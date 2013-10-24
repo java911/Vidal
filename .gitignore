@@ -1,0 +1,15 @@
+web/bundles/
+web/upload
+app/bootstrap*
+app/cache/*
+app/config/parameters.yml
+app/logs/*
+build/
+vendor/
+bin/
+composer.phar
+.idea/*
+mysql-connector-*
+
+
+
