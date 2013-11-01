@@ -1,0 +1,5 @@
+vidal_main:
+    resource: "@VidalMainBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
