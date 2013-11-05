@@ -107,10 +107,23 @@ class Product
 	/** @ORM\OneToMany(targetEntity="ProductDocument", mappedBy="ProductID") */
 	protected $productDocument;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="ClPhGroups", inversedBy="products")
+	 * @ORM\JoinTable(name="product_clphgroups",
+	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="ClPhGroupsID", referencedColumnName="ClPhGroupsID")})
+	 */
+	protected $clphGroups;
+
+	/** @ORM\OneToMany(targetEntity="ProductCompany", mappedBy="ProductID") */
+	protected $productCompany;
+
 	public function __construct()
 	{
 		$this->atcCodes        = new ArrayCollection();
 		$this->productDocument = new ArrayCollection();
+		$this->clphGroups      = new ArrayCollection();
+		$this->productCompany  = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -581,4 +594,53 @@ class Product
 	{
 		return $this->atcCodes;
 	}
+
+	/**
+	 * @param mixed $productDocument
+	 */
+	public function setProductDocument(ArrayCollection $productDocument)
+	{
+		$this->productDocument = $productDocument;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getProductDocument()
+	{
+		return $this->productDocument;
+	}
+
+	/**
+	 * @param mixed $clphGroups
+	 */
+	public function setClphGroups(ArrayCollection $clphGroups)
+	{
+		$this->clphGroups = $clphGroups;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getClphGroups()
+	{
+		return $this->clphGroups;
+	}
+
+	/**
+	 * @param mixed $productCompany
+	 */
+	public function setProductCompany(ArrayCollection $productCompany)
+	{
+		$this->productCompany = $productCompany;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getProductCompany()
+	{
+		return $this->productCompany;
+	}
+
 }

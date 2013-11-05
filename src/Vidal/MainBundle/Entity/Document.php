@@ -140,10 +140,37 @@ class Document
 	/** @ORM\OneToMany(targetEntity="ProductDocument", mappedBy="DocumentID") */
 	protected $productDocument;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="Nozology", mappedBy="documents")
+	 * @ORM\JoinTable(name="document_indicnozology",
+	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")})
+	 */
+	protected $nozologies;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="ClinicoPhPointers", mappedBy="documents")
+	 * @ORM\JoinTable(name="document_clphpointers",
+	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="ClPhPointerID", referencedColumnName="ClPhPointerID")})
+	 */
+	protected $clphPointers;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Contraindication", mappedBy="documents")
+	 * @ORM\JoinTable(name="document_contraindication",
+	 * joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
+	 * inverseJoinColumns={@ORM\JoinColumn(name="ContraIndicCode", referencedColumnName="ContraIndicCode")})
+	 */
+	protected $contraindications;
+
 	public function __construct()
 	{
-		$this->atcCodes        = new ArrayCollection();
-		$this->productDocument = new ArrayCollection();
+		$this->atcCodes          = new ArrayCollection();
+		$this->productDocument   = new ArrayCollection();
+		$this->nozologies        = new ArrayCollection();
+		$this->clphPointers      = new ArrayCollection();
+		$this->contraindications = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -776,6 +803,22 @@ class Document
 	}
 
 	/**
+	 * @param mixed $ed
+	 */
+	public function setEd($ed)
+	{
+		$this->ed = $ed;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getEd()
+	{
+		return $this->ed;
+	}
+
+	/**
 	 * @param mixed $atcCodes
 	 */
 	public function setAtcCodes(ArrayCollection $atcCodes)
@@ -792,19 +835,67 @@ class Document
 	}
 
 	/**
-	 * @param mixed $ed
+	 * @param mixed $nozologies
 	 */
-	public function setEd($ed)
+	public function setNozologies(ArrayCollection $nozologies)
 	{
-		$this->ed = $ed;
+		$this->nozologies = $nozologies;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getEd()
+	public function getNozologies()
 	{
-		return $this->ed;
+		return $this->nozologies;
+	}
+
+	/**
+	 * @param mixed $productDocument
+	 */
+	public function setProductDocument(ArrayCollection $productDocument)
+	{
+		$this->productDocument = $productDocument;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getProductDocument()
+	{
+		return $this->productDocument;
+	}
+
+	/**
+	 * @param mixed $clphPointers
+	 */
+	public function setClphPointers(ArrayCollection $clphPointers)
+	{
+		$this->clphPointers = $clphPointers;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getClphPointers()
+	{
+		return $this->clphPointers;
+	}
+
+	/**
+	 * @param mixed $contraindications
+	 */
+	public function setContraindications(ArrayCollection $contraindications)
+	{
+		$this->contraindications = $contraindications;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getContraindications()
+	{
+		return $this->contraindications;
 	}
 
 }

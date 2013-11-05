@@ -15,6 +15,6 @@ class ProductDocument
 	/** @ORM\Id @ORM\Column(type="integer") @ORM\ManyToOne(targetEntity="Product", inversedBy="productDocument") */
 	protected $ProductID;
 
-	/** @ORM\Column(type="integer", nullable=true) */
+	/** @ORM\Column(type="smallint", nullable=true) */
 	protected $Ranking;
 }
