@@ -56,13 +56,284 @@ class InfoPage
 	 */
 	protected $CoutryEditionCode;
 
+	/** @ORM\ManyToMany(targetEntity="Picture", mappedBy="infoPages") */
+	protected $pictures;
+
+	/** @ORM\OneToMany(targetEntity="DocumentInfoPage", mappedBy="InfoPageID") */
+	protected $documentInfoPages;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="RepresAndDistribs", mappedBy="infoPages")
+	 * @ORM\JoinTable(name="infopage_represanddistribs",
+	 *        joinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="RepresAndDistribID", referencedColumnName="RepresAndDistribID")})
+	 */
+	protected $represAndDistribs;
+
 	public function __construct()
 	{
-
+		$this->pictures          = new ArrayCollection();
+		$this->documentInfoPages = new ArrayCollection();
 	}
 
 	public function __toString()
 	{
 		return $this->RusName;
+	}
+
+	/**
+	 * @param mixed $CoutryCode
+	 */
+	public function setCoutryCode($CoutryCode)
+	{
+		$this->CoutryCode = $CoutryCode;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCoutryCode()
+	{
+		return $this->CoutryCode;
+	}
+
+	/**
+	 * @param mixed $CoutryEditionCode
+	 */
+	public function setCoutryEditionCode($CoutryEditionCode)
+	{
+		$this->CoutryEditionCode = $CoutryEditionCode;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCoutryEditionCode()
+	{
+		return $this->CoutryEditionCode;
+	}
+
+	/**
+	 * @param mixed $DateTextModified
+	 */
+	public function setDateTextModified($DateTextModified)
+	{
+		$this->DateTextModified = $DateTextModified;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDateTextModified()
+	{
+		return $this->DateTextModified;
+	}
+
+	/**
+	 * @param mixed $Email
+	 */
+	public function setEmail($Email)
+	{
+		$this->Email = $Email;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getEmail()
+	{
+		return $this->Email;
+	}
+
+	/**
+	 * @param mixed $EngAddress
+	 */
+	public function setEngAddress($EngAddress)
+	{
+		$this->EngAddress = $EngAddress;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getEngAddress()
+	{
+		return $this->EngAddress;
+	}
+
+	/**
+	 * @param mixed $EngName
+	 */
+	public function setEngName($EngName)
+	{
+		$this->EngName = $EngName;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getEngName()
+	{
+		return $this->EngName;
+	}
+
+	/**
+	 * @param mixed $Fax
+	 */
+	public function setFax($Fax)
+	{
+		$this->Fax = $Fax;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getFax()
+	{
+		return $this->Fax;
+	}
+
+	/**
+	 * @param mixed $InfoPageID
+	 */
+	public function setInfoPageID($InfoPageID)
+	{
+		$this->InfoPageID = $InfoPageID;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getInfoPageID()
+	{
+		return $this->InfoPageID;
+	}
+
+	/**
+	 * @param mixed $Notes
+	 */
+	public function setNotes($Notes)
+	{
+		$this->Notes = $Notes;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getNotes()
+	{
+		return $this->Notes;
+	}
+
+	/**
+	 * @param mixed $PhoneNumber
+	 */
+	public function setPhoneNumber($PhoneNumber)
+	{
+		$this->PhoneNumber = $PhoneNumber;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPhoneNumber()
+	{
+		return $this->PhoneNumber;
+	}
+
+	/**
+	 * @param mixed $RusAddress
+	 */
+	public function setRusAddress($RusAddress)
+	{
+		$this->RusAddress = $RusAddress;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getRusAddress()
+	{
+		return $this->RusAddress;
+	}
+
+	/**
+	 * @param mixed $RusName
+	 */
+	public function setRusName($RusName)
+	{
+		$this->RusName = $RusName;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getRusName()
+	{
+		return $this->RusName;
+	}
+
+	/**
+	 * @param mixed $ShortAddress
+	 */
+	public function setShortAddress($ShortAddress)
+	{
+		$this->ShortAddress = $ShortAddress;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getShortAddress()
+	{
+		return $this->ShortAddress;
+	}
+
+	/**
+	 * @param mixed $WithoutPage
+	 */
+	public function setWithoutPage($WithoutPage)
+	{
+		$this->WithoutPage = $WithoutPage;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getWithoutPage()
+	{
+		return $this->WithoutPage;
+	}
+
+	/**
+	 * @param mixed $pictures
+	 */
+	public function setPictures(ArrayCollection $pictures)
+	{
+		$this->pictures = $pictures;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPictures()
+	{
+		return $this->pictures;
+	}
+
+	/**
+	 * @param mixed $documentInfoPages
+	 */
+	public function setDocumentInfoPages(ArrayCollection $documentInfoPages)
+	{
+		$this->documentInfoPages = $documentInfoPages;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDocumentInfoPages()
+	{
+		return $this->documentInfoPages;
 	}
 }

@@ -4,8 +4,8 @@ namespace Vidal\MainBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/** @ORM\Entity @ORM\Table(name="represanddistrib") */
-class RepresAndDistrib
+/** @ORM\Entity @ORM\Table(name="represanddistribs") */
+class RepresAndDistribs
 {
 	/** @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue */
 	protected $RepresAndDistribID;
@@ -30,7 +30,7 @@ class RepresAndDistrib
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="InfoPage", inversedBy="represAndDistribs")
-	 * @ORM\JoinTable(name="infopage_represanddistrib",
+	 * @ORM\JoinTable(name="infopage_represanddistribs",
 	 *        joinColumns={@ORM\JoinColumn(name="RepresAndDistribID", referencedColumnName="RepresAndDistribID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")})
 	 */

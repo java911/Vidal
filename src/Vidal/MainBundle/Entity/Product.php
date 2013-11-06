@@ -21,7 +21,10 @@ class Product
 	/** @ORM\Column(type="boolean") */
 	protected $NonPrescriptionDrug = false;
 
-	/** @ORM\Column(length=10) */
+	/**
+	 * @ORM\ManyToOne(targetEntity="CountryEdition", inversedBy="products")
+	 * @ORM\JoinColumn(name="CountryEditionCode", referencedColumnName="CountryEditionCode")
+	 */
 	protected $CountryEditionCode;
 
 	/** @ORM\Column(type="datetime", nullable=true) */
@@ -55,10 +58,13 @@ class Product
 	protected $ItsMultiProduct = false;
 
 	/** @ORM\Column(type="integer", nullable=true) */
-	protected $BelongMultiProductID; //todo: связать с таблицей
+	protected $BelongMultiProductID;
 
-	/** @ORM\Column(type="integer", nullable=true) */
-	protected $MarketStatusID; //todo: связать с таблицей
+	/**
+	 * @ORM\ManyToOne(targetEntity="MarketStatus", inversedBy="products")
+	 * @ORM\JoinColumn(name="MarketStatusID", referencedColumnName="MarketStatusID")
+	 */
+	protected $MarketStatusID;
 
 	/** @ORM\Column(type="datetime", nullable=true) */
 	protected $CheckingRegDate;
@@ -91,7 +97,7 @@ class Product
 	protected $MinAs;
 
 	/** @ORM\Column(length=50, nullable=true) */
-	protected $ValidPediod;
+	protected $ValidPeriod;
 
 	/** @ORM\Column(type="text", nullable=true) */
 	protected $StrCond;
@@ -118,12 +124,16 @@ class Product
 	/** @ORM\OneToMany(targetEntity="ProductCompany", mappedBy="ProductID") */
 	protected $productCompany;
 
+	/** @ORM\OneToMany(targetEntity="ProductPackage", mappedBy="ProductID") */
+	protected $productPackages;
+
 	public function __construct()
 	{
 		$this->atcCodes        = new ArrayCollection();
 		$this->productDocument = new ArrayCollection();
 		$this->clphGroups      = new ArrayCollection();
 		$this->productCompany  = new ArrayCollection();
+		$this->productPackages = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -532,19 +542,19 @@ class Product
 	}
 
 	/**
-	 * @param mixed $ValidPediod
+	 * @param mixed $ValidPeriod
 	 */
-	public function setValidPediod($ValidPediod)
+	public function setValidPeriod($ValidPeriod)
 	{
-		$this->ValidPediod = $ValidPediod;
+		$this->ValidPeriod = $ValidPeriod;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getValidPediod()
+	public function getValidPeriod()
 	{
-		return $this->ValidPediod;
+		return $this->ValidPeriod;
 	}
 
 	/**
@@ -643,4 +653,19 @@ class Product
 		return $this->productCompany;
 	}
 
+	/**
+	 * @param mixed $productPackages
+	 */
+	public function setProductPackages(ArrayCollection $productPackages)
+	{
+		$this->productPackages = $productPackages;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getProductPackages()
+	{
+		return $this->productPackages;
+	}
 }

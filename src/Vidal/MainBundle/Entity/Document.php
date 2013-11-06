@@ -164,6 +164,20 @@ class Document
 	 */
 	protected $contraindications;
 
+	/** @ORM\OneToMany(targetEntity="DocumentInfoPage", mappedBy="DocumentID") */
+	protected $documentInfoPages;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Edition", mappedBy="documents")
+	 * @ORM\JoinTable(name="documentoc_edition",
+	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="EditionCode", referencedColumnName="EditionCode")})
+	 */
+	protected $editions;
+
+	/** @ORM\OneToMany(targetEntity="DocumentEdition", mappedBy="DocumentID") */
+	protected $documentEditions;
+
 	public function __construct()
 	{
 		$this->atcCodes          = new ArrayCollection();
@@ -171,6 +185,8 @@ class Document
 		$this->nozologies        = new ArrayCollection();
 		$this->clphPointers      = new ArrayCollection();
 		$this->contraindications = new ArrayCollection();
+		$this->documentInfoPages = new ArrayCollection();
+		$this->documentEditions  = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -898,4 +914,51 @@ class Document
 		return $this->contraindications;
 	}
 
+	/**
+	 * @param mixed $documentInfoPages
+	 */
+	public function setDocumentInfoPages(ArrayCollection $documentInfoPages)
+	{
+		$this->documentInfoPages = $documentInfoPages;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDocumentInfoPages()
+	{
+		return $this->documentInfoPages;
+	}
+
+	/**
+	 * @param mixed $documentEditions
+	 */
+	public function setDocumentEditions(ArrayCollection $documentEditions)
+	{
+		$this->documentEditions = $documentEditions;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDocumentEditions()
+	{
+		return $this->documentEditions;
+	}
+
+	/**
+	 * @param mixed $editions
+	 */
+	public function setEditions(ArrayCollection $editions)
+	{
+		$this->editions = $editions;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getEditions()
+	{
+		return $this->editions;
+	}
 }

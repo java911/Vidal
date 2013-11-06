@@ -22,10 +22,14 @@ class Country
 	/** @ORM\OneToMany(targetEntity="InfoPage", mappedBy="CountryCode") */
 	protected $infoPages;
 
+	/** @ORM\OneToMany(targetEntity="RepresAndDistribs", mappedBy="CountryCode") */
+	protected $represAndDistribs;
+
 	public function __construct()
 	{
-		$this->companies = new ArrayCollection();
-		$this->infoPages = new ArrayCollection();
+		$this->companies         = new ArrayCollection();
+		$this->infoPages         = new ArrayCollection();
+		$this->represAndDistribs = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -113,4 +117,19 @@ class Country
 		return $this->infoPages;
 	}
 
+	/**
+	 * @param mixed $represAndDistribs
+	 */
+	public function setRepresAndDistribs(ArrayCollection $represAndDistribs)
+	{
+		$this->represAndDistribs = $represAndDistribs;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getRepresAndDistribs()
+	{
+		return $this->represAndDistribs;
+	}
 }

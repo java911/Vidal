@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /** @ORM\Entity @ORM\Table(name="countryedition") */
 class CountryEdition
 {
-	/** @ORM\Id @ORM\Column(length=10) */
+	/** @ORM\Id @ORM\Column(length=10, unique=true) */
 	protected $CountryEditionCode;
 
 	/** @ORM\Column(length=255) */
@@ -17,16 +17,20 @@ class CountryEdition
 	protected $infoPages;
 
 	/** @ORM\OneToMany(targetEntity="Product", mappedBy="CountryEditionCode") */
-	//protected $products;
+	protected $products;
 
 	/** @ORM\OneToMany(targetEntity="Company", mappedBy="CountryEditionCode") */
 	protected $companies;
 
+	/** @ORM\OneToMany(targetEntity="DocumentEdition", mappedBy="CountryEditionCode") */
+	protected $documentEditions;
+
 	public function __construct()
 	{
 		$this->infoPages = new ArrayCollection();
-		//$this->products  = new ArrayCollection();
-		$this->companies = new ArrayCollection();
+		$this->products  = new ArrayCollection();
+		$this->companies        = new ArrayCollection();
+		$this->documentEditions = new ArrayCollection;
 	}
 
 	public function __toString()
@@ -114,4 +118,19 @@ class CountryEdition
 		return $this->products;
 	}
 
+	/**
+	 * @param mixed $documentEditions
+	 */
+	public function setDocumentEditions(ArrayCollection $documentEditions)
+	{
+		$this->documentEditions = $documentEditions;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDocumentEditions()
+	{
+		return $this->documentEditions;
+	}
 }

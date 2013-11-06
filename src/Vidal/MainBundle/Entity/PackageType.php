@@ -4,18 +4,23 @@ namespace Vidal\MainBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/** @ORM\Entity @ORM\Table(name="packageItem") */
-class PackageItem
+/** @ORM\Entity @ORM\Table(name="packagetype") */
+class PackageType
 {
-	/** @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue */
-	protected $PackageItemID;
+	/** @ORM\Id @ORM\Column(length=4, unique=true) */
+	protected $PackageTypeCode;
 
-	/** @ORM\Column(length=255) */
-	protected $RusName;
+	/** @ORM\Column(type="smallint") */
+	protected $PackageTypeIndex;
 
-	/** @ORM\Column(length=255, nullable=true) */
-	protected $EngName;
+	public function __construct()
+	{
 
-	/** @ORM\Column(type="integer", nullable=true) */
-	protected $GDDB_PackageItemID;
+	}
+
+	public function __toString()
+	{
+		return $this->PackageTypeCode;
+	}
+
 }
