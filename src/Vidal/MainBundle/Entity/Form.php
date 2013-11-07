@@ -4,11 +4,11 @@ namespace Vidal\MainBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/** @ORM\Entity @ORM\Table(name="packageitem") */
-class PackageItem
+/** @ORM\Entity @ORM\Table(name="form") */
+class Form
 {
 	/** @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue */
-	protected $PackageItemID;
+	protected $FormID;
 
 	/** @ORM\Column(length=255) */
 	protected $RusName;
@@ -17,14 +17,17 @@ class PackageItem
 	protected $EngName;
 
 	/** @ORM\Column(type="integer", nullable=true) */
-	protected $GDDB_PackageItemID;
+	protected $GDDB_FormID;
 
-	/** @ORM\OneToMany(targetEntity="PackagePackageItem", mappedBy="PackageItemID") */
-	protected $packagePackageItems;
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $ShortName;
+
+	/** @ORM\OneToMany(targetEntity="Item", mappedBy="FormID") */
+	protected $items;
 
 	public function __construct()
 	{
-		$this->packagePackageItems = new ArrayCollection();
+		$this->items = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -49,35 +52,35 @@ class PackageItem
 	}
 
 	/**
-	 * @param mixed $GDDB_PackageItemID
+	 * @param mixed $FormID
 	 */
-	public function setGDDBPackageItemID($GDDB_PackageItemID)
+	public function setFormID($FormID)
 	{
-		$this->GDDB_PackageItemID = $GDDB_PackageItemID;
+		$this->FormID = $FormID;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getGDDBPackageItemID()
+	public function getFormID()
 	{
-		return $this->GDDB_PackageItemID;
+		return $this->FormID;
 	}
 
 	/**
-	 * @param mixed $PackageItemID
+	 * @param mixed $GDDB_FormID
 	 */
-	public function setPackageItemID($PackageItemID)
+	public function setGDDBFormID($GDDB_FormID)
 	{
-		$this->PackageItemID = $PackageItemID;
+		$this->GDDB_FormID = $GDDB_FormID;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getPackageItemID()
+	public function getGDDBFormID()
 	{
-		return $this->PackageItemID;
+		return $this->GDDB_FormID;
 	}
 
 	/**
@@ -97,18 +100,34 @@ class PackageItem
 	}
 
 	/**
-	 * @param mixed $packagePackageItems
+	 * @param mixed $ShortName
 	 */
-	public function setPackagePackageItems(ArrayCollection $packagePackageItems)
+	public function setShortName($ShortName)
 	{
-		$this->packagePackageItems = $packagePackageItems;
+		$this->ShortName = $ShortName;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getPackagePackageItems()
+	public function getShortName()
 	{
-		return $this->packagePackageItems;
+		return $this->ShortName;
+	}
+
+	/**
+	 * @param mixed $items
+	 */
+	public function setItems(ArrayCollection $items)
+	{
+		$this->items = $items;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getItems()
+	{
+		return $this->items;
 	}
 }
