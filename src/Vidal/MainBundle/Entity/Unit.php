@@ -22,9 +22,13 @@ class Unit
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $GDDB_UnitID;
 
+	/** @ORM\OneToMany(targetEntity="ItemActiveIng", mappedBy="ItemID") */
+	protected $itemActiveIngs;
+
 	public function __construct()
 	{
-		$this->packages = new ArrayCollection();
+		$this->packages       = new ArrayCollection();
+		$this->itemActiveIngs = new ArrayCollection();
 	}
 
 	public function __string()
@@ -110,5 +114,21 @@ class Unit
 	public function getPackages()
 	{
 		return $this->packages;
+	}
+
+	/**
+	 * @param mixed $itemActiveIngs
+	 */
+	public function setItemActiveIngs(ArrayCollection $itemActiveIngs)
+	{
+		$this->itemActiveIngs = $itemActiveIngs;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getItemActiveIngs()
+	{
+		return $this->itemActiveIngs;
 	}
 }

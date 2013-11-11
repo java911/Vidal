@@ -178,6 +178,9 @@ class Document
 	/** @ORM\OneToMany(targetEntity="DocumentEdition", mappedBy="DocumentID") */
 	protected $documentEditions;
 
+	/** @ORM\OneToMany(targetEntity="MoleculeDocument", mappedBy="DocumentID") */
+	protected $moleculeDocuments;
+
 	public function __construct()
 	{
 		$this->atcCodes          = new ArrayCollection();
@@ -187,6 +190,7 @@ class Document
 		$this->contraindications = new ArrayCollection();
 		$this->documentInfoPages = new ArrayCollection();
 		$this->documentEditions  = new ArrayCollection();
+		$this->moleculeDocuments = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -960,5 +964,21 @@ class Document
 	public function getEditions()
 	{
 		return $this->editions;
+	}
+
+	/**
+	 * @param mixed $moleculeDocuments
+	 */
+	public function setMoleculeDocuments(ArrayCollection $moleculeDocuments)
+	{
+		$this->moleculeDocuments = $moleculeDocuments;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getMoleculeDocuments()
+	{
+		return $this->moleculeDocuments;
 	}
 }

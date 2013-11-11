@@ -16,8 +16,8 @@ class Form
 	/** @ORM\Column(length=255, nullable=true) */
 	protected $EngName;
 
-	/** @ORM\Column(type="integer", nullable=true) */
-	protected $GDDB_FormID;
+	/** @ORM\Column(type="integer", nullable=true, name="GDDB_FormID") */
+	protected $gddbFormID;
 
 	/** @ORM\Column(length=255, nullable=true) */
 	protected $ShortName;
@@ -68,19 +68,19 @@ class Form
 	}
 
 	/**
-	 * @param mixed $GDDB_FormID
+	 * @param mixed $gddbFormID
 	 */
-	public function setGDDBFormID($GDDB_FormID)
+	public function setGddbFormID($gddbFormID)
 	{
-		$this->GDDB_FormID = $GDDB_FormID;
+		$this->gddbFormID = $gddbFormID;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getGDDBFormID()
+	public function getGddbFormID()
 	{
-		return $this->GDDB_FormID;
+		return $this->gddbFormID;
 	}
 
 	/**

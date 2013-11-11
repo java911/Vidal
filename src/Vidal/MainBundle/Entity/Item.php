@@ -31,9 +31,30 @@ class Item
 	/** @ORM\OneToMany(targetEntity="ItemInactiveIng", mappedBy="ItemID") */
 	protected $itemInactiveIngs;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="InactiveIng", mappedBy="itemsNotIncluded")
+	 * @ORM\JoinTable(name="item_ingredient_not_included",
+	 *        joinColumns={@ORM\JoinColumn(name="ItemID", referencedColumnName="ItemID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="IngredientID", referencedColumnName="InactiveIngredientID")})
+	 */
+	protected $ingredientsNotIncluded;
+
+	/** @ORM\OneToMany(targetEntity="ProductItem", mappedBy="ItemID") */
+	protected $productItems;
+
+	/** @ORM\OneToMany(targetEntity="ItemActiveIng", mappedBy="ItemID") */
+	protected $itemActiveIngs;
+
+	/** @ORM\OneToMany(targetEntity="ProductItemRoute", mappedBy="ItemID") */
+	protected $productItemRoutes;
+
 	public function __construct()
 	{
-		$this->itemInactiveIngs = new ArrayCollection();
+		$this->itemInactiveIngs       = new ArrayCollection();
+		$this->ingredientsNotIncluded = new ArrayCollection();
+		$this->productItems           = new ArrayCollection();
+		$this->itemInactiveIngs       = new ArrayCollection();
+		$this->productItemRoutes      = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -135,5 +156,69 @@ class Item
 	public function getItemInactiveIngs()
 	{
 		return $this->itemInactiveIngs;
+	}
+
+	/**
+	 * @param mixed $ingredientsNotIncluded
+	 */
+	public function setIngredientsNotIncluded(ArrayCollection $ingredientsNotIncluded)
+	{
+		$this->ingredientsNotIncluded = $ingredientsNotIncluded;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getIngredientsNotIncluded()
+	{
+		return $this->ingredientsNotIncluded;
+	}
+
+	/**
+	 * @param mixed $productItems
+	 */
+	public function setProductItems($productItems)
+	{
+		$this->productItems = $productItems;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getProductItems()
+	{
+		return $this->productItems;
+	}
+
+	/**
+	 * @param mixed $itemActiveIngs
+	 */
+	public function setItemActiveIngs($itemActiveIngs)
+	{
+		$this->itemActiveIngs = $itemActiveIngs;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getItemActiveIngs()
+	{
+		return $this->itemActiveIngs;
+	}
+
+	/**
+	 * @param mixed $productItemRoutes
+	 */
+	public function setProductItemRoutes($productItemRoutes)
+	{
+		$this->productItemRoutes = $productItemRoutes;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getProductItemRoutes()
+	{
+		return $this->productItemRoutes;
 	}
 }

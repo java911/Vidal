@@ -33,4 +33,86 @@ class ItemInactiveIng
 
 	/** @ORM\Column(type="smallint", nullable=true) */
 	protected $Ranking;
+
+	/**
+	 * @param mixed $DescriptionID
+	 */
+	public function setDescriptionID($DescriptionID)
+	{
+		$this->DescriptionID = $DescriptionID;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDescriptionID()
+	{
+		return $this->DescriptionID;
+	}
+
+	/**
+	 * @param mixed $InactiveIngredientID
+	 */
+	public function setInactiveIngredientID($InactiveIngredientID)
+	{
+		$this->InactiveIngredientID = $InactiveIngredientID;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getInactiveIngredientID()
+	{
+		return $this->InactiveIngredientID;
+	}
+
+	/**
+	 * @param mixed $ItemID
+	 */
+	public function setItemID($ItemID)
+	{
+		$this->ItemID = $ItemID;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getItemID()
+	{
+		return $this->ItemID;
+	}
+
+	/**
+	 * @param mixed $Ranking
+	 */
+	public function setRanking($Ranking)
+	{
+		$this->Ranking = $Ranking;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getRanking()
+	{
+		return $this->Ranking;
+	}
+
+	/**
+	 * @param mixed $Volume
+	 */
+	public function setVolume($Volume)
+	{
+		$this->Volume = $Volume;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getVolume()
+	{
+		return $this->Volume;
+	}
+
+
 }
