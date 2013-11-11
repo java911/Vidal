@@ -10,8 +10,11 @@ class MoleculeName
 	/** @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue */
 	protected $MoleculeNameID;
 
-	/** @ORM\Column(type="integer") */
-	protected $MoleculeID; //todo: fk
+	/**
+	 * @ORM\ManyToOne(targetEntity="Molecule", inversedBy="moleculeNames")
+	 * @ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")
+	 */
+	protected $MoleculeID;
 
 	/** @ORM\Column(type="text") */
 	protected $RusName;

@@ -40,9 +40,13 @@ class Molecule
 	/** @ORM\OneToMany(targetEntity="MoleculeDocument", mappedBy="MoleculeID") */
 	protected $moleculeDocuments;
 
+	/** @ORM\OneToMany(targetEntity="MoleculeName", mappedBy="MoleculeID") */
+	protected $moleculeNames;
+
 	public function __construct()
 	{
 		$this->moleculeDocuments = new ArrayCollection();
+		$this->moleculeNames     = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -192,5 +196,21 @@ class Molecule
 	public function getMoleculeDocuments()
 	{
 		return $this->moleculeDocuments;
+	}
+
+	/**
+	 * @param mixed $moleculeNames
+	 */
+	public function setMoleculeNames(ArrayCollection $moleculeNames)
+	{
+		$this->moleculeNames = $moleculeNames;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getMoleculeNames()
+	{
+		return $this->moleculeNames;
 	}
 }
