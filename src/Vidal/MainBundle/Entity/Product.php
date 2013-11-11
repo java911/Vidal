@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/** @ORM\Entity @ORM\Table(name="product") */
+/** @ORM\Entity(repositoryClass="ProductRepository") @ORM\Table(name="product") */
 class Product
 {
 	/** @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue */

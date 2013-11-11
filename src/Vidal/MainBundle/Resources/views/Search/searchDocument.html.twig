@@ -2,5 +2,76 @@
 
 
 {% block main %}
-	main block
+	<div class="drug">
+		<div class="block">
+			<div class="block-head">Форма выпуска, состав и упаковка</div>
+			<div class="block-content composition">
+				{{ document.CompiledComposition|replace({'[PRING]':'<i class"pring">Вспомогательные вещества</i>:'})|raw }}
+			</div>
+		</div>
+		<div class="block">
+			<div class="block-head">Клинико-фармакологическая группа</div>
+			<div class="block-content">
+				{{ document.ClPhGrDescription|raw }}
+			</div>
+		</div>
+		<div class="block">
+			<div class="block-head">Фармакологическое действие</div>
+			<div class="block-content">
+				{{ document.PhInfluence|raw }}
+			</div>
+		</div>
+		<div class="block">
+			<div class="block-head">Фармакокинетика</div>
+			<div class="block-content">
+				{{ document.PhKinetics|raw }}
+			</div>
+		</div>
+		<div class="block">
+			<div class="block-head">Показания к применению препарата {{ document.RusName|raw }}</div>
+			<div class="block-content">
+				{{ document.Indication|raw }}
+			</div>
+		</div>
+		<div class="block">
+			<div class="block-head">Режим дозирования</div>
+			<div class="block-content">
+				{{ document.Dosage|raw }}
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.drug {
+			max-width: 700px;
+		}
+		.block {
+			margin-top: 15px;
+		}
+		.block-head {
+			font-weight: bold;
+			color:       #00468c;
+		}
+		.block-content.composition i:first-child {
+			font-style:  italic;
+			font-weight: bold;
+			color:       #268366;
+		}
+		.block-content table {
+			width:           100%;
+			border-collapse: collapse;
+		}
+		.block-content td {
+			padding: 3px 5px;
+			border:  1px solid #ebebeb;
+		}
+		.block-content p {
+			margin: 0;
+		}
+	</style>
 {% endblock %}
