@@ -8,30 +8,26 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class SearchController extends Controller
 {
+	/**
+	 * @Route("/poisk_preparatov/{EngName}__{ProductID}.htm", name="search_product")
+	 * @Template()
+	 */
+	public function searchProductAction($EngName, $DocumentID = null)
+	{
+		return array();
+	}
+
     /**
-     * @Route("/poisk_preparatov/{name}~{DocumentID}.htm", name="search_document_id")
+     * @Route("/poisk_preparatov/{EngName}~{DocumentID}.htm", name="search_document_id")
+	 * @Route("/poisk_preparatov/{EngName}.htm", name="search_document")
      * @Template()
      */
-    public function searchDocumentAction($name, $DocumentID = null)
+    public function searchDocumentAction($EngName, $DocumentID = null)
     {
-        return array('name' => $name);
+		$em = $this->getDoctrine()->getManager();
+
+		//$document =
+
+        return array();
     }
-
-	/**
-	 * @Route("/poisk_preparatov/{name}__{ProductID}.htm")
-	 * @Template()
-	 */
-	public function searchProductAction($name, $DocumentID = null)
-	{
-		return array('name' => $name);
-	}
-
-	/**
-	 * @Route("/poisk_preparatov/{name}.htm")
-	 * @Template()
-	 */
-	public function searchMoleculeAction($name, $DocumentID = null)
-	{
-		return array('name' => $name);
-	}
 }
