@@ -31,9 +31,13 @@ class Package
 	/** @ORM\OneToMany(targetEntity="ProductPackage", mappedBy="PackageID") */
 	protected $productPackages;
 
+	/** @ORM\OneToMany(targetEntity="PackagePackageItem", mappedBy="PackageID") */
+	protected $packagePackageItems;
+
 	public function __construct()
 	{
-		$this->productPackages = new ArrayCollection();
+		$this->productPackages     = new ArrayCollection();
+		$this->packagePackageItems = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -151,5 +155,21 @@ class Package
 	public function getProductPackages()
 	{
 		return $this->productPackages;
+	}
+
+	/**
+	 * @param mixed $packagePackageItems
+	 */
+	public function setPackagePackageItems(ArrayCollection $packagePackageItems)
+	{
+		$this->packagePackageItems = $packagePackageItems;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPackagePackageItems()
+	{
+		return $this->packagePackageItems;
 	}
 }
