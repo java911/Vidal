@@ -21,7 +21,7 @@ class IndexController extends Controller
 
     /**
      * @Route("/{url}", name = "page")
-     * @Template
+     * @Template("VidalMainBundle:Index:page.html.twig")
      */
     public function pageAction($url)
     {
@@ -39,6 +39,35 @@ class IndexController extends Controller
      * @Route("/sitemap", name = "sitemap")
      */
     public function mapAction(){
+        /**
+         * Список страниц
+         * Список лекарств
+         * Список статей
+         * Список новостей
+         * Список симптомов ?
+         * memcached
+         */
+
         return true;
     }
+
+    /**
+     * Новости с Эврики список ( Выбирается по полю "isVidal" )
+     * @Route("/news" , name="news")
+     * @Template("VidalMainBundle:Index:news.html.twig")
+     */
+    public function newsAction(){
+        return array();
+    }
+
+    /**
+     * Раскрытая новость с Эврики
+     * @Route("/new/{newId}" , name="new")
+     * @Template("VidalMainBundle:Index:new.html.twig")
+     */
+    public function newAction(){
+        return array();
+    }
+
+
 }
