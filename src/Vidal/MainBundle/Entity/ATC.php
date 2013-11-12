@@ -4,7 +4,7 @@ namespace Vidal\MainBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/** @ORM\Entity @ORM\Table(name="atc") */
+/** @ORM\Entity(repositoryClass="ATCRepository") @ORM\Table(name="atc") */
 class ATC
 {
 	/** @ORM\Id @ORM\Column(length=10, unique=true) */

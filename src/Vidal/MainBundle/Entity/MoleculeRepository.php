@@ -7,13 +7,14 @@ class MoleculeRepository extends EntityRepository
 {
 	public function findByDocumentID($DocumentID)
 	{
-		return $this->createQueryBuilder('m')
-			->select('m')
-			->leftJoin('m.moleculeDocuments', 'md', 'WITH', 'md.DocumentID = :DocumentID')
-			->setParameter('DocumentID', $DocumentID)
-			->orderBy('md.Ranking', 'DESC')
-			->setMaxResults(1)
-			->getQuery()
-			->getSingleResult();
+		return $this->_em->createQuery('
+			SELECT m
+			FROM VidalMainBundle:Molecule m
+			LEFT JOIN VidalMainBundle:MoleculeDocument md WITH md.MoleculeID = m
+			LEFT JOIN VidalMainBundle:Document d WITH md.DocumentID = d
+			WHERE d.DocumentID = :DocumentID
+			ORDER BY md.Ranking DESC
+		')->setParameter('DocumentID', $DocumentID)
+			->getResult();
 	}
 }

@@ -1,0 +1,171 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+{% set loz = asset('bundles/vidalmain/images/g2.gif') %}
+
+{% block main %}
+	<div class="drug">
+
+		<h1>{{ document.RusName|raw }} <span>({{ document.EngName|raw }})</span></h1>
+
+		{#<div class="owner">#}
+		{#<span class="owner-head">Владелец регистрационного удостоверения:</span>#}
+		{#<span class="owner-content">#}
+		{#<a href="{{ path('company', {'CompanyID':company.CompanyID}) }}">{{ company.LocalName }}{{ company.Property is not empty ? ', ' ~ company.Property }}</a>#}
+		{#</span>#}
+		{#</div>#}
+
+		{#<div class="atc">#}
+		{#<span class="atc-head">Код ATX:</span>#}
+		{#<span class="atc-content">#}
+		{#<a href="{{ path('atc', {'ATCCode':atc.ATCCode}) }}">{{ atc.ATCCode }}</a>#}
+		{#<span class="atc-name">({{ atc.EngName }})</span>#}
+		{#</span>#}
+		{#</div>#}
+
+		{# Лекарственные формы #}
+		{% if products|length %}
+			<div class="block">
+				<div class="block-head">Лекарственные формы:</div>
+				<div class="block-content">
+					<ul class="products">
+						{% for product in products %}
+							<li class="product">
+								<p class="product-content">
+									{% if product.NonPrescriptionDrug %}<img class="loz" src="{{ loz }}"/>{% endif %}
+									<a href="{{ path('product', {'EngName':product.EngName|engName, 'ProductID':product.ProductID}) }}">{{ product.RusName|stripSup }}</a>
+									<span>{{ product.ZipInfo|stripLoz|raw }}</span>
+								</p>
+								<span class="product-reg">Регистрационный №: {{ product.RegistrationNumber }} от
+									{{ product.RegistrationDate|date('d.m.Y') }}</span>
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		{% endif %}
+
+		{# Форма выпуска, состав и упаковка #}
+		{% if document.CompiledComposition is not empty %}
+			<div class="block">
+				<div class="block-head">Форма выпуска, состав и упаковка</div>
+				<div class="block-content composition">
+					{{ document.CompiledComposition|replace({
+					'[PRING]':'<i class"pring">Вспомогательные вещества</i>:',
+					'&loz;':'<img class="loz" src="'~loz~'"/>'
+					})|raw }}
+				</div>
+			</div>
+		{% endif %}
+
+		{# Клинико-фармакологическая группа #}
+		{% if document.ClPhGrDescription is not empty %}
+			<div class="block">
+				<div class="block-head">Клинико-фармакологическая группа</div>
+				<div class="block-content">
+					{{ document.ClPhGrDescription|raw }}
+				</div>
+			</div>
+		{% endif %}
+
+		{# Фармакологическое действие #}
+		{% if document.PhInfluence is not empty %}
+			<div class="block">
+				<div class="block-head">Фармакологическое действие</div>
+				<div class="block-content">
+					{{ document.PhInfluence|raw }}
+				</div>
+			</div>
+		{% endif %}
+
+		{# Фармакокинетика #}
+		{% if document.PhKinetics is not empty %}
+			<div class="block">
+				<div class="block-head">Фармакокинетика</div>
+				<div class="block-content">
+					{{ document.PhKinetics|raw }}
+				</div>
+			</div>
+		{% endif %}
+
+		{# Показания к применению препарата #}
+		{% if document.Indication is not empty %}
+			<div class="block">
+				<div class="block-head">Показания к применению препарата {{ document.RusName|raw }}</div>
+				<div class="block-content">
+					{{ document.Indication|raw }}
+				</div>
+			</div>
+		{% endif %}
+
+		{# Режим дозирования #}
+		{% if document.Dosage is not empty %}
+			<div class="block">
+				<div class="block-head">Режим дозирования</div>
+				<div class="block-content">
+					{{ document.Dosage|raw }}
+				</div>
+			</div>
+		{% endif %}
+
+	</div>
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+			/* drug */
+		.drug {
+
+		}
+		.drug h1 {
+			font-size: 18px;
+			color:     #00468c;
+		}
+		.drug h1 span {
+			font-style: italic;
+			color:      #999;
+		}
+
+			/* products */
+		.products {
+			margin:       0;
+			padding-left: 0;
+			list-style:   none;
+		}
+		.product {
+			margin-top: 3px;
+		}
+		.product-content {
+			margin: 0;
+		}
+		.product-content a {
+			margin: 0 6px 0 3px;
+		}
+		.product-reg {
+			font-size: 11px;
+			color:     #999;
+		}
+
+			/* block */
+		.block {
+			margin-top: 15px;
+		}
+		.block-head {
+			font-weight: bold;
+			color:       #00468c;
+		}
+		.block-content table {
+			width:           100%;
+			margin:          5px 0;
+			border-collapse: collapse;
+		}
+		.block-content td {
+			padding: 3px 5px;
+			border:  1px solid #ebebeb;
+		}
+		.block-content p {
+			margin: 0;
+		}
+	</style>
+{% endblock %}
