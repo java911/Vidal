@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/** @ORM\Entity @ORM\Table(name="infopage") */
+/** @ORM\Entity(repositoryClass="InfoPageRepository") @ORM\Table(name="infopage") */
 class InfoPage
 {
 	/** @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue */
@@ -30,7 +30,7 @@ class InfoPage
 	 * @ORM\ManyToOne(targetEntity="Country", inversedBy="infoPages")
 	 * @ORM\JoinColumn(name="CountryCode", referencedColumnName="CountryCode")
 	 */
-	protected $CoutryCode;
+	protected $CountryCode;
 
 	/** @ORM\Column(type="text", nullable=true) */
 	protected $Notes;

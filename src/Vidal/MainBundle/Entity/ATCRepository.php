@@ -7,16 +7,22 @@ class ATCRepository extends EntityRepository
 {
 	public function findByDocumentID($DocumentID)
 	{
-		$atc = $this->_em->createQuery('
+		return $this->_em->createQuery('
 			SELECT a
 			FROM VidalMainBundle:ATC a
 			JOIN a.documents d WITH d = :DocumentID
-		')->setMaxResults(1)
-			->setParameter('DocumentID', $DocumentID)
-			->getOneOrNullResult();
+		')->setParameter('DocumentID', $DocumentID)
+			->getResult();
+	}
 
-		var_dump($atc); exit;
-
-		return null;
+	public function findByProducts($productIds)
+	{
+		return $this->_em->createQuery('
+			SELECT DISTINCT a
+			FROM VidalMainBundle:ATC a
+			JOIN a.products p
+			WHERE p IN (:productIds)
+		')->setParameter('productIds', $productIds)
+			->getResult();
 	}
 }

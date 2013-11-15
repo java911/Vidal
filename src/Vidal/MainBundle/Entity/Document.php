@@ -93,6 +93,9 @@ class Document
 	/** @ORM\Column(length=4, nullable=true) */
 	protected $PregnancyUsing;
 
+	/** @ORM\Column(length=4, nullable=true) */
+	protected $NursingUsing;
+
 	/** @ORM\Column(type="text", nullable=true) */
 	protected $RenalInsuf;
 
@@ -980,5 +983,21 @@ class Document
 	public function getMoleculeDocuments()
 	{
 		return $this->moleculeDocuments;
+	}
+
+	/**
+	 * @param mixed $NursingUsing
+	 */
+	public function setNursingUsing($NursingUsing)
+	{
+		$this->NursingUsing = $NursingUsing;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getNursingUsing()
+	{
+		return $this->NursingUsing;
 	}
 }

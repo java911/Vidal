@@ -9,6 +9,27 @@ html, body {
 	color:       #333333;
 }
 
+/* глобальные теги */
+a {
+	color: #268366;
+}
+a.no-underline {
+	text-decoration: none;
+}
+a.no-underline:hover {
+	color:           #d00;
+	text-decoration: underline;
+}
+
+/* глобальные классы */
+.loz {
+	vertical-align: bottom;
+}
+.small {
+	font-size: 11px;
+	color:     #999;
+}
+
 /* глобальные контейнеры */
 #wrapper {
 	width:  700px;
@@ -22,9 +43,4 @@ html, body {
 }
 #main {
 
-}
-
-/* глобальные классы */
-.loz {
-	vertical-align: bottom;
 }

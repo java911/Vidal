@@ -8,7 +8,7 @@ class MoleculeRepository extends EntityRepository
 	public function findByDocumentID($DocumentID)
 	{
 		return $this->_em->createQuery('
-			SELECT m
+			SELECT m.MoleculeID, m.LatName, m.RusName
 			FROM VidalMainBundle:Molecule m
 			LEFT JOIN VidalMainBundle:MoleculeDocument md WITH md.MoleculeID = m
 			LEFT JOIN VidalMainBundle:Document d WITH md.DocumentID = d
