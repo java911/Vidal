@@ -5,7 +5,11 @@
 {% block main %}
 	<div class="drug">
 
-	<h1>{{ document.RusName|raw }} <span>({{ document.EngName|raw }})</span></h1>
+	<h1>{{ document.RusName|raw }} <span>({{ document.EngName|raw }})</span>
+		{% if document.elaboration is not empty %}
+			<span class="elaboration">{{ document.elaboration }}</span>
+		{% endif %}
+	</h1>
 
 	{# Иконки использования при состояниях #}
 	<div class="conditions">
@@ -154,7 +158,7 @@
 				<span class="atc-content">
 					{% for molecule in molecules %}
 						{% if loop.index > 1 %} + {% endif %}
-						<a href="{{ path('act', {'MoleculeID':molecule.MoleculeID}) }}">{{ molecule.LatName }}</a>
+						<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}">{{ molecule.LatName }}</a>
 						{% if molecule.RusName %}
 							<span class="small">({{ molecule.RusName }})</span>
 						{% endif %}

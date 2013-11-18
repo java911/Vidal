@@ -17,4 +17,29 @@ class MoleculeRepository extends EntityRepository
 		')->setParameter('DocumentID', $DocumentID)
 			->getResult();
 	}
+
+	public function findByProductID($ProductID)
+	{
+		return $this->_em->createQuery('
+			SELECT DISTINCT m.MoleculeID, m.LatName, m.RusName
+			FROM VidalMainBundle:Molecule m
+			LEFT JOIN VidalMainBundle:MoleculeName mn WITH mn.MoleculeID = m
+			LEFT JOIN mn.products p
+			WHERE p = :ProductID
+		')->setParameter('ProductID', $ProductID)
+			->getResult();
+	}
+
+	public function findOneByProductID($ProductID)
+	{
+		return $this->_em->createQuery('
+			SELECT m.MoleculeID, m.LatName, m.RusName
+			FROM VidalMainBundle:Molecule m
+			LEFT JOIN VidalMainBundle:MoleculeName mn WITH mn.MoleculeID = m
+			LEFT JOIN mn.products p
+			WHERE p = :ProductID
+		')->setParameter('ProductID', $ProductID)
+			->setMaxResults(1)
+			->getResult();
+	}
 }

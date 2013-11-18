@@ -12,29 +12,65 @@ class VidalController extends Controller
 	 *
 	 * @Template
 	 */
-	public function productAction($EngName, $DocumentID = null)
-	{
-		return array();
-	}
-
-	/**
-	 * @Route("/poisk_preparatov/{EngName}~{DocumentID}.{ext}", name="document_id", requirements={"DocumentID":"\d+"}, defaults={"ext"="htm"})
-	 *
-	 * @Template
-	 */
-	public function documentAction($DocumentID = null)
+	public function productAction($EngName, $ProductID = null)
 	{
 		$em     = $this->getDoctrine()->getManager();
 		$params = array();
 
-		$document = $em->getRepository('VidalMainBundle:Document')->findById($DocumentID);
+		$product = $em->getRepository('VidalMainBundle:Product')->findByProductID($ProductID);
+
+		if (!$product) {
+			throw $this->createNotFoundException();
+		}
+
+		$document = $em->getRepository('VidalMainBundle:Document')->findByProductDocument($ProductID);
+
+		if ($document) {
+			$molecules = $em->getRepository('VidalMainBundle:Molecule')->findByProductID($ProductID);
+		}
+		else {
+			$molecule = $em->getRepository('VidalMainBundle:Molecule')->findOneByProductID($ProductID);
+			if (!$molecule) {
+				throw $this->createNotFoundException();
+			}
+			$document = $em->getRepository('VidalMainBundle:Document')->findByMoleculeID($molecule['MoleculeID']);
+			if (!$document) {
+				throw $this->createNotFoundException();
+			}
+		}
+
+		return array();
+	}
+
+	/**
+	 * @Route("/poisk_preparator/{EngName}.{ext}", name="document_name", defaults={"ext"="htm"})
+	 * @Route("/poisk_preparatov/{EngName}~{DocumentID}.{ext}", name="document", requirements={"DocumentID":"\d+"}, defaults={"ext"="htm"})
+	 *
+	 * @Template
+	 */
+	public function documentAction($EngName, $DocumentID = null)
+	{
+		$em     = $this->getDoctrine()->getManager();
+		$params = array();
+
+		$document = $DocumentID
+			? $em->getRepository('VidalMainBundle:Document')->findById($DocumentID)
+			: $em->getRepository('VidalMainBundle:Document')->findByName($EngName);
 
 		if (!$document) {
 			throw $this->createNotFoundException();
 		}
 
+		if (!$DocumentID) {
+			$DocumentID = $document->getDocumentID();
+		}
+
+		$articleID = $document->getArticleID();
+
 		$molecules = $em->getRepository('VidalMainBundle:Molecule')->findByDocumentID($DocumentID);
-		$products  = $em->getRepository('VidalMainBundle:Product')->findByDocumentID($DocumentID);
+		$products  = $articleID == 5
+			? $em->getRepository('VidalMainBundle:Product')->findByMolecules($molecules)
+			: $em->getRepository('VidalMainBundle:Product')->findByDocumentID($DocumentID);
 		$infoPages = $em->getRepository('VidalMainBundle:InfoPage')->findByDocumentID($DocumentID);
 
 		if (!empty($products)) {
@@ -51,6 +87,7 @@ class VidalController extends Controller
 			$params['atcCodes'] = $em->getRepository('VidalMainBundle:ATC')->findByDocumentID($DocumentID);
 		}
 
+		$params['articleId'] = $articleID;
 		$params['document']  = $document;
 		$params['molecules'] = $molecules;
 		$params['products']  = $products;
@@ -90,11 +127,11 @@ class VidalController extends Controller
 	}
 
 	/**
-	 * @Route("poisk_preparatov/atc_{MoleculeID}.{ext}", name="act", requirements={"MoleculeID":"\d+"}, defaults={"ext"="htm"})
+	 * @Route("poisk_preparatov/act_{MoleculeID}.{ext}", name="molecule", requirements={"MoleculeID":"\d+"}, defaults={"ext"="htm"})
 	 *
 	 * @Template
 	 */
-	public function actAction($MoleculeID)
+	public function moleculeAction($MoleculeID)
 	{
 		return array();
 	}
