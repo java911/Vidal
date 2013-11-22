@@ -32,4 +32,19 @@ class CompanyRepository extends EntityRepository
 		')->setParameter('productIds', $productIds)
 			->getResult();
 	}
+
+	public function findByProducts($productIds)
+	{
+		return $this->_em->createQuery('
+			SELECT c.CompanyID, pc.CompanyRusNote, pc.CompanyEngNote, c.LocalName, c.Property,
+				country.RusName Country, pc.ItsMainCompany, p.ProductID
+			FROM VidalMainBundle:Company c
+			LEFT JOIN VidalMainBundle:ProductCompany pc WITH pc.CompanyID = c
+			LEFT JOIN VidalMainBundle:Country country WITH c.CountryCode = country
+			LEFT JOIN VidalMainBundle:Product p WITH p = pc.ProductID
+			WHERE pc.ProductID IN (:productIds)
+			ORDER BY pc.ItsMainCompany DESC
+		')->setParameter('productIds', $productIds)
+			->getResult();
+	}
 }

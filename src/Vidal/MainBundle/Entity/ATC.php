@@ -49,7 +49,7 @@ class ATC
 
 	public function __toString()
 	{
-		return $this->RusName;
+		return $this->ATCCode;
 	}
 
 	/**

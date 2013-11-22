@@ -5,6 +5,16 @@ use Doctrine\ORM\EntityRepository;
 
 class MoleculeRepository extends EntityRepository
 {
+	public function findByMoleculeID($MoleculeID)
+	{
+		return $this->_em->createQuery('
+		 	SELECT m
+		 	FROM VidalMainBundle:Molecule m
+		 	WHERE m = :MoleculeID
+		')->setParameter('MoleculeID', $MoleculeID)
+			->getOneOrNullResult();
+	}
+
 	public function findByDocumentID($DocumentID)
 	{
 		return $this->_em->createQuery('
@@ -40,6 +50,6 @@ class MoleculeRepository extends EntityRepository
 			WHERE p = :ProductID
 		')->setParameter('ProductID', $ProductID)
 			->setMaxResults(1)
-			->getResult();
+			->getOneOrNullResult();
 	}
 }

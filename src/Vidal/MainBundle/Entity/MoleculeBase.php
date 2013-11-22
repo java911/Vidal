@@ -23,7 +23,7 @@ class MoleculeBase
 
 	public function __toString()
 	{
-		return "{$this->GNParent} ({$this->description})";
+		return $this->GNParent;
 	}
 
 	/**

@@ -1,6 +1,50 @@
-{% extends 'VidalMainBundle::layout.html.twig' %}
+{% extends 'VidalMainBundle::vidal_layout.html.twig' %}
 
 
-{% block main %}
+{% block vidal %}
+	<div class="drug">
+		<h1>{{ molecule.LatName|upper|raw }}
+			{% if molecule.RusName is not empty %}
+				<span>({{ molecule.RusName|upper|raw }})</span>
+			{% endif %}
+		</h1>
 
+		{% if products is not empty %}
+			<div class="block">
+				<span class="block-head">Входит в состав лекарственных препаратов</span>
+				<ul class="products products-short">
+					{% for product in products %}
+						<li>
+							<div class="product-head">
+								<a class="product-head-link no-underline"
+								   href="{{ path('product', {'EngName':product.EngName|engName, 'ProductID':product.ProductID}) }}">
+									{{ product.RusName|raw }}</a>
+								<span class="product-head-zipinfo">{{ product.ZipInfo }}</span>
+
+								<div class="product-head-company">
+									<a class="no-underline"
+									   href="{{ path('company', {'CompanyID':product.CompanyID}) }}">
+										{{ product.CompanyName|raw }}
+									</a>
+									{% if product.CompanyCountry is not empty %}
+										<span class="product-company-country">({{ product.CompanyCountry }})</span>
+									{% endif %}
+								</div>
+							</div>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endif %}
+	</div>
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.products {
+			margin-top: 12px;
+		}
+	</style>
 {% endblock %}

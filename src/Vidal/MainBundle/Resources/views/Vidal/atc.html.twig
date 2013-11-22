@@ -1,6 +1,140 @@
-{% extends 'VidalMainBundle::layout.html.twig' %}
+{% extends 'VidalMainBundle::vidal_layout.html.twig' %}
 
 
-{% block main %}
+{% block vidal %}
+	<div class="atc">
+		<table class="atc-names">
+			<tr>
+				<td rowspan="2" class="atc-names-code">{{ atc }}</td>
+				<td class="atc-names-rus">{{ atc.RusName }}</td>
+			</tr>
+			<tr>
+				<td class="atc-names-eng">{{ atc.EngName }}</td>
+			</tr>
+		</table>
 
+		<div class="anons">Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)</div>
+		<div class="block-head">Препараты группы</div>
+
+		{# препараты с полным описанием #}
+		{% if products1 is not empty %}
+			<ul class="products">
+				{% for product in products1 %}
+					{% set id = product.ProductID %}
+					<li>
+						{# название препарата и форма выпуска #}
+						<div class="product-head">
+							{% if product.NonPrescriptionDrug %}
+								<img class="loz"
+									 title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"
+									 src="{{ asset('bundles/vidalmain/images/g2.gif') }}"/>
+							{% endif %}
+							<a class="product-head-link no-underline"
+							   href="{{ path('product', {'EngName':product.EngName|engName, 'ProductID':id}) }}">
+								{{ product.RusName|raw }}</a>
+							<span class="product-head-zipinfo">{{ product.ZipInfo|replace({'&loz;':''})|raw }}</span>
+						</div>
+
+						{# показания к применению #}
+						{% if product.Indication is not empty %}
+							<div class="product-indication">
+								<div class="tip">Показания:</div>
+								<div class="product-indication-content">
+									{{ product.Indication|raw }}
+								</div>
+							</div>
+						{% endif %}
+
+						{# компании регистраторы/производители препарата #}
+						{% for company in companies[id] %}
+							<div class="product-company">
+								<span class="tip">
+									{% if company.ItsMainCompany %}
+										Владелец регистрационного удостоверения:
+									{% elseif company.CompanyRusNote is not empty %}
+										{{ company.CompanyRusNote|capitalize }}:
+									{% else %}
+										Произведено:
+									{% endif %}
+								</span>
+								<a class="product-company-link no-underline"
+								   href="{{ path('company', {'CompanyID':company.CompanyID}) }}">
+									{{ company.LocalName|raw }}
+								</a>
+								{% if company.Country is not empty %}
+									<span class="product-company-country">({{ company.Country }})</span>
+								{% endif %}
+							</div>
+						{% endfor %}
+					</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+
+		{# препараты менее значимые #}
+		{% if products2 is not empty %}
+			<ul class="products products-short">
+				{% for product in products %}
+					{% set id = product.ProductID %}
+					<li>
+						<div class="product-head">
+							<a class="product-head-link no-underline"
+							   href="{{ path('product', {'EngName':product.EngName|engName, 'ProductID':id}) }}">
+								{{ product.RusName|raw }}</a>
+							<span class="product-head-zipinfo">{{ product.ZipInfo }}</span>
+							{% for company in companies[id] if company.ItsMainCompany %}
+								<div class="product-head-company">
+									<a class="no-underline"
+									   href="{{ path('company', {'CompanyID':company.CompanyID}) }}">
+										{{ company.LocalName|raw }}
+									</a>
+									{% if company.Country is not empty %}
+										<span class="product-company-country">({{ company.Country }})</span>
+									{% endif %}
+								</div>
+							{% endfor %}
+						</div>
+					</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+
+	</div>
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.anons {
+			color: #476173;
+		}
+		.block-head {
+			margin: 12px 0 6px;
+		}
+		.atc-description {
+			color:         #476173;
+			font-size:     18px;
+			font-weight:   bold;
+			margin-bottom: 9px;
+		}
+		.atc-names {
+			width:           100%;
+			border:          none;
+			border-collapse: collapse;
+		}
+		.atc-names-code {
+			width:       102px;
+			font-size:   18px;
+			font-weight: bold;
+			color:       #00468c;
+		}
+		.atc-names-rus {
+			font-size: 12px;
+		}
+		.atc-names-eng {
+			font-size: 12px;
+			color:     #999;
+		}
+	</style>
 {% endblock %}

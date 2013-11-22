@@ -13,13 +13,6 @@ html, body {
 a {
 	color: #268366;
 }
-a.no-underline {
-	text-decoration: none;
-}
-a.no-underline:hover {
-	color:           #d00;
-	text-decoration: underline;
-}
 
 /* глобальные классы */
 .loz {
@@ -28,6 +21,21 @@ a.no-underline:hover {
 .small {
 	font-size: 11px;
 	color:     #999;
+}
+.no-underline {
+	text-decoration: none;
+}
+.no-underline:hover {
+	text-decoration: underline;
+}
+.ul-style {
+	padding:    0;
+	margin:     0;
+	list-style: none;
+}
+.ul-style li {
+	padding-left: 13px;
+	background:   url('../images/bullets.gif') no-repeat -13px -13px;
 }
 
 /* глобальные контейнеры */
@@ -43,4 +51,215 @@ a.no-underline:hover {
 }
 #main {
 
+}
+
+/* drug */
+.drug h1 {
+	margin-top: 0;
+	font-size:  18px;
+	color:      #00468c;
+}
+.drug h1 span {
+	font-style: italic;
+	color:      #999;
+}
+
+/* products */
+.products {
+	margin:       0;
+	padding-left: 0;
+	list-style:   none;
+}
+.product {
+	margin-top: 3px;
+}
+.product-content {
+	margin: 0;
+}
+.product-content a {
+	margin: 0 6px 0 3px;
+}
+.product-content-zip {
+	font-size: 11px;
+}
+
+/* anons */
+.anons {
+	margin-top: 13px;
+	background: #f5f5f5;
+	padding:    3px 5px;
+}
+.anons-head span {
+	color: #476173;
+}
+.anons-content {
+	font-size:  11px;
+	margin-top: 2px;
+}
+.anons-product {
+	font-weight: bold;
+}
+
+/* block */
+.block {
+	margin-top: 17px;
+}
+.block-head {
+	font-weight: bold;
+	color:       #00468c;
+}
+.block-content table {
+	width:           100%;
+	margin:          5px 0;
+	border-collapse: collapse;
+	font-size:       13px;
+}
+.block-content td {
+	padding: 3px 5px;
+	border:  1px solid #ebebeb;
+}
+.block-content p {
+	margin: 0;
+}
+.block-highlight {
+	box-shadow:            0 0 15px rgba(0, 0, 0, 0.7);
+	border-radius:         4px;
+	-moz-border-radius:    4px;
+	-webkit-border-radius: 4px;
+}
+
+/* atc */
+.atc-name {
+	margin-left:  2px;
+	margin-right: 5px;
+}
+
+/* conditions */
+.conditions {
+	overflow: hidden;
+	margin:   18px 0 10px;
+}
+.conditions a {
+	float:        left;
+	margin-right: 5px;
+}
+
+/* navigation */
+.navigation {
+	margin-top: 15px;
+}
+.navigation > i {
+	display:     block;
+	height:      5px;
+	line-height: 0;
+	font-size:   0;
+	background:  url('../images/navigation_bg.gif');
+}
+.navigation-items {
+	padding:    2px 3px 6px;
+	border:     1px solid #e9e9e9;
+	border-top: 0;
+	background: url('../images/navigation_items_bg.gif') repeat-x 0 100%;
+}
+.navigation-items div {
+	display:       inline-block;
+	width:         40%;
+	margin-bottom: 3px;
+	padding-left:  13px;
+	background:    url('../images/bullets.gif') no-repeat -13px -13px;
+}
+.navigation-items div:last-child {
+	margin-bottom: 0;
+}
+.navigation-items a {
+	text-decoration: none;
+	border-bottom:   1px dashed #268366;
+}
+.navigation-items a:hover {
+	border-bottom: none;
+}
+
+/* copy */
+.copy {
+	margin-top: 20px;
+}
+.copy-head {
+	color: #476173;
+}
+.copy textarea {
+	margin:    2px 0;
+	padding:   2px 4px;
+	font-size: 12px;
+	opacity:   0.5;
+}
+.copy textarea:hover {
+	opacity: 1;
+}
+
+/* vidal */
+.vidal-footer {
+	margin-top:  17px;
+	padding-top: 3px;
+	border-top:  1px solid #ccc;
+	font-size:   11px;
+}
+.vidal-footer b {
+	color:     #476173;
+	font-size: 13px;
+}
+
+/* products */
+.products {
+	padding:    0;
+	list-style: none;
+	margin:     0;
+}
+.products .tip {
+	color:      #476173;
+	font-style: italic;
+}
+.products li {
+	border-bottom:  1px solid #ccc;
+	padding-bottom: 7px;
+	margin-bottom:  3px;
+}
+.products-short li {
+	padding-bottom: 3px;
+}
+.products-short .product-head {
+	font-size: 12px;
+}
+.products:last-child li:last-child {
+	border-bottom: none;
+}
+.product-head {
+	overflow: hidden;
+}
+.product-head-link {
+	font-weight: bold;
+}
+.product-head-zipinfo {
+	margin-left: 10px;
+	font-size:   11px;
+	color:       #999;
+}
+.product-head-company {
+	display:   inline-block;
+	float:     right;
+	font-size: 11px;
+}
+.product-indication, .product-company {
+	font-size: 11px;
+}
+.product-indication p {
+	margin: 0;
+}
+.product-company-link {
+	margin-left: 5px;
+}
+.product-company-country {
+	color: #999;
+}
+.product-indication-content {
+	padding-left: 6px;
 }

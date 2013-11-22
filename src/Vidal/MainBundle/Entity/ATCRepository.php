@@ -5,6 +5,16 @@ use Doctrine\ORM\EntityRepository;
 
 class ATCRepository extends EntityRepository
 {
+	public function findOneByATCCode($ATCCode)
+	{
+		return $this->_em->createQuery('
+		 	SELECT a
+		 	FROM VidalMainBundle:ATC a
+		 	WHERE a = :ATCCode
+		')->setParameter('ATCCode', $ATCCode)
+			->getOneOrNullResult();
+	}
+
 	public function findByDocumentID($DocumentID)
 	{
 		return $this->_em->createQuery('
