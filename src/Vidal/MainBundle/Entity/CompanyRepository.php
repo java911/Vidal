@@ -5,6 +5,17 @@ use Doctrine\ORM\EntityRepository;
 
 class CompanyRepository extends EntityRepository
 {
+	public function findByCompanyID($CompanyID)
+	{
+		return $this->_em->createQuery('
+			SELECT c.CompanyID, c.LocalName CompanyName, c.Property, country.RusName Country
+			FROM VidalMainBundle:Company c
+			LEFT JOIN VidalMainBundle:Country country WITH c.CountryCode = country
+			WHERE c = :CompanyID
+		')->setParameter('CompanyID', $CompanyID)
+			->getOneOrNullResult();
+	}
+
 	public function findOwnersByProducts($productIds)
 	{
 		return $this->_em->createQuery('
@@ -29,6 +40,7 @@ class CompanyRepository extends EntityRepository
 			LEFT JOIN VidalMainBundle:Country country WITH c.CountryCode = country
 			WHERE pc.ProductID IN (:productIds) AND
 				pc.ItsMainCompany = 0
+			ORDER BY pc.CompanyRusNote ASC
 		')->setParameter('productIds', $productIds)
 			->getResult();
 	}

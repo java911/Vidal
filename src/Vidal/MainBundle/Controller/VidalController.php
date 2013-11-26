@@ -9,15 +9,67 @@ class VidalController extends Controller
 {
 	/**
 	 * @Route("poisk_preparatov/fir_{CompanyID}.{ext}", name="company", requirements={"CompanyID":"\d+"}, defaults={"ext"="htm"})
+	 * @Route("poisk_preparatov/lfir_{CompanyID}.{ext}", name="company_products", requirements={"CompanyID":"\d+"}, defaults={"ext"="htm"})
+	 *
 	 * @Template("VidalMainBundle:Vidal:company.html.twig")
 	 */
 	public function companyAction($CompanyID)
 	{
-		return array();
+		$em      = $this->getDoctrine()->getManager();
+		$company = $em->getRepository('VidalMainBundle:Company')->findByCompanyID($CompanyID);
+
+		if ($company == null) {
+			throw $this->createNotFoundException();
+		}
+
+		$productsRaw = $em->getRepository('VidalMainBundle:Product')->findByOwner($CompanyID);
+
+		# находим представительства
+		$productsRepresented = array();
+		for ($i = 0; $i < count($productsRaw); $i++) {
+			$key = $productsRaw[$i]['InfoPageID'];
+			if (!empty($key) && !isset($productsRepresented[$key])) {
+				$productsRepresented[$key] = $productsRaw[$i];
+			}
+		}
+
+		# отсеиваем дубли
+		$products = array();
+
+		for ($i = 0; $i < count($productsRaw); $i++) {
+			$key = $productsRaw[$i]['ProductID'];
+			if (!isset($productsRaw[$key])) {
+				$products[$key] = $productsRaw[$i];
+			}
+		}
+
+		# надо разбить на те, что с представительством и описанием(2,5) и остальные
+		$products1 = array();
+		$products2 = array();
+
+		foreach ($products as $id => $product) {
+			if ($product['InfoPageID'] && ($product['ArticleID'] == 2 || $product['ArticleID'] == 5)) {
+				$key = $product['DocumentID'];
+				if (!isset($products1[$key])) {
+					$products1[$key] = $product;
+				}
+			}
+			else {
+				$products2[] = $product;
+			}
+		}
+
+		return array(
+			'company'             => $company,
+			'productsRepresented' => $productsRepresented,
+			'products1'           => $products1,
+			'products2'           => $products2,
+		);
 	}
 
 	/**
 	 * @Route("poisk_preparatov/lat_{ATCCode}.{ext}", name="atc", defaults={"ext"="htm"})
+	 *
 	 * @Template("VidalMainBundle:Vidal:atc.html.twig")
 	 */
 	public function atcAction($ATCCode)
@@ -32,27 +84,32 @@ class VidalController extends Controller
 		# все продукты по ATC-коду и отсеиваем дубли
 		$productsRaw = $em->getRepository('VidalMainBundle:Product')->findByATCCode($ATCCode);
 		$products    = array();
-		foreach ($productsRaw as $product) {
-			$key = $product['ProductID'];
-			isset($products[$key]) && isset($product[$key]['ArticleID']) && $product['ArticleID'] < $products[$key]['ArticleID']
-				? $products[$key][] = $product
-				: $products[$key] = array($product);
+
+		for ($i = 0; $i < count($productsRaw); $i++) {
+			$key = $productsRaw[$i]['ProductID'];
+			if (!isset($productsRaw[$key])) {
+				$products[$key] = $productsRaw[$i];
+			}
 		}
 
-		# надо разбить на те, что с описанием и те, что без, а потом обе группы отсортировать по названию продукта
+		# надо разбить на те, что с описанием(2,5) и остальные
 		$products1  = array();
 		$products2  = array();
 		$productIds = array();
 
 		foreach ($products as $id => $product) {
-			$product[0]['DocumentID']
-				? $products1[] = $product[0]
-				: $products2[] = $product[0];
+			if ($product['ArticleID'] == 2 || $product['ArticleID'] == 5) {
+				$key = $product['DocumentID'];
+				if (!isset($products1[$key])) {
+					$products1[$key] = $product;
+				}
+			}
+			else {
+				$products2[] = $product;
+			}
+
 			$productIds[] = $id;
 		}
-
-		uasort($products1, array($this, 'sortProducts'));
-		uasort($products2, array($this, 'sortProducts'));
 
 		# надо получить компании и сгруппировать их по продукту
 		$companies        = $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds);
@@ -75,12 +132,25 @@ class VidalController extends Controller
 
 	/**
 	 * @Route("poisk_preparatov/inf_{InfoPageID}.{ext}", name="inf", requirements={"InfoPageID":"\d+"}, defaults={"ext"="htm"})
+	 * @Route("poisk_preparatov/linf_{InfoPageID}.{ext}", name="linf", requirements={"InfoPageID":"\d+"}, defaults={"ext"="htm"})
 	 *
 	 * @Template("VidalMainBundle:Vidal:inf.html.twig")
 	 */
 	public function infAction($InfoPageID)
 	{
-		return array();
+		$em       = $this->getDoctrine()->getManager();
+		$infoPage = $em->getRepository('VidalMainBundle:InfoPage')->findByInfoPageID($InfoPageID);
+
+		if (!$infoPage) {
+			throw $this->createNotFoundException();
+		}
+
+		$products = $em->getRepository('VidalMainBundle:Product')->findByInfoPageID($InfoPageID);
+
+		return array(
+			'infoPage' => $infoPage,
+			'products' => $products,
+		);
 	}
 
 	/**
@@ -119,11 +189,54 @@ class VidalController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		$products = $em->getRepository('VidalMainBundle:Product')->findByMoleculeID($MoleculeID);
+		# все продукты по ATC-коду и отсеиваем дубли
+		$productsRaw = $em->getRepository('VidalMainBundle:Product')->findByMoleculeID($MoleculeID);
+		$products    = array();
+
+		for ($i = 0; $i < count($productsRaw); $i++) {
+			$key = $productsRaw[$i]['ProductID'];
+			if (!isset($productsRaw[$key])) {
+				$products[$key] = $productsRaw[$i];
+			}
+		}
+
+		# надо разбить на те, что с описанием(2,5) и остальные
+		$products1  = array();
+		$products2  = array();
+		$productIds = array();
+
+		foreach ($products as $id => $product) {
+			if ($product['ArticleID'] == 2 || $product['ArticleID'] == 5) {
+				$key = $product['DocumentID'];
+				if (!isset($products1[$key])) {
+					$products1[$key] = $product;
+				}
+			}
+			else {
+				$products2[] = $product;
+			}
+
+			$productIds[] = $id;
+		}
+
+		# надо получить компании и сгруппировать их по продукту
+		$companies        = $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds);
+		$productCompanies = array();
+
+		foreach ($companies as $company) {
+			$key = $company['ProductID'];
+			isset($productCompanies[$key])
+				? $productCompanies[$key][] = $company
+				: $productCompanies[$key] = array($company);
+		}
+
+		//var_dump($productCompanies);exit;
 
 		return array(
-			'molecule' => $molecule,
-			'products' => $products,
+			'molecule'  => $molecule,
+			'products1' => $products1,
+			'products2' => $products2,
+			'companies' => $productCompanies,
 		);
 	}
 
@@ -201,12 +314,15 @@ class VidalController extends Controller
 		$params['owners']       = $em->getRepository('VidalMainBundle:Company')->findOwnersByProducts($productIds);
 		$params['distributors'] = $em->getRepository('VidalMainBundle:Company')->findDistributorsByProducts($productIds);
 
+		var_dump($document->getDocumentID());
+		var_dump($document->getArticleID());
 		return $params;
 	}
 
 	/**
-	 * @Route("/poisk_preparatov/{EngName}.{ext}", name="document_name", defaults={"ext"="htm"})
 	 * @Route("/poisk_preparatov/{EngName}~{DocumentID}.{ext}", name="document", requirements={"DocumentID":"\d+"}, defaults={"ext"="htm"})
+	 * @Route("/poisk_preparatov/{EngName}.{ext}", name="document_name", defaults={"ext"="htm"})
+	 *
 	 * @Template("VidalMainBundle:Vidal:document.html.twig")
 	 */
 	public function documentAction($EngName, $DocumentID = null)
@@ -230,11 +346,16 @@ class VidalController extends Controller
 		}
 
 		$articleId = $document->getArticleID();
-
 		$molecules = $em->getRepository('VidalMainBundle:Molecule')->findByDocumentID($DocumentID);
-		$products  = $articleId == 1
+
+		$products = $articleId == 1
 			? $em->getRepository('VidalMainBundle:Product')->findByMolecules($molecules)
 			: $em->getRepository('VidalMainBundle:Product')->findByDocumentID($DocumentID);
+
+		if (empty($products)) {
+			$products = $em->getRepository('VidalMainBundle:Product')->findByMolecules($molecules);
+		}
+
 		$infoPages = $em->getRepository('VidalMainBundle:InfoPage')->findByDocumentID($DocumentID);
 
 		if (!empty($products)) {
@@ -258,14 +379,5 @@ class VidalController extends Controller
 		$params['infoPages'] = $infoPages;
 
 		return $params;
-	}
-
-	private function sortProducts($a, $b)
-	{
-		if ($a['RusName'] == $b['RusName']) {
-			return 0;
-		}
-
-		return $a['RusName'] > $b['RusName'] ? 1 : -1;
 	}
 }

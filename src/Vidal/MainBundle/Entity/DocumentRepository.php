@@ -18,7 +18,7 @@ class DocumentRepository extends EntityRepository
 	public function findByName($name)
 	{
 		# обрезаем расширение после точки и разбиваем по тире
-		$name  = preg_replace('/\.*/', '', $name);
+		$name  = substr($name, 0, strpos($name, '.'));
 		$name  = strtoupper($name);
 		$names = explode('-', $name);
 

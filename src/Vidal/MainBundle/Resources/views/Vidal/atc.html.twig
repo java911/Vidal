@@ -2,104 +2,123 @@
 
 
 {% block vidal %}
-	<div class="atc">
-		<table class="atc-names">
-			<tr>
-				<td rowspan="2" class="atc-names-code">{{ atc }}</td>
-				<td class="atc-names-rus">{{ atc.RusName }}</td>
-			</tr>
-			<tr>
-				<td class="atc-names-eng">{{ atc.EngName }}</td>
-			</tr>
-		</table>
+	<table class="atc-names">
+		<tr>
+			<td rowspan="2" class="atc-names-code">{{ atc }}</td>
+			<td class="atc-names-rus">{{ atc.RusName }}</td>
+		</tr>
+		<tr>
+			<td class="atc-names-eng">{{ atc.EngName }}</td>
+		</tr>
+	</table>
 
-		<div class="anons">Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)</div>
-		<div class="block-head">Препараты группы</div>
+	<div class="anons">Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)</div>
+	<div class="block-head">Препараты группы</div>
 
-		{# препараты с полным описанием #}
-		{% if products1 is not empty %}
-			<ul class="products">
-				{% for product in products1 %}
-					{% set id = product.ProductID %}
-					<li>
-						{# название препарата и форма выпуска #}
-						<div class="product-head">
-							{% if product.NonPrescriptionDrug %}
-								<img class="loz"
-									 title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"
-									 src="{{ asset('bundles/vidalmain/images/g2.gif') }}"/>
+	<table class="products-table">
+		<tr class="products-table-header">
+			<td class="products-table-loz"></td>
+			<td>Название</td>
+			<td title="Показания к применению"></td>
+			<td>Форма выпуска</td>
+			<td title="Владелец регистрационного удостоверения">Владелец рег/уд</td>
+		</tr>
+
+		{# препараты с описанием(2,5) #}
+		{% for documentId, product in products1 %}
+			{% set id = product.ProductID %}
+			<tr class="important">
+				<td class="products-table-loz">
+					{% if product.NonPrescriptionDrug %}
+						<img src="{{ asset('bundles/vidalmain/images/g2.gif') }}" class="loz"
+							 title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>
+					{% endif %}
+				</td>
+				<td class="products-table-name">
+					<a class="no-underline"
+					   href="{{ path('document', {'EngName':product.DocumentEngName|engName, 'DocumentID':product.DocumentID}) }}">
+						{{ product.DocumentRusName|raw }}</a>
+				</td>
+				<td class="products-table-indication" title="Показания к применению">
+					{% if product.Indication is not empty %}
+						<img src="{{ asset('bundles/vidalmain/images/more.png') }}"/>
+						<div>{{ product.Indication|raw }}</div>
+					{% endif %}
+				</td>
+				<td class="products-table-zip">
+					<div>{{ product.ZipInfo|replace({'&loz;':''}) }}</div>
+					<span>регистрационный №: {{ product.RegistrationNumber }} от
+						{{ product.RegistrationDate|date('d.m.Y') }}</span>
+				</td>
+				<td class="products-table-company">
+					{# компании регистраторы/производители препарата #}
+					{% for company in companies[id] %}
+						<div>
+							<span class="tip">
+								{% if company.ItsMainCompany %}
+								{% elseif company.CompanyRusNote is not empty %}
+									{{ company.CompanyRusNote }}:
+								{% else %}
+									произведено:
+								{% endif %}
+							</span>
+							<a class="no-underline" href="{{ path('company', {'CompanyID':company.CompanyID}) }}">
+								{{ company.LocalName|raw }}
+							</a>
+							{% if company.Country is not empty  and company.Country != 'Unknown' %}
+								<span class="small">({{ company.Country }})</span>
 							{% endif %}
-							<a class="product-head-link no-underline"
-							   href="{{ path('product', {'EngName':product.EngName|engName, 'ProductID':id}) }}">
-								{{ product.RusName|raw }}</a>
-							<span class="product-head-zipinfo">{{ product.ZipInfo|replace({'&loz;':''})|raw }}</span>
 						</div>
+					{% endfor %}
+				</td>
+			</tr>
+		{% endfor %}
 
-						{# показания к применению #}
-						{% if product.Indication is not empty %}
-							<div class="product-indication">
-								<div class="tip">Показания:</div>
-								<div class="product-indication-content">
-									{{ product.Indication|raw }}
-								</div>
-							</div>
-						{% endif %}
-
-						{# компании регистраторы/производители препарата #}
-						{% for company in companies[id] %}
-							<div class="product-company">
+		{# менее значимые препараты #}
+		{% for product in products2 %}
+			{% set id = product.ProductID %}
+			<tr>
+				<td class="products-table-loz">
+					{% if product.NonPrescriptionDrug %}
+						<img src="{{ asset('bundles/vidalmain/images/g2.gif') }}" class="loz"
+							 title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>
+					{% endif %}
+				</td>
+				<td class="products-table-name">
+					<a class="no-underline"
+					   href="{{ path('product', {'EngName':product.EngName|engName, 'ProductID':product.ProductID}) }}">
+						{{ product.RusName|raw }}</a>
+				</td>
+				<td class="products-table-indication"></td>
+				<td class="products-table-zip">
+					<div>{{ product.ZipInfo|replace({'&loz;':''}) }}</div>
+					<span>регистрационный №: {{ product.RegistrationNumber }} от
+						{{ product.RegistrationDate|date('d.m.Y') }}</span>
+				</td>
+				<td class="products-table-company">
+					{# компании регистраторы/производители препарата #}
+					{% for company in companies[id] %}
+						<div>
 								<span class="tip">
 									{% if company.ItsMainCompany %}
-										Владелец регистрационного удостоверения:
 									{% elseif company.CompanyRusNote is not empty %}
-										{{ company.CompanyRusNote|capitalize }}:
+										{{ company.CompanyRusNote }}:
 									{% else %}
-										Произведено:
+										произведено:
 									{% endif %}
 								</span>
-								<a class="product-company-link no-underline"
-								   href="{{ path('company', {'CompanyID':company.CompanyID}) }}">
-									{{ company.LocalName|raw }}
-								</a>
-								{% if company.Country is not empty %}
-									<span class="product-company-country">({{ company.Country }})</span>
-								{% endif %}
-							</div>
-						{% endfor %}
-					</li>
-				{% endfor %}
-			</ul>
-		{% endif %}
-
-		{# препараты менее значимые #}
-		{% if products2 is not empty %}
-			<ul class="products products-short">
-				{% for product in products %}
-					{% set id = product.ProductID %}
-					<li>
-						<div class="product-head">
-							<a class="product-head-link no-underline"
-							   href="{{ path('product', {'EngName':product.EngName|engName, 'ProductID':id}) }}">
-								{{ product.RusName|raw }}</a>
-							<span class="product-head-zipinfo">{{ product.ZipInfo }}</span>
-							{% for company in companies[id] if company.ItsMainCompany %}
-								<div class="product-head-company">
-									<a class="no-underline"
-									   href="{{ path('company', {'CompanyID':company.CompanyID}) }}">
-										{{ company.LocalName|raw }}
-									</a>
-									{% if company.Country is not empty %}
-										<span class="product-company-country">({{ company.Country }})</span>
-									{% endif %}
-								</div>
-							{% endfor %}
+							<a class="no-underline" href="{{ path('company', {'CompanyID':company.CompanyID}) }}">
+								{{ company.LocalName|raw }}
+							</a>
+							{% if company.Country is not empty %}
+								<span class="small">({{ company.Country }})</span>
+							{% endif %}
 						</div>
-					</li>
-				{% endfor %}
-			</ul>
-		{% endif %}
-
-	</div>
+					{% endfor %}
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
 {% endblock %}
 
 
@@ -107,10 +126,8 @@
 	{{ parent() }}
 	<style type="text/css">
 		.anons {
-			color: #476173;
-		}
-		.block-head {
-			margin: 12px 0 6px;
+			color:         #476173;
+			margin-bottom: 13px;
 		}
 		.atc-description {
 			color:         #476173;

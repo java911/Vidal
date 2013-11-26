@@ -36,7 +36,6 @@ class TwigExtension extends \Twig_Extension
 	{
 		return array(
 			new \Twig_SimpleFilter('engName', array($this, 'engName')),
-			new \Twig_SimpleFilter('stripSup', array($this, 'stripSup')),
 			new \Twig_SimpleFilter('stripLoz', array($this, 'stripLoz')),
 		);
 	}
@@ -54,16 +53,11 @@ class TwigExtension extends \Twig_Extension
 
 	public function engName($str)
 	{
-		$p = array('/<SUP>&reg;<\/SUP>/', '/ /');
-		$r = array('', '-');
+		$p = array('/<SUP>&reg;<\/SUP>/', '/<SUP>&trade;<\/SUP>/', '/ /');
+		$r = array('', '', '-');
 		$str = preg_replace($p, $r, $str);
 
 		return strtolower($str);
-	}
-
-	public function stripSup($str)
-	{
-		return preg_replace('/<SUP>&reg;<\/SUP>/', '', $str);
 	}
 
 	public function stripLoz($str)
