@@ -47,6 +47,11 @@ class ATC
 		$this->products = new ArrayCollection();
 	}
 
+	public function getId()
+	{
+		return $this->ATCCode;
+	}
+
 	public function __toString()
 	{
 		return $this->ATCCode;

@@ -90,7 +90,7 @@ class ProductRepository extends EntityRepository
 				p.CountryEditionCode = \'RUS\' AND
 				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
 				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
-			ORDER BY p.RusName ASC
+			ORDER BY d.ArticleID ASC
 		')->setParameter('MoleculeID', $MoleculeID)
 			->getResult();
 	}
@@ -140,5 +140,69 @@ class ProductRepository extends EntityRepository
 			ORDER BY p.RusName ASC
 		')->setParameter('InfoPageID', $InfoPageID)
 			->getResult();
+	}
+
+	public function findProductNames()
+	{
+		$products = $this->_em->createQuery('
+			SELECT DISTINCT p.RusName
+			FROM VidalMainBundle:Product p
+			WHERE p.CountryEditionCode = \'RUS\' AND
+				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
+				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
+			ORDER BY p.RusName ASC
+		')->getResult();
+
+		$productNames = array();
+
+		for ($i = 0; $i < count($products); $i++) {
+			$patterns     = array('/<SUP>.*<\/SUP>/', '/<SUB>.*<\/SUB>/');
+			$replacements = array('', '');
+			$name         = preg_replace($patterns, $replacements, $products[$i]['RusName']);
+			$name         = mb_strtolower($name, 'UTF-8');
+
+			if (!empty($name)) {
+				$productNames[] = $name;
+			}
+		}
+
+		return $productNames;
+	}
+
+	public function findByQuery($q)
+	{
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb
+			->select('p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.ProductID,
+				p.RusName, p.EngName, p.NonPrescriptionDrug')
+			->from('VidalMainBundle:Product', 'p')
+			->orderBy('p.RusName', 'ASC')
+			->andWhere("p.CountryEditionCode = 'RUS'")
+			->andWhere('p.MarketStatusID IN (1,2)')
+			->andWhere("p.ProductTypeCode IN ('DRUG', 'GOME')");
+
+		$words = explode(' ', $q);
+		$count = count($words);
+
+		if ($count == 1) {
+			$qb->andWhere('p.RusName LIKE :word')->setParameter('word', $q . '%');
+		}
+		else {
+			for ($i = 0; $i < $count; $i++) {
+				$word = $words[$i];
+				if ($i == 0) {
+					$qb->andWhere('p.RusName LIKE :word')->setParameter('word', $word . '%');
+				}
+				elseif ($i == $count - 1) {
+					$qb->andWhere('p.RusName LIKE :word')->setParameter('word', '%' . $word);
+				}
+				else {
+					$qb->andWhere('p.RusName LIKE :word')->setParameter('word', '%' . $word . '%');
+				}
+			}
+		}
+
+		return $qb->getQuery()->getResult();
 	}
 }

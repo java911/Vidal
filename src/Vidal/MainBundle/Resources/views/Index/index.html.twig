@@ -1,1 +1,9 @@
-Привет
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block main %}
+	<p>Страница в находится в разработке.</p>
+
+	<p>На данный момент для тестирования доступны адреса препаратов, веществ, атх и компаний.</p>
+	<p>Пример: <a href="{{ path('document', {'EngName':'maalox', 'DocumentID':1607}) }}">Маалокс</a></p>
+{% endblock %}

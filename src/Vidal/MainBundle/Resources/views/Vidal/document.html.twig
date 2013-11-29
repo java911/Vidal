@@ -17,7 +17,20 @@
 	{# Иконки использования при состояниях #}
 	{% if document is defined %}
 		{% include 'VidalMainBundle:Vidal:document_conditions.html.twig' %}
+	{% endif %}
 
+	{% if products is not empty %}
+		<div class="pictures">
+			{% for product in products if pictures[product.ProductID] is defined %}
+				{% set path = '/upload/products/' ~ pictures[product.ProductID] %}
+				{% if is_file(path) %}
+					<img src="{{ path }}"/>
+				{% endif %}
+			{% endfor %}
+		</div>
+	{% endif %}
+
+	{% if document is defined %}
 		{# Объявление, описание чего пойдет ниже #}
 		{% if articleId is defined %}
 			<div class="anons">
@@ -64,7 +77,7 @@
 					<a href="{{ path('company', {'CompanyID':owner.CompanyID}) }}" class="no-underline">
 						{{ owner.LocalName }}{{ owner.Property is not empty ? ', ' ~ owner.Property }}</a>
 					{% if owner.Country is not empty and owner.Country != 'Unknown' %}
-					<span class="small">({{ owner.Country }})</span>
+						<span class="small">({{ owner.Country }})</span>
 					{% endif %}
 				</div>
 			{% endif %}
@@ -153,7 +166,7 @@
 							<td class="products-table-zip">
 								<div>{{ p.ZipInfo|stripLoz|raw }}</div>
 								<span>регистрационный №: {{ p.RegistrationNumber }} от
-									{{ p.RegistrationDate|date('d.m.Y') }}</span>
+									{{ p.RegistrationDate|date('d.m.Y') }}, {{ p.MarketStatus }}</span>
 							</td>
 						</tr>
 					{% endfor %}

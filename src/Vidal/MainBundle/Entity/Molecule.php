@@ -54,6 +54,11 @@ class Molecule
 		return $this->LatName;
 	}
 
+	public function getId()
+	{
+		return $this->MoleculeID;
+	}
+
 	/**
 	 * @param mixed $GNParent
 	 */

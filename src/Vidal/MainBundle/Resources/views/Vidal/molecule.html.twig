@@ -2,29 +2,27 @@
 
 
 {% block vidal %}
-	<div class="drug">
-		<h1>{{ molecule.LatName|upper|raw }}
-			{% if molecule.RusName is not empty %}
-				<span>({{ molecule.RusName|upper|raw }})</span>
-			{% endif %}
-		</h1>
-
-		{% if document %}
-			{% include 'VidalMainBundle:Vidal:document_navigation.html.twig' %}
+	<h1>{{ molecule.LatName|upper|raw }}
+		{% if molecule.RusName is not empty %}
+			<span>({{ molecule.RusName|upper|raw }})</span>
 		{% endif %}
+	</h1>
 
-		<div class="block">
-			<span class="block-head">Международное наименование INN: </span>
-			<a href="{{ path('gnp') }}">{{ molecule.GNParent }}</a>
-		</div>
+	{% if document %}
+		{% include 'VidalMainBundle:Vidal:document_navigation.html.twig' %}
+	{% endif %}
 
-		<div class="block">
-			<span class="block-head">Входит в состав препаратов: </span>
-			<a href="{{ path('molecule_included', {'MoleculeID':molecule.MoleculeID}) }}">список</a>
-		</div>
-
-		{% if document %}
-			{% include 'VidalMainBundle:Vidal:document_info.html.twig' %}
-		{% endif %}
+	<div class="block">
+		<span class="block-head">Международное наименование INN: </span>
+		<a href="{{ path('gnp') }}">{{ molecule.GNParent }}</a>
 	</div>
+
+	<div class="block">
+		<span class="block-head">Входит в состав препаратов: </span>
+		<a href="{{ path('molecule_included', {'MoleculeID':molecule.MoleculeID}) }}">список</a>
+	</div>
+
+	{% if document %}
+		{% include 'VidalMainBundle:Vidal:document_info.html.twig' %}
+	{% endif %}
 {% endblock %}

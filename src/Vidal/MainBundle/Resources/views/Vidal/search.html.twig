@@ -2,56 +2,124 @@
 
 
 {% block vidal %}
-	<div class="gnp">
-		<div class="gnp-title">
-			Международные наименования присвоены активным веществам на основании данных
-			"International Nonproprietary Names (INN) for Pharmaceutical Substances", 9th Edition WHO;
-			"Index Nominum: International Drug Directory" 16th Edition; "MARTINDALE The Extra Pharmacopoeia",
-			31st Edition; данных, представленных на сайте
-			<a href="http://www.who.int/medicines/publications/druginformation/en/" target="_new">WHO
-				Drug Information</a> и имеют следующие обозначения:
+	<div class="search-info">
+		<span>Поиск по запросу <b>{{ q }}</b></span>
+	</div>
+
+	{# Найдено активных веществ #}
+	{% if molecules is defined and molecules is not empty %}
+		<div class="block">
+			<div class="block-anons">
+				<div class="block-head">
+					Найдено активных веществ: <span>{{ molecules|length }}</span>
+				</div>
+			</div>
 		</div>
 
-		<ul class="gnp-items ul-style">
-			<li><b>BAN</b>принятое к употреблению в Великобритании</li>
-			<li><b>BAN Mod.</b>принятое к употреблению в Великобритании, модифицированное наименование</li>
-			<li><b>BHP</b>BHP</li>
-			<li><b>BP</b>Британская Фармакопея</li>
-			<li><b>DAB</b>Фармакопея Германии</li>
-			<li><b>DAC</b>принятое к употреблению в Германии</li>
-			<li><b>DAC Mod.</b>принятое к употреблению в Германии, модифицированное наименование</li>
-			<li><b>DCF</b>принятое к употреблению во Франции</li>
-			<li><b>Fr. Ph.</b>Фармакопея Франции</li>
-			<li><b>Iph</b>Итальянская Фармакопея</li>
-			<li><b>JAN</b>принятое к употреблению в Японии</li>
-			<li><b>P.Ph.</b>Польская Фармакопея</li>
-			<li><b>Ph.Eur.</b>Европейская Фармакопея</li>
-			<li><b>PhBs</b>Фармакопея Словакии</li>
-			<li><b>Prop.INN</b>предложенное к употреблению ВОЗ</li>
-			<li><b>Rec.INN</b>зарегистрированное ВОЗ</li>
-			<li><b>Rec.INN Mod.</b>зарегистрированное ВОЗ, модифицированное наименование</li>
-			<li><b>Swiss Ph.</b>Swiss Ph.</li>
-			<li><b>USAN</b>принятое к употреблению в США</li>
-			<li><b>USAN Mod.</b>принятое к употреблению в США, модифицированное наименование</li>
-			<li><b>USNF 22</b>The United States "National Formulaty 22", 2004, and supplements 1 and 2</li>
-			<li><b>USP</b>Фармакопея США</li>
-			<li><b>USP Mod.</b>USP Mod</li>
-			<li><b>ГФ</b>ГФ</li>
-		</ul>
-	</div>
+		<table class="products-table">
+			<tr class="products-table-header">
+				<td width="23%">Активное вещ-во</td>
+				<td width="23%">лат.</td>
+				<td>входит в состав препаратов</td>
+			</tr>
+			{% for molecule in molecules %}
+				<tr>
+					<td>
+						<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
+						   class="no-underline">{{ molecule.RusName|raw }}</a>
+					</td>
+					<td>{{ molecule.LatName|raw }}</td>
+					<td><a href="{{ path('molecule_included', {'MoleculeID':molecule.MoleculeID}) }}"
+						   class="no-underline">список</a></td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% endif %}
+
+	{# Найдено препаратов #}
+	{% if products is defined and products is not empty %}
+		<div class="block">
+			<div class="block-anons">
+				<div class="block-head">
+					Найдено препаратов: <span>{{ products|length }}</span>
+				</div>
+			</div>
+		</div>
+
+		<table class="products-table">
+			<tr class="products-table-header">
+				<td class="products-table-loz"></td>
+				<td>Название</td>
+				<td></td>
+				<td>Форма выпуска</td>
+				<td title="Владелец регистрационного удостоверения">Владелец рег/уд</td>
+			</tr>
+			{% for product in products %}
+				{% set id = product.ProductID %}
+				<tr>
+					<td class="products-table-loz">
+						{% if product.NonPrescriptionDrug %}
+							<img src="{{ asset('bundles/vidalmain/images/g2.gif') }}" class="loz"
+								 title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>
+						{% endif %}
+					</td>
+					<td class="products-table-name">
+						<a class="no-underline"
+						   href="{{ path('product', {'EngName':product.EngName|engName, 'ProductID':id}) }}">
+							{{ product.RusName|raw }}</a>
+					</td>
+					<td class="products-table-picture">
+						{% if pictures[id] is defined %}
+							{% set path = '/upload/products/' ~ pictures[id] %}
+							{% if is_file(path) %}
+								<img src="{{ path }}"/>
+							{% endif %}
+						{% endif %}
+					</td>
+					<td class="products-table-zip">
+						<div>{{ product.ZipInfo|replace({'&loz;':''}) }}</div>
+								<span>регистрационный №: {{ product.RegistrationNumber }} от
+									{{ product.RegistrationDate|date('d.m.Y') }}</span>
+					</td>
+					<td class="products-table-company">
+						{# компании регистраторы/производители препарата #}
+						{% for company in companies[id] %}
+							<div>
+									<span class="tip">
+										{% if company.ItsMainCompany %}
+										{% elseif company.CompanyRusNote is not empty %}
+											{{ company.CompanyRusNote }}:
+										{% else %}
+											произведено:
+										{% endif %}
+									</span>
+								<a class="no-underline"
+								   href="{{ path('company', {'CompanyID':company.CompanyID}) }}">
+									{{ company.LocalName|raw }}
+								</a>
+								{% if company.Country is not empty %}
+									<span class="small">({{ company.Country }})</span>
+								{% endif %}
+							</div>
+						{% endfor %}
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% endif %}
+
 {% endblock %}
 
 
 {% block stylesheets %}
 	{{ parent() }}
 	<style type="text/css">
-		.gnp-title {
-			margin-bottom: 15px;
-			text-align:    justify;
+		.products-table {
+			font-size: 13px;
 		}
-		.gnp-items b {
-			display: inline-block;
-			width:   95px;
+		.block-anons {
+			padding-top:    6px;
+			padding-bottom: 6px;
 		}
 	</style>
 {% endblock %}

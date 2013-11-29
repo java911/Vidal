@@ -21,7 +21,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "gedmo/doctrine-extensions": "dev-master",
         "friendsofsymfony/jsrouting-bundle": "dev-master",
-        "phpunit/phpunit": "3.7.*"
+        "friendsofsymfony/elastica-bundle": "3.0.*@dev",
+        "jms/serializer-bundle": "dev-master"
     },
 
     "scripts": {

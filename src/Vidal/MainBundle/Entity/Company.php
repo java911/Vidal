@@ -53,6 +53,11 @@ class Company
 		return $this->LocalName;
 	}
 
+	public function getId()
+	{
+		return $this->CompanyID;
+	}
+
 	/**
 	 * @param mixed $CompanyID
 	 */

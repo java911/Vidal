@@ -158,6 +158,11 @@ class Product
 		return $this->RusName;
 	}
 
+	public function getId()
+	{
+		return $this->ProductID;
+	}
+
 	/**
 	 * @param mixed $BelongMultiProductID
 	 */

@@ -4,6 +4,8 @@ namespace Vidal\MainBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class VidalController extends Controller
 {
@@ -189,35 +191,33 @@ class VidalController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		# все продукты по ATC-коду и отсеиваем дубли
+		# все продукты по активному веществу и отсеиваем дубли
 		$productsRaw = $em->getRepository('VidalMainBundle:Product')->findByMoleculeID($MoleculeID);
 		$products    = array();
+		$productIds  = array();
 
 		for ($i = 0; $i < count($productsRaw); $i++) {
 			$key = $productsRaw[$i]['ProductID'];
-			if (!isset($productsRaw[$key])) {
+
+			if (!isset($products[$key])) {
 				$products[$key] = $productsRaw[$i];
+				$productIds[]   = $key;
 			}
 		}
 
-		# надо разбить на те, что с описанием(2,5) и остальные
+		# препараты надо разбить на монокомнонентные и многокомпонентные группы
+		$components = $em->getRepository('VidalMainBundle:Molecule')->countComponents($productIds);
 		$products1  = array();
 		$products2  = array();
-		$productIds = array();
 
 		foreach ($products as $id => $product) {
-			if ($product['ArticleID'] == 2 || $product['ArticleID'] == 5) {
-				$key = $product['DocumentID'];
-				if (!isset($products1[$key])) {
-					$products1[$key] = $product;
-				}
-			}
-			else {
-				$products2[] = $product;
-			}
-
-			$productIds[] = $id;
+			$components[$id] == 1
+				? $products1[$id] = $product
+				: $products2[$id] = $product;
 		}
+
+		uasort($products1, array($this, 'sortProducts'));
+		uasort($products2, array($this, 'sortProducts'));
 
 		# надо получить компании и сгруппировать их по продукту
 		$companies        = $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds);
@@ -230,13 +230,12 @@ class VidalController extends Controller
 				: $productCompanies[$key] = array($company);
 		}
 
-		//var_dump($productCompanies);exit;
-
 		return array(
 			'molecule'  => $molecule,
 			'products1' => $products1,
 			'products2' => $products2,
 			'companies' => $productCompanies,
+			'pictures'  => $em->getRepository('VidalMainBundle:Picture')->findByProductIds($productIds),
 		);
 	}
 
@@ -252,6 +251,7 @@ class VidalController extends Controller
 
 	/**
 	 * @Route("/poisk_preparatov/{EngName}__{ProductID}.{ext}", name="product", requirements={"ProductID":"\d+"}, defaults={"ext"="htm"})
+	 *
 	 * @Template("VidalMainBundle:Vidal:document.html.twig")
 	 */
 	public function productAction($EngName, $ProductID)
@@ -313,9 +313,8 @@ class VidalController extends Controller
 		$params['atcCodes']     = $em->getRepository('VidalMainBundle:ATC')->findByProducts($productIds);
 		$params['owners']       = $em->getRepository('VidalMainBundle:Company')->findOwnersByProducts($productIds);
 		$params['distributors'] = $em->getRepository('VidalMainBundle:Company')->findDistributorsByProducts($productIds);
+		$params['pictures']     = $em->getRepository('VidalMainBundle:Picture')->findByProductIds($productIds);
 
-		var_dump($document->getDocumentID());
-		var_dump($document->getArticleID());
 		return $params;
 	}
 
@@ -356,8 +355,6 @@ class VidalController extends Controller
 			$products = $em->getRepository('VidalMainBundle:Product')->findByMolecules($molecules);
 		}
 
-		$infoPages = $em->getRepository('VidalMainBundle:InfoPage')->findByDocumentID($DocumentID);
-
 		if (!empty($products)) {
 			$productIds = array();
 			foreach ($products as $product) {
@@ -367,17 +364,71 @@ class VidalController extends Controller
 			$params['atcCodes']     = $em->getRepository('VidalMainBundle:ATC')->findByProducts($productIds);
 			$params['owners']       = $em->getRepository('VidalMainBundle:Company')->findOwnersByProducts($productIds);
 			$params['distributors'] = $em->getRepository('VidalMainBundle:Company')->findDistributorsByProducts($productIds);
+			$params['pictures']     = $em->getRepository('VidalMainBundle:Picture')->findByProductIds($productIds);
 		}
 		else {
 			$params['atcCodes'] = $em->getRepository('VidalMainBundle:ATC')->findByDocumentID($DocumentID);
+			$params['pictures'] = array();
 		}
 
 		$params['articleId'] = $articleId;
 		$params['document']  = $document;
 		$params['molecules'] = $molecules;
 		$params['products']  = $products;
-		$params['infoPages'] = $infoPages;
+		$params['infoPages'] = $em->getRepository('VidalMainBundle:InfoPage')->findByDocumentID($DocumentID);
 
 		return $params;
+	}
+
+	/**
+	 * @Route("/search", name="search")
+	 *
+	 * @Template("VidalMainBundle:Vidal:search.html.twig")
+	 */
+	public function searchAction(Request $request)
+	{
+		$em     = $this->getDoctrine()->getManager();
+		$q      = $request->query->get('q', '');
+		$t      = $request->query->get('t', 'all');
+		$params = array('q' => $q, 't' => $t);
+
+		if ($t == 'all' || $t == 'product') {
+			$products = $em->getRepository('VidalMainBundle:Product')->findByQuery($q);
+
+			$productIds = array();
+			for ($i = 0; $i < count($products); $i++) {
+				$productIds[] = $products[$i]['ProductID'];
+			}
+
+			# надо получить компании и сгруппировать их по продукту
+			$companies        = $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds);
+			$productCompanies = array();
+
+			foreach ($companies as $company) {
+				$key = $company['ProductID'];
+				isset($productCompanies[$key])
+					? $productCompanies[$key][] = $company
+					: $productCompanies[$key] = array($company);
+			}
+
+			$params['products']  = $products;
+			$params['companies'] = $productCompanies;
+			$params['pictures']  = $em->getRepository('VidalMainBundle:Picture')->findByProductIds($productIds);
+		}
+
+		if ($t == 'all' || $t == 'molecule') {
+			$params['molecules'] = $em->getRepository('VidalMainBundle:Molecule')->findByQuery($q);
+		}
+
+		return $params;
+	}
+
+	private function sortProducts($a, $b)
+	{
+		if ($a == $b) {
+			return 0;
+		}
+
+		return $a > $b ? $a : $b;
 	}
 }

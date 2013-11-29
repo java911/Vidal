@@ -1,0 +1,67 @@
+<table class="products-table">
+	<tr class="products-table-header">
+		<td class="products-table-loz"></td>
+		<td>Название</td>
+		<td></td>
+		<td title="Показания к применению"></td>
+		<td>Форма выпуска</td>
+		<td title="Владелец регистрационного удостоверения">Владелец рег/уд</td>
+	</tr>
+
+	{% for product in products %}
+		{% set id = product.ProductID %}
+		<tr>
+			<td class="products-table-loz">
+				{% if product.NonPrescriptionDrug %}
+					<img src="{{ asset('bundles/vidalmain/images/g2.gif') }}" class="loz"
+						 title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>
+				{% endif %}
+			</td>
+			<td class="products-table-name">
+				<a class="no-underline"
+				   href="{{ path('product', {'EngName':product.EngName|engName, 'ProductID':product.ProductID}) }}">
+					{{ product.RusName|raw }}</a>
+			</td>
+			<td class="products-table-picture">
+				{% if pictures[id] is defined %}
+					{% set path = '/upload/products/' ~ pictures[id] %}
+					{% if is_file(path) %}
+						<img src="{{ path }}"/>
+					{% endif %}
+				{% endif %}
+			</td>
+			<td class="products-table-indication" title="Показания к применению">
+				{% if product.Indication is not empty %}
+					<img src="{{ asset('bundles/vidalmain/images/more.png') }}"/>
+					<div>{{ product.Indication|raw }}</div>
+				{% endif %}
+			</td>
+			<td class="products-table-zip">
+				<div>{{ product.ZipInfo|replace({'&loz;':''}) }}</div>
+							<span>регистрационный №: {{ product.RegistrationNumber }} от
+								{{ product.RegistrationDate|date('d.m.Y') }}</span>
+			</td>
+			<td class="products-table-company">
+				{# компании регистраторы/производители препарата #}
+				{% for company in companies[id] %}
+					<div>
+						<span class="tip">
+							{% if company.ItsMainCompany %}
+							{% elseif company.CompanyRusNote is not empty %}
+								{{ company.CompanyRusNote }}:
+							{% else %}
+								произведено:
+							{% endif %}
+						</span>
+						<a class="no-underline" href="{{ path('company', {'CompanyID':company.CompanyID}) }}">
+							{{ company.LocalName|raw }}
+						</a>
+						{% if company.Country is not empty %}
+							<span class="small">({{ company.Country }})</span>
+						{% endif %}
+					</div>
+				{% endfor %}
+			</td>
+		</tr>
+	{% endfor %}
+</table>

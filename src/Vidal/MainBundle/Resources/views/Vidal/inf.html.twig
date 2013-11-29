@@ -8,6 +8,10 @@
 			{% endif %})</span>
 	</h1>
 
+	<div class="block anons">
+		{{ infoPage.RusAddress|raw }}
+	</div>
+
 	{# препараты #}
 	<div class="block">
 		<div class="block-head">Лекарственные препараты</div>
@@ -54,4 +58,17 @@
 		</table>
 	</div>
 
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.anons {
+			padding: 2px 10px;
+		}
+		.anons p {
+			margin:  5px 0;
+		}
+	</style>
 {% endblock %}

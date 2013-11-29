@@ -25,7 +25,7 @@ twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     globals:
-        portal: %portal%
+        portal: «Vidal.ru»
 
 # Assetic Configuration
 assetic:
@@ -68,3 +68,47 @@ swiftmailer:
     username:  %mailer_user%
     password:  %mailer_password%
     spool:     { type: memory }
+
+# Elastica Configuration
+#fos_elastica:
+#    clients:
+#        default: { host: localhost, port: 9200 }
+#    serializer:
+#        callback_class: FOS\ElasticaBundle\Serializer\Callback
+#        serializer: serializer
+#    indexes:
+#        website:
+#            client: default
+#            types:
+#                product:
+#                    mappings:
+#                        RusName: ~
+#                    persistence:
+#                        driver: orm
+#                        model: Vidal\MainBundle\Entity\Product
+#                        provider: ~
+#                        finder: ~
+#                molecule:
+#                    mappings:
+#                        RusName: ~
+#                    persistence:
+#                        driver: orm
+#                        model: Vidal\MainBundle\Entity\Molecule
+#                        provider: ~
+#                        finder: ~
+#                atc:
+#                    mappings:
+#                        ATCCode: ~
+#                    persistence:
+#                        driver: orm
+#                        model: Vidal\MainBundle\Entity\ATC
+#                        provider: ~
+#                        finder: ~
+#                company:
+#                    mappings:
+#                        LocalName: ~
+#                    persistence:
+#                        driver: orm
+#                        model: Vidal\MainBundle\Entity\Company
+#                        provider: ~
+#                        finder: ~

@@ -14,3 +14,4 @@ parameters:
 
     locale:            ru
     secret:            e2043fd07b10100ff9ba99ca857acdec48
+    portal:            «Vidal.ru»
