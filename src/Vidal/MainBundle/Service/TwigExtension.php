@@ -35,7 +35,6 @@ class TwigExtension extends \Twig_Extension
 	public function getFilters()
 	{
 		return array(
-			new \Twig_SimpleFilter('engName', array($this, 'engName')),
 			new \Twig_SimpleFilter('stripLoz', array($this, 'stripLoz')),
 		);
 	}
@@ -49,15 +48,6 @@ class TwigExtension extends \Twig_Extension
 	public function is_file($filename)
 	{
 		return file_exists(trim($filename, '/'));
-	}
-
-	public function engName($str)
-	{
-		$p = array('/<SUP>&reg;<\/SUP>/', '/<SUP>&trade;<\/SUP>/', '/ /');
-		$r = array('', '', '-');
-		$str = preg_replace($p, $r, $str);
-
-		return strtolower($str);
 	}
 
 	public function stripLoz($str)

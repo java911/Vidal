@@ -44,4 +44,21 @@ class PictureRepository extends EntityRepository
 
 		return $pictures;
 	}
+
+	public function findByInfoPageID($InfoPageID)
+	{
+		$picture = $this->_em->createQuery('
+			SELECT p.PathForElectronicEdition path
+			FROM VidalMainBundle:Picture p
+			JOIN p.infoPages i WITH i = :InfoPageID
+		')->setParameter('InfoPageID', $InfoPageID)
+			->setMaxResults(1)
+			->getOneOrNullResult();
+
+		if (!empty($picture)) {
+			$picture['path'] = $path = preg_replace('/.+\\\\JPG\\\\/', '', $picture['path']);
+		}
+
+		return $picture;
+	}
 }

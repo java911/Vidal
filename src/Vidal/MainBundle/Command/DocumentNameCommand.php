@@ -12,49 +12,50 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @package Vidal\MainBundle\Command
  */
-class ProductNameCommand extends ContainerAwareCommand
+class DocumentNameCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:productname')
-			->setDescription('Adds names to product without fucking tags');
+		$this->setName('vidal:documentname')
+			->setDescription('Adds names to document without fucking tags');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
-		# надо установить имена для препаратов без тегов
+		# надо установить имена для препаратов без тегов в нижний регистр
 		$em->createQuery('
-			UPDATE VidalMainBundle:Product p
-			SET p.Name = p.EngName
-			WHERE p.EngName NOT LIKE \'%<%\'
+			UPDATE VidalMainBundle:Document d
+			SET d.Name = LOWER(d.EngName)
+			WHERE d.EngName NOT LIKE \'%<%\'
 		')->execute();
 
 		# теперь надо удалить из имен теги и записать в БД
-		$products = $em->createQuery('
-			SELECT p.ProductID, p.EngName
-			FROM VidalMainBundle:Product p
-			WHERE p.EngName LIKE \'%<%\'
+		$documents = $em->createQuery('
+			SELECT d.DocumentID, d.EngName
+			FROM VidalMainBundle:Document d
+			WHERE d.EngName LIKE \'%<%\'
 		')->getResult();
 
 		$query = $em->createQuery('
-			UPDATE VidalMainBundle:Product p
-			SET p.Name = :product_name
-			WHERE p = :product_id
+			UPDATE VidalMainBundle:Document d
+			SET d.Name = :document_name
+			WHERE d = :document_id
 		');
 
-		for ($i = 0; $i < count($products); $i++) {
+		for ($i = 0; $i < count($documents); $i++) {
 			$p    = array('/ /', '/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i');
 			$r    = array('-', '', '');
-			$name = preg_replace($p, $r, $products[$i]['EngName']);
+			$name = preg_replace($p, $r, $documents[$i]['EngName']);
+			$name = mb_strtolower($name, 'UTF-8');
 
 			$query->setParameters(array(
-				'product_name' => $name,
-				'product_id'   => $products[$i]['ProductID'],
+				'document_name' => $name,
+				'document_id'   => $documents[$i]['DocumentID'],
 			))->execute();
 		}
 
-		$output->writeln('... vidal:productname completed!');
+		$output->writeln('... vidal:documentname completed!');
 	}
 }

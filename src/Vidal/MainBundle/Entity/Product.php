@@ -18,6 +18,9 @@ class Product
 	/** @ORM\Column(length=500) */
 	protected $EngName;
 
+	/** @ORM\Column(length=500, nullable=true) */
+	protected $Name;
+
 	/** @ORM\Column(type="boolean") */
 	protected $NonPrescriptionDrug = false;
 
@@ -737,5 +740,21 @@ class Product
 	public function getProductItemRoutes()
 	{
 		return $this->productItemRoutes;
+	}
+
+	/**
+	 * @param mixed $Name
+	 */
+	public function setName($Name)
+	{
+		$this->Name = $Name;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getName()
+	{
+		return $this->Name;
 	}
 }

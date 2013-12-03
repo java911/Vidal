@@ -17,7 +17,7 @@ class DocumentCompositionCommand extends ContainerAwareCommand
 	protected function configure()
 	{
 		$this->setName('vidal:documentcomposition')
-			->setDescription('Edit compiled compositoin of document');
+			->setDescription('Edits compiled composition of document');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
@@ -38,13 +38,13 @@ class DocumentCompositionCommand extends ContainerAwareCommand
 		');
 
 		for ($i = 0; $i < count($documents); $i++) {
-			$patterns     = array('/\[PRING\]/', '&loz;');
+			$patterns     = array('/\[PRING\]/i', '/&loz;/i');
 			$replacements = array('<i class"pring">Вспомогательные вещества</i>:', '');
 			$composition  = preg_replace($patterns, $replacements, $documents[$i]['CompiledComposition']);
 
 			$query->setParameters(array(
 				'document_composition' => $composition,
-				'document_id'          => $documents[$i]['ProductID'],
+				'document_id'          => $documents[$i]['DocumentID'],
 			))->execute();
 		}
 

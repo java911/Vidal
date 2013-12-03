@@ -35,4 +35,15 @@ class ATCRepository extends EntityRepository
 		')->setParameter('productIds', $productIds)
 			->getResult();
 	}
+
+	public function findByQuery($q)
+	{
+		return $this->_em->createQuery('
+			SELECT a.ATCCode, a.RusName, a.EngName, a.ParentATCCode
+			FROM VidalMainBundle:ATC a
+			WHERE a.ATCCode LIKE :q
+			ORDER BY a.ATCCode ASC
+		')->setParameter('q', $q.'%')
+			->getResult();
+	}
 }

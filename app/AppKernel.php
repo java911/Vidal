@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 			new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Vidal\MainBundle\VidalMainBundle(),
+			new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
 			//new JMS\SerializerBundle\JMSSerializerBundle(),
 			//new FOS\ElasticaBundle\FOSElasticaBundle(),
         );

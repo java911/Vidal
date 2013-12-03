@@ -8,7 +8,7 @@
 		<td title="Владелец регистрационного удостоверения">Владелец рег/уд</td>
 	</tr>
 
-	{% for product in products %}
+	{% for id, product in products %}
 		{% set id = product.ProductID %}
 		<tr>
 			<td class="products-table-loz">
@@ -19,7 +19,7 @@
 			</td>
 			<td class="products-table-name">
 				<a class="no-underline"
-				   href="{{ path('product', {'EngName':product.EngName|engName, 'ProductID':product.ProductID}) }}">
+				   href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}">
 					{{ product.RusName|raw }}</a>
 			</td>
 			<td class="products-table-picture">
@@ -37,9 +37,12 @@
 				{% endif %}
 			</td>
 			<td class="products-table-zip">
-				<div>{{ product.ZipInfo|replace({'&loz;':''}) }}</div>
-							<span>регистрационный №: {{ product.RegistrationNumber }} от
-								{{ product.RegistrationDate|date('d.m.Y') }}</span>
+				<div>{{ product.ZipInfo }}</div>
+				<span>рег. №: {{ product.RegistrationNumber }}
+					{% if product.RegistrationDate is not null %}
+						от {{ product.RegistrationDate|date('d.m.Y') }}
+					{% endif %}
+				</span>
 			</td>
 			<td class="products-table-company">
 				{# компании регистраторы/производители препарата #}

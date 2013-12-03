@@ -51,7 +51,7 @@
 						</td>
 						<td class="products-table-name">
 							<a class="no-underline"
-							   href="{{ path('document', {'EngName':product.DocumentEngName|engName, 'DocumentID':product.DocumentID}) }}">
+							   href="{{ path('document', {'EngName':product.DocumentName, 'DocumentID':product.DocumentID}) }}">
 								{{ product.DocumentRusName|raw }}</a>
 						</td>
 						<td class="products-table-indication" title="Показания к применению">
@@ -61,9 +61,12 @@
 							{% endif %}
 						</td>
 						<td class="products-table-zip">
-							<div>{{ product.ZipInfo|replace({'&loz;':''}) }}</div>
-							<span>регистрационный №: {{ product.RegistrationNumber }} от
-								{{ product.RegistrationDate|date('d.m.Y') }}</span>
+							<div>{{ product.ZipInfo }}</div>
+							<span>рег. №: {{ product.RegistrationNumber }}
+								{% if product.RegistrationDate is not null %}
+									от {{ product.RegistrationDate|date('d.m.Y') }}
+								{% endif %}
+							</span>
 						</td>
 						<td class="products-table-company">
 							{% if product.InfoPageID %}
@@ -89,14 +92,17 @@
 						</td>
 						<td class="products-table-name">
 							<a class="no-underline"
-							   href="{{ path('product', {'EngName':product.EngName|engName, 'ProductID':product.ProductID}) }}">
+							   href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}">
 								{{ product.RusName|raw }}</a>
 						</td>
 						<td class="products-table-indication"></td>
 						<td class="products-table-zip">
-							<div>{{ product.ZipInfo|replace({'&loz;':''}) }}</div>
-							<span>регистрационный №: {{ product.RegistrationNumber }} от
-								{{ product.RegistrationDate|date('d.m.Y') }}</span>
+							<div>{{ product.ZipInfo }}</div>
+							<span>рег. №: {{ product.RegistrationNumber }}
+								{% if product.RegistrationDate is not null %}
+									от {{ product.RegistrationDate|date('d.m.Y') }}
+								{% endif %}
+							</span>
 						</td>
 						<td class="products-table-company"></td>
 					</tr>

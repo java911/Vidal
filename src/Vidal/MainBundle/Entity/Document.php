@@ -18,6 +18,9 @@ class Document
 	/** @ORM\Column(length=500) */
 	protected $EngName;
 
+	/** @ORM\Column(length=500, nullable=true) */
+	protected $Name;
+
 	/** @ORM\Column(type="text", nullable=true) */
 	protected $CompiledComposition;
 
@@ -999,5 +1002,21 @@ class Document
 	public function getNursingUsing()
 	{
 		return $this->NursingUsing;
+	}
+
+	/**
+	 * @param mixed $Name
+	 */
+	public function setName($Name)
+	{
+		$this->Name = $Name;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getName()
+	{
+		return $this->Name;
 	}
 }

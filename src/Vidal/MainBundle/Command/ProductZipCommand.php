@@ -8,54 +8,43 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Команда генерации нормальных имен для препаратов
+ * Команда удаления из ZipInfo препарата символов ромбика &loz;
  *
  * @package Vidal\MainBundle\Command
  */
-class ProductNameCommand extends ContainerAwareCommand
+class ProductZipCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:productname')
-			->setDescription('Adds names to product without fucking tags');
+		$this->setName('vidal:productzip')
+			->setDescription('Removes &loz; from Product.ZipInfo');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
-		# надо установить имена для препаратов без тегов
-		$em->createQuery('
-			UPDATE VidalMainBundle:Product p
-			SET p.Name = LOWER(p.EngName)
-			WHERE p.EngName NOT LIKE \'%<%\'
-		')->execute();
-
-		# теперь надо удалить из имен теги и записать в БД
 		$products = $em->createQuery('
-			SELECT p.ProductID, p.EngName
+			SELECT p.ProductID, p.ZipInfo
 			FROM VidalMainBundle:Product p
-			WHERE p.EngName LIKE \'%<%\'
+			WHERE p.ZipInfo LIKE \'%&loz;%\'
 		')->getResult();
 
 		$query = $em->createQuery('
 			UPDATE VidalMainBundle:Product p
-			SET p.Name = :product_name
+			SET p.ZipInfo = :product_zip
 			WHERE p = :product_id
 		');
 
 		for ($i = 0; $i < count($products); $i++) {
-			$p    = array('/ /', '/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i');
-			$r    = array('-', '', '');
-			$name = preg_replace($p, $r, $products[$i]['EngName']);
-			$name = mb_strtolower($name, 'UTF-8');
+			$zip = preg_replace('/&loz;/i', '', $products[$i]['ZipInfo']);
 
 			$query->setParameters(array(
-				'product_name' => $name,
-				'product_id'   => $products[$i]['ProductID'],
+				'product_zip' => $zip,
+				'product_id'  => $products[$i]['ProductID'],
 			))->execute();
 		}
 
-		$output->writeln('... vidal:productname completed!');
+		$output->writeln('... vidal:productzip completed!');
 	}
 }

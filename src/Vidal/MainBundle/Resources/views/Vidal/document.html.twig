@@ -160,13 +160,16 @@
 								{% endif %}
 							</td>
 							<td class="products-table-name">
-								<a href="{{ path('product', {'EngName':p.EngName|engName, 'ProductID':p.ProductID}) }}"
+								<a href="{{ path('product', {'EngName':p.Name, 'ProductID':p.ProductID}) }}"
 								   class="no-underline">{{ p.RusName|raw }}</a>
 							</td>
 							<td class="products-table-zip">
-								<div>{{ p.ZipInfo|stripLoz|raw }}</div>
-								<span>регистрационный №: {{ p.RegistrationNumber }} от
-									{{ p.RegistrationDate|date('d.m.Y') }}, {{ p.MarketStatus }}</span>
+								<div>{{ p.ZipInfo }}</div>
+								<span>рег. №: {{ p.RegistrationNumber }}
+									{% if p.RegistrationDate is not null %}
+										от {{ p.RegistrationDate|date('d.m.Y') }}
+									{% endif %}
+								</span>
 							</td>
 						</tr>
 					{% endfor %}
@@ -212,11 +215,11 @@
 			{% spaceless %}
 				<textarea cols="92" rows="2">
 					{% if product is defined %}
-						<a href="{{ url('product', {'EngName':product.EngName|engName, 'ProductID':product.ProductID}) }}" target="_new"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+						<a href="{{ url('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}" target="_new"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
 					{% elseif documentId is defined %}
-						<a href="{{ url('document', {'EngName':document.EngName|engName, 'DocumentID':document.DocumentID}) }}" target="_new"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+						<a href="{{ url('document', {'EngName':document.Name, 'DocumentID':document.DocumentID}) }}" target="_new"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
 					{% else %}
-						<a href="{{ url('document', {'EngName':document.EngName|engName}) }}" target="_new"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+						<a href="{{ url('document', {'EngName':document.Name}) }}" target="_new"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
 					{% endif %}
 				</textarea>
 			{% endspaceless %}

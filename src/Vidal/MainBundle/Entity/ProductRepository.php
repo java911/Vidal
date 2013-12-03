@@ -9,7 +9,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
-				p.RusName, p.EngName, p.NonPrescriptionDrug, p.Composition
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.Composition
 			FROM VidalMainBundle:Product p
 			LEFT JOIN VidalMainBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE p = :ProductID
@@ -21,7 +21,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
-				p.RusName, p.EngName, p.NonPrescriptionDrug
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug
 			FROM VidalMainBundle:Product p
 			LEFT JOIN VidalMainBundle:ProductDocument pd WITH pd.ProductID = p
 			LEFT JOIN VidalMainBundle:Document d WITH pd.DocumentID = d
@@ -44,7 +44,7 @@ class ProductRepository extends EntityRepository
 
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
-				p.RusName, p.EngName, p.NonPrescriptionDrug
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug
 			FROM VidalMainBundle:Product p
 			LEFT JOIN p.moleculeNames mn
 			LEFT JOIN VidalMainBundle:Molecule m WITH m = mn.MoleculeID
@@ -62,8 +62,9 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ProductID, p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.NonPrescriptionDrug,
-				p.RusName, p.EngName, p.NonPrescriptionDrug,
-				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
+				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
+				d.Name DocumentName
 			FROM VidalMainBundle:Product p
 			JOIN p.atcCodes a WITH a = :ATCCode
 			LEFT JOIN VidalMainBundle:ProductDocument pd WITH pd.ProductID = p
@@ -79,9 +80,10 @@ class ProductRepository extends EntityRepository
 	public function findByMoleculeID($MoleculeID)
 	{
 		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.NonPrescriptionDrug,
+			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
 				p.RegistrationNumber, p.RegistrationDate,
-				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName
+				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
+				d.Name DocumentName
 			FROM VidalMainBundle:Product p
 			LEFT JOIN p.moleculeNames mn
 			LEFT JOIN VidalMainBundle:ProductDocument pd WITH pd.ProductID = p
@@ -98,10 +100,11 @@ class ProductRepository extends EntityRepository
 	public function findByOwner($CompanyID)
 	{
 		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.NonPrescriptionDrug,
+			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
 				p.RegistrationNumber, p.RegistrationDate,
 				country.RusName CompanyCountry,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
+				d.Name DocumentName,
 				i.InfoPageID, i.RusName InfoPageName, co.RusName InfoPageCountry
 			FROM VidalMainBundle:Product p
 			JOIN VidalMainBundle:ProductCompany pc WITH pc.ProductID = p
@@ -124,17 +127,15 @@ class ProductRepository extends EntityRepository
 	public function findByInfoPageID($InfoPageID)
 	{
 		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.NonPrescriptionDrug,
+			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
 				p.RegistrationNumber, p.RegistrationDate,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
-				d.ClPhGrDescription
+				d.Name DocumentName, d.ClPhGrDescription
 			FROM VidalMainBundle:Product p
-			LEFT JOIN VidalMainBundle:ProductDocument pd WITH pd.ProductID = p
-			LEFT JOIN VidalMainBundle:Document d WITH pd.DocumentID = d
-			LEFT JOIN VidalMainBundle:DocumentInfoPage di WITH di.DocumentID = d
-			LEFT JOIN VidalMainBundle:InfoPage i WITH di.InfoPageID = i
-			WHERE i = :InfoPageID AND
-				p.CountryEditionCode = \'RUS\' AND
+			JOIN VidalMainBundle:ProductDocument pd WITH pd.ProductID = p
+			JOIN VidalMainBundle:Document d WITH pd.DocumentID = d
+			JOIN VidalMainBundle:DocumentInfoPage di WITH di.DocumentID = d AND di.InfoPageID = :InfoPageID
+			WHERE p.CountryEditionCode = \'RUS\' AND
 				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
 				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
 			ORDER BY p.RusName ASC
@@ -175,7 +176,7 @@ class ProductRepository extends EntityRepository
 
 		$qb
 			->select('p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.ProductID,
-				p.RusName, p.EngName, p.NonPrescriptionDrug')
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug')
 			->from('VidalMainBundle:Product', 'p')
 			->orderBy('p.RusName', 'ASC')
 			->andWhere("p.CountryEditionCode = 'RUS'")

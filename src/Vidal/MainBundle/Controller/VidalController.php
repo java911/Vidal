@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class VidalController extends Controller
 {
+	const PRODUCTS_PER_PAGE = 30;
+
 	/**
 	 * @Route("poisk_preparatov/fir_{CompanyID}.{ext}", name="company", requirements={"CompanyID":"\d+"}, defaults={"ext"="htm"})
 	 * @Route("poisk_preparatov/lfir_{CompanyID}.{ext}", name="company_products", requirements={"CompanyID":"\d+"}, defaults={"ext"="htm"})
@@ -87,6 +89,10 @@ class VidalController extends Controller
 		$productsRaw = $em->getRepository('VidalMainBundle:Product')->findByATCCode($ATCCode);
 		$products    = array();
 
+		if (empty($productsRaw)) {
+			return array('atc' => $atc);
+		}
+
 		for ($i = 0; $i < count($productsRaw); $i++) {
 			$key = $productsRaw[$i]['ProductID'];
 			if (!isset($productsRaw[$key])) {
@@ -147,11 +153,23 @@ class VidalController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		$products = $em->getRepository('VidalMainBundle:Product')->findByInfoPageID($InfoPageID);
+		$productsRaw = $em->getRepository('VidalMainBundle:Product')->findByInfoPageID($InfoPageID);
+		$products    = array();
+
+		# надо отсеить дубли
+		for ($i = 0; $i < count($productsRaw); $i++) {
+			$key = $productsRaw[$i]['ProductID'];
+			if (!isset($products[$key])) {
+				$products[$key] = $productsRaw[$i];
+			}
+		}
+
+		$picture = $em->getRepository('VidalMainBundle:Picture')->findByInfoPageID($InfoPageID);
 
 		return array(
 			'infoPage' => $infoPage,
 			'products' => $products,
+			'picture'  => $picture,
 		);
 	}
 
@@ -193,8 +211,13 @@ class VidalController extends Controller
 
 		# все продукты по активному веществу и отсеиваем дубли
 		$productsRaw = $em->getRepository('VidalMainBundle:Product')->findByMoleculeID($MoleculeID);
-		$products    = array();
-		$productIds  = array();
+
+		if (empty($productsRaw)) {
+			return array('molecule' => $molecule);
+		}
+
+		$products   = array();
+		$productIds = array();
 
 		for ($i = 0; $i < count($productsRaw); $i++) {
 			$key = $productsRaw[$i]['ProductID'];
@@ -247,6 +270,71 @@ class VidalController extends Controller
 	public function gnpAction()
 	{
 		return array();
+	}
+
+	/**
+	 * @Route("/poisk_preparatov/search", name="search")
+	 *
+	 * @Template("VidalMainBundle:Vidal:search.html.twig")
+	 */
+	public function searchAction(Request $request)
+	{
+		$em     = $this->getDoctrine()->getManager();
+		$q      = $request->query->get('q', ''); # поисковый запрос
+		$t      = $request->query->get('t', 'all'); # тип запроса из селект-бокса
+		$p      = $request->query->get('p', 1); # номер страницы
+		$params = array('q' => $q, 't' => $t);
+
+		# поисковый запрос не может быть меньше 2
+		if (mb_strlen($q, 'UTF-8') < 2) {
+			return $this->render('VidalMainBundle:Vidal:search_too_short.html.twig', $params);
+		}
+
+		if ($t == 'all' || $t == 'product') {
+			$products   = $em->getRepository('VidalMainBundle:Product')->findByQuery($q);
+
+			$paginator  = $this->get('knp_paginator');
+			$pagination = $paginator->paginate($products, $p, self::PRODUCTS_PER_PAGE);
+
+			if ($pagination->getTotalItemCount()) {
+				$productIds = array();
+
+				foreach ($pagination as $product) {
+					$productIds[] = $product['ProductID'];
+				}
+
+				# надо получить компании и сгруппировать их по продукту
+				$companies        = $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds);
+				$productCompanies = array();
+
+				foreach ($companies as $company) {
+					$key = $company['ProductID'];
+					isset($productCompanies[$key])
+						? $productCompanies[$key][] = $company
+						: $productCompanies[$key] = array($company);
+				}
+
+				$params['productsPagination'] = $pagination;
+				$params['companies']          = $productCompanies;
+				$params['pictures']           = $em->getRepository('VidalMainBundle:Picture')->findByProductIds($productIds);
+			}
+		}
+
+		if (($t == 'all' || $t == 'molecule') && $p == 1) {
+			$params['molecules'] = $em->getRepository('VidalMainBundle:Molecule')->findByQuery($q);
+		}
+
+		if ($t == 'atc') {
+			$params['atcCodes'] = $em->getRepository('VidalMainBundle:ATC')->findByQuery($q);
+		}
+
+		return $params;
+	}
+
+	/** Отсортировать препараты по имени */
+	private function sortProducts($a, $b)
+	{
+		return strcasecmp($a['RusName'], $b['RusName']);
 	}
 
 	/**
@@ -378,57 +466,5 @@ class VidalController extends Controller
 		$params['infoPages'] = $em->getRepository('VidalMainBundle:InfoPage')->findByDocumentID($DocumentID);
 
 		return $params;
-	}
-
-	/**
-	 * @Route("/search", name="search")
-	 *
-	 * @Template("VidalMainBundle:Vidal:search.html.twig")
-	 */
-	public function searchAction(Request $request)
-	{
-		$em     = $this->getDoctrine()->getManager();
-		$q      = $request->query->get('q', '');
-		$t      = $request->query->get('t', 'all');
-		$params = array('q' => $q, 't' => $t);
-
-		if ($t == 'all' || $t == 'product') {
-			$products = $em->getRepository('VidalMainBundle:Product')->findByQuery($q);
-
-			$productIds = array();
-			for ($i = 0; $i < count($products); $i++) {
-				$productIds[] = $products[$i]['ProductID'];
-			}
-
-			# надо получить компании и сгруппировать их по продукту
-			$companies        = $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds);
-			$productCompanies = array();
-
-			foreach ($companies as $company) {
-				$key = $company['ProductID'];
-				isset($productCompanies[$key])
-					? $productCompanies[$key][] = $company
-					: $productCompanies[$key] = array($company);
-			}
-
-			$params['products']  = $products;
-			$params['companies'] = $productCompanies;
-			$params['pictures']  = $em->getRepository('VidalMainBundle:Picture')->findByProductIds($productIds);
-		}
-
-		if ($t == 'all' || $t == 'molecule') {
-			$params['molecules'] = $em->getRepository('VidalMainBundle:Molecule')->findByQuery($q);
-		}
-
-		return $params;
-	}
-
-	private function sortProducts($a, $b)
-	{
-		if ($a == $b) {
-			return 0;
-		}
-
-		return $a > $b ? $a : $b;
 	}
 }

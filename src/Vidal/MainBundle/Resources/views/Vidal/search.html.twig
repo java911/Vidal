@@ -2,9 +2,40 @@
 
 
 {% block vidal %}
-	<div class="search-info">
-		<span>Поиск по запросу <b>{{ q }}</b></span>
-	</div>
+	{% include 'VidalMainBundle:Vidal:search_info.html.twig' %}
+
+	{# Найдено АТХ #}
+	{% if atcCodes is defined %}
+		<div class="block">
+			{% if atcCodes is not empty %}
+				<div class="anons">Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)</div>
+				<table class="products-table">
+					<tr class="products-table-header">
+						<td style="width:10%">АТХ код</td>
+						<td style="width:40%">Название</td>
+						<td style="width:40%">Латинское название</td>
+						<td style="width:10%">Входит в группу</td>
+					</tr>
+					{% for atc in atcCodes %}
+						<tr>
+							<td>
+								<a href="{{ path('atc', {'ATCCode':atc.ATCCode}) }}">{{ atc.ATCCode }}</a>
+							</td>
+							<td>{{ atc.RusName }}</td>
+							<td>{{ atc.EngName }}</td>
+							<td>
+								<a href="{{ path('atc', {'ATCCode':atc.ParentATCCode}) }}">{{ atc.ParentATCCode }}</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			{% else %}
+				<div class="no-results">
+					Не найдено результатов по AТС <span>{{ q }}</span>
+				</div>
+			{% endif %}
+		</div>
+	{% endif %}
 
 	{# Найдено активных веществ #}
 	{% if molecules is defined and molecules is not empty %}
@@ -37,11 +68,11 @@
 	{% endif %}
 
 	{# Найдено препаратов #}
-	{% if products is defined and products is not empty %}
+	{% if productsPagination is defined and productsPagination.totalItemCount %}
 		<div class="block">
 			<div class="block-anons">
 				<div class="block-head">
-					Найдено препаратов: <span>{{ products|length }}</span>
+					Найдено препаратов: <span>{{ productsPagination.totalItemCount }}</span>
 				</div>
 			</div>
 		</div>
@@ -54,7 +85,7 @@
 				<td>Форма выпуска</td>
 				<td title="Владелец регистрационного удостоверения">Владелец рег/уд</td>
 			</tr>
-			{% for product in products %}
+			{% for product in productsPagination %}
 				{% set id = product.ProductID %}
 				<tr>
 					<td class="products-table-loz">
@@ -65,7 +96,7 @@
 					</td>
 					<td class="products-table-name">
 						<a class="no-underline"
-						   href="{{ path('product', {'EngName':product.EngName|engName, 'ProductID':id}) }}">
+						   href="{{ path('product', {'EngName':product.Name, 'ProductID':id}) }}">
 							{{ product.RusName|raw }}</a>
 					</td>
 					<td class="products-table-picture">
@@ -77,9 +108,12 @@
 						{% endif %}
 					</td>
 					<td class="products-table-zip">
-						<div>{{ product.ZipInfo|replace({'&loz;':''}) }}</div>
-								<span>регистрационный №: {{ product.RegistrationNumber }} от
-									{{ product.RegistrationDate|date('d.m.Y') }}</span>
+						<div>{{ product.ZipInfo }}</div>
+						<span>рег. №: {{ product.RegistrationNumber }}
+							{% if product.RegistrationDate is not null %}
+								от {{ product.RegistrationDate|date('d.m.Y') }}
+							{% endif %}
+						</span>
 					</td>
 					<td class="products-table-company">
 						{# компании регистраторы/производители препарата #}
@@ -106,6 +140,10 @@
 				</tr>
 			{% endfor %}
 		</table>
+
+		<div class="navigation">
+			{{ knp_pagination_render(productsPagination) }}
+		</div>
 	{% endif %}
 
 {% endblock %}

@@ -1,11 +1,21 @@
 <form id="search_form" method="get" action="{{ path('search') }}">
-	<input id="search_query" type="text" name="q" placeholder="Поиск по сайту" value="{{ app.request.get('q') }}"/>
-	<select id="search_type" name="t">
-		<option value="all" {{ app.request.get('t') == 'all' ? 'selected="selected"' }}>Везде</option>
-		<option value="product" {{ app.request.get('t') == 'product' ? 'selected="selected"' }}>По препарату</option>
-		<option value="molecule" {{ app.request.get('t') == 'molecule' ? 'selected="selected"' }}>По активному веществу</option>
-		<option value="atc" {{ app.request.get('t') == 'atc' ? 'selected="selected"' }}>По АТС коду</option>
-	</select>
-	<input type="submit" value="Найти"/>
+	<div id="search_block">
+		<input id="search_query" type="text" name="q" placeholder="Искать" value="{{ app.request.get('q') }}"/>
+		<select id="search_type" name="t">
+			<option value="all" {{ app.request.get('t') == 'all' ? 'selected="selected"' }}>
+				Везде
+			</option>
+			<option value="product" {{ app.request.get('t') == 'product' ? 'selected="selected"' }}>По
+				препарату
+			</option>
+			<option value="molecule" {{ app.request.get('t') == 'molecule' ? 'selected="selected"' }}>По
+				активному веществу
+			</option>
+			<option value="atc" {{ app.request.get('t') == 'atc' ? 'selected="selected"' }}>
+				По АТС коду
+			</option>
+		</select>
+	</div>
+	<input id="search_button" class="btn-white" type="submit" value="Найти"/>
 </form>
 

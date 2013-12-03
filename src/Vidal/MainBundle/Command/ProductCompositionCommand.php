@@ -8,46 +8,46 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Команда редактирования Document.CompiledComposition
+ * Команда редактирования Product.Composition
  *
  * @package Vidal\MainBundle\Command
  */
-class DocumentCompositionCommand extends ContainerAwareCommand
+class ProductCompositionCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:documentcomposition')
-			->setDescription('Edit compiled compositoin of document');
+		$this->setName('vidal:productcomposition')
+			->setDescription('Edits composition of products');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
-		$documents = $em->createQuery('
-			SELECT d.DocumentID, d.CompiledComposition
-			FROM VidalMainBundle:Document d
-			WHERE d.CompiledComposition LIKE \'%&loz;%\' OR
-				d.CompiledComposition LIKE \'%[PRING]%\'
+		$products = $em->createQuery('
+			SELECT p.ProductID, p.Composition
+			FROM VidalMainBundle:Product p
+			WHERE p.Composition LIKE \'%&loz;%\' OR
+				p.Composition LIKE \'%[PRING]%\'
 		')->getResult();
 
 		$query = $em->createQuery('
-			UPDATE VidalMainBundle:Document d
-			SET d.CompiledComposition = :document_composition
-			WHERE d = :document_id
+			UPDATE VidalMainBundle:Product p
+			SET p.Composition = :product_composition
+			WHERE p = :product_id
 		');
 
-		for ($i = 0; $i < count($documents); $i++) {
+		for ($i = 0; $i < count($products); $i++) {
 			$patterns     = array('/\[PRING\]/i', '/&loz;/i');
 			$replacements = array('<i class"pring">Вспомогательные вещества</i>:', '');
-			$composition  = preg_replace($patterns, $replacements, $documents[$i]['CompiledComposition']);
+			$composition  = preg_replace($patterns, $replacements, $products[$i]['Composition']);
 
 			$query->setParameters(array(
-				'document_composition' => $composition,
-				'document_id'          => $documents[$i]['DocumentID'],
+				'product_composition' => $composition,
+				'product_id'          => $products[$i]['ProductID'],
 			))->execute();
 		}
 
-		$output->writeln('... vidal:documentcomposition completed!');
+		$output->writeln('... vidal:productcomposition completed!');
 	}
 }
