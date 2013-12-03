@@ -12,11 +12,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @package Vidal\MainBundle\Command
  */
-class ElasticAutocompleteCommand extends ContainerAwareCommand
+class AutocompleteCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:elastic:autocomplete')
+		$this->setName('vidal:autocomplete')
 			->setDescription('Creates autocomplete in Elastica');
 	}
 
