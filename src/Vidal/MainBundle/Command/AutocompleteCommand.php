@@ -22,6 +22,8 @@ class AutocompleteCommand extends ContainerAwareCommand
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+		$output->writeln('--- vidal:autocomplete started');
+
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
 		$productNames  = $em->getRepository('VidalMainBundle:Product')->findProductNames();
@@ -32,7 +34,13 @@ class AutocompleteCommand extends ContainerAwareCommand
 
 		$elasticaClient = new \Elastica\Client();
 		$elasticaIndex  = $elasticaClient->getIndex('website');
-		$elasticaType   = $elasticaIndex->getType('autocomplete');
+
+		if ($elasticaIndex->exists()) {
+			$elasticaIndex->delete();
+		}
+
+		$elasticaIndex->create();
+		$elasticaType = $elasticaIndex->getType('autocomplete');
 
 		// Define mapping
 		$mapping = new \Elastica\Type\Mapping();
@@ -40,28 +48,25 @@ class AutocompleteCommand extends ContainerAwareCommand
 
 		// Set mapping
 		$mapping->setProperties(array(
-			'id'      => array('type' => 'integer', 'include_in_all' => FALSE),
-			'name'    => array('type' => 'string', 'include_in_all' => TRUE),
+			'id'   => array('type' => 'integer', 'include_in_all' => FALSE),
+			'name' => array('type' => 'string', 'include_in_all' => TRUE),
 		));
 
 		// Send mapping to type
 		$mapping->send();
 
 		# записываем на сервер документы автодополнения
-		$output->writeln('writing autocomplete documents =>');
 		$documents = array();
 
-		for ($i=0; $i<count($names); $i++) {
-			$documents[] = new \Elastica\Document($i+1, array('name' => $names[$i]));
+		for ($i = 0; $i < count($names); $i++) {
+			$documents[] = new \Elastica\Document($i + 1, array('name' => $names[$i]));
 
-			if ($i && $i % 100 == 0) {
+			if ($i && $i % 500 == 0) {
 				$elasticaType->addDocuments($documents);
 				$elasticaType->getIndex()->refresh();
-				$documents = array();
-				$output->writeln('... '. $i);
 			}
 		}
 
-		$output->writeln("loaded $i autocomplete documents!");
+		$output->writeln("+++ vidal:autocomplete loaded $i documents!");
 	}
 }

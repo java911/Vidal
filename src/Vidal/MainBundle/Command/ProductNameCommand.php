@@ -22,6 +22,8 @@ class ProductNameCommand extends ContainerAwareCommand
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+		$output->writeln('--- vidal:productname started');
+
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
 		# надо установить имена для препаратов без тегов
@@ -56,6 +58,6 @@ class ProductNameCommand extends ContainerAwareCommand
 			))->execute();
 		}
 
-		$output->writeln('... vidal:productname completed!');
+		$output->writeln('+++ vidal:productname completed!');
 	}
 }

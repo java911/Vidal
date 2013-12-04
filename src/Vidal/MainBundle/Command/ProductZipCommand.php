@@ -22,6 +22,8 @@ class ProductZipCommand extends ContainerAwareCommand
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+		$output->writeln('--- vidal:productzip started');
+
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
 		$products = $em->createQuery('
@@ -45,6 +47,6 @@ class ProductZipCommand extends ContainerAwareCommand
 			))->execute();
 		}
 
-		$output->writeln('... vidal:productzip completed!');
+		$output->writeln('+++ vidal:productzip completed!');
 	}
 }

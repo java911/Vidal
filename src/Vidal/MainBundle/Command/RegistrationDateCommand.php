@@ -22,6 +22,8 @@ class RegistrationDateCommand extends ContainerAwareCommand
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+		$output->writeln('--- vidal:registrationdate started');
+
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
 		$em->createQuery('
@@ -36,6 +38,6 @@ class RegistrationDateCommand extends ContainerAwareCommand
 			WHERE p.DateOfCloseRegistration = \'0000-00-00 00:00:00\'
 		')->execute();
 
-		$output->writeln('... vidal:registrationdate completed!');
+		$output->writeln('+++ vidal:registrationdate completed!');
 	}
 }

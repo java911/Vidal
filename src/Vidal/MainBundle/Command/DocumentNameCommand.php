@@ -22,6 +22,8 @@ class DocumentNameCommand extends ContainerAwareCommand
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+		$output->writeln('--- vidal:documentname started');
+
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
 		# надо установить имена для препаратов без тегов в нижний регистр
@@ -56,6 +58,6 @@ class DocumentNameCommand extends ContainerAwareCommand
 			))->execute();
 		}
 
-		$output->writeln('... vidal:documentname completed!');
+		$output->writeln('+++ vidal:documentname completed!');
 	}
 }

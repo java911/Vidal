@@ -22,6 +22,8 @@ class DocumentCompositionCommand extends ContainerAwareCommand
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+		$output->writeln('--- vidal:documentcomposition started');
+
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
 		$documents = $em->createQuery('
@@ -48,6 +50,6 @@ class DocumentCompositionCommand extends ContainerAwareCommand
 			))->execute();
 		}
 
-		$output->writeln('... vidal:documentcomposition completed!');
+		$output->writeln('+++ vidal:documentcomposition completed!');
 	}
 }

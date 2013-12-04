@@ -22,6 +22,8 @@ class ProductCompositionCommand extends ContainerAwareCommand
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+		$output->writeln('--- vidal:productcomposition started');
+
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
 		$products = $em->createQuery('
@@ -48,6 +50,6 @@ class ProductCompositionCommand extends ContainerAwareCommand
 			))->execute();
 		}
 
-		$output->writeln('... vidal:productcomposition completed!');
+		$output->writeln('+++ vidal:productcomposition completed!');
 	}
 }

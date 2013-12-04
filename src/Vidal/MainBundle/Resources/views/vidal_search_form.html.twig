@@ -1,6 +1,7 @@
 <form id="search_form" method="get" action="{{ path('search') }}">
-	<div id="search_block">
-		<input id="search_query" type="text" name="q" placeholder="Искать" value="{{ app.request.get('q') }}"/>
+	<div id="search_block" class="border-radius">
+		<input id="search_query" type="text" name="q" class="border-radius"
+			   placeholder="Искать" value="{{ app.request.get('q') }}"/>
 		<select id="search_type" name="t">
 			<option value="all" {{ app.request.get('t') == 'all' ? 'selected="selected"' }}>
 				Везде
