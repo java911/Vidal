@@ -335,7 +335,7 @@ a {
 	border:  1px solid #aaa;
 }
 #search_query {
-	width:        260px;
+	width:        280px;
 	margin:       0;
 	padding-left: 6px;
 	border:       none;
@@ -344,7 +344,7 @@ a {
 	height:       24px;
 }
 #search_type {
-	width: 180px;
+	width: 190px;
 }
 #search_button {
 	display:        inline-block;
@@ -380,6 +380,7 @@ a {
 	border-top:    1px solid #aaa;
 	margin-top:    2px;
 	border-radius: 4px;
+	width:         190px;
 }
 #search_form .chosen-container-active.chosen-with-drop .chosen-single {
 	border:           none;
@@ -395,8 +396,8 @@ a {
 	color: gray;
 }
 #search_form .ui-widget-content a em {
-	font-style: normal;
-	font-weight:bold;
+	font-style:  normal;
+	font-weight: bold;
 }
 
 /* search-info */

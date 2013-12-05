@@ -34,19 +34,19 @@ class DocumentRepository extends EntityRepository
 		$count = count($names);
 
 		if ($count == 1) {
-			$qb->andWhere("d.EngName = '{$name}'");
+			$qb->andWhere("d.Name = '{$name}'");
 		}
 		else {
 			for ($i = 0; $i < $count; $i++) {
 				$word = $names[$i];
 				if ($i == 0) {
-					$qb->andWhere("d.EngName LIKE '{$word}%'");
+					$qb->andWhere("d.Name LIKE '{$word}%'");
 				}
 				elseif ($i == $count - 1) {
-					$qb->andWhere("d.EngName LIKE '%{$word}'");
+					$qb->andWhere("d.Name LIKE '%{$word}'");
 				}
 				else {
-					$qb->andWhere("d.EngName LIKE '%{$word}%'");
+					$qb->andWhere("d.Name LIKE '%{$word}%'");
 				}
 			}
 		}
@@ -63,19 +63,19 @@ class DocumentRepository extends EntityRepository
 				->setMaxResults(1);
 
 			if ($count == 1) {
-				$qb->andWhere("d.EngName = '{$name}'");
+				$qb->andWhere("d.Name = '{$name}'");
 			}
 			else {
 				for ($i = 0; $i < $count; $i++) {
 					$word = $names[$i];
 					if ($i == 0) {
-						$qb->andWhere("d.EngName LIKE '{$word}%'");
+						$qb->andWhere("d.Name LIKE '{$word}%'");
 					}
 					elseif ($i == $count - 1) {
-						$qb->andWhere("d.EngName LIKE '%{$word}'");
+						$qb->andWhere("d.Name LIKE '%{$word}'");
 					}
 					else {
-						$qb->andWhere("d.EngName LIKE '%{$word}%'");
+						$qb->andWhere("d.Name LIKE '%{$word}%'");
 					}
 				}
 			}

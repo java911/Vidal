@@ -281,6 +281,7 @@ class VidalController extends Controller
 	{
 		$em     = $this->getDoctrine()->getManager();
 		$q      = $request->query->get('q', ''); # поисковый запрос
+		$q      = trim($q);
 		$t      = $request->query->get('t', 'all'); # тип запроса из селект-бокса
 		$p      = $request->query->get('p', 1); # номер страницы
 		$params = array('q' => $q, 't' => $t);
@@ -291,7 +292,7 @@ class VidalController extends Controller
 		}
 
 		if ($t == 'all' || $t == 'product') {
-			$products   = $em->getRepository('VidalMainBundle:Product')->findByQuery($q);
+			$products = $em->getRepository('VidalMainBundle:Product')->findByQuery($q);
 
 			$paginator  = $this->get('knp_paginator');
 			$pagination = $paginator->paginate($products, $p, self::PRODUCTS_PER_PAGE);
