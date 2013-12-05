@@ -42,7 +42,6 @@ class PictureRepository extends EntityRepository
 			}
 		}
 
-		var_dump($pictures); exit;
 		return $pictures;
 	}
 
