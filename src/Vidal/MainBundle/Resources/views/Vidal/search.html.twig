@@ -38,87 +38,94 @@
 	{% endif %}
 
 	{# Найдено активных веществ #}
-	{% if molecules is defined and molecules is not empty %}
-		<div class="block">
-			<div class="block-anons">
-				<div class="block-head">
-					Найдено активных веществ: <span>{{ molecules|length }}</span>
+	{% if molecules is defined %}
+		{% if molecules is not empty %}
+			<div class="block">
+				<div class="block-anons">
+					<div class="block-head">
+						Найдено активных веществ: <span>{{ molecules|length }}</span>
+					</div>
 				</div>
 			</div>
-		</div>
 
-		<table class="products-table">
-			<tr class="products-table-header">
-				<td width="23%">Активное вещ-во</td>
-				<td width="23%">лат.</td>
-				<td>входит в состав препаратов</td>
-			</tr>
-			{% for molecule in molecules %}
-				<tr>
-					<td>
-						<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
-						   class="no-underline">{{ molecule.RusName|raw }}</a>
-					</td>
-					<td>{{ molecule.LatName|raw }}</td>
-					<td><a href="{{ path('molecule_included', {'MoleculeID':molecule.MoleculeID}) }}"
-						   class="no-underline">список</a></td>
+			<table class="products-table">
+				<tr class="products-table-header">
+					<td width="23%">Активное вещ-во</td>
+					<td width="23%">лат.</td>
+					<td>входит в состав препаратов</td>
 				</tr>
-			{% endfor %}
-		</table>
+				{% for molecule in molecules %}
+					<tr>
+						<td>
+							<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
+							   class="no-underline">{{ molecule.RusName|raw }}</a>
+						</td>
+						<td>{{ molecule.LatName|raw }}</td>
+						<td><a href="{{ path('molecule_included', {'MoleculeID':molecule.MoleculeID}) }}"
+							   class="no-underline">список</a></td>
+					</tr>
+				{% endfor %}
+			</table>
+		{% elseif t == 'molecule' %}
+			<div class="no-results">
+				Не найдено результатов по активному веществу <span>{{ q }}</span>
+			</div>
+		{% endif %}
 	{% endif %}
 
 	{# Найдено препаратов #}
-	{% if productsPagination is defined and productsPagination.totalItemCount %}
-		<div class="block">
-			<div class="block-anons">
-				<div class="block-head">
-					Найдено препаратов: <span>{{ productsPagination.totalItemCount }}</span>
+	{% if productsPagination is defined %}
+		{% if productsPagination is not empty %}
+			<div class="block">
+				<div class="block-anons">
+					<div class="block-head">
+						Найдено препаратов: <span>{{ productsPagination.totalItemCount }}</span>
+					</div>
 				</div>
 			</div>
-		</div>
 
-		<table class="products-table">
-			<tr class="products-table-header">
-				<td class="products-table-loz"></td>
-				<td>Название</td>
-				<td></td>
-				<td>Форма выпуска</td>
-				<td title="Владелец регистрационного удостоверения">Владелец рег/уд</td>
-			</tr>
-			{% for product in productsPagination %}
-				{% set id = product.ProductID %}
-				<tr>
-					<td class="products-table-loz">
-						{% if product.NonPrescriptionDrug %}
-							<img src="{{ asset('bundles/vidalmain/images/g2.gif') }}" class="loz"
-								 title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>
-						{% endif %}
-					</td>
-					<td class="products-table-name">
-						<a class="no-underline"
-						   href="{{ path('product', {'EngName':product.Name, 'ProductID':id}) }}">
-							{{ product.RusName|raw }}</a>
-					</td>
-					<td class="products-table-picture">
-						{% if pictures[id] is defined %}
-							{% set path = '/upload/products/' ~ pictures[id] %}
-							{% if is_file(path) %}
-								<img src="{{ path }}"/>
+			<table class="products-table">
+				<tr class="products-table-header">
+					<td class="products-table-loz"></td>
+					<td>Название</td>
+					<td></td>
+					<td>Форма выпуска</td>
+					<td title="Владелец регистрационного удостоверения">Владелец рег/уд</td>
+				</tr>
+				{% for product in productsPagination %}
+					{% set id = product.ProductID %}
+					<tr>
+						<td class="products-table-loz">
+							{% if product.NonPrescriptionDrug %}
+								<img src="{{ asset('bundles/vidalmain/images/g2.gif') }}" class="loz"
+									 title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>
 							{% endif %}
-						{% endif %}
-					</td>
-					<td class="products-table-zip">
-						<div>{{ product.ZipInfo }}</div>
+						</td>
+						<td class="products-table-name">
+							<a class="no-underline"
+							   href="{{ path('product', {'EngName':product.Name, 'ProductID':id}) }}">
+								{{ product.RusName|raw }}</a>
+						</td>
+						<td class="products-table-picture">
+							{% if pictures[id] is defined %}
+								{% set path = '/upload/products/' ~ pictures[id] %}
+								{% if is_file(path) %}
+									<img src="{{ path }}"/>
+								{% endif %}
+							{% endif %}
+						</td>
+						<td class="products-table-zip">
+							<div>{{ product.ZipInfo }}</div>
 						<span>рег. №: {{ product.RegistrationNumber }}
 							{% if product.RegistrationDate is not null %}
 								от {{ product.RegistrationDate|date('d.m.Y') }}
 							{% endif %}
 						</span>
-					</td>
-					<td class="products-table-company">
-						{# компании регистраторы/производители препарата #}
-						{% for company in companies[id] %}
-							<div>
+						</td>
+						<td class="products-table-company">
+							{# компании регистраторы/производители препарата #}
+							{% for company in companies[id] %}
+								<div>
 									<span class="tip">
 										{% if company.ItsMainCompany %}
 										{% elseif company.CompanyRusNote is not empty %}
@@ -127,22 +134,36 @@
 											произведено:
 										{% endif %}
 									</span>
-								<a class="no-underline"
-								   href="{{ path('company', {'CompanyID':company.CompanyID}) }}">
-									{{ company.LocalName|raw }}
-								</a>
-								{% if company.Country is not empty %}
-									<span class="small">({{ company.Country }})</span>
-								{% endif %}
-							</div>
-						{% endfor %}
-					</td>
-				</tr>
-			{% endfor %}
-		</table>
+									<a class="no-underline"
+									   href="{{ path('company', {'CompanyID':company.CompanyID}) }}">
+										{{ company.LocalName|raw }}
+									</a>
+									{% if company.Country is not empty %}
+										<span class="small">({{ company.Country }})</span>
+									{% endif %}
+								</div>
+							{% endfor %}
+						</td>
+					</tr>
+				{% endfor %}
+			</table>
 
-		<div class="navigation">
-			{{ knp_pagination_render(productsPagination) }}
+			<div class="navigation">
+				{{ knp_pagination_render(productsPagination) }}
+			</div>
+		{% elseif t == 'product' %}
+			<div class="no-results">
+				Не найдено результатов по препарату <span>{{ q }}</span>
+			</div>
+		{% endif %}
+	{% endif %}
+
+	{# если общий поиск не дал результатов #}
+	{% if t == 'all' and
+	(productsPagination is not defined or productsPagination is empty) and
+	(molecules is not defined or molecules is empty) %}
+		<div class="no-results">
+			Не найдено результатов
 		</div>
 	{% endif %}
 
@@ -158,6 +179,9 @@
 		.block-anons {
 			padding-top:    6px;
 			padding-bottom: 6px;
+		}
+		.no-results {
+			margin: 30px 0 24px;
 		}
 	</style>
 {% endblock %}
