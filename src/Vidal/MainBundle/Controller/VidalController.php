@@ -467,4 +467,20 @@ class VidalController extends Controller
 
 		return $params;
 	}
+
+	/**
+	 * @Route("/test/email", name="test_email")
+	 */
+	public function testEmail()
+	{
+		$message = \Swift_Message::newInstance()
+			->setSubject('Сообщение из формы обратной связи')
+			->setContentType('text/html')
+			->setCharset('utf-8')
+			->setFrom('noreply@mailbot.evrika.ru', 'Testing')
+			->setTo('7binary@gmail.com')
+			->setBody('<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>Its a simple message</body></html>');
+
+		$this->get('mailer')->send($message);
+	}
 }
