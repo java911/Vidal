@@ -190,18 +190,17 @@ class ProductRepository extends EntityRepository
 			$qb->andWhere('p.RusName LIKE :word')->setParameter('word', $q . '%');
 		}
 		else {
+			$where = '';
 			for ($i = 0; $i < $count; $i++) {
 				$word = $words[$i];
 				if ($i == 0) {
-					$qb->andWhere('p.RusName LIKE :word')->setParameter('word', $word . '%');
-				}
-				elseif ($i == $count - 1) {
-					$qb->andWhere('p.RusName LIKE :word')->setParameter('word', '%' . $word);
+					$where .= "p.RusName LIKE '$word%'";
 				}
 				else {
-					$qb->andWhere('p.RusName LIKE :word')->setParameter('word', '%' . $word . '%');
+					$where .= " AND p.RusName LIKE '%$word%'";
 				}
 			}
+			$qb->andWhere($where);
 		}
 
 		return $qb->getQuery()->getResult();

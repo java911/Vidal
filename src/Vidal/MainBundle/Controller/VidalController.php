@@ -292,8 +292,7 @@ class VidalController extends Controller
 		}
 
 		if ($t == 'all' || $t == 'product') {
-			$products = $em->getRepository('VidalMainBundle:Product')->findByQuery($q);
-
+			$products                     = $em->getRepository('VidalMainBundle:Product')->findByQuery($q);
 			$paginator                    = $this->get('knp_paginator');
 			$pagination                   = $paginator->paginate($products, $p, self::PRODUCTS_PER_PAGE);
 			$params['productsPagination'] = $pagination;
