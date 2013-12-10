@@ -328,6 +328,11 @@ class VidalController extends Controller
 			$params['atcCodes'] = $em->getRepository('VidalMainBundle:ATC')->findByQuery($q);
 		}
 
+		if ($t == 'firm') {
+			$params['firms'] = $em->getRepository('VidalMainBundle:Company')->findByQuery($q);
+			var_dump($params['firms']); exit;
+		}
+
 		return $params;
 	}
 
@@ -473,15 +478,16 @@ class VidalController extends Controller
 	 */
 	public function testEmail()
 	{
-//		$message = \Swift_Message::newInstance()
-//			->setSubject('Сообщение из формы обратной связи')
-//			->setContentType('text/html')
-//			->setCharset('utf-8')
-//			->setFrom('noreply@mailbot.evrika.ru', 'Testing')
-//			->setTo('7binary@gmail.com')
-//			->setBody('<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>Its a simple message</body></html>');
+		$message = \Swift_Message::newInstance()
+			->setSubject('Сообщение из формы обратной связи')
+			->setContentType('text/html')
+			->setCharset('utf-8')
+			->setFrom('noreply@mailbot.evrika.ru', 'Testing')
+			->setTo('7binary@gmail.com')
+			->setBody('<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>Its a simple message</body></html>');
 
-		mail('7binary@bk.ru','oyee','it is works');
-		//$this->get('mailer')->send($message);
+		$this->get('mailer')->send($message);
+
+		return new Response();
 	}
 }

@@ -13,7 +13,10 @@
 				активному веществу
 			</option>
 			<option value="atc" {{ app.request.get('t') == 'atc' ? 'selected="selected"' }}>
-				По АТС коду
+				По АТХ коду
+			</option>
+			<option value="firm" {{ app.request.get('t') == 'company' ? 'selected="selected"' }}>
+				По производителю
 			</option>
 		</select>
 	</div>
