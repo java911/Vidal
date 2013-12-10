@@ -158,6 +158,39 @@
 		{% endif %}
 	{% endif %}
 
+	{# поиск по производителю #}
+	{% if t == 'firm' %}
+		{% if firms is not empty %}
+			<div class="block">
+				<div class="block-anons">
+					<div class="block-head">
+						Найдено производителей: <span>{{ firms|length }}</span>
+					</div>
+				</div>
+			</div>
+
+			<table class="products-table">
+				<tr class="products-table-header">
+					<td>Производитель</td>
+					<td>Страна</td>
+				</tr>
+				{% for company in firms %}
+					<tr>
+						<td>
+							<a class="no-underline" href="{{ path('company', {'CompanyID':company.CompanyID}) }}"
+								>{{ company.LocalName|raw }}{{ company.Property is not empty ? ', ' ~ company.Property|raw|replace({'&amp;':'&'}) }}</a>
+						</td>
+						<td>{{ company.Country }}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		{% else %}
+			<div class="no-results">
+				Не найдено результатов по производителю <span>{{ q }}</span>
+			</div>
+		{% endif %}
+	{% endif %}
+
 	{# если общий поиск не дал результатов #}
 	{% if t == 'all' and
 	(productsPagination is not defined or productsPagination is empty) and

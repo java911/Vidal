@@ -320,17 +320,19 @@ class VidalController extends Controller
 			}
 		}
 
+		# поиск по активному веществу
 		if (($t == 'all' || $t == 'molecule') && $p == 1) {
 			$params['molecules'] = $em->getRepository('VidalMainBundle:Molecule')->findByQuery($q);
 		}
 
+		# поиск по АТХ коду
 		if ($t == 'atc') {
 			$params['atcCodes'] = $em->getRepository('VidalMainBundle:ATC')->findByQuery($q);
 		}
 
+		# поиск по производителю
 		if ($t == 'firm') {
 			$params['firms'] = $em->getRepository('VidalMainBundle:Company')->findByQuery($q);
-			var_dump($params['firms']); exit;
 		}
 
 		return $params;
