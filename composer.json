@@ -23,8 +23,7 @@
         "friendsofsymfony/jsrouting-bundle": "dev-master",
         "friendsofsymfony/elastica-bundle": "3.0.*@dev",
         "jms/serializer-bundle": "dev-master",
-        "knplabs/knp-paginator-bundle": "dev-master",
-        "phpmailer/phpmailer": "dev-master"
+        "phpmailer/phpmailer": "dev-master",
         "knplabs/knp-paginator-bundle": "dev-master",
         "knplabs/knp-menu": "1.1.*@dev",
         "sonata-project/admin-bundle": "2.2.*@dev",
