@@ -21,6 +21,7 @@
 		<tr class="products-table-header">
 			<td class="products-table-loz"></td>
 			<td>Название</td>
+			<td></td>
 			<td title="Показания к применению"></td>
 			<td>Форма выпуска</td>
 			<td title="Владелец регистрационного удостоверения">Владелец рег/уд</td>
@@ -40,6 +41,14 @@
 					<a class="no-underline"
 					   href="{{ path('document', {'EngName':product.DocumentName, 'DocumentID':product.DocumentID}) }}">
 						{{ product.DocumentRusName|raw }}</a>
+				</td>
+				<td class="products-table-picture">
+					{% if pictures[id] is defined %}
+						{% set path = '/upload/products/' ~ pictures[id] %}
+						{% if is_file(path) %}
+							<img src="{{ path }}"/>
+						{% endif %}
+					{% endif %}
 				</td>
 				<td class="products-table-indication" title="Показания к применению">
 					{% if product.Indication is not empty %}
@@ -93,6 +102,14 @@
 					<a class="no-underline"
 					   href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}">
 						{{ product.RusName|raw }}</a>
+				</td>
+				<td class="products-table-picture">
+					{% if pictures[id] is defined %}
+						{% set path = '/upload/products/' ~ pictures[id] %}
+						{% if is_file(path) %}
+							<img src="{{ path }}"/>
+						{% endif %}
+					{% endif %}
 				</td>
 				<td class="products-table-indication"></td>
 				<td class="products-table-zip">

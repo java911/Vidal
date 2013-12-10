@@ -134,7 +134,8 @@ class VidalController extends Controller
 			'atc'       => $atc,
 			'products1' => $products1,
 			'products2' => $products2,
-			'companies' => $productCompanies
+			'companies' => $productCompanies,
+			'pictures'  => $em->getRepository('VidalMainBundle:Picture')->findByProductIds($productIds)
 		);
 	}
 
