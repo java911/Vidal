@@ -56,7 +56,7 @@ class MoleculeRepository extends EntityRepository
 	public function findMoleculeNames()
 	{
 		$molecules = $this->_em->createQuery('
-			SELECT DISTINCT m.RusName
+			SELECT DISTINCT m.RusName, m.LatName
 			FROM VidalMainBundle:Molecule m
 			ORDER BY m.RusName ASC
 		')->getResult();
@@ -66,11 +66,17 @@ class MoleculeRepository extends EntityRepository
 		for ($i = 0; $i < count($molecules); $i++) {
 			$patterns     = array('/<SUP>.*<\/SUP>/', '/<SUB>.*<\/SUB>/');
 			$replacements = array('', '');
-			$name         = preg_replace($patterns, $replacements, $molecules[$i]['RusName']);
-			$name         = mb_strtolower($name, 'UTF-8');
+			$RusName      = preg_replace($patterns, $replacements, $molecules[$i]['RusName']);
+			$RusName      = mb_strtolower($RusName, 'UTF-8');
+			$LatName      = preg_replace($patterns, $replacements, $molecules[$i]['LatName']);
+			$LatName      = mb_strtolower($LatName, 'UTF-8');
 
-			if (!empty($name)) {
-				$moleculeNames[] = $name;
+			if (!empty($RusName)) {
+				$moleculeNames[] = $RusName;
+			}
+
+			if (!empty($LatName)) {
+				$moleculeNames[] = $LatName;
 			}
 		}
 
@@ -82,7 +88,7 @@ class MoleculeRepository extends EntityRepository
 		return $this->_em->createQuery('
 			SELECT m.MoleculeID, m.LatName, m.RusName
 			FROM VidalMainBundle:Molecule m
-			WHERE m.RusName LIKE :q
+			WHERE m.RusName LIKE :q OR m.LatName LIKE :q
 			ORDER BY m.RusName ASC
 		')->setParameter('q', $q.'%')
 			->getResult();

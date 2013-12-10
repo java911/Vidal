@@ -146,7 +146,7 @@ class ProductRepository extends EntityRepository
 	public function findProductNames()
 	{
 		$products = $this->_em->createQuery('
-			SELECT DISTINCT p.RusName
+			SELECT DISTINCT p.RusName, p.EngName
 			FROM VidalMainBundle:Product p
 			WHERE p.CountryEditionCode = \'RUS\' AND
 				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
@@ -159,11 +159,17 @@ class ProductRepository extends EntityRepository
 		for ($i = 0; $i < count($products); $i++) {
 			$patterns     = array('/<SUP>.*<\/SUP>/', '/<SUB>.*<\/SUB>/');
 			$replacements = array('', '');
-			$name         = preg_replace($patterns, $replacements, $products[$i]['RusName']);
-			$name         = mb_strtolower($name, 'UTF-8');
+			$RusName      = preg_replace($patterns, $replacements, $products[$i]['RusName']);
+			$RusName      = mb_strtolower($RusName, 'UTF-8');
+			$EngName      = preg_replace($patterns, $replacements, $products[$i]['EngName']);
+			$EngName      = mb_strtolower($EngName, 'UTF-8');
 
-			if (!empty($name)) {
-				$productNames[] = $name;
+			if (!empty($RusName)) {
+				$productNames[] = $RusName;
+			}
+
+			if (!empty($EngName)) {
+				$productNames[] = $EngName;
 			}
 		}
 
@@ -187,17 +193,19 @@ class ProductRepository extends EntityRepository
 		$count = count($words);
 
 		if ($count == 1) {
-			$qb->andWhere('p.RusName LIKE :word')->setParameter('word', $q . '%');
+			# поиск по единственному слову
+			$qb->andWhere('p.RusName LIKE :word OR p.EngName LIKE :word')->setParameter('word', $q . '%');
 		}
 		else {
+			# составной поиск
 			$where = '';
 			for ($i = 0; $i < $count; $i++) {
 				$word = $words[$i];
 				if ($i == 0) {
-					$where .= "p.RusName LIKE '$word%'";
+					$where .= "(p.RusName LIKE '$word%' OR p.RusName LIKE '$word%')";
 				}
 				else {
-					$where .= " AND p.RusName LIKE '%$word%'";
+					$where .= " AND (p.RusName LIKE '%$word%' OR p.EngName LIKE '%$word%')";
 				}
 			}
 			$qb->andWhere($where);
