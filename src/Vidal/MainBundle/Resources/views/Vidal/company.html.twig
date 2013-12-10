@@ -2,7 +2,7 @@
 
 
 {% block vidal %}
-	<h1>{{ company.CompanyName|upper|raw }}{% if company.Property is not empty %}, {{ company.Property }}{% endif %}
+	<h1>{{ company.CompanyName|upper|raw }}{% if company.Property is not empty %}, {{ company.Property|raw }}{% endif %}
 		{% if company.Country is not empty  and company.Country != 'Unknown' %}
 			<span>({{ company.Country }})</span>
 		{% endif %}

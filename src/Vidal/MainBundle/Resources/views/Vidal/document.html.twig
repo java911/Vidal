@@ -75,7 +75,7 @@
 				<div class="owners">
 					<span class="block-head">Владелец регистрационного удостоверения: </span>
 					<a href="{{ path('company', {'CompanyID':owner.CompanyID}) }}" class="no-underline">
-						{{ owner.LocalName }}{{ owner.Property is not empty ? ', ' ~ owner.Property }}</a>
+						{{ owner.LocalName|raw }}{{ owner.Property is not empty ? ', ' ~ owner.Property|raw|replace({'&amp;':'&'}) }}</a>
 					{% if owner.Country is not empty and owner.Country != 'Unknown' %}
 						<span class="small">({{ owner.Country }})</span>
 					{% endif %}
@@ -87,7 +87,7 @@
 				<div class="distributor">
 					<span class="block-head">{{ distributor.CompanyRusNote|capitalize }}:</span>
 					<a href="{{ path('company', {'CompanyID':distributor.CompanyID}) }}" class="no-underline">
-						{{ distributor.LocalName }}{{ distributor.Property is not empty ? ', ' ~ distributor.Property }}</a>
+						{{ distributor.LocalName|raw }}{{ distributor.Property is not empty ? ', ' ~ distributor.Property|raw|replace({'&amp;':'&'}) }}</a>
 					{% if distributor.Country is not empty and distributor.Country != 'Unknown' %}
 						<span class="small">({{ distributor.Country }})</span>
 					{% endif %}
@@ -101,7 +101,7 @@
 					{% for infoPage in infoPages %}
 						{% if loop.index > 1 %}<br/>{% endif %}
 						<a href="{{ path('inf', {'InfoPageID':infoPage.InfoPageID}) }}" class="no-underline">
-							{{ infoPage.RusName }}</a>
+							{{ infoPage.RusName|raw }}</a>
 						{% if infoPage.Country and infoPage.Country != 'Unknown' %}
 							<span class="small">({{ infoPage.Country }})</span>
 						{% endif %}
@@ -226,6 +226,17 @@
 		</div>
 	{% endif %}
 
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		#dosage p img {
+			max-width: 600px;
+			max-height: 400px;
+		}
+	</style>
 {% endblock %}
 
 
