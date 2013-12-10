@@ -19,6 +19,13 @@ class AppKernel extends Kernel
 			new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Vidal\MainBundle\VidalMainBundle(),
 			new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Sonata\CoreBundle\SonataCoreBundle(),
+            new Sonata\BlockBundle\SonataBlockBundle(),
+            new Sonata\jQueryBundle\SonatajQueryBundle(),
+            new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
+            new Sonata\AdminBundle\SonataAdminBundle(),
+
 			//new JMS\SerializerBundle\JMSSerializerBundle(),
 			//new FOS\ElasticaBundle\FOSElasticaBundle(),
         );
