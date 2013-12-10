@@ -1,6 +1,9 @@
+
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: @VidalMainBundle/Resources/config/admin.xml }
+
 
 framework:
     #esi:             ~
@@ -78,6 +81,34 @@ knp_paginator:
     template:
         pagination: KnpPaginatorBundle:Pagination:sliding.html.twig     # sliding pagination controls template
         sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
+
+
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        # Enable the SonataAdminBundle block
+        sonata.admin.block.admin_list:
+            contexts:   [admin]
+#Sonata admin configuration
+#sonata_admin:
+#    title:      Vidal.ru
+#    #title_logo: /bundles/vidalmain/images/icon.jpg
+#    templates:
+#        # default global templates
+#        layout:  EvrikaMainBundle::admin_layout.html.twig
+#        ajax:    SonataAdminBundle::ajax_layout.html.twig
+#
+#        # default actions templates, should extend a global templates
+#        list:    EvrikaMainBundle::list_layout.html.twig
+#        show:    SonataAdminBundle:CRUD:show.html.twig
+#        edit:    SonataAdminBundle:CRUD:edit.html.twig
+
+#    dashboard:
+#        blocks:
+#            # display a dashboard block
+#            - { position: left, type: sonata.admin.block.admin_list }
+
+
 
 # Elastica Configuration
 #fos_elastica:
