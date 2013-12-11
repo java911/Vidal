@@ -220,12 +220,12 @@ file that was distributed with this source code.
 			{% if admin_pool is defined %}
 				<div class="navbar-text pull-right">{% include admin_pool.getTemplate('user_block') %}</div>
 
-				{% block logo %}
-					<a href="{{ url('_welcome') }}" class="brand">
-						<img src="{{ asset(admin_pool.titlelogo) }}" alt="{{ admin_pool.title }}"/>
-						{{ admin_pool.title }}
-					</a>
-				{% endblock %}
+				{#{% block logo %}#}
+					{#<a href="{{ url('_welcome') }} " class="brand">#}
+						{#<img src="{{ asset(admin_pool.titlelogo) }}" alt="{{ admin_pool.title }}"/>#}
+						 {#{{ admin_pool.title }}#}
+					{#</a>#}
+				{#{% endblock %}#}
 
 				{% block sonata_nav_menu %}
 					<div class="nav-collapse">
@@ -323,12 +323,12 @@ file that was distributed with this source code.
 					<div class="sonata-ba-content">{{ _content|raw }}</div>
 
 					{# тут кнопки под панелью управления (для администраторов) #}
-					{% if route == 'sonata_admin_dashboard' and is_granted('ROLE_ADMIN') %}
-						<a class="btn" href="{{ path('digest') }}">
-							<img src="{{ asset('bundles/evrikamain/images/digest.png') }}"/>
-							&nbsp;Дайджест
-						</a>
-					{% endif %}
+					{#{% if route == 'sonata_admin_dashboard' and is_granted('ROLE_ADMIN') %}#}
+						{#<a class="btn" href="{{ path('digest') }}">#}
+							{#<img src="{{ asset('bundles/evrikamain/images/digest.png') }}"/>#}
+							{#&nbsp;Дайджест#}
+						{#</a>#}
+					{#{% endif %}#}
 				{% endif %}
 
 				{% if _show is not empty %}
@@ -370,7 +370,7 @@ file that was distributed with this source code.
 
 	{% block footer %}
 		<div class="pull-right clearfix">
-			<span class="label"><a href="{{ path('_welcome') }}" style="text-decoration: none; color: black">Перейти на
+			<span class="label"><a href="{# path('_welcome') #}" style="text-decoration: none; color: black">Перейти на
 					сайт</a></span>
 		</div>
 	{% endblock %}

@@ -7,7 +7,7 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallback: %locale% }
+    translator:      { fallback: %locale% }
     secret:          %secret%
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -90,18 +90,18 @@ sonata_block:
         sonata.admin.block.admin_list:
             contexts:   [admin]
 #Sonata admin configuration
-#sonata_admin:
-#    title:      Vidal.ru
+sonata_admin:
+    title:      Vidal.ru
 #    #title_logo: /bundles/vidalmain/images/icon.jpg
-#    templates:
-#        # default global templates
-#        layout:  EvrikaMainBundle::admin_layout.html.twig
-#        ajax:    SonataAdminBundle::ajax_layout.html.twig
+    templates:
+        # default global templates
+        layout:  VidalMainBundle::admin_layout.html.twig
+        ajax:    SonataAdminBundle::ajax_layout.html.twig
 #
 #        # default actions templates, should extend a global templates
 #        list:    EvrikaMainBundle::list_layout.html.twig
-#        show:    SonataAdminBundle:CRUD:show.html.twig
-#        edit:    SonataAdminBundle:CRUD:edit.html.twig
+        show:    SonataAdminBundle:CRUD:show.html.twig
+        edit:    SonataAdminBundle:CRUD:edit.html.twig
 
 #    dashboard:
 #        blocks:
