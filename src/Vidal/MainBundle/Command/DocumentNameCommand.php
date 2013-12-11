@@ -17,7 +17,7 @@ class DocumentNameCommand extends ContainerAwareCommand
 	protected function configure()
 	{
 		$this->setName('vidal:documentname')
-			->setDescription('Adds names to document without fucking tags');
+			->setDescription('Adds Document.Name');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
@@ -26,36 +26,45 @@ class DocumentNameCommand extends ContainerAwareCommand
 
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
-		# надо установить имена для препаратов без тегов в нижний регистр
-		$em->createQuery('
-			UPDATE VidalMainBundle:Document d
-			SET d.Name = LOWER(d.EngName)
-			WHERE d.EngName NOT LIKE \'%<%\'
-		')->execute();
-
-		# теперь надо удалить из имен теги и записать в БД
-		$documents = $em->createQuery('
-			SELECT d.DocumentID, d.EngName
+		$count = $em->createQuery('
+			SELECT COUNT(d.DocumentID)
 			FROM VidalMainBundle:Document d
-			WHERE d.EngName LIKE \'%<%\'
-		')->getResult();
+			WHERE d.CountryEditionCode = \'RUS\'
+		')->getSingleScalarResult();
 
 		$query = $em->createQuery('
+			SELECT d.DocumentID, d.EngName
+			FROM VidalMainBundle:Document d
+			WHERE d.CountryEditionCode = \'RUS\'
+		');
+
+		$updateQuery = $em->createQuery('
 			UPDATE VidalMainBundle:Document d
 			SET d.Name = :document_name
 			WHERE d = :document_id
 		');
 
-		for ($i = 0; $i < count($documents); $i++) {
-			$p    = array('/ /', '/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i');
-			$r    = array('-', '', '');
-			$name = preg_replace($p, $r, $documents[$i]['EngName']);
-			$name = mb_strtolower($name, 'UTF-8');
+		$step = 100;
 
-			$query->setParameters(array(
-				'document_name' => $name,
-				'document_id'   => $documents[$i]['DocumentID'],
-			))->execute();
+		for ($i = 0, $c = $count; $i < $c; $i = $i+$step) {
+			$documents = $query
+				->setFirstResult($i)
+				->setMaxResults($i+$step)
+				->getResult();
+
+			foreach ($documents as $document) {
+				$p    = array('/ /', '/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i');
+				$r    = array('-', '', '');
+				$name = preg_replace($p, $r, $document['EngName']);
+				$name = mb_strtolower($name, 'UTF-8');
+
+				$updateQuery->setParameters(array(
+					'document_name' => $name,
+					'document_id'   => $document['DocumentID'],
+				))->execute();
+			}
+
+			$output->writeln("... " . ($i+$step) . " / $count done");
 		}
 
 		$output->writeln('+++ vidal:documentname completed!');

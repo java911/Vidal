@@ -17,7 +17,7 @@ class ProductNameCommand extends ContainerAwareCommand
 	protected function configure()
 	{
 		$this->setName('vidal:productname')
-			->setDescription('Adds names to product without fucking tags');
+			->setDescription('Adds Product.Name');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
