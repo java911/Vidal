@@ -26,12 +26,22 @@ class ProductNameCommand extends ContainerAwareCommand
 
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
+		# надо установить имена для препаратов без тегов/пробелов в нижний регистр
+		$em->createQuery('
+			UPDATE VidalMainBundle:Document d
+			SET d.Name = LOWER(d.EngName)
+			WHERE d.EngName NOT LIKE \'%<%\' AND
+				d.EngName NOT LIKE \'% %\'
+		')->execute();
+
+		# далее надо преобразовать остальные по регуляркам
 		$count = $em->createQuery('
 			SELECT COUNT(p.ProductID)
 			FROM VidalMainBundle:Product p
 			WHERE p.CountryEditionCode = \'RUS\' AND
 				p.MarketStatusID IN (1,2)  AND
-				p.ProductTypeCode IN (\'DRUG\', \'GOME\')
+				p.ProductTypeCode IN (\'DRUG\', \'GOME\') AND
+				(p.EngName LIKE \'%<%\' OR p.EngName LIKE \'% %\')
 		')->getSingleScalarResult();
 
 		$query = $em->createQuery('
@@ -39,7 +49,8 @@ class ProductNameCommand extends ContainerAwareCommand
 			FROM VidalMainBundle:Product p
 			WHERE p.CountryEditionCode = \'RUS\' AND
 				p.MarketStatusID IN (1,2)  AND
-				p.ProductTypeCode IN (\'DRUG\', \'GOME\')
+				p.ProductTypeCode IN (\'DRUG\', \'GOME\') AND
+				(p.EngName LIKE \'%<%\' OR p.EngName LIKE \'% %\')
 		');
 
 		$updateQuery = $em->createQuery('

@@ -26,16 +26,27 @@ class DocumentNameCommand extends ContainerAwareCommand
 
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
+		# надо установить имена для препаратов без тегов/пробелов в нижний регистр
+		$em->createQuery('
+			UPDATE VidalMainBundle:Document d
+			SET d.Name = LOWER(d.EngName)
+			WHERE d.EngName NOT LIKE \'%<%\' AND
+				d.EngName NOT LIKE \'% %\'
+		')->execute();
+
+		# далее надо преобразовать остальные по регуляркам
 		$count = $em->createQuery('
 			SELECT COUNT(d.DocumentID)
 			FROM VidalMainBundle:Document d
-			WHERE d.CountryEditionCode = \'RUS\'
+			WHERE d.CountryEditionCode = \'RUS\' AND
+			 	(d.EngName LIKE \'%<%\' OR d.EngName LIKE \'% %\')
 		')->getSingleScalarResult();
 
 		$query = $em->createQuery('
 			SELECT d.DocumentID, d.EngName
 			FROM VidalMainBundle:Document d
-			WHERE d.CountryEditionCode = \'RUS\'
+			WHERE d.CountryEditionCode = \'RUS\' AND
+				(d.EngName LIKE \'%<%\' OR d.EngName LIKE \'% %\')
 		');
 
 		$updateQuery = $em->createQuery('
