@@ -5,7 +5,7 @@
     <services>
 
         <service id="sonata.admin.document" class="Vidal\MainBundle\Admin\DocumentAdmin">
-            <tag name="sonata.admin" manager_type="orm" group="основной контент" label="Документы"/>
+            <tag name="sonata.admin" manager_type="orm" group="Основной контент" label="Документы"/>
             <argument />
             <argument>Vidal\MainBundle\Entity\Document</argument>
             <argument>SonataAdminBundle:CRUD</argument>
@@ -15,7 +15,7 @@
             </call>
         </service>
         <service id="sonata.admin.product" class="Vidal\MainBundle\Admin\ProductAdmin">
-            <tag name="sonata.admin" manager_type="orm" group="основной контент" label="Продукты"/>
+            <tag name="sonata.admin" manager_type="orm" group="Основной контент" label="Продукты"/>
             <argument />
             <argument>Vidal\MainBundle\Entity\Product</argument>
             <argument>SonataAdminBundle:CRUD</argument>
