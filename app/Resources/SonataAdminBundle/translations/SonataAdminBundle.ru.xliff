@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!-- Переопределения русского перевода для SonataAdminBunle -->
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
+        <body>
+            <trans-unit id="link_action_edit">
+                <source>link_action_edit</source>
+                <target>Редактировать</target>
+            </trans-unit>
+			<trans-unit id="title_dashboard">
+                <source>title_dashboard</source>
+                <target>Панель редактора</target>
+            </trans-unit>
+			
+			<trans-unit id="source_title_too_long">
+                <source>source_title_too_long</source>
+                <target>Название источника не может быть длинее %count% символов|Название источника не может быть длинее %count% символов|Название источника не может быть длинее %count% символов</target>
+            </trans-unit>
+			<trans-unit id="source_url_too_long">
+                <source>source_url_too_long</source>
+                <target>URL источника не может быть длинее %count% символов|URL источника не может быть длинее %count% символов|URL источника не может быть длинее %count% символов</target>
+            </trans-unit>
+			<trans-unit id="sonata-dashboard">
+                <source>Dashboard</source>
+                <target>Панель</target>
+            </trans-unit>
+
+            <trans-unit id="action_delete">
+                <source>action_delete</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit id="action_edit">
+                <source>action_edit</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit id="action_show">
+                <source>action_show</source>
+                <target></target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
