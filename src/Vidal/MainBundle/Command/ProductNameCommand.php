@@ -26,38 +26,51 @@ class ProductNameCommand extends ContainerAwareCommand
 
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
-		# надо установить имена для препаратов без тегов
-		$em->createQuery('
-			UPDATE VidalMainBundle:Product p
-			SET p.Name = LOWER(p.EngName)
-			WHERE p.EngName NOT LIKE \'%<%\'
-		')->execute();
-
-		# теперь надо удалить из имен теги и записать в БД
-		$products = $em->createQuery('
-			SELECT p.ProductID, p.EngName
+		$count = $em->createQuery('
+			SELECT COUNT(p.ProductID)
 			FROM VidalMainBundle:Product p
-			WHERE p.EngName LIKE \'%<%\'
-		')->getResult();
+			WHERE p.CountryEditionCode = \'RUS\' AND
+				p.MarketStatusID IN (1,2)  AND
+				p.ProductTypeCode IN (\'DRUG\', \'GOME\')
+		')->getSingleScalarResult();
 
 		$query = $em->createQuery('
+			SELECT p.ProductID, p.EngName
+			FROM VidalMainBundle:Product p
+			WHERE p.CountryEditionCode = \'RUS\' AND
+				p.MarketStatusID IN (1,2)  AND
+				p.ProductTypeCode IN (\'DRUG\', \'GOME\')
+		');
+
+		$updateQuery = $em->createQuery('
 			UPDATE VidalMainBundle:Product p
 			SET p.Name = :product_name
 			WHERE p = :product_id
 		');
 
-		for ($i = 0; $i < count($products); $i++) {
-			$p    = array('/ /', '/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i');
-			$r    = array('-', '', '');
-			$name = preg_replace($p, $r, $products[$i]['EngName']);
-			$name = mb_strtolower($name, 'UTF-8');
+		$step = 100;
 
-			$query->setParameters(array(
-				'product_name' => $name,
-				'product_id'   => $products[$i]['ProductID'],
-			))->execute();
+		for ($i = 0, $c = $count; $i < $c; $i = $i+$step) {
+			$products = $query
+				->setFirstResult($i)
+				->setMaxResults($i+$step)
+				->getResult();
+
+			foreach ($products as $product) {
+				$p    = array('/ /', '/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i');
+				$r    = array('-', '', '');
+				$name = preg_replace($p, $r, $product['EngName']);
+				$name = mb_strtolower($name, 'UTF-8');
+
+				$updateQuery->setParameters(array(
+					'product_name' => $name,
+					'product_id'   => $product['ProductID'],
+				))->execute();
+			}
+
+			$output->writeln("... " . ($i+$step) . " / $count done");
 		}
 
-		$output->writeln('+++ vidal:productname completed!');
+		$output->writeln("+++ vidal:productname updated $i products!");
 	}
 }
