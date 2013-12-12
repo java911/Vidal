@@ -1,6 +1,5 @@
 $(document).ready(function() {
-
-	$('#search_query')
+	$('#search_form .search-query')
 		.autocomplete({
 			minLength: 2,
 			source:    function(request, response) {
@@ -12,7 +11,7 @@ $(document).ready(function() {
 					success:  function(data) {
 						response($.map(data.hits.hits, function(item) {
 							return {
-								label: item.highlight.name,
+								label: item.fields._id,
 								value: item.fields.name
 							}
 						}));
@@ -20,17 +19,11 @@ $(document).ready(function() {
 				});
 			},
 			select: function(event, ui) {
-				if(ui.item){
-					$('#search_query').val(ui.item.value);
+				if(ui.item) {
+					$(this).val(ui.item.value);
 				}
 			}
-		}).data("ui-autocomplete")._renderItem = function (ul, item) {
-			return $("<li></li>")
-				.data("item.autocomplete", item)
-				.append("<a>" + item.label + "</a>")
-				.appendTo(ul);
-		};
+		});
 
-	$('#search_type').chosen({disable_search: true});
-
+	$('#search_form .search-type').chosen({disable_search:true});
 });

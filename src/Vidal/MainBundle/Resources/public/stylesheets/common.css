@@ -343,11 +343,11 @@ a {
 #search_form {
 	margin-bottom: 10px;
 }
-#search_block {
+.search .search-block {
 	display: inline-block;
 	border:  1px solid #aaa;
 }
-#search_query {
+.search .search-query {
 	width:        280px;
 	margin:       0;
 	padding-left: 6px;
@@ -356,59 +356,59 @@ a {
 	line-height:  23px;
 	height:       23px;
 }
-#search_type {
+.search .search-type {
 	width: 190px;
 }
-#search_button {
+.search .search-button {
 	display:        inline-block;
 	margin-left:    12px;
 	vertical-align: top;
 }
-#search_form .chosen-container-active.chosen-with-drop .chosen-single {
+.search .chosen-container-active.chosen-with-drop .chosen-single {
 	border:           none;
 	background-image: none;
 }
-#search_form .chosen-container-single .chosen-single {
+.search .chosen-container-single .chosen-single {
 	border: none;
 }
-#search_form .chosen-single {
+.search .chosen-single {
 	box-shadow:    none !important;
 	border-radius: 4px;
 }
-#search_form .chosen-container-active .chosen-single {
+.search .chosen-container-active .chosen-single {
 	border:     1px solid #5897fb;
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
-#search_form .chosen-container-single .chosen-single {
+.search .chosen-container-single .chosen-single {
 	height:      24px;
 	line-height: 24px;
 }
-#search_form .chosen-container-single .chosen-single span {
+.search .chosen-container-single .chosen-single span {
 	text-align: right;
 }
-#search_form .chosen-container {
+.search .chosen-container {
 	vertical-align: top;
 }
-#search_form .chosen-container .chosen-drop {
+.search .chosen-container .chosen-drop {
 	border-top:    1px solid #aaa;
 	margin-top:    2px;
 	border-radius: 4px;
 	width:         190px;
 }
-#search_form .chosen-container-active.chosen-with-drop .chosen-single {
+.search .chosen-container-active.chosen-with-drop .chosen-single {
 	border:           none;
 	background-image: none;
 }
-#search_form .chosen-container-single .chosen-single {
+.search .chosen-container-single .chosen-single {
 	border: none;
 }
-#search_form .chosen-single {
+.search .chosen-single {
 	box-shadow: none;
 }
-#search_form .ui-widget-content a {
+.search .ui-widget-content a {
 	color: gray;
 }
-#search_form .ui-widget-content a em {
+.search .ui-widget-content a em {
 	font-style:  normal;
 	font-weight: bold;
 }

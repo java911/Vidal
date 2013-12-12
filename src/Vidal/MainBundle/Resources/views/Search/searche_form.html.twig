@@ -1,7 +1,7 @@
-<form id="search_form" class="search" method="get" action="{{ path('search') }}">
+<form id="searche_form" class="search" method="get" action="{{ path('searche') }}">
 	<div class="search-block border-radius">
 		<input class="search-query border-radius" type="text" name="q" placeholder="Искать"
-			   value="{{ app.request.attributes.get('_route') == 'search' ? app.request.get('q') }}"/>
+			   value="{{ app.request.attributes.get('_route') == 'searche' ? app.request.get('q') }}"/>
 		<select class="search-type" name="t">
 			<option value="all" {{ app.request.get('t') == 'all' ? 'selected="selected"' }}>
 				Везде
@@ -18,8 +18,22 @@
 			<option value="firm" {{ app.request.get('t') == 'firm' ? 'selected="selected"' }}>
 				По производителю
 			</option>
+			<option value="nosology" {{ app.request.get('t') == 'nosology' ? 'selected="selected"' }}>
+				По показаниям (МКБ-10)
+			</option>
+			<option value="clphgroup" {{ app.request.get('t') == 'clphgroup' ? 'selected="selected"' }}>
+				Клинико-фармакологическая группа
+			</option>
+			<option value="phthgroup" {{ app.request.get('t') == 'phphgroup' ? 'selected="selected"' }}>
+				Фармако-терапевтическая группа
+			</option>
 		</select>
 	</div>
-	<input class="search-button btn-white" type="submit" value="Найти"/>
-</form>
 
+	<input class="search-button btn-white" type="submit" value="Найти"/>
+
+	<div class="search-bad">
+		<label for="search_bad">Включить в поиск БАДы</label>
+		<input id="search_bad" type="checkbox" name="b"/>
+	</div>
+</form>

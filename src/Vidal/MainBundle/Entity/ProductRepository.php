@@ -176,7 +176,7 @@ class ProductRepository extends EntityRepository
 		return $productNames;
 	}
 
-	public function findByQuery($q)
+	public function findByQuery($q, $badIncluded = false)
 	{
 		$qb = $this->_em->createQueryBuilder();
 
@@ -186,8 +186,15 @@ class ProductRepository extends EntityRepository
 			->from('VidalMainBundle:Product', 'p')
 			->orderBy('p.RusName', 'ASC')
 			->andWhere("p.CountryEditionCode = 'RUS'")
-			->andWhere('p.MarketStatusID IN (1,2)')
-			->andWhere("p.ProductTypeCode IN ('DRUG', 'GOME')");
+			->andWhere('p.MarketStatusID IN (1,2)');
+
+		# включать ли бады
+		if ($badIncluded) {
+			$qb->andWhere("p.ProductTypeCode IN ('DRUG', 'GOME', 'BAD')");
+		}
+		else {
+			$qb->andWhere("p.ProductTypeCode IN ('DRUG', 'GOME')");
+		}
 
 		$words = explode(' ', $q);
 		$count = count($words);

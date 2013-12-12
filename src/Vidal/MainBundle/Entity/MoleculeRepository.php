@@ -88,7 +88,7 @@ class MoleculeRepository extends EntityRepository
 	public function findByQuery($q)
 	{
 		return $this->_em->createQuery('
-			SELECT m.MoleculeID, m.LatName, m.RusName, mnn.GNParent
+			SELECT m.MoleculeID, m.LatName, m.RusName, mnn.GNParent, mnn.description
 			FROM VidalMainBundle:Molecule m
 			LEFT JOIN m.GNParent mnn
 			WHERE m.RusName LIKE :q OR m.LatName LIKE :q

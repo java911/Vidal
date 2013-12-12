@@ -12,45 +12,48 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @package Vidal\MainBundle\Command
  */
-class AutocompleteCommand extends ContainerAwareCommand
+class AutocompleteExtCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:autocomplete')
-			->setDescription('Creates autocomplete in Elastica');
+		$this->setName('vidal:autocompleteext')
+			->setDescription('Creates extended autocomplete in Elastica');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln('--- vidal:autocomplete started');
+		$output->writeln('--- vidal:autocompleteext started');
 
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
+		$nozologyNames = $em->getRepository('VidalMainBundle:Nozology')->findNozologyNames();
 		$productNames  = $em->getRepository('VidalMainBundle:Product')->findProductNames();
 		$moleculeNames = $em->getRepository('VidalMainBundle:Molecule')->findMoleculeNames();
 
 		$names = array_unique(array_merge($productNames, $moleculeNames));
+		$names = array_merge($names, $nozologyNames);
 		sort($names);
 
 		$elasticaClient = new \Elastica\Client();
 		$elasticaIndex  = $elasticaClient->getIndex('website');
-		$elasticaType   = $elasticaIndex->getType('autocomplete');
+		$elasticaType   = $elasticaIndex->getType('autocompleteext');
 
+		# delete if exists
 		if ($elasticaType->exists()) {
 			$elasticaType->delete();
 		}
 
-		// Define mapping
+		# Define mapping
 		$mapping = new \Elastica\Type\Mapping();
 		$mapping->setType($elasticaType);
 
-		// Set mapping
+		# Set mapping
 		$mapping->setProperties(array(
 			'id'   => array('type' => 'integer', 'include_in_all' => FALSE),
 			'name' => array('type' => 'string', 'include_in_all' => TRUE),
 		));
 
-		// Send mapping to type
+		# Send mapping to type
 		$mapping->send();
 
 		# записываем на сервер документы автодополнения
@@ -62,9 +65,10 @@ class AutocompleteCommand extends ContainerAwareCommand
 			if ($i && $i % 500 == 0) {
 				$elasticaType->addDocuments($documents);
 				$elasticaType->getIndex()->refresh();
+				$output->writeln("... + $i");
 			}
 		}
 
-		$output->writeln("+++ vidal:autocomplete loaded $i documents!");
+		$output->writeln("+++ vidal:autocompleteext loaded $i documents!");
 	}
 }

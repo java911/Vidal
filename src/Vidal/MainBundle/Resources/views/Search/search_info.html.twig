@@ -1,3 +1,5 @@
-<div class="search-info">
-	<span>Поиск по запросу <b>{{ q }}</b></span>
-</div>
+{% if q is defined and q is not empty %}
+	<div class="search-info">
+		<span>Поиск по запросу <b>{{ q }}</b></span>
+	</div>
+{% endif %}
