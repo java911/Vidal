@@ -4,7 +4,7 @@ namespace Vidal\MainBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/** @ORM\Entity @ORM\Table(name="nozology") */
+/** @ORM\Entity(repositoryClass="NozologyRepository") @ORM\Table(name="nozology") */
 class Nozology
 {
 	/** @ORM\Id @ORM\Column(length=8) */

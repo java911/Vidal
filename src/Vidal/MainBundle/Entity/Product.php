@@ -144,6 +144,14 @@ class Product
 	/** @ORM\OneToMany(targetEntity="ProductItemRoute", mappedBy="ProductID") */
 	protected $productItemRoutes;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="PhThGroups", mappedBy="products", fetch="EXTRA_LAZY")
+	 * @ORM\JoinTable(name="product_phthgrp",
+	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="PhThGroupsID", referencedColumnName="id")})
+	 */
+	protected $phthgroups;
+
 	public function __construct()
 	{
 		$this->atcCodes          = new ArrayCollection();
@@ -154,6 +162,7 @@ class Product
 		$this->productItems      = new ArrayCollection();
 		$this->moleculeNames     = new ArrayCollection();
 		$this->productItemRoutes = new ArrayCollection();
+		$this->phthgroups        = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -756,5 +765,21 @@ class Product
 	public function getName()
 	{
 		return $this->Name;
+	}
+
+	/**
+	 * @param mixed $phthgroups
+	 */
+	public function setPhthgroups($phthgroups)
+	{
+		$this->phthgroups = $phthgroups;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPhthgroups()
+	{
+		return $this->phthgroups;
 	}
 }

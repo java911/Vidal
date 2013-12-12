@@ -1,11 +1,34 @@
 {# Клинико-фармакологическая группа #}
 {% if document.ClPhGrDescription is not empty %}
 	<div class="block" id="description">
-		<div class="block-head">Клинико-фармакологическая группа</div>
-		<div class="block-content">
+		<span class="block-head">Клинико-фармакологическая группа: </span>
+		<span class="block-content">
 			{{ document.ClPhGrDescription|raw }}
-		</div>
+		</span>
 	</div>
+{% endif %}
+
+{# Фармако-терапевтическая группа ГосРеестра МинЗдрава РФ #}
+{% if phthgroups is defined and phthgroups is not empty %}
+	{% if phthgroups|length == 1 %}
+		<div class="block" id="phthgroup">
+			<span class="block-head">Фармако-терапевтическая группа ГосРеестра МинЗдрава РФ:</span>
+			<span class="block-content">
+				{{ phthgroups[0].Name }}
+			</span>
+		</div>
+	{% else %}
+		<div class="block">
+			<div class="block-head">Фармако-терапевтические группы ГосРеестра МинЗдрава РФ</div>
+			<div class="block-content">
+				<ul class="ul-style">
+					{% for g in phthgroups %}
+						<li>{{ loop.index > 1 ? ', ' }}{{ g.Name }}</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+	{% endif %}
 {% endif %}
 
 {# Фармакологическое действие #}

@@ -2,7 +2,7 @@
 
 
 {% block vidal %}
-	{% include 'VidalMainBundle:Vidal:search_info.html.twig' %}
+	{% include 'VidalMainBundle:Search:search_info.html.twig' %}
 
 	{# Найдено АТХ #}
 	{% if atcCodes is defined %}
@@ -51,8 +51,9 @@
 			<table class="products-table">
 				<tr class="products-table-header">
 					<td width="23%">Активное вещ-во</td>
-					<td width="23%">лат.</td>
-					<td>входит в состав препаратов</td>
+					<td width="23%">Латинское</td>
+					<td width="14%" title="Международное непатентованное наименование (МНН)">МНН</td>
+					<td>Входит в состав препаратов</td>
 				</tr>
 				{% for molecule in molecules %}
 					<tr>
@@ -61,6 +62,8 @@
 							   class="no-underline">{{ molecule.RusName|raw }}</a>
 						</td>
 						<td>{{ molecule.LatName|raw }}</td>
+						<td><a title="Международное непатентованное наименование (МНН)" href="{{ path('gnp') }}"
+							   class="no-underline">{{ molecule.GNParent }}</a></td>
 						<td><a href="{{ path('molecule_included', {'MoleculeID':molecule.MoleculeID}) }}"
 							   class="no-underline">список</a></td>
 					</tr>
