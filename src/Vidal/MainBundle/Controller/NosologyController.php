@@ -16,8 +16,7 @@ class NosologyController extends Controller
 	public function nosologyAction($letter = null)
 	{
 		# поиск по букве
-		$params =
-			array();
+		$params = array();
 
 		if ($letter) {
 			$em = $this->getDoctrine()->getManager();
