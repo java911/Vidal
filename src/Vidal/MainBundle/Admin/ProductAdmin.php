@@ -16,7 +16,7 @@ class productAdmin extends Admin
         $formMapper
             ->add('RusName', 'text', array('label' => 'Русское название'))
             ->add('EngName', 'text', array('label' => 'Зарубежное название'))
-            ->add('NonPrescriptionDrug', 'text', array('label' => 'Не рециптуальный'))
+            ->add('NonPrescriptionDrug', null, array('label' => 'Не рециптуальный'))
             ->add('CountryEditionCode', null, array('label' => 'Страна изготовитель'))
             ->add('RegistrationDate', null, array('label' => 'Дата регистрации'))
             ->add('DateOfCloseRegistration', null, array('label' => 'Регистрация до'))
