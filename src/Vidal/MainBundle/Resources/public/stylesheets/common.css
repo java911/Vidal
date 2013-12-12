@@ -19,8 +19,10 @@ a {
 	vertical-align: bottom;
 }
 .small {
-	font-size: 11px;
-	color:     #999;
+	font-style:  normal;
+	font-weight: normal;
+	font-size:   11px;
+	color:       #999;
 }
 .tip {
 	color:     #476173;
@@ -48,6 +50,9 @@ a {
 	border-radius:         4px;
 	-moz-border-radius:    4px;
 	-webkit-border-radius: 4px;
+}
+.italic {
+	font-style: italic !important;
 }
 
 /* глобальные контейнеры */
@@ -79,6 +84,14 @@ a {
 #vidal h1 a {
 	text-decoration: none;
 	color:           #00468c;
+}
+#vidal .mnn {
+	color:       #476173 !important;
+	margin-left: 5px;
+}
+#vidal h1 a.mnn {
+	font-size:   15px;
+	margin-left: 20px;
 }
 #vidal h1 a:hover {
 	text-decoration: underline;

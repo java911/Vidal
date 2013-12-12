@@ -5,6 +5,15 @@
 		{% if document.ClPhGrDescription is not empty %}
 			<div><a href="#group">Клинико-фармакологическая группа</a></div>
 		{% endif %}
+		{% if phthgroups is defined and phthgroups is not empty %}
+			{% if phthgroups|length == 1 %}
+				<div><a href="#phthgroup" title="Фармако-терапевтическая группа ГосРеестра МинЗдрава РФ"
+						>Фармако-терапевтическая группа</a></div>
+			{% else %}
+				<div><a href="#phthgroup" title="Фармако-терапевтические группы ГосРеестра МинЗдрава РФ"
+						>Фармако-терапевтические группы</a></div>
+			{% endif %}
+		{% endif %}
 		{% if document.PhInfluence is not empty %}
 			<div><a href="#influence">Фармакологическое действие</a></div>
 		{% endif %}

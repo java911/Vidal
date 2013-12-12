@@ -18,10 +18,11 @@ class MoleculeRepository extends EntityRepository
 	public function findByDocumentID($DocumentID)
 	{
 		return $this->_em->createQuery('
-			SELECT m.MoleculeID, m.LatName, m.RusName
+			SELECT m.MoleculeID, m.LatName, m.RusName, mnn.GNParent, mnn.description
 			FROM VidalMainBundle:Molecule m
 			LEFT JOIN VidalMainBundle:MoleculeDocument md WITH md.MoleculeID = m
 			LEFT JOIN VidalMainBundle:Document d WITH md.DocumentID = d
+			LEFT JOIN VidalMainBundle:MoleculeBase mnn WITH mnn.GNParent = m.GNParent
 			WHERE d.DocumentID = :DocumentID
 			ORDER BY md.Ranking DESC
 		')->setParameter('DocumentID', $DocumentID)
@@ -31,10 +32,11 @@ class MoleculeRepository extends EntityRepository
 	public function findByProductID($ProductID)
 	{
 		return $this->_em->createQuery('
-			SELECT DISTINCT m.MoleculeID, m.LatName, m.RusName
+			SELECT DISTINCT m.MoleculeID, m.LatName, m.RusName, mnn.GNParent, mnn.description
 			FROM VidalMainBundle:Molecule m
 			LEFT JOIN VidalMainBundle:MoleculeName mn WITH mn.MoleculeID = m
 			LEFT JOIN mn.products p
+			LEFT JOIN VidalMainBundle:MoleculeBase mnn WITH mnn.GNParent = m.GNParent
 			WHERE p = :ProductID
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
@@ -86,8 +88,9 @@ class MoleculeRepository extends EntityRepository
 	public function findByQuery($q)
 	{
 		return $this->_em->createQuery('
-			SELECT m.MoleculeID, m.LatName, m.RusName
+			SELECT m.MoleculeID, m.LatName, m.RusName, mnn.GNParent
 			FROM VidalMainBundle:Molecule m
+			LEFT JOIN m.GNParent mnn
 			WHERE m.RusName LIKE :q OR m.LatName LIKE :q
 			ORDER BY m.RusName ASC
 		')->setParameter('q', $q.'%')

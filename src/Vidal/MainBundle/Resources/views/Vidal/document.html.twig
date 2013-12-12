@@ -111,37 +111,54 @@
 		</div>
 	{% endif %}
 
-	{# Блок кода АТХ и активных веществ #}
-	{% if atcCodes is defined or molecules is defined %}
+	{# Блок кода АТХ #}
+	{% if atcCodes is defined and atcCodes is not empty %}
 		<div class="block">
-			{# код ATХ #}
-			{% if atcCodes is defined and atcCodes is not empty %}
-				<div class="atc">
-					<span class="block-head">Код ATX: </span>
-				<span class="atc-content">
-					{% for atc in atcCodes %}
-						<a href="{{ path('atc', {'ATCCode':atc.ATCCode}) }}">{{ atc.ATCCode }}</a>
-						<span class="atc-name small">({{ atc.RusName }})</span>
-					{% endfor %}
-				</span>
-				</div>
-			{% endif %}
+			<span class="block-head">Код ATX: </span>
+			<span class="atc-content">
+				{% for atc in atcCodes %}
+					<a href="{{ path('atc', {'ATCCode':atc.ATCCode}) }}">{{ atc.ATCCode }}</a>
+					<span class="atc-name small">({{ atc.RusName }})</span>
+				{% endfor %}
+			</span>
+		</div>
+	{% endif %}
 
-			{# активные вещества #}
-			{% if molecules is defined and molecules is not empty %}
-				<div class="atc">
-					<span
-						class="block-head">{{ molecules|length==1 ? 'Активное вещество:' : 'Активные вещества:' }} </span>
-				<span class="atc-content">
+	{# Блок активных веществ #}
+	{% if molecules is defined and molecules is not empty %}
+		<div class="block">
+			{% if molecules|length == 1 %}
+				{% set molecule = molecules[0] %}
+				<span class="block-head">Активное вещество:</span>
+				<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
+				   class="no-underline">{{ molecule.LatName }}</a>
+				{% if molecule.RusName %}
+					<span class="small">({{ molecule.RusName }})</span>
+				{% endif %}
+				{% if molecule.GNParent is not empty %}
+					<a title="Международное непатентованное наименование (МНН)" href="{{ path('gnp') }}"
+					   class="no-underline mnn">{{ molecule.GNParent }}
+					</a>
+					<span class="small italic">{{ molecule.description }}</span>
+				{% endif %}
+			{% else %}
+				<div class="block-head">Активные вещества</div>
+				<ul class="ul-style">
 					{% for molecule in molecules %}
-						{% if loop.index > 1 %} + {% endif %}
-						<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}">{{ molecule.LatName }}</a>
-						{% if molecule.RusName %}
-						<span class="small">({{ molecule.RusName }})</span>
-					{% endif %}
+						<li>
+							<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
+							   class="no-underline">{{ molecule.LatName }}</a>
+							{% if molecule.RusName %}
+								<span class="small">({{ molecule.RusName }})</span>
+							{% endif %}
+							{% if molecule.GNParent is not empty %}
+								<a title="Международное непатентованное наименование (МНН)"
+								   href="{{ path('gnp') }}" class="no-underline mnn">{{ molecule.GNParent }}</a>
+								<span class="small italic">{{ molecule.description }}</span>
+							{% endif %}
+						</li>
 					{% endfor %}
-				</span>
-				</div>
+				</ul>
 			{% endif %}
 		</div>
 	{% endif %}
@@ -233,7 +250,7 @@
 	{{ parent() }}
 	<style type="text/css">
 		#dosage p img {
-			max-width: 600px;
+			max-width:  600px;
 			max-height: 400px;
 		}
 	</style>
