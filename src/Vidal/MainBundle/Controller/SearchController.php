@@ -145,10 +145,13 @@ class SearchController extends Controller
 			$params['firms'] = $em->getRepository('VidalMainBundle:Company')->findByQuery($q);
 		}
 
-		# поиск по показаниям (МКБ-10)
-		if ($t == 'nosology') {
-			$products = $em->getRepository('VidalMainBundle:Product')->findByNosology($q);
-			$params['nosology'] = 1;
+		# поиск по показаниям (МКБ-10) - Nozology
+		if ($t == 'all' || $t == 'nosology') {
+			$params['nozologies'] = $this->get('elastica.service')->query('nozology', $q);
+		}
+
+		if ($t == 'all' || $t == 'clphgroup') {
+			$params['clphgroup'] = $this->get('elastica.service')->query('clphgroup', $q);
 		}
 
 		return $params;

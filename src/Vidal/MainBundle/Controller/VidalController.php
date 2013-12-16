@@ -138,6 +138,67 @@ class VidalController extends Controller
 	}
 
 	/**
+	 * @Route("poisk_preparatov/nosology/{NosologyCode}", name="nosology_code")
+	 * @Template("VidalMainBundle:Vidal:nosology_code.html.twig")
+	 */
+	public function nosologyAction($NosologyCode)
+	{
+
+//		$documents  = $em->getRepository('VidalMainBundle:Document')->findByNozologies($nozologies);
+//		$molecules  = $em->getRepository('VidalMainBundle:Molecule')->findByDocuments1($documents);
+//		$products1  = $em->getRepository('VidalMainBundle:Product')->findByDocuments25($documents);
+//		$products2  = $em->getRepository('VidalMainBundle:Product')->findByDocuments4($documents);
+//
+//		# надо слить продукты, исключая повторения и отсортировать по названию
+//		$products = array();
+//		foreach ($products1 as $id => $product) {
+//			$products[] = $product;
+//		}
+//		foreach ($products2 as $id => $product) {
+//			if (!isset($products1[$id])) {
+//				$products[] = $product;
+//			}
+//		}
+//		usort($products, function ($a, $b) {
+//			return strcmp($a['RusName'], $b['RusName']);
+//		});
+//
+//		$noz = array();
+//		foreach ($nozologies as $nozology) {
+//			$key = $nozology['code'];
+//			$noz[$key] = array('name' => $nozology['name']);
+//		}
+//
+//		foreach ($documents as $document) {
+//			$key = $document['NozologyCode'];
+//			$noz[$key]['documents'][] = $document;
+//		}
+//
+//		foreach ($noz as $code => &$nozology) {
+//			$products1 = $em->getRepository('VidalMainBundle:Product')->findByDocuments25($nozology['documents']);
+//			$products2 = $em->getRepository('VidalMainBundle:Product')->findByDocuments4($nozology['documents']);
+//		}
+//
+//		# сгруппировать продукты по показаниям
+//		foreach ($products as $product) {
+//			foreach ($noz) {
+//
+//			}
+//			isset($documentsGrouped[$key])
+//				? $documentsGrouped[$key][] = $product
+//				: $documentsGrouped[$key] = array($product);
+//		}
+//
+//		# сгруппировать молекулы по документом
+//		foreach ($molecules as $molecule) {
+//			$key = $molecule['DocumentID'];
+//			isset($documentsGrouped[$key]['molecules'])
+//				? $documentsGrouped[$key]['molecules'][] = $molecule
+//				: $documentsGrouped[$key]['molecules'] = array($molecule);
+//		}
+	}
+
+	/**
 	 * @Route("poisk_preparatov/inf_{InfoPageID}.{ext}", name="inf", requirements={"InfoPageID":"\d+"}, defaults={"ext"="htm"})
 	 * @Route("poisk_preparatov/linf_{InfoPageID}.{ext}", name="linf", requirements={"InfoPageID":"\d+"}, defaults={"ext"="htm"})
 	 *

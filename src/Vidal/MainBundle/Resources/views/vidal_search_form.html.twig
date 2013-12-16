@@ -1,5 +1,5 @@
 <form id="search_form" class="search" method="get" action="{{ path('search') }}">
-	<div class="search-block border-radius">
+	<div class="search-block border-line border-radius">
 		<input class="search-query border-radius" type="text" name="q" placeholder="Искать"
 			   value="{{ app.request.attributes.get('_route') == 'search' ? app.request.get('q') }}"/>
 		<select class="search-type" name="t">

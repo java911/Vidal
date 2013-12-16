@@ -8,35 +8,29 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Команда генерации названий для автодополнения поисковой строки
+ * Команда генерации показаний Nozology
  *
  * @package Vidal\MainBundle\Command
  */
-class AutocompleteExtCommand extends ContainerAwareCommand
+class ClPhGroupCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:autocompleteext')
-			->setDescription('Creates extended autocomplete in Elastica');
+		$this->setName('vidal:clphgroup')
+			->setDescription('Creates clphgroup type in Elastica');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln('--- vidal:autocompleteext started');
+		$output->writeln('--- vidal:clphgroup started');
 
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
-		$productNames  = $em->getRepository('VidalMainBundle:Product')->findProductNames();
-		$moleculeNames = $em->getRepository('VidalMainBundle:Molecule')->findMoleculeNames();
-		$nozologyNames = $em->getRepository('VidalMainBundle:Nozology')->findNozologyNames();
-
-		$names = array_unique(array_merge($productNames, $moleculeNames));
-		sort($names);
-		$names = array_merge($names, $nozologyNames);
+		$clphgroup = $em->getRepository('VidalMainBundle:Product')->findClPhGroup();
 
 		$elasticaClient = new \Elastica\Client();
 		$elasticaIndex  = $elasticaClient->getIndex('website');
-		$elasticaType   = $elasticaIndex->getType('autocompleteext');
+		$elasticaType   = $elasticaIndex->getType('nozology');
 
 		# delete if exists
 		if ($elasticaType->exists()) {
@@ -50,6 +44,7 @@ class AutocompleteExtCommand extends ContainerAwareCommand
 		# Set mapping
 		$mapping->setProperties(array(
 			'id'   => array('type' => 'integer', 'include_in_all' => FALSE),
+			'code' => array('type' => 'string', 'include_in_all' => TRUE),
 			'name' => array('type' => 'string', 'include_in_all' => TRUE, 'analyzer' => 'ru'),
 		));
 
@@ -59,16 +54,18 @@ class AutocompleteExtCommand extends ContainerAwareCommand
 		# записываем на сервер документы автодополнения
 		$documents = array();
 
-		for ($i = 0; $i < count($names); $i++) {
-			$documents[] = new \Elastica\Document($i + 1, array('name' => $names[$i]));
+		for ($i = 0; $i < count($nozologies); $i++) {
+			$documents[] = new \Elastica\Document($i + 1, array(
+				'code' => $nozologies[$i]['NozologyCode'],
+				'name' => $nozologies[$i]['Name'],
+			));
 
 			if ($i && $i % 500 == 0) {
 				$elasticaType->addDocuments($documents);
 				$elasticaType->getIndex()->refresh();
-				$output->writeln("... + $i");
 			}
 		}
 
-		$output->writeln("+++ vidal:autocompleteext loaded $i documents!");
+		$output->writeln("+++ vidal:clphgroup loaded $i documents!");
 	}
 }

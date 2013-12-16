@@ -46,6 +46,9 @@ a {
 	padding-left: 13px;
 	background:   url('../images/bullets.gif') no-repeat -13px -13px;
 }
+.border-line {
+	border:  1px solid #aaa;
+}
 .border-radius {
 	border-radius:         4px;
 	-moz-border-radius:    4px;
@@ -345,7 +348,6 @@ a {
 }
 .search .search-block {
 	display: inline-block;
-	border:  1px solid #aaa;
 }
 .search .search-query {
 	width:        280px;

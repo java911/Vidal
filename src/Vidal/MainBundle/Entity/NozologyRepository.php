@@ -25,9 +25,18 @@ class NozologyRepository extends EntityRepository
 		')->getResult();
 
 		for ($i = 0, $c = count($namesRaw); $i < $c; $i++) {
-			$names[] = $namesRaw[$i];
+			$names[] = $namesRaw[$i]['Name'];
 		}
 
 		return $names;
+	}
+
+	public function findAll()
+	{
+		return $this->_em->createQuery('
+		 	SELECT n.NozologyCode, n.Name
+		 	FROM VidalMainBundle:Nozology n
+		 	ORDER BY n.Name ASC
+		')->getResult();
 	}
 }

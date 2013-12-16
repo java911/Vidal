@@ -92,8 +92,8 @@ class MoleculeRepository extends EntityRepository
 			FROM VidalMainBundle:Molecule m
 			LEFT JOIN m.GNParent mnn
 			WHERE m.RusName LIKE :q OR m.LatName LIKE :q
-			ORDER BY m.RusName ASC
-		')->setParameter('q', $q.'%')
+			ORDER BY m.LatName ASC
+		')->setParameter('q', $q . '%')
 			->getResult();
 	}
 
@@ -110,11 +110,33 @@ class MoleculeRepository extends EntityRepository
 
 		$components = array();
 
-		for ($i=0; $i<count($componentsRaw); $i++) {
-			$key = $componentsRaw[$i]['ProductID'];
+		for ($i = 0; $i < count($componentsRaw); $i++) {
+			$key              = $componentsRaw[$i]['ProductID'];
 			$components[$key] = $componentsRaw[$i]['molecules'];
 		}
 
 		return $components;
+	}
+
+	public function findByDocuments1($documents)
+	{
+		$documentIds = array();
+
+		foreach ($documents as $document) {
+			if ($document['ArticleID'] == 1) {
+				$documentIds[] = $document['DocumentID'];
+			}
+		}
+
+		$moleculesRaw = $this->_em->createQuery('
+			SELECT m.MoleculeID, m.LatName, m.RusName, mnn.GNParent, mnn.description, d.DocumentID
+			FROM VidalMainBundle:Molecule m
+			JOIN VidalMainBundle:MoleculeDocument md WITH md.MoleculeID = m
+			JOIN VidalMainBundle:Document d WITH md.DocumentID = d
+			LEFT JOIN m.GNParent mnn
+			WHERE d IN (:documentIds)
+			ORDER BY m.LatName ASC
+		')->setParameter('documentIds', $documentIds)
+			->getResult();
 	}
 }

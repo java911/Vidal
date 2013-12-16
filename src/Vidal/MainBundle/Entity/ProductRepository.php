@@ -220,4 +220,83 @@ class ProductRepository extends EntityRepository
 
 		return $qb->getQuery()->getResult();
 	}
+
+	public function findByDocuments25($documents)
+	{
+		$documentIds = array();
+
+		foreach ($documents as $document) {
+			if ($document['ArticleID'] == 2 || $document['ArticleID'] == 5) {
+				$documentIds[] = $document['DocumentID'];
+			}
+		}
+
+		$productsRaw = $this->_em->createQuery('
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, d.Indication, d.DocumentID
+			FROM VidalMainBundle:Product p
+			LEFT JOIN VidalMainBundle:ProductDocument pd WITH pd.ProductID = p
+			LEFT JOIN VidalMainBundle:Document d WITH pd.DocumentID = d
+			LEFT JOIN VidalMainBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
+			WHERE d IN (:documentIds) AND
+				p.CountryEditionCode = \'RUS\' AND
+				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
+				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
+			ORDER BY pd.Ranking DESC, p.RusName ASC
+		')->setParameter('documentIds', $documentIds)
+			->getResult();
+
+		# исключаем повторения продуктов по приоритему
+		$products = array();
+
+		for ($i=0, $c=count($productsRaw); $i<$c; $i++) {
+			$key = $productsRaw[$i]['ProductID'];
+
+			if (!isset($products[$key])) {
+				$products[$key] = $productsRaw[$i];
+			}
+		}
+
+		return $products;
+	}
+
+	public function findByDocuments4($documents)
+	{
+		$documentIds = array();
+
+		foreach ($documents as $document) {
+			if ($document['ArticleID'] == 4) {
+				$documentIds[] = $document['DocumentID'];
+			}
+		}
+
+		$productsRaw = $this->_em->createQuery('
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, d.Indication, d.DocumentID
+			FROM VidalMainBundle:Product p
+			LEFT JOIN VidalMainBundle:ProductDocument pd WITH pd.ProductID = p
+			LEFT JOIN VidalMainBundle:Document d WITH pd.DocumentID = d
+			LEFT JOIN VidalMainBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
+			WHERE d IN (:documentIds) AND
+				p.CountryEditionCode = \'RUS\' AND
+				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
+				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
+			ORDER BY pd.Ranking DESC, p.RusName ASC
+		')->setParameter('documentIds', $documentIds)
+			->getResult();
+
+
+		# исключаем повторения продуктов по приоритему
+		$products = array();
+
+		for ($i=0, $c=count($productsRaw); $i<$c; $i++) {
+			$key = $productsRaw[$i]['ProductID'];
+
+			if (!isset($products[$key])) {
+				$products[$key] = $productsRaw[$i];
+			}
+		}
+
+		return $products;
+	}
 }

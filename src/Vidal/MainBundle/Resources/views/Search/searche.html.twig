@@ -5,6 +5,32 @@
 	{% include 'VidalMainBundle:Search:searche_form.html.twig' %}
 	{% include 'VidalMainBundle:Search:search_info.html.twig' %}
 
+	{# Найдено показаний #}
+	{% if nozologies is defined %}
+		{% if nozologies is not empty %}
+			<div class="block">
+				<div class="block-anons">
+					<div class="block-head">
+						Найдено показаний МКБ-10: <span>{{ nozologies|length }}</span>
+					</div>
+				</div>
+			</div>
+
+			<ul class="ul-style">
+				{% for nozology in nozologies %}
+					<li>
+						<a href="{{ path('nosology_code', {'NosologyCode':nozology.code}) }}"
+						   class="no-underline">{{ nozology.name|raw }}</a>
+					</li>
+				{% endfor %}
+			</ul>
+		{% elseif t == 'nosology' %}
+			<div class="no-results">
+				Не найдено результатов по показанию <span>{{ q }}</span>
+			</div>
+		{% endif %}
+	{% endif %}
+
 	{# Найдено АТХ #}
 	{% if atcCodes is defined %}
 		<div class="block">
@@ -203,7 +229,8 @@
 	{# если общий поиск не дал результатов #}
 	{% if t == 'all' and
 	(productsPagination is not defined or productsPagination is empty) and
-	(molecules is not defined or molecules is empty) %}
+	(molecules is not defined or molecules is empty) and
+	(nozologies is not defined or nozologies is empty) %}
 		<div class="no-results">
 			Не найдено результатов
 		</div>
@@ -225,14 +252,19 @@
 		.no-results {
 			margin: 30px 0 24px;
 		}
+		.ul-style li {
+			padding-top: 2px;
+		}
 
 		/* search extended */
 		#searche_form .search-type, #searche_form .chosen-container .chosen-drop {
 			width: 250px;
 		}
 		#searche_form .search-bad {
-			font-size: 11px;
-			margin:    3px 0 0 3px;
+			font-size:  11px;
+			text-align: right;
+			margin:     4px 3px 0 3px;
+			color:      #999;
 		}
 		#search_bad {
 			vertical-align: bottom;
@@ -251,10 +283,10 @@
 					minLength: 2,
 					source:    function(request, response) {
 						$.ajax({
-							url:      "http://vidal.evrika.ru:9200/website/autocompleteext/_search",
+							url:      "http://localhost:9200/website/autocompleteext/_search",
 							type:     "POST",
 							dataType: "JSON",
-							data:     '{ "query":{"query_string":{"query":"' + request.term + '*"}}, "fields":["name"], "size":15, "highlight":{"fields":{"name":{}}} }',
+							data:     '{ "query":{"query_string":{"query":"' + request.term + '*", "analyzer":"ru"}}, "fields":["name"], "size":15 }',
 							success:  function(data) {
 								response($.map(data.hits.hits, function(item) {
 									return {

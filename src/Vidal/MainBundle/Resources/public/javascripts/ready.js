@@ -7,7 +7,7 @@ $(document).ready(function() {
 					url:      "http://vidal.evrika.ru:9200/website/autocomplete/_search",
 					type:     "POST",
 					dataType: "JSON",
-					data:     '{ "query":{"query_string":{"query":"' + request.term + '*"}}, "fields":["name"], "size":15, "highlight":{"fields":{"name":{}}} }',
+					data:     '{ "query":{"query_string":{"query":"' + request.term + '*"}}, "fields":["name"], "size":15 }',
 					success:  function(data) {
 						response($.map(data.hits.hits, function(item) {
 							return {

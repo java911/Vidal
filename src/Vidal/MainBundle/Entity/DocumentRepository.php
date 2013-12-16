@@ -128,4 +128,24 @@ class DocumentRepository extends EntityRepository
 			->setMaxResults(1)
 			->getOneOrNullResult();
 	}
+
+	public function findByNozologies($nozologies)
+	{
+		$codes = array();
+		foreach ($nozologies as $nozology) {
+			$codes[] = $nozology['code'];
+		}
+
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb
+			->select('d.DocumentID, d.ArticleID, n.NozologyCode')
+			->from('VidalMainBundle:Document', 'd')
+			->leftJoin('d.nozologies', 'n')
+			->where('n IN (:codes)')
+			->andWhere("d.CountryEditionCode = 'RUS'")
+			->setParameter('codes', $codes);
+
+		return $qb->getQuery()->getResult();
+	}
 }

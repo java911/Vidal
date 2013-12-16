@@ -47,7 +47,7 @@ class AutocompleteCommand extends ContainerAwareCommand
 		// Set mapping
 		$mapping->setProperties(array(
 			'id'   => array('type' => 'integer', 'include_in_all' => FALSE),
-			'name' => array('type' => 'string', 'include_in_all' => TRUE),
+			'name' => array('type' => 'string', 'include_in_all' => TRUE, 'analyzer' => 'ru'),
 		));
 
 		// Send mapping to type

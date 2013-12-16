@@ -1,39 +1,41 @@
 <form id="searche_form" class="search" method="get" action="{{ path('searche') }}">
-	<div class="search-block border-radius">
-		<input class="search-query border-radius" type="text" name="q" placeholder="Искать"
-			   value="{{ app.request.attributes.get('_route') == 'searche' ? app.request.get('q') }}"/>
-		<select class="search-type" name="t">
-			<option value="all" {{ app.request.get('t') == 'all' ? 'selected="selected"' }}>
-				Везде
-			</option>
-			<option value="product" {{ app.request.get('t') == 'product' ? 'selected="selected"' }}>
-				По препарату
-			</option>
-			<option value="molecule" {{ app.request.get('t') == 'molecule' ? 'selected="selected"' }}>
-				По активному веществу
-			</option>
-			<option value="atc" {{ app.request.get('t') == 'atc' ? 'selected="selected"' }}>
-				По АТХ коду
-			</option>
-			<option value="firm" {{ app.request.get('t') == 'firm' ? 'selected="selected"' }}>
-				По производителю
-			</option>
-			<option value="nosology" {{ app.request.get('t') == 'nosology' ? 'selected="selected"' }}>
-				По показаниям (МКБ-10)
-			</option>
-			<option value="clphgroup" {{ app.request.get('t') == 'clphgroup' ? 'selected="selected"' }}>
-				Клинико-фармакологическая группа
-			</option>
-			<option value="phthgroup" {{ app.request.get('t') == 'phphgroup' ? 'selected="selected"' }}>
-				Фармако-терапевтическая группа
-			</option>
-		</select>
+	<div class="search-block">
+		<div class="border-line border-radius">
+			<input class="search-query border-radius" type="text" name="q" placeholder="Искать"
+				   value="{{ app.request.attributes.get('_route') == 'searche' ? app.request.get('q') }}"/>
+			<select class="search-type" name="t">
+				<option value="all" {{ app.request.get('t') == 'all' ? 'selected="selected"' }}>
+					Везде
+				</option>
+				<option value="product" {{ app.request.get('t') == 'product' ? 'selected="selected"' }}>
+					По препарату
+				</option>
+				<option value="molecule" {{ app.request.get('t') == 'molecule' ? 'selected="selected"' }}>
+					По активному веществу
+				</option>
+				<option value="atc" {{ app.request.get('t') == 'atc' ? 'selected="selected"' }}>
+					По АТХ коду
+				</option>
+				<option value="firm" {{ app.request.get('t') == 'firm' ? 'selected="selected"' }}>
+					По производителю
+				</option>
+				<option value="nosology" {{ app.request.get('t') == 'nosology' ? 'selected="selected"' }}>
+					По показаниям (МКБ-10)
+				</option>
+				<option value="clphgroup" {{ app.request.get('t') == 'clphgroup' ? 'selected="selected"' }}>
+					Клинико-фармакологическая группа
+				</option>
+				<option value="phthgroup" {{ app.request.get('t') == 'phphgroup' ? 'selected="selected"' }}>
+					Фармако-терапевтическая группа
+				</option>
+			</select>
+		</div>
+
+		<div class="search-bad">
+			<label for="search_bad">включить в поиск БАДы</label>
+			<input id="search_bad" type="checkbox" name="b"{{ app.request.get('b') ? ' checked="checked"' }}/>
+		</div>
 	</div>
 
 	<input class="search-button btn-white" type="submit" value="Найти"/>
-
-	<div class="search-bad">
-		<label for="search_bad">Включить в поиск БАДы</label>
-		<input id="search_bad" type="checkbox" name="b"/>
-	</div>
 </form>
