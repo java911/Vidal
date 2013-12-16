@@ -82,6 +82,6 @@ class ProductNameCommand extends ContainerAwareCommand
 			$output->writeln("... " . ($i+$step) . " / $count done");
 		}
 
-		$output->writeln("+++ vidal:productname updated $i products!");
+		$output->writeln("+++ vidal:productname updated $count products!");
 	}
 }

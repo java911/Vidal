@@ -283,7 +283,7 @@
 					minLength: 2,
 					source:    function(request, response) {
 						$.ajax({
-							url:      "http://localhost:9200/website/autocompleteext/_search",
+							url:      "http://vidal.evrika.ru:9200/website/autocompleteext/_search",
 							type:     "POST",
 							dataType: "JSON",
 							data:     '{ "query":{"query_string":{"query":"' + request.term + '*", "analyzer":"ru"}}, "fields":["name"], "size":15 }',
