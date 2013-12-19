@@ -16,7 +16,7 @@ class RegistrationDateCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:registrationdate')
+		$this->setName('vidal:registration_date')
 			->setDescription('Transforms dates of product registration to NULL if its like 0000-00-00 00:00:00');
 	}
 
@@ -38,6 +38,6 @@ class RegistrationDateCommand extends ContainerAwareCommand
 			WHERE p.DateOfCloseRegistration = \'0000-00-00 00:00:00\'
 		')->execute();
 
-		$output->writeln('+++ vidal:registrationdate completed!');
+		$output->writeln('+++ vidal:registration_date completed!');
 	}
 }

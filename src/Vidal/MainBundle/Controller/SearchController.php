@@ -31,31 +31,21 @@ class SearchController extends Controller
 			return $this->render('VidalMainBundle:Search:search_too_short.html.twig', $params);
 		}
 
+		# для некоторых типов запроса надо найти основание слова (чтоб не учитывать окончание)
+		if (in_array($t, array('all', 'molecule', 'atc'))) {
+			$q = $this->get('lingua.service')->stem_string($q);
+		}
+
 		if ($t == 'all' || $t == 'product') {
-			$products                     = $em->getRepository('VidalMainBundle:Product')->findByQuery($q);
+			$products = $em->getRepository('VidalMainBundle:Product')->findByQuery($q);
+
 			$paginator                    = $this->get('knp_paginator');
 			$pagination                   = $paginator->paginate($products, $p, self::PRODUCTS_PER_PAGE);
 			$params['productsPagination'] = $pagination;
 
 			if ($pagination->getTotalItemCount()) {
-				$productIds = array();
-
-				foreach ($pagination as $product) {
-					$productIds[] = $product['ProductID'];
-				}
-
-				# надо получить компании и сгруппировать их по продукту
-				$companies        = $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds);
-				$productCompanies = array();
-
-				foreach ($companies as $company) {
-					$key = $company['ProductID'];
-					isset($productCompanies[$key])
-						? $productCompanies[$key][] = $company
-						: $productCompanies[$key] = array($company);
-				}
-
-				$params['companies'] = $productCompanies;
+				$productIds          = $this->getProductIds($pagination);
+				$params['companies'] = $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds);
 				$params['pictures']  = $em->getRepository('VidalMainBundle:Picture')->findByProductIds($productIds);
 			}
 		}
@@ -101,6 +91,11 @@ class SearchController extends Controller
 			return $this->render('VidalMainBundle:Search:searche_too_short.html.twig', $params);
 		}
 
+		# для некоторых типов запроса надо найти основание слова (чтоб не учитывать окончание)
+		if (in_array($t, array('all', 'molecule', 'atc', 'nosology', 'clphgroup', 'phthgroup'))) {
+			$q = $this->get('lingua.service')->stem_string($q);
+		}
+
 		if ($t == 'all' || $t == 'product') {
 			$products                     = $em->getRepository('VidalMainBundle:Product')->findByQuery($q, $badIncluded);
 			$paginator                    = $this->get('knp_paginator');
@@ -108,52 +103,85 @@ class SearchController extends Controller
 			$params['productsPagination'] = $pagination;
 
 			if ($pagination->getTotalItemCount()) {
-				$productIds = array();
-
-				foreach ($pagination as $product) {
-					$productIds[] = $product['ProductID'];
-				}
-
-				# надо получить компании и сгруппировать их по продукту
-				$companies        = $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds);
-				$productCompanies = array();
-
-				foreach ($companies as $company) {
-					$key = $company['ProductID'];
-					isset($productCompanies[$key])
-						? $productCompanies[$key][] = $company
-						: $productCompanies[$key] = array($company);
-				}
-
-				$params['companies'] = $productCompanies;
-				$params['pictures']  = $em->getRepository('VidalMainBundle:Picture')->findByProductIds($productIds);
+				$productIds          = $this->getProductIds($pagination);
+				$params['companies'] = $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds);;
+				$params['pictures'] = $em->getRepository('VidalMainBundle:Picture')->findByProductIds($productIds);
 			}
 		}
 
-		# поиск по активному веществу
-		if (($t == 'all' || $t == 'molecule') && $p == 1) {
-			$params['molecules'] = $em->getRepository('VidalMainBundle:Molecule')->findByQuery($q);
-		}
+		# на следующих страницах отображаются только препараты
+		if ($p == 1) {
+			# поиск по активному веществу
+			if ($t == 'all' || $t == 'molecule') {
+				$params['molecules'] = $em->getRepository('VidalMainBundle:Molecule')->findByQuery($q);
+			}
 
-		# поиск по АТХ коду
-		if ($t == 'atc') {
-			$params['atcCodes'] = $em->getRepository('VidalMainBundle:ATC')->findByQuery($q);
-		}
+			# поиск по показаниям (МКБ-10) - Nozology
+			if ($t == 'all' || $t == 'nosology') {
+				$params['nozologies'] = $em->getRepository('VidalMainBundle:Nozology')->findByQuery($q);
+			}
 
-		# поиск по производителю
-		if ($t == 'firm') {
-			$params['firms'] = $em->getRepository('VidalMainBundle:Company')->findByQuery($q);
-		}
+			# поиск по АТХ коду
+			if ($t == 'atc') {
+				$params['atcCodes']   = $em->getRepository('VidalMainBundle:ATC')->findByQuery($q);
+				$params['atcGrouped'] = $this->getAtcGrouped();
+			}
 
-		# поиск по показаниям (МКБ-10) - Nozology
-		if ($t == 'all' || $t == 'nosology') {
-			$params['nozologies'] = $this->get('elastica.service')->query('nozology', $q);
-		}
+			# поиск по производителю
+			if ($t == 'firm') {
+				$params['firms'] = $em->getRepository('VidalMainBundle:Company')->findByQuery($q);
+			}
 
-		if ($t == 'all' || $t == 'clphgroup') {
-			$params['clphgroup'] = $this->get('elastica.service')->query('clphgroup', $q);
+			# поиск по клиннико-фармакологической группе
+			if ($t == 'clphgroup') {
+				$params['clphgroups'] = $em->getRepository('VidalMainBundle:Document')->findClPhGroupsByQuery($q);
+			}
+
+			# поиск по фармако-терапевтической группе
+			if ($t == 'phthgroup') {
+				$params['phthgroups'] = $em->getRepository('VidalMainBundle:Product')->findPhThGroupsByQuery($q);
+			}
 		}
 
 		return $params;
+	}
+
+	/** Получить массив идентификаторов продуктов */
+	private function getProductIds($products)
+	{
+		$productIds = array();
+
+		foreach ($products as $product) {
+			$productIds[] = $product['ProductID'];
+		}
+
+		return $productIds;
+	}
+
+	private function getAtcGrouped()
+	{
+		$em         = $this->getDoctrine()->getManager();
+		$atcCodes   = $em->getRepository('VidalMainBundle:ATC')->findAll();
+		$atcGrouped = array();
+
+		# надо сгруппировать по родителю
+		for ($i = 8; $i > 1; $i--) {
+			foreach ($atcCodes as $code => $atc) {
+				if (strlen($code) == $i && isset($atc['ParentATCCode'])) {
+					$key                           = $atc['ParentATCCode'];
+					$code                          = $atc['ATCCode'];
+					$atcCodes[$key]['list'][$code] = $atc;
+				}
+			}
+		}
+
+		# взять только первый уровень [A, B, C]
+		foreach ($atcCodes as $code => $atc) {
+			if (strlen($code) == 1) {
+				$atcGrouped[$code] = $atc;
+			}
+		}
+
+		return $atcGrouped;
 	}
 }

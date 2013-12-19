@@ -1,0 +1,14 @@
+{% for atc in atcGrouped %}
+	<li{{ atc.ATCCode in atcCodes|keys ? ' class="selected"' }}>
+		<span>{{ atc.ATCCode }}</span>
+		<div>
+			<span><a href="{{ path('atc', {'ATCCode':atc.ATCCode}) }}"
+					class="no-underline">{{ atc.RusName|raw }}</a></span>
+		</div>
+		{% if atc.list is not empty %}
+			<ul>
+				{% include 'VidalMainBundle:Search:render_tree_atc.html.twig' with {'atcGrouped':atc.list} %}
+			</ul>
+		{% endif %}
+	</li>
+{% endfor %}

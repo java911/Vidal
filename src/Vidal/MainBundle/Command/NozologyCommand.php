@@ -44,8 +44,7 @@ class NozologyCommand extends ContainerAwareCommand
 		# Set mapping
 		$mapping->setProperties(array(
 			'id'   => array('type' => 'integer', 'include_in_all' => FALSE),
-			'code' => array('type' => 'string', 'include_in_all' => TRUE),
-			'name' => array('type' => 'string', 'include_in_all' => TRUE, 'analyzer' => 'ru'),
+			'name' => array('type' => 'string', 'include_in_all' => TRUE),
 		));
 
 		# Send mapping to type

@@ -20,7 +20,7 @@ class DocumentRepository extends EntityRepository
 		# обрезаем расширение после точки и разбиваем по тире
 		$pos = strpos($name, '.');
 		if ($pos) {
-			$name  = substr($name, 0, $pos);
+			$name = substr($name, 0, $pos);
 		}
 		$name  = strtoupper($name);
 		$names = explode('-', $name);
@@ -129,23 +129,46 @@ class DocumentRepository extends EntityRepository
 			->getOneOrNullResult();
 	}
 
-	public function findByNozologies($nozologies)
+	public function findByNozologyCode($code)
 	{
-		$codes = array();
-		foreach ($nozologies as $nozology) {
-			$codes[] = $nozology['code'];
-		}
+		return $this->_em->createQuery("
+			SELECT DISTINCT d.DocumentID, d.ArticleID
+			FROM VidalMainBundle:Document d
+			JOIN d.nozologies n WITH n.Code = :code
+			WHERE d.CountryEditionCode = 'RUS'
+		")->setParameter('code', $code)
+			->getResult();
+	}
 
+	public function findClPhGroupsByQuery($q)
+	{
 		$qb = $this->_em->createQueryBuilder();
 
-		$qb
-			->select('d.DocumentID, d.ArticleID, n.NozologyCode')
+		$qb->select('DISTINCT d.ClPhGrName name, d.ClPhGrDescription description')
 			->from('VidalMainBundle:Document', 'd')
-			->leftJoin('d.nozologies', 'n')
-			->where('n IN (:codes)')
-			->andWhere("d.CountryEditionCode = 'RUS'")
-			->setParameter('codes', $codes);
+			->where("d.CountryEditionCode = 'RUS'")
+			->orderBy('d.ClPhGrName', 'ASC');
 
-		return $qb->getQuery()->getResult();
+		# поиск по словам
+		$where = '';
+		$words = explode(' ', $q);
+
+		for ($i = 0; $i < count($words); $i++) {
+			$word = $words[$i];
+			if ($i > 0) {
+				$where .= ' OR ';
+			}
+			$where .= "(d.ClPhGrName LIKE '$word%' OR d.ClPhGrName LIKE '% $word%')";
+		}
+
+		$qb->andWhere($where);
+
+		$groups = $qb->getQuery()->getResult();
+
+		for ($i = 0, $c = count($groups); $i < $c; $i++) {
+			$groups[$i]['description'] = preg_replace('/' . $q . '/iu', '<span class="query">$0</span>', $groups[$i]['description']);
+		}
+
+		return $groups;
 	}
 }

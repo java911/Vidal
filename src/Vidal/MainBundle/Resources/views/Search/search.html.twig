@@ -8,11 +8,9 @@
 	{% if atcCodes is defined %}
 		<div class="block">
 			{% if atcCodes is not empty %}
-				<div class="anons">
-					Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)
-					<div class="block-head">
-						Найдено: <span>{{ atcCodes|length }}</span>
-					</div>
+				<div class="block-head anons"
+					 title="Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)">
+					Найдено кодов АТХ: <span>{{ atcCodes|length }}</span>
 				</div>
 
 				<table class="products-table">
@@ -22,7 +20,7 @@
 						<td style="width:40%">Латинское название</td>
 						<td style="width:10%">Входит в группу</td>
 					</tr>
-					{% for atc in atcCodes %}
+					{% for code, atc in atcCodes %}
 						<tr>
 							<td>
 								<a href="{{ path('atc', {'ATCCode':atc.ATCCode}) }}"
@@ -31,8 +29,10 @@
 							<td>{{ atc.RusName }}</td>
 							<td>{{ atc.EngName }}</td>
 							<td>
-								<a href="{{ path('atc', {'ATCCode':atc.ParentATCCode}) }}"
-								   class="no-underline">{{ atc.ParentATCCode }}</a>
+								{% if atc.ParentATCCode is not empty %}
+									<a href="{{ path('atc', {'ATCCode':atc.ParentATCCode}) }}"
+									   class="no-underline">{{ atc.ParentATCCode }}</a>
+								{% endif %}
 							</td>
 						</tr>
 					{% endfor %}
@@ -55,28 +55,7 @@
 					</div>
 				</div>
 			</div>
-
-			<table class="products-table">
-				<tr class="products-table-header">
-					<td width="23%">Активное вещ-во</td>
-					<td width="23%">Латинское</td>
-					<td width="14%" title="Международное непатентованное наименование (МНН)">МНН</td>
-					<td>Входит в состав препаратов</td>
-				</tr>
-				{% for molecule in molecules %}
-					<tr>
-						<td>
-							<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
-							   class="no-underline">{{ molecule.RusName|raw }}</a>
-						</td>
-						<td>{{ molecule.LatName|raw }}</td>
-						<td><a title="Международное непатентованное наименование (МНН)" href="{{ path('gnp') }}"
-							   class="no-underline">{{ molecule.GNParent }}</a></td>
-						<td><a href="{{ path('molecule_included', {'MoleculeID':molecule.MoleculeID}) }}"
-							   class="no-underline">список</a></td>
-					</tr>
-				{% endfor %}
-			</table>
+			{% include 'VidalMainBundle:Vidal:render_molecules.html.twig' %}
 		{% elseif t == 'molecule' %}
 			<div class="no-results">
 				Не найдено результатов по активному веществу <span>{{ q }}</span>
@@ -95,69 +74,7 @@
 				</div>
 			</div>
 
-			<table class="products-table">
-				<tr class="products-table-header">
-					<td class="products-table-loz"></td>
-					<td>Название</td>
-					<td></td>
-					<td>Форма выпуска</td>
-					<td title="Владелец регистрационного удостоверения">Владелец рег/уд</td>
-				</tr>
-				{% for product in productsPagination %}
-					{% set id = product.ProductID %}
-					<tr>
-						<td class="products-table-loz">
-							{% if product.NonPrescriptionDrug %}
-								<img src="{{ asset('bundles/vidalmain/images/g2.gif') }}" class="loz"
-									 title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>
-							{% endif %}
-						</td>
-						<td class="products-table-name">
-							<a class="no-underline"
-							   href="{{ path('product', {'EngName':product.Name, 'ProductID':id}) }}">
-								{{ product.RusName|raw }}</a>
-						</td>
-						<td class="products-table-picture">
-							{% if pictures[id] is defined %}
-								{% set path = '/upload/products/' ~ pictures[id] %}
-								{% if is_file(path) %}
-									<img src="{{ path }}"/>
-								{% endif %}
-							{% endif %}
-						</td>
-						<td class="products-table-zip">
-							<div>{{ product.ZipInfo }}</div>
-						<span>рег. №: {{ product.RegistrationNumber }}
-							{% if product.RegistrationDate is not null %}
-								от {{ product.RegistrationDate|date('d.m.Y') }}
-							{% endif %}
-						</span>
-						</td>
-						<td class="products-table-company">
-							{# компании регистраторы/производители препарата #}
-							{% for company in companies[id] %}
-								<div>
-									<span class="tip">
-										{% if company.ItsMainCompany %}
-										{% elseif company.CompanyRusNote is not empty %}
-											{{ company.CompanyRusNote }}:
-										{% else %}
-											произведено:
-										{% endif %}
-									</span>
-									<a class="no-underline"
-									   href="{{ path('company', {'CompanyID':company.CompanyID}) }}">
-										{{ company.LocalName|raw }}
-									</a>
-									{% if company.Country is not empty %}
-										<span class="small">({{ company.Country }})</span>
-									{% endif %}
-								</div>
-							{% endfor %}
-						</td>
-					</tr>
-				{% endfor %}
-			</table>
+			{% include 'VidalMainBundle:Vidal:render_products.html.twig' with {'products':productsPagination.items} %}
 
 			<div class="navigation">
 				{{ knp_pagination_render(productsPagination) }}

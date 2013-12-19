@@ -3,7 +3,8 @@
 	<div class="block" id="description">
 		<span class="block-head">Клинико-фармакологическая группа: </span>
 		<span class="block-content">
-			{{ document.ClPhGrDescription|raw }}
+			<a href="{{ path('clphgroup', {'description':document.ClPhGrDescription|raw}) }}"
+			   class="no-underline">{{ document.ClPhGrDescription|raw }}</a>
 		</span>
 	</div>
 {% endif %}
@@ -14,7 +15,8 @@
 		<div class="block" id="phthgroup">
 			<span class="block-head">Фармако-терапевтическая группа ГосРеестра МинЗдрава РФ:</span>
 			<span class="block-content">
-				{{ phthgroups[0].Name }}
+				<a href="{{ path('phthgroup', {'id':phthgroups[0].id}) }}"
+				   class="no-underline">{{ phthgroups[0].Name|capitalize }}</a>
 			</span>
 		</div>
 	{% else %}
@@ -23,7 +25,9 @@
 			<div class="block-content">
 				<ul class="ul-style">
 					{% for g in phthgroups %}
-						<li>{{ loop.index > 1 ? ', ' }}{{ g.Name }}</li>
+						<li>{{ loop.index > 1 ? ', ' }}<a href="{{ path('phthgroup', {'id':g.id}) }}"
+														  class="no-underline">{{ g.Name|capitalize }}</a>
+						</li>
 					{% endfor %}
 				</ul>
 			</div>
@@ -58,6 +62,21 @@
 		<div class="block-content">
 			{{ document.Indication|raw }}
 		</div>
+		{% if nozologies is defined and nozologies is not empty %}
+			<table class="products-table">
+				<tr class="products-table-header">
+					<td style="width:78px">Код МКБ-10</td>
+					<td>Показание</td>
+				</tr>
+				{% for nozology in nozologies %}
+					<tr>
+						<td>{{ nozology.Code }}</td>
+						<td><a href="{{ path('nozology_code', {'NozologyCode':nozology.Code}) }}"
+							   class="no-underline">{{ nozology.Name|raw }}</a></td>
+					</tr>
+				{% endfor %}
+			</table>
+		{% endif %}
 	</div>
 {% endif %}
 

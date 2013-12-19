@@ -117,7 +117,7 @@
 			<span class="block-head">Код ATX: </span>
 			<span class="atc-content">
 				{% for atc in atcCodes %}
-					<a href="{{ path('atc', {'ATCCode':atc.ATCCode}) }}">{{ atc.ATCCode }}</a>
+					<a href="{{ path('atc', {'ATCCode':atc.ATCCode}) }}" class="no-underline">{{ atc.ATCCode }}</a>
 					<span class="atc-name small">({{ atc.RusName }})</span>
 				{% endfor %}
 			</span>
@@ -166,7 +166,7 @@
 	{# Лекарственные формы #}
 	{% if products is defined and products|length %}
 		<div class="block">
-			<div class="block-head">Лекарственные формы</div>
+			<div class="block-head">{{ products|length == 1 ? 'Лекарственная форма' : 'Лекарственные формы' }}</div>
 			<div class="block-content">
 				<table class="products-table">
 					{% for p in products %}

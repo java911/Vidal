@@ -182,8 +182,11 @@ class ProductRepository extends EntityRepository
 
 		$qb
 			->select('p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.ProductID,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug')
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
+				d.Indication')
 			->from('VidalMainBundle:Product', 'p')
+			->leftJoin('VidalMainBundle:ProductDocument', 'pd', 'WITH', 'pd.ProductID = p')
+			->leftJoin('VidalMainBundle:Document', 'd', 'WITH', 'pd.DocumentID = d')
 			->orderBy('p.RusName', 'ASC')
 			->andWhere("p.CountryEditionCode = 'RUS'")
 			->andWhere('p.MarketStatusID IN (1,2)');
@@ -196,27 +199,19 @@ class ProductRepository extends EntityRepository
 			$qb->andWhere("p.ProductTypeCode IN ('DRUG', 'GOME')");
 		}
 
+		# поиск по словам
+		$where = '';
 		$words = explode(' ', $q);
-		$count = count($words);
 
-		if ($count == 1) {
-			# поиск по единственному слову
-			$qb->andWhere('p.RusName LIKE :word OR p.EngName LIKE :word')->setParameter('word', $q . '%');
-		}
-		else {
-			# составной поиск
-			$where = '';
-			for ($i = 0; $i < $count; $i++) {
-				$word = $words[$i];
-				if ($i == 0) {
-					$where .= "(p.RusName LIKE '$word%' OR p.RusName LIKE '$word%')";
-				}
-				else {
-					$where .= " AND (p.RusName LIKE '%$word%' OR p.EngName LIKE '%$word%')";
-				}
+		for ($i = 0; $i < count($words); $i++) {
+			$word = $words[$i];
+			if ($i > 0) {
+				$where .= ' OR ';
 			}
-			$qb->andWhere($where);
+			$where .= "(p.RusName LIKE '$word%' OR p.EngName LIKE '$word%' OR p.RusName LIKE '% $word%' OR p.EngName LIKE '% $word%')";
 		}
+
+		$qb->andWhere($where);
 
 		return $qb->getQuery()->getResult();
 	}
@@ -229,6 +224,10 @@ class ProductRepository extends EntityRepository
 			if ($document['ArticleID'] == 2 || $document['ArticleID'] == 5) {
 				$documentIds[] = $document['DocumentID'];
 			}
+		}
+
+		if (empty($documentIds)) {
+			return array();
 		}
 
 		$productsRaw = $this->_em->createQuery('
@@ -249,7 +248,7 @@ class ProductRepository extends EntityRepository
 		# исключаем повторения продуктов по приоритему
 		$products = array();
 
-		for ($i=0, $c=count($productsRaw); $i<$c; $i++) {
+		for ($i = 0, $c = count($productsRaw); $i < $c; $i++) {
 			$key = $productsRaw[$i]['ProductID'];
 
 			if (!isset($products[$key])) {
@@ -270,6 +269,10 @@ class ProductRepository extends EntityRepository
 			}
 		}
 
+		if (empty($documentIds)) {
+			return array();
+		}
+
 		$productsRaw = $this->_em->createQuery('
 			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, d.Indication, d.DocumentID
@@ -285,11 +288,10 @@ class ProductRepository extends EntityRepository
 		')->setParameter('documentIds', $documentIds)
 			->getResult();
 
-
 		# исключаем повторения продуктов по приоритему
 		$products = array();
 
-		for ($i=0, $c=count($productsRaw); $i<$c; $i++) {
+		for ($i = 0, $c = count($productsRaw); $i < $c; $i++) {
 			$key = $productsRaw[$i]['ProductID'];
 
 			if (!isset($products[$key])) {
@@ -298,5 +300,95 @@ class ProductRepository extends EntityRepository
 		}
 
 		return $products;
+	}
+
+	public function findByClPhGroup($description)
+	{
+		return $this->_em->createQuery('
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
+				d.Indication, d.DocumentID, d.ClPhGrDescription
+			FROM VidalMainBundle:Product p
+			LEFT JOIN VidalMainBundle:ProductDocument pd WITH pd.ProductID = p
+			LEFT JOIN VidalMainBundle:Document d WITH pd.DocumentID = d
+			LEFT JOIN VidalMainBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
+			WHERE d.ClPhGrName = :description AND
+				p.CountryEditionCode = \'RUS\' AND
+				p.MarketStatusID IN (1,2) AND
+				p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+			ORDER BY p.RusName ASC
+		')->setParameter('description', $description)
+			->getResult();
+	}
+
+	public function findByPhThGroup($id)
+	{
+		return $this->_em->createQuery('
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
+				d.Indication, d.DocumentID
+			FROM VidalMainBundle:Product p
+			JOIN p.phthgroups g WITH g.id = :id
+			LEFT JOIN VidalMainBundle:ProductDocument pd WITH pd.ProductID = p
+			LEFT JOIN VidalMainBundle:Document d WITH pd.DocumentID = d
+			LEFT JOIN VidalMainBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
+			WHERE p.CountryEditionCode = \'RUS\' AND
+				p.MarketStatusID IN (1,2) AND
+				p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+			ORDER BY p.RusName ASC
+		')->setParameter('id', $id)
+			->getResult();
+	}
+
+	public function findPhThGroupsByQuery($q)
+	{
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select('DISTINCT g.Name, g.id')
+			->from('VidalMainBundle:Product', 'p')
+			->join('p.phthgroups', 'g')
+			->where("p.CountryEditionCode = 'RUS' AND
+				p.MarketStatusID IN (1,2) AND
+				p.ProductTypeCode IN ('DRUG','GOME')")
+			->orderBy('g.Name', 'ASC');
+
+		# поиск по словам
+		$where = '';
+		$words = explode(' ', $q);
+
+		for ($i = 0; $i < count($words); $i++) {
+			$word = $words[$i];
+			if ($i > 0) {
+				$where .= ' OR ';
+			}
+			$where .= "(g.Name LIKE '$word%' OR g.Name LIKE '% $word%')";
+		}
+
+		$qb->andWhere($where);
+
+		$groups = $qb->getQuery()->getResult();
+
+		for ($i=0, $c=count($groups); $i<$c; $i++) {
+			$name = $this->mb_ucfirst($groups[$i]['Name']);
+			$groups[$i]['Name'] = preg_replace('/'. $q .'/iu', '<span class="query">$0</span>', $name);
+		}
+
+		return $groups;
+	}
+
+	/**
+	 * Функция возвращает слово с заглавной первой буквой (c поддержкой кирилицы)
+	 *
+	 * @param string $string
+	 * @param string $encoding
+	 * @return string
+	 */
+	private function mb_ucfirst($string, $encoding = 'utf-8')
+	{
+		$strlen    = mb_strlen($string, $encoding);
+		$firstChar = mb_substr($string, 0, 1, $encoding);
+		$then      = mb_substr($string, 1, $strlen - 1, $encoding);
+
+		return mb_strtoupper($firstChar, $encoding) . $then;
 	}
 }

@@ -23,3 +23,10 @@
 	<input class="search-button btn-white" type="submit" value="Найти"/>
 </form>
 
+{% if app.request.get('_route') != 'searche' %}
+	<div style="margin-bottom:15px">
+		<a class="btn-white" href="{{ path('searche') }}">Расширенный поиск</a>
+		<span class="small">будет доступен только врачам</span>
+	</div>
+{% endif %}
+

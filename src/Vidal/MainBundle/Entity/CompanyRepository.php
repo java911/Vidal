@@ -47,7 +47,7 @@ class CompanyRepository extends EntityRepository
 
 	public function findByProducts($productIds)
 	{
-		return $this->_em->createQuery('
+		$companies = $this->_em->createQuery('
 			SELECT c.CompanyID, pc.CompanyRusNote, pc.CompanyEngNote, c.LocalName, c.Property,
 				country.RusName Country, pc.ItsMainCompany, p.ProductID
 			FROM VidalMainBundle:Company c
@@ -58,6 +58,18 @@ class CompanyRepository extends EntityRepository
 			ORDER BY pc.ItsMainCompany DESC
 		')->setParameter('productIds', $productIds)
 			->getResult();
+
+		$productCompanies = array();
+
+		# надо получить компании и сгруппировать их по продукту
+		foreach ($companies as $company) {
+			$key = $company['ProductID'];
+			isset($productCompanies[$key])
+				? $productCompanies[$key][] = $company
+				: $productCompanies[$key] = array($company);
+		}
+
+		return $productCompanies;
 	}
 
 	public function findByQuery($q)
@@ -69,27 +81,21 @@ class CompanyRepository extends EntityRepository
 			->from('VidalMainBundle:Company', 'c')
 			->leftJoin('VidalMainBundle:Country', 'country', 'WITH', 'country.CountryCode = c.CountryCode')
 			->orderBy('c.LocalName', 'ASC')
-			->andWhere("c.CountryEditionCode = 'RUS'");
+			->where("c.CountryEditionCode = 'RUS'");
 
+		# поиск по словам
+		$where = '';
 		$words = explode(' ', $q);
-		$count = count($words);
 
-		if ($count == 1) {
-			$qb->andWhere('c.LocalName LIKE :word')->setParameter('word', $q . '%');
-		}
-		else {
-			$where = '';
-			for ($i = 0; $i < $count; $i++) {
-				$word = $words[$i];
-				if ($i == 0) {
-					$where .= "c.LocalName LIKE '$word%'";
-				}
-				else {
-					$where .= " AND c.LocalName LIKE '%$word%'";
-				}
+		for ($i = 0; $i < count($words); $i++) {
+			$word = $words[$i];
+			if ($i > 0) {
+				$where .= ' OR ';
 			}
-			$qb->andWhere($where);
+			$where .= "(c.LocalName LIKE '$word%' OR c.LocalName LIKE '% $word%')";
 		}
+
+		$qb->andWhere($where);
 
 		return $qb->getQuery()->getResult();
 	}

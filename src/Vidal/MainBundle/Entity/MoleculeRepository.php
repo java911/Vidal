@@ -87,14 +87,28 @@ class MoleculeRepository extends EntityRepository
 
 	public function findByQuery($q)
 	{
-		return $this->_em->createQuery('
-			SELECT m.MoleculeID, m.LatName, m.RusName, mnn.GNParent, mnn.description
-			FROM VidalMainBundle:Molecule m
-			LEFT JOIN m.GNParent mnn
-			WHERE m.RusName LIKE :q OR m.LatName LIKE :q
-			ORDER BY m.LatName ASC
-		')->setParameter('q', $q . '%')
-			->getResult();
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select('m.MoleculeID, m.LatName, m.RusName, mnn.GNParent, mnn.description')
+			->from('VidalMainBundle:Molecule', 'm')
+			->leftJoin('m.GNParent', 'mnn')
+			->orderBy('m.LatName', 'ASC');
+
+		# поиск по словам
+		$where = '';
+		$words = explode(' ', $q);
+
+		for ($i = 0; $i < count($words); $i++) {
+			$word = $words[$i];
+			if ($i > 0) {
+				$where .= ' OR ';
+			}
+			$where .= "(m.RusName LIKE '$word%' OR m.LatName LIKE '$word%' OR m.RusName LIKE '% $word%' OR m.LatName LIKE '% $word%')";
+		}
+
+		$qb->where($where);
+
+		return $qb->getQuery()->getResult();
 	}
 
 	public function countComponents($productIds)
@@ -128,8 +142,12 @@ class MoleculeRepository extends EntityRepository
 			}
 		}
 
-		$moleculesRaw = $this->_em->createQuery('
-			SELECT m.MoleculeID, m.LatName, m.RusName, mnn.GNParent, mnn.description, d.DocumentID
+		if (empty($documentIds)) {
+			return array();
+		}
+
+		return $this->_em->createQuery('
+			SELECT DISTINCT m.MoleculeID, m.LatName, m.RusName, mnn.GNParent, mnn.description, d.DocumentID
 			FROM VidalMainBundle:Molecule m
 			JOIN VidalMainBundle:MoleculeDocument md WITH md.MoleculeID = m
 			JOIN VidalMainBundle:Document d WITH md.DocumentID = d

@@ -16,13 +16,13 @@ class ProductCompositionCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:productcomposition')
+		$this->setName('vidal:product_composition')
 			->setDescription('Edits composition of products');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln('--- vidal:productcomposition started');
+		$output->writeln('--- vidal:product_composition started');
 
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
@@ -50,6 +50,6 @@ class ProductCompositionCommand extends ContainerAwareCommand
 			))->execute();
 		}
 
-		$output->writeln('+++ vidal:productcomposition completed!');
+		$output->writeln('+++ vidal:product_composition completed!');
 	}
 }

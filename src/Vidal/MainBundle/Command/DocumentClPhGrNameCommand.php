@@ -12,26 +12,26 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @package Vidal\MainBundle\Command
  */
-class DocumentNameCommand extends ContainerAwareCommand
+class DocumentClPhGrNameCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:document_name')
+		$this->setName('vidal:document_clphgrname')
 			->setDescription('Adds Document.Name');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln('--- vidal:document_name started');
+		$output->writeln('--- vidal:document_clphgrname started');
 
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
 		# надо установить имена для препаратов без тегов/пробелов в нижний регистр
 		$em->createQuery('
 			UPDATE VidalMainBundle:Document d
-			SET d.Name = LOWER(d.EngName)
-			WHERE d.EngName NOT LIKE \'%<%\' AND
-				d.EngName NOT LIKE \'% %\'
+			SET d.ClPhGrName = d.ClPhGrDescription
+			WHERE d.ClPhGrDescription NOT LIKE \'%<%\' AND
+				d.ClPhGrDescription IS NOT NULL
 		')->execute();
 
 		# далее надо преобразовать остальные по регуляркам
@@ -39,45 +39,44 @@ class DocumentNameCommand extends ContainerAwareCommand
 			SELECT COUNT(d.DocumentID)
 			FROM VidalMainBundle:Document d
 			WHERE d.CountryEditionCode = \'RUS\' AND
-			 	(d.EngName LIKE \'%<%\' OR d.EngName LIKE \'% %\')
+			 	(d.ClPhGrDescription LIKE \'%<%\' OR d.ClPhGrDescription IS NULL)
 		')->getSingleScalarResult();
 
 		$query = $em->createQuery('
-			SELECT d.DocumentID, d.EngName
+			SELECT d.DocumentID, d.ClPhGrDescription
 			FROM VidalMainBundle:Document d
 			WHERE d.CountryEditionCode = \'RUS\' AND
-				(d.EngName LIKE \'%<%\' OR d.EngName LIKE \'% %\')
+				(d.ClPhGrDescription LIKE \'%<%\' OR d.ClPhGrDescription IS NULL)
 		');
 
 		$updateQuery = $em->createQuery('
 			UPDATE VidalMainBundle:Document d
-			SET d.Name = :document_name
+			SET d.ClPhGrName = :document_clphgrname
 			WHERE d = :document_id
 		');
 
 		$step = 100;
 
-		for ($i = 0, $c = $count; $i < $c; $i = $i+$step) {
+		for ($i = 0, $c = $count; $i < $c; $i = $i + $step) {
 			$documents = $query
 				->setFirstResult($i)
-				->setMaxResults($i+$step)
+				->setMaxResults($i + $step)
 				->getResult();
 
 			foreach ($documents as $document) {
-				$p    = array('/ /', '/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i');
-				$r    = array('-', '', '');
-				$name = preg_replace($p, $r, $document['EngName']);
-				$name = mb_strtolower($name, 'UTF-8');
+				$p    = array('/<BR( ?)\/>/i', '/<su.>(.*?)<\/su.>/i');
+				$r    = array('. ', '$1');
+				$name = preg_replace($p, $r, $document['ClPhGrDescription']);
 
 				$updateQuery->setParameters(array(
-					'document_name' => $name,
-					'document_id'   => $document['DocumentID'],
+					'document_clphgrname' => $name,
+					'document_id'         => $document['DocumentID'],
 				))->execute();
 			}
 
-			$output->writeln("... " . ($i+$step) . " / $count done");
+			$output->writeln("... " . ($i + $step) . " / $count done");
 		}
 
-		$output->writeln('+++ vidal:document_name completed!');
+		$output->writeln('+++ vidal:document_clphgrname completed!');
 	}
 }

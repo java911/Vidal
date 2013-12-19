@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 class VidalController extends Controller
 {
 	/**
+	 * Список препаратов по компании
 	 * @Route("poisk_preparatov/fir_{CompanyID}.{ext}", name="company", requirements={"CompanyID":"\d+"}, defaults={"ext"="htm"})
 	 * @Route("poisk_preparatov/lfir_{CompanyID}.{ext}", name="company_products", requirements={"CompanyID":"\d+"}, defaults={"ext"="htm"})
 	 *
@@ -70,6 +71,7 @@ class VidalController extends Controller
 	}
 
 	/**
+	 * Список препаратов по коду АТХ
 	 * @Route("poisk_preparatov/lat_{ATCCode}.{ext}", name="atc", defaults={"ext"="htm"})
 	 *
 	 * @Template("VidalMainBundle:Vidal:atc.html.twig")
@@ -117,88 +119,113 @@ class VidalController extends Controller
 			$productIds[] = $id;
 		}
 
-		# надо получить компании и сгруппировать их по продукту
-		$companies        = $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds);
-		$productCompanies = array();
-
-		foreach ($companies as $company) {
-			$key = $company['ProductID'];
-			isset($productCompanies[$key])
-				? $productCompanies[$key][] = $company
-				: $productCompanies[$key] = array($company);
-		}
-
 		return array(
 			'atc'       => $atc,
 			'products1' => $products1,
 			'products2' => $products2,
-			'companies' => $productCompanies,
+			'companies' => $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds),
 			'pictures'  => $em->getRepository('VidalMainBundle:Picture')->findByProductIds($productIds)
 		);
 	}
 
 	/**
-	 * @Route("poisk_preparatov/nosology/{NosologyCode}", name="nosology_code")
-	 * @Template("VidalMainBundle:Vidal:nosology_code.html.twig")
+	 * Список препаратов по клиннико-фармакологической группе
+	 * @Route("poisk_preparatov/cl-ph-group/{description}", name="clphgroup")
+	 * @Template("VidalMainBundle:Vidal:clphgroup.html.twig")
 	 */
-	public function nosologyAction($NosologyCode)
+	public function clphgroupAction($description)
 	{
+		$em       = $this->getDoctrine()->getManager();
+		$products = $em->getRepository('VidalMainBundle:Product')->findByClPhGroup($description);
+		$params   = array('products' => $products, 'description' => $description);
 
-//		$documents  = $em->getRepository('VidalMainBundle:Document')->findByNozologies($nozologies);
-//		$molecules  = $em->getRepository('VidalMainBundle:Molecule')->findByDocuments1($documents);
-//		$products1  = $em->getRepository('VidalMainBundle:Product')->findByDocuments25($documents);
-//		$products2  = $em->getRepository('VidalMainBundle:Product')->findByDocuments4($documents);
-//
-//		# надо слить продукты, исключая повторения и отсортировать по названию
-//		$products = array();
-//		foreach ($products1 as $id => $product) {
-//			$products[] = $product;
-//		}
-//		foreach ($products2 as $id => $product) {
-//			if (!isset($products1[$id])) {
-//				$products[] = $product;
-//			}
-//		}
-//		usort($products, function ($a, $b) {
-//			return strcmp($a['RusName'], $b['RusName']);
-//		});
-//
-//		$noz = array();
-//		foreach ($nozologies as $nozology) {
-//			$key = $nozology['code'];
-//			$noz[$key] = array('name' => $nozology['name']);
-//		}
-//
-//		foreach ($documents as $document) {
-//			$key = $document['NozologyCode'];
-//			$noz[$key]['documents'][] = $document;
-//		}
-//
-//		foreach ($noz as $code => &$nozology) {
-//			$products1 = $em->getRepository('VidalMainBundle:Product')->findByDocuments25($nozology['documents']);
-//			$products2 = $em->getRepository('VidalMainBundle:Product')->findByDocuments4($nozology['documents']);
-//		}
-//
-//		# сгруппировать продукты по показаниям
-//		foreach ($products as $product) {
-//			foreach ($noz) {
-//
-//			}
-//			isset($documentsGrouped[$key])
-//				? $documentsGrouped[$key][] = $product
-//				: $documentsGrouped[$key] = array($product);
-//		}
-//
-//		# сгруппировать молекулы по документом
-//		foreach ($molecules as $molecule) {
-//			$key = $molecule['DocumentID'];
-//			isset($documentsGrouped[$key]['molecules'])
-//				? $documentsGrouped[$key]['molecules'][] = $molecule
-//				: $documentsGrouped[$key]['molecules'] = array($molecule);
-//		}
+		if (!empty($products)) {
+			$productIds          = $this->getProductIds($products);
+			$params['companies'] = $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds);
+			$params['pictures']  = $em->getRepository('VidalMainBundle:Picture')->findByProductIds($productIds);
+		}
+
+		return $params;
 	}
 
 	/**
+	 * Список препаратов по фармако-терапевтической группе
+	 * @Route("poisk_preparatov/ph-th-group/{id}", name="phthgroup", defaults={"id":"\d+"})
+	 * @Template("VidalMainBundle:Vidal:phthgroup.html.twig")
+	 */
+	public function phthgroupAction($id)
+	{
+		$em        = $this->getDoctrine()->getManager();
+		$phthgroup = $em->getRepository('VidalMainBundle:PhThGroups')->findById($id);
+
+		if ($phthgroup === null) {
+			throw $this->createNotFoundException();
+		}
+
+		$products = $em->getRepository('VidalMainBundle:Product')->findByPhThGroup($id);
+		$params   = array('phthgroup' => $phthgroup, 'products' => $products);
+
+		if (!empty($products)) {
+			$productIds          = $this->getProductIds($products);
+			$params['companies'] = $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds);
+			$params['pictures']  = $em->getRepository('VidalMainBundle:Picture')->findByProductIds($productIds);
+		}
+
+		return $params;
+	}
+
+	/**
+	 * Список препаратов и активных веществ по показанию (Nozology)
+	 * @Route("poisk_preparatov/lno_{NozologyCode}", name="nozology_code")
+	 * @Template("VidalMainBundle:Vidal:nozology_code.html.twig")
+	 */
+	public function nozologyCodeAction($NozologyCode)
+	{
+		$em = $this->getDoctrine()->getManager();
+
+		if ($pos = strpos($NozologyCode, '.htm')) {
+			$NozologyCode = substr($NozologyCode, $pos, 4);
+		}
+
+		$nozology = $em->getRepository('VidalMainBundle:Nozology')->findByCode($NozologyCode);
+
+		if ($nozology === null) {
+			throw $this->createNotFoundException();
+		}
+
+		$documents = $em->getRepository('VidalMainBundle:Document')->findByNozologyCode($NozologyCode);
+		$params    = array('nozology' => $nozology);
+
+		if (!empty($documents)) {
+			$params['molecules'] = $em->getRepository('VidalMainBundle:Molecule')->findByDocuments1($documents);
+			$products1           = $em->getRepository('VidalMainBundle:Product')->findByDocuments25($documents);
+			$products2           = $em->getRepository('VidalMainBundle:Product')->findByDocuments4($documents);
+			$products            = array();
+
+			# надо слить продукты, исключая повторения и отсортировать по названию
+			foreach ($products1 as $id => $product) {
+				$products[] = $product;
+			}
+			foreach ($products2 as $id => $product) {
+				if (!isset($products1[$id])) {
+					$products[] = $product;
+				}
+			}
+			usort($products, function ($a, $b) {
+				return strcmp($a['RusName'], $b['RusName']);
+			});
+
+			$productIds          = $this->getProductIds($products);
+			$params['products']  = $products;
+			$params['companies'] = $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds);
+			$params['pictures']  = $em->getRepository('VidalMainBundle:Picture')->findByProductIds($productIds);
+		}
+
+		return $params;
+	}
+
+	/**
+	 * Страничка представительства и список препаратов
 	 * @Route("poisk_preparatov/inf_{InfoPageID}.{ext}", name="inf", requirements={"InfoPageID":"\d+"}, defaults={"ext"="htm"})
 	 * @Route("poisk_preparatov/linf_{InfoPageID}.{ext}", name="linf", requirements={"InfoPageID":"\d+"}, defaults={"ext"="htm"})
 	 *
@@ -234,6 +261,7 @@ class VidalController extends Controller
 	}
 
 	/**
+	 * Список препаратов по активному веществу: одно-монокомпонентные
 	 * @Route("poisk_preparatov/act_{MoleculeID}.{ext}", name="molecule", requirements={"MoleculeID":"\d+"}, defaults={"ext"="htm"})
 	 *
 	 * @Template("VidalMainBundle:Vidal:molecule.html.twig")
@@ -256,6 +284,7 @@ class VidalController extends Controller
 	}
 
 	/**
+	 * Отображение списка препаратов, в состав которых входит активное вещество (Molecule)
 	 * @Route("poisk_preparatov/lact_{MoleculeID}.{ext}", name="molecule_included", requirements={"MoleculeID":"\d+"}, defaults={"ext"="htm"})
 	 *
 	 * @Template("VidalMainBundle:Vidal:molecule_included.html.twig")
@@ -302,27 +331,17 @@ class VidalController extends Controller
 		uasort($products1, array($this, 'sortProducts'));
 		uasort($products2, array($this, 'sortProducts'));
 
-		# надо получить компании и сгруппировать их по продукту
-		$companies        = $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds);
-		$productCompanies = array();
-
-		foreach ($companies as $company) {
-			$key = $company['ProductID'];
-			isset($productCompanies[$key])
-				? $productCompanies[$key][] = $company
-				: $productCompanies[$key] = array($company);
-		}
-
 		return array(
 			'molecule'  => $molecule,
 			'products1' => $products1,
 			'products2' => $products2,
-			'companies' => $productCompanies,
+			'companies' => $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds),
 			'pictures'  => $em->getRepository('VidalMainBundle:Picture')->findByProductIds($productIds),
 		);
 	}
 
 	/**
+	 * Страничка рассшифровки МНН аббревиатур
 	 * @Route("poisk_preparatov/gnp.{ext}", name="gnp", defaults={"ext"="htm"})
 	 *
 	 * @Template("VidalMainBundle:Vidal:gnp.html.twig")
@@ -332,13 +351,8 @@ class VidalController extends Controller
 		return array();
 	}
 
-	/** Отсортировать препараты по имени */
-	private function sortProducts($a, $b)
-	{
-		return strcasecmp($a['RusName'], $b['RusName']);
-	}
-
 	/**
+	 * Описание препарата
 	 * @Route("/poisk_preparatov/{EngName}__{ProductID}.{ext}", name="product", requirements={"ProductID":"\d+"}, defaults={"ext"="htm"})
 	 *
 	 * @Template("VidalMainBundle:Vidal:document.html.twig")
@@ -395,6 +409,10 @@ class VidalController extends Controller
 			}
 		}
 
+		if ($params['document']) {
+			$params['nozologies'] = $em->getRepository('VidalMainBundle:Nozology')->findByDocumentID($document->getDocumentID());
+		}
+
 		$productIds             = array($product['ProductID']);
 		$params['product']      = $product;
 		$params['products']     = array($product);
@@ -409,6 +427,7 @@ class VidalController extends Controller
 	}
 
 	/**
+	 * Описание по документу и отображение информации по препаратам или веществу
 	 * @Route("/poisk_preparatov/{EngName}~{DocumentID}.{ext}", name="document", requirements={"DocumentID":"\d+"}, defaults={"ext"="htm"})
 	 * @Route("/poisk_preparatov/{EngName}.{ext}", name="document_name", defaults={"ext"="htm"})
 	 *
@@ -446,11 +465,7 @@ class VidalController extends Controller
 		}
 
 		if (!empty($products)) {
-			$productIds = array();
-			foreach ($products as $product) {
-				$productIds[] = $product['ProductID'];
-			}
-
+			$productIds             = $this->getProductIds($products);
 			$params['atcCodes']     = $em->getRepository('VidalMainBundle:ATC')->findByProducts($productIds);
 			$params['owners']       = $em->getRepository('VidalMainBundle:Company')->findOwnersByProducts($productIds);
 			$params['distributors'] = $em->getRepository('VidalMainBundle:Company')->findDistributorsByProducts($productIds);
@@ -461,30 +476,31 @@ class VidalController extends Controller
 			$params['pictures'] = array();
 		}
 
-		$params['articleId'] = $articleId;
-		$params['document']  = $document;
-		$params['molecules'] = $molecules;
-		$params['products']  = $products;
-		$params['infoPages'] = $em->getRepository('VidalMainBundle:InfoPage')->findByDocumentID($DocumentID);
+		$params['nozologies'] = $em->getRepository('VidalMainBundle:Nozology')->findByDocumentID($DocumentID);
+		$params['articleId']  = $articleId;
+		$params['document']   = $document;
+		$params['molecules']  = $molecules;
+		$params['products']   = $products;
+		$params['infoPages']  = $em->getRepository('VidalMainBundle:InfoPage')->findByDocumentID($DocumentID);
 
 		return $params;
 	}
 
-	/**
-	 * @Route("/test/email", name="test_email")
-	 */
-	public function testEmail()
+	/** Получить массив идентификаторов продуктов */
+	private function getProductIds($products)
 	{
-		$message = \Swift_Message::newInstance()
-			->setSubject('Сообщение из формы обратной связи')
-			->setContentType('text/html')
-			->setCharset('utf-8')
-			->setFrom('noreply@mailbot.evrika.ru', 'Testing')
-			->setTo('7binary@gmail.com')
-			->setBody('<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>Its a simple message</body></html>');
+		$productIds = array();
 
-		$this->get('mailer')->send($message);
+		foreach ($products as $product) {
+			$productIds[] = $product['ProductID'];
+		}
 
-		return new Response();
+		return $productIds;
+	}
+
+	/** Отсортировать препараты по имени */
+	private function sortProducts($a, $b)
+	{
+		return strcasecmp($a['RusName'], $b['RusName']);
 	}
 }

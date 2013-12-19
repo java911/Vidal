@@ -16,7 +16,7 @@ class AutocompleteExtCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:autocompleteext')
+		$this->setName('vidal:autocomplete_ext')
 			->setDescription('Creates extended autocomplete in Elastica');
 	}
 
@@ -50,7 +50,7 @@ class AutocompleteExtCommand extends ContainerAwareCommand
 		# Set mapping
 		$mapping->setProperties(array(
 			'id'   => array('type' => 'integer', 'include_in_all' => FALSE),
-			'name' => array('type' => 'string', 'include_in_all' => TRUE, 'analyzer' => 'ru'),
+			'name' => array('type' => 'string', 'include_in_all' => TRUE),
 		));
 
 		# Send mapping to type

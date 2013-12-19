@@ -52,7 +52,7 @@ class PhThGroups
 	 */
 	public function setName($name)
 	{
-		$this->name = $name;
+		$this->Name = $name;
 	}
 
 	/**
@@ -60,7 +60,7 @@ class PhThGroups
 	 */
 	public function getName()
 	{
-		return $this->name;
+		return $this->Name;
 	}
 
 	/**

@@ -1,9 +1,12 @@
 {% extends 'VidalMainBundle::vidal_layout.html.twig' %}
 
 
-{% block main %}
+{% block vidal %}
+	<h2>Расширенный поиск</h2>
 	{% include 'VidalMainBundle:Search:searche_form.html.twig' %}
 	{% include 'VidalMainBundle:Search:search_info.html.twig' %}
+
+	<div class="search-results">
 
 	{# Найдено показаний #}
 	{% if nozologies is defined %}
@@ -11,19 +14,23 @@
 			<div class="block">
 				<div class="block-anons">
 					<div class="block-head">
-						Найдено показаний МКБ-10: <span>{{ nozologies|length }}</span>
+						Найдено показаний: <span>{{ nozologies|length }}</span>
 					</div>
 				</div>
 			</div>
-
-			<ul class="ul-style">
+			<table class="products-table">
+				<tr class="products-table-header">
+					<td style="width:78px">Код МКБ-10</td>
+					<td>Показание</td>
+				</tr>
 				{% for nozology in nozologies %}
-					<li>
-						<a href="{{ path('nosology_code', {'NosologyCode':nozology.code}) }}"
-						   class="no-underline">{{ nozology.name|raw }}</a>
-					</li>
+					<tr>
+						<td>{{ nozology.Code }}</td>
+						<td><a href="{{ path('nozology_code', {'NozologyCode':nozology.Code}) }}"
+							   class="no-underline">{{ nozology.Name|raw }}</a></td>
+					</tr>
 				{% endfor %}
-			</ul>
+			</table>
 		{% elseif t == 'nosology' %}
 			<div class="no-results">
 				Не найдено результатов по показанию <span>{{ q }}</span>
@@ -35,7 +42,10 @@
 	{% if atcCodes is defined %}
 		<div class="block">
 			{% if atcCodes is not empty %}
-				<div class="anons">Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)</div>
+				<div class="block-head anons"
+					 title="Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)">
+					Найдено кодов АТХ: <span>{{ atcCodes|length }}</span>
+				</div>
 				<table class="products-table">
 					<tr class="products-table-header">
 						<td style="width:10%">АТХ код</td>
@@ -43,15 +53,19 @@
 						<td style="width:40%">Латинское название</td>
 						<td style="width:10%">Входит в группу</td>
 					</tr>
-					{% for atc in atcCodes %}
+					{% for code, atc in atcCodes %}
 						<tr>
 							<td>
-								<a href="{{ path('atc', {'ATCCode':atc.ATCCode}) }}">{{ atc.ATCCode }}</a>
+								<a href="{{ path('atc', {'ATCCode':atc.ATCCode}) }}"
+								   class="no-underline">{{ atc.ATCCode }}</a>
 							</td>
 							<td>{{ atc.RusName }}</td>
 							<td>{{ atc.EngName }}</td>
 							<td>
-								<a href="{{ path('atc', {'ATCCode':atc.ParentATCCode}) }}">{{ atc.ParentATCCode }}</a>
+								{% if atc.ParentATCCode is not empty %}
+									<a href="{{ path('atc', {'ATCCode':atc.ParentATCCode}) }}"
+									   class="no-underline">{{ atc.ParentATCCode }}</a>
+								{% endif %}
 							</td>
 						</tr>
 					{% endfor %}
@@ -62,6 +76,18 @@
 				</div>
 			{% endif %}
 		</div>
+
+		{# раскрывающееся дерево АТХ #}
+		{% if atcGrouped is defined and atcGrouped is not empty %}
+			<div class="block">
+				<div class="block-head atc-tree">
+					Список кодов АТХ
+					<a id="atc_collapse" href="#" class="no-underline">свернуть</a>
+					<a id="atc_expand" href="#" class="no-underline">развернуть</a>
+				</div>
+				{% include 'VidalMainBundle:Search:tree_atc.html.twig' %}
+			</div>
+		{% endif %}
 	{% endif %}
 
 	{# Найдено активных веществ #}
@@ -108,6 +134,52 @@
 		{% endif %}
 	{% endif %}
 
+	{# Найдено клинико-фармакологических групп #}
+	{% if clphgroups is defined %}
+		{% if clphgroups is not empty %}
+			<div class="block">
+				<div class="block-anons">
+					<div class="block-head">
+						Найдено клинико-фармакологических групп: <span>{{ clphgroups|length }}</span>
+					</div>
+				</div>
+			</div>
+			<ul class="ul-style">
+				{% for group in clphgroups %}
+					<li><a href="{{ path('clphgroup', {'description':group.name}) }}"
+						   class="no-underline">{{ group.description|raw }}</a></li>
+				{% endfor %}
+			</ul>
+		{% elseif t == 'clphgroups' %}
+			<div class="no-results">
+				Не найдено клинико-фармакологических групп
+			</div>
+		{% endif %}
+	{% endif %}
+
+	{# Найдено фармако-терапевтических групп #}
+	{% if phthgroups is defined %}
+		{% if phthgroups is not empty %}
+			<div class="block">
+				<div class="block-anons">
+					<div class="block-head">
+						Найдено фармако-терапевтических групп: <span>{{ phthgroups|length }}</span>
+					</div>
+				</div>
+			</div>
+			<ul class="ul-style">
+				{% for group in phthgroups %}
+					<li><a href="{{ path('phthgroup', {'id':group.id}) }}"
+						   class="no-underline">{{ group.Name|raw }}</a></li>
+				{% endfor %}
+			</ul>
+		{% elseif t == 'phthgroup' %}
+			<div class="no-results">
+				Не найдено фармако-терапевтических групп
+			</div>
+		{% endif %}
+	{% endif %}
+
 	{# Найдено препаратов #}
 	{% if productsPagination is defined %}
 		{% if productsPagination is not empty %}
@@ -119,69 +191,7 @@
 				</div>
 			</div>
 
-			<table class="products-table">
-				<tr class="products-table-header">
-					<td class="products-table-loz"></td>
-					<td>Название</td>
-					<td></td>
-					<td>Форма выпуска</td>
-					<td title="Владелец регистрационного удостоверения">Владелец рег/уд</td>
-				</tr>
-				{% for product in productsPagination %}
-					{% set id = product.ProductID %}
-					<tr>
-						<td class="products-table-loz">
-							{% if product.NonPrescriptionDrug %}
-								<img src="{{ asset('bundles/vidalmain/images/g2.gif') }}" class="loz"
-									 title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>
-							{% endif %}
-						</td>
-						<td class="products-table-name">
-							<a class="no-underline"
-							   href="{{ path('product', {'EngName':product.Name, 'ProductID':id}) }}">
-								{{ product.RusName|raw }}</a>
-						</td>
-						<td class="products-table-picture">
-							{% if pictures[id] is defined %}
-								{% set path = '/upload/products/' ~ pictures[id] %}
-								{% if is_file(path) %}
-									<img src="{{ path }}"/>
-								{% endif %}
-							{% endif %}
-						</td>
-						<td class="products-table-zip">
-							<div>{{ product.ZipInfo }}</div>
-						<span>рег. №: {{ product.RegistrationNumber }}
-							{% if product.RegistrationDate is not null %}
-								от {{ product.RegistrationDate|date('d.m.Y') }}
-							{% endif %}
-						</span>
-						</td>
-						<td class="products-table-company">
-							{# компании регистраторы/производители препарата #}
-							{% for company in companies[id] %}
-								<div>
-									<span class="tip">
-										{% if company.ItsMainCompany %}
-										{% elseif company.CompanyRusNote is not empty %}
-											{{ company.CompanyRusNote }}:
-										{% else %}
-											произведено:
-										{% endif %}
-									</span>
-									<a class="no-underline"
-									   href="{{ path('company', {'CompanyID':company.CompanyID}) }}">
-										{{ company.LocalName|raw }}
-									</a>
-									{% if company.Country is not empty %}
-										<span class="small">({{ company.Country }})</span>
-									{% endif %}
-								</div>
-							{% endfor %}
-						</td>
-					</tr>
-				{% endfor %}
-			</table>
+			{% include 'VidalMainBundle:Vidal:render_products.html.twig' with {'products':productsPagination.items} %}
 
 			<div class="navigation">
 				{{ knp_pagination_render(productsPagination) }}
@@ -227,7 +237,7 @@
 	{% endif %}
 
 	{# если общий поиск не дал результатов #}
-	{% if t == 'all' and
+	{% if q is not empty and t == 'all' and
 	(productsPagination is not defined or productsPagination is empty) and
 	(molecules is not defined or molecules is empty) and
 	(nozologies is not defined or nozologies is empty) %}
@@ -235,6 +245,8 @@
 			Не найдено результатов
 		</div>
 	{% endif %}
+
+	</div>
 
 {% endblock %}
 
@@ -246,14 +258,16 @@
 			font-size: 13px;
 		}
 		.block-anons {
-			padding-top:    6px;
-			padding-bottom: 6px;
+			padding: 6px 10px;
 		}
 		.no-results {
 			margin: 30px 0 24px;
 		}
 		.ul-style li {
 			padding-top: 2px;
+		}
+		.query {
+			text-decoration: underline;
 		}
 
 		/* search extended */
@@ -270,6 +284,21 @@
 			vertical-align: bottom;
 			margin:         0 0 0 4px;
 		}
+
+		/* atc-tree */
+		.atc-tree {
+			margin-bottom: 8px;
+		}
+		.atc-tree a {
+			font-weight: normal;
+			font-size:   12px;
+		}
+		#atc_collapse {
+			margin-left: 50px;
+		}
+		#atc_expand {
+			margin-left: 10px;
+		}
 	</style>
 {% endblock %}
 
@@ -283,28 +312,31 @@
 					minLength: 2,
 					source:    function(request, response) {
 						$.ajax({
-							url:      "http://vidal.evrika.ru:9200/website/autocompleteext/_search",
+							url:      "http://{{ app.debug ? 'localhost' : 'vidal.evrika.ru' }}:9200/website/autocompleteext/_search",
 							type:     "POST",
 							dataType: "JSON",
-							data:     '{ "query":{"query_string":{"query":"' + request.term + '*", "analyzer":"ru"}}, "fields":["name"], "size":15 }',
+							data:     '{ "query":{"query_string":{"query":"' + request.term + '*"}}, "fields":["name"], "size":15, "highlight":{"fields":{"name":{}}} }',
 							success:  function(data) {
 								response($.map(data.hits.hits, function(item) {
 									return {
-										label: item.fields._id,
+										label: item.highlight.name,
 										value: item.fields.name
 									}
 								}));
 							}
 						});
 					},
-					select: function(event, ui) {
-						if(ui.item) {
+					select:    function(event, ui) {
+						if (ui.item) {
 							$(this).val(ui.item.value);
 						}
 					}
-				});
+				}).data("ui-autocomplete")._renderItem = function(ul, item) {
+				return $("<li></li>").data("item.autocomplete", item).append("<a>" + item.label + "</a>").appendTo(ul);
+			};
 
-			$('#searche_form .search-type').chosen({disable_search:true});
-		});
+			$('#searche_form .search-type').chosen({disable_search: true});
+
+		})
 	</script>
 {% endblock %}

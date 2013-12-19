@@ -16,13 +16,13 @@ class ProductZipCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:productzip')
+		$this->setName('vidal:product_zip')
 			->setDescription('Removes &loz; from Product.ZipInfo');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln('--- vidal:productzip started');
+		$output->writeln('--- vidal:product_zip started');
 
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
@@ -47,6 +47,6 @@ class ProductZipCommand extends ContainerAwareCommand
 			))->execute();
 		}
 
-		$output->writeln('+++ vidal:productzip completed!');
+		$output->writeln('+++ vidal:product_zip completed!');
 	}
 }

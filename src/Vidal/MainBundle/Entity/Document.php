@@ -46,6 +46,9 @@ class Document
 	protected $ClPhGrDescription;
 
 	/** @ORM\Column(type="text", nullable=true) */
+	protected $ClPhGrName;
+
+	/** @ORM\Column(type="text", nullable=true) */
 	protected $PhInfluence;
 
 	/** @ORM\Column(type="text", nullable=true) */
@@ -1018,5 +1021,21 @@ class Document
 	public function getName()
 	{
 		return $this->Name;
+	}
+
+	/**
+	 * @param mixed $ClPhGrName
+	 */
+	public function setClPhGrName($ClPhGrName)
+	{
+		$this->ClPhGrName = $ClPhGrName;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getClPhGrName()
+	{
+		return $this->ClPhGrName;
 	}
 }

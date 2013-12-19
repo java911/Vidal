@@ -16,13 +16,13 @@ class DocumentCompositionCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:documentcomposition')
+		$this->setName('vidal:document_composition')
 			->setDescription('Edits compiled composition of document');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln('--- vidal:documentcomposition started');
+		$output->writeln('--- vidal:document_composition started');
 
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
@@ -50,6 +50,6 @@ class DocumentCompositionCommand extends ContainerAwareCommand
 			))->execute();
 		}
 
-		$output->writeln('+++ vidal:documentcomposition completed!');
+		$output->writeln('+++ vidal:document_composition completed!');
 	}
 }
