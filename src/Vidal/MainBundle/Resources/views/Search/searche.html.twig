@@ -78,14 +78,7 @@
 		</div>
 
 		{# раскрывающееся дерево АТХ #}
-		<div class="block">
-			<div class="block-head atc-tree">
-				Список кодов АТХ
-				<a id="atc_collapse" href="#" class="no-underline">свернуть</a>
-				<a id="atc_expand" href="#" class="no-underline">развернуть</a>
-			</div>
-			{{ render(controller('VidalMainBundle:Search:treeAtc')) }}
-		</div>
+		{% include 'VidalMainBundle:Search:tree_atc.html.twig' %}
 	{% endif %}
 
 	{# Найдено активных веществ #}
@@ -310,49 +303,39 @@
 {% block javascripts %}
 	{{ parent() }}
 
-	{% if atcTree is defined %}
-		<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.js') }}" type="text/javascript"></script>
-		<script type="text/javascript">
-			$(document).ready(function() {
-				var $tree = $('#tree_atc');
-				{% for code, atc in atcCodes %}
-					$tree.find('li[data="' + '{{ code }}' + '"]').addClass('selected').parents('ul').show();
-				{% endfor %}
-			});
-		</script>
-	{% endif %}
-
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('#searche_form .search-query')
-				.autocomplete({
-					minLength: 2,
-					source:    function(request, response) {
-						$.ajax({
-							url:      "http://{{ app.debug ? 'localhost' : 'vidal.evrika.ru' }}:9200/website/autocompleteext/_search",
-							type:     "POST",
-							dataType: "JSON",
-							data:     '{ "query":{"query_string":{"query":"' + request.term + '*"}}, "fields":["name"], "size":15, "highlight":{"fields":{"name":{}}} }',
-							success:  function(data) {
-								response($.map(data.hits.hits, function(item) {
-									return {
-										label: item.highlight.name,
-										value: item.fields.name
-									}
-								}));
-							}
-						});
-					},
-					select:    function(event, ui) {
-						if (ui.item) {
-							$(this).val(ui.item.value);
-						}
-					}
-				}).data("ui-autocomplete")._renderItem = function(ul, item) {
-				return $("<li></li>").data("item.autocomplete", item).append("<a>" + item.label + "</a>").appendTo(ul);
-			};
+			var $searcheForm = $('#searche_form');
 
-			$('#searche_form .search-type').chosen({disable_search: true});
+			$searcheForm.find('.search-query').autocomplete({
+				minLength: 2,
+				source:    function(request, response) {
+					$.ajax({
+						url:      "http://{{ app.debug ? 'localhost' : 'vidal.evrika.ru' }}:9200/website/autocompleteext/_search",
+						type:     "POST",
+						dataType: "JSON",
+						data:     '{ "query":{"query_string":{"query":"' + request.term + '*"}}, "fields":["name"], "size":15, "highlight":{"fields":{"name":{}}} }',
+						success:  function(data) {
+							response($.map(data.hits.hits, function(item) {
+								return {
+									label: item.highlight.name,
+									value: item.fields.name
+								}
+							}));
+						}
+					});
+				},
+				select:    function(event, ui) {
+					if (ui.item) {
+						$(this).val(ui.item.value);
+					}
+				}
+			}).data("ui-autocomplete")._renderItem =
+				function(ul, item) {
+					return $("<li></li>").data("item.autocomplete", item).append("<a>" + item.label + "</a>").appendTo(ul);
+				};
+
+			$searcheForm.find('.search-type').chosen({disable_search: true});
 		});
 	</script>
 {% endblock %}

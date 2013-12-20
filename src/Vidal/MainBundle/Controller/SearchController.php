@@ -160,7 +160,7 @@ class SearchController extends Controller
 	}
 
 	/**
-	 * @Cache(expires="tomorrow", public="true")
+	 * Функция генерации дерева с кодами АТС
 	 */
 	public function treeAtcAction()
 	{
