@@ -15,12 +15,22 @@
 		$("#tree_atc .selected").parents("ul").show();
 
 		$("#atc_expand").click(function() {
-			$("#tree_atc").find("ul").show();
+			var $tree = $('#tree_atc');
+			$tree.find('ul').show();
+			$tree.find('div.expandable-hitarea').removeClass('expandable-hitarea').addClass('collapsable-hitarea');
+			$tree.find('div.lastExpandable-hitarea').removeClass('lastExpandable-hitarea').addClass('lastCollapsable-hitarea');
+			$tree.find('li.expandable').removeClass('expandable').addClass('collapsable');
+			$tree.find('li.lastExpandable').removeClass('lastExpandable').addClass('lastCollapsable');
 			return false;
 		});
 
-		$("#atc_collapse").click(function() {
-			$("#tree_atc").find("ul").hide();
+		$('#atc_collapse').click(function() {
+			var $tree = $('#tree_atc');
+			$tree.find('ul').hide();
+			$tree.find('div.collapsable-hitarea').removeClass('collapsable-hitarea').addClass('expandable-hitarea');
+			$tree.find('div.lastCollapsable-hitarea').removeClass('lastCollapsable-hitarea').addClass('lastExpandable-hitarea');
+			$tree.find('li.collapsable').removeClass('collapsable').addClass('expandable');
+			$tree.find('li.lastCollapsable').removeClass('lastCollapsable').addClass('lastExpandable');
 			return false;
 		});
 	});

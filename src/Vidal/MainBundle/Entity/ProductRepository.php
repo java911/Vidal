@@ -183,11 +183,12 @@ class ProductRepository extends EntityRepository
 		$qb
 			->select('p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.ProductID,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
-				d.Indication')
+				d.Indication, d.ArticleID')
 			->from('VidalMainBundle:Product', 'p')
 			->leftJoin('VidalMainBundle:ProductDocument', 'pd', 'WITH', 'pd.ProductID = p')
 			->leftJoin('VidalMainBundle:Document', 'd', 'WITH', 'pd.DocumentID = d')
 			->orderBy('p.RusName', 'ASC')
+			->addOrderBy('pd.Ranking', 'DESC')
 			->andWhere("p.CountryEditionCode = 'RUS'")
 			->andWhere('p.MarketStatusID IN (1,2)');
 
@@ -213,7 +214,27 @@ class ProductRepository extends EntityRepository
 
 		$qb->andWhere($where);
 
-		return $qb->getQuery()->getResult();
+		$productsRaw     = $qb->getQuery()->getResult();
+		$products        = array();
+		$articlePriority = array(2, 5, 4, 3, 1);
+
+		# отсеиваем дубли препаратов
+		for ($i = 0; $i < count($productsRaw); $i++) {
+			$key = $productsRaw[$i]['ProductID'];
+			if (!isset($products[$key])) {
+				$products[$key] = $productsRaw[$i];
+			}
+			else {
+				# надо взять препарат по приоритету Document.ArticleID [2,5,4,3,1]
+				$curr = array_search($products[$key]['ArticleID'], $articlePriority);
+				$new  = array_search($productsRaw[$i]['ArticleID'], $articlePriority);
+				if ($new < $curr) {
+					$products[$key] = $productsRaw[$i];
+				}
+			}
+		}
+
+		return array_values($products);
 	}
 
 	public function findByDocuments25($documents)
@@ -368,9 +389,9 @@ class ProductRepository extends EntityRepository
 
 		$groups = $qb->getQuery()->getResult();
 
-		for ($i=0, $c=count($groups); $i<$c; $i++) {
-			$name = $this->mb_ucfirst($groups[$i]['Name']);
-			$groups[$i]['Name'] = preg_replace('/'. $q .'/iu', '<span class="query">$0</span>', $name);
+		for ($i = 0, $c = count($groups); $i < $c; $i++) {
+			$name               = $this->mb_ucfirst($groups[$i]['Name']);
+			$groups[$i]['Name'] = preg_replace('/' . $q . '/iu', '<span class="query">$0</span>', $name);
 		}
 
 		return $groups;

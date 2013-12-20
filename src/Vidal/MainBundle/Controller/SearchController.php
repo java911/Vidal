@@ -102,6 +102,9 @@ class SearchController extends Controller
 			$pagination                   = $paginator->paginate($products, $p, self::PRODUCTS_PER_PAGE);
 			$params['productsPagination'] = $pagination;
 
+			//TODO
+//			var_dump($products); exit;
+
 			if ($pagination->getTotalItemCount()) {
 				$productIds          = $this->getProductIds($pagination);
 				$params['companies'] = $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds);;
