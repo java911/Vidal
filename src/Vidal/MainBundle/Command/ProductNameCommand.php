@@ -32,7 +32,7 @@ class ProductNameCommand extends ContainerAwareCommand
 			SET p.Name = LOWER(p.EngName)
 			WHERE p.EngName NOT LIKE \'%<%\' AND
 				p.EngName NOT LIKE \'% %\' AND
-				p.EngName LIKE \'%/%\'
+				p.EngName NOT LIKE \'%/%\'
 		')->execute();
 
 		# далее надо преобразовать остальные по регуляркам

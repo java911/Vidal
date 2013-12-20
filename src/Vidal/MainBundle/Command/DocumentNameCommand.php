@@ -32,7 +32,7 @@ class DocumentNameCommand extends ContainerAwareCommand
 			SET d.Name = LOWER(d.EngName)
 			WHERE d.EngName NOT LIKE \'%<%\' AND
 				d.EngName NOT LIKE \'% %\' AND
-				d.EngName NOT LIKE \'%/%\' AND
+				d.EngName NOT LIKE \'%/%\'
 		')->execute();
 
 		# далее надо преобразовать остальные по регуляркам
