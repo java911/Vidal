@@ -161,6 +161,7 @@ class SearchController extends Controller
 
 	/**
 	 * Функция генерации дерева с кодами АТС
+	 * @Route("/tree/atc", name="tree_atc")
 	 */
 	public function treeAtcAction()
 	{
@@ -186,7 +187,7 @@ class SearchController extends Controller
 			}
 		}
 
-		return $this->render('VidalMainBundle:Search:tree_atc.html.twig', array(
+		return $this->render('VidalMainBundle:Search:tree_atc_generator.html.twig', array(
 			'atcGrouped' => $atcGrouped,
 		));
 	}

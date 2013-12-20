@@ -1,10 +1,7 @@
 {% for atc in atcGrouped %}
 	<li data="{{ atc.ATCCode }}">
 		<span>{{ atc.ATCCode }}</span>
-		<div>
-			<span><a href="{{ path('atc', {'ATCCode':atc.ATCCode}) }}"
-					class="no-underline">{{ atc.RusName|raw }}</a></span>
-		</div>
+		<i><a href="#">{{ atc.RusName|raw }}</a></i>
 		{% if atc.list is not empty %}
 			<ul>
 				{% include 'VidalMainBundle:Search:tree_atc_render.html.twig' with {'atcGrouped':atc.list} %}

@@ -31,7 +31,8 @@ class DocumentNameCommand extends ContainerAwareCommand
 			UPDATE VidalMainBundle:Document d
 			SET d.Name = LOWER(d.EngName)
 			WHERE d.EngName NOT LIKE \'%<%\' AND
-				d.EngName NOT LIKE \'% %\'
+				d.EngName NOT LIKE \'% %\' AND
+				d.EngName NOT LIKE \'%/%\' AND
 		')->execute();
 
 		# далее надо преобразовать остальные по регуляркам
@@ -39,14 +40,14 @@ class DocumentNameCommand extends ContainerAwareCommand
 			SELECT COUNT(d.DocumentID)
 			FROM VidalMainBundle:Document d
 			WHERE d.CountryEditionCode = \'RUS\' AND
-			 	(d.EngName LIKE \'%<%\' OR d.EngName LIKE \'% %\')
+			 	(d.EngName LIKE \'%<%\' OR d.EngName LIKE \'% %\' OR d.EngName LIKE \'%/%\')
 		')->getSingleScalarResult();
 
 		$query = $em->createQuery('
 			SELECT d.DocumentID, d.EngName
 			FROM VidalMainBundle:Document d
 			WHERE d.CountryEditionCode = \'RUS\' AND
-				(d.EngName LIKE \'%<%\' OR d.EngName LIKE \'% %\')
+				(d.EngName LIKE \'%<%\' OR d.EngName LIKE \'% %\' OR d.EngName LIKE \'%/%\')
 		');
 
 		$updateQuery = $em->createQuery('
@@ -64,8 +65,8 @@ class DocumentNameCommand extends ContainerAwareCommand
 				->getResult();
 
 			foreach ($documents as $document) {
-				$p    = array('/ /', '/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i');
-				$r    = array('-', '', '');
+				$p    = array('/ /', '/\\//', '/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i');
+				$r    = array('-', '-', '', '');
 				$name = preg_replace($p, $r, $document['EngName']);
 				$name = mb_strtolower($name, 'UTF-8');
 

@@ -72,7 +72,7 @@ class VidalController extends Controller
 
 	/**
 	 * Список препаратов по коду АТХ
-	 * @Route("poisk_preparatov/lat_{ATCCode}.{ext}", name="atc", defaults={"ext"="htm"})
+	 * @Route("poisk_preparatov/lat_{ATCCode}.{ext}", name="atc", options={"expose":true}, defaults={"ext"="htm"})
 	 *
 	 * @Template("VidalMainBundle:Vidal:atc.html.twig")
 	 */

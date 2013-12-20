@@ -4,15 +4,22 @@
 		<a id="atc_collapse" href="#" class="no-underline">свернуть</a>
 		<a id="atc_expand" href="#" class="no-underline">развернуть</a>
 	</div>
-	{% include 'VidalMainBundle:Search:tree_atc_html.html.twig' %}
+	{% include 'VidalMainBundle:Search:tree_atc_generated.html.twig' %}
 </div>
 
+<script src="{{ asset('bundles/vidalmain/javascripts/jquery.cookie.js') }}" type="text/javascript"></script>
 <script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		var $tree = $('#tree_atc');
 
-		$tree.treeview({animated: "fast", collapsed: true, toggle: false});
+		$tree.treeview({
+			animated:  "fast",
+			collapsed: true,
+			toggle:    false,
+			persist:   "cookie",
+			cookieId:  "tree_atc"
+		});
 
 		{# Для дерева кодов АТС нужно раскрыть узлы найденных #}
 		{% for code, atc in atcCodes %}
@@ -51,6 +58,11 @@
 			$tree.find('div.lastCollapsable-hitarea').removeClass('lastCollapsable-hitarea').addClass('lastExpandable-hitarea');
 			$tree.find('li.collapsable').removeClass('collapsable').addClass('expandable');
 			$tree.find('li.lastCollapsable').removeClass('lastCollapsable').addClass('lastExpandable');
+			return false;
+		});
+
+		$tree.find('i > a').click(function() {
+			location.href = Routing.generate('atc', {'ATCCode': $(this).closest('li').attr('data')});
 			return false;
 		});
 	});

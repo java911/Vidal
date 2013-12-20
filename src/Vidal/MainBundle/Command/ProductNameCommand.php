@@ -28,10 +28,11 @@ class ProductNameCommand extends ContainerAwareCommand
 
 		# надо установить имена для препаратов без тегов/пробелов в нижний регистр
 		$em->createQuery('
-			UPDATE VidalMainBundle:Document d
-			SET d.Name = LOWER(d.EngName)
-			WHERE d.EngName NOT LIKE \'%<%\' AND
-				d.EngName NOT LIKE \'% %\'
+			UPDATE VidalMainBundle:Product p
+			SET p.Name = LOWER(p.EngName)
+			WHERE p.EngName NOT LIKE \'%<%\' AND
+				p.EngName NOT LIKE \'% %\' AND
+				p.EngName LIKE \'%/%\'
 		')->execute();
 
 		# далее надо преобразовать остальные по регуляркам
@@ -41,7 +42,7 @@ class ProductNameCommand extends ContainerAwareCommand
 			WHERE p.CountryEditionCode = \'RUS\' AND
 				p.MarketStatusID IN (1,2)  AND
 				p.ProductTypeCode IN (\'DRUG\', \'GOME\') AND
-				(p.EngName LIKE \'%<%\' OR p.EngName LIKE \'% %\')
+				(p.EngName LIKE \'%<%\' OR p.EngName LIKE \'% %\' OR p.EngName LIKE \'%/%\')
 		')->getSingleScalarResult();
 
 		$query = $em->createQuery('
@@ -50,7 +51,7 @@ class ProductNameCommand extends ContainerAwareCommand
 			WHERE p.CountryEditionCode = \'RUS\' AND
 				p.MarketStatusID IN (1,2)  AND
 				p.ProductTypeCode IN (\'DRUG\', \'GOME\') AND
-				(p.EngName LIKE \'%<%\' OR p.EngName LIKE \'% %\')
+				(p.EngName LIKE \'%<%\' OR p.EngName LIKE \'% %\' OR p.EngName LIKE \'%/%\')
 		');
 
 		$updateQuery = $em->createQuery('
@@ -68,8 +69,8 @@ class ProductNameCommand extends ContainerAwareCommand
 				->getResult();
 
 			foreach ($products as $product) {
-				$p    = array('/ /', '/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i');
-				$r    = array('-', '', '');
+				$p    = array('/ /', '/\\//', '/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i');
+				$r    = array('-', '-', '', '');
 				$name = preg_replace($p, $r, $product['EngName']);
 				$name = mb_strtolower($name, 'UTF-8');
 
