@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 
 class SearchController extends Controller
 {
@@ -102,9 +103,6 @@ class SearchController extends Controller
 			$pagination                   = $paginator->paginate($products, $p, self::PRODUCTS_PER_PAGE);
 			$params['productsPagination'] = $pagination;
 
-			//TODO
-//			var_dump($products); exit;
-
 			if ($pagination->getTotalItemCount()) {
 				$productIds          = $this->getProductIds($pagination);
 				$params['companies'] = $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds);;
@@ -126,8 +124,8 @@ class SearchController extends Controller
 
 			# поиск по АТХ коду
 			if ($t == 'atc') {
-				$params['atcCodes']   = $em->getRepository('VidalMainBundle:ATC')->findByQuery($q);
-				$params['atcGrouped'] = $this->getAtcGrouped();
+				$params['atcCodes'] = $em->getRepository('VidalMainBundle:ATC')->findByQuery($q);
+				$params['atcTree']  = true;
 			}
 
 			# поиск по производителю
@@ -161,7 +159,10 @@ class SearchController extends Controller
 		return $productIds;
 	}
 
-	private function getAtcGrouped()
+	/**
+	 * @Cache(expires="tomorrow", public="true")
+	 */
+	public function treeAtcAction()
 	{
 		$em         = $this->getDoctrine()->getManager();
 		$atcCodes   = $em->getRepository('VidalMainBundle:ATC')->findAll();
@@ -185,6 +186,8 @@ class SearchController extends Controller
 			}
 		}
 
-		return $atcGrouped;
+		return $this->render('VidalMainBundle:Search:tree_atc.html.twig', array(
+			'atcGrouped' => $atcGrouped,
+		));
 	}
 }

@@ -78,16 +78,14 @@
 		</div>
 
 		{# раскрывающееся дерево АТХ #}
-		{% if atcGrouped is defined and atcGrouped is not empty %}
-			<div class="block">
-				<div class="block-head atc-tree">
-					Список кодов АТХ
-					<a id="atc_collapse" href="#" class="no-underline">свернуть</a>
-					<a id="atc_expand" href="#" class="no-underline">развернуть</a>
-				</div>
-				{% include 'VidalMainBundle:Search:tree_atc.html.twig' %}
+		<div class="block">
+			<div class="block-head atc-tree">
+				Список кодов АТХ
+				<a id="atc_collapse" href="#" class="no-underline">свернуть</a>
+				<a id="atc_expand" href="#" class="no-underline">развернуть</a>
 			</div>
-		{% endif %}
+			{{ render(controller('VidalMainBundle:Search:treeAtc')) }}
+		</div>
 	{% endif %}
 
 	{# Найдено активных веществ #}
@@ -253,6 +251,27 @@
 
 {% block stylesheets %}
 	{{ parent() }}
+
+	{% if atcTree is defined %}
+		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/treeview/jquery.treeview.css') }}"/>
+		<style type="text/css">
+			/* atc-tree */
+			.atc-tree {
+				margin-bottom: 8px;
+			}
+			.atc-tree a {
+				font-weight: normal;
+				font-size:   12px;
+			}
+			#atc_collapse {
+				margin-left: 50px;
+			}
+			#atc_expand {
+				margin-left: 10px;
+			}
+		</style>
+	{% endif %}
+
 	<style type="text/css">
 		.products-table {
 			font-size: 13px;
@@ -284,27 +303,25 @@
 			vertical-align: bottom;
 			margin:         0 0 0 4px;
 		}
-
-		/* atc-tree */
-		.atc-tree {
-			margin-bottom: 8px;
-		}
-		.atc-tree a {
-			font-weight: normal;
-			font-size:   12px;
-		}
-		#atc_collapse {
-			margin-left: 50px;
-		}
-		#atc_expand {
-			margin-left: 10px;
-		}
 	</style>
 {% endblock %}
 
 
 {% block javascripts %}
 	{{ parent() }}
+
+	{% if atcTree is defined %}
+		<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.js') }}" type="text/javascript"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				var $tree = $('#tree_atc');
+				{% for code, atc in atcCodes %}
+					$tree.find('li[data="' + '{{ code }}' + '"]').addClass('selected').parents('ul').show();
+				{% endfor %}
+			});
+		</script>
+	{% endif %}
+
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#searche_form .search-query')
@@ -336,7 +353,6 @@
 			};
 
 			$('#searche_form .search-type').chosen({disable_search: true});
-
 		})
 	</script>
 {% endblock %}

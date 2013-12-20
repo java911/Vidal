@@ -1,21 +1,17 @@
 <ul id="tree_atc">
-	{% include 'VidalMainBundle:Search:render_tree_atc.html.twig' %}
+	{% include 'VidalMainBundle:Search:tree_atc_render.html.twig' %}
 </ul>
 
-<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/treeview/jquery.treeview.css') }}"/>
-<script src="{{ asset('bundles/vidalmain/javascripts/jquery.cookie.js') }}" type="text/javascript"></script>
-<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.js') }}" type="text/javascript"></script>
+
 <script type="text/javascript">
-	$(document).ready(function() {
-		$("#tree_atc").treeview({
-			animated: "fast",
+		var $tree = $('#tree_atc');
+
+		$tree.treeview({
+			animated:  "fast",
 			collapsed: true
 		});
 
-		$("#tree_atc .selected").parents("ul").show();
-
 		$("#atc_expand").click(function() {
-			var $tree = $('#tree_atc');
 			$tree.find('ul').show();
 			$tree.find('div.expandable-hitarea').removeClass('expandable-hitarea').addClass('collapsable-hitarea');
 			$tree.find('div.lastExpandable-hitarea').removeClass('lastExpandable-hitarea').addClass('lastCollapsable-hitarea');
