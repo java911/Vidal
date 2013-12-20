@@ -22,7 +22,7 @@ class AutocompleteExtCommand extends ContainerAwareCommand
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln('--- vidal:autocompleteext started');
+		$output->writeln('--- vidal:autocomplete_ext started');
 
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
@@ -69,6 +69,6 @@ class AutocompleteExtCommand extends ContainerAwareCommand
 			}
 		}
 
-		$output->writeln("+++ vidal:autocompleteext loaded $i documents!");
+		$output->writeln("+++ vidal:autocomplete_ext loaded $i documents!");
 	}
 }

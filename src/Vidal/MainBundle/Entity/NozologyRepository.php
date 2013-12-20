@@ -44,16 +44,27 @@ class NozologyRepository extends EntityRepository
 
 	public function findByQuery($q)
 	{
-		$nozologies = $this->_em->createQuery('
-			SELECT DISTINCT n.Code, n.Name
-			FROM VidalMainBundle:Nozology n
-			WHERE n.Name LIKE :q or n.Name LIKE :q2
-			ORDER BY n.Name ASC
-		')->setParameters(array(
-				'q'  => $q . '%',
-				'q2' => '% ' . $q . '%'
-			))
-			->getResult();
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select('DISTINCT n.Code, n.Name')
+			->from('VidalMainBundle:Nozology', 'n')
+			->orderBy('n.Name', 'ASC');
+
+		# поиск по словам
+		$where = '';
+		$words = explode(' ', $q);
+
+		for ($i = 0; $i < count($words); $i++) {
+			$word = $words[$i];
+			if ($i > 0) {
+				$where .= ' OR ';
+			}
+			$where .= "(n.Name LIKE '$word%' OR n.Name LIKE '% $word%')";
+		}
+
+		$qb->where($where);
+
+		$nozologies = $qb->getQuery()->getResult();
 
 		for ($i=0, $c=count($nozologies); $i<$c; $i++) {
 			$nozologies[$i]['Name'] = preg_replace('/' . $q . '/iu', '<span class="query">$0</span>', $nozologies[$i]['Name']);
