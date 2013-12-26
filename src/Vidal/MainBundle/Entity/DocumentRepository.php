@@ -132,10 +132,9 @@ class DocumentRepository extends EntityRepository
 	public function findByNozologyCode($code)
 	{
 		return $this->_em->createQuery("
-			SELECT DISTINCT d.DocumentID, d.ArticleID
+			SELECT DISTINCT d.DocumentID, d.ArticleID, d.CountryEditionCode
 			FROM VidalMainBundle:Document d
 			JOIN d.nozologies n WITH n.Code = :code
-			WHERE d.CountryEditionCode = 'RUS'
 		")->setParameter('code', $code)
 			->getResult();
 	}

@@ -241,8 +241,10 @@ class ProductRepository extends EntityRepository
 	{
 		$documentIds = array();
 
+		//d.CountryEditionCode = 'RUS'
 		foreach ($documents as $document) {
-			if ($document['ArticleID'] == 2 || $document['ArticleID'] == 5) {
+			if ($document['CountryEditionCode'] == 'RUS' &&
+				($document['ArticleID'] == 2 || $document['ArticleID'] == 5)) {
 				$documentIds[] = $document['DocumentID'];
 			}
 		}
@@ -285,7 +287,8 @@ class ProductRepository extends EntityRepository
 		$documentIds = array();
 
 		foreach ($documents as $document) {
-			if ($document['ArticleID'] == 4) {
+			if ($document['CountryEditionCode'] == 'RUS' &&
+				$document['ArticleID'] == 4) {
 				$documentIds[] = $document['DocumentID'];
 			}
 		}
