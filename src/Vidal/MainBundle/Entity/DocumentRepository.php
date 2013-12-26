@@ -170,4 +170,26 @@ class DocumentRepository extends EntityRepository
 
 		return $groups;
 	}
+
+	public function findIdsByInfoPageID($InfoPageID)
+	{
+		$documentsRaw = $this->_em->createQuery('
+			SELECT DISTINCT d.DocumentID
+			FROM VidalMainBundle:Document d
+			JOIN VidalMainBundle:DocumentInfoPage di WITH di.DocumentID = d
+			WHERE di.InfoPageID = :InfoPageID AND
+				d.CountryEditionCode = \'RUS\' AND
+				d.ArticleID IN (2,5,4,3)
+			ORDER BY d.DocumentID
+		')->setParameter('InfoPageID', $InfoPageID)
+			->getResult();
+
+		$documents = array();
+
+		foreach ($documentsRaw as $document) {
+			$documents[] = $document['DocumentID'];
+		}
+
+		return $documents;
+	}
 }

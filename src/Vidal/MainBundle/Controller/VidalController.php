@@ -240,24 +240,22 @@ class VidalController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		$productsRaw = $em->getRepository('VidalMainBundle:Product')->findByInfoPageID($InfoPageID);
-		$products    = array();
+		$picture     = $em->getRepository('VidalMainBundle:Picture')->findByInfoPageID($InfoPageID);
+		$params      = array('infoPage' => $infoPage, 'picture' => $picture);
+		$documentIds = $em->getRepository('VidalMainBundle:Document')->findIdsByInfoPageID($InfoPageID);
 
-		# надо отсеить дубли
-		for ($i = 0; $i < count($productsRaw); $i++) {
-			$key = $productsRaw[$i]['ProductID'];
-			if (!isset($products[$key])) {
-				$products[$key] = $productsRaw[$i];
+		if (!empty($documentIds)) {
+			$products = $em->getRepository('VidalMainBundle:Product')->findByDocumentIDs($documentIds);
+
+			if (!empty($products)) {
+				$productIds          = $this->getProductIds($products);
+				$params['products']  = $products;
+				$params['companies'] = $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds);
+				$params['pictures']  = $em->getRepository('VidalMainBundle:Picture')->findByProductIds($productIds);
 			}
 		}
 
-		$picture = $em->getRepository('VidalMainBundle:Picture')->findByInfoPageID($InfoPageID);
-
-		return array(
-			'infoPage' => $infoPage,
-			'products' => $products,
-			'picture'  => $picture,
-		);
+		return $params;
 	}
 
 	/**

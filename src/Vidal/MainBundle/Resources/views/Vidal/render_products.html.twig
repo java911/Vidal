@@ -26,7 +26,9 @@
 				{% if pictures[id] is defined %}
 					{% set path = '/upload/products/' ~ pictures[id] %}
 					{% if is_file(path) %}
-						<img src="{{ path }}"/>
+						<a class="no-underline"
+						   href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"
+							><img src="{{ path }}"/></a>
 					{% endif %}
 				{% endif %}
 			</td>

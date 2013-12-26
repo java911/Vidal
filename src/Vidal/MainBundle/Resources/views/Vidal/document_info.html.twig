@@ -3,7 +3,7 @@
 	<div class="block" id="description">
 		<span class="block-head">Клинико-фармакологическая группа: </span>
 		<span class="block-content">
-			<a href="{{ path('clphgroup', {'description':document.ClPhGrDescription|raw}) }}"
+			<a href="{{ path('clphgroup', {'description':document.ClPhGrName}) }}"
 			   class="no-underline">{{ document.ClPhGrDescription|raw }}</a>
 		</span>
 	</div>
