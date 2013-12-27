@@ -8,6 +8,33 @@
 
 	<div class="search-results">
 
+	{# Найдено препаратов #}
+	{% if filtered is defined %}
+		{% if filtered.productsPagination is not empty %}
+			<div class="block">
+				<div class="block-anons">
+					<div class="block-head">
+						Найдено препаратов: <span>{{ filtered.productsPagination.totalItemCount }}</span>
+					</div>
+				</div>
+			</div>
+
+			{% include 'VidalMainBundle:Vidal:render_products.html.twig' with {
+			'products':filtered.productsPagination.items,
+			'companies':filtered.companies,
+			'pictures':filtered.pictures
+			} %}
+
+			<div class="navigation">
+				{{ knp_pagination_render(filtered.productsPagination) }}
+			</div>
+		{% elseif t == 'product' %}
+			<div class="no-results">
+				Не найдено результатов по препарату <span>{{ q }}</span>
+			</div>
+		{% endif %}
+	{% endif %}
+
 	{# Найдено показаний #}
 	{% if nozologies is defined %}
 		{% if nozologies is not empty %}
@@ -228,7 +255,9 @@
 	{% endif %}
 
 	{# если общий поиск не дал результатов #}
-	{% if q is not empty and t == 'all' and
+	{% if q is not empty and
+	t == 'all' and
+	filtered is not defined
 	(productsPagination is not defined or productsPagination is empty) and
 	(molecules is not defined or molecules is empty) and
 	(nozologies is not defined or nozologies is empty) %}
@@ -244,6 +273,7 @@
 
 {% block stylesheets %}
 	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/searche.css') }}"/>
 
 	{% if atcTree is defined %}
 		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/treeview/jquery.treeview.css') }}"/>
@@ -264,39 +294,6 @@
 			}
 		</style>
 	{% endif %}
-
-	<style type="text/css">
-		.products-table {
-			font-size: 13px;
-		}
-		.block-anons {
-			padding: 6px 10px;
-		}
-		.no-results {
-			margin: 30px 0 24px;
-		}
-		.ul-style li {
-			padding-top: 2px;
-		}
-		.query {
-			text-decoration: underline;
-		}
-
-		/* search extended */
-		#searche_form .search-type, #searche_form .chosen-container .chosen-drop {
-			width: 250px;
-		}
-		#searche_form .search-bad {
-			font-size:  11px;
-			text-align: right;
-			margin:     4px 3px 0 3px;
-			color:      #999;
-		}
-		#search_bad {
-			vertical-align: bottom;
-			margin:         0 0 0 4px;
-		}
-	</style>
 {% endblock %}
 
 

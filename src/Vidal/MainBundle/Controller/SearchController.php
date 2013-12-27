@@ -70,7 +70,7 @@ class SearchController extends Controller
 	}
 
 	/**
-	 * @Route("/searche", name="searche")
+	 * @Route("/searche", name="searche", options={"expose"=true})
 	 *
 	 * @Template("VidalMainBundle:Search:searche.html.twig")
 	 */
@@ -83,64 +83,88 @@ class SearchController extends Controller
 		$p           = $request->query->get('p', 1); # номер страницы
 		$badIncluded = $request->query->has('b'); # включать ли бады
 		$params      = array('q' => $q, 't' => $t);
+		$hasFilter   = $request->query->has('nozology') || $request->query->has('contra');
 
-		# поисковый запрос не может быть меньше 2
-		if (empty($q)) {
-			return $params;
-		}
-		elseif (mb_strlen($q, 'UTF-8') < 2) {
-			return $this->render('VidalMainBundle:Search:searche_too_short.html.twig', $params);
-		}
+		if ($hasFilter) {
+			$nozologyCodes = $request->query->has('nozology') ? explode('-', $request->query->get('nozology')) : null;
+			$contraCodes   = $request->query->has('contra') ? exmplode('-', $request->query->get('contra')) : null;
+			$documentIds   = $em->getRepository('VidalMainBundle:Document')
+				->findIdsByNozologyContraCodes($nozologyCodes, $contraCodes);
 
-		# для некоторых типов запроса надо найти основание слова (чтоб не учитывать окончание)
-		if (in_array($t, array('all', 'molecule', 'atc', 'nosology', 'clphgroup', 'phthgroup'))) {
-			$q = $this->get('lingua.service')->stem_string($q);
-		}
+			if (!empty($documentIds)) {
+				$products = $em->getRepository('VidalMainBundle:Product')->findByDocumentIDs($documentIds);
+				if (!empty($products)) {
+					$paginator  = $this->get('knp_paginator');
+					$pagination = $paginator->paginate($products, $p, self::PRODUCTS_PER_PAGE);
+					$productIds = $this->getProductIds($products);
 
-		if ($t == 'all' || $t == 'product') {
-			$products                     = $em->getRepository('VidalMainBundle:Product')->findByQuery($q, $badIncluded);
-			$paginator                    = $this->get('knp_paginator');
-			$pagination                   = $paginator->paginate($products, $p, self::PRODUCTS_PER_PAGE);
-			$params['productsPagination'] = $pagination;
-
-			if ($pagination->getTotalItemCount()) {
-				$productIds          = $this->getProductIds($pagination);
-				$params['companies'] = $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds);;
-				$params['pictures'] = $em->getRepository('VidalMainBundle:Picture')->findByProductIds($productIds);
+					$params['filtered']['productsPagination'] = $pagination;
+					$params['filtered']['companies']          = $em->getRepository('VidalMainBundle:Company')
+						->findByProducts($productIds);;
+					$params['filtered']['pictures'] = $em->getRepository('VidalMainBundle:Picture')
+						->findByProductIds($productIds);
+				}
 			}
 		}
-
-		# на следующих страницах отображаются только препараты
-		if ($p == 1) {
-			# поиск по активному веществу
-			if ($t == 'all' || $t == 'molecule') {
-				$params['molecules'] = $em->getRepository('VidalMainBundle:Molecule')->findByQuery($q);
+		else {
+			# поисковый запрос не может быть меньше 2
+			if (empty($q)) {
+				return $params;
+			}
+			elseif (mb_strlen($q, 'UTF-8') < 2) {
+				return $this->render('VidalMainBundle:Search:searche_too_short.html.twig', $params);
 			}
 
-			# поиск по показаниям (МКБ-10) - Nozology
-			if ($t == 'all' || $t == 'nosology') {
-				$params['nozologies'] = $em->getRepository('VidalMainBundle:Nozology')->findByQuery($q);
+			# для некоторых типов запроса надо найти основание слова (чтоб не учитывать окончание)
+			if (in_array($t, array('all', 'molecule', 'atc', 'nosology', 'clphgroup', 'phthgroup'))) {
+				$q = $this->get('lingua.service')->stem_string($q);
 			}
 
-			# поиск по АТХ коду
-			if ($t == 'atc') {
-				$params['atcCodes'] = $em->getRepository('VidalMainBundle:ATC')->findByQuery($q);
-				$params['atcTree']  = true;
+			if ($t == 'all' || $t == 'product') {
+				$products                     = $em->getRepository('VidalMainBundle:Product')->findByQuery($q, $badIncluded);
+				$paginator                    = $this->get('knp_paginator');
+				$pagination                   = $paginator->paginate($products, $p, self::PRODUCTS_PER_PAGE);
+				$params['productsPagination'] = $pagination;
+
+				if ($pagination->getTotalItemCount()) {
+					$productIds          = $this->getProductIds($pagination);
+					$params['companies'] = $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds);;
+					$params['pictures'] = $em->getRepository('VidalMainBundle:Picture')->findByProductIds($productIds);
+				}
 			}
 
-			# поиск по производителю
-			if ($t == 'firm') {
-				$params['firms'] = $em->getRepository('VidalMainBundle:Company')->findByQuery($q);
-			}
+			# на следующих страницах отображаются только препараты
+			if ($p == 1) {
+				# поиск по активному веществу
+				if ($t == 'all' || $t == 'molecule') {
+					$params['molecules'] = $em->getRepository('VidalMainBundle:Molecule')->findByQuery($q);
+				}
 
-			# поиск по клиннико-фармакологической группе
-			if ($t == 'clphgroup') {
-				$params['clphgroups'] = $em->getRepository('VidalMainBundle:Document')->findClPhGroupsByQuery($q);
-			}
+				# поиск по показаниям (МКБ-10) - Nozology
+				if ($t == 'all' || $t == 'nosology') {
+					$params['nozologies'] = $em->getRepository('VidalMainBundle:Nozology')->findByQuery($q);
+				}
 
-			# поиск по фармако-терапевтической группе
-			if ($t == 'phthgroup') {
-				$params['phthgroups'] = $em->getRepository('VidalMainBundle:Product')->findPhThGroupsByQuery($q);
+				# поиск по АТХ коду
+				if ($t == 'atc') {
+					$params['atcCodes'] = $em->getRepository('VidalMainBundle:ATC')->findByQuery($q);
+					$params['atcTree']  = true;
+				}
+
+				# поиск по производителю
+				if ($t == 'firm') {
+					$params['firms'] = $em->getRepository('VidalMainBundle:Company')->findByQuery($q);
+				}
+
+				# поиск по клиннико-фармакологической группе
+				if ($t == 'clphgroup') {
+					$params['clphgroups'] = $em->getRepository('VidalMainBundle:Document')->findClPhGroupsByQuery($q);
+				}
+
+				# поиск по фармако-терапевтической группе
+				if ($t == 'phthgroup') {
+					$params['phthgroups'] = $em->getRepository('VidalMainBundle:Product')->findPhThGroupsByQuery($q);
+				}
 			}
 		}
 

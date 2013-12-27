@@ -192,4 +192,31 @@ class DocumentRepository extends EntityRepository
 
 		return $documents;
 	}
+
+	public function findIdsByNozologyContraCodes($nozologyCodes, $contraCodes)
+	{
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select('DISTINCT d.DocumentID')
+			->from('VidalMainBundle:Document', 'd');
+
+		if (!empty($nozologyCodes)) {
+			$qb->join('d.nozologies', 'n', 'WITH', 'n.NozologyCode IN (:nozologyCodes)')
+				->setParameter('nozologyCodes', $nozologyCodes);
+		}
+
+		if (!empty($contraCodes)) {
+			$qb->join('d.contraindications', 'c', 'WITH', 'c.ContraIndicCode NOT IN (:contraCodes)')
+				->setParameter('contraCodes', $contraCodes);
+		}
+
+		$documents = $qb->getQuery()->getResult();
+		$documentIds = array();
+
+		for ($i=0, $c=count($documents); $i<$c; $i++) {
+			$documentIds[] = $documents[$i]['DocumentID'];
+		}
+
+		return $documentIds;
+	}
 }
