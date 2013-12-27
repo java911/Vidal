@@ -43,6 +43,7 @@ class AutocompleteContraindicationCommand extends ContainerAwareCommand
 
 		# Set mapping
 		$mapping->setProperties(array(
+			'code' => array('type' => 'string', 'include_in_all' => TRUE),
 			'name' => array('type' => 'string', 'include_in_all' => TRUE),
 		));
 
@@ -53,7 +54,10 @@ class AutocompleteContraindicationCommand extends ContainerAwareCommand
 		$documents = array();
 
 		for ($i = 0; $i < count($contraindications); $i++) {
-			$documents[] = new \Elastica\Document($i + 1, array('name' => $contraindications[$i]['RusName']));
+			$documents[] = new \Elastica\Document($i + 1, array(
+				'code' => $contraindications[$i]['ContraIndicCode'],
+				'name' => $contraindications[$i]['RusName']
+			));
 
 			if ($i && $i % 500 == 0) {
 				$elasticaType->addDocuments($documents);
