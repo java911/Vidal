@@ -39,3 +39,49 @@
 
 	<input class="search-button btn-white" type="submit" value="Найти"/>
 </form>
+
+<div id="searche_filter">
+	<div class="searche-filter-title">Найти препараты c показаниями или исключая противопоказания</div>
+	<div class="searche-filter-content">
+		<div class="searche-nozologies">
+			<div class="label">Показания</div>
+			<div class="items">
+				<input id="searche_nozology" type="text"/>
+				<ul></ul>
+			</div>
+		</div>
+		<div class="searche-contraindications">
+			<div class="label">Противопоказания</div>
+			<div class="items">
+				<input id="searche_contraindication" type="text"/>
+				<ul></ul>
+			</div>
+		</div>
+		<button class="searche-submit btn-white">Поиск</button>
+	</div>
+</div>
+
+<style>
+	/* Фильтр поиска показаний/противопоказаний */
+	#searche_filter {
+		display: none;
+	}
+	#searche_filter .searche-filter-title {
+		font-weight:   bold;
+		margin-bottom: 8px;
+		margin-top:    12px;
+		color:         #476173;
+	}
+	#searche_filter .searche-nozologies,
+	#searche_filter .searche-contraindications {
+		overflow: hidden;
+	}
+	#searche_filter .label {
+		width: 120px;
+		float: left;
+	}
+	#searche_filter input {
+		margin: 0;
+		width:  416px;
+	}
+</style>

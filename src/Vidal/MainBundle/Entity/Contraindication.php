@@ -4,7 +4,7 @@ namespace Vidal\MainBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/** @ORM\Entity @ORM\Table(name="index_contraindication") */
+/** @ORM\Entity(repositoryClass="ContraindicationRepository") @ORM\Table(name="index_contraindication") */
 class Contraindication
 {
 	/** @ORM\Id @ORM\Column(length=10) */

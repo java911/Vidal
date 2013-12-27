@@ -8,21 +8,21 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Команда генерации показаний Nozology
+ * Команда генерации автодополнения показаний Nozology
  *
  * @package Vidal\MainBundle\Command
  */
-class NozologyCommand extends ContainerAwareCommand
+class AutocompleteNozologyCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:nozology')
-			->setDescription('Creates nozology type in Elastica');
+		$this->setName('vidal:autocomplete_nozology')
+			->setDescription('Creates autocomplete_nozology type in Elastica');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln('--- vidal:nozology started');
+		$output->writeln('--- vidal:autocomplete_nozology started');
 
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
@@ -30,7 +30,7 @@ class NozologyCommand extends ContainerAwareCommand
 
 		$elasticaClient = new \Elastica\Client();
 		$elasticaIndex  = $elasticaClient->getIndex('website');
-		$elasticaType   = $elasticaIndex->getType('nozology');
+		$elasticaType   = $elasticaIndex->getType('autocomplete_nozology');
 
 		# delete if exists
 		if ($elasticaType->exists()) {
@@ -62,9 +62,12 @@ class NozologyCommand extends ContainerAwareCommand
 			if ($i && $i % 500 == 0) {
 				$elasticaType->addDocuments($documents);
 				$elasticaType->getIndex()->refresh();
+				$documents = array();
 			}
 		}
 
-		$output->writeln("+++ vidal:nozology loaded $i documents!");
+		$elasticaType->getIndex()->refresh();
+
+		$output->writeln("+++ vidal:autocomplete_nozology loaded $i documents!");
 	}
 }
