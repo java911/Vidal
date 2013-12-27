@@ -86,8 +86,20 @@ class SearchController extends Controller
 		$hasFilter   = $request->query->has('nozology') || $request->query->has('contra');
 
 		if ($hasFilter) {
-			$nozologyCodes = $request->query->has('nozology') ? explode('-', $request->query->get('nozology')) : null;
-			$contraCodes   = $request->query->has('contra') ? exmplode('-', $request->query->get('contra')) : null;
+			if ($request->query->has('nozology')) {
+				$nozologyCodes = explode('-', $request->query->get('nozology'));
+			}
+			else {
+				$nozologyCodes = null;
+			}
+
+			if ($request->query->has('contra')) {
+				$contraCodes = explode('-', $request->query->get('contra'));
+			}
+			else {
+				$contraCodes = null;
+			}
+
 			$documentIds   = $em->getRepository('VidalMainBundle:Document')
 				->findIdsByNozologyContraCodes($nozologyCodes, $contraCodes);
 
