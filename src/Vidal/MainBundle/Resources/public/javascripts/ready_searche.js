@@ -95,7 +95,7 @@ $(document).ready(function() {
 	$('#searche_filter_submit').click(function() {
 		var params = [];
 		var nozologyCodes = [];
-		var contraCodes = []
+		var contraCodes = [];
 
 		$('.searche-nozologies li b').each(function() {
 			nozologyCodes.push(this.innerHTML);
@@ -111,5 +111,13 @@ $(document).ready(function() {
 		}
 
 		location.href = Routing.generate('searche', params);
+	});
+
+	$('#searche_filter li i').click(function() {
+		$(this).parent('li').remove();
+	});
+
+	$('#searche_filter .searche-filter-title').click(function() {
+		$('#searche_filter .searche-filter-content').slideToggle();
 	});
 });

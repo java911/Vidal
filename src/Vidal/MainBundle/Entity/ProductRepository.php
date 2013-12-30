@@ -71,6 +71,10 @@ class ProductRepository extends EntityRepository
 			}
 		}
 
+		if (empty($products)) {
+			return array();
+		}
+
 		# надо отсеять те препараты, у которых есть другие более ролевантные документы (не из $documentIds)
 		$sideProducts = $this->_em->createQuery('
 			SELECT d.DocumentID, d.ArticleID, p.ProductID

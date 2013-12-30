@@ -42,20 +42,32 @@
 
 
 <div id="searche_filter">
-	<div class="searche-filter-title">Найти препараты c показаниями или исключая противопоказания</div>
-	<div class="searche-filter-content">
+	<div class="searche-filter-title"><span>Найти препараты c показаниями или исключая противопоказания</span></div>
+	<div class="searche-filter-content"{{ filtered.status is defined ? ' style="display: block"' }}>
 		<div class="searche-nozologies">
 			<div class="label">Показания</div>
 			<div class="items">
 				<input id="searche_nozology" type="text"/>
-				<ul></ul>
+				<ul>
+					{% if filtered.nozologies is defined %}
+						{% for nozology in filtered.nozologies %}
+							<li><i></i><span>{{ nozology.Name }}</span><b>{{ nozology.NozologyCode }}</b></li>
+						{% endfor %}
+					{% endif %}
+				</ul>
 			</div>
 		</div>
 		<div class="searche-contraindications">
 			<div class="label">Противопоказания</div>
 			<div class="items">
 				<input id="searche_contraindication" type="text"/>
-				<ul></ul>
+				<ul>
+					{% if filtered.contraindications is defined %}
+						{% for contra in filtered.contraindications %}
+							<li><i></i><span>{{ contra.RusName }}</span><b>{{ contra.ContraIndicCode }}</b></li>
+						{% endfor %}
+					{% endif %}
+				</ul>
 			</div>
 		</div>
 		<button id="searche_filter_submit" class="btn-white">Поиск</button>

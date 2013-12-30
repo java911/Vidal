@@ -86,25 +86,32 @@ class SearchController extends Controller
 		$hasFilter   = $request->query->has('nozology') || $request->query->has('contra');
 
 		if ($hasFilter) {
+			$params['filtered']['status'] = true;
+
 			if ($request->query->has('nozology')) {
-				$nozologyCodes = explode('-', $request->query->get('nozology'));
+				$nozologyCodes                    = explode('-', $request->query->get('nozology'));
+				$params['filtered']['nozologies'] = $em->getRepository('VidalMainBundle:Nozology')
+					->findByCodes($nozologyCodes);
 			}
 			else {
 				$nozologyCodes = null;
 			}
 
 			if ($request->query->has('contra')) {
-				$contraCodes = explode('-', $request->query->get('contra'));
+				$contraCodes                             = explode('-', $request->query->get('contra'));
+				$params['filtered']['contraindications'] = $em->getRepository('VidalMainBundle:Contraindication')
+					->findByCodes($contraCodes);
 			}
 			else {
 				$contraCodes = null;
 			}
 
-			$documentIds   = $em->getRepository('VidalMainBundle:Document')
+			$documentIds = $em->getRepository('VidalMainBundle:Document')
 				->findIdsByNozologyContraCodes($nozologyCodes, $contraCodes);
 
 			if (!empty($documentIds)) {
 				$products = $em->getRepository('VidalMainBundle:Product')->findByDocumentIDs($documentIds);
+
 				if (!empty($products)) {
 					$paginator  = $this->get('knp_paginator');
 					$pagination = $paginator->paginate($products, $p, self::PRODUCTS_PER_PAGE);

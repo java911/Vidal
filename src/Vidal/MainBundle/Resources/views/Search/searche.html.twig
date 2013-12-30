@@ -8,13 +8,14 @@
 
 	<div class="search-results">
 
-	{# Найдено препаратов #}
-	{% if filtered is defined %}
+	{# Найдено препаратов по показаниям/противопоказаниям #}
+	{% if filtered.productsPagination is defined %}
 		{% if filtered.productsPagination is not empty %}
 			<div class="block">
 				<div class="block-anons">
 					<div class="block-head">
-						Найдено препаратов: <span>{{ filtered.productsPagination.totalItemCount }}</span>
+						Найдено препаратов по показаниям/противопоказаниям:
+						<span>{{ filtered.productsPagination.totalItemCount }}</span>
 					</div>
 				</div>
 			</div>
@@ -30,7 +31,7 @@
 			</div>
 		{% elseif t == 'product' %}
 			<div class="no-results">
-				Не найдено результатов по препарату <span>{{ q }}</span>
+				Не найдено препаратов по показаниям/противопоказаниям
 			</div>
 		{% endif %}
 	{% endif %}
@@ -52,8 +53,8 @@
 				</tr>
 				{% for nozology in nozologies %}
 					<tr>
-						<td>{{ nozology.Code }}</td>
-						<td><a href="{{ path('nozology_code', {'NozologyCode':nozology.Code}) }}"
+						<td>{{ nozology.NozologyCode }}</td>
+						<td><a href="{{ path('nozology_code', {'NozologyCode':nozology.NozologyCode}) }}"
 							   class="no-underline">{{ nozology.Name|raw }}</a></td>
 					</tr>
 				{% endfor %}

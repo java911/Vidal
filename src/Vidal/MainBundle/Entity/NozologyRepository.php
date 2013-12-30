@@ -83,4 +83,14 @@ class NozologyRepository extends EntityRepository
 		')->setParameter('DocumentID', $DocumentID)
 			->getResult();
 	}
+
+	public function findByCodes($nozologyCodes)
+	{
+		return $this->_em->createQuery('
+		 	SELECT DISTINCT n.NozologyCode, n.Name
+		 	FROM VidalMainBundle:Nozology n
+		 	WHERE n.NozologyCode IN (:nozologyCodes)
+		')->setParameter('nozologyCodes', $nozologyCodes)
+			->getResult();
+	}
 }
