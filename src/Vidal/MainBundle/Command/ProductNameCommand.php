@@ -42,7 +42,7 @@ class ProductNameCommand extends ContainerAwareCommand
 			WHERE p.CountryEditionCode = \'RUS\' AND
 				p.MarketStatusID IN (1,2)  AND
 				p.ProductTypeCode IN (\'DRUG\', \'GOME\') AND
-				(p.EngName LIKE \'%<%\' OR p.EngName LIKE \'% %\' OR p.EngName LIKE \'%/%\')
+				(p.Name LIKE \'%<%\' OR p.Name LIKE \'% %\' OR p.Name LIKE \'%/%\')
 		')->getSingleScalarResult();
 
 		$query = $em->createQuery('
@@ -51,7 +51,7 @@ class ProductNameCommand extends ContainerAwareCommand
 			WHERE p.CountryEditionCode = \'RUS\' AND
 				p.MarketStatusID IN (1,2)  AND
 				p.ProductTypeCode IN (\'DRUG\', \'GOME\') AND
-				(p.EngName LIKE \'%<%\' OR p.EngName LIKE \'% %\' OR p.EngName LIKE \'%/%\')
+				(p.Name LIKE \'%<%\' OR p.Name LIKE \'% %\' OR p.Name LIKE \'%/%\')
 		');
 
 		$updateQuery = $em->createQuery('
@@ -69,9 +69,10 @@ class ProductNameCommand extends ContainerAwareCommand
 				->getResult();
 
 			foreach ($products as $product) {
-				$p    = array('/ /', '/\\//', '/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i');
-				$r    = array('-', '-', '', '');
-				$name = preg_replace($p, $r, $product['EngName']);
+				$p    = array('/ /', '/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/<sup>(.*?)<\-sup>/i', '/<sub>(.*?)<\-sub>/i');
+				$r    = array('-', '', '', '', '');
+				$name = preg_replace($p, $r, $product['Name']);
+				$name = preg_replace('/\\//', '-', $name);
 				$name = mb_strtolower($name, 'UTF-8');
 
 				$updateQuery->setParameters(array(

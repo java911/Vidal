@@ -4,7 +4,7 @@ namespace Vidal\MainBundle\Service;
 class LinguaService
 {
 	private $VERSION = "0.02";
-	private $unset_predlog = false; //удалять пердлоги ?
+	private $unset_predlog = true; //удалять пердлоги ?
 	private $Stem_Caching = 0;
 	private $Stem_Cache = array();
 	private $VOWEL = '/аеиоуыэюя/u';

@@ -106,6 +106,11 @@ class SearchController extends Controller
 				$contraCodes = null;
 			}
 
+			if (empty($nozologyCodes)) {
+				$params['filtered']['fail'] = true;
+				return $params;
+			}
+
 			$documentIds = $em->getRepository('VidalMainBundle:Document')
 				->findIdsByNozologyContraCodes($nozologyCodes, $contraCodes);
 

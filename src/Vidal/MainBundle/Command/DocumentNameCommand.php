@@ -40,14 +40,14 @@ class DocumentNameCommand extends ContainerAwareCommand
 			SELECT COUNT(d.DocumentID)
 			FROM VidalMainBundle:Document d
 			WHERE d.CountryEditionCode = \'RUS\' AND
-			 	(d.EngName LIKE \'%<%\' OR d.EngName LIKE \'% %\' OR d.EngName LIKE \'%/%\')
+			 	(d.Name LIKE \'%<%\' OR d.Name LIKE \'% %\' OR d.Name LIKE \'%/%\')
 		')->getSingleScalarResult();
 
 		$query = $em->createQuery('
 			SELECT d.DocumentID, d.EngName
 			FROM VidalMainBundle:Document d
 			WHERE d.CountryEditionCode = \'RUS\' AND
-				(d.EngName LIKE \'%<%\' OR d.EngName LIKE \'% %\' OR d.EngName LIKE \'%/%\')
+				(d.Name LIKE \'%<%\' OR d.Name LIKE \'% %\' OR d.Name LIKE \'%/%\')
 		');
 
 		$updateQuery = $em->createQuery('
@@ -65,9 +65,10 @@ class DocumentNameCommand extends ContainerAwareCommand
 				->getResult();
 
 			foreach ($documents as $document) {
-				$p    = array('/ /', '/\\//', '/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i');
-				$r    = array('-', '-', '', '');
-				$name = preg_replace($p, $r, $document['EngName']);
+				$p    = array('/ /', '/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/<sup>(.*?)<\-sup>/i', '/<sub>(.*?)<\-sub>/i');
+				$r    = array('-', '', '', '', '');
+				$name = preg_replace($p, $r, $document['Name']);
+				$name = preg_replace('/\\//', '-', $name);
 				$name = mb_strtolower($name, 'UTF-8');
 
 				$updateQuery->setParameters(array(

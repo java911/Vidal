@@ -255,16 +255,27 @@
 		{% endif %}
 	{% endif %}
 
-	{# если общий поиск не дал результатов #}
-	{% if q is not empty and
-	t == 'all' and
-	filtered is not defined
-	(productsPagination is not defined or productsPagination is empty) and
-	(molecules is not defined or molecules is empty) and
-	(nozologies is not defined or nozologies is empty) %}
-		<div class="no-results">
-			Не найдено результатов
-		</div>
+	{% if filtered is defined %}
+		{# если в поиске по показанию не указано ни одного показания #}
+		{% if filtered.fail is defined %}
+			<div class="no-results">
+				Необходимо указать хотя бы одно <span>показание</span> к применению
+			</div>
+		{% elseif filtered.productsPagination is not defined %}
+			<div class="no-results">
+				Не найдено результатов
+			</div>
+		{% endif %}
+	{% else %}
+		{# если общий поиск не дал результатов #}
+		{% if q is not empty and t == 'all' and
+		(productsPagination is not defined or productsPagination is empty) and
+		(molecules is not defined or molecules is empty) and
+		(nozologies is not defined or nozologies is empty) %}
+			<div class="no-results">
+				Не найдено результатов
+			</div>
+		{% endif %}
 	{% endif %}
 
 	</div>
