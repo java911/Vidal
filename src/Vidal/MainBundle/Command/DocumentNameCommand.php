@@ -44,7 +44,7 @@ class DocumentNameCommand extends ContainerAwareCommand
 		')->getSingleScalarResult();
 
 		$query = $em->createQuery('
-			SELECT d.DocumentID, d.EngName
+			SELECT d.DocumentID, d.Name
 			FROM VidalMainBundle:Document d
 			WHERE d.CountryEditionCode = \'RUS\' AND
 				(d.Name LIKE \'%<%\' OR d.Name LIKE \'% %\' OR d.Name LIKE \'%/%\')

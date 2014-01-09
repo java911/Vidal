@@ -46,7 +46,7 @@ class ProductNameCommand extends ContainerAwareCommand
 		')->getSingleScalarResult();
 
 		$query = $em->createQuery('
-			SELECT p.ProductID, p.EngName
+			SELECT p.ProductID, p.Name
 			FROM VidalMainBundle:Product p
 			WHERE p.CountryEditionCode = \'RUS\' AND
 				p.MarketStatusID IN (1,2)  AND
