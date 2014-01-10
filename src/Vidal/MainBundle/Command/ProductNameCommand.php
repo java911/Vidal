@@ -42,16 +42,16 @@ class ProductNameCommand extends ContainerAwareCommand
 			WHERE p.CountryEditionCode = \'RUS\' AND
 				p.MarketStatusID IN (1,2)  AND
 				p.ProductTypeCode IN (\'DRUG\', \'GOME\') AND
-				(p.Name LIKE \'%<%\' OR p.Name LIKE \'% %\' OR p.Name LIKE \'%/%\')
+				(p.EngName LIKE \'%<%\' OR p.EngName LIKE \'% %\' OR p.EngName LIKE \'%/%\')
 		')->getSingleScalarResult();
 
 		$query = $em->createQuery('
-			SELECT p.ProductID, p.Name
+			SELECT p.ProductID, p.EngName
 			FROM VidalMainBundle:Product p
 			WHERE p.CountryEditionCode = \'RUS\' AND
 				p.MarketStatusID IN (1,2)  AND
 				p.ProductTypeCode IN (\'DRUG\', \'GOME\') AND
-				(p.Name LIKE \'%<%\' OR p.Name LIKE \'% %\' OR p.Name LIKE \'%/%\')
+				(p.EngName LIKE \'%<%\' OR p.EngName LIKE \'% %\' OR p.EngName LIKE \'%/%\')
 		');
 
 		$updateQuery = $em->createQuery('
@@ -69,9 +69,9 @@ class ProductNameCommand extends ContainerAwareCommand
 				->getResult();
 
 			foreach ($products as $product) {
-				$p    = array('/ /', '/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/<sup>(.*?)<\-sup>/i', '/<sub>(.*?)<\-sub>/i');
-				$r    = array('-', '', '', '', '');
-				$name = preg_replace($p, $r, $product['Name']);
+				$p    = array('/ /', '/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i');
+				$r    = array('-', '', '');
+				$name = preg_replace($p, $r, $product['EngName']);
 				$name = preg_replace('/\\//', '-', $name);
 				$name = mb_strtolower($name, 'UTF-8');
 
