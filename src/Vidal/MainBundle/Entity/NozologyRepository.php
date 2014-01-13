@@ -46,7 +46,7 @@ class NozologyRepository extends EntityRepository
 	{
 		$qb = $this->_em->createQueryBuilder();
 
-		$qb->select('DISTINCT n.Code, n.Name')
+		$qb->select('DISTINCT n.NozologyCode, n.Name')
 			->from('VidalMainBundle:Nozology', 'n')
 			->orderBy('n.Name', 'ASC');
 
@@ -54,17 +54,32 @@ class NozologyRepository extends EntityRepository
 		$where = '';
 		$words = explode(' ', $q);
 
+		# находим все слова
 		for ($i = 0; $i < count($words); $i++) {
 			$word = $words[$i];
 			if ($i > 0) {
-				$where .= ' OR ';
+				$where .= ' AND ';
 			}
 			$where .= "(n.Name LIKE '$word%' OR n.Name LIKE '% $word%')";
 		}
 
 		$qb->where($where);
-
 		$nozologies = $qb->getQuery()->getResult();
+
+		# находим какое-либо из слов, если нет результата
+		if (empty($nozologies)) {
+			$where = '';
+			for ($i = 0; $i < count($words); $i++) {
+				$word = $words[$i];
+				if ($i > 0) {
+					$where .= ' OR ';
+				}
+				$where .= "(n.Name LIKE '$word%' OR n.Name LIKE '% $word%')";
+			}
+
+			$qb->where($where);
+			$nozologies = $qb->getQuery()->getResult();
+		}
 
 		for ($i=0, $c=count($nozologies); $i<$c; $i++) {
 			$nozologies[$i]['Name'] = preg_replace('/' . $q . '/iu', '<span class="query">$0</span>', $nozologies[$i]['Name']);

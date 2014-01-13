@@ -27,6 +27,9 @@ class Nozology
 	 */
 	protected $documents;
 
+	/** @ORM\Column(length=20, nullable=true) */
+	protected $Class;
+
 	public function __construct()
 	{
 		$this->documents = new ArrayCollection;
@@ -115,5 +118,21 @@ class Nozology
 	public function getDocuments()
 	{
 		return $this->documents;
+	}
+
+	/**
+	 * @param mixed $class
+	 */
+	public function setClass($class)
+	{
+		$this->Class = $class;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getClass()
+	{
+		return $this->Class;
 	}
 }
