@@ -469,6 +469,66 @@ class ProductRepository extends EntityRepository
 		return $groups;
 	}
 
+	public function getQueryByLetter($letter, $type, $nonPrescription)
+	{
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select('DISTINCT p')
+			->from('VidalMainBundle:Product', 'p')
+			->where('p.CountryEditionCode = \'RUS\'')
+			->andWhere('p.MarketStatusID IN (1,2)')
+			->orderBy('p.RusName', 'ASC');
+
+		if ($letter) {
+			$qb->andWhere('p.RusName LIKE :likeName')->setParameter('likeName', $letter . '%');
+		}
+
+		if ($type == 'p') {
+			$qb->andWhere('p.ProductTypeCode IN (\'DRUG\',\'GOME\')');
+		}
+		elseif ($type == 'b') {
+			$qb->andWhere('p.ProductTypeCode = \'BAD\'');
+		}
+		else {
+			$qb->andWhere('p.ProductTypeCode IN (\'DRUG\',\'GOME\',\'BAD\')');
+		}
+
+		if ($nonPrescription) {
+			$qb->andWhere('p.NonPrescriptionDrug = 1');
+		}
+
+		return $qb->getQuery();
+	}
+
+	public function findMarketStatusesByProductIds($productIds)
+	{
+		$raw = $this->_em->createQuery('
+			SELECT p.ProductID, ms.RusName MarketStatus
+			FROM VidalMainBundle:Product p
+			JOIN p.MarketStatusID ms
+			WHERE p.ProductID IN (:productIds)
+		')->setParameter('productIds', $productIds)
+			->getResult();
+
+		$marketStatuses = array();
+
+		for ($i=0; $i<count($raw); $i++) {
+			$key = $raw[$i]['ProductID'];
+			$marketStatuses[] = $raw[$i]['MarketStatus'];
+		}
+
+		return $marketStatuses;
+	}
+
+	public function findAllNames()
+	{
+		return $this->_em->createQuery('
+			SELECT DISTINCT p.RusName
+			FROM VidalMainBundle:Product p
+			ORDER BY p.RusName
+		')->getResult();
+	}
+
 	/**
 	 * Функция возвращает слово с заглавной первой буквой (c поддержкой кирилицы)
 	 *

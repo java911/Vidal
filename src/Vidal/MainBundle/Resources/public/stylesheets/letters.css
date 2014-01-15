@@ -1,0 +1,31 @@
+.letters, .letters form {
+	overflow:     hidden;
+}
+.letter {
+	display:               inline-block;
+	width:                 24px;
+	text-align:            center;
+	text-decoration:       none;
+	background-color:      #F1F1F1;
+	border:                1px solid #DCDCDC;
+	color:                 #00626a;
+	border-radius:         4px;
+	-moz-border-radius:    4px;
+	-webkit-border-radius: 4px;
+	float:                 left;
+	padding:               3px;
+	margin-right:          3px;
+	font-size:             14px;
+	outline:               none;
+	cursor:                pointer;
+}
+.letter.active {
+	border:      1px solid #aaa;
+	font-weight: bold;
+	color:       #d00;
+}
+.letter:hover {
+	border:      1px solid #aaa;
+	font-weight: bold;
+	color:       #d00;
+}

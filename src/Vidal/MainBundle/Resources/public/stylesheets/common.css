@@ -443,7 +443,7 @@ a {
 }
 .pagination span {
 	display:      inline-block;
-	width:        22px;
+	width:        26px;
 	text-align:   center;
 	height:       22px;
 	line-height:  22px;
@@ -455,7 +455,7 @@ a {
 .pagination a {
 	text-decoration: none;
 	display:         inline-block;
-	width:           22px;
+	width:           26px;
 	color:           #1a6dc0;
 }
 .pagination .current, .pagination span:hover a {

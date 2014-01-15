@@ -35,7 +35,8 @@
         "sonata-project/intl-bundle": "2.2.x-dev",
         "sonata-project/user-bundle": "2.2.x-dev",
         "sonata-project/doctrine-extensions": "1.0.0",
-        "sonata-project/easy-extends-bundle": "dev-master"
+        "sonata-project/easy-extends-bundle": "dev-master",
+        "white-october/pagerfanta-bundle": "dev-master"
     },
 
     "scripts": {

@@ -219,4 +219,25 @@ class DocumentRepository extends EntityRepository
 
 		return $documentIds;
 	}
+
+	public function findIndicationsByProductIds($productIds)
+	{
+		$raw = $this->_em->createQuery('
+			SELECT p.ProductID, d.Indication
+			FROM VidalMainBundle:Product p
+			LEFT JOIN VidalMainBundle:ProductDocument pd WITH pd.ProductID = p
+			LEFT JOIN VidalMainBundle:Document d WITH pd.DocumentID = d
+			WHERE p.ProductID IN (:productIds)
+		')->setParameter('productIds', $productIds)
+			->getResult();
+
+		$indications = array();
+
+		for ($i=0; $i<count($raw); $i++) {
+			$key = $raw[$i]['ProductID'];
+			$indications[$key] = $raw[$i]['Indication'];
+		}
+
+		return $indications;
+	}
 }

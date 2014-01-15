@@ -11,7 +11,7 @@ class NozologyRepository extends EntityRepository
 		return $this->_em->createQuery('
 			SELECT n.NozologyCode, n.Code, n.Name
 			FROM VidalMainBundle:Nozology n
-			WHERE n.Code = :code
+			WHERE n.NozologyCode = :code
 		')->setParameter('code', $code)
 			->getOneOrNullResult();
 	}

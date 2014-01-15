@@ -112,8 +112,6 @@ sonata_admin:
             # display a dashboard block
             - { position: left, type: sonata.admin.block.admin_list }
 
-
-
 # Elastica Configuration
 #fos_elastica:
 #    clients:

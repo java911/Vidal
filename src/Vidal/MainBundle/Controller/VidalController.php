@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class VidalController extends Controller
 {
+	const PRODUCTS_PER_PAGE = 40;
+
 	/**
 	 * Список препаратов по компании
 	 * @Route("poisk_preparatov/fir_{CompanyID}.{ext}", name="company", requirements={"CompanyID":"\d+"}, defaults={"ext"="htm"})
@@ -347,6 +349,55 @@ class VidalController extends Controller
 	public function gnpAction()
 	{
 		return array();
+	}
+
+	/**
+	 * Отображение препаратов или бадов по букве алфавита
+	 * @Route("/drugs", name="drugs_by_letter")
+	 *
+	 * @Template("VidalMainBundle:Vidal:drugs_by_letter.html.twig")
+	 */
+	public function drugsByLetterAction(Request $request)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$t  = $request->query->get('t', 'p'); // тип препараты-бады-вместе
+		$p  = $request->query->get('p', 1); // номер страницы
+		$l  = $request->query->get('l', null); // буква
+		$n  = $request->query->has('n'); // только безрецептурные препараты
+
+		$params = array(
+			't' => $t,
+			'p' => $p,
+			'l' => $l,
+			'n' => $n,
+		);
+
+		if ($l != null) {
+			$paginator  = $this->get('knp_paginator');
+			$pagination = $paginator->paginate(
+				$em->getRepository('VidalMainBundle:Product')->getQueryByLetter($l, $t, $n),
+				$p,
+				self::PRODUCTS_PER_PAGE
+			);
+
+			$products             = $pagination->getItems();
+			$params['pagination'] = $pagination;
+
+			if (!empty($products)) {
+				$productIds = array();
+
+				foreach ($products as $product) {
+					$productIds[] = $product->getProductID();
+				}
+
+				$params['products']    = $products;
+				$params['indications'] = $em->getRepository('VidalMainBundle:Document')->findIndicationsByProductIds($productIds);
+				$params['companies']   = $em->getRepository('VidalMainBundle:Company')->findByProducts($productIds);
+				$params['pictures']    = $em->getRepository('VidalMainBundle:Picture')->findByProductIds($productIds);
+			}
+		}
+
+		return $params;
 	}
 
 	/**

@@ -33,9 +33,12 @@
 				{% endif %}
 			</td>
 			<td class="products-table-indication" title="Показания к применению">
-				{% if product.Indication is not empty %}
+				{% if product.Indication is defined and product.Indication is not empty %}
 					<img src="{{ asset('bundles/vidalmain/images/more.png') }}"/>
 					<div>{{ product.Indication|raw }}</div>
+				{% elseif indications is defined and indications[product.ProductID] is not empty %}
+					<img src="{{ asset('bundles/vidalmain/images/more.png') }}"/>
+					<div>{{ indications[product.ProductID]|raw }}</div>
 				{% endif %}
 			</td>
 			<td class="products-table-zip">
