@@ -11,7 +11,7 @@
 	<table class="infopage">
 		<tr>
 			{% if picture %}
-				{% set path = '/upload/companies/' ~ picture.path %}
+				{% set path = '/upload_vidal/companies/' ~ picture.path %}
 				{% if is_file(path) %}
 					<td class="infopage-logo">
 						<img src="{{ path }}"/>
