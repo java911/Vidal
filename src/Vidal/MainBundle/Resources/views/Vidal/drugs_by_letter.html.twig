@@ -54,10 +54,13 @@
 	</div>
 
 	{% if products is defined and products is not empty %}
-		<div class="anons">
-			<div class="anons-head">
-				Найдено {{ n ? 'безрецептурных ' }}{{ t == 'p' ? 'препаратов' : t == 'b' ? 'БАДов' : 'препаратов и БАДов' }}:
-				<span>{{ pagination.totalItemCount }}</span>
+		<div class="block">
+			<div class="block-anons">
+				<div class="block-head">
+					Найдено {{ n ? 'безрецептурных ' }}{{ t == 'p' ? 'препаратов' : t == 'b' ? 'БАДов' : 'препаратов и БАДов' }}
+					:
+					<span>{{ pagination.totalItemCount }}</span>
+				</div>
 			</div>
 		</div>
 

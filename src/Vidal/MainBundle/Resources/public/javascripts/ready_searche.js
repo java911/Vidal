@@ -113,7 +113,7 @@ $(document).ready(function() {
 		location.href = Routing.generate('searche', params);
 	});
 
-	$('#searche_filter li i').click(function() {
+	$('ul.removable').on('click', 'li i', function() {
 		$(this).parent('li').remove();
 	});
 

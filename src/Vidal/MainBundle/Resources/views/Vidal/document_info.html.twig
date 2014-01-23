@@ -71,7 +71,7 @@
 				{% for nozology in nozologies %}
 					<tr>
 						<td>{{ nozology.Code }}</td>
-						<td><a href="{{ path('nozology_code', {'NozologyCode':nozology.Code}) }}"
+						<td><a href="{{ path('nozology_code', {'NozologyCode':nozology.NozologyCode}) }}"
 							   class="no-underline">{{ nozology.Name|raw }}</a></td>
 					</tr>
 				{% endfor %}

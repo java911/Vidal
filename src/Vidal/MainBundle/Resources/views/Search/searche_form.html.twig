@@ -48,7 +48,7 @@
 			<div class="label">Показания</div>
 			<div class="items">
 				<input id="searche_nozology" type="text"/>
-				<ul>
+				<ul class="removable">
 					{% if filtered.nozologies is defined %}
 						{% for nozology in filtered.nozologies %}
 							<li><i></i><span>{{ nozology.Name }}</span><b>{{ nozology.NozologyCode }}</b></li>
@@ -61,7 +61,7 @@
 			<div class="label">Противопоказания</div>
 			<div class="items">
 				<input id="searche_contraindication" type="text"/>
-				<ul>
+				<ul class="removable">
 					{% if filtered.contraindications is defined %}
 						{% for contra in filtered.contraindications %}
 							<li><i></i><span>{{ contra.RusName }}</span><b>{{ contra.ContraIndicCode }}</b></li>

@@ -91,7 +91,7 @@ class NozologyRepository extends EntityRepository
 	public function findByDocumentId($DocumentID)
 	{
 		return $this->_em->createQuery('
-			SELECT DISTINCT n.Code, n.Name
+			SELECT DISTINCT n.NozologyCode, n.Code, n.Name
 			FROM VidalMainBundle:Nozology n
 			JOIN n.documents d WITH d = :DocumentID
 			ORDER BY n.Name ASC
