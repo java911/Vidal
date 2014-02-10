@@ -1,0 +1,57 @@
+{% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
+
+
+{% block vidal %}
+	<div class="gnp">
+		<div class="gnp-title">
+			Международные наименования присвоены активным веществам на основании данных
+			"International Nonproprietary Names (INN) for Pharmaceutical Substances", 9th Edition WHO;
+			"Index Nominum: International Drug Directory" 16th Edition; "MARTINDALE The Extra Pharmacopoeia",
+			31st Edition; данных, представленных на сайте
+			<a href="http://www.who.int/medicines/publications/druginformation/en/" target="_new">WHO
+				Drug Information</a> и имеют следующие обозначения:
+		</div>
+
+		<ul class="gnp-items ul-style">
+			<li><b>BAN</b>принятое к употреблению в Великобритании</li>
+			<li><b>BAN Mod.</b>принятое к употреблению в Великобритании, модифицированное наименование</li>
+			<li><b>BHP</b>BHP</li>
+			<li><b>BP</b>Британская Фармакопея</li>
+			<li><b>DAB</b>Фармакопея Германии</li>
+			<li><b>DAC</b>принятое к употреблению в Германии</li>
+			<li><b>DAC Mod.</b>принятое к употреблению в Германии, модифицированное наименование</li>
+			<li><b>DCF</b>принятое к употреблению во Франции</li>
+			<li><b>Fr. Ph.</b>Фармакопея Франции</li>
+			<li><b>Iph</b>Итальянская Фармакопея</li>
+			<li><b>JAN</b>принятое к употреблению в Японии</li>
+			<li><b>P.Ph.</b>Польская Фармакопея</li>
+			<li><b>Ph.Eur.</b>Европейская Фармакопея</li>
+			<li><b>PhBs</b>Фармакопея Словакии</li>
+			<li><b>Prop.INN</b>предложенное к употреблению ВОЗ</li>
+			<li><b>Rec.INN</b>зарегистрированное ВОЗ</li>
+			<li><b>Rec.INN Mod.</b>зарегистрированное ВОЗ, модифицированное наименование</li>
+			<li><b>Swiss Ph.</b>Swiss Ph.</li>
+			<li><b>USAN</b>принятое к употреблению в США</li>
+			<li><b>USAN Mod.</b>принятое к употреблению в США, модифицированное наименование</li>
+			<li><b>USNF 22</b>The United States "National Formulaty 22", 2004, and supplements 1 and 2</li>
+			<li><b>USP</b>Фармакопея США</li>
+			<li><b>USP Mod.</b>USP Mod</li>
+			<li><b>ГФ</b>ГФ</li>
+		</ul>
+	</div>
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.gnp-title {
+			margin-bottom: 15px;
+			text-align:    justify;
+		}
+		.gnp-items b {
+			display: inline-block;
+			width:   95px;
+		}
+	</style>
+{% endblock %}

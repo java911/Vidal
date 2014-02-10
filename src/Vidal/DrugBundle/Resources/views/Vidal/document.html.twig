@@ -1,0 +1,270 @@
+{% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
+
+{% set loz = asset('bundles/vidalmain/images/g2.gif') %}
+
+{% block vidal %}
+	{# Заголовок #}
+	{% if product is defined %}
+		<h1>{{ product.RusName|raw }} <span>({{ product.EngName|raw }})</span></h1>
+	{% else %}
+		<h1>{{ document.RusName|raw }} <span>({{ document.EngName|raw }})</span>
+			{% if document.elaboration is not empty %}
+				<span class="elaboration">{{ document.elaboration }}</span>
+			{% endif %}
+		</h1>
+	{% endif %}
+
+	{# Иконки использования при состояниях #}
+	{% if document is defined %}
+		{% include 'VidalDrugBundle:Vidal:document_conditions.html.twig' %}
+	{% endif %}
+
+	{% if products is not empty %}
+		<div class="pictures">
+			{% for product in products if pictures[product.ProductID] is defined %}
+				{% set path = '/upload_vidal/products/' ~ pictures[product.ProductID] %}
+				{% if is_file(path) %}
+					<img src="{{ path }}"/>
+				{% endif %}
+			{% endfor %}
+		</div>
+	{% endif %}
+
+	{% if document is defined %}
+		{# Объявление, описание чего пойдет ниже #}
+		{% if articleId is defined %}
+			<div class="anons">
+				{% if articleId == 1 or articleId == 4 %}
+					<div class="anons-head">
+						<span>Описание активных компонентов препарата</span>
+						{% if product is defined %}
+							<span class="anons-product">{{ product.RusName|raw }}</span>
+							<span>({{ product.EngName|raw }})</span>
+						{% else %}
+							<span class="anons-product">{{ document.RusName|raw }}</span>
+							<span>({{ document.EngName|raw }})</span>
+						{% endif %}
+					</div>
+					<div class="anons-content">
+						Приведенная научная информация является обобщающей и не может быть использована для принятия
+						решения о возможности применения конкретного лекарственного препарата.
+					</div>
+				{% else %}
+					<div class="anons-head">
+						<span>Описание лекарственного препарата</span>
+						<span class="anons-product">{{ document.RusName|raw }}</span>
+						<span>({{ document.EngName|raw }})</span>
+					</div>
+					<div class="anons-content">
+						Основано на официально утвержденной инструкции по применению препарата
+						и сделано в {{ document.YearEdition }} году.
+					</div>
+				{% endif %}
+			</div>
+		{% endif %}
+
+		{% include 'VidalDrugBundle:Vidal:document_navigation.html.twig' %}
+	{% endif %}
+
+	{# Блок регистратора/владельца/представительства #}
+	{% if owners is defined or distributors is defined or infoPages is defined %}
+		<div class="block">
+			{# Владелец регистрационного удостоверения #}
+			{% if owners is defined and owners is not empty %}
+				{% set owner = owners[0] %}
+				<div class="owners">
+					<span class="block-head">Владелец регистрационного удостоверения: </span>
+					<a href="{{ path('company', {'CompanyID':owner.CompanyID}) }}" class="no-underline">
+						{{ owner.LocalName|raw }}{{ owner.Property is not empty ? ', ' ~ owner.Property|raw|replace({'&amp;':'&'}) }}</a>
+					{% if owner.Country is not empty and owner.Country != 'Unknown' %}
+						<span class="small">({{ owner.Country }})</span>
+					{% endif %}
+				</div>
+			{% endif %}
+
+			{# Произведено #}
+			{% for distributor in distributors %}
+				<div class="distributor">
+					<span class="block-head">{{ distributor.CompanyRusNote|capitalize }}:</span>
+					<a href="{{ path('company', {'CompanyID':distributor.CompanyID}) }}" class="no-underline">
+						{{ distributor.LocalName|raw }}{{ distributor.Property is not empty ? ', ' ~ distributor.Property|raw|replace({'&amp;':'&'}) }}</a>
+					{% if distributor.Country is not empty and distributor.Country != 'Unknown' %}
+						<span class="small">({{ distributor.Country }})</span>
+					{% endif %}
+				</div>
+			{% endfor %}
+
+			{# Представительство #}
+			{% if infoPages is defined and infoPages is not empty %}
+				<div class="infoPages">
+					<span class="block-head">Представительство: </span>
+					{% for infoPage in infoPages %}
+						{% if loop.index > 1 %}<br/>{% endif %}
+						<a href="{{ path('inf', {'InfoPageID':infoPage.InfoPageID}) }}" class="no-underline">
+							{{ infoPage.RusName|raw }}</a>
+						{% if infoPage.Country and infoPage.Country != 'Unknown' %}
+							<span class="small">({{ infoPage.Country }})</span>
+						{% endif %}
+					{% endfor %}
+				</div>
+			{% endif %}
+		</div>
+	{% endif %}
+
+	{# Блок кода АТХ #}
+	{% if atcCodes is defined and atcCodes is not empty %}
+		<div class="block">
+			<span class="block-head">Код ATX: </span>
+			<span class="atc-content">
+				{% for atc in atcCodes %}
+					<a href="{{ path('atc', {'ATCCode':atc.ATCCode}) }}" class="no-underline">{{ atc.ATCCode }}</a>
+					<span class="atc-name small">({{ atc.RusName }})</span>
+				{% endfor %}
+			</span>
+		</div>
+	{% endif %}
+
+	{# Блок активных веществ #}
+	{% if molecules is defined and molecules is not empty %}
+		<div class="block">
+			{% if molecules|length == 1 %}
+				{% set molecule = molecules[0] %}
+				<span class="block-head">Активное вещество:</span>
+				<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
+				   class="no-underline">{{ molecule.LatName }}</a>
+				{% if molecule.RusName %}
+					<span class="small">({{ molecule.RusName }})</span>
+				{% endif %}
+				{% if molecule.GNParent is not empty %}
+					<a title="Международное непатентованное наименование (МНН)" href="{{ path('gnp') }}"
+					   class="no-underline mnn">{{ molecule.GNParent }}
+					</a>
+					<span class="small italic">{{ molecule.description }}</span>
+				{% endif %}
+			{% else %}
+				<div class="block-head">Активные вещества</div>
+				<ul class="ul-style">
+					{% for molecule in molecules %}
+						<li>
+							<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
+							   class="no-underline">{{ molecule.LatName }}</a>
+							{% if molecule.RusName %}
+								<span class="small">({{ molecule.RusName }})</span>
+							{% endif %}
+							{% if molecule.GNParent is not empty %}
+								<a title="Международное непатентованное наименование (МНН)"
+								   href="{{ path('gnp') }}" class="no-underline mnn">{{ molecule.GNParent }}</a>
+								<span class="small italic">{{ molecule.description }}</span>
+							{% endif %}
+						</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		</div>
+	{% endif %}
+
+	{# Лекарственные формы #}
+	{% if products is defined and products|length %}
+		<div class="block">
+			<div class="block-head">{{ products|length == 1 ? 'Лекарственная форма' : 'Лекарственные формы' }}</div>
+			<div class="block-content">
+				<table class="products-table">
+					{% for p in products %}
+						<tr>
+							<td class="products-table-loz">
+								{% if p.NonPrescriptionDrug %}
+									<img src="{{ loz }}" class="loz"
+										 title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>
+								{% endif %}
+							</td>
+							<td class="products-table-name">
+								<a href="{{ path('product', {'EngName':p.Name, 'ProductID':p.ProductID}) }}"
+								   class="no-underline">{{ p.RusName|raw }}</a>
+							</td>
+							<td class="products-table-zip">
+								<div>{{ p.ZipInfo }}</div>
+								<span>рег. №: {{ p.RegistrationNumber }}
+									{% if p.RegistrationDate is not null %}
+										от {{ p.RegistrationDate|date('d.m.Y') }}
+									{% endif %}
+								</span>
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	{% endif %}
+
+	{# Форма выпуска, состав и упаковка #}
+	{% if product is defined and product.Composition is not empty %}
+		<div class="block">
+			<div class="block-head">Форма выпуска, состав и упаковка</div>
+			<div class="block-content composition">
+				{{ product.Composition|replace({
+				'[PRING]':'<i class"pring">Вспомогательные вещества</i>:',
+				'&loz;':'<img class="loz" src="'~loz~'" title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>'
+				})|raw }}
+			</div>
+		</div>
+	{% elseif document is defined and document.CompiledComposition is not empty %}
+		<div class="block">
+			<div class="block-head">Форма выпуска, состав и упаковка</div>
+			<div class="block-content composition">
+				{{ document.CompiledComposition|replace({
+				'[PRING]':'<i class"pring">Вспомогательные вещества</i>:',
+				'&loz;':'<img class="loz" src="'~loz~'" title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>'
+				})|raw }}
+			</div>
+		</div>
+	{% endif %}
+
+	{# блоки описания документа #}
+	{% if document is defined %}
+		{% include 'VidalDrugBundle:Vidal:document_info.html.twig' %}
+	{% endif %}
+
+	{# блок получения ссылки #}
+	{% if product is defined or document is defined %}
+		<div class="copy">
+			<div class="copy-head">
+				Если вы хотите разместить ссылку на описание этого препарата - используйте данный код
+			</div>
+			{% spaceless %}
+				<textarea cols="92" rows="2">
+					{% if product is defined %}
+						<a href="{{ url('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}" target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+					{% elseif documentId is defined %}
+						<a href="{{ url('document', {'EngName':document.Name, 'DocumentID':document.DocumentID}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+					{% else %}
+						<a href="{{ url('document', {'EngName':document.Name}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+					{% endif %}
+				</textarea>
+			{% endspaceless %}
+		</div>
+	{% endif %}
+
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		#dosage p img {
+			max-width:  600px;
+			max-height: 400px;
+		}
+	</style>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.copy textarea')
+				.focus(function() { $(this).css('opacity', '1'); })
+				.blur(function() { $(this).css('opacity', '0.5'); });
+		});
+	</script>
+{% endblock %}

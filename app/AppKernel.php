@@ -17,7 +17,7 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 			new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-            new Vidal\MainBundle\VidalMainBundle(),
+            new Vidal\DrugBundle\VidalDrugBundle(),
 			new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Sonata\CoreBundle\SonataCoreBundle(),
@@ -28,6 +28,7 @@ class AppKernel extends Kernel
 
 			//new JMS\SerializerBundle\JMSSerializerBundle(),
 			//new FOS\ElasticaBundle\FOSElasticaBundle(),
+            new Vidal\MainBundle\VidalMainBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

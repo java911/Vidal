@@ -2,7 +2,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
-    - { resource: @VidalMainBundle/Resources/config/admin.xml }
+    - { resource: @VidalDrugBundle/Resources/config/admin.xml }
 
 
 framework:
@@ -46,23 +46,35 @@ assetic:
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver:   %database_driver%
-        host:     %database_host%
-        port:     %database_port%
-        dbname:   %database_name%
-        user:     %database_user%
-        password: %database_password%
-        charset:  UTF8
-        # if using pdo_sqlite as your database driver, add the path in parameters.yml
-        # e.g. database_path: %kernel.root_dir%/data/data.db3
-        # path:     %database_path%
-
+        default_connection: default
+        connections:
+            default:
+                driver:   %database_driver%
+                host:     %database_host%
+                port:     %database_port%
+                dbname:   %database_name%
+                user:     %database_user%
+                password: %database_password%
+                charset:  UTF8
+            drug:
+                driver:   %database_driver%
+                host:     %database_host%
+                port:     %database_port%
+                dbname:   vidal2
+                user:     %database_user%
+                password: %database_password%
+                charset:  UTF8
     orm:
         auto_generate_proxy_classes: %kernel.debug%
-        auto_mapping: true
-        dql:
-            datetime_functions:
-                field: Vidal\MainBundle\Dql\Field
+        entity_managers:
+            default:
+                connection: default
+                mappings:
+                    VidalMainBundle: ~
+            drug:
+                connection: drug
+                mappings:
+                    VidalDrugBundle: ~
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -98,12 +110,12 @@ sonata_admin:
 #    #title_logo: /bundles/vidalmain/images/icon.jpg
     templates:
         # default global templates
-        layout:  VidalMainBundle::admin_layout.html.twig
+        layout:  VidalDrugBundle::admin_layout.html.twig
         ajax:    SonataAdminBundle::ajax_layout.html.twig
-        dashboard: VidalMainBundle::dashboard.html.twig
+        dashboard: VidalDrugBundle::dashboard.html.twig
 #
 #        # default actions templates, should extend a global templates
-        list:    VidalMainBundle::list_layout.html.twig
+        list:    VidalDrugBundle::list_layout.html.twig
         show:    SonataAdminBundle:CRUD:show.html.twig
         edit:    SonataAdminBundle:CRUD:edit.html.twig
 
@@ -111,47 +123,3 @@ sonata_admin:
         blocks:
             # display a dashboard block
             - { position: left, type: sonata.admin.block.admin_list }
-
-# Elastica Configuration
-#fos_elastica:
-#    clients:
-#        default: { host: localhost, port: 9200 }
-#    serializer:
-#        callback_class: FOS\ElasticaBundle\Serializer\Callback
-#        serializer: serializer
-#    indexes:
-#        website:
-#            client: default
-#            types:
-#                product:
-#                    mappings:
-#                        RusName: ~
-#                    persistence:
-#                        driver: orm
-#                        model: Vidal\MainBundle\Entity\Product
-#                        provider: ~
-#                        finder: ~
-#                molecule:
-#                    mappings:
-#                        RusName: ~
-#                    persistence:
-#                        driver: orm
-#                        model: Vidal\MainBundle\Entity\Molecule
-#                        provider: ~
-#                        finder: ~
-#                atc:
-#                    mappings:
-#                        ATCCode: ~
-#                    persistence:
-#                        driver: orm
-#                        model: Vidal\MainBundle\Entity\ATC
-#                        provider: ~
-#                        finder: ~
-#                company:
-#                    mappings:
-#                        LocalName: ~
-#                    persistence:
-#                        driver: orm
-#                        model: Vidal\MainBundle\Entity\Company
-#                        provider: ~
-#                        finder: ~

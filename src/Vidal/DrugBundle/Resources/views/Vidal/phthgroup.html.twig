@@ -1,0 +1,23 @@
+{% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
+
+
+{% block vidal %}
+	<h1>{{ phthgroup.Name|capitalize }}</h1>
+
+	<div class="anons anons-head">
+		<span>Фармако-терапевтическая группа ГосРеестра МинЗдрава РФ</span>
+	</div>
+
+	{% if products is not empty %}
+		<div class="block">
+			<div class="block-head">Препараты группы</div>
+			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' %}
+		</div>
+	{% else %}
+		<div class="no-results">
+			Извините, не найдено препаратов фармако-терапевтическая группы
+			<span>{{ phthgroup.Name|capitalize }}</span>
+		</div>
+	{% endif %}
+
+{% endblock %}

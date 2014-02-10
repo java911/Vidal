@@ -1,0 +1,109 @@
+{% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
+
+
+{% block vidal %}
+	<h1>Препараты и БАДы</h1>
+
+	<div class="letters">
+		<form id="letters_form" method="GET" action="{{ path('drugs_by_letter') }}">
+			<div class="letters-controls">
+				<select id="letters_type" name="t">
+					<option value="p"{{ t == 'p' ? ' selected="selected"' }}>Препараты</option>
+					<option value="b"{{ t == 'b' ? ' selected="selected"' }}>БАДы</option>
+					<option value="o"{{ t == 'o' ? ' selected="selected"' }}>Препараты и БАДы</option>
+				</select>
+				<span class="letters-controls-check">
+					<input id="letters_nonpres" type="checkbox" name="n"{{ n ? ' checked="checked"' }}/>
+					<span class="small">только безрецептурные</span>
+				</span>
+			</div>
+
+			<div class="letters-russian">
+				<input type="hidden" name="p" id="letters_page" value="{{ p }}"/>
+				<input type="submit" value="А" name="l" class="letter{{ l == 'А' ? ' active' }}"/>
+				<input type="submit" value="Б" name="l" class="letter{{ l == 'Б' ? ' active' }}"/>
+				<input type="submit" value="В" name="l" class="letter{{ l == 'В' ? ' active' }}"/>
+				<input type="submit" value="Г" name="l" class="letter{{ l == 'Г' ? ' active' }}"/>
+				<input type="submit" value="Д" name="l" class="letter{{ l == 'Д' ? ' active' }}"/>
+				<input type="submit" value="Е" name="l" class="letter{{ l == 'Е' ? ' active' }}"/>
+				<input type="submit" value="Ж" name="l" class="letter{{ l == 'Ж' ? ' active' }}"/>
+				<input type="submit" value="З" name="l" class="letter{{ l == 'З' ? ' active' }}"/>
+				<input type="submit" value="И" name="l" class="letter{{ l == 'И' ? ' active' }}"/>
+				<input type="submit" value="Й" name="l" class="letter{{ l == 'Й' ? ' active' }}"/>
+				<input type="submit" value="К" name="l" class="letter{{ l == 'К' ? ' active' }}"/>
+				<input type="submit" value="Л" name="l" class="letter{{ l == 'Л' ? ' active' }}"/>
+				<input type="submit" value="М" name="l" class="letter{{ l == 'М' ? ' active' }}"/>
+				<input type="submit" value="Н" name="l" class="letter{{ l == 'Н' ? ' active' }}"/>
+				<input type="submit" value="О" name="l" class="letter{{ l == 'О' ? ' active' }}"/>
+				<input type="submit" value="П" name="l" class="letter{{ l == 'П' ? ' active' }}"/>
+				<input type="submit" value="Р" name="l" class="letter{{ l == 'Р' ? ' active' }}"/>
+				<input type="submit" value="С" name="l" class="letter{{ l == 'С' ? ' active' }}"/>
+				<input type="submit" value="Т" name="l" class="letter{{ l == 'Т' ? ' active' }}"/>
+				<input type="submit" value="У" name="l" class="letter{{ l == 'У' ? ' active' }}"/>
+				<input type="submit" value="Ф" name="l" class="letter{{ l == 'Ф' ? ' active' }}"/>
+				<input type="submit" value="Х" name="l" class="letter{{ l == 'Х' ? ' active' }}"/>
+				<input type="submit" value="Ц" name="l" class="letter{{ l == 'Ц' ? ' active' }}"/>
+				<input type="submit" value="Ч" name="l" class="letter{{ l == 'Ч' ? ' active' }}"/>
+				<input type="submit" value="Ш" name="l" class="letter{{ l == 'Ш' ? ' active' }}"/>
+				<input type="submit" value="Щ" name="l" class="letter{{ l == 'Щ' ? ' active' }}"/>
+				<input type="submit" value="Э" name="l" class="letter{{ l == 'Э' ? ' active' }}"/>
+				<input type="submit" value="Ю" name="l" class="letter{{ l == 'Ю' ? ' active' }}"/>
+				<input type="submit" value="Я" name="l" class="letter{{ l == 'Я' ? ' active' }}"/>
+			</div>
+		</form>
+	</div>
+
+	{% if products is defined and products is not empty %}
+		<div class="block">
+			<div class="block-anons">
+				<div class="block-head">
+					Найдено {{ n ? 'безрецептурных ' }}{{ t == 'p' ? 'препаратов' : t == 'b' ? 'БАДов' : 'препаратов и БАДов' }}
+					:
+					<span>{{ pagination.totalItemCount }}</span>
+				</div>
+			</div>
+		</div>
+
+		{% include 'VidalDrugBundle:Vidal:render_products.html.twig' %}
+
+		<div class="navigation">
+			{{ knp_pagination_render(pagination) }}
+		</div>
+	{% endif %}
+
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/letters.css') }}"/>
+	<style type="text/css">
+		.letters-controls {
+			margin-bottom: 8px;
+		}
+		.letters-controls-check {
+			display:     inline-block;
+			margin-left: 15px;
+		}
+		.letters-controls-check input, letters-controls-check span {
+			vertical-align: top;
+		}
+	</style>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#letters_form input[type="submit"]').click(function() {
+				$('#letters_page').val('1');
+			});
+
+			$('#letters_type, #letters_nonpres').change(function() {
+				$('#letters_page').val('1');
+				$('.letter.active').click();
+			});
+		});
+	</script>
+{% endblock %}

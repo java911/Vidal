@@ -1,0 +1,48 @@
+{% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
+
+
+{% block vidal %}
+	<h1>{{ infoPage.RusName|upper|raw }}
+		<span>(представительство{% if infoPage.Country is not empty and infoPage.Country != 'Unknown' %},
+			{{ infoPage.Country }}{% endif %})</span>
+	</h1>
+
+	{# логотип компании и инфо #}
+	<table class="infopage">
+		<tr>
+			{% if picture %}
+				{% set path = '/upload_vidal/companies/' ~ picture.path %}
+				{% if is_file(path) %}
+					<td class="infopage-logo">
+						<img src="{{ path }}"/>
+					</td>
+				{% endif %}
+			{% endif %}
+			<td class="infopage-about">
+				{{ infoPage.RusAddress|raw }}
+			</td>
+		</tr>
+	</table>
+
+	{# препараты #}
+	<div class="block">
+		<div class="block-head">Лекарственные препараты</div>
+		{% include 'VidalDrugBundle:Vidal:render_products.html.twig' %}
+	</div>
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.infopage-logo img {
+			max-width:     200px;
+			max-height:    200px;
+			padding-right: 40px;
+		}
+		.infopage-about p {
+			margin:    7px 0;
+			font-size: 12px;
+		}
+	</style>
+{% endblock %}

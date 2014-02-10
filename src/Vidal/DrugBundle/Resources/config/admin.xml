@@ -1,0 +1,29 @@
+<!-- Vidal/DrugBundle/Resources/config/admin.xml -->
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <service id="sonata.admin.document" class="Vidal\DrugBundle\Admin\DocumentAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Основной контент" label="Документы"/>
+            <argument />
+            <argument>Vidal\DrugBundle\Entity\Document</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <argument />
+            <call method="setTranslationDomain">
+                <argument>VidalDrugBundle</argument>
+            </call>
+        </service>
+        <service id="sonata.admin.product" class="Vidal\DrugBundle\Admin\ProductAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Основной контент" label="Продукты"/>
+            <argument />
+            <argument>Vidal\DrugBundle\Entity\Product</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <argument />
+            <call method="setTranslationDomain">
+                <argument>VidalDrugBundle</argument>
+            </call>
+        </service>
+
+    </services>
+</container>
