@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8"/>
+
+	{% block meta %}
+		<title>{% spaceless %}
+				{% if seotitle is defined and seotitle is not null %}
+					{{ seotitle }}
+				{% else %}
+					{{ title is defined and title is not null ? title ~ ' | ' }}Справочник лекарственных препаратов Видаль. Описание лекарственных средств.
+				{% endif %}
+			{% endspaceless %}</title>
+		<meta name="description" content="{% spaceless %}
+				{% if description is defined and description is not null %}
+					{{ description }}
+				{% else %}
+					{{ title is defined ? title ~ '. ' }}Справочник лекарственных препаратов, содержащий подробные описания и инструкции по применению лекарственных средств. Так же, на сайте: медицинская энциклопедия с описанием болезней, новости медицины и фармацевтики, взаимодействие лекарств и исследования их эффективности.
+				{% endif %}
+			{% endspaceless %}"/>
+		<meta name="keywords" content="{% spaceless %}
+				{% if keywords is defined %}
+					{{ keywords }}
+				{% else %}
+					{{ title is defined ? title ~ ' ' }}Справочник лекарственных препаратов, средств, лекарства, описания, инструкции, применение, медицина, болезни, энциклопедия, врачи, новости, лечение, Видаль
+				{% endif %}
+			{% endspaceless %}"/>
+	{% endblock %}
+
+	<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+
+	{% block stylesheets %}
+		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/common.css') }}"/>
+		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/jquery-chosen/chosen.css') }}"/>
+		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/jquery-ui/jquery-ui-full.css') }}"/>
+	{% endblock %}
+
+	{% block javascripts %}
+		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/jquery-1.9.1.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/ready.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+		<script type="text/javascript"
+				src="{{ asset('bundles/vidalmain/jquery-chosen/chosen.jquery.min.js') }}"></script>
+		<script type="text/javascript"
+				src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+		<script type="text/javascript"
+				src="{{ asset('bundles/vidalmain/jquery-ui/jquery-ui-full.js') }}"></script>
+	{% endblock %}
+</head>
+
+<body>
+
+<div id="wrapper">
+	{% include 'VidalDrugBundle::header.html.twig' %}
+
+	<div id="content">
+		{% block content %}
+			<div id="sidebar">
+				{% include 'VidalDrugBundle::sidebar.html.twig' %}
+			</div>
+			<div id="main">
+				{% include 'VidalDrugBundle::vidal_search_form.html.twig' %}
+				{% block main %}{% endblock %}
+			</div>
+		{% endblock %}
+	</div>
+
+	<div class="push"></div>
+</div>
+
+{# Для низа сайта #}
+<div id="footer">
+
+</div>
+
+{# это фон диагональный при загрузке или всплывающем окне #}
+<div id="overlay"></div>
+
+{# всплывающее оповещение, если задано в контроллере через $session->getFlashBag()->add(...) #}
+{% include 'VidalDrugBundle::popup.html.twig' %}
+
+</body>
+</html>
