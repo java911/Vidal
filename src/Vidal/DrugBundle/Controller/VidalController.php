@@ -20,7 +20,7 @@ class VidalController extends Controller
 	 */
 	public function companyAction($CompanyID)
 	{
-		$em      = $this->getDoctrine()->getManager('vidal');
+		$em      = $this->getDoctrine()->getManager('drug');
 		$company = $em->getRepository('VidalDrugBundle:Company')->findByCompanyID($CompanyID);
 
 		if ($company == null) {
@@ -80,7 +80,7 @@ class VidalController extends Controller
 	 */
 	public function atcAction($ATCCode)
 	{
-		$em  = $this->getDoctrine()->getManager('vidal');
+		$em  = $this->getDoctrine()->getManager('drug');
 		$atc = $em->getRepository('VidalDrugBundle:ATC')->findOneByATCCode($ATCCode);
 
 		if (!$atc) {
@@ -137,7 +137,7 @@ class VidalController extends Controller
 	 */
 	public function clphgroupAction($description)
 	{
-		$em       = $this->getDoctrine()->getManager('vidal');
+		$em       = $this->getDoctrine()->getManager('drug');
 		$products = $em->getRepository('VidalDrugBundle:Product')->findByClPhGroup($description);
 		$params   = array('products' => $products, 'description' => $description);
 
@@ -157,7 +157,7 @@ class VidalController extends Controller
 	 */
 	public function phthgroupAction($id)
 	{
-		$em        = $this->getDoctrine()->getManager('vidal');
+		$em        = $this->getDoctrine()->getManager('drug');
 		$phthgroup = $em->getRepository('VidalDrugBundle:PhThGroups')->findById($id);
 
 		if ($phthgroup === null) {
@@ -183,7 +183,7 @@ class VidalController extends Controller
 	 */
 	public function nozologyCodeAction($NozologyCode)
 	{
-		$em = $this->getDoctrine()->getManager('vidal');
+		$em = $this->getDoctrine()->getManager('drug');
 
 		if ($pos = strpos($NozologyCode, '.htm')) {
 			$NozologyCode = substr($NozologyCode, $pos, 4);
@@ -235,7 +235,7 @@ class VidalController extends Controller
 	 */
 	public function infAction($InfoPageID)
 	{
-		$em       = $this->getDoctrine()->getManager('vidal');
+		$em       = $this->getDoctrine()->getManager('drug');
 		$infoPage = $em->getRepository('VidalDrugBundle:InfoPage')->findByInfoPageID($InfoPageID);
 
 		if (!$infoPage) {
@@ -268,7 +268,7 @@ class VidalController extends Controller
 	 */
 	public function moleculeAction($MoleculeID)
 	{
-		$em       = $this->getDoctrine()->getManager('vidal');
+		$em       = $this->getDoctrine()->getManager('drug');
 		$molecule = $em->getRepository('VidalDrugBundle:Molecule')->findByMoleculeID($MoleculeID);
 
 		if (!$molecule) {
@@ -291,7 +291,7 @@ class VidalController extends Controller
 	 */
 	public function moleculeIncludedAction($MoleculeID)
 	{
-		$em       = $this->getDoctrine()->getManager('vidal');
+		$em       = $this->getDoctrine()->getManager('drug');
 		$molecule = $em->getRepository('VidalDrugBundle:Molecule')->findByMoleculeID($MoleculeID);
 
 		if (!$molecule) {
@@ -359,7 +359,7 @@ class VidalController extends Controller
 	 */
 	public function drugsByLetterAction(Request $request)
 	{
-		$em = $this->getDoctrine()->getManager('vidal');
+		$em = $this->getDoctrine()->getManager('drug');
 		$t  = $request->query->get('t', 'p'); // тип препараты-бады-вместе
 		$p  = $request->query->get('p', 1); // номер страницы
 		$l  = $request->query->get('l', null); // буква
@@ -408,7 +408,7 @@ class VidalController extends Controller
 	 */
 	public function productAction($EngName, $ProductID)
 	{
-		$em     = $this->getDoctrine()->getManager('vidal');
+		$em     = $this->getDoctrine()->getManager('drug');
 		$params = array();
 
 		$product = $em->getRepository('VidalDrugBundle:Product')->findByProductID($ProductID);
@@ -484,7 +484,7 @@ class VidalController extends Controller
 	 */
 	public function documentAction($EngName, $DocumentID = null)
 	{
-		$em     = $this->getDoctrine()->getManager('vidal');
+		$em     = $this->getDoctrine()->getManager('drug');
 		$params = array();
 
 		$document = $DocumentID

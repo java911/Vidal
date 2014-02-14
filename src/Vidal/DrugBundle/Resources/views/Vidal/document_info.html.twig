@@ -1,6 +1,6 @@
 {# Клинико-фармакологическая группа #}
 {% if document.ClPhGrDescription is not empty %}
-	<div class="block" id="description">
+	<div class="block" id="group">
 		<span class="block-head">Клинико-фармакологическая группа: </span>
 		<span class="block-content">
 			<a href="{{ path('clphgroup', {'description':document.ClPhGrName}) }}"

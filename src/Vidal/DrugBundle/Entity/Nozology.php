@@ -3,6 +3,7 @@ namespace Vidal\DrugBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /** @ORM\Entity(repositoryClass="NozologyRepository") @ORM\Table(name="nozology") */
 class Nozology
@@ -30,9 +31,18 @@ class Nozology
 	/** @ORM\Column(length=20, nullable=true) */
 	protected $Class;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="Article", inversedBy="nozologies")
+	 * @ORM\JoinTable(name="article_nozology",
+	 * 		joinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")},
+	 * 		inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
+	 */
+	protected $articles;
+
 	public function __construct()
 	{
-		$this->documents = new ArrayCollection;
+		$this->documents = new ArrayCollection();
+		$this->articles = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -134,5 +144,21 @@ class Nozology
 	public function getClass()
 	{
 		return $this->Class;
+	}
+
+	/**
+	 * @param mixed $articles
+	 */
+	public function setArticles($articles)
+	{
+		$this->articles = $articles;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getArticles()
+	{
+		return $this->articles;
 	}
 }

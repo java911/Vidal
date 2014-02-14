@@ -70,31 +70,19 @@ class InfoPage
 	 */
 	protected $represAndDistribs;
 
+	/** @ORM\OneToMany(targetEntity="Article", mappedBy="infoPage") */
+	protected $articles;
+
 	public function __construct()
 	{
 		$this->pictures          = new ArrayCollection();
 		$this->documentInfoPages = new ArrayCollection();
+		$this->articles          = new ArrayCollection();
 	}
 
 	public function __toString()
 	{
 		return $this->RusName;
-	}
-
-	/**
-	 * @param mixed $CoutryCode
-	 */
-	public function setCoutryCode($CoutryCode)
-	{
-		$this->CoutryCode = $CoutryCode;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getCoutryCode()
-	{
-		return $this->CoutryCode;
 	}
 
 	/**
@@ -335,5 +323,53 @@ class InfoPage
 	public function getDocumentInfoPages()
 	{
 		return $this->documentInfoPages;
+	}
+
+	/**
+	 * @param mixed $CountryCode
+	 */
+	public function setCountryCode($CountryCode)
+	{
+		$this->CountryCode = $CountryCode;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCountryCode()
+	{
+		return $this->CountryCode;
+	}
+
+	/**
+	 * @param mixed $articles
+	 */
+	public function setArticles($articles)
+	{
+		$this->articles = $articles;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getArticles()
+	{
+		return $this->articles;
+	}
+
+	/**
+	 * @param mixed $represAndDistribs
+	 */
+	public function setRepresAndDistribs($represAndDistribs)
+	{
+		$this->represAndDistribs = $represAndDistribs;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getRepresAndDistribs()
+	{
+		return $this->represAndDistribs;
 	}
 }

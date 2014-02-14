@@ -43,10 +43,19 @@ class Molecule
 	/** @ORM\OneToMany(targetEntity="MoleculeName", mappedBy="MoleculeID") */
 	protected $moleculeNames;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="Article", inversedBy="molecules")
+	 * @ORM\JoinTable(name="article_molecule",
+	 *        joinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
+	 */
+	protected $articles;
+
 	public function __construct()
 	{
 		$this->moleculeDocuments = new ArrayCollection();
 		$this->moleculeNames     = new ArrayCollection();
+		$this->articles          = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -217,5 +226,21 @@ class Molecule
 	public function getMoleculeNames()
 	{
 		return $this->moleculeNames;
+	}
+
+	/**
+	 * @param mixed $articles
+	 */
+	public function setArticles($articles)
+	{
+		$this->articles = $articles;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getArticles()
+	{
+		return $this->articles;
 	}
 }

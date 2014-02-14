@@ -1,8 +1,6 @@
-{% extends layout | default('EvrikaMainBundle::limited_layout.html.twig') %}
+{% extends ('VidalDrugBundle::layout.html.twig') %}
 
-{% block body %}
-
-	
+{% block main %}
 	<div style="text-align: center">
 		{% if status_code == 404 %}
             <table style="width: 600px;" align='center'>

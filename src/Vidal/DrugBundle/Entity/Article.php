@@ -1,6 +1,6 @@
 <?php
 
-namespace Vidal\MainBundle\Entity;
+namespace Vidal\DrugBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -36,22 +36,53 @@ class Article extends BaseEntity
 	protected $author;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Vidal\DrugBundle\Entity\Nozology", mappedBy="articles")
+	 * @ORM\ManyToMany(targetEntity="Nozology", mappedBy="articles")
 	 * @ORM\JoinTable(name="article_nozology",
-	 * 		joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
-	 * 		inverseJoinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")})
+	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")})
 	 */
 	protected $nozologies;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="Molecule", mappedBy="articles")
+	 * @ORM\JoinTable(name="article_molecule",
+	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")})
+	 */
+	protected $molecules;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Product", mappedBy="articles")
+	 * @ORM\JoinTable(name="article_product",
+	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")})
+	 */
+	protected $products;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="ATC", inversedBy="articles")
+	 * @ORM\JoinColumn(name="id", referencedColumnName="ATCCode")
+	 */
+	protected $atc;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="InfoPage", inversedBy="articles")
+	 * @ORM\JoinColumn(name="id", referencedColumnName="InfoPageID")
+	 */
+	protected $infoPage;
+
+	/** @ORM\ManyToOne(targetEntity="ArticleType", inversedBy="articles") */
+	protected $type;
+
 	public function __construct()
 	{
-
+		$this->nozologies = new ArrayCollection();
+		$this->moleculdes = new ArrayCollection();
+		$this->products   = new ArrayCollection();
 	}
 
 	public function __toString()
 	{
 		return $this->title;
 	}
-
-
 }

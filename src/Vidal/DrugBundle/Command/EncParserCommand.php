@@ -9,18 +9,23 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class EncParserCommand extends ContainerAwareCommand
 {
-    protected function configure()
-    {
-        $this
-			->setName('vidal:test')
-            ->setDescription('Command to copy')
-            //->addArgument('user', InputArgument::OPTIONAL, '')
-			//->addOption('email', null, InputOption::VALUE_NONE, '')
-        ;
-    }
+	protected function configure()
+	{
+		$this->setName('vidal:enc_parser')
+			->setDescription('Command to copy');
+	}
 
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-		$em = $this->getContainer()->get('doctrine')->getManager();
+	protected function execute(InputInterface $input, OutputInterface $output)
+	{
+		$em       = $this->getContainer()->get('doctrine')->getManager();
+		$fileName = __DIR__ . DIRECTORY_SEPARATOR . 'enc2012.xml';
+		$fileXml = file_get_contents($fileName);
+
+		$noko = new \nokogiri($fileXml);
+
+		$xml = $noko->get('encyclopedy')->toArray();
+		$diseases = $xml[0]['disease'];
+
+		//var_dump($diseases[0]);
 	}
 }

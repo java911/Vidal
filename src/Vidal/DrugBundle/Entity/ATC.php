@@ -28,7 +28,7 @@ class ATC
 	/**
 	 * @ORM\ManyToMany(targetEntity="Product", mappedBy="atcCodes")
 	 * @ORM\JoinTable(name="product_atc",
-	 * 		joinColumns={@ORM\JoinColumn(name="ATCcode", referencedColumnName="ATCCode")},
+	 *        joinColumns={@ORM\JoinColumn(name="ATCcode", referencedColumnName="ATCCode")},
 	 *      inverseJoinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")})
 	 */
 	protected $products;
@@ -36,15 +36,19 @@ class ATC
 	/**
 	 * @ORM\ManyToMany(targetEntity="Document", inversedBy="atcCodes")
 	 * @ORM\JoinTable(name="documentoc_atc",
-	 * 		joinColumns={@ORM\JoinColumn(name="ATCCode", referencedColumnName="ATCCode")},
+	 *      joinColumns={@ORM\JoinColumn(name="ATCCode", referencedColumnName="ATCCode")},
 	 *      inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})
 	 */
 	protected $documents;
+
+	/** @ORM\OneToMany(targetEntity="Article", mappedBy="atc") */
+	protected $articles;
 
 	public function __construct()
 	{
 		$this->children = new ArrayCollection();
 		$this->products = new ArrayCollection();
+		$this->articles = new ArrayCollection();
 	}
 
 	public function getId()
@@ -167,5 +171,37 @@ class ATC
 	public function getProducts()
 	{
 		return $this->products;
+	}
+
+	/**
+	 * @param mixed $articles
+	 */
+	public function setArticles($articles)
+	{
+		$this->articles = $articles;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getArticles()
+	{
+		return $this->articles;
+	}
+
+	/**
+	 * @param mixed $documents
+	 */
+	public function setDocuments($documents)
+	{
+		$this->documents = $documents;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDocuments()
+	{
+		return $this->documents;
 	}
 }
