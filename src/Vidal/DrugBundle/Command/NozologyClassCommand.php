@@ -24,7 +24,7 @@ class NozologyClassCommand extends ContainerAwareCommand
 	{
 		$output->writeln('--- vidal:nozology_class started');
 
-		$em = $this->getContainer()->get('doctrine')->getManager();
+		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
 		# находим заболевания с тегами <sub> или <sup>
 		$nozologies = $em->createQuery('

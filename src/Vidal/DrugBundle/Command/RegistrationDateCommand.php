@@ -24,7 +24,7 @@ class RegistrationDateCommand extends ContainerAwareCommand
 	{
 		$output->writeln('--- vidal:registrationdate started');
 
-		$em = $this->getContainer()->get('doctrine')->getManager();
+		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
 		$em->createQuery('
 			UPDATE VidalDrugBundle:Product p

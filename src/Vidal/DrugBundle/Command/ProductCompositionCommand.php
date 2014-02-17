@@ -24,7 +24,7 @@ class ProductCompositionCommand extends ContainerAwareCommand
 	{
 		$output->writeln('--- vidal:product_composition started');
 
-		$em = $this->getContainer()->get('doctrine')->getManager();
+		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
 		$products = $em->createQuery('
 			SELECT p.ProductID, p.Composition

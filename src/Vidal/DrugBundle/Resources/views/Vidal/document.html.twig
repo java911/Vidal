@@ -187,6 +187,9 @@
 									{% if p.RegistrationDate is not null %}
 										от {{ p.RegistrationDate|date('d.m.Y') }}
 									{% endif %}
+									{% if p.MarketStatus %}
+										<i>- {{ p.MarketStatus }}</i>
+									{% endif %}
 								</span>
 							</td>
 						</tr>

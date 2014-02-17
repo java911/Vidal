@@ -24,7 +24,7 @@ class DocumentCompositionCommand extends ContainerAwareCommand
 	{
 		$output->writeln('--- vidal:document_composition started');
 
-		$em = $this->getContainer()->get('doctrine')->getManager();
+		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
 		$documents = $em->createQuery('
 			SELECT d.DocumentID, d.CompiledComposition

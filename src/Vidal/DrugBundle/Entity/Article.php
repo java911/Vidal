@@ -24,9 +24,6 @@ class Article extends BaseEntity
 	/** @ORM\Column(type="boolean") */
 	protected $forDoctor;
 
-	/** @ORM\Column(length=255, nullable=true) */
-	protected $pubDate;
-
 	/**
 	 * @ORM\Column(length=255, nullable=true)
 	 */
@@ -74,15 +71,254 @@ class Article extends BaseEntity
 	/** @ORM\ManyToOne(targetEntity="ArticleType", inversedBy="articles") */
 	protected $type;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="Document", mappedBy="articles")
+	 * @ORM\JoinTable(name="article_document",
+	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})
+	 */
+	protected $documents;
+
 	public function __construct()
 	{
 		$this->nozologies = new ArrayCollection();
-		$this->moleculdes = new ArrayCollection();
+		$this->molecules  = new ArrayCollection();
 		$this->products   = new ArrayCollection();
+		$this->documents  = new ArrayCollection();
+		$this->forDoctor  = false;
 	}
 
 	public function __toString()
 	{
 		return $this->title;
+	}
+
+	/**
+	 * @param mixed $announce
+	 */
+	public function setAnnounce($announce)
+	{
+		$this->announce = $announce;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getAnnounce()
+	{
+		return $this->announce;
+	}
+
+	/**
+	 * @param mixed $atc
+	 */
+	public function setAtc($atc)
+	{
+		$this->atc = $atc;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getAtc()
+	{
+		return $this->atc;
+	}
+
+	/**
+	 * @param mixed $author
+	 */
+	public function setAuthor($author)
+	{
+		$this->author = $author;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getAuthor()
+	{
+		return $this->author;
+	}
+
+	/**
+	 * @param mixed $body
+	 */
+	public function setBody($body)
+	{
+		$this->body = $body;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getBody()
+	{
+		return $this->body;
+	}
+
+	/**
+	 * @param mixed $documents
+	 */
+	public function setDocuments($documents)
+	{
+		$this->documents = $documents;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDocuments()
+	{
+		return $this->documents;
+	}
+
+	/**
+	 * @param mixed $forDoctor
+	 */
+	public function setForDoctor($forDoctor)
+	{
+		$this->forDoctor = $forDoctor;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getForDoctor()
+	{
+		return $this->forDoctor;
+	}
+
+	/**
+	 * @param mixed $infoPage
+	 */
+	public function setInfoPage($infoPage)
+	{
+		$this->infoPage = $infoPage;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getInfoPage()
+	{
+		return $this->infoPage;
+	}
+
+	/**
+	 * @param mixed $link
+	 */
+	public function setLink($link)
+	{
+		$this->link = $link;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getLink()
+	{
+		return $this->link;
+	}
+
+	/**
+	 * @param mixed $molecules
+	 */
+	public function setMolecules($molecules)
+	{
+		$this->molecules = $molecules;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getMolecules()
+	{
+		return $this->molecules;
+	}
+
+	/**
+	 * @param mixed $nozologies
+	 */
+	public function setNozologies($nozologies)
+	{
+		$this->nozologies = $nozologies;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getNozologies()
+	{
+		return $this->nozologies;
+	}
+
+	/**
+	 * @param mixed $products
+	 */
+	public function setProducts($products)
+	{
+		$this->products = $products;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getProducts()
+	{
+		return $this->products;
+	}
+
+	/**
+	 * @param mixed $rubrique
+	 */
+	public function setRubrique($rubrique)
+	{
+		$this->rubrique = $rubrique;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getRubrique()
+	{
+		return $this->rubrique;
+	}
+
+	/**
+	 * @param mixed $title
+	 */
+	public function setTitle($title)
+	{
+		$this->title = $title;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTitle()
+	{
+		return $this->title;
+	}
+
+	/**
+	 * @param mixed $type
+	 */
+	public function setType($type)
+	{
+		$this->type = $type;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getType()
+	{
+		return $this->type;
+	}
+
+	public function addDocument(Document $document)
+	{
+		$this->documents[] = $document;
 	}
 }

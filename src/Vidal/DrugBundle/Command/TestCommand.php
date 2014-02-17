@@ -21,6 +21,6 @@ class TestCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-		$em = $this->getContainer()->get('doctrine')->getManager();
+		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 	}
 }

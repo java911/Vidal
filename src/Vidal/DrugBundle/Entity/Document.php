@@ -190,6 +190,14 @@ class Document
 	/** @ORM\OneToMany(targetEntity="MoleculeDocument", mappedBy="DocumentID") */
 	protected $moleculeDocuments;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="Article", inversedBy="documents")
+	 * @ORM\JoinTable(name="article_document",
+	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
+	 */
+	protected $articles;
+
 	public function __construct()
 	{
 		$this->atcCodes          = new ArrayCollection();
@@ -200,6 +208,7 @@ class Document
 		$this->documentInfoPages = new ArrayCollection();
 		$this->documentEditions  = new ArrayCollection();
 		$this->moleculeDocuments = new ArrayCollection();
+		$this->articles          = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -1037,5 +1046,21 @@ class Document
 	public function getClPhGrName()
 	{
 		return $this->ClPhGrName;
+	}
+
+	/**
+	 * @param mixed $articles
+	 */
+	public function setArticles($articles)
+	{
+		$this->articles = $articles;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getArticles()
+	{
+		return $this->articles;
 	}
 }

@@ -24,7 +24,7 @@ class AutocompleteNozologyCommand extends ContainerAwareCommand
 	{
 		$output->writeln('--- vidal:autocomplete_nozology started');
 
-		$em = $this->getContainer()->get('doctrine')->getManager();
+		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
 		$nozologies = $em->getRepository('VidalDrugBundle:Nozology')->findAll();
 

@@ -24,7 +24,7 @@ class DocumentImageCommand extends ContainerAwareCommand
 	{
 		$output->writeln('--- vidal:document_image started');
 
-		$em   = $this->getContainer()->get('doctrine')->getManager();
+		$em   = $this->getContainer()->get('doctrine')->getManager('drug');
 		$repo = $em->getRepository('VidalDrugBundle:Document');
 
 		# Картинка berotek jpg вставляется в рубрику Режим дозирования по месту где написано рис 1 в препараты Беродуал Н и Атровент Н

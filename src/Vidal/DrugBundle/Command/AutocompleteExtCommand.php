@@ -24,7 +24,7 @@ class AutocompleteExtCommand extends ContainerAwareCommand
 	{
 		$output->writeln('--- vidal:autocomplete_ext started');
 
-		$em = $this->getContainer()->get('doctrine')->getManager();
+		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
 		$productNames  = $em->getRepository('VidalDrugBundle:Product')->findProductNames();
 		$moleculeNames = $em->getRepository('VidalDrugBundle:Molecule')->findMoleculeNames();

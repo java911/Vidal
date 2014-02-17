@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/** @ORM\Entity @ORM\Table(name="article_rubrique") */
+/** @ORM\Entity(repositoryClass="ArticleRubriqueRepository") @ORM\Table(name="article_rubrique") */
 class ArticleRubrique
 {
 	/** @ORM\Column(type="integer") @ORM\Id @ORM\GeneratedValue */

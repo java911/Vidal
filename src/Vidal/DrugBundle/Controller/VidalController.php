@@ -498,20 +498,14 @@ class VidalController extends Controller
 		if (!$DocumentID) {
 			$DocumentID = $document->getDocumentID();
 		}
-		else {
-			$params['documentId'] = $document->getDocumentID();
-		}
 
+		$params['documentId'] = $document->getDocumentID();
 		$articleId = $document->getArticleID();
 		$molecules = $em->getRepository('VidalDrugBundle:Molecule')->findByDocumentID($DocumentID);
 
 		$products = $articleId == 1
 			? $em->getRepository('VidalDrugBundle:Product')->findByMolecules($molecules)
 			: $em->getRepository('VidalDrugBundle:Product')->findByDocumentID($DocumentID);
-
-		if (empty($products)) {
-			$products = $em->getRepository('VidalDrugBundle:Product')->findByMolecules($molecules);
-		}
 
 		if (!empty($products)) {
 			$productIds             = $this->getProductIds($products);

@@ -24,7 +24,7 @@ class AutocompleteContraindicationCommand extends ContainerAwareCommand
 	{
 		$output->writeln('--- vidal:autocomplete_contraindication started');
 
-		$em = $this->getContainer()->get('doctrine')->getManager();
+		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
 		$contraindications = $em->getRepository('VidalDrugBundle:Contraindication')->findAll();
 

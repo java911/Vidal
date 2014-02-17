@@ -24,7 +24,7 @@ class ProductNameCommand extends ContainerAwareCommand
 	{
 		$output->writeln('--- vidal:product_name started');
 
-		$em = $this->getContainer()->get('doctrine')->getManager();
+		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
 		# надо установить имена для препаратов без тегов/пробелов в нижний регистр
 		$em->createQuery('
@@ -40,7 +40,6 @@ class ProductNameCommand extends ContainerAwareCommand
 			SELECT COUNT(p.ProductID)
 			FROM VidalDrugBundle:Product p
 			WHERE p.CountryEditionCode = \'RUS\' AND
-				p.MarketStatusID IN (1,2)  AND
 				p.ProductTypeCode IN (\'DRUG\', \'GOME\') AND
 				(p.EngName LIKE \'%<%\' OR p.EngName LIKE \'% %\' OR p.EngName LIKE \'%/%\')
 		')->getSingleScalarResult();
@@ -49,7 +48,6 @@ class ProductNameCommand extends ContainerAwareCommand
 			SELECT p.ProductID, p.EngName
 			FROM VidalDrugBundle:Product p
 			WHERE p.CountryEditionCode = \'RUS\' AND
-				p.MarketStatusID IN (1,2)  AND
 				p.ProductTypeCode IN (\'DRUG\', \'GOME\') AND
 				(p.EngName LIKE \'%<%\' OR p.EngName LIKE \'% %\' OR p.EngName LIKE \'%/%\')
 		');

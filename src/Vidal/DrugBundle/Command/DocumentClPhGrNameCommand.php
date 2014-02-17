@@ -24,7 +24,7 @@ class DocumentClPhGrNameCommand extends ContainerAwareCommand
 	{
 		$output->writeln('--- vidal:document_clphgrname started');
 
-		$em = $this->getContainer()->get('doctrine')->getManager();
+		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
 		# надо установить имена для препаратов без тегов/пробелов в нижний регистр
 		$em->createQuery('

@@ -28,7 +28,6 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d = :DocumentID AND
 				p.CountryEditionCode = \'RUS\' AND
-				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
 				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
 			ORDER BY pd.Ranking DESC, p.RusName ASC
 		')->setParameter('DocumentID', $DocumentID)
