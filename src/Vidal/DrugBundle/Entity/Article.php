@@ -33,7 +33,7 @@ class Article extends BaseEntity
 	protected $author;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Nozology", mappedBy="articles")
+	 * @ORM\ManyToMany(targetEntity="Nozology", inversedBy="articles")
 	 * @ORM\JoinTable(name="article_nozology",
 	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")})
@@ -41,7 +41,7 @@ class Article extends BaseEntity
 	protected $nozologies;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Molecule", mappedBy="articles")
+	 * @ORM\ManyToMany(targetEntity="Molecule", inversedBy="articles")
 	 * @ORM\JoinTable(name="article_molecule",
 	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")})
@@ -49,7 +49,7 @@ class Article extends BaseEntity
 	protected $molecules;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Product", mappedBy="articles")
+	 * @ORM\ManyToMany(targetEntity="Product", inversedBy="articles")
 	 * @ORM\JoinTable(name="article_product",
 	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")})
@@ -57,27 +57,27 @@ class Article extends BaseEntity
 	protected $products;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="ATC", inversedBy="articles")
-	 * @ORM\JoinColumn(name="id", referencedColumnName="ATCCode")
-	 */
-	protected $atc;
-
-	/**
-	 * @ORM\ManyToOne(targetEntity="InfoPage", inversedBy="articles")
-	 * @ORM\JoinColumn(name="id", referencedColumnName="InfoPageID")
-	 */
-	protected $infoPage;
-
-	/** @ORM\ManyToOne(targetEntity="ArticleType", inversedBy="articles") */
-	protected $type;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Document", mappedBy="articles")
+	 * @ORM\ManyToMany(targetEntity="Document", inversedBy="articles")
 	 * @ORM\JoinTable(name="article_document",
 	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})
 	 */
 	protected $documents;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="ATC", inversedBy="articles")
+	 * @ORM\JoinColumn(name="atc", referencedColumnName="ATCCode")
+	 */
+	protected $atc;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="InfoPage", inversedBy="articles")
+	 * @ORM\JoinColumn(name="infoPage", referencedColumnName="InfoPageID")
+	 */
+	protected $infoPage;
+
+	/** @ORM\ManyToOne(targetEntity="ArticleType", inversedBy="articles") */
+	protected $type;
 
 	public function __construct()
 	{

@@ -21,6 +21,7 @@ class ArticleParseCommand extends ContainerAwareCommand
 		$em       = $this->getContainer()->get('doctrine')->getManager('drug');
 		$fileName = __DIR__ . DIRECTORY_SEPARATOR . 'e1.xml';
 		$xml      = simplexml_load_file($fileName);
+		$i        = 0;
 
 		foreach ($xml->disease as $d) {
 			$rubriqueCategory = null;
@@ -69,6 +70,9 @@ class ArticleParseCommand extends ContainerAwareCommand
 			$article->setCreated($pubDate);
 			$article->setUpdated($now);
 			$article->setAuthor($author);
+			$em->persist($article);
+			$em->flush($article);
+			$em->refresh($article);
 
 			# надо прикрепить к статьи документы по ссылке
 			foreach ($d->drugs as $drugs) {
@@ -80,33 +84,9 @@ class ArticleParseCommand extends ContainerAwareCommand
 				}
 			}
 
-			$em->persist($article);
-			$em->flush($article);
+			$em->flush();
+
+			$output->writeln('... ' . ++$i);
 		}
 	}
 }
-
-//$em       = $this->getContainer()->get('doctrine')->getManager('drug');
-//$fileName = __DIR__ . DIRECTORY_SEPARATOR . 'enc2012_new1.xml';
-//$fileXml  = file_get_contents($fileName);
-//
-//$pat = array(
-//	//			'/<text>/',
-//	//			'/<\\/text>/',
-//	//			'/>\\!\\[CDATA\\[/',
-//	//			'/<drug><a href=\\/poisk_preparatov\\//',
-//	//			'/\\]\\]<\\/a>/',
-//	'/<drug>(.*):(.*)<\\/drug>/'
-//);
-//
-//$rep = array(
-//	//			'<text><![CDATA[',
-//	//			']]></text>',
-//	//			':',
-//	//			'<drug>',
-//	//			'',
-//	'<drug>$1</drug>'
-//);
-////
-//$newXml = preg_replace($pat, $rep, $fileXml);
-//file_put_contents(__DIR__ . DIRECTORY_SEPARATOR . 'enc2012_new11.xml', $newXml);

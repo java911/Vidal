@@ -153,7 +153,7 @@ class Product
 	protected $phthgroups;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Article", inversedBy="products")
+	 * @ORM\ManyToMany(targetEntity="Article", mappedBy="products")
 	 * @ORM\JoinTable(name="article_product",
 	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})

@@ -44,7 +44,7 @@ class Molecule
 	protected $moleculeNames;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Article", inversedBy="molecules")
+	 * @ORM\ManyToMany(targetEntity="Article", mappedBy="molecules")
 	 * @ORM\JoinTable(name="article_molecule",
 	 *        joinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})

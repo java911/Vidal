@@ -32,7 +32,7 @@ class Nozology
 	protected $Class;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Article", inversedBy="nozologies")
+	 * @ORM\ManyToMany(targetEntity="Article", mappedBy="nozologies")
 	 * @ORM\JoinTable(name="article_nozology",
 	 * 		joinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")},
 	 * 		inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})

@@ -191,7 +191,7 @@ class Document
 	protected $moleculeDocuments;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Article", inversedBy="documents")
+	 * @ORM\ManyToMany(targetEntity="Article", mappedBy="documents")
 	 * @ORM\JoinTable(name="article_document",
 	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
