@@ -75,11 +75,17 @@ class ArticleParseCommand extends ContainerAwareCommand
 			$em->refresh($article);
 
 			# надо прикрепить к статьи документы по ссылке
+			$documentIds = array();
+
 			foreach ($d->drugs as $drugs) {
 				foreach ($drugs as $name) {
 					$document = $em->getRepository('VidalDrugBundle:Document')->findByName($name);
 					if ($document) {
-						$article->addDocument($document);
+						$documentId = $document->getDocumentID();
+						if (!in_array($documentId, $documentIds)) {
+							$article->addDocument($document);
+							$documentIds[] = $documentId;
+						}
 					}
 				}
 			}
