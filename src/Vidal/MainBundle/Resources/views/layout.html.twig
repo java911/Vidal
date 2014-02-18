@@ -32,7 +32,8 @@
 	{% block stylesheets %}
 		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/common.css') }}"/>
 		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/jquery-chosen/chosen.css') }}"/>
-		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/jquery-ui/jquery-ui-full.css') }}"/>
+		<link rel="stylesheet" type="text/css"
+			  href="{{ asset('bundles/vidalmain/jquery-ui/jquery-ui-1.10.4.custom.min.css') }}"/>
 	{% endblock %}
 
 	{% block javascripts %}
@@ -44,7 +45,7 @@
 		<script type="text/javascript"
 				src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 		<script type="text/javascript"
-				src="{{ asset('bundles/vidalmain/jquery-ui/jquery-ui-full.js') }}"></script>
+				src="{{ asset('bundles/vidalmain/jquery-ui/jquery-ui-1.10.4.custom.min.js') }}"></script>
 	{% endblock %}
 </head>
 

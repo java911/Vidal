@@ -1,0 +1,19 @@
+{% use 'VidalMainBundle:Form:form_table_layout.html.twig' %}
+
+
+{% block form_row %}
+	{% spaceless %}
+		<tr class="form_row row_{{ name }}">
+			<td style="width:35%">
+				<div class="form_label">{{ form_label(form) }}</div>
+			</td>
+			<td style="width:55%">
+				<div class="form_widget">{{ form_widget(form) }}</div>
+				<div class="form_error">{{ form_errors(form) }}</div>
+			</td>
+			<td style="width:10%">
+
+			</td>
+		</tr>
+	{% endspaceless %}
+{% endblock form_row %}

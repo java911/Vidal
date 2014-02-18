@@ -1,5 +1,5 @@
 <?php
-namespace Vidal\DrugBundle\Controller;
+namespace Vidal\MainBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -10,8 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 class IndexController extends Controller
 {
 	/**
-	 * @Route("/", name = "index")
-	 * @Template("VidalDrugBundle:Index:index.html.twig")
+	 * @Route("/", name="index")
+	 * @Template()
 	 */
 	public function indexAction()
 	{

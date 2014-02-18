@@ -1,0 +1,70 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block main %}
+	<h1>Регистрация</h1>
+
+	<form id="registration_form" action="{{ path('registration') }}" autocomplete="off" method="post" {{ form_enctype(form) }}>
+		{% form_theme form 'VidalMainBundle:Form:registration_form.html.twig' %}
+		{{ form_widget(form) }}
+		{#<p class="addition-info">* Специализацию вы можете указать в профиле после регистрации</p>#}
+	</form>
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/evrikamain/jquery-chosen/chosen.css') }}"/>
+	<style type="text/css">
+		.form_label {
+			width: 35%;
+			margin-top: 6px;
+		}
+		input[type="checkbox"] {
+			margin-top: 6px;
+		}
+		.form_widget {
+			width: 65%;
+		}
+		.addition-info {
+			color:  #777777;
+			margin: 10px 0 0;
+		}
+		/* eula */
+		.eula {
+			text-align: left;
+		}
+		.eula .form_label {
+			width: 302px;
+		}
+		.row_birthdate .chosen-container {
+			width: 68px !important;
+			margin-right: 15px;
+		}
+		#form_birthdate_month_chosen {
+			width: 100px !important;
+		}
+	</style>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript" src="{{ asset('bundles/evrikamain/jquery-chosen/chosen.jquery.min.js') }}"></script>
+	<script>
+		$(document).ready(function() {
+			$("#form_city").autocomplete({
+				source:    Routing.generate('ajax_city'),
+				minLength: 2,
+				delay:     100,
+				autoFocus: true,
+				limit: 15
+			});
+
+			// jQuery-chosen
+			var $miniChoices = $('#form_jobAlignment, #form_jobType, #form_academicDegree');
+			$('#registration_form select').not($miniChoices).chosen({search_contains: true});
+			$($miniChoices).chosen({disable_search: true});
+		});
+	</script>
+{% endblock %}
