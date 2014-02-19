@@ -1,1 +1,28 @@
 services:
+    gedmo.listener.timestampable:
+        class: Gedmo\Timestampable\TimestampableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ @annotation_reader ] ]
+
+    gedmo.listener.sortable:
+        class: Gedmo\Sortable\SortableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ @annotation_reader ] ]
+
+    twig.extension.stringloader:
+        class: Twig_Extension_StringLoader
+        tags:
+            - { name: 'twig.extension' }
+
+    vidal.twig_extension:
+        class: Vidal\MainBundle\Service\TwigExtension
+        tags:
+            - { name: twig.extension }
+
+    email.service:
+          class: Vidal\MainBundle\Service\EmailService
+          arguments: [@service_container, @templating]

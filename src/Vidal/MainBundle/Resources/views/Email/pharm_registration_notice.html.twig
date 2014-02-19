@@ -1,0 +1,20 @@
+{% extends layout | default('EvrikaMainBundle::minimal_layout.html.twig') %}
+
+{% block body %}
+	<p>Фармкомпания зарегистрировалась на сайте</p>
+	<p>Данные о компании:</p>
+	<p>
+		Название: {{ company.title }}<br>
+		Описание: {{ company.body }}<br>		
+		Юридический адрес: {{ company.legalAddress }}<br>
+		Фактический адрес: {{ company.postAddress }}<br>
+		Телефон: {{ company.phone }}<br>
+		Факс: {{ company.fax }}<br>
+		Сайт: <a href="{{ company.website }}">{{ company.website }}</a><br>
+	<p>Контатное лицо:</p>	
+		Имя: {{ company.contactPerson }}<br>
+		Должность: {{ company.contactPersonPosition }}
+		
+	
+	<p><a href="{{ url('company_feed', {'groupId': company.id}) }}">Перейти на страницу компании</a>.</p>
+{% endblock %}

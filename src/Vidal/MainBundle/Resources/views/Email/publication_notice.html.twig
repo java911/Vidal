@@ -1,0 +1,6 @@
+{% extends layout | default('EvrikaMainBundle::minimal_layout.html.twig') %}
+
+{% block body %}
+	<p>Пользователь <a href="{{ url('user_feed', {'userId': publication.author.id}) }}">{{ publication.author }}</a> разместил публикацию в разделе &laquo;{{ publication.category }}&raquo;.</p>
+	<p><a href="{{ url('show_publication', {'publicationId': publication.id}) }}">Ссылка на публикацию</a>.</p>
+{% endblock %}

@@ -1,24 +1,4 @@
 services:
-    vidal.twig_extension:
-        class: Vidal\DrugBundle\Service\TwigExtension
-        arguments: [@service_container]
-        tags:
-            - { name: twig.extension }
-
-    gedmo.listener.timestampable:
-        class: Gedmo\Timestampable\TimestampableListener
-        tags:
-            - { name: doctrine.event_subscriber, connection: default }
-        calls:
-            - [ setAnnotationReader, [ @annotation_reader ] ]
-
-    gedmo.listener.sortable:
-        class: Gedmo\Sortable\SortableListener
-        tags:
-            - { name: doctrine.event_subscriber, connection: default }
-        calls:
-            - [ setAnnotationReader, [ @annotation_reader ] ]
-
     lingua.service:
         class: Vidal\DrugBundle\Service\LinguaService
 

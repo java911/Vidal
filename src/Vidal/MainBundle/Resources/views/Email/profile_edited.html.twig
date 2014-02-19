@@ -1,0 +1,6 @@
+{% extends layout | default('EvrikaMainBundle::minimal_layout.html.twig') %}
+
+{% block body %}
+	<p>Пользователь {{ user.getPoliteReference() }} {{ user.lastName }} внес изменения в свой профайл.</p>
+	<p><a href="{{ url('show_profile', {'userId': user.id}) }}">Ссылка на пользователя</a>.</p>
+{% endblock %}

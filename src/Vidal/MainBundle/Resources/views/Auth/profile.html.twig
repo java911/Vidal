@@ -2,5 +2,69 @@
 
 
 {% block main %}
+	<h1>МОЙ ПРОФИЛЬ</h1>
 
+	{# извещения #}
+	{% if app.session.flashBag.get('confirmed')|length %}
+		<div class="thanks">Благодарим за регистрацию на нашем портале!</div>
+	{% elseif app.session.flashBag.get('saved')|length %}
+		<div class="thanks">Сохранено!</div>
+	{% endif %}
+
+	{# форма #}
+	<form id="profile_form" action="{{ path('profile') }}" method="post" {{ form_enctype(form) }}>
+		{{ form_widget(form) }}
+	</form>
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/jquery-chosen/chosen.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/checkbox/checkbox.css') }}"/>
+	<style type="text/css">
+		.row_birthdate .chosen-container {
+			width:        68px !important;
+			margin-right: 15px;
+		}
+		#profile_birthdate_month_chosen {
+			width: 100px !important;
+		}
+		.row_student .form_widget {
+			user-select:         none;
+			-moz-user-select:    none;
+			-webkit-user-select: none;
+			-ms-user-select:     none;
+		}
+	</style>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript" src="{{ asset('bundles/vidalmain/jquery-chosen/chosen.jquery.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('bundles/vidalmain/checkbox/jquery.checkbox.js') }}"></script>
+	<script>
+		$(document).ready(function() {
+			$("#profile_city").autocomplete({
+				source:    Routing.generate('ajax_city'),
+				minLength: 2,
+				delay:     100,
+				autoFocus: true,
+				limit:     15
+			});
+
+			var $miniChoices = $('#profile_jobAlignment, #profile_jobType, #profile_academicDegree');
+			$('#profile_form select').not($miniChoices).chosen({
+				search_contains: true,
+				no_results_text: "не найдено"
+			});
+			$($miniChoices).chosen({
+				disable_search:  true,
+				no_results_text: "не найдено"
+			});
+
+			$('#profile_form input[type="checkbox"]').checkbox();
+		});
+	</script>
 {% endblock %}

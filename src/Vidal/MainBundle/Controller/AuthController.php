@@ -12,12 +12,15 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Vidal\MainBundle\Entity\User;
 use Vidal\MainBundle\Form\Type\RegisterType;
+use Vidal\MainBundle\Form\Type\ProfileType;
 
 class AuthController extends Controller
 {
 	const DISPLAYED_CITIES_AJAX = 10;
 
 	/**
+	 * Регистрация врача на сайте
+	 *
 	 * @Route("/registration", name="registration")
 	 * @Template()
 	 */
@@ -34,21 +37,18 @@ class AuthController extends Controller
 		$form->handleRequest($request);
 
 		if ($form->isValid()) {
-			$password_orig = $user->getPassword();
 			$user->setHash($this->calculateHash($user));
 
 			$em->persist($user);
 			$em->flush();
 			$em->refresh($user);
+
 			$this->resetToken($user);
 
 			# уведомление пользователя о регистрации
 			$this->get('email.service')->send(
 				$user->getUsername(),
-				array('VidalMainBundle:Email:registration.html.twig', array(
-					'user'          => $user,
-					'password_orig' => $password_orig
-				)),
+				array('VidalMainBundle:Email:registration.html.twig', array('user' => $user)),
 				'Благодарим за регистрацию на нашем портале!'
 			);
 
@@ -59,22 +59,59 @@ class AuthController extends Controller
 				'Зарегистрировался новый пользователь'
 			);
 
-			return $this->redirect($this->generateUrl('edit_profile'));
+			return $this->redirect($this->generateUrl('profile'));
 		}
 
-		return array(
-			'form'  => $form->createView(),
-			'title' => 'Регистрация',
-		);
+		return array('form'  => $form->createView(), 'title' => 'Регистрация');
 	}
 
 	/**
+	 * Редактирование профиля
+	 *
 	 * @Route("/profile", name="profile")
 	 * @Template()
 	 */
-	public function profileAction()
+	public function profileAction(Request $request)
 	{
-		return array();
+		$em   = $this->getDoctrine()->getManager();
+		$user = $this->getUser();
+		$form = $this->createForm(new ProfileType($em), $user);
+
+		$form->handleRequest($request);
+
+		if ($form->isValid()) {
+			$em->persist($user);
+			$em->flush();
+			$this->get('session')->getFlashBag()->add('saved', '');
+
+			return $this->redirect($this->generateUrl('profile'));
+		}
+
+		return array('form' => $form->createView(), 'title' => 'Мой профиль');
+	}
+
+	/**
+	 * Подтверждает адрес электронной почты пользователя. Если пользователь подтвердил адрес и прошел тест, ему выставляется роль ROLE_DOCTOR или ROLE_STUDENT вместо ROLE_UNCONFIRMED
+	 *
+	 * @Route("/confirm-email/{userId}/{hash}", name="confirm_email")
+	 */
+	public function confirmEmailAction($userId, $hash)
+	{
+		$em = $this->getDoctrine()->getManager();
+
+		$user = $em->find('VidalMainBundle:User', $userId);
+
+		if (!empty($user) && $user->getHash() == $hash) {
+			$user->setEmailConfirmed(true);
+			$user->setHash($this->calculateHash($user));
+			$this->resetToken($user);
+			$em->flush();
+			$this->get('session')->getFlashBag()->add('confirmed', '');
+
+			return $this->redirect($this->generateUrl('profile'));
+		}
+
+		return $this->redirect($this->generateUrl('index'));
 	}
 
 	/**

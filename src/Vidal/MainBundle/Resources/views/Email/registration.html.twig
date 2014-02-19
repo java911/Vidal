@@ -1,0 +1,13 @@
+{% extends 'VidalMainBundle::minimal_layout.html.twig' %}
+
+{% block body %}
+	<p>{{ user.getPoliteReference() }}, благодарим за регистрацию на портале Evrika.ru!</p>
+	<p>
+		Ваш логин: <b>{{ user.username }}</b><br/>
+		Ваш пароль: <b>{{ user.password }}</b>
+	</p>
+	<p>Для того чтобы получить полный доступ к функциям сайта осталось лишь подтвердить что это ваш настоящий электронный адрес. Для этого просто перейдите по ссылке:</p>
+	<p>{{ url('confirm_email', {'userId': user.id, 'hash': user.hash}) }}</p>
+
+	{%  include 'VidalMainBundle:Email:signature.html.twig' %}
+{% endblock %}

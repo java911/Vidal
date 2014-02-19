@@ -6,9 +6,13 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\True;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Regex;
 use Doctrine\ORM\EntityManager;
 use Vidal\MainBundle\Form\DataTransformer\CityToStringTransformer;
 use Vidal\MainBundle\Form\DataTransformer\YearToNumberTransformer;
+use Vidal\MainBundle\Entity\User;
 
 class ProfileType extends AbstractType
 {
@@ -32,67 +36,44 @@ class ProfileType extends AbstractType
 		$builder
 			->add('lastName', null, array('label' => 'Фамилия'))
 			->add('firstName', null, array('label' => 'Имя'))
-			->add('surName', null, array('label' => 'Отчество'))
+			->add('surName', null, array('label' => 'Отчество', 'required' => false))
 			->add('birthdate', 'date', array(
-				'label'           => 'Дата рождения',
-				'widget'          => 'single_text',
-				'format'          => 'dd.MM.yyyy',
-				'invalid_message' => 'Дата указана неверно. Формат: 31.01.1970',
-				'attr'            => array('class' => 'input-calendar', 'title' => '31.01.1970 как пример'),
+				'label'  => 'Дата рождения',
+				'years'  => range(date('Y') - 111, date('Y')),
+				'format' => 'dd MMMM yyyy',
 			))
-			->add($builder->create('city', 'text', array(
-					'label' => 'Город',
-				))->addModelTransformer($cityToStringTransformer)
+			->add(
+				$builder->create('city', 'text', array('label' => 'Город'))->addModelTransformer($cityToStringTransformer)
 			)
-			->add('specialties', null, array(
-				'label'       => 'Специальности',
-				'empty_value' => 'выберите',
-				'required'    => true,
-				'attr'        => array('data-placeholder' => 'выберите одну или несколько')
-			))
-			->add('university', null, array(
-				'label'    => 'ВУЗ',
-				'required' => true,
-				'attr'     => array('data-placeholder' => 'выберите')
-			))
+			->add('university', null, array('label' => 'ВУЗ', 'required' => true, 'empty_value' => 'выберите'))
+			->add('student', null, array('label' => 'Являюсь студентом', 'required' => false))
 			->add($builder->create('graduateYear', 'choice', array(
 					'label'       => 'Год окончания',
+					'required'    => true,
 					'choices'     => $years,
 					'empty_value' => 'выберите',
 					'attr'        => array('data-placeholder' => 'выберите')
 				))->addModelTransformer($yearToNumberTransformer)
 			)
-			->add('job', null, array(
-				'label'    => 'Место работы',
-				'required' => true,
-				'attr'     => array('class' => 'input-document')
+			->add(
+				$builder->create('graduateYear', 'choice', array('label' => 'Год окончания ВУЗа', 'choices' => $years, 'empty_value' => 'выберите'))->addModelTransformer($yearToNumberTransformer)
+			)
+			->add('primarySpecialty', null, array(
+				'label'       => 'Основная специальность',
+				'empty_value' => 'выберите',
+				'required'    => true,
 			))
-			->add('phone', null, array(
-				'label'    => 'Контактный телефон',
-				'required' => true,
-			))
-			->add('scanDiplom', 'iphp_file', array(
-				'label'    => 'Диплом ВУЗа',
-				'required' => false,
-			))
-			->add('scanSpecialist', 'iphp_file', array(
-				'label'    => 'Сертификат специалиста',
-				'required' => false,
-			))
-			->add('scanJob', 'iphp_file', array(
-				'label'    => 'Справка с работы',
-				'required' => false,
-			))
-			->add('avatar', 'iphp_file', array(
-				'label'    => 'Фотография',
-				'required' => false,
-			))
-			->add('submit', 'submit', array('label' => 'СОХРАНИТЬ', 'attr' => array('class' => 'btn-red')));
+			->add('specialization', null, array('label' => 'Специализация', 'attr' => array('data-help' => 'если есть')))
+			->add('academicDegree', 'choice', array('label' => 'Ученая степень', 'choices' => User::getAcademicDegrees(), 'empty_value' => 'выберите'))
+			->add('jobType', 'choice', array('label' => 'Место работы', 'choices' => User::getJobTypes(), 'empty_value' => 'выберите'))
+			->add('jobAlignment', 'choice', array('label' => 'Вид организации', 'choices' => User::getJobAlignments(), 'empty_value' => 'выберите'))
+			->add('submit', 'submit', array('label' => 'Сохранить'));
+
 	}
 
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
-		$resolver->setDefaults(array('data_class' => 'Learning\MainBundle\Entity\User'));
+		$resolver->setDefaults(array('data_class' => 'Vidal\MainBundle\Entity\User'));
 	}
 
 	public function getName()

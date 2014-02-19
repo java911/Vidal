@@ -47,14 +47,16 @@ class RegisterType extends AbstractType
 			->add('firstName', null, array('label' => 'Имя'))
 			->add('surName', null, array('label' => 'Отчество', 'required' => false))
 			->add('birthdate', 'date', array(
-				'label' => 'Дата рождения',
-				'years' => range(date('Y') - 111, date('Y')),
+				'label'  => 'Дата рождения',
+				'years'  => range(date('Y') - 111, date('Y')),
+				'data'   => new \DateTime('1970-01-01'),
+				'format' => 'dd MMMM yyyy',
 			))
 			->add(
 				$builder->create('city', 'text', array('label' => 'Город'))->addModelTransformer($cityToStringTransformer)
 			)
 			->add('university', null, array('label' => 'ВУЗ', 'required' => true, 'empty_value' => 'выберите'))
-			->add('student', null, array('label' => 'Являюсь студентом'))
+			->add('student', null, array('label' => 'Являюсь студентом', 'required' => false))
 			->add($builder->create('graduateYear', 'choice', array(
 					'label'       => 'Год окончания',
 					'required'    => true,
@@ -66,7 +68,11 @@ class RegisterType extends AbstractType
 			->add(
 				$builder->create('graduateYear', 'choice', array('label' => 'Год окончания ВУЗа', 'choices' => $years, 'empty_value' => 'выберите'))->addModelTransformer($yearToNumberTransformer)
 			)
-			->add('primarySpecialty', null, array('label' => 'Основная специальность', 'empty_value' => 'выберите'))
+			->add('primarySpecialty', null, array(
+				'label'       => 'Основная специальность',
+				'empty_value' => 'выберите',
+				'required'    => true,
+			))
 			->add('academicDegree', 'choice', array('label' => 'Ученая степень', 'choices' => User::getAcademicDegrees(), 'empty_value' => 'выберите'))
 			->add('jobType', 'choice', array('label' => 'Место работы', 'choices' => User::getJobTypes(), 'empty_value' => 'выберите'))
 			->add('jobAlignment', 'choice', array('label' => 'Вид организации', 'choices' => User::getJobAlignments(), 'empty_value' => 'выберите'))
@@ -77,9 +83,7 @@ class RegisterType extends AbstractType
 						'message' => 'Пожалуйста, подтвердите что вы согласны с пользовательским соглашением'
 					))
 			))
-			->add('submit', 'submit', array('label' => 'ОТПРАВИТЬ', 'attr' => array(
-				'class' => 'btn-red',
-			)));
+			->add('submit', 'submit', array('label' => 'Зарегистрироваться'));
 
 	}
 

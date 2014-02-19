@@ -53,8 +53,8 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	/** @ORM\Column(type="string") */
 	protected $roles;
 
-	/** @ORM\ManyToMany(targetEntity="Specialization", inversedBy="doctors") */
-	protected $specializations;
+	/** @ORM\ManyToOne(targetEntity="Specialization", inversedBy="doctors") */
+	protected $specialization;
 
 	/** @ORM\ManyToOne(targetEntity="Specialty", inversedBy="primaryDoctors") */
 	protected $primarySpecialty;
@@ -109,7 +109,7 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	{
 		$this->emailConfirmed = false;
 		$this->student        = false;
-		$this->roles          = 'ROLE_UNCONFIRMED';
+		$this->roles          = 'ROLE_DOCTOR';
 	}
 
 	public function __toString()
@@ -357,22 +357,6 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	}
 
 	/**
-	 * @param mixed $specializations
-	 */
-	public function setSpecializations($specializations)
-	{
-		$this->specializations = $specializations;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getSpecializations()
-	{
-		return $this->specializations;
-	}
-
-	/**
 	 * @param mixed $city
 	 */
 	public function setCity($city)
@@ -530,5 +514,21 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	public function getBirthdate()
 	{
 		return $this->birthdate;
+	}
+
+	/**
+	 * @param mixed $specialization
+	 */
+	public function setSpecialization($specialization)
+	{
+		$this->specialization = $specialization;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSpecialization()
+	{
+		return $this->specialization;
 	}
 }

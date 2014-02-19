@@ -1,0 +1,13 @@
+{% extends layout | default('EvrikaMainBundle::minimal_layout.html.twig') %}
+
+{% block body %}
+	<p>Возможно, Вам будет интересно узнать, что<br/>
+	   на вашу ленту публикаций подписался пользователь
+		<a style="color:steelblue; font-weight: bold; text-decoration: none"
+		   href="{{ url('show_profile', {'userId': user.id}) }}" title="Посмотреть профайл пользователя">
+			{{ user }}
+		</a>
+	</p>
+
+	{%  include 'EvrikaMainBundle:Email:signature.html.twig' %}
+{% endblock %}

@@ -18,6 +18,7 @@ security:
                 check_path: /login-submit
             logout:
                 path:   /logout
+                target: /
                 # success_handler: logout_handler
             remember_me:
                 key:      "%secret%"

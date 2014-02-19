@@ -419,3 +419,25 @@
   }
 }
 /* @end */
+
+
+/* chosen */
+#wrapper .chosen-container-single .chosen-single {
+	border:                1px solid #d71344;
+	border-radius:         4px;
+	-moz-border-radius:    4px;
+	-webkit-border-radius: 4px;
+}
+#wrapper .chosen-container .chosen-drop {
+	border: 1px solid #d71344;
+	border-radius: 4px;
+}
+#wrapper .chosen-container-active.chosen-with-drop .chosen-single {
+	border: 1px solid #d71344;
+}
+#wrapper .chosen-container-single .chosen-search input[type="text"] {
+	border:     1px solid #d71344;
+}
+#wrapper .chosen-container-single .chosen-single {
+	color: #333;
+}

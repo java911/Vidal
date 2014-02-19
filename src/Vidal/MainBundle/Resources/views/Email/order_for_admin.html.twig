@@ -1,0 +1,21 @@
+{% extends layout | default('EvrikaMainBundle::minimal_layout.html.twig') %}
+
+{% block body %}
+    <p><b>Был произведен заказ:</b></p>
+    <p><b>Информация о клиенте</b></p>
+    <b>Имя и Фамилия</b> {{ user.getPoliteReference() }}<br />
+    <b>Email:</b> {{ user.username }}<br />
+    <b>Телефон:</b> {{ user.phone }}<br />
+
+    <b>Город:</b> {{ user.city }}<br />
+    <b>Адрес:</b> {{ user.address }}<br />
+
+    <p><b>информация о заказе</b></p>
+    <p>
+        {% for item in books['obj'] %}
+            {{ item.book.name }} - {{ item.count }} шт. - по {{ percent(item.book.cena ) }} р. <br />
+        {% endfor %}
+    </p>
+    <p><b>ИТОГО:</b> {{ percent(books.summa) }} р.</p>
+    {%  include 'EvrikaMainBundle:Email:signature.html.twig' %}
+{% endblock %}

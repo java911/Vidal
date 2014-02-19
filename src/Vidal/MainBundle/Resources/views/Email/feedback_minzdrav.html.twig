@@ -1,0 +1,42 @@
+{% extends 'EvrikaMainBundle::minimal_layout.html.twig' %}
+
+{% block body %}
+	<p>Письмо отправлено из формы <a href="{{ url('translation_minzdrav') }}">трансляции с Минздравом</a></p>
+
+	<div>
+		<span width="120px">ФИО:</span>
+		<b>{{ feedback.fio|striptags }}</b>
+	</div>
+	<div>
+		<span width="120px">Город:</span>
+		<b>{{ feedback.city|striptags }}</b>
+	</div>
+	<div>
+		<span width="120px">Место работы:</span>
+		<b>{{ feedback.jobPlace|striptags }}</b>
+	</div>
+	<div>
+		<span width="120px">Должность:</span>
+		<b>{{ feedback.jobTitle|striptags }}</b>
+	</div>
+	<div>
+		<span width="120px">Основная специальность:</span>
+		<b>{{ feedback.specialty }}</b>
+	</div>
+	<div>
+		<span width="120px">Стаж по специальности:</span>
+		<b>{{ feedback.jobExpirience }}</b> лет
+	</div>
+	<div>
+		<span width="120px">Кому вопрос:</span>
+		<b>{{ feedback.to }}</b>
+	</div>
+	<div>
+		<span width="120px">Тема вопроса:</span>
+		<b>{{ feedback.type }}</b>
+	</div>
+	<div>
+		<span width="120px">Вопрос:</span>
+		<p><i>{{ feedback.text|striptags }}</i></p>
+	</div>
+{% endblock %}

@@ -13,8 +13,48 @@ html, body {
 a {
 	color: #268366;
 }
+input[type=text], input[type=number], input[type=password], input[type=email], input[type=url] {
+	width:                 318px;
+	height:                29px;
+	padding:               0 8px;
+	border-radius:         4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius:    4px;
+	border:                1px solid #d71344;
+}
+select {
+	width: 336px;
+}
+textarea {
+	width:                 318px;
+	padding:               0 8px;
+	height:                172px;
+	border-radius:         4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius:    4px;
+	border:                1px solid #d71344;
+	resize:                vertical;
+}
+h1 {
+	font-size:    17px;
+	color:        #d71344;
+	word-spacing: 4px;
+}
+#main h1:first-of-type {
+	margin-top: 0;
+}
 
 /* глобальные классы */
+.center {
+	text-align: center;
+}
+.red {
+	color: #dd0000;
+}
+.asterisk {
+	margin-left: 3px;
+	font-weight: bold;
+}
 .loz {
 	vertical-align: bottom;
 }
@@ -67,6 +107,21 @@ a {
 .italic {
 	font-style: italic !important;
 }
+.thanks {
+	margin:      5px 0 15px;
+	padding:     8px 24px 10px;
+	font-size:   16px;
+	font-weight: bold;
+	color:       seagreen;
+	background:  aliceblue;
+}
+.thanks.error {
+	color:      maroon;
+	background: palegoldenrod;
+}
+.raspberry {
+	color: #d71344;
+}
 
 /* глобальные контейнеры */
 #wrapper {
@@ -82,6 +137,51 @@ a {
 }
 #main {
 
+}
+
+/* форма */
+.form_table {
+	width: 570px;
+}
+.form_table td.label {
+	width: 38%;
+}
+.form_table td.widget {
+	width:          62%;
+	padding-bottom: 5px;
+}
+.form_table input[type="checkbox"] {
+	margin-left: 0;
+}
+.form_table button, .btn-red {
+	margin:           0;
+	padding:          6px 22px 7px;
+	background-color: #d71344;
+	color:            white;
+	border:           none;
+	outline:          none;
+	cursor:           pointer;
+	text-decoration:  none;
+}
+.form_table button:hover, .btn-red:hover, .form_table button:active, .btn-red:active {
+	background-color: #c0113d;
+}
+.form_table button:active, .btn-red:active {
+	position: relative;
+	top:      1px;
+}
+.form_table .form_button {
+	padding-top: 20px;
+}
+.form_table .form_error ul {
+	margin:       3px 0 10px;
+	padding-left: 15px;
+	color:        #d00;
+}
+.form_table .data-help {
+	color:        #A1A1A1;
+	font-size:    11px;
+	padding-left: 1px;
 }
 
 /* drug */

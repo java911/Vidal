@@ -61,7 +61,7 @@ class CityToStringTransformer implements DataTransformerInterface
 		$builder
 			->select('city')
 			->from('VidalMainBundle:City', 'city')
-			->leftJoin('LearningMainBundle:Country', 'country', 'WITH', 'country = city.country')
+			->leftJoin('VidalMainBundle:Country', 'country', 'WITH', 'country = city.country')
 			->where('city.title = :cityTitle')
 			->orderBy('country.id', 'ASC')
 			->setParameter('cityTitle', $cityTitle)

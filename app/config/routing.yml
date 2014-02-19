@@ -1,3 +1,9 @@
+login:
+    pattern: /login-submit
+
+logout:
+    pattern: /logout
+
 vidal_main:
     resource: "@VidalMainBundle/Controller/"
     type:     annotation

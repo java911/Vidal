@@ -2,47 +2,42 @@
 
 
 {% block main %}
-	<h1>Регистрация</h1>
+	<h1>РЕГИСТРАЦИЯ</h1>
 
-	<form id="registration_form" action="{{ path('registration') }}" autocomplete="off" method="post" {{ form_enctype(form) }}>
+	<form id="register_form" action="{{ path('registration') }}" autocomplete="off"
+		  method="post" {{ form_enctype(form) }}>
 		{% form_theme form 'VidalMainBundle:Form:registration_form.html.twig' %}
 		{{ form_widget(form) }}
-		{#<p class="addition-info">* Специализацию вы можете указать в профиле после регистрации</p>#}
+		<p class="addition-info">* Специализацию вы можете указать в профиле после регистрации</p>
 	</form>
 {% endblock %}
 
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/evrikamain/jquery-chosen/chosen.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/jquery-chosen/chosen.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/checkbox/checkbox.css') }}"/>
 	<style type="text/css">
-		.form_label {
-			width: 35%;
-			margin-top: 6px;
-		}
-		input[type="checkbox"] {
-			margin-top: 6px;
-		}
-		.form_widget {
-			width: 65%;
-		}
 		.addition-info {
-			color:  #777777;
-			margin: 10px 0 0;
+			color:      #777777;
+			margin:     10px 0 0;
+			text-align: center;
 		}
-		/* eula */
-		.eula {
-			text-align: left;
-		}
-		.eula .form_label {
-			width: 302px;
+		.form_table .eula-checkbox{
+			margin-left: 10px;
 		}
 		.row_birthdate .chosen-container {
-			width: 68px !important;
+			width:        68px !important;
 			margin-right: 15px;
 		}
-		#form_birthdate_month_chosen {
+		#register_birthdate_month_chosen {
 			width: 100px !important;
+		}
+		.row_student .form_widget, .row_eula .form_widget, .eula {
+			user-select:         none;
+			-moz-user-select:    none;
+			-webkit-user-select: none;
+			-ms-user-select:     none;
 		}
 	</style>
 {% endblock %}
@@ -50,21 +45,29 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	<script type="text/javascript" src="{{ asset('bundles/evrikamain/jquery-chosen/chosen.jquery.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('bundles/vidalmain/jquery-chosen/chosen.jquery.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('bundles/vidalmain/checkbox/jquery.checkbox.js') }}"></script>
 	<script>
 		$(document).ready(function() {
-			$("#form_city").autocomplete({
+			$("#register_city").autocomplete({
 				source:    Routing.generate('ajax_city'),
 				minLength: 2,
 				delay:     100,
 				autoFocus: true,
-				limit: 15
+				limit:     15
 			});
 
-			// jQuery-chosen
-			var $miniChoices = $('#form_jobAlignment, #form_jobType, #form_academicDegree');
-			$('#registration_form select').not($miniChoices).chosen({search_contains: true});
-			$($miniChoices).chosen({disable_search: true});
+			var $miniChoices = $('#register_jobAlignment, #register_jobType, #register_academicDegree');
+			$('#register_form select').not($miniChoices).chosen({
+				search_contains: true,
+				no_results_text: "не найдено"
+			});
+			$($miniChoices).chosen({
+				disable_search:  true,
+				no_results_text: "не найдено"
+			});
+
+			$('#register_form input[type="checkbox"]').checkbox();
 		});
 	</script>
 {% endblock %}

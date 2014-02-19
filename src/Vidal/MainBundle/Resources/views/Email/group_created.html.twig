@@ -1,0 +1,6 @@
+{% extends layout | default('EvrikaMainBundle::minimal_layout.html.twig') %}
+
+{% block body %}
+	<p>Пользователь {{ user.getPoliteReference() }} {{ user.lastName }} создал группу.</p>
+	<p><a href="{{ url('group_feed', {'groupId': group.id}) }}">Ссылка на группу</a>.</p>
+{% endblock %}

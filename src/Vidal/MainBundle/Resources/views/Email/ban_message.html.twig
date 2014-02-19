@@ -1,0 +1,13 @@
+{% extends 'VidalMainBundle::minimal_layout.html.twig' %}
+
+{% block body %}
+	<p><b>{{ user.firstName }}{{ user.surName|length ? ' ' ~ user.surName }}</b>,</p>
+	<p>К сожалению, мы были вынуждены временно ограничить вас в возможности
+		оставлять комментарии или публикации.<br/>
+		<span style="display:inline-block; width:94px">Причина:</span> {{ reason }}<br/>
+		<span style="display:inline-block; width:94px">Оканчивается:</span> {{ user.banned | date('d.m.Y H:i') }}</p>
+
+	<p>Пожалуйста, обратите внимание на <a href="http://www.evrika.ru/policy">политику редакции</a>.</p>
+
+	{% include 'VidalMainBundle:Email:signature.html.twig' %}
+{% endblock %}

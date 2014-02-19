@@ -1,0 +1,63 @@
+{% extends layout | default('EvrikaMainBundle::minimal_layout.html.twig') %}
+
+{% block body %}
+	<p>
+		Возможно, Вам будет интересно узнать, что<br/><br/>
+		{% if comment.author %}
+			Пользователь <a style="color:#586E85; font-weight:bold; text-decoration:none;"
+							href="{{ url('user_feed', {'userId': comment.author.id }) }}">{{ comment.author }}</a>
+		{% else %}
+			Гость, представившийся как <span style="color:#586E85; font-weight:bold;">{{ comment.authorName }}</span>
+		{% endif %}
+
+		{# комментарий к публикации или событию #}
+		{% if comment.publication is defined %}
+			ответил на ваш комментарий в теме<br/>
+			<a style="text-decoration:none;"
+			   href="{{ url('show_publication', {'publicationId': comment.publication.id}) }}#comment_{{ comment.id }}">
+				&laquo;{{ comment.publication.title | raw }}&raquo;
+			</a>
+		{% else %}
+			ответил на ваш комментарий в теме<br/>
+			<a style="text-decoration:none;"
+			   href="{{ url('show_publication', {'publicationId': comment.event.id, 'feedType': 'event'}) }}#comment_{{ comment.id }}">
+				&laquo;{{ comment.event.title | raw }}&raquo;
+			</a>
+		{% endif %}
+	</p>
+
+	<div style="width:600px; color:#333; margin:25px 0;">
+		{# родительский комментарий #}
+		<div style="margin-top:10px; padding:5px 20px 0 20px; background:#E8F2F4;">
+			{{ parentComment.text | raw }}
+			<div style="font-size:80%; color:#A3A3A3; text-align:right; margin-bottom:4px;">
+				{{ comment.created | date('d.m.Y, H:i') }}
+			</div>
+		</div>
+
+		{# комментарий ответа #}
+		<a style="margin-left:40px; text-decoration:none; display:block; color:#333; margin-top: 10px;"
+		   href="{{ comment.publication is defined
+		   ? url('show_publication', {'publicationId': comment.publication.id})
+		   : url('show_publication', {'publicationId': comment.event.id, 'feedType': 'event'}) }}#comment_{{ comment.id }}">
+			<img style="float:left; max-width:34px; max-height:34px;"
+				 src="{{ comment.author.avatar.path is defined and is_file('http://evrika.ru' ~ comment.author.avatar.path)
+				 ? 'http://evrika.ru' ~ comment.author.avatar.path
+				 : 'http://evrika.ru/bundles/evrikamain/images/blank_avatar.png' }}"/>
+
+			<div style="margin-left:40px; background:#E8F2F4; padding:5px 20px 0 20px;">
+				{{ comment.text | raw }}
+				<div style="font-size:80%; color:#A3A3A3; text-align:right;">
+					{{ comment.created | date('d.m.Y, H:i') }}
+				</div>
+			</div>
+		</a>
+	</div>
+
+	<div style="font-size:90%; color:#333;">
+		Отписаться от уведомлений ответов на комментарии Вы можете в
+		<a href="{{ url('profile') }}">Личном кабинете</a>
+	</div>
+
+	{%  include 'EvrikaMainBundle:Email:signature.html.twig' %}
+{% endblock %}

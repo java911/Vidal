@@ -28,7 +28,10 @@ twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     globals:
-        portal: «Vidal.ru»
+        portal: %portal%
+    form:
+        resources:
+            - 'VidalMainBundle:Form:form_table_layout.html.twig'
 
 # Assetic Configuration
 assetic:

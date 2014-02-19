@@ -13,18 +13,21 @@
 				{% set label = name|humanize %}
 			{% endif %}
 			<label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}
-			>{{ label }}{{ required? '<span class="red asterisk">*</span>' }}</label>
+			>{{ label }}{{ required? '<span class="raspberry asterisk">*</span>' }}</label>
 		{% endif %}
 	{% endspaceless %}
 {% endblock form_label %}
 
 {% block form_row %}
 	{% spaceless %}
-		<tr class="form_row row_{{ name }}">
-			<td>
+		<tr class="row row_{{ name }}">
+			<td class="label">
 				<div class="form_label">{{ form_label(form) }}</div>
+				{% if attr['data-help'] is defined %}
+					<div class="data-help">{{ attr['data-help'] }}</div>
+				{% endif %}
 			</td>
-			<td>
+			<td class="widget">
 				<div class="form_widget">{{ form_widget(form) }}</div>
 				<div class="form_error">{{ form_errors(form) }}</div>
 			</td>
@@ -34,9 +37,9 @@
 
 {% block button_row %}
 	{% spaceless %}
-		<tr>
-			<td></td>
-			<td class="form_button">
+		<tr class="row">
+			<td class="label"></td>
+			<td class="widget form_button">
 				{{ form_widget(form) }}
 			</td>
 		</tr>
@@ -57,7 +60,7 @@
 	{% spaceless %}
 		<table {{ block('widget_container_attributes') }} class="form_table">
 			{% if form.parent is empty and errors|length > 0 %}
-				<tr>
+				<tr class="row">
 					<td colspan="2">
 						<div class="form_errors">
 							{{ form_errors(form) }}

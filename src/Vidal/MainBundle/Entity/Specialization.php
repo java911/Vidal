@@ -11,7 +11,7 @@ class Specialization
 	/** @ORM\Id @ORM\Column(type = "integer") @ORM\GeneratedValue */
 	protected $id;
 
-	/** @ORM\ManyToMany(targetEntity="User", mappedBy = "specializations") */
+	/** @ORM\OneToMany(targetEntity="User", mappedBy = "specialization") */
 	protected $doctors;
 	
 	/**
