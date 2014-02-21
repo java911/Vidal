@@ -51,34 +51,37 @@
 
 <body>
 
-<div id="wrapper">
-	{% include 'VidalDrugBundle::header.html.twig' %}
+<div id="wrapper" class="wrapper">
+	<header class="header">
+		<div class="header-content">
+			{% include 'VidalMainBundle::header.html.twig' %}
+		</div>
+	</header>
 
-	<div id="content">
-		{% block content %}
-			<div id="sidebar">
-				{% include 'VidalDrugBundle::sidebar.html.twig' %}
+	<div class="middle">
+		{% block middle %}
+			<div class="container">
+				<main class="content">
+					{% block content %}{% endblock %}
+				</main>
 			</div>
-			<div id="main">
-				{% include 'VidalDrugBundle::vidal_search_form.html.twig' %}
-				{% block main %}{% endblock %}
-			</div>
+
+			<aside class="left-sidebar">
+				{% include 'VidalMainBundle::left_sidebar.html.twig' %}
+			</aside>
+
+			<aside class="right-sidebar">
+				{% include 'VidalMainBundle::right_sidebar.html.twig' %}
+			</aside>
 		{% endblock %}
 	</div>
-
-	<div class="push"></div>
 </div>
 
-{# Для низа сайта #}
-<div id="footer">
-
-</div>
-
-{# это фон диагональный при загрузке или всплывающем окне #}
-<div id="overlay"></div>
-
-{# всплывающее оповещение, если задано в контроллере через $session->getFlashBag()->add(...) #}
-{% include 'VidalDrugBundle::popup.html.twig' %}
+<footer class="footer">
+	<div class="footer-content">
+		{% include 'VidalMainBundle::footer.html.twig' %}
+	</div>
+</footer>
 
 </body>
 </html>

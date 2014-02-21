@@ -79,6 +79,7 @@ class RegisterType extends AbstractType
 			->add('eula', 'checkbox', array(
 				'label'       => 'Пользовательское соглашение',
 				'mapped'      => false,
+				'required'    => false,
 				'constraints' => new True(array(
 						'message' => 'Пожалуйста, подтвердите что вы согласны с пользовательским соглашением'
 					))

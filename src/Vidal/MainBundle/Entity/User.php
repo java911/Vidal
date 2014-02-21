@@ -109,7 +109,7 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	{
 		$this->emailConfirmed = false;
 		$this->student        = false;
-		$this->roles          = 'ROLE_DOCTOR';
+		$this->roles          = 'ROLE_UNCONFIRMED';
 	}
 
 	public function __toString()

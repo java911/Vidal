@@ -458,7 +458,7 @@ class VidalController extends Controller
 			}
 		}
 
-		if ($params['document']) {
+		if ($document) {
 			$params['nozologies'] = $em->getRepository('VidalDrugBundle:Nozology')->findByDocumentID($document->getDocumentID());
 		}
 

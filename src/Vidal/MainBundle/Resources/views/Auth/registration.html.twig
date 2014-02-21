@@ -1,14 +1,17 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
-{% block main %}
+{% block content %}
 	<h1>РЕГИСТРАЦИЯ</h1>
+
+	<p class="reg-info">Для регистрации заполните форму.
+		<span class="raspberry asterisk">*</span> - поля обязательные для заполнения</p>
 
 	<form id="register_form" action="{{ path('registration') }}" autocomplete="off"
 		  method="post" {{ form_enctype(form) }}>
 		{% form_theme form 'VidalMainBundle:Form:registration_form.html.twig' %}
 		{{ form_widget(form) }}
-		<p class="addition-info">* Специализацию вы можете указать в профиле после регистрации</p>
+		<p class="addition-info">Специализацию вы можете указать в профиле после регистрации</p>
 	</form>
 {% endblock %}
 
@@ -18,12 +21,18 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/jquery-chosen/chosen.css') }}"/>
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/checkbox/checkbox.css') }}"/>
 	<style type="text/css">
+		.reg-info {
+			color:     #777777;
+			margin:    10px 0 20px;
+			font-size: 90%;
+		}
 		.addition-info {
 			color:      #777777;
 			margin:     10px 0 0;
 			text-align: center;
+			font-size:  90%;
 		}
-		.form_table .eula-checkbox{
+		.form_table .eula-checkbox {
 			margin-left: 10px;
 		}
 		.row_birthdate .chosen-container {
@@ -38,6 +47,12 @@
 			-moz-user-select:    none;
 			-webkit-user-select: none;
 			-ms-user-select:     none;
+		}
+		.eula {
+			margin: 22px 0 6px;
+		}
+		.eula a {
+			font-weight: bold;
 		}
 	</style>
 {% endblock %}

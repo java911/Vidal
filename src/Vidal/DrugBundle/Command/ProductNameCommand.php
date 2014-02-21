@@ -39,17 +39,13 @@ class ProductNameCommand extends ContainerAwareCommand
 		$count = $em->createQuery('
 			SELECT COUNT(p.ProductID)
 			FROM VidalDrugBundle:Product p
-			WHERE p.CountryEditionCode = \'RUS\' AND
-				p.ProductTypeCode IN (\'DRUG\', \'GOME\') AND
-				(p.EngName LIKE \'%<%\' OR p.EngName LIKE \'% %\' OR p.EngName LIKE \'%/%\')
+			WHERE p.EngName LIKE \'%<%\' OR p.EngName LIKE \'% %\' OR p.EngName LIKE \'%/%\')
 		')->getSingleScalarResult();
 
 		$query = $em->createQuery('
 			SELECT p.ProductID, p.EngName
 			FROM VidalDrugBundle:Product p
-			WHERE p.CountryEditionCode = \'RUS\' AND
-				p.ProductTypeCode IN (\'DRUG\', \'GOME\') AND
-				(p.EngName LIKE \'%<%\' OR p.EngName LIKE \'% %\' OR p.EngName LIKE \'%/%\')
+			WHERE p.EngName LIKE \'%<%\' OR p.EngName LIKE \'% %\' OR p.EngName LIKE \'%/%\'
 		');
 
 		$updateQuery = $em->createQuery('

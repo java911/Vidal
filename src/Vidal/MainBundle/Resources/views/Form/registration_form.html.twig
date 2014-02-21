@@ -6,13 +6,14 @@
 		{% if name == 'eula' %}
 			<tr class="row row_eula">
 				<td colspan="2">
-					<div class="form_error">{{ form_errors(form) }}</div>
 					<div class="eula">
 						<span class="form_label">Я согласен(на) c
 							<a target="_blank" href="{{ path("eula") }}">пользовательским соглашением</a>
+							<span class="asterisk raspberry">*</span>
 						</span>
 						<span class="eula-checkbox">{{ form_widget(form) }}</span>
 					</div>
+					<div class="form_error">{{ form_errors(form) }}</div>
 				</td>
 			</tr>
 		{% else %}

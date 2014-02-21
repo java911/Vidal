@@ -149,8 +149,8 @@ class AuthController extends Controller
 	 */
 	public function ajaxLoginAction(Request $request)
 	{
-		$username = $request->request->get('_username');
-		$password = $request->request->get('_password');
+		$username = $request->request->get('username');
+		$password = $request->request->get('password');
 
 		$user = $this->getDoctrine()->getRepository('VidalMainBundle:User')->findOneByUsername($username);
 

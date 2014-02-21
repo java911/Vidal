@@ -1,8 +1,14 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
-{% block main %}
+{% block content %}
 	<h1>МОЙ ПРОФИЛЬ</h1>
+
+	{% if not app.user.emailConfirmed %}
+		<div class="thanks">
+			Для того чтобы получить доступ к функциям сайта осталось лишь подтвердить электронный адрес
+		</div>
+	{% endif %}
 
 	{# извещения #}
 	{% if app.session.flashBag.get('confirmed')|length %}
