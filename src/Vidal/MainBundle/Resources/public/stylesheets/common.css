@@ -242,12 +242,12 @@ h1 {
 .small {
 	font-style:  normal;
 	font-weight: normal;
-	font-size:   11px;
+	font-size:   13px;
 	color:       #999;
 }
 .tip {
 	color:     #476173;
-	font-size: 11px;
+	font-size: 12px;
 }
 .bold {
 	font-weight: bold;
@@ -255,6 +255,9 @@ h1 {
 .dashed {
 	text-decoration: none;
 	border-bottom:   1px dashed #268366;
+}
+.clear {
+	clear: both;
 }
 .dashed:hover {
 	border-bottom: none;
@@ -426,8 +429,7 @@ h1 {
 /* drug */
 #vidal h1 {
 	margin-top: 0;
-	font-size:  18px;
-	color:      #00468c;
+	color:      #2e3f51;
 }
 #vidal h1 span {
 	font-style: italic;
@@ -459,7 +461,7 @@ h1 {
 	color: #476173;
 }
 .anons-content {
-	font-size:  11px;
+	font-size:  12px;
 	margin-top: 2px;
 }
 .anons-product {
@@ -475,8 +477,10 @@ h1 {
 	background: #f5f5f5;
 }
 .block-head {
-	font-weight: bold;
-	color:       #00468c;
+	font-weight:   bold;
+	color:         #2e3f51;
+	font-size:     15px;
+	margin-bottom: 4px;
 }
 .block-head span {
 	color: #333;
@@ -487,6 +491,9 @@ h1 {
 .block-tip {
 	font-size: 11px;
 	color:     #999;
+}
+.block-content {
+	font-size: 14px;
 }
 .block-content table {
 	width:           100%;
@@ -527,6 +534,7 @@ h1 {
 /* navigation */
 .navigation {
 	margin-top: 15px;
+	font-size:  14px;
 }
 .navigation > i {
 	display:     block;
@@ -543,7 +551,7 @@ h1 {
 }
 .navigation-items div {
 	display:       inline-block;
-	width:         40%;
+	width:         46%;
 	margin-bottom: 3px;
 	padding-left:  13px;
 	background:    url('../images/bullets.gif') no-repeat -13px -13px;
@@ -553,10 +561,9 @@ h1 {
 }
 .navigation-items a {
 	text-decoration: none;
-	border-bottom:   1px dashed #268366;
 }
 .navigation-items a:hover {
-	border-bottom: none;
+	text-decoration: underline;
 }
 
 /* copy */
@@ -567,9 +574,11 @@ h1 {
 	color: #476173;
 }
 .copy textarea {
+	width:     100%;
+	height:    47px !important;
 	margin:    2px 0;
 	padding:   2px 4px;
-	font-size: 12px;
+	font-size: 13px;
 	opacity:   0.5;
 }
 .copy textarea:hover {
@@ -577,20 +586,15 @@ h1 {
 }
 
 /* vidal */
-.vidal-footer {
-	margin-top:  17px;
-	padding-top: 3px;
-	border-top:  1px solid #D4D4D4;
-	font-size:   11px;
-}
-.vidal-footer b {
-	color:     #476173;
-	font-size: 13px;
-}
 #vidal .pictures img {
 	display:      inline-block;
 	max-height:   200px;
 	margin-right: 20px;
+}
+#vidal .elaboration {
+	font-size:   16px;
+	margin-left: 3px;
+	font-weight: normal;
 }
 
 /* products-table */
@@ -598,7 +602,7 @@ h1 {
 	width:           100%;
 	border-collapse: collapse;
 	border-spacing:  0;
-	font-size:       11px;
+	font-size:       14px;
 	line-height:     12px;
 	margin:          0 !important;
 }
@@ -617,16 +621,20 @@ h1 {
 	border-bottom:  0;
 	padding-top:    10px;
 	padding-bottom: 5px;
-	font-size:      11px;
+	font-size:      12px;
+	font-family:    'PT Sans Caption', sans-serif;
 }
 .products-table tr.important .products-table-name {
 	font-weight: bold;
 }
 .products-table-name {
-	font-size: 13px;
+	font-size:   14px;
+	line-height: 17px;
 }
 .products-table-company {
-	width: 30%;
+	width:       30%;
+	font-size:   14px;
+	line-height: 14px;
 }
 .products-table-picture {
 	text-align: center;
@@ -659,13 +667,14 @@ h1 {
 	-moz-border-radius:    4px;
 	box-shadow:            0 0 10px rgba(0, 0, 0, 0.4);
 	z-index:               999;
+	font-size:             15px;
 }
 .products-table-indication > div p {
 	margin: 3px;
 }
 .products-table-zip {
 	margin-left: 10px;
-	font-size:   11px;
+	font-size:   12px;
 }
 .products-table-zip span {
 	color: #999;
@@ -723,7 +732,7 @@ h1 {
 /* pagination */
 .pagination {
 	overflow:  hidden;
-	font-size: 12px;
+	font-size: 15px;
 }
 .pagination span {
 	display:      inline-block;
@@ -740,14 +749,11 @@ h1 {
 	text-decoration: none;
 	display:         inline-block;
 	width:           26px;
-	color:           #1a6dc0;
+	color:           #d71344;
 }
 .pagination .current, .pagination span:hover a {
 	color:            white;
-	background:       -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #63b8ee), color-stop(1, #468ccf));
-	background:       -moz-linear-gradient(center top, #63b8ee 5%, #468ccf 100%);
-	filter:           progid:DXImageTransform.Microsoft.gradient(startColorstr='#63b8ee', endColorstr='#468ccf');
-	background-color: #63b8ee;
+	background-color: #d71344;
 }
 .pagination .next a, .pagination .previous a, .pagination .next, .pagination .previous {
 	width: 51px;

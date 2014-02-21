@@ -1,5 +1,4 @@
 .letters, .letters form {
-	overflow:     hidden;
 }
 .letter {
 	display:               inline-block;
@@ -22,7 +21,7 @@
 .letter.active {
 	border:      1px solid #aaa;
 	font-weight: bold;
-	color:       #d00;
+	color:       #d71344;
 }
 .letter:hover {
 	border:      1px solid #aaa;

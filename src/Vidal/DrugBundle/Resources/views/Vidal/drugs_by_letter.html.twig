@@ -51,14 +51,14 @@
 				<input type="submit" value="Я" name="l" class="letter{{ l == 'Я' ? ' active' }}"/>
 			</div>
 		</form>
+		<div class="clear"></div>
 	</div>
 
 	{% if products is defined and products is not empty %}
 		<div class="block">
 			<div class="block-anons">
 				<div class="block-head">
-					Найдено {{ n ? 'безрецептурных ' }}{{ t == 'p' ? 'препаратов' : t == 'b' ? 'БАДов' : 'препаратов и БАДов' }}
-					:
+					Найдено {{ n ? 'безрецептурных ' }}{{ t == 'p' ? 'препаратов' : t == 'b' ? 'БАДов' : 'препаратов и БАДов' }}:
 					<span>{{ pagination.totalItemCount }}</span>
 				</div>
 			</div>
@@ -77,6 +77,8 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/letters.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/jquery-chosen/chosen.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/checkbox/checkbox.css') }}"/>
 	<style type="text/css">
 		.letters-controls {
 			margin-bottom: 8px;
@@ -85,7 +87,7 @@
 			display:     inline-block;
 			margin-left: 15px;
 		}
-		.letters-controls-check input, letters-controls-check span {
+		.letters-controls-check input, .letters-controls-check span {
 			vertical-align: top;
 		}
 	</style>
@@ -94,6 +96,8 @@
 
 {% block javascripts %}
 	{{ parent() }}
+	<script type="text/javascript" src="{{ asset('bundles/vidalmain/jquery-chosen/chosen.jquery.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('bundles/vidalmain/checkbox/jquery.checkbox.js') }}"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#letters_form input[type="submit"]').click(function() {
@@ -104,6 +108,12 @@
 				$('#letters_page').val('1');
 				$('.letter.active').click();
 			});
+
+			$('#letters_type').chosen({
+				disable_search:  true
+			});
+
+			$('#letters_nonpres').checkbox();
 		});
 	</script>
 {% endblock %}
