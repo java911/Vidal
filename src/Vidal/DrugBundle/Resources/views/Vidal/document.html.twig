@@ -68,7 +68,7 @@
 
 	{# Блок регистратора/владельца/представительства #}
 	{% if owners is defined or distributors is defined or infoPages is defined %}
-		<div class="block">
+		<div class="block firms">
 			{# Владелец регистрационного удостоверения #}
 			{% if owners is defined and owners is not empty %}
 				{% set owner = owners[0] %}

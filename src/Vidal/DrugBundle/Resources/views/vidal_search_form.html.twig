@@ -1,68 +1,3 @@
-<style>
-	.search-inputs {
-		overflow: hidden;
-	}
-	.search .search-type {
-		width: 160px;
-	}
-	.search .search-query {
-		display:        inline-block;
-		float:          left;
-		width:          196px;
-		margin:         0;
-		padding:        0 6px;
-		border:         none;
-		outline:        none;
-		height:         50px;
-		background:     transparent;
-		vertical-align: top;
-		font-style:     italic;
-		font-size:      14px;
-	}
-	.search .search-inputs {
-		display: inline-block;
-	}
-	#wrapper .search .chosen-container-single .chosen-single {
-		border:     none;
-		height:     50px;
-		background: #F6F6F6;
-	}
-	#search_form {
-		position: absolute;
-		top:      36px;
-		left:     516px;
-	}
-	#search_form .chosen-container-single .chosen-single {
-		border-radius: 0;
-	}
-	#wrapper #search_form .chosen-container .chosen-drop {
-		border:        1px solid #eee;
-		border-radius: 0;
-		background:    #F6F6F6;
-	}
-	.search .chosen-container-single .chosen-single span {
-		margin-top: 12px;
-	}
-	.search .chosen-container {
-		vertical-align: top;
-		color:          #2e3f51;
-		font-style:     italic;
-		font-size:      14px;
-	}
-	.search .chosen-container-single .chosen-single div {
-		top:   13px;
-		width: 16px;
-	}
-	.search .chosen-container-single .chosen-single span {
-		margin-right: 16px;
-	}
-	.search .chosen-container-active .chosen-single {
-		border:     none;
-		box-shadow: none;
-	}
-
-</style>
-
 <form id="search_form" class="search" method="get" action="{{ path('search') }}">
 	<select class="search-type" name="t">
 		<option value="all" {{ app.request.get('t') == 'all' ? 'selected="selected"' }}>
@@ -89,9 +24,7 @@
 	</div>
 </form>
 
-{% if is_granted('ROLE_ADMIN') %}
-	<div class="searche-link">
-		<a href="{{ path('searche') }}">расширенный поиск</a>
-	</div>
-{% endif %}
+<div class="searche-link">
+	<a href="{{ path('searche') }}">расширенный поиск</a>
+</div>
 

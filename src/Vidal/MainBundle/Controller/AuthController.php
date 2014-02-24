@@ -87,7 +87,7 @@ class AuthController extends Controller
 			return $this->redirect($this->generateUrl('profile'));
 		}
 
-		return array('form' => $form->createView(), 'title' => 'Мой профиль');
+		return array('form' => $form->createView(), 'title' => 'Редактирование профиля');
 	}
 
 	/**

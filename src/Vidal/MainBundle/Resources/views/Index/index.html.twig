@@ -1,6 +1,11 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
+{% block menu %}
+	{% include 'VidalMainBundle::menu_big.html.twig' %}
+{% endblock %}
+
+
 {% block content %}
 	<p><a class="btn-white" href="{{ path('drugs_by_letter') }}">Препараты и БАДы</a>
 		<span class="small">по алфавиту. Будет отдельный раздел</span></p>
@@ -10,4 +15,9 @@
 	<div style="margin-top:40px; font-weight:bold; font-size:20px; color:darkslategray;">
 		Страница в находится в разработке
 	</div>
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
 {% endblock %}

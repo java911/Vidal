@@ -1,0 +1,41 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block content %}
+	<h1>СТАТЬИ</h1>
+
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<span>Статьи</span>
+	</div>
+
+	<div class="rubriques">
+		{% if rubriques|length %}
+			{% set perColumn = rubriques|length // 2 %}
+
+			{% for rubrique in rubriques %}
+
+				{% if loop.index % perColumn == 1 %}
+					<div>
+					<ul class="ul">
+				{% endif %}
+
+				<li><a href="{{ path('rubrique', {'rubrique':rubrique.rubrique}) }}">{{ rubrique }}</a></li>
+
+				{% if loop.index % perColumn == 0 %}
+					</ul>
+					</div>
+				{% endif %}
+
+			{% endfor %}
+		{% endif %}
+	</div>
+
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/article.css') }}"/>
+{% endblock %}

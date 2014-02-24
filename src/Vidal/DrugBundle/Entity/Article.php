@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/** @ORM\Entity @ORM\Table(name="article") */
+/** @ORM\Entity(repositoryClass="ArticleRepository") @ORM\Table(name="article") */
 class Article extends BaseEntity
 {
 	/** @ORM\Column(length=255) */

@@ -30,4 +30,13 @@ class ArticleRubriqueRepository extends EntityRepository
 
 		return $rubrique;
 	}
+
+	public function findActive()
+	{
+		return $this->_em->createQuery('
+			SELECT r
+			FROM VidalDrugBundle:ArticleRubrique r
+			ORDER BY r.title ASC
+		')->getResult();
+	}
 }
