@@ -11,7 +11,7 @@ class ArticleType
 	/** @ORM\Column(type="integer") @ORM\Id @ORM\GeneratedValue */
 	protected $id;
 
-	/** @ORM\Column(length=255) */
+	/** @ORM\Column(length=255, unique=true) */
 	protected $title;
 
 	/** @ORM\OneToMany(targetEntity="Article", mappedBy="type") */

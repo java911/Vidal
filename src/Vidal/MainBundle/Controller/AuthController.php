@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Authentication\Token\RememberMeToken;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Vidal\MainBundle\Entity\User;
 use Vidal\MainBundle\Form\Type\RegisterType;
 use Vidal\MainBundle\Form\Type\ProfileType;
@@ -17,6 +19,19 @@ use Vidal\MainBundle\Form\Type\ProfileType;
 class AuthController extends Controller
 {
 	const DISPLAYED_CITIES_AJAX = 10;
+
+	/**
+	 * @Route("/login", name="login")
+	 * @Template()
+	 */
+	public function loginAction(Request $request)
+	{
+		if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+			return new RedirectResponse($this->generateUrl('index'));
+		}
+
+		return array();
+	}
 
 	/**
 	 * Регистрация врача на сайте
@@ -62,7 +77,7 @@ class AuthController extends Controller
 			return $this->redirect($this->generateUrl('profile'));
 		}
 
-		return array('form'  => $form->createView(), 'title' => 'Регистрация');
+		return array('form' => $form->createView(), 'title' => 'Регистрация');
 	}
 
 	/**
@@ -104,8 +119,11 @@ class AuthController extends Controller
 		if (!empty($user) && $user->getHash() == $hash) {
 			$user->setEmailConfirmed(true);
 			$user->setHash($this->calculateHash($user));
-			$this->resetToken($user);
+			$user->setRoles('ROLE_DOCTOR');
 			$em->flush();
+
+			$this->resetToken($user);
+
 			$this->get('session')->getFlashBag()->add('confirmed', '');
 
 			return $this->redirect($this->generateUrl('profile'));
@@ -133,9 +151,14 @@ class AuthController extends Controller
 
 	private function resetToken($user)
 	{
-		$token = new UsernamePasswordToken($user->getUsername(), $user->getPassword(), 'everything');
-		$token->setUser($user);
+		$secret = $this->container->getParameter('secret');
+		$token  = new RememberMeToken($user, 'local_database', $secret);
 		$this->get('security.context')->setToken($token);
+
+		# dispatch the login event
+		$request = $this->get('request');
+		$event   = new InteractiveLoginEvent($request, $token);
+		$this->get('event_dispatcher')->dispatch('security.interactive_login', $event);
 	}
 
 	private function generatePassword()

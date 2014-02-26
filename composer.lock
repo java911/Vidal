@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "53ec375ff0bd1c413ab356cf7f8df472",
+    "hash": "8cd198b81506b10c71e186ee9187ab39",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -479,66 +479,6 @@
                 "persistence"
             ],
             "time": "2013-03-25 20:13:59"
-        },
-        {
-            "name": "doctrine/doctrine-fixtures-bundle",
-            "version": "dev-master",
-            "target-dir": "Doctrine/Bundle/FixturesBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/DoctrineFixturesBundle.git",
-                "reference": "42ac886c2c669d793dc9d6258a7296edb0d5e933"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineFixturesBundle/zipball/42ac886c2c669d793dc9d6258a7296edb0d5e933",
-                "reference": "42ac886c2c669d793dc9d6258a7296edb0d5e933",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/data-fixtures": "~1.0",
-                "doctrine/doctrine-bundle": "~1.0",
-                "php": ">=5.3.2",
-                "symfony/doctrine-bridge": "~2.1"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Doctrine\\Bundle\\FixturesBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "http://symfony.com/contributors"
-                },
-                {
-                    "name": "Doctrine Project",
-                    "homepage": "http://www.doctrine-project.org"
-                }
-            ],
-            "description": "Symfony DoctrineFixturesBundle",
-            "homepage": "http://www.doctrine-project.org",
-            "keywords": [
-                "Fixture",
-                "persistence"
-            ],
-            "time": "2013-12-31 08:56:10"
         },
         {
             "name": "doctrine/inflector",
@@ -1064,6 +1004,65 @@
                 "parameters management"
             ],
             "time": "2013-12-07 10:10:39"
+        },
+        {
+            "name": "iphp/filestore-bundle",
+            "version": "dev-master",
+            "target-dir": "Iphp/FileStoreBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vitiko/IphpFileStoreBundle.git",
+                "reference": "f9f3119982a4ea11f93369b1c2ee96ffc8ba4d65"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vitiko/IphpFileStoreBundle/zipball/f9f3119982a4ea11f93369b1c2ee96ffc8ba4d65",
+                "reference": "f9f3119982a4ea11f93369b1c2ee96ffc8ba4d65",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/framework-bundle": ">=2.2,<2.5-dev"
+            },
+            "require-dev": {
+                "doctrine/doctrine-bundle": "@stable",
+                "doctrine/orm": "@stable",
+                "mikey179/vfsstream": "v1.2.0",
+                "sensio/framework-extra-bundle": "@stable",
+                "symfony/browser-kit": "@stable",
+                "symfony/class-loader": "@stable",
+                "symfony/css-selector": "@stable",
+                "symfony/finder": "@stable",
+                "symfony/form": "@stable",
+                "symfony/process": "@stable",
+                "symfony/twig-bundle": "@stable",
+                "symfony/validator": "@stable",
+                "symfony/yaml": "@stable"
+            },
+            "type": "bundle",
+            "autoload": {
+                "psr-0": {
+                    "Iphp\\FileStoreBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vitiko",
+                    "email": "vitiko@mail.ru"
+                }
+            ],
+            "description": "Upload files for doctrine entities in symfony 2 project",
+            "homepage": "http://symfonydev.ru",
+            "keywords": [
+                "file upload",
+                "sonata admin file upload",
+                "symfony file upload",
+                "upload"
+            ],
+            "time": "2014-01-21 06:58:46"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -1645,6 +1644,62 @@
                 "minification"
             ],
             "time": "2013-07-19 00:03:27"
+        },
+        {
+            "name": "leaseweb/secure-controller-bundle",
+            "version": "v1.0.3",
+            "target-dir": "Lsw/SecureControllerBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/LeaseWeb/LswSecureControllerBundle.git",
+                "reference": "6849c04e885599afd3475989eaed374bc0249cfa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/LeaseWeb/LswSecureControllerBundle/zipball/6849c04e885599afd3475989eaed374bc0249cfa",
+                "reference": "6849c04e885599afd3475989eaed374bc0249cfa",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/doctrine-bundle": "@stable",
+                "php": ">=5.3.2",
+                "symfony/framework-bundle": ">=2.1",
+                "symfony/security-bundle": ">=2.1"
+            },
+            "require-dev": {
+                "doctrine/doctrine-bundle": "@stable"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Lsw\\SecureControllerBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maurits van der Schee",
+                    "email": "m.vanderschee@leaseweb.com"
+                }
+            ],
+            "description": "Provide '@Secure' annotation to secure actions in controllers by specifying required roles",
+            "homepage": "http://www.leaseweblabs.com",
+            "keywords": [
+                "Symfony2",
+                "annotation",
+                "controller",
+                "secure",
+                "security"
+            ],
+            "time": "2013-08-13 07:19:23"
         },
         {
             "name": "monolog/monolog",
@@ -3387,7 +3442,7 @@
         "sonata-project/user-bundle": 20,
         "sonata-project/easy-extends-bundle": 20,
         "olamedia/nokogiri": 20,
-        "doctrine/doctrine-fixtures-bundle": 20
+        "iphp/filestore-bundle": 20
     },
     "platform": {
         "php": ">=5.3.3"

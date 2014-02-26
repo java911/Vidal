@@ -1,9 +1,9 @@
 /* Eric Meyer's CSS Reset */
 html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+h1, h2, h3, h4, h5, h6, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
+small, strike, sub, sup, tt, var,
 center,
 dl, dt, dd, li,
 fieldset, form, label, legend,
@@ -81,7 +81,8 @@ body {
 	overflow: hidden;
 }
 .content {
-	padding: 0 220px 30px 196px;
+	padding:    0 220px 30px 196px;
+	min-height: 420px;
 }
 .left-sidebar {
 	float:         left;
@@ -165,57 +166,57 @@ h1 {
 /* кастомные шрифты */
 @font-face {
 	font-family: 'PT Sans';
-	src:         url('pts55f_w.eot');
-	src:         local('PT Sans'), url('PTS55F_W.woff') format('woff'), url('PTS55F_W.ttf') format('truetype'), url('PTS55F_W.svg#PTSans-Regular') format('svg');
+	src:         url('../fonts/pts55f_w.eot');
+	src:         local('PT Sans'), url('../fonts/PTS55F_W.woff') format('woff'), url('../fonts/PTS55F_W.ttf') format('truetype'), url('../fonts/PTS55F_W.svg#PTSans-Regular') format('svg');
 }
 
 @font-face {
 	font-family: 'PT Sans';
 	font-style:  italic;
-	src:         url('pts56f_w.eot');
-	src:         local('PT Sans Italic'), url('PTS56F_W.woff') format('woff'), url('PTS56F_W.ttf') format('truetype'), url('PTS56F_W.svg#PTSans-Italic') format('svg');
+	src:         url('../fonts/pts56f_w.eot');
+	src:         local('PT Sans Italic'), url('../fonts/PTS56F_W.woff') format('woff'), url('../fonts/PTS56F_W.ttf') format('truetype'), url('../fonts/PTS56F_W.svg#PTSans-Italic') format('svg');
 }
 
 @font-face {
 	font-family: 'PT Sans';
-	src:         url('pts75f_w.eot');
+	src:         url('../fonts/pts75f_w.eot');
 	font-style:  normal;
 	font-weight: bold;
-	src:         local('PT Sans Bold'), url('PTS75F_W.woff') format('woff'), url('PTS75F_W.ttf') format('truetype'), url('PTS75F_W.svg#PTSans-Bold') format('svg');
+	src:         local('PT Sans Bold'), url('../fonts/PTS75F_W.woff') format('woff'), url('../fonts/PTS75F_W.ttf') format('truetype'), url('../fonts/PTS75F_W.svg#PTSans-Bold') format('svg');
 }
 
 @font-face {
 	font-family: 'PT Sans';
 	font-style:  italic;
 	font-weight: bold;
-	src:         url('pts76f_w.eot');
-	src:         local('PT Sans Bold Italic'), url('PTS76F_W.woff') format('woff'), url('PTS76F_W.ttf') format('truetype'), url('PTS76F_W.svg#PTSans-BoldItalic') format('svg');
+	src:         url('../fonts/pts76f_w.eot');
+	src:         local('PT Sans Bold Italic'), url('../fonts/PTS76F_W.woff') format('woff'), url('../fonts/PTS76F_W.ttf') format('truetype'), url('../fonts/PTS76F_W.svg#PTSans-BoldItalic') format('svg');
 }
 
 @font-face {
 	font-family: 'PT Sans Caption';
-	src:         url('ptc55f_w.eot');
-	src:         local('PT Sans Caption'), url('PTC55F_W.woff') format('woff'), url('PTC55F_W.ttf') format('truetype'), url('PTC55F_W.svg#PTSans-Caption') format('svg');
+	src:         url('../fonts/ptc55f_w.eot');
+	src:         local('PT Sans Caption'), url('../fonts/PTC55F_W.woff') format('woff'), url('../fonts/PTC55F_W.ttf') format('truetype'), url('../fonts/PTC55F_W.svg#PTSans-Caption') format('svg');
 }
 
 @font-face {
 	font-family: 'PT Sans Caption';
 	font-weight: bold;
-	src:         url('ptc75f_w.eot');
-	src:         local('PT Sans Caption Bold'), url('PTC75F_W.woff') format('woff'), url('PTC75F_W.ttf') format('truetype'), url('PTC75F_W.svg#PTSans-CaptionBold') format('svg');
+	src:         url('../fonts/ptc75f_w.eot');
+	src:         local('PT Sans Caption Bold'), url('../fonts/PTC75F_W.woff') format('woff'), url('../fonts/PTC75F_W.ttf') format('truetype'), url('../fonts/PTC75F_W.svg#PTSans-CaptionBold') format('svg');
 }
 
 @font-face {
 	font-family: 'PT Sans Narrow';
-	src:         url('ptn57f_w.eot');
-	src:         local('PT Sans Narrow'), url('PTN57F_W.woff') format('woff'), url('PTN57F_W.ttf') format('truetype'), url('PTN57F_W.svg#PTSans-Narrow') format('svg');
+	src:         url('../fonts/ptn57f_w.eot');
+	src:         local('PT Sans Narrow'), url('../fonts/PTN57F_W.woff') format('woff'), url('../fonts/PTN57F_W.ttf') format('truetype'), url('../fonts/PTN57F_W.svg#PTSans-Narrow') format('svg');
 }
 
 @font-face {
 	font-family: 'PT Sans Narrow';
 	font-weight: bold;
-	src:         url('ptn77f_w.eot');
-	src:         local('PT Sans Narrow Bold'), url('PTN77F_W.woff') format('woff'), url('PTN77F_W.ttf') format('truetype'), url('PTN77F_W.svg#PTSans-NarrowBold') format('svg');
+	src:         url('../fonts/ptn77f_w.eot');
+	src:         local('PT Sans Narrow Bold'), url('../fonts/PTN77F_W.woff') format('woff'), url('../fonts/PTN77F_W.ttf') format('truetype'), url('../fonts/PTN77F_W.svg#PTSans-NarrowBold') format('svg');
 }
 
 /* глобальные классы */
@@ -321,6 +322,14 @@ h1 {
 .raspberry {
 	color: #d71344;
 }
+.no-selection * {
+	-webkit-touch-callout: none;
+	-webkit-user-select:   none;
+	-khtml-user-select:    none;
+	-moz-user-select:      none;
+	-ms-user-select:       none;
+	user-select:           none;
+}
 
 /* боковое меню */
 .sidebar-menu .active {
@@ -412,7 +421,7 @@ h1 {
 .form_table button, .btn-red {
 	display:          inline-block;
 	margin:           0;
-	padding:          6px 22px 7px;
+	padding:          5px 22px 6px;
 	background-color: #d71344;
 	color:            white;
 	border:           none;
@@ -420,7 +429,7 @@ h1 {
 	cursor:           pointer;
 	text-decoration:  none;
 	font-family:      'PT Sans Caption', sans-serif;
-	font-size:        80%;
+	font-size:        15px;
 	text-align:       center;
 }
 .form_table button:hover, .btn-red:hover, .form_table button:active, .btn-red:active {
@@ -551,7 +560,7 @@ h1 {
 
 /* navigation */
 .navigation {
-	margin-top: 15px;
+	margin-top: 20px;
 	font-size:  14px;
 }
 .navigation > i {
@@ -751,6 +760,9 @@ h1 {
 	height:     50px;
 	background: #F6F6F6;
 }
+#wrapper #search_form .chosen-container-active.chosen-with-drop .chosen-single {
+	border: none;
+}
 #search_form {
 	position: absolute;
 	top:      36px;
@@ -849,7 +861,7 @@ h1 {
 /* menu small/big */
 .menu {
 	overflow:      hidden;
-	margin-bottom: 30px;
+	margin-bottom: 24px;
 }
 .menu a {
 	display:           block;
@@ -914,7 +926,7 @@ h1 {
 
 /* breadcrumbs */
 .breadcrumbs {
-	margin-bottom: 16px;
+	margin-bottom: 24px;
 	overflow:      hidden;
 	font-size:     14px;
 	font-family:   'PT Sans Caption', sans-serif;
@@ -934,4 +946,35 @@ h1 {
 }
 .breadcrumbs a {
 	color: #2f4053;
+}
+
+/* tabs */
+.tabs {
+	margin-bottom:         22px;
+	background:            none repeat scroll 0 0 #E8F2F4;
+	border:                1px solid #D6DADD;
+	border-radius:         4px;
+	-moz-border-radius:    4px;
+	-webkit-border-radius: 4px;
+	overflow:              hidden;
+}
+.tabs a {
+	display:         inline-block;
+	float:           left;
+	padding:         7px 12px 8px;
+	text-decoration: none;
+	color:           #2e3f51;
+	font-weight:     bold;
+	font-size:       14px;
+	font-family:     'PT Sans Caption', sans-serif;
+}
+.tabs a.active {
+	color:            white;
+	background-color: #2e3f51;
+}
+.tabs a.active:hover {
+	background-color: #2e3f51;
+}
+.tabs a:hover {
+	background: #D4D4D4;
 }

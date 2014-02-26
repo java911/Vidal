@@ -1,0 +1,32 @@
+<form id="auth_form" action="{{ path("ajax_login") }}" method="POST" autocomplete="off">
+	<div class="auth-info raspberry">Вход для врачей</div>
+
+	<div class="auth-username">
+		<label for="username" class="form_label">Логин:</label>
+		<input type="text" id="username" name="username"/>
+	</div>
+
+	<div class="auth-password">
+		<label for="password" class="form_label">Пароль:</label>
+		<input type="password" id="password" name="password"/>
+	</div>
+
+	<div class="auth-submit">
+		{#<a href="{{ path('password_reset') }}" title="Сбросить пароль">Забыли пароль?</a>#}
+		<a class="submit btn-red" href="#">Войти</a>
+	</div>
+
+	<div class="auth-fail-message red">Неверный логин<br/> или пароль</div>
+</form>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('.auth a.submit').click(function(e) {
+			e.preventDefault();
+
+			$.post(Routing.generate('ajax_login'), $('#auth_form').serialize(), function(data) {
+				data['success'] == 'yes' ? location.reload() : $('.auth-fail-message').show();
+			});
+		});
+	});
+</script>

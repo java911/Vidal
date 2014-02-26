@@ -13,13 +13,23 @@
 .query {
 	text-decoration: underline;
 }
+#vidal h1 {
+	color: #d71344;
+}
 
 /* searche_form */
+#searche_form > * {
+	vertical-align: top;
+}
+#searche_form .search-query {
+	margin-left: 5px;
+	width:       250px;
+}
 #searche_form .search-type, #searche_form .chosen-container .chosen-drop {
 	width: 250px;
 }
 #searche_form .search-bad {
-	font-size:  11px;
+	font-size:  14px;
 	text-align: right;
 	margin:     4px 3px 0 3px;
 	color:      #999;
@@ -43,20 +53,17 @@
 	cursor:        pointer;
 	border-bottom: 1px dashed #476173;
 }
-#searche_filter .searche-filter-content {
-	display: none;
-	width:   540px;
-}
 #searche_filter .searche-nozologies,
 #searche_filter .searche-contraindications {
 	overflow: hidden;
 }
 #searche_filter .label {
-	width: 120px;
-	float: left;
+	width:      140px;
+	float:      left;
+	margin-top: 6px;
 }
 #searche_filter .items {
-	margin-left: 120px;
+	margin-left: 140px;
 }
 #searche_filter ul {
 	list-style: none;
@@ -65,7 +72,7 @@
 }
 #searche_filter input {
 	margin: 0;
-	width:  416px;
+	width:  368px;
 }
 #searche_filter li {
 	margin-bottom: 2px;

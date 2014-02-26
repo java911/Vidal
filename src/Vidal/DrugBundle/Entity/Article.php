@@ -26,6 +26,11 @@ class Article extends BaseEntity
 
 	/**
 	 * @ORM\Column(length=255, nullable=true)
+	 * @Assert\Regex(
+	 *     pattern="/[a-zA-Z\d\-\_\.]+/",
+	 *     match=true,
+	 *     message="Ссылка может состоять только из латинских букв, цифр, тире, точки и подчеркивания."
+	 * )
 	 */
 	protected $link;
 
@@ -86,11 +91,15 @@ class Article extends BaseEntity
 		$this->products   = new ArrayCollection();
 		$this->documents  = new ArrayCollection();
 		$this->forDoctor  = false;
+		$this->author     = 'Доктор Видаль: медицинская энциклопедия www.vidal.ru';
+		$now              = new \DateTime('now');
+		$this->created    = $now;
+		$this->updated    = $now;
 	}
 
 	public function __toString()
 	{
-		return $this->title;
+		return empty($this->title) ? '' : $this->title;
 	}
 
 	/**

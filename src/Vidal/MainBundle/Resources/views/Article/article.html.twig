@@ -12,6 +12,15 @@
 		<a href="{{ path('rubrique', {'rubrique':rubrique.rubrique}) }}">{{ rubrique }}</a>
 	</div>
 
+	<div class="article-wrap">
+		<div class="article-body">
+			{{ article.body|raw }}
+		</div>
+		<div class="article-footer">
+			<span class="article-date">{{ article.created|date('d.m.Y') }}</span>
+		</div>
+	</div>
+
 {% endblock %}
 
 

@@ -1,5 +1,6 @@
 {% set isLogged = is_granted('IS_AUTHENTICATED_REMEMBERED') %}
 
+{# блок основных боковых меню #}
 <ul class="sidebar-menu ul">
 	<li>
 		<a href="#" class="{{ menu_left is defined and menu_left == 'symptoms' ? 'active' : 'dotted' }}">Симптомы</a>
@@ -9,14 +10,14 @@
 		   class="{{ menu_left is defined and menu_left == 'articles' ? 'active' : 'dotted' }}">Статьи</a>
 	</li>
 	<li>
-		<a href="#" class="{{ menu_left is defined and menu_left == 'news' ? 'active' : 'dotted' }}">Новости</a>
+		<a href="{{ path('news') }}" class="{{ menu_left is defined and menu_left == 'news' ? 'active' : 'dotted' }}">Новости</a>
 	</li>
 	<li>
 		<a href="#" class="{{ menu_left is defined and menu_left == 'qa' ? 'active' : 'dotted' }}">Вопрос-ответ</a>
 	</li>
 </ul>
 
-
+{# блок авторизации или личного кабинета #}
 <div class="auth">
 	{% if isLogged %}
 		<div class="auth-welcome">
@@ -25,49 +26,20 @@
 		</div>
 
 		<ul class="auth-controls ul">
+			{% if is_granted('ROLE_ADMIN') %}
+				<li>
+					<a href="{{ path('sonata_admin_dashboard') }}" class="dotted">Панель администратора</a>
+				</li>
+			{% endif %}
 			<li>
 				<a href="{{ path('profile') }}" class="dotted">Профиль</a>
 			</li>
 			<li>
 				<a href="{{ path('logout') }}" class="dotted">Выйти</a>
 			</li>
-			{% if is_granted('ROLE_ADMIN') %}
-				<li><a href="{{ path('sonata_admin_dashboard') }}">Панель редактора</a></li>
-			{% endif %}
 		</ul>
 	{% else %}
-		<form id="auth_form" action="{{ path("ajax_login") }}" method="POST" autocomplete="off">
-			<div class="auth-info raspberry">Вход для врачей</div>
-
-			<div class="auth-username">
-				<label for="username" class="form_label">Логин:</label>
-				<input type="text" id="username" name="username"/>
-			</div>
-
-			<div class="auth-password">
-				<label for="password" class="form_label">Пароль:</label>
-				<input type="password" id="password" name="password"/>
-			</div>
-
-			<div class="auth-submit">
-				{#<a href="{{ path('password_reset') }}" title="Сбросить пароль">Забыли пароль?</a>#}
-				<a class="submit btn-red" href="#">Войти</a>
-			</div>
-
-			<div class="auth-fail-message red">Неверный логин<br/> или пароль</div>
-		</form>
-
-		<script type="text/javascript">
-			$(document).ready(function() {
-				$('.auth a.submit').click(function(e) {
-					e.preventDefault();
-
-					$.post(Routing.generate('ajax_login'), $('#auth_form').serialize(), function(data) {
-						data['success'] == 'yes' ? location.reload() : $('.auth-fail-message').show();
-					});
-				});
-			});
-		</script>
+		{% include 'VidalMainBundle:Auth:login_form.html.twig' %}
 	{% endif %}
 </div>
 

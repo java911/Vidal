@@ -2,19 +2,20 @@
 
 
 {% block vidal %}
-	<h1>Препараты и БАДы</h1>
+	{% include 'VidalDrugBundle:Search:menu.html.twig' %}
 
 	<div class="letters">
-		<form id="letters_form" method="GET" action="{{ path('drugs_by_letter') }}">
-			<div class="letters-controls">
+		<form id="letters_form" method="GET" action="{{ path('searche_letter') }}">
+			<div class="letters-controls no-selection">
 				<select id="letters_type" name="t">
 					<option value="p"{{ t == 'p' ? ' selected="selected"' }}>Препараты</option>
 					<option value="b"{{ t == 'b' ? ' selected="selected"' }}>БАДы</option>
 					<option value="o"{{ t == 'o' ? ' selected="selected"' }}>Препараты и БАДы</option>
 				</select>
-				<span class="letters-controls-check">
-					<input id="letters_nonpres" type="checkbox" name="n"{{ n ? ' checked="checked"' }}/>
-					<span class="small">только безрецептурные</span>
+				<span class="letters-controls-check no-selection">
+					<input id="letters_nonpres" type="checkbox" name="n"{{ n ? ' checked="checked"' }}
+						   class="checkbox"/>
+					<span class="small no-selection">только безрецептурные</span>
 				</span>
 			</div>
 
@@ -58,7 +59,8 @@
 		<div class="block">
 			<div class="block-anons">
 				<div class="block-head">
-					Найдено {{ n ? 'безрецептурных ' }}{{ t == 'p' ? 'препаратов' : t == 'b' ? 'БАДов' : 'препаратов и БАДов' }}:
+					Найдено {{ n ? 'безрецептурных ' }}{{ t == 'p' ? 'препаратов' : t == 'b' ? 'БАДов' : 'препаратов и БАДов' }}
+					:
 					<span>{{ pagination.totalItemCount }}</span>
 				</div>
 			</div>
@@ -80,6 +82,10 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/jquery-chosen/chosen.css') }}"/>
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/checkbox/checkbox.css') }}"/>
 	<style type="text/css">
+		#vidal h1 {
+			color: #d71344;
+		}
+		/* letters-controls */
 		.letters-controls {
 			margin-bottom: 8px;
 		}
@@ -110,10 +116,8 @@
 			});
 
 			$('#letters_type').chosen({
-				disable_search:  true
+				disable_search: true
 			});
-
-			$('#letters_nonpres').checkbox();
 		});
 	</script>
 {% endblock %}

@@ -352,55 +352,6 @@ class VidalController extends Controller
 	}
 
 	/**
-	 * Отображение препаратов или бадов по букве алфавита
-	 * @Route("/drugs", name="drugs_by_letter")
-	 *
-	 * @Template("VidalDrugBundle:Vidal:drugs_by_letter.html.twig")
-	 */
-	public function drugsByLetterAction(Request $request)
-	{
-		$em = $this->getDoctrine()->getManager('drug');
-		$t  = $request->query->get('t', 'p'); // тип препараты-бады-вместе
-		$p  = $request->query->get('p', 1); // номер страницы
-		$l  = $request->query->get('l', null); // буква
-		$n  = $request->query->has('n'); // только безрецептурные препараты
-
-		$params = array(
-			't' => $t,
-			'p' => $p,
-			'l' => $l,
-			'n' => $n,
-		);
-
-		if ($l != null) {
-			$paginator  = $this->get('knp_paginator');
-			$pagination = $paginator->paginate(
-				$em->getRepository('VidalDrugBundle:Product')->getQueryByLetter($l, $t, $n),
-				$p,
-				self::PRODUCTS_PER_PAGE
-			);
-
-			$products             = $pagination->getItems();
-			$params['pagination'] = $pagination;
-
-			if (!empty($products)) {
-				$productIds = array();
-
-				foreach ($products as $product) {
-					$productIds[] = $product->getProductID();
-				}
-
-				$params['products']    = $products;
-				$params['indications'] = $em->getRepository('VidalDrugBundle:Document')->findIndicationsByProductIds($productIds);
-				$params['companies']   = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-				$params['pictures']    = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
-			}
-		}
-
-		return $params;
-	}
-
-	/**
 	 * Описание препарата
 	 * @Route("/poisk_preparatov/{EngName}__{ProductID}.{ext}", name="product", requirements={"ProductID":"\d+"}, defaults={"ext"="htm"})
 	 *
@@ -500,8 +451,8 @@ class VidalController extends Controller
 		}
 
 		$params['documentId'] = $document->getDocumentID();
-		$articleId = $document->getArticleID();
-		$molecules = $em->getRepository('VidalDrugBundle:Molecule')->findByDocumentID($DocumentID);
+		$articleId            = $document->getArticleID();
+		$molecules            = $em->getRepository('VidalDrugBundle:Molecule')->findByDocumentID($DocumentID);
 
 		$products = $articleId == 1
 			? $em->getRepository('VidalDrugBundle:Product')->findByMolecules($molecules)

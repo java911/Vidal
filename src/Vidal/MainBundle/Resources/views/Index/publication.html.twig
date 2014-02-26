@@ -1,0 +1,69 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+{% set withPhoto = publication.photo and is_file(publication.photo.path) %}
+
+{% block content %}
+	<h1>{{ publication }}</h1>
+
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('news') }}">Новости</a>
+	</div>
+
+	<div class="publication">
+		<div class="publication-header{{ withPhoto ? ' with-photo' }}">
+			{% if withPhoto %}
+				<div class="photo">
+					<img src="{{ publication.photo.path }}" alt="{{ publication.title }}"/>
+				</div>
+			{% endif %}
+			<div class="publication-announce">
+				{{ publication.announce|raw }}
+			</div>
+		</div>
+
+		<div class="publication-body">
+			{{ publication.body|raw }}
+		</div>
+
+		<div class="publication-footer">
+			<span class="publication-date">{{ publication.created|date('d.m.Y') }}</span>
+		</div>
+	</div>
+
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.publication {
+			font-size: 15px;
+		}
+		.publication-header {
+			margin-bottom: 20px;
+			overflow:      hidden;
+		}
+		.publication-header .photo {
+			display:    inline-block;
+			float:      left;
+			margin-top: 2px;
+		}
+		.publication-header .photo img {
+			max-width: 185px;
+		}
+		.publication-header.with-photo .publication-announce {
+			margin-left: 205px;
+		}
+		.publication-announce p {
+			margin: 0;
+		}
+		.publication-date {
+			text-align: right;
+			font-size:  13px;
+			font-style: italic;
+			color:      gray;
+		}
+	</style>
+{% endblock %}

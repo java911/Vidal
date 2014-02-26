@@ -25,10 +25,9 @@ class AppKernel extends Kernel
             new Sonata\jQueryBundle\SonatajQueryBundle(),
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
             new Sonata\AdminBundle\SonataAdminBundle(),
-
-			//new JMS\SerializerBundle\JMSSerializerBundle(),
-			//new FOS\ElasticaBundle\FOSElasticaBundle(),
             new Vidal\MainBundle\VidalMainBundle(),
+			new Lsw\SecureControllerBundle\LswSecureControllerBundle(),
+			new Iphp\FileStoreBundle\IphpFileStoreBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

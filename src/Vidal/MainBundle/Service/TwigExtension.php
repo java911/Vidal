@@ -20,6 +20,7 @@ class TwigExtension extends \Twig_Extension
 			'dateFromMinutes' => new \Twig_Function_Method($this, 'dateFromMinutes'),
 			'evrikaImg'       => new \Twig_Function_Method($this, 'evrikaImg'),
 			'formatDate'      => new \Twig_Function_Method($this, 'formatDate'),
+			'getClass'        => new \Twig_Function_Method($this, 'getClass'),
 		);
 	}
 
@@ -31,7 +32,6 @@ class TwigExtension extends \Twig_Extension
 		return array(
 			new \Twig_SimpleFilter('dateRu', array($this, 'dateRu')),
 			new \Twig_SimpleFilter('shortcut', array($this, 'shortcut')),
-			new \Twig_SimpleFilter('granted', array($this, 'granted')),
 			new \Twig_SimpleFilter('dateCreated', array($this, 'dateCreated'))
 		);
 	}
@@ -136,8 +136,10 @@ class TwigExtension extends \Twig_Extension
 			: $str;
 	}
 
-	public function granted(\Learning\MainBundle\Entity\User $user, $role)
+	public function getClass($object)
 	{
-		return in_array($role, $user->getRoles());
+		$reflect = new \ReflectionClass($object);
+
+		return $reflect->getShortName();
 	}
 }

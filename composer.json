@@ -36,7 +36,9 @@
         "sonata-project/user-bundle": "2.2.x-dev",
         "sonata-project/doctrine-extensions": "1.0.0",
         "sonata-project/easy-extends-bundle": "dev-master",
-        "olamedia/nokogiri": "dev-master"
+        "olamedia/nokogiri": "dev-master",
+        "leaseweb/secure-controller-bundle": "*",
+        "iphp/filestore-bundle": "dev-master"
     },
 
     "scripts": {

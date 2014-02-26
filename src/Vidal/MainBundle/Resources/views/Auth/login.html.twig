@@ -1,0 +1,22 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block content %}
+	<div class="auth-required">
+		Для доступа к странице необходимо авторизоваться
+	</div>
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.auth-required {
+			margin-top:  54px;
+			text-align:  center;
+			font-weight: bold;
+			font-size:   20px;
+			color:       #2f4053;
+		}
+	</style>
+{% endblock %}

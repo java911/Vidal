@@ -18,8 +18,7 @@ security:
                 check_path: /login-submit
             logout:
                 path:   /logout
-                target: /
-                # success_handler: logout_handler
+                target: /x
             remember_me:
                 key:      "%secret%"
                 lifetime: 31536000

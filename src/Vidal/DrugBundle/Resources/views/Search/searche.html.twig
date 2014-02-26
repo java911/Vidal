@@ -2,39 +2,10 @@
 
 
 {% block vidal %}
-	<h2>Расширенный поиск</h2>
+	{% include 'VidalDrugBundle:Search:menu.html.twig' %}
 	{% include 'VidalDrugBundle:Search:searche_form.html.twig' %}
-	{% include 'VidalDrugBundle:Search:search_info.html.twig' %}
 
 	<div class="search-results">
-
-	{# Найдено препаратов по показаниям/противопоказаниям #}
-	{% if filtered.productsPagination is defined %}
-		{% if filtered.productsPagination is not empty %}
-			<div class="block">
-				<div class="block-anons">
-					<div class="block-head">
-						Найдено препаратов по показаниям/противопоказаниям:
-						<span>{{ filtered.productsPagination.totalItemCount }}</span>
-					</div>
-				</div>
-			</div>
-
-			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {
-			'products':filtered.productsPagination.items,
-			'companies':filtered.companies,
-			'pictures':filtered.pictures
-			} %}
-
-			<div class="navigation">
-				{{ knp_pagination_render(filtered.productsPagination) }}
-			</div>
-		{% elseif t == 'product' %}
-			<div class="no-results">
-				Не найдено препаратов по показаниям/противопоказаниям
-			</div>
-		{% endif %}
-	{% endif %}
 
 	{# Найдено показаний МКБ-10 #}
 	{% if nozologies is defined %}
@@ -255,27 +226,14 @@
 		{% endif %}
 	{% endif %}
 
-	{% if filtered is defined %}
-		{# если в поиске по показанию не указано ни одного показания #}
-		{% if filtered.fail is defined %}
-			<div class="no-results">
-				Необходимо указать хотя бы одно <span>показание</span> к применению
-			</div>
-		{% elseif filtered.productsPagination is not defined %}
-			<div class="no-results">
-				Не найдено результатов
-			</div>
-		{% endif %}
-	{% else %}
-		{# если общий поиск не дал результатов #}
-		{% if q is not empty and t == 'all' and
-		(productsPagination is not defined or productsPagination is empty) and
-		(molecules is not defined or molecules is empty) and
-		(nozologies is not defined or nozologies is empty) %}
-			<div class="no-results">
-				Не найдено результатов
-			</div>
-		{% endif %}
+	{# если общий поиск не дал результатов #}
+	{% if q is not empty and t == 'all' and
+	(productsPagination is not defined or productsPagination is empty) and
+	(molecules is not defined or molecules is empty) and
+	(nozologies is not defined or nozologies is empty) %}
+		<div class="no-results">
+			Не найдено результатов
+		</div>
 	{% endif %}
 
 	</div>
@@ -286,6 +244,7 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/searche.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/checkbox/checkbox.css') }}"/>
 
 	{% if atcTree is defined %}
 		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/treeview/jquery.treeview.css') }}"/>
@@ -311,5 +270,37 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/ready_searche.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('bundles/vidalmain/checkbox/jquery.checkbox.js') }}"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var $searcheForm = $('#searche_form');
+
+			$searcheForm.find('.search-query')
+				.autocomplete({
+					minLength: 2,
+					source:    function(request, response) {
+						$.ajax({
+							url:      "http://vidal.evrika.ru:9200/website/autocompleteext/_search",
+							type:     "POST",
+							dataType: "JSON",
+							data:     '{ "query":{"query_string":{"query":"' + request.term + '*"}}, "fields":["name"], "size":15, "highlight":{"fields":{"name":{}}} }',
+							success:  function(data) {
+								response($.map(data.hits.hits, function(item) {
+									return {
+										label: item.highlight.name,
+										value: item.fields.name
+									}
+								}));
+							}
+						});
+					}
+				})
+				.data("ui-autocomplete")._renderItem =
+				function(ul, item) {
+					return $("<li></li>").data("item.autocomplete", item).append("<a>" + item.label + "</a>").appendTo(ul);
+				};
+
+			$searcheForm.find('.search-type').chosen({disable_search: true});
+		});
+	</script>
 {% endblock %}

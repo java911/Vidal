@@ -1,75 +1,39 @@
-<form id="searche_form" class="search" method="get" action="{{ path('searche') }}">
-	<div class="search-block">
-		<div class="border-line border-radius">
-			<input class="search-query border-radius" type="text" name="q" placeholder="Искать"
-				   value="{{ app.request.attributes.get('_route') == 'searche' ? app.request.get('q') }}"/>
-			<select class="search-type" name="t">
-				<option value="all" {{ app.request.get('t') == 'all' ? 'selected="selected"' }}>
-					Везде
-				</option>
-				<option value="product" {{ app.request.get('t') == 'product' ? 'selected="selected"' }}>
-					По препарату
-				</option>
-				<option value="molecule" {{ app.request.get('t') == 'molecule' ? 'selected="selected"' }}>
-					По активному веществу
-				</option>
-				<option value="atc" {{ app.request.get('t') == 'atc' ? 'selected="selected"' }}>
-					По АТХ коду
-				</option>
-				<option value="firm" {{ app.request.get('t') == 'firm' ? 'selected="selected"' }}>
-					По производителю
-				</option>
-				<option value="nosology" {{ app.request.get('t') == 'nosology' ? 'selected="selected"' }}>
-					По показаниям (МКБ-10)
-				</option>
-				<option value="clphgroup" {{ app.request.get('t') == 'clphgroup' ? 'selected="selected"' }}>
-					Клинико-фармакологическая группа
-				</option>
-				<option value="phthgroup" {{ app.request.get('t') == 'phthgroup' ? 'selected="selected"' }}>
-					Фармако-терапевтическая группа
-				</option>
-			</select>
-		</div>
+<form id="searche_form" method="get" action="{{ path('searche') }}">
+	<select class="search-type" name="t">
+		<option value="all" {{ app.request.get('t') == 'all' ? 'selected="selected"' }}>
+			Везде
+		</option>
+		<option value="product" {{ app.request.get('t') == 'product' ? 'selected="selected"' }}>
+			По препарату
+		</option>
+		<option value="molecule" {{ app.request.get('t') == 'molecule' ? 'selected="selected"' }}>
+			По активному веществу
+		</option>
+		<option value="atc" {{ app.request.get('t') == 'atc' ? 'selected="selected"' }}>
+			По АТХ коду
+		</option>
+		<option value="firm" {{ app.request.get('t') == 'firm' ? 'selected="selected"' }}>
+			По производителю
+		</option>
+		<option value="nosology" {{ app.request.get('t') == 'nosology' ? 'selected="selected"' }}>
+			По показаниям (МКБ-10)
+		</option>
+		<option value="clphgroup" {{ app.request.get('t') == 'clphgroup' ? 'selected="selected"' }}>
+			Клинико-фармакологическая группа
+		</option>
+		<option value="phthgroup" {{ app.request.get('t') == 'phthgroup' ? 'selected="selected"' }}>
+			Фармако-терапевтическая группа
+		</option>
+	</select>
 
-		<div class="search-bad">
-			<label for="search_bad">включить в поиск БАДы</label>
-			<input id="search_bad" type="checkbox" name="b"{{ app.request.get('b') ? ' checked="checked"' }}/>
-		</div>
+	<input class="search-query border-radius" type="text" name="q" placeholder="Введите слово для поиска..."
+		   value="{{ app.request.attributes.get('_route') == 'searche' ? app.request.get('q') }}"/>
+
+	<div class="search-bad">
+		<label for="search_bad">включить в поиск БАДы</label>
+		<input id="search_bad" class="checkbox"
+			   type="checkbox" name="b"{{ app.request.get('b') ? ' checked="checked"' }}/>
 	</div>
 
-	<input class="search-button btn-white" type="submit" value="Найти"/>
+	<input class="search-button btn-red" type="submit" value="Найти"/>
 </form>
-
-
-<div id="searche_filter">
-	<div class="searche-filter-title"><span>Найти препараты c показаниями или исключая противопоказания</span></div>
-	<div class="searche-filter-content"{{ filtered.status is defined ? ' style="display: block"' }}>
-		<div class="searche-nozologies">
-			<div class="label">Показания</div>
-			<div class="items">
-				<input id="searche_nozology" type="text"/>
-				<ul class="removable">
-					{% if filtered.nozologies is defined %}
-						{% for nozology in filtered.nozologies %}
-							<li><i></i><span>{{ nozology.Name }}</span><b>{{ nozology.NozologyCode }}</b></li>
-						{% endfor %}
-					{% endif %}
-				</ul>
-			</div>
-		</div>
-		<div class="searche-contraindications">
-			<div class="label">Противопоказания</div>
-			<div class="items">
-				<input id="searche_contraindication" type="text"/>
-				<ul class="removable">
-					{% if filtered.contraindications is defined %}
-						{% for contra in filtered.contraindications %}
-							<li><i></i><span>{{ contra.RusName }}</span><b>{{ contra.ContraIndicCode }}</b></li>
-						{% endfor %}
-					{% endif %}
-				</ul>
-			</div>
-		</div>
-		<button id="searche_filter_submit" class="btn-white">Поиск</button>
-	</div>
-</div>

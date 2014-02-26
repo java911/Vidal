@@ -1,0 +1,22 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block content %}
+
+	<h1>НОВОСТИ</h1>
+
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<span>Новости</span>
+	</div>
+
+	{% include 'VidalMainBundle:Index:render_publications.html.twig' with {publications:publicationsPagination.items} %}
+
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/publication.css') }}"/>
+{% endblock %}

@@ -38,6 +38,7 @@ class ArticleController extends Controller
 	 * Конкретная рубрика
 	 *
 	 * @Route("/articles/{rubrique}", name="rubrique")
+	 * @Route("/patsientam/entsiklopediya/{rubrique}/")
 	 * @Route("/patsientam/entsiklopediya/{rubrique}")
 	 *
 	 * @Template()
@@ -64,6 +65,7 @@ class ArticleController extends Controller
 	 *
 	 * @Route("/articles", name="articles")
 	 * @Route("/patsientam/entsiklopediya/")
+	 * @Route("/patsientam/entsiklopediya")
 	 *
 	 * @Template()
 	 */

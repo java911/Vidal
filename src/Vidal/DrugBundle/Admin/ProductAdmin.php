@@ -74,6 +74,14 @@ class productAdmin extends Admin
             ->addIdentifier('ProductID')
             ->add('RusName')
             ->add('EngName')
+			->add('_action', 'actions', array(
+				'label'   => 'Действия',
+				'actions' => array(
+					'view'   => array(),
+					'edit'   => array(),
+					'delete' => array(),
+				)
+			))
         ;
     }
 }

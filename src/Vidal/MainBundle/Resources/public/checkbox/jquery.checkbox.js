@@ -62,4 +62,8 @@
 			}
 		});
 	}
-})(jQuery)
+})(jQuery);
+
+$(document).ready(function() {
+	$('.checkbox').checkbox();
+});

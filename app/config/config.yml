@@ -7,13 +7,14 @@ imports:
 
 framework:
     #esi:             ~
-    translator:      { fallback: %locale% }
+    translator:      { fallback: "%locale%" }
     secret:          %secret%
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
+    templating:      { engines: ['twig'], assets_version: v1 }
     form:            ~
-    csrf_protection: ~
+    csrf_protection: false
     validation:      { enable_annotations: true }
     templating:
         engines: ['twig']
@@ -79,6 +80,34 @@ doctrine:
                 mappings:
                     VidalDrugBundle: ~
 
+#Iphp FileStore
+iphp_file_store:
+    mappings:
+        avatar:
+            upload_dir: %upload_dir%/avatar
+            upload_path: /upload/avatar
+            overwrite_duplicates: false
+            namer:
+                translit: ~
+        banner:
+            upload_dir: %upload_dir%/banner
+            upload_path: /upload/banner
+            overwrite_duplicates: false
+            namer:
+                 translit: ~
+        swf:
+            upload_dir: %upload_dir%/swf
+            upload_path: /upload/swf
+            overwrite_duplicates: false
+            namer:
+                 translit: ~
+        photo:
+            upload_dir: %upload_dir%/photo
+            upload_path: /upload/photo/
+            overwrite_duplicates: false
+            namer:
+                 translit: ~
+
 # Swiftmailer Configuration
 swiftmailer:
     transport: %mailer_transport%
@@ -110,19 +139,18 @@ sonata_block:
 #Sonata admin configuration
 sonata_admin:
     title:      Vidal.ru
-#    #title_logo: /bundles/vidalmain/images/icon.jpg
+    #title_logo: /bundles/evrikamain/images/icon.jpg
     templates:
         # default global templates
-        layout:  VidalDrugBundle::admin_layout.html.twig
-        ajax:    SonataAdminBundle::ajax_layout.html.twig
-        dashboard: VidalDrugBundle::dashboard.html.twig
-#
-#        # default actions templates, should extend a global templates
-        list:    VidalDrugBundle::list_layout.html.twig
+        layout:  VidalDrugBundle:Sonata:admin_layout.html.twig
+        #ajax:    SonataAdminBundle::ajax_layout.html.twig
+
+        # default actions templates, should extend a global templates
+        list:    VidalDrugBundle:Sonata:list_layout.html.twig
         show:    SonataAdminBundle:CRUD:show.html.twig
         edit:    SonataAdminBundle:CRUD:edit.html.twig
 
     dashboard:
         blocks:
             # display a dashboard block
-            - { position: left, type: sonata.admin.block.admin_list }
+            - { position: center, type: sonata.admin.block.admin_list }

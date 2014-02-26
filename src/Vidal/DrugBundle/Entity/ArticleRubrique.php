@@ -12,15 +12,15 @@ class ArticleRubrique
 	/** @ORM\Column(type="integer") @ORM\Id @ORM\GeneratedValue */
 	protected $id;
 
-	/** @ORM\Column(length=255) */
+	/** @ORM\Column(length=255, unique=true) */
 	protected $title;
 
 	/**
-	 * @ORM\Column(length=255, nullable=true)
+	 * @ORM\Column(length=255, nullable=true, unique=true)
 	 * @Assert\Regex(
-	 *     pattern="/[a-z]+/",
+	 *     pattern="/[a-z\-]+/",
 	 *     match=true,
-	 *     message="Путь к рубрике должен состоять из латинских букв"
+	 *     message="Путь к рубрике может состоять только из латинских букв и тире"
 	 * )
 	 */
 	protected $rubrique;
@@ -37,7 +37,7 @@ class ArticleRubrique
 
 	public function __toString()
 	{
-		return $this->title;
+		return empty($this->title) ? '' : $this->title;
 	}
 
 	/**

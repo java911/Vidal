@@ -6,8 +6,9 @@ use Symfony\Component\Security\Core\User\EquatableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Iphp\FileStoreBundle\Mapping\Annotation as FileStore;
 
-/** @ORM\Entity(repositoryClass="UserRepository") @ORM\Table(name="user") */
+/** @ORM\Entity(repositoryClass="UserRepository") @ORM\Table(name="user") @FileStore\Uploadable */
 class User extends BaseEntity implements UserInterface, EquatableInterface, \Serializable
 {
 	/**
@@ -22,6 +23,16 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	 * @Assert\NotBlank(message = "Придумайте себе пароль")
 	 */
 	protected $password;
+
+	/**
+	 * @ORM\Column(type="array", nullable=true)
+	 * @FileStore\UploadableField(mapping="avatar")
+	 * @Assert\Image(
+	 * 		maxSize="2M",
+	 *  	maxSizeMessage="Принимаются фотографии размером до 2 Мб"
+	 * )
+	 */
+	protected $avatar;
 
 	/**
 	 * @ORM\Column(type="string")
@@ -104,6 +115,9 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	 * @Assert\Choice(callback="getJobAlignments", message="Некорректный вид организации. Пожалуйста, выберите из списка")
 	 */
 	protected $jobAlignment;
+
+	/** @ORM\OneToMany(targetEntity="Publication", mappedBy="author") */
+	protected $publications;
 
 	public function __construct()
 	{
@@ -530,5 +544,37 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	public function getSpecialization()
 	{
 		return $this->specialization;
+	}
+
+	/**
+	 * @param mixed $avatar
+	 */
+	public function setAvatar($avatar)
+	{
+		$this->avatar = $avatar;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getAvatar()
+	{
+		return $this->avatar;
+	}
+
+	/**
+	 * @param mixed $publications
+	 */
+	public function setPublications($publications)
+	{
+		$this->publications = $publications;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPublications()
+	{
+		return $this->publications;
 	}
 }

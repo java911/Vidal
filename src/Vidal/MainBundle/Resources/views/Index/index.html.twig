@@ -7,17 +7,14 @@
 
 
 {% block content %}
-	<p><a class="btn-white" href="{{ path('drugs_by_letter') }}">Препараты и БАДы</a>
-		<span class="small">по алфавиту. Будет отдельный раздел</span></p>
-	<p>На данный момент для тестирования доступны адреса препаратов, веществ, атх и компаний.</p>
-	<p>Пример: <a href="{{ path('document', {'EngName':'maalox', 'DocumentID':1607}) }}">Маалокс</a></p>
-
-	<div style="margin-top:40px; font-weight:bold; font-size:20px; color:darkslategray;">
-		Страница в находится в разработке
+	<div class="news">
+		<h1>НОВОСТИ</h1>
+		{% include 'VidalMainBundle:Index:render_publications.html.twig' with {publications:publicationsPagination.items} %}
 	</div>
 {% endblock %}
 
 
 {% block stylesheets %}
 	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/publication.css') }}"/>
 {% endblock %}
