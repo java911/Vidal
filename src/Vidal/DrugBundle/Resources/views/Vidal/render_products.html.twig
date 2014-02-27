@@ -24,7 +24,7 @@
 			</td>
 			<td class="products-table-picture">
 				{% if pictures[id] is defined %}
-					{% set path = '/upload_vidal/products/' ~ pictures[id] %}
+					{% set path = '/upload/products/' ~ pictures[id] %}
 					{% if is_file(path) %}
 						<a class="no-underline"
 						   href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"

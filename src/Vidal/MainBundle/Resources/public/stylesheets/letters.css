@@ -7,7 +7,7 @@
 	text-decoration:       none;
 	background-color:      #F1F1F1;
 	border:                1px solid #DCDCDC;
-	color:                 #00626a;
+	color:                 #2e3f51;
 	border-radius:         4px;
 	-moz-border-radius:    4px;
 	-webkit-border-radius: 4px;
@@ -19,12 +19,12 @@
 	cursor:                pointer;
 }
 .letter.active {
-	border:      1px solid #aaa;
+	border:      1px solid #d71344;
 	font-weight: bold;
 	color:       #d71344;
 }
 .letter:hover {
-	border:      1px solid #aaa;
+	border:      1px solid #d71344;
 	font-weight: bold;
-	color:       #d00;
+	color:       #d71344;
 }

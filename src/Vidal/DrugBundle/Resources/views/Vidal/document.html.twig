@@ -22,7 +22,7 @@
 	{% if products is not empty %}
 		<div class="pictures">
 			{% for product in products if pictures[product.ProductID] is defined %}
-				{% set path = '/upload_vidal/products/' ~ pictures[product.ProductID] %}
+				{% set path = '/upload/products/' ~ pictures[product.ProductID] %}
 				{% if is_file(path) %}
 					<img src="{{ path }}"/>
 				{% endif %}

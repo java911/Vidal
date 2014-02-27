@@ -148,7 +148,7 @@ class SearchController extends Controller
 	}
 
 	/**
-	 * @Route("/search/indic", name="searche_indic")
+	 * @Route("/search/indic", name="searche_indic", options={"expose":true})
 	 *
 	 * @Template("VidalDrugBundle:Search:searche_indic.html.twig")
 	 */

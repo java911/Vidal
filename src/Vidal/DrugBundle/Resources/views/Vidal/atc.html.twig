@@ -44,7 +44,7 @@
 				</td>
 				<td class="products-table-picture">
 					{% if pictures[id] is defined %}
-						{% set path = '/upload_vidal_vidal/products/' ~ pictures[id] %}
+						{% set path = '/upload/products/' ~ pictures[id] %}
 						{% if is_file(path) %}
 							<img src="{{ path }}"/>
 						{% endif %}
@@ -105,7 +105,7 @@
 				</td>
 				<td class="products-table-picture">
 					{% if pictures[id] is defined %}
-						{% set path = '/upload_vidal_vidal/products/' ~ pictures[id] %}
+						{% set path = '/upload/products/' ~ pictures[id] %}
 						{% if is_file(path) %}
 							<img src="{{ path }}"/>
 						{% endif %}

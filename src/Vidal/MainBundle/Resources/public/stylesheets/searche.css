@@ -92,6 +92,7 @@
 #searche_filter li span {
 	vertical-align: top;
 	margin-left:    2px;
+	font-size:      14px;
 }
 #searche_filter li b {
 	display: none;
