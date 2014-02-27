@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class PublicationAdmin extends Admin
+class QuestionAnswerAdmin extends Admin
 {
 	protected $datagridValues;
 
@@ -30,10 +30,9 @@ class PublicationAdmin extends Admin
 	{
 		$showMapper
 			->add('id')
-			->add('title', null, array('label' => 'Заголовок'))
-			->add('announce', null, array('label' => 'Анонс'))
-			->add('body', null, array('label' => 'Основное содержимое'))
-			->add('enabled', null, array('label' => 'Активна'))
+			->add('question', null, array('label' => 'Вопрос'))
+			->add('answer', null, array('label' => 'Ответ'))
+			->add('enabled', null, array('label' => 'Активен'))
 			->add('created', null, array(
 				'label'  => 'Дата создания',
 				'widget' => 'single_text',
@@ -49,11 +48,9 @@ class PublicationAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('photo', 'iphp_file', array('label' => 'Фотография', 'required' => false))
-			->add('title', null, array('label' => 'Заголовок', 'required' => true))
-			->add('announce', null, array('label' => 'Анонс', 'required' => true))
-			->add('body', null, array('label' => 'Основное содержимое', 'required' => true))
-			->add('enabled', null, array('label' => 'Активна', 'required' => false))
+			->add('question', null, array('label' => 'Вопрос', 'required' => true))
+			->add('answer', null, array('label' => 'Ответ', 'required' => true))
+			->add('enabled', null, array('label' => 'Активен', 'required' => false))
 			->add('created', null, array(
 				'label'    => 'Дата создания',
 				'data'     => new \DateTime('now'),
@@ -65,21 +62,22 @@ class PublicationAdmin extends Admin
 	{
 		$datagridMapper
 			->add('id')
-			->add('title', null, array('label' => 'Заголовок'))
-			->add('enabled', null, array('label' => 'Активна'));
+			->add('question', null, array('label' => 'Вопрос'))
+			->add('enabled', null, array('label' => 'Активнен'));
 	}
 
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
 			->add('id')
-			->add('title', null, array('label' => 'Заголовок'))
+			->add('question', null, array('label' => 'Вопрос'))
+			->add('answer', null, array('label' => 'Ответ', 'template' => 'VidalDrugBundle:Sonata:qa_answer.html.twig'))
 			->add('created', null, array(
 				'label'  => 'Дата создания',
 				'widget' => 'single_text',
 				'format' => 'd.m.Y в H:i'
 			))
-			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
+			->add('enabled', null, array('label' => 'Активен', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(

@@ -29,11 +29,13 @@
 	<input class="search-query border-radius" type="text" name="q" placeholder="Введите слово для поиска..."
 		   value="{{ app.request.attributes.get('_route') == 'searche' ? app.request.get('q') }}"/>
 
-	<div class="search-bad">
-		<label for="search_bad">включить в поиск БАДы</label>
+	<div class="search-bad no-selection">
 		<input id="search_bad" class="checkbox"
 			   type="checkbox" name="b"{{ app.request.get('b') ? ' checked="checked"' }}/>
+		<label for="search_bad">включить в поиск БАДы</label>
 	</div>
 
-	<input class="search-button btn-red" type="submit" value="Найти"/>
+	<div class="right">
+		<input class="search-button btn-red" type="submit" value="Найти"/>
+	</div>
 </form>

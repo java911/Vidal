@@ -132,8 +132,8 @@ a {
 }
 input[type=text], input[type=number], input[type=password], input[type=email], input[type=url] {
 	width:                 318px;
-	height:                29px;
-	padding:               0 8px;
+	height:                27px;
+	padding:               0 8px 2px;
 	border-radius:         4px;
 	-webkit-border-radius: 4px;
 	-moz-border-radius:    4px;
@@ -226,6 +226,9 @@ h1 {
 }
 .center {
 	text-align: center;
+}
+.right {
+	text-align: right;
 }
 .bg-gray {
 	background: #F6F6F6;
@@ -820,9 +823,12 @@ h1 {
 
 /* search-info */
 .search-info {
-	padding-left: 2px;
-	font-size:    11px;
+	height:       16px;
+	margin-left:  5px;
+	padding-left: 22px;
+	font-size:    15px;
 	color:        #476173;
+	background:   url(../images/search_16.png) no-repeat top left;
 }
 .search-info b {
 	color: #333;

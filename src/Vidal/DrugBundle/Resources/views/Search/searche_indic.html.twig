@@ -5,6 +5,7 @@
 	{% include 'VidalDrugBundle:Search:menu.html.twig' %}
 
 	<div id="searche_filter">
+
 		<div class="searche-filter-content">
 			<div class="searche-nozologies">
 				<div class="label">Показания</div>
@@ -19,8 +20,9 @@
 					</ul>
 				</div>
 			</div>
+
 			<div class="searche-contraindications">
-				<div class="label">Противопоказания</div>
+				<div class="label">Исключая противопоказания</div>
 				<div class="items">
 					<input id="searche_contraindication" type="text" placeholder="добавить..."/>
 					<ul class="removable">
@@ -32,7 +34,10 @@
 					</ul>
 				</div>
 			</div>
-			<button id="searche_filter_submit" class="btn-red">Найти</button>
+
+			<div class="right">
+				<button id="searche_filter_submit" class="btn-red">Найти</button>
+			</div>
 		</div>
 	</div>
 

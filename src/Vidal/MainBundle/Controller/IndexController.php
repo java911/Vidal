@@ -69,4 +69,17 @@ class IndexController extends Controller
 
 		return $params;
 	}
+
+	/**
+	 * @Route("/qa", name="qa")
+	 * @Template()
+	 */
+	public function qaAction()
+	{
+		return array(
+			'title'           => 'Вопрос-ответ',
+			'menu_left'       => 'question-answer',
+			'questionAnswers' => $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findAll(),
+		);
+	}
 }

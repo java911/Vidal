@@ -1,0 +1,92 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block content %}
+	<h1>ВОПРОС-ОТВЕТ</h1>
+
+	{% if questionAnswers|length %}
+		<div class="qa-wrap">
+			{% for qa in questionAnswers %}
+				<div class="qa">
+					<div class="qa-header">
+						<div class="qa-controls">
+							<div class="qa-expand">показать</div>
+							<div class="qa-collapse">свернуть</div>
+						</div>
+						<div class="qa-question">
+							{{ qa.question }}
+						</div>
+					</div>
+					<div class="qa-answer">
+						{{ qa.answer|raw }}
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	{% endif %}
+
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.qa {
+			border:        3px solid #eee;
+			margin-bottom: 10px;
+			padding:       11px 12px 10px;
+		}
+		.qa-header {
+			overflow: hidden;
+		}
+		.qa-controls {
+			float: right;
+			width: 64px;
+		}
+		.qa-controls > div {
+			display:       inline-block;
+			border-bottom: 2px dotted #aaa;
+			color:         #d71344;
+			cursor:        pointer;
+		}
+		.qa-controls .qa-collapse {
+			display: none;
+		}
+		.qa-question {
+			margin-right: 76px;
+			font-weight:  bold;
+			font-family:  'PT Sans Caption', sans-serif;
+			font-size:    15px;
+			color:        #2f4053;
+		}
+		.expanded .qa-question {
+			color: #d71344;
+		}
+		.qa-answer {
+			display: none;
+			padding: 0 20px 2px;
+		}
+	</style>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.qa-expand').click(function() {
+				var $this = $(this);
+				$this.closest('.qa').addClass('expanded').find('.qa-answer').slideDown('fast');
+				$this.hide();
+				$this.siblings('div').show();
+			});
+
+			$('.qa-collapse').click(function() {
+				var $this = $(this);
+				$this.closest('.qa').removeClass('expanded').find('.qa-answer').slideUp('fast');
+				$this.hide();
+				$this.siblings('div').show();
+			});
+		});
+	</script>
+{% endblock %}

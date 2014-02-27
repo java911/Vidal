@@ -29,10 +29,9 @@
 	width: 250px;
 }
 #searche_form .search-bad {
-	font-size:  14px;
-	text-align: right;
-	margin:     4px 3px 0 3px;
-	color:      #999;
+	font-size: 14px;
+	margin:    4px 3px 0 3px;
+	color:     #999;
 }
 #search_bad {
 	vertical-align: bottom;
@@ -55,15 +54,20 @@
 }
 #searche_filter .searche-nozologies,
 #searche_filter .searche-contraindications {
-	overflow: hidden;
+	overflow:      hidden;
+	margin-bottom: 8px;
 }
 #searche_filter .label {
-	width:      140px;
+	width:      128px;
 	float:      left;
 	margin-top: 6px;
+	font-size:  14px;
+}
+#searche_filter .searche-contraindications .label {
+	margin-top: 0;
 }
 #searche_filter .items {
-	margin-left: 140px;
+	margin-left: 130px;
 }
 #searche_filter ul {
 	list-style: none;
@@ -72,7 +76,7 @@
 }
 #searche_filter input {
 	margin: 0;
-	width:  368px;
+	width:  386px;
 }
 #searche_filter li {
 	margin-bottom: 2px;
