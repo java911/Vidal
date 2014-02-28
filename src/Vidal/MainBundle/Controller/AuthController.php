@@ -15,6 +15,7 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Vidal\MainBundle\Entity\User;
 use Vidal\MainBundle\Form\Type\RegisterType;
 use Vidal\MainBundle\Form\Type\ProfileType;
+use Lsw\SecureControllerBundle\Annotation\Secure;
 
 class AuthController extends Controller
 {
@@ -102,7 +103,11 @@ class AuthController extends Controller
 			return $this->redirect($this->generateUrl('profile'));
 		}
 
-		return array('form' => $form->createView(), 'title' => 'Редактирование профиля');
+		return array(
+			'form'  => $form->createView(),
+			'user'  => $user,
+			'title' => 'Редактирование профиля',
+		);
 	}
 
 	/**
@@ -139,6 +144,21 @@ class AuthController extends Controller
 	public function eulaAction()
 	{
 		return array();
+	}
+
+	/**
+	 * @Route("/reset-avatar", name="reset_avatar")
+	 * @Secure(roles="IS_AUTHENTICATED_REMEMBERED")
+	 */
+	public function resetAvatarAction()
+	{
+		$sql        = 'UPDATE user SET avatar = NULL WHERE id = ' . $this->getUser()->getId();
+		$connection = $this->getDoctrine()->getManager()->getConnection();
+		$stmt       = $connection->prepare($sql);
+
+		$stmt->execute();
+
+		return $this->redirect($this->generateUrl('profile'));
 	}
 
 	/**

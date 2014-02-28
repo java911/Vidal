@@ -131,7 +131,7 @@ a {
 	color: #d71344;
 }
 input[type=text], input[type=number], input[type=password], input[type=email], input[type=url] {
-	width:                 318px;
+	width:                 308px;
 	height:                27px;
 	padding:               0 8px 2px;
 	border-radius:         4px;
@@ -140,12 +140,12 @@ input[type=text], input[type=number], input[type=password], input[type=email], i
 	border:                1px solid #d71344;
 }
 select {
-	width: 336px;
+	width: 326px;
 }
 textarea {
-	width:                 318px;
-	padding:               0 8px;
-	height:                172px;
+	width:                 308px;
+	padding:               2px 8px;
+	height:                60px;
 	border-radius:         4px;
 	-webkit-border-radius: 4px;
 	-moz-border-radius:    4px;
@@ -311,12 +311,13 @@ h1 {
 	font-style: italic !important;
 }
 .thanks {
-	margin:      5px 0 15px;
-	padding:     8px 15px 10px;
-	font-style:  italic;
-	font-weight: bold;
-	color:       seagreen;
-	background:  aliceblue;
+	margin:           5px 0 15px;
+	padding:          8px 15px 10px;
+	font-style:       italic;
+	font-weight:      bold;
+	color:            #2f4053;
+	background-color: #F6F6F6;
+	font-size:        18px;
 }
 .thanks.error {
 	color:      maroon;
@@ -410,12 +411,16 @@ h1 {
 
 /* форма */
 .form_table {
+	width: 100%;
 }
 .form_table td.label {
-	width: 38%;
+	width:          40%;
+	vertical-align: middle;
+	padding-bottom: 8px;
+	color:          #666d75;
 }
 .form_table td.widget {
-	width:          62%;
+	width:          60%;
 	padding-bottom: 8px;
 }
 .form_table input[type="checkbox"] {
@@ -424,7 +429,7 @@ h1 {
 .form_table button, .btn-red {
 	display:          inline-block;
 	margin:           0;
-	padding:          5px 22px 6px;
+	padding:          6px 22px 7px;
 	background-color: #d71344;
 	color:            white;
 	border:           none;

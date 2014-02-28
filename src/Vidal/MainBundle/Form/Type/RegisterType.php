@@ -56,7 +56,6 @@ class RegisterType extends AbstractType
 				$builder->create('city', 'text', array('label' => 'Город'))->addModelTransformer($cityToStringTransformer)
 			)
 			->add('university', null, array('label' => 'ВУЗ', 'required' => true, 'empty_value' => 'выберите'))
-			->add('student', null, array('label' => 'Являюсь студентом', 'required' => false))
 			->add($builder->create('graduateYear', 'choice', array(
 					'label'       => 'Год окончания',
 					'required'    => true,
@@ -74,8 +73,6 @@ class RegisterType extends AbstractType
 				'required'    => true,
 			))
 			->add('academicDegree', 'choice', array('label' => 'Ученая степень', 'choices' => User::getAcademicDegrees(), 'empty_value' => 'выберите'))
-			->add('jobType', 'choice', array('label' => 'Место работы', 'choices' => User::getJobTypes(), 'empty_value' => 'выберите'))
-			->add('jobAlignment', 'choice', array('label' => 'Вид организации', 'choices' => User::getJobAlignments(), 'empty_value' => 'выберите'))
 			->add('eula', 'checkbox', array(
 				'label'       => 'Пользовательское соглашение',
 				'mapped'      => false,

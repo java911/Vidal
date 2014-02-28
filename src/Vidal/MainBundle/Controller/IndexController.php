@@ -78,7 +78,7 @@ class IndexController extends Controller
 	{
 		return array(
 			'title'           => 'Вопрос-ответ',
-			'menu_left'       => 'question-answer',
+			'menu_left'       => 'qa',
 			'questionAnswers' => $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findAll(),
 		);
 	}

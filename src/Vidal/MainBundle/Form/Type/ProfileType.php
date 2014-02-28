@@ -34,6 +34,7 @@ class ProfileType extends AbstractType
 		}
 
 		$builder
+			->add('avatar', 'iphp_file', array('label' => 'Аватар', 'required' => false))
 			->add('lastName', null, array('label' => 'Фамилия'))
 			->add('firstName', null, array('label' => 'Имя'))
 			->add('surName', null, array('label' => 'Отчество', 'required' => false))
@@ -42,11 +43,21 @@ class ProfileType extends AbstractType
 				'years'  => range(date('Y') - 111, date('Y')),
 				'format' => 'dd MMMM yyyy',
 			))
+			->add('hideBirthdate', null, array('required' => false))
 			->add(
 				$builder->create('city', 'text', array('label' => 'Город'))->addModelTransformer($cityToStringTransformer)
 			)
+			->add('phone', null, array('label' => 'Телефон', 'required' => false))
+			->add('hidePhone', null, array('required' => false))
+			->add('icq', null, array('label' => 'ICQ', 'required' => false))
+			->add('hideIcq', null, array('required' => false))
+			->add('submit1', 'submit', array('label' => 'Сохранить'))
+
+			########################################################################
 			->add('university', null, array('label' => 'ВУЗ', 'required' => true, 'empty_value' => 'выберите'))
-			->add('student', null, array('label' => 'Являюсь студентом', 'required' => false))
+			->add(
+				$builder->create('graduateYear', 'choice', array('label' => 'Год окончания ВУЗа', 'choices' => $years, 'empty_value' => 'выберите'))->addModelTransformer($yearToNumberTransformer)
+			)
 			->add($builder->create('graduateYear', 'choice', array(
 					'label'       => 'Год окончания',
 					'required'    => true,
@@ -55,9 +66,7 @@ class ProfileType extends AbstractType
 					'attr'        => array('data-placeholder' => 'выберите')
 				))->addModelTransformer($yearToNumberTransformer)
 			)
-			->add(
-				$builder->create('graduateYear', 'choice', array('label' => 'Год окончания ВУЗа', 'choices' => $years, 'empty_value' => 'выберите'))->addModelTransformer($yearToNumberTransformer)
-			)
+			->add('educationType', 'choice', array('label' => 'Форма обучения', 'required' => false, 'choices' => User::getEducationTypes(), 'empty_value' => 'выберите'))
 			->add('primarySpecialty', null, array(
 				'label'       => 'Основная специальность',
 				'empty_value' => 'выберите',
@@ -65,9 +74,19 @@ class ProfileType extends AbstractType
 			))
 			->add('specialization', null, array('label' => 'Специализация', 'attr' => array('data-help' => 'если есть')))
 			->add('academicDegree', 'choice', array('label' => 'Ученая степень', 'choices' => User::getAcademicDegrees(), 'empty_value' => 'выберите'))
-			->add('jobType', 'choice', array('label' => 'Место работы', 'choices' => User::getJobTypes(), 'empty_value' => 'выберите'))
-			->add('jobAlignment', 'choice', array('label' => 'Вид организации', 'choices' => User::getJobAlignments(), 'empty_value' => 'выберите'))
-			->add('submit', 'submit', array('label' => 'Сохранить'));
+			->add('dissertation', null, array('label' => 'Тема диссертации', 'required' => false))
+			->add('professionalInterests', null, array('label' => 'Профессиональные интересы', 'required' => false))
+			->add('submit2', 'submit', array('label' => 'Сохранить'))
+
+			###############################################################################################
+			->add('jobPlace', null, array('label' => 'Место работы', 'required' => false))
+			->add('jobSite', null, array('label' => 'Сайт', 'required' => false))
+			->add('jobPosition', null, array('label' => 'Должность', 'required' => false))
+			->add('jobStage', null, array('label' => 'Стаж работы по специальности', 'required' => false))
+			->add('jobAchievements', null, array('label' => 'Достижения', 'required' => false))
+			->add('about', null, array('label' => 'О себе', 'required' => false))
+			->add('jobPublications', null, array('label' => 'Публикации', 'required' => false))
+			->add('submit3', 'submit', array('label' => 'Сохранить'));
 
 	}
 

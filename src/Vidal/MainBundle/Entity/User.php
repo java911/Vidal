@@ -28,8 +28,8 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	 * @ORM\Column(type="array", nullable=true)
 	 * @FileStore\UploadableField(mapping="avatar")
 	 * @Assert\Image(
-	 * 		maxSize="2M",
-	 *  	maxSizeMessage="Принимаются фотографии размером до 2 Мб"
+	 *        maxSize="2M",
+	 *    maxSizeMessage="Принимаются фотографии размером до 2 Мб"
 	 * )
 	 */
 	protected $avatar;
@@ -76,9 +76,6 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	/** @ORM\ManyToOne(targetEntity="City", inversedBy="doctors") */
 	protected $city;
 
-	/** @ORM\Column(type="boolean") */
-	protected $student;
-
 	/** @ORM\ManyToOne(targetEntity="University", inversedBy="doctors") */
 	protected $university;
 
@@ -95,6 +92,9 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	 */
 	protected $birthdate;
 
+	/** @ORM\Column(type="boolean") */
+	protected $hideBirthdate;
+
 	/**
 	 * @ORM\Column(type="string", nullable=true)
 	 * @Assert\NotBlank(message="Укажите ученую степень")
@@ -102,27 +102,60 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	 */
 	protected $academicDegree;
 
-	/**
-	 * @ORM\Column(type="string", nullable=true)
-	 * @Assert\NotBlank(message="Укажите ваше место работы")
-	 * @Assert\Choice(callback="getJobTypes", message="Некорректное место работы. Пожалуйста, выберите из списка.")
-	 */
-	protected $jobType;
-
-	/**
-	 * @ORM\Column(type="string", nullable=true)
-	 * @Assert\NotBlank(message="Укажите вид организации, где вы работаете")
-	 * @Assert\Choice(callback="getJobAlignments", message="Некорректный вид организации. Пожалуйста, выберите из списка")
-	 */
-	protected $jobAlignment;
-
 	/** @ORM\OneToMany(targetEntity="Publication", mappedBy="author") */
 	protected $publications;
+
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $phone;
+
+	/** @ORM\Column(type="boolean") */
+	protected $hidePhone;
+
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $icq;
+
+	/** @ORM\Column(type="boolean") */
+	protected $hideIcq;
+
+	/** @ORM\Column(length=30, nullable=true) */
+	protected $educationType;
+
+	/** @ORM\Column(length=500, nullable=true) */
+	protected $dissertation;
+
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $professionalInterests;
+
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $jobPlace;
+
+	/**
+	 * @ORM\Column(length=255, nullable=true)
+	 * @Assert\Url(message="Сайт указан некорректно")
+	 */
+	protected $jobSite;
+
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $jobPosition;
+
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $jobStage;
+
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $jobAchievements;
+
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $about;
+
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $jobPublications;
 
 	public function __construct()
 	{
 		$this->emailConfirmed = false;
-		$this->student        = false;
+		$this->hideBirthdate  = false;
+		$this->hidePhone      = false;
+		$this->hideIcq        = false;
 		$this->roles          = 'ROLE_UNCONFIRMED';
 	}
 
@@ -143,14 +176,9 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 		return array('Нет' => 'Нет', 'Кандидат наук' => 'Кандидат наук', 'Доктор медицинских наук' => 'Доктор медицинских наук');
 	}
 
-	public static function getJobTypes()
+	public static function getEducationTypes()
 	{
-		return array('Поликлиника' => 'Поликлиника', 'Больница' => 'Больница', 'НИИ' => 'НИИ', 'Другое' => 'Другое');
-	}
-
-	public static function getJobAlignments()
-	{
-		return array('Государственная' => 'Государственная', 'Частная' => 'Частная');
+		return array('Очная' => 'Очная', 'Заочная' => 'Заочная');
 	}
 
 	/** @inheritDoc */
@@ -419,22 +447,6 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	}
 
 	/**
-	 * @param mixed $student
-	 */
-	public function setStudent($student)
-	{
-		$this->student = $student;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getStudent()
-	{
-		return $this->student;
-	}
-
-	/**
 	 * @param mixed $university
 	 */
 	public function setUniversity($university)
@@ -480,38 +492,6 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	public function getGraduateYear()
 	{
 		return $this->graduateYear;
-	}
-
-	/**
-	 * @param mixed $jobAlignment
-	 */
-	public function setJobAlignment($jobAlignment)
-	{
-		$this->jobAlignment = $jobAlignment;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getJobAlignment()
-	{
-		return $this->jobAlignment;
-	}
-
-	/**
-	 * @param mixed $jobType
-	 */
-	public function setJobType($jobType)
-	{
-		$this->jobType = $jobType;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getJobType()
-	{
-		return $this->jobType;
 	}
 
 	/**
@@ -562,6 +542,13 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 		return $this->avatar;
 	}
 
+	public function resetAvatar()
+	{
+		$this->avatar = array();
+
+		return $this;
+	}
+
 	/**
 	 * @param mixed $publications
 	 */
@@ -576,5 +563,245 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	public function getPublications()
 	{
 		return $this->publications;
+	}
+
+	/**
+	 * @param mixed $hideBirthdate
+	 */
+	public function setHideBirthdate($hideBirthdate)
+	{
+		$this->hideBirthdate = $hideBirthdate;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getHideBirthdate()
+	{
+		return $this->hideBirthdate;
+	}
+
+	/**
+	 * @param mixed $icq
+	 */
+	public function setIcq($icq)
+	{
+		$this->icq = $icq;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getIcq()
+	{
+		return $this->icq;
+	}
+
+	/**
+	 * @param mixed $phone
+	 */
+	public function setPhone($phone)
+	{
+		$this->phone = $phone;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPhone()
+	{
+		return $this->phone;
+	}
+
+	/**
+	 * @param mixed $hideIcq
+	 */
+	public function setHideIcq($hideIcq)
+	{
+		$this->hideIcq = $hideIcq;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getHideIcq()
+	{
+		return $this->hideIcq;
+	}
+
+	/**
+	 * @param mixed $hidePhone
+	 */
+	public function setHidePhone($hidePhone)
+	{
+		$this->hidePhone = $hidePhone;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getHidePhone()
+	{
+		return $this->hidePhone;
+	}
+
+	/**
+	 * @param mixed $dissertation
+	 */
+	public function setDissertation($dissertation)
+	{
+		$this->dissertation = $dissertation;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDissertation()
+	{
+		return $this->dissertation;
+	}
+
+	/**
+	 * @param mixed $educationType
+	 */
+	public function setEducationType($educationType)
+	{
+		$this->educationType = $educationType;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getEducationType()
+	{
+		return $this->educationType;
+	}
+
+	/**
+	 * @param mixed $professionalInterests
+	 */
+	public function setProfessionalInterests($professionalInterests)
+	{
+		$this->professionalInterests = $professionalInterests;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getProfessionalInterests()
+	{
+		return $this->professionalInterests;
+	}
+
+	/**
+	 * @param mixed $jobPlace
+	 */
+	public function setJobPlace($jobPlace)
+	{
+		$this->jobPlace = $jobPlace;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getJobPlace()
+	{
+		return $this->jobPlace;
+	}
+
+	/**
+	 * @param mixed $jobPosition
+	 */
+	public function setJobPosition($jobPosition)
+	{
+		$this->jobPosition = $jobPosition;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getJobPosition()
+	{
+		return $this->jobPosition;
+	}
+
+	/**
+	 * @param mixed $jobSite
+	 */
+	public function setJobSite($jobSite)
+	{
+		$this->jobSite = $jobSite;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getJobSite()
+	{
+		return $this->jobSite;
+	}
+
+	/**
+	 * @param mixed $about
+	 */
+	public function setAbout($about)
+	{
+		$this->about = $about;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getAbout()
+	{
+		return $this->about;
+	}
+
+	/**
+	 * @param mixed $jobAchievements
+	 */
+	public function setJobAchievements($jobAchievements)
+	{
+		$this->jobAchievements = $jobAchievements;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getJobAchievements()
+	{
+		return $this->jobAchievements;
+	}
+
+	/**
+	 * @param mixed $jobPublications
+	 */
+	public function setJobPublications($jobPublications)
+	{
+		$this->jobPublications = $jobPublications;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getJobPublications()
+	{
+		return $this->jobPublications;
+	}
+
+	/**
+	 * @param mixed $jobStage
+	 */
+	public function setJobStage($jobStage)
+	{
+		$this->jobStage = $jobStage;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getJobStage()
+	{
+		return $this->jobStage;
 	}
 }
