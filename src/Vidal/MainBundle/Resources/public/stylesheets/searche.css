@@ -22,8 +22,8 @@
 	vertical-align: top;
 }
 #searche_form .search-query {
-	margin-left: 5px;
-	width:       250px;
+	float: right;
+	width: 250px;
 }
 #searche_form .search-type, #searche_form .chosen-container .chosen-drop {
 	width: 250px;

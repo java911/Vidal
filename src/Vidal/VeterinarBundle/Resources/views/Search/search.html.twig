@@ -1,0 +1,148 @@
+{% extends 'VidalVeterinarBundle::vidal_layout.html.twig' %}
+
+
+{% block vidal %}
+	{% include 'VidalVeterinarBundle:Search:search_info.html.twig' %}
+
+	{# Найдено АТХ #}
+	{% if atcCodes is defined %}
+		<div class="block">
+			{% if atcCodes is not empty %}
+				<div class="block-head anons"
+					 title="Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)">
+					Найдено кодов АТХ: <span>{{ atcCodes|length }}</span>
+				</div>
+
+				<table class="products-table">
+					<tr class="products-table-header">
+						<td style="width:10%">АТХ код</td>
+						<td style="width:40%">Название</td>
+						<td style="width:40%">Латинское название</td>
+						<td style="width:10%">Входит в группу</td>
+					</tr>
+					{% for code, atc in atcCodes %}
+						<tr>
+							<td>
+								<a href="{{ path('atc', {'ATCCode':atc.ATCCode}) }}"
+								   class="no-underline">{{ atc.ATCCode }}</a>
+							</td>
+							<td>{{ atc.RusName }}</td>
+							<td>{{ atc.EngName }}</td>
+							<td>
+								{% if atc.ParentATCCode is not empty %}
+									<a href="{{ path('atc', {'ATCCode':atc.ParentATCCode}) }}"
+									   class="no-underline">{{ atc.ParentATCCode }}</a>
+								{% endif %}
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			{% else %}
+				<div class="no-results">
+					Не найдено результатов по AТХ коду <span>{{ q }}</span>
+				</div>
+			{% endif %}
+		</div>
+	{% endif %}
+
+	{# Найдено активных веществ #}
+	{% if molecules is defined %}
+		{% if molecules is not empty %}
+			<div class="block">
+				<div class="block-anons">
+					<div class="block-head">
+						Найдено активных веществ: <span>{{ molecules|length }}</span>
+					</div>
+				</div>
+			</div>
+			{% include 'VidalVeterinarBundle:Vidal:render_molecules.html.twig' %}
+		{% elseif t == 'molecule' %}
+			<div class="no-results">
+				Не найдено результатов по активному веществу <span>{{ q }}</span>
+			</div>
+		{% endif %}
+	{% endif %}
+
+	{# Найдено препаратов #}
+	{% if productsPagination is defined %}
+		{% if productsPagination is not empty %}
+			<div class="block">
+				<div class="block-anons">
+					<div class="block-head">
+						Найдено препаратов: <span>{{ productsPagination.totalItemCount }}</span>
+					</div>
+				</div>
+			</div>
+
+			{% include 'VidalVeterinarBundle:Vidal:render_products.html.twig' with {'products':productsPagination.items} %}
+
+			<div class="navigation">
+				{{ knp_pagination_render(productsPagination) }}
+			</div>
+		{% elseif t == 'product' %}
+			<div class="no-results">
+				Не найдено результатов по препарату <span>{{ q }}</span>
+			</div>
+		{% endif %}
+	{% endif %}
+
+	{# поиск по производителю #}
+	{% if t == 'firm' %}
+		{% if firms is not empty %}
+			<div class="block">
+				<div class="block-anons">
+					<div class="block-head">
+						Найдено производителей: <span>{{ firms|length }}</span>
+					</div>
+				</div>
+			</div>
+
+			<table class="products-table">
+				<tr class="products-table-header">
+					<td>Производитель</td>
+					<td>Страна</td>
+				</tr>
+				{% for company in firms %}
+					<tr>
+						<td>
+							<a class="no-underline" href="{{ path('company', {'CompanyID':company.CompanyID}) }}"
+								>{{ company.LocalName|raw }}{{ company.Property is not empty ? ', ' ~ company.Property|raw|replace({'&amp;':'&'}) }}</a>
+						</td>
+						<td>{{ company.Country }}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		{% else %}
+			<div class="no-results">
+				Не найдено результатов по производителю <span>{{ q }}</span>
+			</div>
+		{% endif %}
+	{% endif %}
+
+	{# если общий поиск не дал результатов #}
+	{% if t == 'all' and
+	(productsPagination is not defined or productsPagination is empty) and
+	(molecules is not defined or molecules is empty) %}
+		<div class="no-results">
+			Не найдено результатов
+		</div>
+	{% endif %}
+
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.products-table {
+			font-size: 13px;
+		}
+		.block-anons {
+			padding-top:    6px;
+			padding-bottom: 6px;
+		}
+		.no-results {
+			margin: 30px 0 24px;
+		}
+	</style>
+{% endblock %}

@@ -28,6 +28,7 @@ class AppKernel extends Kernel
             new Vidal\MainBundle\VidalMainBundle(),
 			new Lsw\SecureControllerBundle\LswSecureControllerBundle(),
 			new Iphp\FileStoreBundle\IphpFileStoreBundle(),
+            new Vidal\VeterinarBundle\VidalVeterinarBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

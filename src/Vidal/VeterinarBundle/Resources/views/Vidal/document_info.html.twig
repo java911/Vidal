@@ -1,0 +1,211 @@
+{# Клинико-фармакологическая группа #}
+{% if document.ClPhGrDescription is not empty %}
+	<div class="block" id="group">
+		<span class="block-head">Клинико-фармакологическая группа: </span>
+		<span class="block-content">
+			<a href="{{ path('clphgroup', {'description':document.ClPhGrName}) }}"
+			   class="no-underline">{{ document.ClPhGrDescription|raw }}</a>
+		</span>
+	</div>
+{% endif %}
+
+{# Фармако-терапевтическая группа ГосРеестра МинЗдрава РФ #}
+{% if phthgroups is defined and phthgroups is not empty %}
+	{% if phthgroups|length == 1 %}
+		<div class="block" id="phthgroup">
+			<span class="block-head">Фармако-терапевтическая группа ГосРеестра МинЗдрава РФ:</span>
+			<span class="block-content">
+				<a href="{{ path('phthgroup', {'id':phthgroups[0].id}) }}"
+				   class="no-underline">{{ phthgroups[0].Name|capitalize }}</a>
+			</span>
+		</div>
+	{% else %}
+		<div class="block">
+			<div class="block-head">Фармако-терапевтические группы ГосРеестра МинЗдрава РФ</div>
+			<div class="block-content">
+				<ul class="ul-style">
+					{% for g in phthgroups %}
+						<li>{{ loop.index > 1 ? ', ' }}<a href="{{ path('phthgroup', {'id':g.id}) }}"
+														  class="no-underline">{{ g.Name|capitalize }}</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+	{% endif %}
+{% endif %}
+
+{# Фармакологическое действие #}
+{% if document.PhInfluence is not empty %}
+	<div class="block" id="influence">
+		<div class="block-head">Фармакологическое действие</div>
+		<div class="block-content">
+			{{ document.PhInfluence|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Фармакокинетика #}
+{% if document.PhKinetics is not empty %}
+	<div class="block" id="kinetics">
+		<div class="block-head">Фармакокинетика</div>
+		<div class="block-content">
+			{{ document.PhKinetics|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Показания к применению препарата #}
+{% if document.Indication is not empty %}
+	<div class="block" id="indication">
+		<div class="block-head">Показания</div>
+		<div class="block-content">
+			{{ document.Indication|raw }}
+		</div>
+		{% if nozologies is defined and nozologies is not empty %}
+			<table class="products-table">
+				<tr class="products-table-header">
+					<td style="width:78px">Код МКБ-10</td>
+					<td>Показание</td>
+				</tr>
+				{% for nozology in nozologies %}
+					<tr>
+						<td>{{ nozology.Code }}</td>
+						<td><a href="{{ path('nozology_code', {'NozologyCode':nozology.NozologyCode}) }}"
+							   class="no-underline">{{ nozology.Name|raw }}</a></td>
+					</tr>
+				{% endfor %}
+			</table>
+		{% endif %}
+	</div>
+{% endif %}
+
+{# Режим дозирования #}
+{% if document.Dosage is not empty %}
+	<div class="block" id="dosage">
+		<div class="block-head">Режим дозирования</div>
+		<div class="block-content">
+			{{ document.Dosage|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Побочное действие #}
+{% if document.SideEffects is not empty %}
+	<div class="block" id="side_effects">
+		<div class="block-head">Побочное действие</div>
+		<div class="block-content">
+			{{ document.SideEffects|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Противопоказания к применению препарата #}
+{% if document.ContraIndication is not empty %}
+	<div class="block" id="contra">
+		<div class="block-head">Противопоказания к применению</div>
+		<div class="block-content">
+			{{ document.ContraIndication|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Применение препарата при беременности и кормлении грудью #}
+{% if document.Lactation is not empty %}
+	<div class="block" id="preg_lact">
+		<div class="block-head">Применение при беременности и кормлении грудью</div>
+		<div class="block-content">
+			{{ document.Lactation|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Применение при нарушениях функции печени #}
+{% if document.HepatoInsuf is not empty %}
+	<div class="block" id="hepato">
+		<div class="block-head">Применение при нарушениях функции печени</div>
+		<div class="block-content">
+			{{ document.HepatoInsuf|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Применение при нарушениях функции почек #}
+{% if document.RenalInsuf is not empty %}
+	<div class="block" id="renal">
+		<div class="block-head">Применение при нарушениях функции почек</div>
+		<div class="block-content">
+			{{ document.RenalInsuf|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Применение у детей #}
+{% if document.ChildInsuf is not empty %}
+	<div class="block" id="child">
+		<div class="block-head">Применение у детей</div>
+		<div class="block-content">
+			{{ document.ChildInsuf|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Применение у пожилых пациентов #}
+{% if document.ElderlyInsuf is not empty %}
+	<div class="block" id="old">
+		<div class=" block-head">Применение у пожилых пациентов</div>
+		<div class="block-content">
+			{{ document.ElderlyInsuf|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Особые указания #}
+{% if document.SpecialInstruction is not empty %}
+	<div class="block" id="special">
+		<div class="block-head">Особые указания</div>
+		<div class="block-content">
+			{{ document.SpecialInstruction|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Передозировка #}
+{% if document.OverDosage is not empty %}
+	<div class="block" id="over_dosage">
+		<div class="block-head">Передозировка</div>
+		<div class="block-content">
+			{{ document.OverDosage|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Лекарственное взаимодействие #}
+{% if document.Interaction is not empty %}
+	<div class="block" id="interaction">
+		<div class="block-head">Лекарственное взаимодействие</div>
+		<div class="block-content">
+			{{ document.Interaction|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Условия отпуска из аптек #}
+{% if document.PharmDelivery is not empty %}
+	<div class="block" id="pharm">
+		<div class="block-head">Условия отпуска из аптек</div>
+		<div class="block-content">
+			{{ document.PharmDelivery|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Условия и сроки хранения #}
+{% if document.StorageCondition is not empty %}
+	<div class="block" id="storage">
+		<div class="block-head">Условия и сроки хранения</div>
+		<div class="block-content">
+			{{ document.StorageCondition|raw }}
+		</div>
+	</div>
+{% endif %}

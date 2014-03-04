@@ -1,0 +1,23 @@
+{% extends 'VidalVeterinarBundle::vidal_layout.html.twig' %}
+
+
+{% block vidal %}
+	<h1>{{ description }}</h1>
+
+	<div class="anons anons-head">
+		<span>Клинико-фармакологическая группа</span>
+	</div>
+
+	{% if products is not empty %}
+		<div class="block">
+			<div class="block-head">Препараты группы</div>
+			{% include 'VidalVeterinarBundle:Vidal:render_products.html.twig' %}
+		</div>
+	{% else %}
+		<div class="no-results">
+			Извините, не найдено препаратов клинико-фармакологической группы
+			<span>{{ description }}</span>
+		</div>
+	{% endif %}
+
+{% endblock %}
