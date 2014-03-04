@@ -16,13 +16,13 @@ class DocumentNameCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:document_name')
+		$this->setName('veterinar:document_name')
 			->setDescription('Adds Document.Name');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln('--- vidal:document_name started');
+		$output->writeln('--- veterinar:document_name started');
 
 		$em = $this->getContainer()->get('doctrine')->getManager('veterinar');
 
@@ -80,6 +80,6 @@ class DocumentNameCommand extends ContainerAwareCommand
 			$output->writeln("... " . ($i+$step) . " / $count done");
 		}
 
-		$output->writeln('+++ vidal:document_name completed!');
+		$output->writeln('+++ veterinar:document_name completed!');
 	}
 }

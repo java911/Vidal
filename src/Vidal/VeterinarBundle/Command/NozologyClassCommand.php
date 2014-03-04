@@ -16,13 +16,13 @@ class NozologyClassCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:nozology_class')
+		$this->setName('veterinar:nozology_class')
 			->setDescription('Fills nozology with "class" field and removes tags');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln('--- vidal:nozology_class started');
+		$output->writeln('--- veterinar:nozology_class started');
 
 		$em = $this->getContainer()->get('doctrine')->getManager('veterinar');
 
@@ -55,7 +55,7 @@ class NozologyClassCommand extends ContainerAwareCommand
 		')->getResult();
 
 		if (empty($nozologies)) {
-			$output->writeln('+++ vidal:nozology_class has not found nozologies to update!');
+			$output->writeln('+++ veterinar:nozology_class has not found nozologies to update!');
 
 			return 0;
 		}
@@ -78,6 +78,6 @@ class NozologyClassCommand extends ContainerAwareCommand
 			))->execute();
 		}
 
-		$output->writeln("+++ vidal:nozology_class updated $i nozologies!");
+		$output->writeln("+++ veterinar:nozology_class updated $i nozologies!");
 	}
 }

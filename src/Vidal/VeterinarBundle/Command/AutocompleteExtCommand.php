@@ -16,13 +16,13 @@ class AutocompleteExtCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:autocomplete_ext')
+		$this->setName('veterinar:autocomplete_ext')
 			->setDescription('Creates extended autocomplete in Elastica');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln('--- vidal:autocomplete_ext started');
+		$output->writeln('--- veterinar:autocomplete_ext started');
 
 		$em = $this->getContainer()->get('doctrine')->getManager('veterinar');
 
@@ -69,6 +69,6 @@ class AutocompleteExtCommand extends ContainerAwareCommand
 			}
 		}
 
-		$output->writeln("+++ vidal:autocomplete_ext loaded $i documents!");
+		$output->writeln("+++ veterinar:autocomplete_ext loaded $i documents!");
 	}
 }

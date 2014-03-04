@@ -12,7 +12,7 @@ class ArticleTypesCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:article_types')
+		$this->setName('veterinar:article_types')
 			->setDescription('Command to copy');
 	}
 

@@ -16,13 +16,13 @@ class ProductNameCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:product_name')
+		$this->setName('veterinar:product_name')
 			->setDescription('Adds Product.Name');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln('--- vidal:product_name started');
+		$output->writeln('--- veterinar:product_name started');
 
 		$em = $this->getContainer()->get('doctrine')->getManager('veterinar');
 
@@ -78,6 +78,6 @@ class ProductNameCommand extends ContainerAwareCommand
 			$output->writeln("... " . ($i+$step) . " / $count done");
 		}
 
-		$output->writeln("+++ vidal:product_name updated $count products!");
+		$output->writeln("+++ veterinar:product_name updated $count products!");
 	}
 }

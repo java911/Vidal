@@ -12,7 +12,7 @@ class ArticleParseCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:article_parse')
+		$this->setName('veterinar:article_parse')
 			->setDescription('Command to copy');
 	}
 

@@ -16,13 +16,13 @@ class DocumentClPhGrNameCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:document_clphgrname')
+		$this->setName('veterinar:document_clphgrname')
 			->setDescription('Adds Document.Name');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln('--- vidal:document_clphgrname started');
+		$output->writeln('--- veterinar:document_clphgrname started');
 
 		$em = $this->getContainer()->get('doctrine')->getManager('veterinar');
 
@@ -77,6 +77,6 @@ class DocumentClPhGrNameCommand extends ContainerAwareCommand
 			$output->writeln("... " . ($i + $step) . " / $count done");
 		}
 
-		$output->writeln('+++ vidal:document_clphgrname completed!');
+		$output->writeln('+++ veterinar:document_clphgrname completed!');
 	}
 }

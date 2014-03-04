@@ -17,7 +17,7 @@ class ElasticIndexCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:elastic_index')
+		$this->setName('veterinar:elastic_index')
 			->setDescription('Creates website index in Elastica');
 	}
 
@@ -34,6 +34,6 @@ class ElasticIndexCommand extends ContainerAwareCommand
 			true
 		);
 
-		$output->writeln('+++ vidal:elastic_index created!');
+		$output->writeln('+++ veterinar:elastic_index created!');
 	}
 }

@@ -16,13 +16,13 @@ class DocumentImageCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:document_image')
+		$this->setName('veterinar:document_image')
 			->setDescription('Changes to documents content to add images');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln('--- vidal:document_image started');
+		$output->writeln('--- veterinar:document_image started');
 
 		$em   = $this->getContainer()->get('doctrine')->getManager('veterinar');
 		$repo = $em->getRepository('VidalVeterinarBundle:Document');
@@ -196,6 +196,6 @@ class DocumentImageCommand extends ContainerAwareCommand
 		}
 
 
-		$output->writeln('+++ vidal:document_image completed!');
+		$output->writeln('+++ veterinar:document_image completed!');
 	}
 }

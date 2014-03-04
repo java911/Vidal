@@ -16,13 +16,13 @@ class AutocompleteContraindicationCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:autocomplete_contraindication')
+		$this->setName('veterinar:autocomplete_contraindication')
 			->setDescription('Creates autocomplete_contraindication type in Elastica');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln('--- vidal:autocomplete_contraindication started');
+		$output->writeln('--- veterinar:autocomplete_contraindication started');
 
 		$em = $this->getContainer()->get('doctrine')->getManager('veterinar');
 
@@ -68,6 +68,6 @@ class AutocompleteContraindicationCommand extends ContainerAwareCommand
 
 		$elasticaType->getIndex()->refresh();
 
-		$output->writeln("+++ vidal:autocomplete_contraindication loaded $i documents!");
+		$output->writeln("+++ veterinar:autocomplete_contraindication loaded $i documents!");
 	}
 }

@@ -16,13 +16,13 @@ class AutocompleteNozologyCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:autocomplete_nozology')
+		$this->setName('veterinar:autocomplete_nozology')
 			->setDescription('Creates autocomplete_nozology type in Elastica');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln('--- vidal:autocomplete_nozology started');
+		$output->writeln('--- veterinar:autocomplete_nozology started');
 
 		$em = $this->getContainer()->get('doctrine')->getManager('veterinar');
 
@@ -68,6 +68,6 @@ class AutocompleteNozologyCommand extends ContainerAwareCommand
 
 		$elasticaType->getIndex()->refresh();
 
-		$output->writeln("+++ vidal:autocomplete_nozology loaded $i documents!");
+		$output->writeln("+++ veterinar:autocomplete_nozology loaded $i documents!");
 	}
 }

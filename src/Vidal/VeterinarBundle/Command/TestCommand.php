@@ -12,7 +12,7 @@ class TestCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-			->setName('vidal:test')
+			->setName('veterinar:test')
             ->setDescription('Command to copy')
             //->addArgument('user', InputArgument::OPTIONAL, '')
 			//->addOption('email', null, InputOption::VALUE_NONE, '')
