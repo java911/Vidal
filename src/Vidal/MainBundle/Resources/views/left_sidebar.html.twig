@@ -3,10 +3,6 @@
 {# блок основных боковых меню #}
 <ul class="sidebar-menu ul">
 	<li>
-		<a href="#"
-		   class="{{ menu_left is defined and menu_left == 'symptoms' ? 'active' : 'dotted' }}">Симптомы</a>
-	</li>
-	<li>
 		<a href="{{ path('articles') }}"
 		   class="{{ menu_left is defined and menu_left == 'articles' ? 'active' : 'dotted' }}">Статьи</a>
 	</li>
@@ -15,12 +11,12 @@
 		   class="{{ menu_left is defined and menu_left == 'news' ? 'active' : 'dotted' }}">Новости</a>
 	</li>
 	<li>
-		<a href="{{ path('qa') }}"
-		   class="{{ menu_left is defined and menu_left == 'qa' ? 'active' : 'dotted' }}">Вопрос-ответ</a>
-	</li>
-	<li>
 		<a href="{{ path('veterinar') }}"
 		   class="{{ menu_left is defined and menu_left == 'veterinar' ? 'active' : 'dotted' }}">Видаль-Ветеринар</a>
+	</li>
+	<li>
+		<a href="{{ path('qa') }}"
+		   class="{{ menu_left is defined and menu_left == 'qa' ? 'active' : 'dotted' }}">Вопрос-ответ</a>
 	</li>
 </ul>
 

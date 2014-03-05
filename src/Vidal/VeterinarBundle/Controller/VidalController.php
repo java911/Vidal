@@ -15,9 +15,66 @@ class VidalController extends Controller
 	 * @Route("veterinar", name="veterinar")
 	 * @Template("VidalVeterinarBundle:Vidal:veterinar.html.twig")
 	 */
-	public function veterinarAction()
+	public function veterinarAction(Request $request)
 	{
-		return array('title' => 'Видаль-Ветеринар');
+		$em = $this->getDoctrine()->getManager('veterinar');
+		$t  = $request->query->get('t', 'p'); // тип препараты=p / производители=c / представительства=r
+		$p  = $request->query->get('p', 1); // номер страницы
+		$l  = $request->query->get('l', null); // буква
+		$q  = $request->query->get('q', null); // текстовый запрос
+
+		$params = array(
+			't'              => $t,
+			'p'              => $p,
+			'l'              => $l,
+			'title'          => 'Видаль-Ветеринар',
+			'menu_veterinar' => 'veterinar',
+		);
+
+		# если выбрали препараты
+		if ($t == 'p') {
+			if ($l != null) {
+				$paginator  = $this->get('knp_paginator');
+				$pagination = $paginator->paginate(
+					$em->getRepository('VidalVeterinarBundle:Product')->getQueryByLetter($l),
+					$p,
+					self::PRODUCTS_PER_PAGE
+				);
+
+				$products             = $pagination->getItems();
+				$params['pagination'] = $pagination;
+
+				if (!empty($products)) {
+					$productIds = array();
+
+					foreach ($products as $product) {
+						$productIds[] = $product->getProductID();
+					}
+
+					$params['products']    = $products;
+					$params['indications'] = $em->getRepository('VidalVeterinarBundle:Document')->findIndicationsByProductIds($productIds);
+					$params['companies']   = $em->getRepository('VidalVeterinarBundle:Company')->findByProducts($productIds);
+					$params['pictures']    = $em->getRepository('VidalVeterinarBundle:Picture')->findByProductIds($productIds);
+				}
+			}
+		}
+
+		return $params;
+	}
+
+	/**
+	 * Клинико-фармакологический указатель ветеринарной базы
+	 *
+	 * @Route("veterinar/kfu/{name}", name = "v_kfu")
+	 * @Template("VidalVeterinarBundle:Vidal:kfu.html.twig")
+	 */
+	public function kfuAction($name = null)
+	{
+		$params = array(
+			'menu_veterinar' => 'kfu',
+		);
+
+		return $params;
 	}
 
 	/**

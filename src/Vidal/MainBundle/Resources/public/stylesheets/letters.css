@@ -1,5 +1,3 @@
-.letters, .letters form {
-}
 .letter {
 	display:               inline-block;
 	width:                 24px;
@@ -27,4 +25,8 @@
 	border:      1px solid #d71344;
 	font-weight: bold;
 	color:       #d71344;
+}
+.letter:active {
+	position: relative;
+	top:      1px;
 }

@@ -586,7 +586,7 @@ h1 {
 .navigation-items div {
 	display:       inline-block;
 	width:         46%;
-	margin-bottom: 3px;
+	margin-bottom: 5px;
 	padding-left:  13px;
 	background:    url('../images/bullets.gif') no-repeat -13px -13px;
 }
@@ -595,9 +595,12 @@ h1 {
 }
 .navigation-items a {
 	text-decoration: none;
+	color:           #2e3f51;
+	border-bottom:   1px dashed #aaa;
 }
 .navigation-items a:hover {
-	text-decoration: underline;
+	border-bottom: none;
+	color:         #d71344;
 }
 
 /* copy */

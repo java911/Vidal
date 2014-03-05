@@ -11,5 +11,41 @@
 
 
 {% block vidal %}
+	{% if menu_veterinar is defined %}
+		{% include 'VidalVeterinarBundle:Vidal:veterinar_menu.html.twig' %}
+	{% endif %}
 
+	{% include 'VidalVeterinarBundle:Vidal:veterinar_form.html.twig' %}
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/letters.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/jquery-chosen/chosen.css') }}"/>
+	<style type="text/css">
+		#veterinar_letters {
+			margin-top: 10px;
+		}
+		.veterinar-search select {
+			width: 250px;
+		}
+		.veterinar-search input {
+			float: right;
+			width: 250px;
+		}
+	</style>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript" src="{{ asset('bundles/vidalmain/jquery-chosen/chosen.jquery.min.js') }}"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.veterinar-search select').chosen({
+				disable_search: true
+			});
+		});
+	</script>
 {% endblock %}

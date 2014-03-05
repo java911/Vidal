@@ -157,13 +157,9 @@
 			{% spaceless %}
 				<textarea cols="92" rows="2">
 					{% if product is defined %}
-						<a href="{{ url('v_product', {'name':product.Name ~ '_' ~ product.ProductID}) }}"
-						   target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике
-							Видаль-Ветеринар.</a>
+						<a href="{{ url('v_product', {'name':product.Name ~ '_' ~ product.ProductID}) }}" target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике Видаль-Ветеринар.</a>
 					{% else %}
-						<a href="{{ url('v_document', {'name':document.Name ~ '_' ~ document.DocumentID}) }}"
-						   target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике
-							Видаль-Ветеринар.</a>
+						<a href="{{ url('v_document', {'name':document.Name ~ '_' ~ document.DocumentID}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль-Ветеринар.</a>
 					{% endif %}
 				</textarea>
 			{% endspaceless %}

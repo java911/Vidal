@@ -54,11 +54,11 @@
 {% endif %}
 
 {# Противопоказания #}
-{% if document.ContraIndications is not empty %}
+{% if document.ContraIndication is not empty %}
 	<div class="block" id="contra">
 		<div class="block-head">Противопоказания к применению препарата {{ RusName }}</div>
 		<div class="block-content">
-			{{ document.ContraIndications|raw }}
+			{{ document.ContraIndication|raw }}
 		</div>
 	</div>
 {% endif %}

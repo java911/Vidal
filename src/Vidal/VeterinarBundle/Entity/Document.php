@@ -582,22 +582,6 @@ class Document
 	}
 
 	/**
-	 * @param mixed $contraindications
-	 */
-	public function setContraindications(ArrayCollection $contraindications)
-	{
-		$this->contraindications = $contraindications;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getContraindications()
-	{
-		return $this->contraindications;
-	}
-
-	/**
 	 * @param mixed $documentInfoPages
 	 */
 	public function setDocumentInfoPages(ArrayCollection $documentInfoPages)
@@ -691,5 +675,21 @@ class Document
 	public function getClPhGrName()
 	{
 		return $this->ClPhGrName;
+	}
+
+	/**
+	 * @param mixed $ContraIndication
+	 */
+	public function setContraIndication($ContraIndication)
+	{
+		$this->ContraIndication = $ContraIndication;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getContraIndication()
+	{
+		return $this->ContraIndication;
 	}
 }

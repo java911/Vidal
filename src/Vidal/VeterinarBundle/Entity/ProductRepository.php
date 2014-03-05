@@ -463,7 +463,7 @@ class ProductRepository extends EntityRepository
 		return $groups;
 	}
 
-	public function getQueryByLetter($letter, $type, $nonPrescription)
+	public function getQueryByLetter($letter)
 	{
 		$qb = $this->_em->createQueryBuilder();
 
@@ -474,20 +474,6 @@ class ProductRepository extends EntityRepository
 
 		if ($letter) {
 			$qb->andWhere('p.RusName LIKE :likeName')->setParameter('likeName', $letter . '%');
-		}
-
-		if ($type == 'p') {
-			$qb->andWhere('p.ProductTypeCode IN (\'DRUG\',\'GOME\')');
-		}
-		elseif ($type == 'b') {
-			$qb->andWhere('p.ProductTypeCode = \'BAD\'');
-		}
-		else {
-			$qb->andWhere('p.ProductTypeCode IN (\'DRUG\',\'GOME\',\'BAD\')');
-		}
-
-		if ($nonPrescription) {
-			$qb->andWhere('p.NonPrescriptionDrug = 1');
 		}
 
 		return $qb->getQuery();

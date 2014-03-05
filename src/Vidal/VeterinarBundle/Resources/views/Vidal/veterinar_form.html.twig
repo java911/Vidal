@@ -1,0 +1,49 @@
+<form id="veterinar_form" method="GET" action="{{ path('veterinar') }}">
+
+	<div class="veterinar-search">
+		<select id="veterinar_type" name="t">
+			<option value="p"{{ t == 'p' ? ' selected="selected"' }}>Препараты</option>
+			<option value="c"{{ t == 'c' ? ' selected="selected"' }}>Производители</option>
+			<option value="r"{{ t == 'r' ? ' selected="selected"' }}>Представительства</option>
+		</select>
+
+		<input type="text" name="q" placeholder="Введите слово для поиска..."
+			   value="{{ q is defined and q is not empty ? q }}" />
+
+		<div class="clear"></div>
+	</div>
+
+	<div id="veterinar_letters">
+		<input type="hidden" name="p" id="letters_page" value="{{ p }}"/>
+		<input type="submit" value="А" name="l" class="letter{{ l == 'А' ? ' active' }}"/>
+		<input type="submit" value="Б" name="l" class="letter{{ l == 'Б' ? ' active' }}"/>
+		<input type="submit" value="В" name="l" class="letter{{ l == 'В' ? ' active' }}"/>
+		<input type="submit" value="Г" name="l" class="letter{{ l == 'Г' ? ' active' }}"/>
+		<input type="submit" value="Д" name="l" class="letter{{ l == 'Д' ? ' active' }}"/>
+		<input type="submit" value="Е" name="l" class="letter{{ l == 'Е' ? ' active' }}"/>
+		<input type="submit" value="Ж" name="l" class="letter{{ l == 'Ж' ? ' active' }}"/>
+		<input type="submit" value="З" name="l" class="letter{{ l == 'З' ? ' active' }}"/>
+		<input type="submit" value="И" name="l" class="letter{{ l == 'И' ? ' active' }}"/>
+		<input type="submit" value="Й" name="l" class="letter{{ l == 'Й' ? ' active' }}"/>
+		<input type="submit" value="К" name="l" class="letter{{ l == 'К' ? ' active' }}"/>
+		<input type="submit" value="Л" name="l" class="letter{{ l == 'Л' ? ' active' }}"/>
+		<input type="submit" value="М" name="l" class="letter{{ l == 'М' ? ' active' }}"/>
+		<input type="submit" value="Н" name="l" class="letter{{ l == 'Н' ? ' active' }}"/>
+		<input type="submit" value="О" name="l" class="letter{{ l == 'О' ? ' active' }}"/>
+		<input type="submit" value="П" name="l" class="letter{{ l == 'П' ? ' active' }}"/>
+		<input type="submit" value="Р" name="l" class="letter{{ l == 'Р' ? ' active' }}"/>
+		<input type="submit" value="С" name="l" class="letter{{ l == 'С' ? ' active' }}"/>
+		<input type="submit" value="Т" name="l" class="letter{{ l == 'Т' ? ' active' }}"/>
+		<input type="submit" value="У" name="l" class="letter{{ l == 'У' ? ' active' }}"/>
+		<input type="submit" value="Ф" name="l" class="letter{{ l == 'Ф' ? ' active' }}"/>
+		<input type="submit" value="Х" name="l" class="letter{{ l == 'Х' ? ' active' }}"/>
+		<input type="submit" value="Ц" name="l" class="letter{{ l == 'Ц' ? ' active' }}"/>
+		<input type="submit" value="Ч" name="l" class="letter{{ l == 'Ч' ? ' active' }}"/>
+		<input type="submit" value="Ш" name="l" class="letter{{ l == 'Ш' ? ' active' }}"/>
+		<input type="submit" value="Щ" name="l" class="letter{{ l == 'Щ' ? ' active' }}"/>
+		<input type="submit" value="Э" name="l" class="letter{{ l == 'Э' ? ' active' }}"/>
+		<input type="submit" value="Ю" name="l" class="letter{{ l == 'Ю' ? ' active' }}"/>
+		<input type="submit" value="Я" name="l" class="letter{{ l == 'Я' ? ' active' }}"/>
+		<input type="submit" value="8" name="l" class="letter{{ l == '8' ? ' active' }}"/>
+	</div>
+</form>
