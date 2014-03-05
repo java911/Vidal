@@ -16,9 +16,6 @@ class Form
 	/** @ORM\Column(length=255, nullable=true) */
 	protected $EngName;
 
-	/** @ORM\Column(type="integer", nullable=true, name="GDDB_FormID") */
-	protected $gddbFormID;
-
 	/** @ORM\Column(length=255, nullable=true) */
 	protected $ShortName;
 
@@ -65,22 +62,6 @@ class Form
 	public function getFormID()
 	{
 		return $this->FormID;
-	}
-
-	/**
-	 * @param mixed $gddbFormID
-	 */
-	public function setGddbFormID($gddbFormID)
-	{
-		$this->gddbFormID = $gddbFormID;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getGddbFormID()
-	{
-		return $this->gddbFormID;
 	}
 
 	/**

@@ -19,9 +19,6 @@ class Unit
 	/** @ORM\OneToMany(targetEntity="Package", mappedBy="ItemQuantityUnitID") */
 	protected $packages;
 
-	/** @ORM\Column(type="integer", nullable=true) */
-	protected $GDDB_UnitID;
-
 	/** @ORM\OneToMany(targetEntity="ItemActiveIng", mappedBy="ItemID") */
 	protected $itemActiveIngs;
 
@@ -50,22 +47,6 @@ class Unit
 	public function getEngName()
 	{
 		return $this->EngName;
-	}
-
-	/**
-	 * @param mixed $GDDB_UnitID
-	 */
-	public function setGDDBUnitID($GDDB_UnitID)
-	{
-		$this->GDDB_UnitID = $GDDB_UnitID;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getGDDBUnitID()
-	{
-		return $this->GDDB_UnitID;
 	}
 
 	/**

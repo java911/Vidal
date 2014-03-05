@@ -28,34 +28,16 @@ class Molecule
 	 */
 	protected $MarketStatusID;
 
-	/** @ORM\Column(length=500, nullable=true, name="GDDB_MoleculeName") */
-	protected $gddbMoleculeName;
-
-	/** @ORM\Column(type="integer", nullable=true, name="GDDB_MOLECULENAMEID") */
-	protected $gddbMoleculeNameID;
-
-	/** @ORM\Column(type="integer", nullable=true, name="GDDB_MoleculeID") */
-	protected $gddbMoleculeID;
-
 	/** @ORM\OneToMany(targetEntity="MoleculeDocument", mappedBy="MoleculeID") */
 	protected $moleculeDocuments;
 
 	/** @ORM\OneToMany(targetEntity="MoleculeName", mappedBy="MoleculeID") */
 	protected $moleculeNames;
 
-	/**
-	 * @ORM\ManyToMany(targetEntity="Article", mappedBy="molecules")
-	 * @ORM\JoinTable(name="article_molecule",
-	 *        joinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")},
-	 *        inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
-	 */
-	protected $articles;
-
 	public function __construct()
 	{
 		$this->moleculeDocuments = new ArrayCollection();
 		$this->moleculeNames     = new ArrayCollection();
-		$this->articles          = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -149,54 +131,6 @@ class Molecule
 	}
 
 	/**
-	 * @param mixed $gddbMoleculeID
-	 */
-	public function setGddbMoleculeID($gddbMoleculeID)
-	{
-		$this->gddbMoleculeID = $gddbMoleculeID;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getGddbMoleculeID()
-	{
-		return $this->gddbMoleculeID;
-	}
-
-	/**
-	 * @param mixed $gddbMoleculeName
-	 */
-	public function setGddbMoleculeName($gddbMoleculeName)
-	{
-		$this->gddbMoleculeName = $gddbMoleculeName;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getGddbMoleculeName()
-	{
-		return $this->gddbMoleculeName;
-	}
-
-	/**
-	 * @param mixed $gddbMoleculeNameID
-	 */
-	public function setGddbMoleculeNameID($gddbMoleculeNameID)
-	{
-		$this->gddbMoleculeNameID = $gddbMoleculeNameID;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getGddbMoleculeNameID()
-	{
-		return $this->gddbMoleculeNameID;
-	}
-
-	/**
 	 * @param mixed $moleculeDocuments
 	 */
 	public function setMoleculeDocuments(ArrayCollection $moleculeDocuments)
@@ -226,21 +160,5 @@ class Molecule
 	public function getMoleculeNames()
 	{
 		return $this->moleculeNames;
-	}
-
-	/**
-	 * @param mixed $articles
-	 */
-	public function setArticles($articles)
-	{
-		$this->articles = $articles;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getArticles()
-	{
-		return $this->articles;
 	}
 }

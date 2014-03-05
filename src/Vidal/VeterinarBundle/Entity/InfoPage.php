@@ -70,14 +70,10 @@ class InfoPage
 	 */
 	protected $represAndDistribs;
 
-	/** @ORM\OneToMany(targetEntity="Article", mappedBy="infoPage") */
-	protected $articles;
-
 	public function __construct()
 	{
 		$this->pictures          = new ArrayCollection();
 		$this->documentInfoPages = new ArrayCollection();
-		$this->articles          = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -339,22 +335,6 @@ class InfoPage
 	public function getCountryCode()
 	{
 		return $this->CountryCode;
-	}
-
-	/**
-	 * @param mixed $articles
-	 */
-	public function setArticles($articles)
-	{
-		$this->articles = $articles;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getArticles()
-	{
-		return $this->articles;
 	}
 
 	/**

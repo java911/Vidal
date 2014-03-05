@@ -15,7 +15,7 @@
 			<ul class="ul-style">
 				{% for product in productsRepresented %}
 					<li>
-						<a href="{{ path('inf', {'InfoPageID':product.InfoPageID}) }}" class="no-underline">
+						<a href="{{ path('v_inf', {'InfoPageID':product.InfoPageID}) }}" class="no-underline">
 							{{ product.InfoPageName }}</a>
 						{% if product.InfoPageCountry is not empty and product.InfoPageCountry != 'Unknown' %}
 							<span class="small">({{ product.InfoPageCountry }})</span>
@@ -51,7 +51,7 @@
 						</td>
 						<td class="products-table-name">
 							<a class="no-underline"
-							   href="{{ path('document', {'EngName':product.DocumentName, 'DocumentID':product.DocumentID}) }}">
+							   href="{{ path('v_document', {'EngName':product.DocumentName, 'DocumentID':product.DocumentID}) }}">
 								{{ product.DocumentRusName|raw }}</a>
 						</td>
 						<td class="products-table-indication" title="Показания к применению">
@@ -70,7 +70,7 @@
 						</td>
 						<td class="products-table-company">
 							{% if product.InfoPageID %}
-								<a class="no-underline" href="{{ path('inf', {'InfoPageID':product.InfoPageID}) }}">
+								<a class="no-underline" href="{{ path('v_inf', {'InfoPageID':product.InfoPageID}) }}">
 									{{ product.InfoPageName|raw }}</a>
 								{% if product.InfoPageCountry is not empty and product.InfoPageCountry != 'Unknown' %}
 									<span class="small">({{ product.InfoPageCountry }})</span>
@@ -92,7 +92,7 @@
 						</td>
 						<td class="products-table-name">
 							<a class="no-underline"
-							   href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}">
+							   href="{{ path('v_product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}">
 								{{ product.RusName|raw }}</a>
 						</td>
 						<td class="products-table-indication"></td>

@@ -105,24 +105,8 @@ class Product
 	/** @ORM\Column(type="text", nullable=true) */
 	protected $StrCond;
 
-	/**
-	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="products")
-	 * @ORM\JoinTable(name="product_atc",
-	 *      joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
-	 *      inverseJoinColumns={@ORM\JoinColumn(name="ATCcode", referencedColumnName="ATCCode")})
-	 */
-	protected $atcCodes;
-
 	/** @ORM\OneToMany(targetEntity="ProductDocument", mappedBy="ProductID") */
 	protected $productDocument;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="ClPhGroups", inversedBy="products")
-	 * @ORM\JoinTable(name="product_clphgroups",
-	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
-	 *        inverseJoinColumns={@ORM\JoinColumn(name="ClPhGroupsID", referencedColumnName="ClPhGroupsID")})
-	 */
-	protected $clphGroups;
 
 	/** @ORM\OneToMany(targetEntity="ProductCompany", mappedBy="ProductID") */
 	protected $productCompany;
@@ -144,34 +128,14 @@ class Product
 	/** @ORM\OneToMany(targetEntity="ProductItemRoute", mappedBy="ProductID") */
 	protected $productItemRoutes;
 
-	/**
-	 * @ORM\ManyToMany(targetEntity="PhThGroups", mappedBy="products", fetch="EXTRA_LAZY")
-	 * @ORM\JoinTable(name="product_phthgrp",
-	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
-	 *        inverseJoinColumns={@ORM\JoinColumn(name="PhThGroupsID", referencedColumnName="id")})
-	 */
-	protected $phthgroups;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Article", mappedBy="products")
-	 * @ORM\JoinTable(name="article_product",
-	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
-	 *        inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
-	 */
-	protected $articles;
-
 	public function __construct()
 	{
-		$this->atcCodes          = new ArrayCollection();
 		$this->productDocument   = new ArrayCollection();
-		$this->clphGroups        = new ArrayCollection();
 		$this->productCompany    = new ArrayCollection();
 		$this->productPackages   = new ArrayCollection();
 		$this->productItems      = new ArrayCollection();
 		$this->moleculeNames     = new ArrayCollection();
 		$this->productItemRoutes = new ArrayCollection();
-		$this->phthgroups        = new ArrayCollection();
-		$this->articles          = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -633,22 +597,6 @@ class Product
 	}
 
 	/**
-	 * @param mixed $atcCodes
-	 */
-	public function setAtcCodes(ArrayCollection $atcCodes)
-	{
-		$this->atcCodes = $atcCodes;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getAtcCodes()
-	{
-		return $this->atcCodes;
-	}
-
-	/**
 	 * @param mixed $productDocument
 	 */
 	public function setProductDocument(ArrayCollection $productDocument)
@@ -662,22 +610,6 @@ class Product
 	public function getProductDocument()
 	{
 		return $this->productDocument;
-	}
-
-	/**
-	 * @param mixed $clphGroups
-	 */
-	public function setClphGroups(ArrayCollection $clphGroups)
-	{
-		$this->clphGroups = $clphGroups;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getClphGroups()
-	{
-		return $this->clphGroups;
 	}
 
 	/**
@@ -774,37 +706,5 @@ class Product
 	public function getName()
 	{
 		return $this->Name;
-	}
-
-	/**
-	 * @param mixed $phthgroups
-	 */
-	public function setPhthgroups($phthgroups)
-	{
-		$this->phthgroups = $phthgroups;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getPhthgroups()
-	{
-		return $this->phthgroups;
-	}
-
-	/**
-	 * @param mixed $articles
-	 */
-	public function setArticles($articles)
-	{
-		$this->articles = $articles;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getArticles()
-	{
-		return $this->articles;
 	}
 }

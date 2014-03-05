@@ -3,7 +3,7 @@
 {% set moleculeName = molecule.RusName is empty ? molecule.LatName|upper|raw : molecule.RusName|upper|raw %}
 
 {% block vidal %}
-	<h1><a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}">{{ molecule.LatName|upper|raw }}</a>
+	<h1><a href="{{ path('v_molecule', {'MoleculeID':molecule.MoleculeID}) }}">{{ molecule.LatName|upper|raw }}</a>
 		{% if molecule.RusName is not empty %}
 			<span>({{ molecule.RusName|upper|raw }})</span>
 		{% endif %}
@@ -11,7 +11,7 @@
 
 	<div class="block">
 		<span class="block-head">Международное наименование INN: </span>
-		<a href="{{ path('gnp') }}">{{ molecule.GNParent }}</a>
+		<a href="{{ path('v_gnp') }}">{{ molecule.GNParent }}</a>
 	</div>
 
 	{% if products1 is defined and products2 is defined %}

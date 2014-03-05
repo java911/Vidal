@@ -16,9 +16,6 @@ class PerVolumeUnit
 	/** @ORM\Column(length=150, nullable=true) */
 	protected $EngName;
 
-	/** @ORM\Column(type="integer", nullable=true, name="GDDB_PerVolumeUnitID") */
-	protected $gddbPerVolumeUnitID;
-
 	/** @ORM\Column(length=40, nullable=true) */
 	protected $number;
 
@@ -86,21 +83,6 @@ class PerVolumeUnit
 		return $this->RusName;
 	}
 
-	/**
-	 * @param mixed $gddbPerVolumeUnitID
-	 */
-	public function setGddbPerVolumeUnitID($gddbPerVolumeUnitID)
-	{
-		$this->gddbPerVolumeUnitID = $gddbPerVolumeUnitID;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getGddbPerVolumeUnitID()
-	{
-		return $this->gddbPerVolumeUnitID;
-	}
 
 	/**
 	 * @param mixed $itemActiveIngs

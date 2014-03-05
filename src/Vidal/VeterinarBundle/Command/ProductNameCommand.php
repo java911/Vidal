@@ -32,20 +32,21 @@ class ProductNameCommand extends ContainerAwareCommand
 			SET p.Name = LOWER(p.EngName)
 			WHERE p.EngName NOT LIKE \'%<%\' AND
 				p.EngName NOT LIKE \'% %\' AND
-				p.EngName NOT LIKE \'%/%\'
+				p.EngName NOT LIKE \'%/%\' AND
+				p.EngName NOT LIKE \'%&%\'
 		')->execute();
 
 		# далее надо преобразовать остальные по регуляркам
 		$count = $em->createQuery('
 			SELECT COUNT(p.ProductID)
 			FROM VidalVeterinarBundle:Product p
-			WHERE p.EngName LIKE \'%<%\' OR p.EngName LIKE \'% %\' OR p.EngName LIKE \'%/%\'
+			WHERE p.EngName LIKE \'%<%\' OR p.EngName LIKE \'% %\' OR p.EngName LIKE \'%/%\' OR p.EngName LIKE \'%&%\'
 		')->getSingleScalarResult();
 
 		$query = $em->createQuery('
 			SELECT p.ProductID, p.EngName
 			FROM VidalVeterinarBundle:Product p
-			WHERE p.EngName LIKE \'%<%\' OR p.EngName LIKE \'% %\' OR p.EngName LIKE \'%/%\'
+			WHERE p.EngName LIKE \'%<%\' OR p.EngName LIKE \'% %\' OR p.EngName LIKE \'%/%\' OR p.EngName LIKE \'%&%\'
 		');
 
 		$updateQuery = $em->createQuery('
@@ -63,8 +64,8 @@ class ProductNameCommand extends ContainerAwareCommand
 				->getResult();
 
 			foreach ($products as $product) {
-				$p    = array('/ /', '/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i');
-				$r    = array('-', '', '');
+				$p    = array('/&(.+);/', '/ /', '/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i');
+				$r    = array('_$1_', '-', '', '');
 				$name = preg_replace($p, $r, $product['EngName']);
 				$name = preg_replace('/\\//', '-', $name);
 				$name = mb_strtolower($name, 'UTF-8');

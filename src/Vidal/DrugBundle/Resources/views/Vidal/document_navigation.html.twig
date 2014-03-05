@@ -2,6 +2,14 @@
 	<i></i>
 
 	<div class="navigation-items">
+		{% if products is defined and products|length %}
+			<div>
+				<a href="#products_table">{{ products|length == 1 ? 'Лекарственная форма' : 'Лекарственные формы' }}</a>
+			</div>
+		{% endif %}
+		{% if Composition is not empty %}
+			<div><a href="#composition">Форма выпуска, состав и упаковка</a></div>
+		{% endif %}
 		{% if document.ClPhGrDescription is not empty %}
 			<div><a href="#group">Клинико-фармакологическая группа</a></div>
 		{% endif %}
@@ -25,6 +33,12 @@
 		{% endif %}
 		{% if document.Dosage is not empty %}
 			<div><a href="#dosage">Режим дозирования</a></div>
+		{% endif %}
+		{% if document.SideEffects is not empty %}
+			<div><a href="#side_effects">Побочное действие</a></div>
+		{% endif %}
+		{% if document.PharmDelivery is not empty %}
+			<div><a href="#contra">Противопоказания к применению</a></div>
 		{% endif %}
 		{% if document.SideEffects is not empty %}
 			<div><a href="#special">Особые указания</a></div>

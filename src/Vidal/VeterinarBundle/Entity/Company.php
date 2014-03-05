@@ -13,9 +13,6 @@ class Company
 	/** @ORM\Column(length=255) */
 	protected $LocalName;
 
-	/** @ORM\Column(length=255, nullable=true) */
-	protected $GDDBName;
-
 	/** @ORM\Column(length=30, nullable=true) */
 	protected $Property;
 
@@ -104,22 +101,6 @@ class Company
 	public function getCountryEditionCode()
 	{
 		return $this->CountryEditionCode;
-	}
-
-	/**
-	 * @param mixed $GDDBName
-	 */
-	public function setGDDBName($GDDBName)
-	{
-		$this->GDDBName = $GDDBName;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getGDDBName()
-	{
-		return $this->GDDBName;
 	}
 
 	/**

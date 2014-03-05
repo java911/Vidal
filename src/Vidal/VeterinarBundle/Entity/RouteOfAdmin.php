@@ -25,9 +25,6 @@ class RouteOfAdmin
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $DrugDSMRouteID;
 
-	/** @ORM\Column(type="integer", nullable=true, name="GDDB_RouteID") */
-	protected $gddbRouteID;
-
 	/** @ORM\OneToMany(targetEntity="ProductItemRoute", mappedBy="RouteID") */
 	protected $productItemRoutes;
 
@@ -135,22 +132,6 @@ class RouteOfAdmin
 	public function getRusName()
 	{
 		return $this->RusName;
-	}
-
-	/**
-	 * @param mixed $gddbRouteID
-	 */
-	public function setGddbRouteID($gddbRouteID)
-	{
-		$this->gddbRouteID = $gddbRouteID;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getGddbRouteID()
-	{
-		return $this->gddbRouteID;
 	}
 
 	/**

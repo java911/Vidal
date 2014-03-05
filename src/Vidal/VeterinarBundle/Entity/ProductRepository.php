@@ -45,7 +45,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN VidalVeterinarBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d IN (:DocumentIDs) AND
 				p.CountryEditionCode = \'RUS\' AND
-				p.MarketStatusID IN (1,2) AND
+				p.MarketStatusID IN (0,1,2,3,4,5,6,7) AND
 				p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 			ORDER BY p.RusName ASC
 		')->setParameter('DocumentIDs', $documentIds)
@@ -116,7 +116,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN VidalVeterinarBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE m IN (:moleculeIds) AND
 				p.CountryEditionCode = \'RUS\' AND
-				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
+				p.MarketStatusID IN (0,1,2,3,4,5,6,7) AND
 				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
 			ORDER BY p.RusName ASC
 		')->setParameter('moleculeIds', $moleculeIds)
@@ -135,7 +135,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.ProductID = p
 			LEFT JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d
 			WHERE p.CountryEditionCode = \'RUS\' AND
-				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
+				p.MarketStatusID IN (0,1,2,3,4,5,6,7) AND
 				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
 			ORDER BY p.RusName ASC
 		')->setParameter('ATCCode', $ATCCode)
@@ -155,7 +155,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d
 			WHERE mn.MoleculeID = :MoleculeID AND
 				p.CountryEditionCode = \'RUS\' AND
-				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
+				p.MarketStatusID IN (0,1,2,3,4,5,6,7) AND
 				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
 			ORDER BY d.ArticleID ASC
 		')->setParameter('MoleculeID', $MoleculeID)
@@ -329,7 +329,6 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN VidalVeterinarBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d IN (:documentIds) AND
 				p.CountryEditionCode = \'RUS\' AND
-				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
 				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
 			ORDER BY pd.Ranking DESC, p.RusName ASC
 		')->setParameter('documentIds', $documentIds)
@@ -374,7 +373,6 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN VidalVeterinarBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d IN (:documentIds) AND
 				p.CountryEditionCode = \'RUS\' AND
-				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
 				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
 			ORDER BY pd.Ranking DESC, p.RusName ASC
 		')->setParameter('documentIds', $documentIds)
@@ -406,7 +404,6 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN VidalVeterinarBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d.ClPhGrName = :description AND
 				p.CountryEditionCode = \'RUS\' AND
-				p.MarketStatusID IN (1,2) AND
 				p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 			ORDER BY p.RusName ASC
 		')->setParameter('description', $description)
@@ -425,7 +422,6 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d
 			LEFT JOIN VidalVeterinarBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE p.CountryEditionCode = \'RUS\' AND
-				p.MarketStatusID IN (1,2) AND
 				p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 			ORDER BY p.RusName ASC
 		')->setParameter('id', $id)
@@ -440,7 +436,6 @@ class ProductRepository extends EntityRepository
 			->from('VidalVeterinarBundle:Product', 'p')
 			->join('p.phthgroups', 'g')
 			->where("p.CountryEditionCode = 'RUS' AND
-				p.MarketStatusID IN (1,2) AND
 				p.ProductTypeCode IN ('veterinar','GOME')")
 			->orderBy('g.Name', 'ASC');
 
@@ -475,7 +470,6 @@ class ProductRepository extends EntityRepository
 		$qb->select('DISTINCT p')
 			->from('VidalVeterinarBundle:Product', 'p')
 			->where('p.CountryEditionCode = \'RUS\'')
-			->andWhere('p.MarketStatusID IN (1,2)')
 			->orderBy('p.RusName', 'ASC');
 
 		if ($letter) {

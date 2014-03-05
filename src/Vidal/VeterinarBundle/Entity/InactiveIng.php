@@ -16,12 +16,6 @@ class InactiveIng
 	/** @ORM\Column(length=1000, nullable=true) */
 	protected $EngName;
 
-	/** @ORM\Column(type="integer", nullable=true, name="GDDB_MOLECULENAMEID") */
-	protected $gddbMoleculeNameID;
-
-	/** @ORM\Column(type="integer", nullable=true, name="GDDB_MoleculeID") */
-	protected $gddbMoleculeID;
-
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $ParentIngredientID;
 
@@ -80,38 +74,6 @@ class InactiveIng
 	public function getEngName()
 	{
 		return $this->EngName;
-	}
-
-	/**
-	 * @param mixed $gddbMoleculeID
-	 */
-	public function setGddbMoleculeID($gddbMoleculeID)
-	{
-		$this->gddbMoleculeID = $gddbMoleculeID;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getGddbMoleculeID()
-	{
-		return $this->gddbMoleculeID;
-	}
-
-	/**
-	 * @param mixed $gddbMoleculeNameID
-	 */
-	public function setGddbMoleculeNameID($gddbMoleculeNameID)
-	{
-		$this->gddbMoleculeNameID = $gddbMoleculeNameID;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getGddbMoleculeNameID()
-	{
-		return $this->gddbMoleculeNameID;
 	}
 
 	/**

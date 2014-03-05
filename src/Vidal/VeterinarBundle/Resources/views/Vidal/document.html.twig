@@ -1,24 +1,17 @@
 {% extends 'VidalVeterinarBundle::vidal_layout.html.twig' %}
 
+
 {% set loz = asset('bundles/vidalmain/images/g2.gif') %}
+{% set RusName = (product is defined ? product.RusName : document.RusName)|raw %}
+{% set Composition = product is defined ? product.Composition : document.CompiledComposition %}
+
+
+{% block title %}
+	<h1>{{ RusName }}</h1>
+{% endblock %}
+
 
 {% block vidal %}
-	{# Заголовок #}
-	{% if product is defined %}
-		<h1>{{ product.RusName|raw }} <span>({{ product.EngName|raw }})</span></h1>
-	{% else %}
-		<h1>{{ document.RusName|raw }} <span>({{ document.EngName|raw }})</span>
-			{% if document.elaboration is not empty %}
-				<span class="elaboration">{{ document.elaboration }}</span>
-			{% endif %}
-		</h1>
-	{% endif %}
-
-	{# Иконки использования при состояниях #}
-	{% if document is defined %}
-		{% include 'VidalVeterinarBundle:Vidal:document_conditions.html.twig' %}
-	{% endif %}
-
 	{% if products is not empty %}
 		<div class="pictures">
 			{% for product in products if pictures[product.ProductID] is defined %}
@@ -30,38 +23,17 @@
 		</div>
 	{% endif %}
 
+	{# Навигация и анонс описания #}
 	{% if document is defined %}
-		{# Объявление, описание чего пойдет ниже #}
-		{% if articleId is defined %}
-			<div class="anons">
-				{% if articleId == 1 or articleId == 4 %}
-					<div class="anons-head">
-						<span>Описание активных компонентов препарата</span>
-						{% if product is defined %}
-							<span class="anons-product">{{ product.RusName|raw }}</span>
-							<span>({{ product.EngName|raw }})</span>
-						{% else %}
-							<span class="anons-product">{{ document.RusName|raw }}</span>
-							<span>({{ document.EngName|raw }})</span>
-						{% endif %}
-					</div>
-					<div class="anons-content">
-						Приведенная научная информация является обобщающей и не может быть использована для принятия
-						решения о возможности применения конкретного лекарственного препарата.
-					</div>
-				{% else %}
-					<div class="anons-head">
-						<span>Описание лекарственного препарата</span>
-						<span class="anons-product">{{ document.RusName|raw }}</span>
-						<span>({{ document.EngName|raw }})</span>
-					</div>
-					<div class="anons-content">
-						Основано на официально утвержденной инструкции по применению препарата
-						и сделано в {{ document.YearEdition }} году.
-					</div>
-				{% endif %}
+		<div class="anons">
+			<div class="anons-head">
+				<span>Описание лекарственного препарата ветеринарного назначения <b>{{ RusName }}</b></span>
 			</div>
-		{% endif %}
+			<div class="anons-content">
+				основано на официально утвержденной инструкции по применению препарата {{ RusName }} для специалистов
+				и утверждено компанией-производителем для издания справочника Видаль Ветеринар 2013 года.
+			</div>
+		</div>
 
 		{% include 'VidalVeterinarBundle:Vidal:document_navigation.html.twig' %}
 	{% endif %}
@@ -74,7 +46,7 @@
 				{% set owner = owners[0] %}
 				<div class="owners">
 					<span class="block-head">Владелец регистрационного удостоверения: </span>
-					<a href="{{ path('company', {'CompanyID':owner.CompanyID}) }}" class="no-underline">
+					<a href="{{ path('v_company', {'CompanyID':owner.CompanyID}) }}" class="no-underline">
 						{{ owner.LocalName|raw }}{{ owner.Property is not empty ? ', ' ~ owner.Property|raw|replace({'&amp;':'&'}) }}</a>
 					{% if owner.Country is not empty and owner.Country != 'Unknown' %}
 						<span class="small">({{ owner.Country }})</span>
@@ -86,7 +58,7 @@
 			{% for distributor in distributors %}
 				<div class="distributor">
 					<span class="block-head">{{ distributor.CompanyRusNote|capitalize }}:</span>
-					<a href="{{ path('company', {'CompanyID':distributor.CompanyID}) }}" class="no-underline">
+					<a href="{{ path('v_company', {'CompanyID':distributor.CompanyID}) }}" class="no-underline">
 						{{ distributor.LocalName|raw }}{{ distributor.Property is not empty ? ', ' ~ distributor.Property|raw|replace({'&amp;':'&'}) }}</a>
 					{% if distributor.Country is not empty and distributor.Country != 'Unknown' %}
 						<span class="small">({{ distributor.Country }})</span>
@@ -100,7 +72,7 @@
 					<span class="block-head">Представительство: </span>
 					{% for infoPage in infoPages %}
 						{% if loop.index > 1 %}<br/>{% endif %}
-						<a href="{{ path('inf', {'InfoPageID':infoPage.InfoPageID}) }}" class="no-underline">
+						<a href="{{ path('v_inf', {'InfoPageID':infoPage.InfoPageID}) }}" class="no-underline">
 							{{ infoPage.RusName|raw }}</a>
 						{% if infoPage.Country and infoPage.Country != 'Unknown' %}
 							<span class="small">({{ infoPage.Country }})</span>
@@ -117,55 +89,16 @@
 			<span class="block-head">Код ATX: </span>
 			<span class="atc-content">
 				{% for atc in atcCodes %}
-					<a href="{{ path('atc', {'ATCCode':atc.ATCCode}) }}" class="no-underline">{{ atc.ATCCode }}</a>
+					<a href="{{ path('v_atc', {'ATCCode':atc.ATCCode}) }}" class="no-underline">{{ atc.ATCCode }}</a>
 					<span class="atc-name small">({{ atc.RusName }})</span>
 				{% endfor %}
 			</span>
 		</div>
 	{% endif %}
 
-	{# Блок активных веществ #}
-	{% if molecules is defined and molecules is not empty %}
-		<div class="block">
-			{% if molecules|length == 1 %}
-				{% set molecule = molecules[0] %}
-				<span class="block-head">Активное вещество:</span>
-				<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
-				   class="no-underline">{{ molecule.LatName }}</a>
-				{% if molecule.RusName %}
-					<span class="small">({{ molecule.RusName }})</span>
-				{% endif %}
-				{% if molecule.GNParent is not empty %}
-					<a title="Международное непатентованное наименование (МНН)" href="{{ path('gnp') }}"
-					   class="no-underline mnn">{{ molecule.GNParent }}
-					</a>
-					<span class="small italic">{{ molecule.description }}</span>
-				{% endif %}
-			{% else %}
-				<div class="block-head">Активные вещества</div>
-				<ul class="ul-style">
-					{% for molecule in molecules %}
-						<li>
-							<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
-							   class="no-underline">{{ molecule.LatName }}</a>
-							{% if molecule.RusName %}
-								<span class="small">({{ molecule.RusName }})</span>
-							{% endif %}
-							{% if molecule.GNParent is not empty %}
-								<a title="Международное непатентованное наименование (МНН)"
-								   href="{{ path('gnp') }}" class="no-underline mnn">{{ molecule.GNParent }}</a>
-								<span class="small italic">{{ molecule.description }}</span>
-							{% endif %}
-						</li>
-					{% endfor %}
-				</ul>
-			{% endif %}
-		</div>
-	{% endif %}
-
 	{# Лекарственные формы #}
 	{% if products is defined and products|length %}
-		<div class="block">
+		<div class="block" id="products_table">
 			<div class="block-head">{{ products|length == 1 ? 'Лекарственная форма' : 'Лекарственные формы' }}</div>
 			<div class="block-content">
 				<table class="products-table">
@@ -178,7 +111,7 @@
 								{% endif %}
 							</td>
 							<td class="products-table-name">
-								<a href="{{ path('product', {'EngName':p.Name, 'ProductID':p.ProductID}) }}"
+								<a href="{{ path('v_product', {'EngName':p.Name, 'ProductID':p.ProductID}) }}"
 								   class="no-underline">{{ p.RusName|raw }}</a>
 							</td>
 							<td class="products-table-zip">
@@ -200,27 +133,15 @@
 	{% endif %}
 
 	{# Форма выпуска, состав и упаковка #}
-	{% if product is defined and product.Composition is not empty %}
-		<div class="block">
-			<div class="block-head">Форма выпуска, состав и упаковка</div>
-			<div class="block-content composition">
-				{{ product.Composition|replace({
-				'[PRING]':'<i class"pring">Вспомогательные вещества</i>:',
-				'&loz;':'<img class="loz" src="'~loz~'" title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>'
-				})|raw }}
-			</div>
+	<div class="block" id="composition">
+		<div class="block-head">Форма выпуска, состав и упаковка</div>
+		<div class="block-content composition">
+			{{ Composition|replace({
+			'[PRING]':'<i class"pring">Вспомогательные вещества</i>:',
+			'&loz;':'<img class="loz" src="'~loz~'" title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>'
+			})|raw }}
 		</div>
-	{% elseif document is defined and document.CompiledComposition is not empty %}
-		<div class="block">
-			<div class="block-head">Форма выпуска, состав и упаковка</div>
-			<div class="block-content composition">
-				{{ document.CompiledComposition|replace({
-				'[PRING]':'<i class"pring">Вспомогательные вещества</i>:',
-				'&loz;':'<img class="loz" src="'~loz~'" title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>'
-				})|raw }}
-			</div>
-		</div>
-	{% endif %}
+	</div>
 
 	{# блоки описания документа #}
 	{% if document is defined %}
@@ -236,11 +157,13 @@
 			{% spaceless %}
 				<textarea cols="92" rows="2">
 					{% if product is defined %}
-						<a href="{{ url('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}" target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
-					{% elseif documentId is defined %}
-						<a href="{{ url('document', {'EngName':document.Name, 'DocumentID':document.DocumentID}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+						<a href="{{ url('v_product', {'name':product.Name ~ '_' ~ product.ProductID}) }}"
+						   target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике
+							Видаль-Ветеринар.</a>
 					{% else %}
-						<a href="{{ url('document', {'EngName':document.Name}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+						<a href="{{ url('v_document', {'name':document.Name ~ '_' ~ document.DocumentID}) }}"
+						   target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике
+							Видаль-Ветеринар.</a>
 					{% endif %}
 				</textarea>
 			{% endspaceless %}
@@ -256,6 +179,10 @@
 		#dosage p img {
 			max-width:  600px;
 			max-height: 400px;
+		}
+		.navigation-items > div {
+			display: block;
+			width:   auto;
 		}
 	</style>
 {% endblock %}

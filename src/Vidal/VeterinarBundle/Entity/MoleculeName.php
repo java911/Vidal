@@ -22,9 +22,6 @@ class MoleculeName
 	/** @ORM\Column(type="text", nullable=true) */
 	protected $EngName;
 
-	/** @ORM\Column(type="integer", name="GDDB_MoleculeID") */
-	protected $gddbMoleculeID;
-
 	/** @ORM\OneToMany(targetEntity="ItemActiveIng", mappedBy="ItemID") */
 	protected $itemActiveIngs;
 
@@ -109,22 +106,6 @@ class MoleculeName
 	public function getRusName()
 	{
 		return $this->RusName;
-	}
-
-	/**
-	 * @param mixed $gddbMoleculeID
-	 */
-	public function setGddbMoleculeID($gddbMoleculeID)
-	{
-		$this->gddbMoleculeID = $gddbMoleculeID;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getGddbMoleculeID()
-	{
-		return $this->gddbMoleculeID;
 	}
 
 	/**

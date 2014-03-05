@@ -147,28 +147,6 @@
 		{% endif %}
 	{% endif %}
 
-	{# Найдено фармако-терапевтических групп #}
-	{% if phthgroups is defined %}
-		{% if phthgroups is not empty %}
-			<div class="block">
-				<div class="block-anons">
-					<div class="block-head">
-						Найдено фармако-терапевтических групп: <span>{{ phthgroups|length }}</span>
-					</div>
-				</div>
-			</div>
-			<ul class="ul-style">
-				{% for group in phthgroups %}
-					<li><a href="{{ path('phthgroup', {'id':group.id}) }}"
-						   class="no-underline">{{ group.Name|raw }}</a></li>
-				{% endfor %}
-			</ul>
-		{% elseif t == 'phthgroup' %}
-			<div class="no-results">
-				Не найдено фармако-терапевтических групп
-			</div>
-		{% endif %}
-	{% endif %}
 
 	{# Найдено препаратов #}
 	{% if productsPagination is defined %}

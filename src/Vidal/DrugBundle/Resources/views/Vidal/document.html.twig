@@ -1,6 +1,9 @@
 {% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
 
+
 {% set loz = asset('bundles/vidalmain/images/g2.gif') %}
+{% set Composition = product is defined ? product.Composition : document.CompiledComposition %}
+
 
 {% block vidal %}
 	{# Заголовок #}
@@ -200,27 +203,15 @@
 	{% endif %}
 
 	{# Форма выпуска, состав и упаковка #}
-	{% if product is defined and product.Composition is not empty %}
-		<div class="block">
-			<div class="block-head">Форма выпуска, состав и упаковка</div>
-			<div class="block-content composition">
-				{{ product.Composition|replace({
-				'[PRING]':'<i class"pring">Вспомогательные вещества</i>:',
-				'&loz;':'<img class="loz" src="'~loz~'" title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>'
-				})|raw }}
-			</div>
+	<div class="block" id="composition">
+		<div class="block-head">Форма выпуска, состав и упаковка</div>
+		<div class="block-content composition">
+			{{ Composition|replace({
+			'[PRING]':'<i class"pring">Вспомогательные вещества</i>:',
+			'&loz;':'<img class="loz" src="'~loz~'" title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>'
+			})|raw }}
 		</div>
-	{% elseif document is defined and document.CompiledComposition is not empty %}
-		<div class="block">
-			<div class="block-head">Форма выпуска, состав и упаковка</div>
-			<div class="block-content composition">
-				{{ document.CompiledComposition|replace({
-				'[PRING]':'<i class"pring">Вспомогательные вещества</i>:',
-				'&loz;':'<img class="loz" src="'~loz~'" title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>'
-				})|raw }}
-			</div>
-		</div>
-	{% endif %}
+	</div>
 
 	{# блоки описания документа #}
 	{% if document is defined %}
