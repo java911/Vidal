@@ -27,6 +27,7 @@ class VidalController extends Controller
 			't'              => $t,
 			'p'              => $p,
 			'l'              => $l,
+			'q'              => $q,
 			'title'          => 'Видаль-Ветеринар',
 			'menu_veterinar' => 'veterinar',
 		);
@@ -306,7 +307,7 @@ class VidalController extends Controller
 
 	/**
 	 * Описание препарата
-	 * @Route("veterinar/{EngName}__{ProductID}.{ext}", name="v_product", requirements={"ProductID":"\d+"}, defaults={"ext"="htm"})
+	 * @Route("veterinar/{EngName}~{ProductID}.{ext}", name="v_product", requirements={"ProductID":"\d+"}, defaults={"ext"="htm"})
 	 *
 	 * @Template("VidalVeterinarBundle:Vidal:document.html.twig")
 	 */

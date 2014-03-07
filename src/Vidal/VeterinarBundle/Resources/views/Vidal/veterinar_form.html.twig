@@ -7,10 +7,9 @@
 			<option value="r"{{ t == 'r' ? ' selected="selected"' }}>Представительства</option>
 		</select>
 
-		<input type="text" name="q" placeholder="Введите слово для поиска..."
+		<input id="veterinar_input" type="text" name="q" placeholder="Введите слово для поиска..."
 			   value="{{ q is defined and q is not empty ? q }}" />
-
-		<div class="clear"></div>
+		<input id="veterinar_submit" type="submit" value="Найти" class="btn-red">
 	</div>
 
 	<div id="veterinar_letters">
@@ -46,4 +45,6 @@
 		<input type="submit" value="Я" name="l" class="letter{{ l == 'Я' ? ' active' }}"/>
 		<input type="submit" value="8" name="l" class="letter{{ l == '8' ? ' active' }}"/>
 	</div>
+
+	<div class="clear"></div>
 </form>

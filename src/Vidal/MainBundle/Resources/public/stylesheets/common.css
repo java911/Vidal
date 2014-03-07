@@ -429,7 +429,7 @@ h1 {
 .form_table button, .btn-red {
 	display:          inline-block;
 	margin:           0;
-	padding:          6px 22px 7px;
+	padding:          5px 22px 7px;
 	background-color: #d71344;
 	color:            white;
 	border:           none;
@@ -701,14 +701,14 @@ h1 {
 	display:               none;
 	width:                 400px;
 	padding:               6px 10px;
-	background:            white;
+	background:            beige;
 	border:                1px solid #ccc;
 	border-radius:         4px;
 	-webkit-border-radius: 4px;
 	-moz-border-radius:    4px;
 	box-shadow:            0 0 10px rgba(0, 0, 0, 0.4);
 	z-index:               999;
-	font-size:             15px;
+	font-size:             13px;
 }
 .products-table-indication > div p {
 	margin: 3px;
