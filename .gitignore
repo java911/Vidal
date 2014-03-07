@@ -1,5 +1,7 @@
 web/bundles/
 web/upload
+web/images
+web/netcat_files
 app/bootstrap*
 app/cache/*
 app/config/parameters.yml
