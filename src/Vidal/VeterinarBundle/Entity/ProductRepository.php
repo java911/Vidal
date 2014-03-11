@@ -214,9 +214,6 @@ class ProductRepository extends EntityRepository
 		$products = $this->_em->createQuery('
 			SELECT DISTINCT p.RusName, p.EngName
 			FROM VidalVeterinarBundle:Product p
-			WHERE p.CountryEditionCode = \'RUS\' AND
-				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
-				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
 			ORDER BY p.RusName ASC
 		')->getResult();
 
@@ -242,7 +239,7 @@ class ProductRepository extends EntityRepository
 		return $productNames;
 	}
 
-	public function findByQuery($q, $badIncluded = false)
+	public function findByQuery($q)
 	{
 		$qb = $this->_em->createQueryBuilder();
 
@@ -254,33 +251,39 @@ class ProductRepository extends EntityRepository
 			->leftJoin('VidalVeterinarBundle:ProductDocument', 'pd', 'WITH', 'pd.ProductID = p')
 			->leftJoin('VidalVeterinarBundle:Document', 'd', 'WITH', 'pd.DocumentID = d')
 			->orderBy('p.RusName', 'ASC')
-			->addOrderBy('pd.Ranking', 'DESC')
-			->andWhere("p.CountryEditionCode = 'RUS'")
-			->andWhere('p.MarketStatusID IN (1,2)');
-
-		# включать ли бады
-		if ($badIncluded) {
-			$qb->andWhere("p.ProductTypeCode IN ('veterinar', 'GOME', 'BAD')");
-		}
-		else {
-			$qb->andWhere("p.ProductTypeCode IN ('veterinar', 'GOME')");
-		}
+			->addOrderBy('pd.Ranking', 'DESC');
 
 		# поиск по словам
 		$where = '';
 		$words = explode(' ', $q);
 
+		# ищем совпадение по всем словам
 		for ($i = 0; $i < count($words); $i++) {
 			$word = $words[$i];
 			if ($i > 0) {
-				$where .= ' OR ';
+				$where .= ' AND ';
 			}
 			$where .= "(p.RusName LIKE '$word%' OR p.EngName LIKE '$word%' OR p.RusName LIKE '% $word%' OR p.EngName LIKE '% $word%')";
 		}
+		$qb->where($where);
+		$productsRaw = $qb->getQuery()->getResult();
 
-		$qb->andWhere($where);
+		# ищем совпадение по любому из слов
+		if (empty($productsRaw)) {
 
-		$productsRaw     = $qb->getQuery()->getResult();
+			for ($i = 0; $i < count($words); $i++) {
+				$word = $words[$i];
+				if ($i > 0) {
+					$where .= ' OR ';
+				}
+				$where .= "(p.RusName LIKE '$word%' OR p.EngName LIKE '$word%' OR p.RusName LIKE '% $word%' OR p.EngName LIKE '% $word%')";
+			}
+
+			$qb->where($where);
+
+			$productsRaw = $qb->getQuery()->getResult();
+		}
+
 		$products        = array();
 		$articlePriority = array(2, 5, 4, 3, 1);
 
@@ -491,8 +494,8 @@ class ProductRepository extends EntityRepository
 
 		$marketStatuses = array();
 
-		for ($i=0; $i<count($raw); $i++) {
-			$key = $raw[$i]['ProductID'];
+		for ($i = 0; $i < count($raw); $i++) {
+			$key              = $raw[$i]['ProductID'];
 			$marketStatuses[] = $raw[$i]['MarketStatus'];
 		}
 
