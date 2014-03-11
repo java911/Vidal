@@ -18,37 +18,20 @@
 	{% include 'VidalVeterinarBundle:Vidal:veterinar_form.html.twig' %}
 
 	{% if products is defined and products is not empty %}
-		{% if t == 'p' %}
-			<div class="block">
-				<div class="block-anons">
-					<div class="block-head">
-						Найдено препаратов: <span>{{ pagination.totalItemCount }}</span>
-					</div>
+
+		<div class="block">
+			<div class="block-anons">
+				<div class="block-head">
+					Найдено препаратов: <span>{{ products.totalItemCount }}</span>
 				</div>
 			</div>
+		</div>
 
-			{% include 'VidalVeterinarBundle:Vidal:render_products.html.twig' %}
+		{% include 'VidalVeterinarBundle:Vidal:render_products.html.twig' %}
 
-			<div class="navigation">
-				{{ knp_pagination_render(pagination) }}
-			</div>
-		{% endif %}
-
-		{#<div class="block">#}
-		{#<div class="block-anons">#}
-		{#<div class="block-head">#}
-		{#Найдено#}
-		{#{% if t == 'p' %}#}
-		{#препаратов:#}
-		{#{% elseif t == 'c' %}#}
-		{#производителей:#}
-		{#{% elseif t == 'r' %}#}
-		{#представительств:#}
-		{#{% endif %}#}
-		{#<span>{{ pagination.totalItemCount }}</span>#}
-		{#</div>#}
-		{#</div>#}
-		{#</div>#}
+		<div class="navigation">
+			{{ knp_pagination_render(products) }}
+		</div>
 
 	{% else %}
 		<div class="veterinar-about">
@@ -151,6 +134,37 @@
 			$('.veterinar-search select').chosen({
 				disable_search: true
 			});
+
+			$('#veterinar_input')
+				.autocomplete({
+					minLength: 2,
+					source:    function(request, response) {
+						$.ajax({
+							url:      "http://localhost:9200/website/veterinar_autocomplete/_search",
+							type:     "POST",
+							dataType: "JSON",
+							data:     '{ "query":{"query_string":{"query":"' + request.term + '*"}}, "fields":["name"], "size":15, "highlight":{"fields":{"name":{}}} }',
+							success:  function(data) {
+								response($.map(data.hits.hits, function(item) {
+									return {
+										label: item.highlight.name,
+										value: item.fields.name
+									}
+								}));
+							}
+						});
+					},
+					select:    function(event, ui) {
+						if (ui.item) {
+							$(this).val(ui.item.value);
+						}
+					}
+				}).data("ui-autocomplete")._renderItem = function(ul, item) {
+				return $("<li></li>")
+					.data("item.autocomplete", item)
+					.append("<a>" + item.label + "</a>")
+					.appendTo(ul);
+			};
 		});
 	</script>
 {% endblock %}

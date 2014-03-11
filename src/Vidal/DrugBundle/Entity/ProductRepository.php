@@ -266,21 +266,38 @@ class ProductRepository extends EntityRepository
 			$qb->andWhere("p.ProductTypeCode IN ('DRUG', 'GOME')");
 		}
 
-		# поиск по словам
 		$where = '';
 		$words = explode(' ', $q);
+
+		# поиск по всем словам вместе
+		$qbAnd = clone $qb;
 
 		for ($i = 0; $i < count($words); $i++) {
 			$word = $words[$i];
 			if ($i > 0) {
-				$where .= ' OR ';
+				$where .= ' AND ';
 			}
 			$where .= "(p.RusName LIKE '$word%' OR p.EngName LIKE '$word%' OR p.RusName LIKE '% $word%' OR p.EngName LIKE '% $word%')";
 		}
 
-		$qb->andWhere($where);
+		$qbAnd->andWhere($where);
+		$productsRaw = $qbAnd->getQuery()->getResult();
 
-		$productsRaw     = $qb->getQuery()->getResult();
+		# поиск по любому из слов, если по всем не дал результата
+		if (empty($productsRaw)) {
+			$where = '';
+
+			for ($i = 0; $i < count($words); $i++) {
+				$word = $words[$i];
+				if ($i > 0) {
+					$where .= ' OR ';
+				}
+				$where .= "(p.RusName LIKE '$word%' OR p.EngName LIKE '$word%' OR p.RusName LIKE '% $word%' OR p.EngName LIKE '% $word%')";
+			}
+
+			$productsRaw = $qb->getQuery()->getResult();
+		}
+
 		$products        = array();
 		$articlePriority = array(2, 5, 4, 3, 1);
 
@@ -511,8 +528,8 @@ class ProductRepository extends EntityRepository
 
 		$marketStatuses = array();
 
-		for ($i=0; $i<count($raw); $i++) {
-			$key = $raw[$i]['ProductID'];
+		for ($i = 0; $i < count($raw); $i++) {
+			$key              = $raw[$i]['ProductID'];
 			$marketStatuses[] = $raw[$i]['MarketStatus'];
 		}
 

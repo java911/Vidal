@@ -34,7 +34,20 @@ class VidalController extends Controller
 
 		# если выбрали препараты
 		if ($t == 'p') {
-			if ($l != null) {
+			if (!empty($q)) {
+				$products = $em->getRepository('VidalVeterinarBundle:Product')->findByQuery($q);
+
+				$paginator                    = $this->get('knp_paginator');
+				$pagination                   = $paginator->paginate($products, $p, self::PRODUCTS_PER_PAGE);
+				$params['products'] = $pagination;
+
+				if ($pagination->getTotalItemCount()) {
+					$productIds          = $this->getProductIds($pagination);
+					$params['companies'] = $em->getRepository('VidalVeterinarBundle:Company')->findByProducts($productIds);
+					$params['pictures']  = $em->getRepository('VidalVeterinarBundle:Picture')->findByProductIds($productIds);
+				}
+			}
+			elseif ($l != null) {
 				$paginator  = $this->get('knp_paginator');
 				$pagination = $paginator->paginate(
 					$em->getRepository('VidalVeterinarBundle:Product')->getQueryByLetter($l),

@@ -27,14 +27,13 @@ class AutocompleteCommand extends ContainerAwareCommand
 		$em = $this->getContainer()->get('doctrine')->getManager('veterinar');
 
 		$productNames  = $em->getRepository('VidalVeterinarBundle:Product')->findProductNames();
-		$moleculeNames = $em->getRepository('VidalVeterinarBundle:Molecule')->findMoleculeNames();
 
-		$names = array_unique(array_merge($productNames, $moleculeNames));
+		$names = array_unique($productNames);
 		sort($names);
 
 		$elasticaClient = new \Elastica\Client();
 		$elasticaIndex  = $elasticaClient->getIndex('website');
-		$elasticaType   = $elasticaIndex->getType('autocomplete');
+		$elasticaType   = $elasticaIndex->getType('veterinar_autocomplete');
 
 		if ($elasticaType->exists()) {
 			$elasticaType->delete();
