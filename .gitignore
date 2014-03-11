@@ -12,3 +12,4 @@ bin/
 .idea/*
 mysql-connector-*
 .gitconfig
+node_modules/
