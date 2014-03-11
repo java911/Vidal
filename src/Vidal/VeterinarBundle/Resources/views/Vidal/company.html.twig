@@ -1,114 +1,84 @@
 {% extends 'VidalVeterinarBundle::vidal_layout.html.twig' %}
 
 
-{% block vidal %}
+{% block title %}
 	<h1>{{ company.CompanyName|upper|raw }}{% if company.Property is not empty %}, {{ company.Property|raw }}{% endif %}
 		{% if company.Country is not empty  and company.Country != 'Unknown' %}
 			<span>({{ company.Country }})</span>
-		{% endif %}
-	</h1>
+		{% endif %}</h1>
+{% endblock %}
 
-	{# представительства #}
-	{% if productsRepresented is not empty %}
-		<div class="block">
-			<div class="block-head">Информация о препаратах предоставлена представительствами</div>
-			<ul class="ul-style">
-				{% for product in productsRepresented %}
-					<li>
-						<a href="{{ path('v_inf', {'InfoPageID':product.InfoPageID}) }}" class="no-underline">
-							{{ product.InfoPageName }}</a>
-						{% if product.InfoPageCountry is not empty and product.InfoPageCountry != 'Unknown' %}
-							<span class="small">({{ product.InfoPageCountry }})</span>
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('veterinar') }}">Видаль-Ветеринар</a>
+		<i></i>
+		<span>Производители</span>
+	</div>
+{% endblock %}
+
+
+{% block vidal %}
+	{% if products|length %}
+		<table class="products-table">
+			<tr class="products-table-header">
+				<td>Название</td>
+				<td></td>
+				<td title="Показания к применению"></td>
+				<td>Форма выпуска</td>
+			</tr>
+
+			{% for id, product in products %}
+				{% set id = product.ProductID %}
+				<tr>
+					<td class="products-table-name">
+						<a class="no-underline"
+						   href="{{ path('v_product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}">
+							{{ product.RusName|raw }}</a>
+					</td>
+					<td class="products-table-picture">
+						{% if pictures[id] is defined %}
+							{% set path = '/upload/veterinar/' ~ pictures[id] %}
+							{% if is_file(path) %}
+								<a class="no-underline"
+								   href="{{ path('v_product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"
+									><img src="{{ path }}"/></a>
+							{% endif %}
 						{% endif %}
-					</li>
-				{% endfor %}
-			</ul>
-		</div>
-	{% endif %}
+					</td>
+					<td class="products-table-indication" title="Показания к применению">
+						{% if product.Indication is defined and product.Indication is not empty %}
+							<img src="{{ asset('bundles/vidalmain/images/more.png') }}"/>
+							<div>{{ product.Indication|raw }}</div>
+						{% elseif indications is defined and indications[product.ProductID] is not empty %}
+							<img src="{{ asset('bundles/vidalmain/images/more.png') }}"/>
+							<div>{{ indications[product.ProductID]|raw }}</div>
+						{% endif %}
+					</td>
+					<td class="products-table-zip">
+						<div>{{ product.ZipInfo }}</div>
+						<span>рег. №: {{ product.RegistrationNumber }}
+							{% if product.RegistrationDate is not null %}
+								от {{ product.RegistrationDate|date('d.m.Y') }}
+							{% endif %}
+						</span>
+					</td>
 
-	{% if products1 is not empty or products2 is not empty %}
-		<div class="block">
-			<div class="block-head">Производимые препараты</div>
-
-			<table class="products-table">
-				<tr class="products-table-header">
-					<td class="products-table-loz"></td>
-					<td>Название</td>
-					<td title="Показания к применению"></td>
-					<td>Форма выпуска</td>
-					<td>Представительство</td>
 				</tr>
-
-				{# препараты с представительством и описанием(2,5) #}
-				{% for documentId, product in products1 %}
-					{% set id = product.ProductID %}
-					<tr class="important">
-						<td class="products-table-loz">
-							{% if product.NonPrescriptionDrug %}
-								<img src="{{ asset('bundles/vidalmain/images/g2.gif') }}" class="loz"
-									 title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>
-							{% endif %}
-						</td>
-						<td class="products-table-name">
-							<a class="no-underline"
-							   href="{{ path('v_document', {'EngName':product.DocumentName, 'DocumentID':product.DocumentID}) }}">
-								{{ product.DocumentRusName|raw }}</a>
-						</td>
-						<td class="products-table-indication" title="Показания к применению">
-							{% if product.Indication is not empty %}
-								<img src="{{ asset('bundles/vidalmain/images/more.png') }}"/>
-								<div>{{ product.Indication|raw }}</div>
-							{% endif %}
-						</td>
-						<td class="products-table-zip">
-							<div>{{ product.ZipInfo }}</div>
-							<span>рег. №: {{ product.RegistrationNumber }}
-								{% if product.RegistrationDate is not null %}
-									от {{ product.RegistrationDate|date('d.m.Y') }}
-								{% endif %}
-							</span>
-						</td>
-						<td class="products-table-company">
-							{% if product.InfoPageID %}
-								<a class="no-underline" href="{{ path('v_inf', {'InfoPageID':product.InfoPageID}) }}">
-									{{ product.InfoPageName|raw }}</a>
-								{% if product.InfoPageCountry is not empty and product.InfoPageCountry != 'Unknown' %}
-									<span class="small">({{ product.InfoPageCountry }})</span>
-								{% endif %}
-							{% endif %}
-						</td>
-					</tr>
-				{% endfor %}
-
-				{# менее значимые препараты #}
-				{% for product in products2 %}
-					{% set id = product.ProductID %}
-					<tr>
-						<td class="products-table-loz">
-							{% if product.NonPrescriptionDrug %}
-								<img src="{{ asset('bundles/vidalmain/images/g2.gif') }}" class="loz"
-									 title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>
-							{% endif %}
-						</td>
-						<td class="products-table-name">
-							<a class="no-underline"
-							   href="{{ path('v_product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}">
-								{{ product.RusName|raw }}</a>
-						</td>
-						<td class="products-table-indication"></td>
-						<td class="products-table-zip">
-							<div>{{ product.ZipInfo }}</div>
-							<span>рег. №: {{ product.RegistrationNumber }}
-								{% if product.RegistrationDate is not null %}
-									от {{ product.RegistrationDate|date('d.m.Y') }}
-								{% endif %}
-							</span>
-						</td>
-						<td class="products-table-company"></td>
-					</tr>
-				{% endfor %}
-			</table>
-		</div>
+			{% endfor %}
+		</table>
 	{% endif %}
 
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.products-table-name {
+			width: 140px;
+		}
+	</style>
 {% endblock %}

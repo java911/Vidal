@@ -1,6 +1,5 @@
 <table class="products-table">
 	<tr class="products-table-header">
-		<td class="products-table-loz"></td>
 		<td>Название</td>
 		<td></td>
 		<td title="Показания к применению"></td>
@@ -11,12 +10,6 @@
 	{% for id, product in products %}
 		{% set id = product.ProductID %}
 		<tr>
-			<td class="products-table-loz">
-				{% if product.NonPrescriptionDrug %}
-					<img src="{{ asset('bundles/vidalmain/images/g2.gif') }}" class="loz"
-						 title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>
-				{% endif %}
-			</td>
 			<td class="products-table-name">
 				<a class="no-underline"
 				   href="{{ path('v_product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}">
@@ -24,7 +17,7 @@
 			</td>
 			<td class="products-table-picture">
 				{% if pictures[id] is defined %}
-					{% set path = '/upload/products/' ~ pictures[id] %}
+					{% set path = '/upload/veterinar/' ~ pictures[id] %}
 					{% if is_file(path) %}
 						<a class="no-underline"
 						   href="{{ path('v_product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"

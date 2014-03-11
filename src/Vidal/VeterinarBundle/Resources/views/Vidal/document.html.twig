@@ -7,15 +7,26 @@
 
 
 {% block title %}
-	<h1>{{ RusName }}</h1>
+	<h1>{{ RusName|raw }}</h1>
+{% endblock %}
+
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('veterinar') }}">Видаль-Ветеринар</a>
+		<i></i>
+		<span>Препараты</span>
+	</div>
 {% endblock %}
 
 
 {% block vidal %}
 	{% if products is not empty %}
 		<div class="pictures">
-			{% for product in products if pictures[product.ProductID] is defined %}
-				{% set path = '/upload/products/' ~ pictures[product.ProductID] %}
+			{% for picture in pictures %}
+				{% set path = '/upload/veterinar/' ~ picture %}
 				{% if is_file(path) %}
 					<img src="{{ path }}"/>
 				{% endif %}
@@ -27,10 +38,10 @@
 	{% if document is defined %}
 		<div class="anons">
 			<div class="anons-head">
-				<span>Описание лекарственного препарата ветеринарного назначения <b>{{ RusName }}</b></span>
+				<span>Описание лекарственного препарата ветеринарного назначения <b>{{ RusName|raw }}</b></span>
 			</div>
 			<div class="anons-content">
-				основано на официально утвержденной инструкции по применению препарата {{ RusName }} для специалистов
+				основано на официально утвержденной инструкции по применению препарата {{ RusName|raw }} для специалистов
 				и утверждено компанией-производителем для издания справочника Видаль Ветеринар 2013 года.
 			</div>
 		</div>
@@ -157,9 +168,9 @@
 			{% spaceless %}
 				<textarea cols="92" rows="2">
 					{% if product is defined %}
-						<a href="{{ url('v_product', {'name':product.Name ~ '_' ~ product.ProductID}) }}" target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике Видаль-Ветеринар.</a>
+						<a href="{{ url('v_product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}" target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике Видаль-Ветеринар.</a>
 					{% else %}
-						<a href="{{ url('v_document', {'name':document.Name ~ '_' ~ document.DocumentID}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль-Ветеринар.</a>
+						<a href="{{ url('v_document', {'EngName':document.Name, 'DocumentID':document.DocumentID}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль-Ветеринар.</a>
 					{% endif %}
 				</textarea>
 			{% endspaceless %}

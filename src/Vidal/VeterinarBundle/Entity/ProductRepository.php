@@ -5,6 +5,45 @@ use Doctrine\ORM\EntityRepository;
 
 class ProductRepository extends EntityRepository
 {
+	public function findByLetter($letter)
+	{
+		return $this->_em->createQuery('
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, d.ArticleID, d.Indication, d.DocumentID
+			FROM VidalVeterinarBundle:Product p
+			LEFT JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.ProductID = p
+			LEFT JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d
+			LEFT JOIN VidalVeterinarBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
+			WHERE p.RusName LIKE :letter
+			ORDER BY p.RusName ASC
+		')->setParameter('letter', $letter . '%')
+			->getResult();
+	}
+
+	public function findByCompany($CompanyID)
+	{
+		return $this->_em->createQuery('
+			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
+				p.RegistrationNumber, p.RegistrationDate,
+				country.RusName CompanyCountry,
+				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
+				d.Name DocumentName,
+				i.InfoPageID, i.RusName InfoPageName, co.RusName InfoPageCountry
+			FROM VidalVeterinarBundle:Product p
+			JOIN VidalVeterinarBundle:ProductCompany pc WITH pc.ProductID = p
+			JOIN VidalVeterinarBundle:Company c WITH pc.CompanyID = c
+			LEFT JOIN VidalVeterinarBundle:Country country WITH c.CountryCode = country
+			LEFT JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.ProductID = p
+			LEFT JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d
+			LEFT JOIN VidalVeterinarBundle:DocumentInfoPage di WITH di.DocumentID = d
+			LEFT JOIN VidalVeterinarBundle:InfoPage i WITH di.InfoPageID = i
+			LEFT JOIN VidalVeterinarBundle:Country co WITH i.CountryCode = co
+			WHERE c = :CompanyID
+			ORDER BY p.RusName ASC
+		')->setParameter('CompanyID', $CompanyID)
+			->getResult();
+	}
+
 	public function findByProductID($ProductID)
 	{
 		return $this->_em->createQuery('
@@ -162,33 +201,6 @@ class ProductRepository extends EntityRepository
 			->getResult();
 	}
 
-	public function findByOwner($CompanyID)
-	{
-		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
-				p.RegistrationNumber, p.RegistrationDate,
-				country.RusName CompanyCountry,
-				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
-				d.Name DocumentName,
-				i.InfoPageID, i.RusName InfoPageName, co.RusName InfoPageCountry
-			FROM VidalVeterinarBundle:Product p
-			JOIN VidalVeterinarBundle:ProductCompany pc WITH pc.ProductID = p
-			JOIN VidalVeterinarBundle:Company c WITH pc.CompanyID = c
-			LEFT JOIN VidalVeterinarBundle:Country country WITH c.CountryCode = country
-			LEFT JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.ProductID = p
-			LEFT JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d
-			LEFT JOIN VidalVeterinarBundle:DocumentInfoPage di WITH di.DocumentID = d
-			LEFT JOIN VidalVeterinarBundle:InfoPage i WITH di.InfoPageID = i
-			LEFT JOIN VidalVeterinarBundle:Country co WITH i.CountryCode = co
-			WHERE c = :CompanyID AND
-				p.CountryEditionCode = \'RUS\' AND
-				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
-				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
-			ORDER BY p.RusName ASC
-		')->setParameter('CompanyID', $CompanyID)
-			->getResult();
-	}
-
 	public function findByInfoPageID($InfoPageID)
 	{
 		//
@@ -270,7 +282,7 @@ class ProductRepository extends EntityRepository
 
 		# ищем совпадение по любому из слов
 		if (empty($productsRaw)) {
-
+			$where = '';
 			for ($i = 0; $i < count($words); $i++) {
 				$word = $words[$i];
 				if ($i > 0) {
@@ -464,22 +476,6 @@ class ProductRepository extends EntityRepository
 		}
 
 		return $groups;
-	}
-
-	public function getQueryByLetter($letter)
-	{
-		$qb = $this->_em->createQueryBuilder();
-
-		$qb->select('DISTINCT p')
-			->from('VidalVeterinarBundle:Product', 'p')
-			->where('p.CountryEditionCode = \'RUS\'')
-			->orderBy('p.RusName', 'ASC');
-
-		if ($letter) {
-			$qb->andWhere('p.RusName LIKE :likeName')->setParameter('likeName', $letter . '%');
-		}
-
-		return $qb->getQuery();
 	}
 
 	public function findMarketStatusesByProductIds($productIds)

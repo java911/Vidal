@@ -11,7 +11,7 @@
 {# Показания к применению препарата #}
 {% if document.Indication is not empty %}
 	<div class="block" id="indication">
-		<div class="block-head">Показания к применению препарата {{ RusName }}</div>
+		<div class="block-head">Показания к применению препарата {{ RusName|raw }}</div>
 		<div class="block-content">
 			{{ document.Indication|raw }}
 		</div>
@@ -56,7 +56,7 @@
 {# Противопоказания #}
 {% if document.ContraIndication is not empty %}
 	<div class="block" id="contra">
-		<div class="block-head">Противопоказания к применению препарата {{ RusName }}</div>
+		<div class="block-head">Противопоказания к применению препарата {{ RusName|raw }}</div>
 		<div class="block-content">
 			{{ document.ContraIndication|raw }}
 		</div>

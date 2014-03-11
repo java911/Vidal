@@ -14,7 +14,7 @@
 			<div><a href="#influence">Фармакологические (биологические) свойства и эффекты</a></div>
 		{% endif %}
 		{% if document.Indication is not empty %}
-			<div><a href="#indication">Показания к применению препарата {{ RusName }}</a></div>
+			<div><a href="#indication">Показания к применению препарата {{ RusName|raw }}</a></div>
 		{% endif %}
 		{% if document.Dosage is not empty %}
 			<div><a href="#dosage">Порядок применения</a></div>
@@ -23,7 +23,7 @@
 			<div><a href="#side_effects">Побочные эффекты</a></div>
 		{% endif %}
 		{% if document.ContraIndication is not empty %}
-			<div><a href="#contra">Противопоказания к применению препарата {{ RusName }}</a></div>
+			<div><a href="#contra">Противопоказания к применению препарата {{ RusName|raw }}</a></div>
 		{% endif %}
 		{% if document.SpecialInstruction is not empty %}
 			<div><a href="#special">Особые указания и меры личной профилактики</a></div>

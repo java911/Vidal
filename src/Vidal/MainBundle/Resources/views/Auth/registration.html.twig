@@ -7,8 +7,7 @@
 	<p class="reg-info">Для регистрации заполните форму.
 		<span class="raspberry asterisk">*</span> - поля обязательные для заполнения</p>
 
-	<form id="register_form" action="{{ path('registration') }}" autocomplete="off"
-		  method="post" {{ form_enctype(form) }}>
+	<form id="register_form" action="{{ path('registration') }}" method="post" {{ form_enctype(form) }}>
 		{% form_theme form 'VidalMainBundle:Form:registration_form.html.twig' %}
 		{{ form_widget(form) }}
 		<p class="addition-info">Специализацию вы можете указать в профиле после регистрации</p>

@@ -76,9 +76,8 @@ body {
 	content: '';
 }
 .container {
-	width:    100%;
-	float:    left;
-	overflow: hidden;
+	width: 100%;
+	float: left;
 }
 .content {
 	padding:    0 220px 30px 196px;
@@ -495,8 +494,9 @@ h1 {
 	color: #476173;
 }
 .anons-content {
-	font-size:  12px;
+	font-size:  13px;
 	margin-top: 2px;
+	color:      #555;
 }
 .anons-product {
 	font-weight: bold;
@@ -511,10 +511,11 @@ h1 {
 	background: #f5f5f5;
 }
 .block-head {
+	margin-bottom: 3px;
+	margin-top:    2px;
 	font-weight:   bold;
 	color:         #2e3f51;
 	font-size:     15px;
-	margin-bottom: 4px;
 }
 .block-head span {
 	color: #333;
@@ -612,12 +613,16 @@ h1 {
 	font-size: 13px;
 }
 .copy textarea {
-	width:     100%;
-	height:    47px !important;
-	margin:    2px 0;
-	padding:   2px 4px;
-	font-size: 13px;
-	opacity:   0.5;
+	width:                 100%;
+	height:                47px !important;
+	margin:                2px 0;
+	padding:               2px 4px;
+	font-size:             12px;
+	opacity:               0.5;
+	border:                1px solid #C54B69;
+	border-radius:         0;
+	-webkit-border-radius: 0;
+	-moz-border-radius:    0;
 }
 .copy textarea:hover {
 	opacity: 1;
@@ -648,9 +653,10 @@ h1 {
 	margin:          0 !important;
 }
 .products-table td {
-	border:        0;
-	border-bottom: 1px solid #D4D4D4;
-	padding:       4px 5px;
+	border:         0;
+	border-bottom:  1px solid #D4D4D4;
+	padding:        4px 5px;
+	vertical-align: middle;
 }
 .products-table-loz {
 	border-bottom: 0 !important;
@@ -974,7 +980,7 @@ h1 {
 .tabs a {
 	display:         inline-block;
 	float:           left;
-	padding:         7px 12px 8px;
+	padding:         6px 12px 7px;
 	text-decoration: none;
 	color:           #2e3f51;
 	font-weight:     bold;
@@ -990,4 +996,22 @@ h1 {
 }
 .tabs a:hover {
 	background: #D4D4D4;
+}
+
+/* info-line */
+.info-line {
+	margin-top:    17px;
+	padding:       4px 10px 5px;
+	font-weight:   bold;
+	color:         #2e3f51;
+	font-size:     15px;
+	margin-bottom: 4px;
+	background:    #f5f5f5;
+}
+.info-line i {
+	font-style: normal;
+	color:      #d71344
+}
+.info-line span {
+	color: #333;
 }

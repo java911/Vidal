@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Vidal\VeterinarBundle\Entity\Product;
 
 class VidalController extends Controller
 {
@@ -32,45 +33,50 @@ class VidalController extends Controller
 			'menu_veterinar' => 'veterinar',
 		);
 
-		# если выбрали препараты
-		if ($t == 'p') {
-			if (!empty($q)) {
-				$products = $em->getRepository('VidalVeterinarBundle:Product')->findByQuery($q);
+		switch ($t) {
+			case 'p':
+				# препараты по букве алфавита или по поисковому запросу
+				if ($l) {
+					$products           = $em->getRepository('VidalVeterinarBundle:Product')->findByLetter($l);
+					$pagination         = $this->get('knp_paginator')->paginate($products, $p, self::PRODUCTS_PER_PAGE);
+					$params['products'] = $pagination;
 
-				$paginator                    = $this->get('knp_paginator');
-				$pagination                   = $paginator->paginate($products, $p, self::PRODUCTS_PER_PAGE);
-				$params['products'] = $pagination;
-
-				if ($pagination->getTotalItemCount()) {
-					$productIds          = $this->getProductIds($pagination);
-					$params['companies'] = $em->getRepository('VidalVeterinarBundle:Company')->findByProducts($productIds);
-					$params['pictures']  = $em->getRepository('VidalVeterinarBundle:Picture')->findByProductIds($productIds);
-				}
-			}
-			elseif ($l != null) {
-				$paginator  = $this->get('knp_paginator');
-				$pagination = $paginator->paginate(
-					$em->getRepository('VidalVeterinarBundle:Product')->getQueryByLetter($l),
-					$p,
-					self::PRODUCTS_PER_PAGE
-				);
-
-				$products             = $pagination->getItems();
-				$params['pagination'] = $pagination;
-
-				if (!empty($products)) {
-					$productIds = array();
-
-					foreach ($products as $product) {
-						$productIds[] = $product->getProductID();
+					if ($pagination->getTotalItemCount()) {
+						$productIds          = $this->getProductIds($pagination);
+						$params['companies'] = $em->getRepository('VidalVeterinarBundle:Company')->findByProducts($productIds);
+						$params['pictures']  = $em->getRepository('VidalVeterinarBundle:Picture')->findByProductIds($productIds);
 					}
-
-					$params['products']    = $products;
-					$params['indications'] = $em->getRepository('VidalVeterinarBundle:Document')->findIndicationsByProductIds($productIds);
-					$params['companies']   = $em->getRepository('VidalVeterinarBundle:Company')->findByProducts($productIds);
-					$params['pictures']    = $em->getRepository('VidalVeterinarBundle:Picture')->findByProductIds($productIds);
 				}
-			}
+				elseif (!empty($q)) {
+					$products           = $em->getRepository('VidalVeterinarBundle:Product')->findByQuery($q);
+					$pagination         = $this->get('knp_paginator')->paginate($products, $p, self::PRODUCTS_PER_PAGE);
+					$params['products'] = $pagination;
+
+					if ($pagination->getTotalItemCount()) {
+						$productIds          = $this->getProductIds($pagination);
+						$params['companies'] = $em->getRepository('VidalVeterinarBundle:Company')->findByProducts($productIds);
+						$params['pictures']  = $em->getRepository('VidalVeterinarBundle:Picture')->findByProductIds($productIds);
+					}
+				}
+				break;
+			case 'c':
+				# производители
+				if ($l) {
+					$params['companies'] = $em->getRepository('VidalVeterinarBundle:Company')->findByLetter($l);
+				}
+				elseif (!empty($q)) {
+					$params['companies'] = $em->getRepository('VidalVeterinarBundle:Company')->findByQuery($q);
+				}
+				break;
+			case 'r':
+				# представительства
+				if ($l) {
+					$params['infoPages'] = $em->getRepository('VidalVeterinarBundle:InfoPage')->findByLetter($l);
+				}
+				elseif (!empty($q)) {
+					$params['infoPages'] = $em->getRepository('VidalVeterinarBundle:InfoPage')->findByQuery($q);
+				}
+				break;
 		}
 
 		return $params;
@@ -93,8 +99,7 @@ class VidalController extends Controller
 
 	/**
 	 * Список препаратов по компании
-	 * @Route("veterinar/fir_{CompanyID}.{ext}", name="v_company", requirements={"CompanyID":"\d+"}, defaults={"ext"="htm"})
-	 * @Route("veterinar/lfir_{CompanyID}.{ext}", name="v_company_products", requirements={"CompanyID":"\d+"}, defaults={"ext"="htm"})
+	 * @Route("veterinar/proizvoditeli/{CompanyID}", name="v_company", requirements={"CompanyID":"\d+"})
 	 *
 	 * @Template("VidalVeterinarBundle:Vidal:company.html.twig")
 	 */
@@ -107,49 +112,19 @@ class VidalController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		$productsRaw = $em->getRepository('VidalVeterinarBundle:Product')->findByOwner($CompanyID);
+		$products = $em->getRepository('VidalVeterinarBundle:Product')->findByCompany($CompanyID);
 
-		# находим представительства
-		$productsRepresented = array();
-		for ($i = 0; $i < count($productsRaw); $i++) {
-			$key = $productsRaw[$i]['InfoPageID'];
-			if (!empty($key) && !isset($productsRepresented[$key])) {
-				$productsRepresented[$key] = $productsRaw[$i];
-			}
-		}
-
-		# отсеиваем дубли
-		$products = array();
-
-		for ($i = 0; $i < count($productsRaw); $i++) {
-			$key = $productsRaw[$i]['ProductID'];
-			if (!isset($productsRaw[$key])) {
-				$products[$key] = $productsRaw[$i];
-			}
-		}
-
-		# надо разбить на те, что с представительством и описанием(2,5) и остальные
-		$products1 = array();
-		$products2 = array();
-
-		foreach ($products as $id => $product) {
-			if ($product['InfoPageID'] && ($product['ArticleID'] == 2 || $product['ArticleID'] == 5)) {
-				$key = $product['DocumentID'];
-				if (!isset($products1[$key])) {
-					$products1[$key] = $product;
-				}
-			}
-			else {
-				$products2[] = $product;
-			}
-		}
-
-		return array(
-			'company'             => $company,
-			'productsRepresented' => $productsRepresented,
-			'products1'           => $products1,
-			'products2'           => $products2,
+		$params = array(
+			'company'  => $company,
+			'products' => $products,
 		);
+
+		if (!empty($products)) {
+			$productIds          = $this->getProductIds($products);
+			$params['pictures']  = $em->getRepository('VidalVeterinarBundle:Picture')->findByProductIds($productIds);
+		}
+
+		return $params;
 	}
 
 	/**
@@ -304,7 +279,7 @@ class VidalController extends Controller
 			$productIds             = $this->getProductIds($products);
 			$params['owners']       = $em->getRepository('VidalVeterinarBundle:Company')->findOwnersByProducts($productIds);
 			$params['distributors'] = $em->getRepository('VidalVeterinarBundle:Company')->findDistributorsByProducts($productIds);
-			$params['pictures']     = $em->getRepository('VidalVeterinarBundle:Picture')->findByProductIds($productIds);
+			$params['pictures']     = $em->getRepository('VidalVeterinarBundle:Picture')->findAllByProductIds($productIds);
 		}
 		else {
 			$params['pictures'] = array();
@@ -382,7 +357,7 @@ class VidalController extends Controller
 		$params['molecules']    = $molecules;
 		$params['owners']       = $em->getRepository('VidalVeterinarBundle:Company')->findOwnersByProducts($productIds);
 		$params['distributors'] = $em->getRepository('VidalVeterinarBundle:Company')->findDistributorsByProducts($productIds);
-		$params['pictures']     = $em->getRepository('VidalVeterinarBundle:Picture')->findByProductIds($productIds);
+		$params['pictures']     = $em->getRepository('VidalVeterinarBundle:Picture')->findAllByProductIds($productIds);
 
 		return $params;
 	}
@@ -392,8 +367,15 @@ class VidalController extends Controller
 	{
 		$productIds = array();
 
-		foreach ($products as $product) {
-			$productIds[] = $product['ProductID'];
+		if ($products[0] instanceof Product) {
+			foreach ($products as $product) {
+				$productIds[] = $product->getProductID();
+			}
+		}
+		else {
+			foreach ($products as $product) {
+				$productIds[] = $product['ProductID'];
+			}
 		}
 
 		return $productIds;

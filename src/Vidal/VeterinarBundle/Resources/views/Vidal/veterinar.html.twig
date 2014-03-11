@@ -17,21 +17,95 @@
 
 	{% include 'VidalVeterinarBundle:Vidal:veterinar_form.html.twig' %}
 
-	{% if products is defined and products is not empty %}
-
-		<div class="block">
-			<div class="block-anons">
-				<div class="block-head">
-					Найдено препаратов: <span>{{ products.totalItemCount }}</span>
-				</div>
+	{% if products is defined %}
+		{% if products is not empty %}
+			<div class="info-line">
+				{% if l %}
+				Найдено препаратов {{ l == 8 ? 'c цифры' : 'на букву' }} <i>{{ l }}<i>:
+						{% else %}
+							Найдено препаратов по запросу <i>{{ q }}</i>:
+						{% endif %}
+						<span>{{ products.totalItemCount }}</span>
 			</div>
-		</div>
+			{% include 'VidalVeterinarBundle:Vidal:render_products.html.twig' %}
+			<div class="navigation">{{ knp_pagination_render(products) }}</div>
+		{% else %}
+			<div class="info-line">
+				{% if l %}
+					Не найдено препаратов {{ l == 8 ? 'c цифры' : 'на букву' }} <i>{{ l }}</i>
+				{% else %}
+					Не найдено препаратов по запросу <i>{{ q }}</i>
+				{% endif %}
+			</div>
+		{% endif %}
 
-		{% include 'VidalVeterinarBundle:Vidal:render_products.html.twig' %}
+	{% elseif companies is defined %}
+		{% if companies is not empty %}
+			<div class="info-line">
+				{% if l %}
+					Найдено производителей {{ l == 8 ? 'c цифры' : 'на букву' }} <i>{{ l }}</i>:
+				{% else %}
+					Найдено производителей по запросу <i>{{ q }}</i>:
+				{% endif %}
+				<span>{{ companies|length }}</span>
+			</div>
+			<table class="products-table companies">
+				<tr class="products-table-header">
+					<td>Название</td>
+					<td>Страна</td>
+				</tr>
+				{% for company in companies %}
+					<tr>
+						<td>
+							<a href="{{ path('v_company', {'CompanyID':company.CompanyID}) }}">{{ company.LocalName|raw }}</a>
+						</td>
+						<td>{{ company.Country }}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		{% else %}
+			<div class="info-line">
+				{% if l %}
+					Не найдено производителей {{ l == 8 ? 'c цифры' : 'на букву' }} <i>{{ l }}</i>
+				{% else %}
+					Не найдено производителей по запросу <i>{{ q }}</i>
+				{% endif %}
+			</div>
+		{% endif %}
 
-		<div class="navigation">
-			{{ knp_pagination_render(products) }}
-		</div>
+	{% elseif infoPages is defined %}
+		{% if infoPages is not empty %}
+			<div class="info-line">
+				{% if l %}
+					Найдено представительств {{ l == 8 ? 'c цифры' : 'на букву' }} <i>{{ l }}</i>:
+				{% else %}
+					Найдено представительств по запросу <i>{{ q }}</i>:
+				{% endif %}
+				<span>{{ infoPages|length }}</span>
+			</div>
+			<table class="products-table companies">
+				<tr class="products-table-header">
+					<td>Название</td>
+					<td>Страна</td>
+				</tr>
+				{% for infoPage in infoPages %}
+					<tr>
+						<td>
+							<a href="{{ path('v_inf', {'InfoPageID':infoPage.InfoPageID}) }}">{{ infoPage.RusName|raw }}</a>
+						</td>
+						<td>{{ infoPage.Country }}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		{% else %}
+			<div class="info-line">
+				{% if l %}
+					Не найдено представительств {{ l == 8 ? 'c цифры' : 'на букву' }} <i>{{ l }}</i>
+				{% else %}
+					Не найдено представительств по запросу <i>{{ q }}</i>
+				{% endif %}
+			</div>
+		{% endif %}
 
 	{% else %}
 		<div class="veterinar-about">
@@ -100,9 +174,21 @@
 	{{ parent() }}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/letters.css') }}"/>
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/jquery-chosen/chosen.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/jquery-chosen/chosen.css') }}"/>
 	<style type="text/css">
-		#veterinar_letters {
+		.veterinar-letters {
 			margin-top: 10px;
+		}
+		.veterinar-letters .en {
+			clear: both;
+		}
+		.veterinar-letters .en > span {
+			margin:         4px 6px 4px 4px;
+			float:          left;
+			font-weight:    bold;
+			color:          #476173;
+			display:        inline-block;
+			vertical-align: top;
 		}
 		#veterinar_type {
 			width: 160px;
@@ -115,12 +201,19 @@
 			float: right;
 		}
 		.veterinar-about {
-			font-size:  15px;
-			margin-top: 12px;
-			border-top: 1px solid #e1e1e1;
+			font-size:   15px;
+			margin-top:  22px;
+			padding-top: 4px;
+			border-top:  1px solid #e1e1e1;
 		}
 		.veterinar-about-2 {
 			margin-top: 35px;
+		}
+		.companies a {
+			text-decoration: none;
+		}
+		.companies a:hover {
+			text-decoration: underline;
 		}
 	</style>
 {% endblock %}
@@ -131,9 +224,14 @@
 	<script type="text/javascript" src="{{ asset('bundles/vidalmain/jquery-chosen/chosen.jquery.min.js') }}"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('.veterinar-search select').chosen({
-				disable_search: true
-			});
+			$('.veterinar-search select')
+				.chosen({
+					disable_search: true
+				})
+				.on('change', function() {
+					$('#letters_page').val(1);
+					$('.letter.active').click();
+				});
 
 			$('#veterinar_input')
 				.autocomplete({
