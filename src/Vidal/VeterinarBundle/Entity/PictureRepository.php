@@ -65,7 +65,7 @@ class PictureRepository extends EntityRepository
 			$pictures[] = $path;
 		}
 
-		return $pictures;
+		return array_unique($pictures);
 	}
 
 	public function findByInfoPageID($InfoPageID)

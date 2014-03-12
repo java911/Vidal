@@ -11,6 +11,9 @@ class Company
 	protected $CompanyID;
 
 	/** @ORM\Column(length=255) */
+	protected $Name;
+
+	/** @ORM\Column(length=255, unique=true) */
 	protected $LocalName;
 
 	/** @ORM\Column(length=30, nullable=true) */
@@ -167,4 +170,19 @@ class Company
 		return $this->productCompany;
 	}
 
+	/**
+	 * @param mixed $Name
+	 */
+	public function setName($Name)
+	{
+		$this->Name = $Name;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getName()
+	{
+		return $this->Name;
+	}
 }

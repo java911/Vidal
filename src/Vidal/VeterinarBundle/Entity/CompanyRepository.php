@@ -8,7 +8,7 @@ class CompanyRepository extends EntityRepository
 	public function findByLetter($l)
 	{
 		return $this->_em->createQuery('
-		 	SELECT c.CompanyID, c.LocalName, c.Property, country.RusName Country
+		 	SELECT c.CompanyID, c.LocalName, c.Property, country.RusName Country, c.Name
 		 	FROM VidalVeterinarBundle:Company c
 		 	LEFT JOIN VidalVeterinarBundle:Country country WITH country.CountryCode = c.CountryCode
 		 	WHERE c.LocalName LIKE :letter
@@ -27,12 +27,33 @@ class CompanyRepository extends EntityRepository
 			->getOneOrNullResult();
 	}
 
+	public function findOneByName($name)
+	{
+		return $this->_em->createQuery('
+			SELECT c.CompanyID, c.LocalName CompanyName, c.Property, country.RusName Country
+			FROM VidalVeterinarBundle:Company c
+			LEFT JOIN VidalVeterinarBundle:Country country WITH c.CountryCode = country
+			WHERE c.Name = :name
+		')->setParameter('name', $name)
+			->getOneOrNullResult();
+	}
+
+	public function findAllOrdered()
+	{
+		return $this->_em->createQuery('
+			SELECT c.LocalName, c.Name, country.RusName Country
+			FROM VidalVeterinarBundle:Company c
+			LEFT JOIN VidalVeterinarBundle:Country country WITH c.CountryCode = country
+			ORDER BY c.LocalName ASC
+		')->getResult();
+	}
+
 	public function findByQuery($q)
 	{
 		$qb = $this->_em->createQueryBuilder();
 
 		$qb
-			->select('c.CompanyID, c.LocalName, c.Property, country.RusName Country')
+			->select('c.CompanyID, c.LocalName, c.Property, country.RusName Country, c.Name')
 			->from('VidalVeterinarBundle:Company', 'c')
 			->leftJoin('VidalVeterinarBundle:Country', 'country', 'WITH', 'country.CountryCode = c.CountryCode')
 			->orderBy('c.LocalName', 'ASC');
@@ -102,7 +123,7 @@ class CompanyRepository extends EntityRepository
 	public function findByProducts($productIds)
 	{
 		$companies = $this->_em->createQuery('
-			SELECT c.CompanyID, pc.CompanyRusNote, pc.CompanyEngNote, c.LocalName, c.Property,
+			SELECT c.CompanyID, pc.CompanyRusNote, pc.CompanyEngNote, c.LocalName, c.Property, c.Name,
 				country.RusName Country, pc.ItsMainCompany, p.ProductID
 			FROM VidalVeterinarBundle:Company c
 			LEFT JOIN VidalVeterinarBundle:ProductCompany pc WITH pc.CompanyID = c

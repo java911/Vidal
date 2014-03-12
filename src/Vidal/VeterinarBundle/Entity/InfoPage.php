@@ -12,6 +12,9 @@ class InfoPage
 	protected $InfoPageID;
 
 	/** @ORM\Column(length=255) */
+	protected $Name;
+
+	/** @ORM\Column(length=255, unique=true) */
 	protected $RusName;
 
 	/** @ORM\Column(length=255, nullable=true) */
@@ -351,5 +354,21 @@ class InfoPage
 	public function getRepresAndDistribs()
 	{
 		return $this->represAndDistribs;
+	}
+
+	/**
+	 * @param mixed $Name
+	 */
+	public function setName($Name)
+	{
+		$this->Name = $Name;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getName()
+	{
+		return $this->Name;
 	}
 }

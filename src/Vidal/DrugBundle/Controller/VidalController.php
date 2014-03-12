@@ -420,7 +420,7 @@ class VidalController extends Controller
 		$params['atcCodes']     = $em->getRepository('VidalDrugBundle:ATC')->findByProducts($productIds);
 		$params['owners']       = $em->getRepository('VidalDrugBundle:Company')->findOwnersByProducts($productIds);
 		$params['distributors'] = $em->getRepository('VidalDrugBundle:Company')->findDistributorsByProducts($productIds);
-		$params['pictures']     = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
+		$params['pictures']     = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds);
 		$params['phthgroups']   = $em->getRepository('VidalDrugBundle:PhThGroups')->findByProductId($ProductID);
 
 		return $params;
@@ -463,7 +463,7 @@ class VidalController extends Controller
 			$params['atcCodes']     = $em->getRepository('VidalDrugBundle:ATC')->findByProducts($productIds);
 			$params['owners']       = $em->getRepository('VidalDrugBundle:Company')->findOwnersByProducts($productIds);
 			$params['distributors'] = $em->getRepository('VidalDrugBundle:Company')->findDistributorsByProducts($productIds);
-			$params['pictures']     = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
+			$params['pictures']     = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds);
 		}
 		else {
 			$params['atcCodes'] = $em->getRepository('VidalDrugBundle:ATC')->findByDocumentID($DocumentID);

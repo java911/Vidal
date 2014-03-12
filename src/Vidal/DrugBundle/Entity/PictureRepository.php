@@ -19,6 +19,29 @@ class PictureRepository extends EntityRepository
 			->getResult();
 	}
 
+	public function findAllByProductIds($productIds)
+	{
+		$picturesRaw = $this->_em->createQuery('
+			SELECT pict.PathForElectronicEdition path, prod.ProductID
+			FROM VidalDrugBundle:Picture pict
+			JOIN VidalDrugBundle:ProductPicture pp WITH pp.PictureID = pict.PictureID
+			JOIN VidalDrugBundle:Product prod WITH pp.ProductID = prod.ProductID
+			WHERE prod.ProductID IN (:productIds) AND
+				pp.CountryEditionCode = \'RUS\'
+			ORDER BY prod.ProductID DESC, pp.YearEdition DESC
+		')->setParameter('productIds', $productIds)
+			->getResult();
+
+		$pictures = array();
+
+		for ($i = 0; $i < count($picturesRaw); $i++) {
+			$path       = preg_replace('/.+\\\\JPG\\\\/', '', $picturesRaw[$i]['path']);
+			$pictures[] = $path;
+		}
+
+		return array_unique($pictures);
+	}
+
 	public function findByProductIds($productIds)
 	{
 		$picturesRaw = $this->_em->createQuery('
@@ -34,10 +57,10 @@ class PictureRepository extends EntityRepository
 
 		$pictures = array();
 
-		for ($i=0; $i<count($picturesRaw); $i++) {
+		for ($i = 0; $i < count($picturesRaw); $i++) {
 			$key = $picturesRaw[$i]['ProductID'];
 			if (!isset($pictures[$key])) {
-				$path = preg_replace('/.+\\\\JPG\\\\/', '', $picturesRaw[$i]['path']);
+				$path           = preg_replace('/.+\\\\JPG\\\\/', '', $picturesRaw[$i]['path']);
 				$pictures[$key] = $path;
 			}
 		}

@@ -56,6 +56,7 @@ body {
 .wrapper {
 	width:      950px;
 	margin:     0 auto;
+	padding:    0 15px;
 	min-height: 100%;
 	height:     auto !important;
 	height:     100%;
@@ -946,22 +947,19 @@ h1 {
 /* breadcrumbs */
 .breadcrumbs {
 	margin-bottom: 24px;
-	overflow:      hidden;
 	font-size:     14px;
 	font-family:   'PT Sans Caption', sans-serif;
 	color:         #2f4053;
+	line-height:   17px;
 }
 .breadcrumbs > * {
 	display:        inline-block;
-	float:          left;
 	vertical-align: top;
-
 }
 .breadcrumbs i {
 	width:      16px;
 	height:     16px;
 	background: url(../images/menu-next.png) no-repeat 0 0;
-	margin:     0 2px 0;
 }
 .breadcrumbs a {
 	color: #2f4053;
@@ -1001,7 +999,7 @@ h1 {
 /* info-line */
 .info-line {
 	margin-top:    17px;
-	padding:       4px 10px 5px;
+	padding:       4px 6px 5px;
 	font-weight:   bold;
 	color:         #2e3f51;
 	font-size:     15px;
@@ -1009,8 +1007,10 @@ h1 {
 	background:    #f5f5f5;
 }
 .info-line i {
+	display:    inline-block;
+	margin:     0 1px;
 	font-style: normal;
-	color:      #d71344
+	color:      #476173;
 }
 .info-line span {
 	color: #333;

@@ -15,62 +15,15 @@
 		<i></i>
 		<a href="{{ path('veterinar') }}">Видаль-Ветеринар</a>
 		<i></i>
-		<span>Производители</span>
+		<a href="{{ path('proizvoditeli') }}">Фирмы-производители</a>
+		<i></i>
+		<span>{{ company.CompanyName|raw }}</span>
 	</div>
 {% endblock %}
 
 
 {% block vidal %}
-	{% if products|length %}
-		<table class="products-table">
-			<tr class="products-table-header">
-				<td>Название</td>
-				<td></td>
-				<td title="Показания к применению"></td>
-				<td>Форма выпуска</td>
-			</tr>
-
-			{% for id, product in products %}
-				{% set id = product.ProductID %}
-				<tr>
-					<td class="products-table-name">
-						<a class="no-underline"
-						   href="{{ path('v_product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}">
-							{{ product.RusName|raw }}</a>
-					</td>
-					<td class="products-table-picture">
-						{% if pictures[id] is defined %}
-							{% set path = '/upload/veterinar/' ~ pictures[id] %}
-							{% if is_file(path) %}
-								<a class="no-underline"
-								   href="{{ path('v_product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"
-									><img src="{{ path }}"/></a>
-							{% endif %}
-						{% endif %}
-					</td>
-					<td class="products-table-indication" title="Показания к применению">
-						{% if product.Indication is defined and product.Indication is not empty %}
-							<img src="{{ asset('bundles/vidalmain/images/more.png') }}"/>
-							<div>{{ product.Indication|raw }}</div>
-						{% elseif indications is defined and indications[product.ProductID] is not empty %}
-							<img src="{{ asset('bundles/vidalmain/images/more.png') }}"/>
-							<div>{{ indications[product.ProductID]|raw }}</div>
-						{% endif %}
-					</td>
-					<td class="products-table-zip">
-						<div>{{ product.ZipInfo }}</div>
-						<span>рег. №: {{ product.RegistrationNumber }}
-							{% if product.RegistrationDate is not null %}
-								от {{ product.RegistrationDate|date('d.m.Y') }}
-							{% endif %}
-						</span>
-					</td>
-
-				</tr>
-			{% endfor %}
-		</table>
-	{% endif %}
-
+	{% include 'VidalVeterinarBundle:Vidal:render_products.html.twig' %}
 {% endblock %}
 
 

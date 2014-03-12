@@ -99,28 +99,49 @@ class VidalController extends Controller
 
 	/**
 	 * Список препаратов по компании
-	 * @Route("veterinar/proizvoditeli/{CompanyID}", name="v_company", requirements={"CompanyID":"\d+"})
+	 *
+	 * @Route("veterinar/proizvoditeli", name="proizvoditeli")
+	 * @Template("VidalVeterinarBundle:Vidal:proizvoditeli.html.twig")
+	 */
+	public function proizvoditeliAction()
+	{
+		$em        = $this->getDoctrine()->getManager('veterinar');
+		$companies = $em->getRepository('VidalVeterinarBundle:Company')->findAllOrdered();
+
+		return array(
+			'title'          => 'Фирмы-производители | Видаль-Ветеринар',
+			'menu_veterinar' => 'company',
+			'companies'      => $companies,
+		);
+	}
+
+	/**
+	 * Список препаратов по компании
+	 * @Route("veterinar/proizvoditeli/{Name}.{ext}", name="v_company", defaults={"ext"="htm"})
 	 *
 	 * @Template("VidalVeterinarBundle:Vidal:company.html.twig")
 	 */
-	public function companyAction($CompanyID)
+	public function companyAction($Name)
 	{
 		$em      = $this->getDoctrine()->getManager('veterinar');
-		$company = $em->getRepository('VidalVeterinarBundle:Company')->findByCompanyID($CompanyID);
+		$company = $em->getRepository('VidalVeterinarBundle:Company')->findOneByName($Name);
 
-		if ($company == null) {
+		if (!$company) {
 			throw $this->createNotFoundException();
 		}
 
-		$products = $em->getRepository('VidalVeterinarBundle:Product')->findByCompany($CompanyID);
-
-		$params = array(
-			'company'  => $company,
-			'products' => $products,
+		$CompanyID = $company['CompanyID'];
+		$products  = $em->getRepository('VidalVeterinarBundle:Product')->findByCompany($CompanyID);
+		$params    = array(
+			'title'          => 'Фирмы-производители | Видаль-Ветеринар',
+			'menu_veterinar' => 'company',
+			'company'        => $company,
+			'products'       => $products,
 		);
 
 		if (!empty($products)) {
 			$productIds          = $this->getProductIds($products);
+			$params['companies'] = $em->getRepository('VidalVeterinarBundle:Company')->findByProducts($productIds);
 			$params['pictures']  = $em->getRepository('VidalVeterinarBundle:Picture')->findByProductIds($productIds);
 		}
 
@@ -129,22 +150,46 @@ class VidalController extends Controller
 
 	/**
 	 * Страничка представительства и список препаратов
-	 * @Route("veterinar/inf_{InfoPageID}.{ext}", name="v_inf", requirements={"InfoPageID":"\d+"}, defaults={"ext"="htm"})
-	 * @Route("veterinar/linf_{InfoPageID}.{ext}", name="v_linf", requirements={"InfoPageID":"\d+"}, defaults={"ext"="htm"})
 	 *
+	 * @Route("veterinar/predstavitelstvo", name="predstavitelstvo")
+	 * @Template("VidalVeterinarBundle:Vidal:predstavitelstvo.html.twig")
+	 */
+	public function predstavitelstvaAction()
+	{
+		$em        = $this->getDoctrine()->getManager('veterinar');
+		$infoPages = $em->getRepository('VidalVeterinarBundle:InfoPage')->findAllOrdered();
+
+		return array(
+			'title'          => 'Представительства фирм | Видаль-Ветеринар',
+			'menu_veterinar' => 'infoPage',
+			'infoPages'      => $infoPages,
+		);
+	}
+
+	/**
+	 * Страничка представительства и список препаратов
+	 *
+	 * @Route("veterinar/predstavitelstvo/{Name}.{ext}", name="v_inf", defaults={"ext"="htm"})
 	 * @Template("VidalVeterinarBundle:Vidal:inf.html.twig")
 	 */
-	public function infAction($InfoPageID)
+	public function infAction($Name)
 	{
 		$em       = $this->getDoctrine()->getManager('veterinar');
-		$infoPage = $em->getRepository('VidalVeterinarBundle:InfoPage')->findByInfoPageID($InfoPageID);
+		$infoPage = $em->getRepository('VidalVeterinarBundle:InfoPage')->findOneByName($Name);
 
 		if (!$infoPage) {
 			throw $this->createNotFoundException();
 		}
 
+		$InfoPageID = $infoPage['InfoPageID'];
+
 		$picture     = $em->getRepository('VidalVeterinarBundle:Picture')->findByInfoPageID($InfoPageID);
-		$params      = array('infoPage' => $infoPage, 'picture' => $picture);
+		$params      = array(
+			'title'          => 'Представительства фирм | Видаль-Ветеринар',
+			'menu_veterinar' => 'infoPage',
+			'infoPage'       => $infoPage,
+			'picture'        => $picture,
+		);
 		$documentIds = $em->getRepository('VidalVeterinarBundle:Document')->findIdsByInfoPageID($InfoPageID);
 
 		if (!empty($documentIds)) {

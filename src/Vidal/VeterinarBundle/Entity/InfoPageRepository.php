@@ -8,7 +8,7 @@ class InfoPageRepository extends EntityRepository
 	public function findByLetter($l)
 	{
 		return $this->_em->createQuery('
-			SELECT i.InfoPageID, i.RusName, c.RusName Country
+			SELECT i.InfoPageID, i.RusName, c.RusName Country, i.Name
 			FROM VidalVeterinarBundle:InfoPage i
 			LEFT JOIN VidalVeterinarBundle:Country c WITH i.CountryCode = c
 			WHERE i.RusName LIKE :letter
@@ -22,7 +22,7 @@ class InfoPageRepository extends EntityRepository
 		$qb = $this->_em->createQueryBuilder();
 
 		$qb
-			->select('i.InfoPageID, i.RusName, country.RusName Country')
+			->select('i.InfoPageID, i.RusName, country.RusName Country, i.Name')
 			->from('VidalVeterinarBundle:InfoPage', 'i')
 			->leftJoin('VidalVeterinarBundle:Country', 'country', 'WITH', 'country.CountryCode = i.CountryCode')
 			->orderBy('i.RusName', 'ASC');
@@ -82,5 +82,26 @@ class InfoPageRepository extends EntityRepository
 			ORDER BY di.Ranking DESC
 		')->setParameter('DocumentID', $DocumentID)
 			->getResult();
+	}
+
+	public function findOneByName($name)
+	{
+		return $this->_em->createQuery('
+			SELECT i.InfoPageID, i.RusName, i.RusAddress, c.RusName Country
+			FROM VidalVeterinarBundle:InfoPage i
+			LEFT JOIN VidalVeterinarBundle:Country c WITH i.CountryCode = c
+			WHERE i.Name = :name
+		')->setParameter('name', $name)
+			->getOneOrNullResult();
+	}
+
+	public function findAllOrdered()
+	{
+		return $this->_em->createQuery('
+			SELECT i.Name, i.RusName, c.RusName Country
+			FROM VidalVeterinarBundle:InfoPage i
+			LEFT JOIN VidalVeterinarBundle:Country c WITH i.CountryCode = c
+			ORDER BY i.RusName
+		')->getResult();
 	}
 }
