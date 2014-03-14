@@ -63,7 +63,7 @@ class InfoPageRepository extends EntityRepository
 	public function findByInfoPageID($InfoPageID)
 	{
 		return $this->_em->createQuery('
-			SELECT i.InfoPageID, i.RusName, i.RusAddress, c.RusName Country
+			SELECT i.InfoPageID, i.RusName, i.RusAddress, c.RusName Country, i.Name
 			FROM VidalVeterinarBundle:InfoPage i
 			LEFT JOIN VidalVeterinarBundle:Country c WITH i.CountryCode = c
 			WHERE i = :InfoPageID
@@ -74,7 +74,7 @@ class InfoPageRepository extends EntityRepository
 	public function findByDocumentID($DocumentID)
 	{
 		return $this->_em->createQuery('
-			SELECT i.InfoPageID, i.RusName, c.RusName Country
+			SELECT i.InfoPageID, i.RusName, c.RusName Country, i.Name
 			FROM VidalVeterinarBundle:InfoPage i
 			LEFT JOIN VidalVeterinarBundle:DocumentInfoPage di WITH di.InfoPageID = i
 			LEFT JOIN VidalVeterinarBundle:Country c WITH i.CountryCode = c
@@ -87,7 +87,7 @@ class InfoPageRepository extends EntityRepository
 	public function findOneByName($name)
 	{
 		return $this->_em->createQuery('
-			SELECT i.InfoPageID, i.RusName, i.RusAddress, c.RusName Country
+			SELECT i.InfoPageID, i.RusName, i.RusAddress, c.RusName Country, i.Name
 			FROM VidalVeterinarBundle:InfoPage i
 			LEFT JOIN VidalVeterinarBundle:Country c WITH i.CountryCode = c
 			WHERE i.Name = :name

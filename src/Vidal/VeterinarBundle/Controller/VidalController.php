@@ -85,14 +85,48 @@ class VidalController extends Controller
 	/**
 	 * Клинико-фармакологический указатель ветеринарной базы
 	 *
-	 * @Route("veterinar/kfu/{name}", name = "v_kfu")
+	 * @Route("veterinar/kfu", name = "v_kfu")
 	 * @Template("VidalVeterinarBundle:Vidal:kfu.html.twig")
 	 */
-	public function kfuAction($name = null)
+	public function kfuAction()
 	{
 		$params = array(
+			'title'          => 'Клинико-фармакологические указатели | Видаль-Ветеринар',
 			'menu_veterinar' => 'kfu',
 		);
+
+		return $params;
+	}
+
+	/**
+	 * Клинико-фармакологический указатель ветеринарной базы
+	 *
+	 * @Route("veterinar/kfu/{url}.{ext}", name="v_kfu_item", defaults={"ext"="htm"}, options={"expose":true})
+	 * @Template("VidalVeterinarBundle:Vidal:kfu_item.html.twig")
+	 */
+	public function kfuItemAction($url)
+	{
+		$em  = $this->getDoctrine()->getManager('veterinar');
+		$kfu = $em->getRepository('VidalVeterinarBundle:ClinicoPhPointers')->findOneByUrl($url);
+
+		if (!$kfu) {
+			throw $this->createNotFoundException();
+		}
+
+		$documentIds = $this->getDocumentIds($kfu->getDocuments());
+		$params      = array(
+			'title'          => $kfu->getName() . ' | Клинико-фармакологические указатели | Видаль-Ветеринар',
+			'menu_veterinar' => 'kfu',
+			'kfu'            => $kfu,
+		);
+
+		if (!empty($documentIds)) {
+			$products            = $em->getRepository('VidalVeterinarBundle:Product')->findByDocumentIds($documentIds);
+			$productIds          = $this->getProductIds($products);
+			$params['products']  = $products;
+			$params['companies'] = $em->getRepository('VidalVeterinarBundle:Company')->findByProducts($productIds);
+			$params['pictures']  = $em->getRepository('VidalVeterinarBundle:Picture')->findByProductIds($productIds);
+		}
 
 		return $params;
 	}
@@ -407,6 +441,40 @@ class VidalController extends Controller
 		return $params;
 	}
 
+	/**
+	 * Функция генерации дерева с кодами АТС
+	 * @Route("/veterinar/kfu-generator", name="v_kfu_generator")
+	 * @Template("VidalVeterinarBundle:Vidal:kfu_generator.html.twig")
+	 */
+	public function kfuGeneratorAction()
+	{
+		$em    = $this->getDoctrine()->getManager('veterinar');
+		$repo  = $em->getRepository('VidalVeterinarBundle:ClinicoPhPointers');
+		$codes = $repo->findForTree();
+
+		# надо сгруппировать по родителю (запихпуть в list родителя дочерние)
+		for ($i = 11; $i > 0; $i = $i - 3) {
+			foreach ($codes as $codeValue => $code) {
+				if (strlen($codeValue) == $i) {
+					$key = substr($codeValue, 0, -3);
+					if (isset($codes[$key]) && strlen($codeValue) > strlen($key)) {
+						$codes[$key]['list'][$codeValue] = $code;
+					}
+				}
+			}
+		}
+
+		$grouped = array();
+
+		foreach ($codes as $codeValue => $code) {
+			if (strlen($codeValue) == 2) {
+				$grouped[] = $code;
+			}
+		}
+
+		return array('codes' => $grouped);
+	}
+
 	/** Получить массив идентификаторов продуктов */
 	private function getProductIds($products)
 	{
@@ -424,6 +492,17 @@ class VidalController extends Controller
 		}
 
 		return $productIds;
+	}
+
+	private function getDocumentIds($documents)
+	{
+		$ids = array();
+
+		foreach ($documents as $document) {
+			$ids[] = $document->getDocumentID();
+		}
+
+		return $ids;
 	}
 
 	/** Отсортировать препараты по имени */

@@ -29,11 +29,11 @@
 		<tr>
 			{% if picture %}
 				{% set path = '/upload/veterinar/infoPages/' ~ picture.path %}
-
-				<td class="infopage-logo">
-					<img src="{{ path }}"/>
-				</td>
-
+				{% if is_file(path) %}
+					<td class="infopage-logo">
+						<img src="{{ path }}"/>
+					</td>
+				{% endif %}
 			{% endif %}
 			<td class="infopage-about">
 				{{ infoPage.RusAddress|raw }}
@@ -43,7 +43,9 @@
 
 	{# препараты #}
 	<div class="block">
-		<div class="block-head">Лекарственные препараты</div>
+		<div class="block-anons">
+			<div class="block-head">Лекарственные препараты</div>
+		</div>
 		{% include 'VidalVeterinarBundle:Vidal:render_products.html.twig' %}
 	</div>
 {% endblock %}

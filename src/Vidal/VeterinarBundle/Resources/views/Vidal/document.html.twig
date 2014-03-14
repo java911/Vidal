@@ -7,7 +7,7 @@
 
 
 {% block title %}
-	<h1>{{ RusName|raw }}</h1>
+	<h1>{{ RusName }}</h1>
 {% endblock %}
 
 
@@ -17,7 +17,7 @@
 		<i></i>
 		<a href="{{ path('veterinar') }}">Видаль-Ветеринар</a>
 		<i></i>
-		<span>Препараты</span>
+		<span>{{ RusName }}</span>
 	</div>
 {% endblock %}
 
@@ -57,7 +57,7 @@
 				{% set owner = owners[0] %}
 				<div class="owners">
 					<span class="block-head">Владелец регистрационного удостоверения: </span>
-					<a href="{{ path('v_company', {'CompanyID':owner.CompanyID}) }}" class="no-underline">
+					<a href="{{ path('v_company', {'Name':owner.Name}) }}" class="no-underline">
 						{{ owner.LocalName|raw }}{{ owner.Property is not empty ? ', ' ~ owner.Property|raw|replace({'&amp;':'&'}) }}</a>
 					{% if owner.Country is not empty and owner.Country != 'Unknown' %}
 						<span class="small">({{ owner.Country }})</span>
@@ -69,7 +69,7 @@
 			{% for distributor in distributors %}
 				<div class="distributor">
 					<span class="block-head">{{ distributor.CompanyRusNote|capitalize }}:</span>
-					<a href="{{ path('v_company', {'CompanyID':distributor.CompanyID}) }}" class="no-underline">
+					<a href="{{ path('v_company', {'Name':distributor.Name}) }}" class="no-underline">
 						{{ distributor.LocalName|raw }}{{ distributor.Property is not empty ? ', ' ~ distributor.Property|raw|replace({'&amp;':'&'}) }}</a>
 					{% if distributor.Country is not empty and distributor.Country != 'Unknown' %}
 						<span class="small">({{ distributor.Country }})</span>
@@ -83,7 +83,7 @@
 					<span class="block-head">Представительство: </span>
 					{% for infoPage in infoPages %}
 						{% if loop.index > 1 %}<br/>{% endif %}
-						<a href="{{ path('v_inf', {'InfoPageID':infoPage.InfoPageID}) }}" class="no-underline">
+						<a href="{{ path('v_inf', {'Name':infoPage.Name}) }}" class="no-underline">
 							{{ infoPage.RusName|raw }}</a>
 						{% if infoPage.Country and infoPage.Country != 'Unknown' %}
 							<span class="small">({{ infoPage.Country }})</span>
@@ -170,7 +170,7 @@
 					{% if product is defined %}
 						<a href="{{ url('v_product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}" target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике Видаль-Ветеринар.</a>
 					{% else %}
-						<a href="{{ url('v_document', {'EngName':document.Name, 'DocumentID':document.DocumentID}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль-Ветеринар.</a>
+						<a href="{{ url('v_document', {'name':document.Name ~ '_' ~ document.DocumentID}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль-Ветеринар.</a>
 					{% endif %}
 				</textarea>
 			{% endspaceless %}

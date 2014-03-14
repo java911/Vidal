@@ -1,0 +1,24 @@
+{% extends 'VidalVeterinarBundle::vidal_layout.html.twig' %}
+
+
+{% block title %}
+	<h1>{{ kfu.Name }}</h1>
+{% endblock %}
+
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('veterinar') }}">Видаль-Ветеринар</a>
+		<i></i>
+		<a href="{{ path('v_kfu') }}" title="Клинико-фармакологический указатель">КФУ</a>
+		<i></i>
+		<span>{{ kfu.Name }}</span>
+	</div>
+{% endblock %}
+
+
+{% block vidal %}
+	{% include 'VidalVeterinarBundle:Vidal:render_products.html.twig' %}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% for code in codes %}
+	<li data="{{ code.url }}">
+		{% if code.list is defined and code.total %}
+			<span>{{ code.Name|raw }}</span>
+			<ul>{% include 'VidalVeterinarBundle:Vidal:kfu_generator_render.html.twig' with {'codes':code.list} %}</ul>
+		{% elseif code.total %}
+			<i>{{ code.Name|raw  }}</i>
+			<b>{{ code.total }}</b>
+		{% endif %}
+	</li>
+{% endfor %}
