@@ -1,11 +1,13 @@
 {% for atc in atcGrouped %}
 	<li data="{{ atc.ATCCode }}">
-		<span>{{ atc.ATCCode }}</span>
-		<i><a href="#">{{ atc.RusName|raw }}</a></i>
+		<span class="t">{{ atc.ATCCode }}</span>
 		{% if atc.list is not empty %}
+			<span>{{ atc.RusName|raw }}</span>
 			<ul>
 				{% include 'VidalDrugBundle:Search:tree_atc_render.html.twig' with {'atcGrouped':atc.list} %}
 			</ul>
+		{% else %}
+			<i>{{ atc.RusName|raw }}</i>
 		{% endif %}
 	</li>
 {% endfor %}

@@ -2,12 +2,12 @@
 
 
 {% set loz = asset('bundles/vidalmain/images/g2.gif') %}
-{% set RusName = (product is defined ? product.RusName : document.RusName)|raw %}
+{% set RusName = product is defined ? product.RusName : document.RusName %}
 {% set Composition = product is defined ? product.Composition : document.CompiledComposition %}
 
 
 {% block title %}
-	<h1>{{ RusName }}</h1>
+	<h1>{{ RusName|raw }}</h1>
 {% endblock %}
 
 
@@ -17,7 +17,7 @@
 		<i></i>
 		<a href="{{ path('veterinar') }}">Видаль-Ветеринар</a>
 		<i></i>
-		<span>{{ RusName }}</span>
+		<span>{{ RusName|raw }}</span>
 	</div>
 {% endblock %}
 

@@ -7,7 +7,7 @@
 				<a href="#products_table">{{ products|length == 1 ? 'Лекарственная форма' : 'Лекарственные формы' }}</a>
 			</div>
 		{% endif %}
-		{% if Composition is not empty %}
+		{% if Composition is defined and Composition is not empty %}
 			<div><a href="#composition">Форма выпуска, состав и упаковка</a></div>
 		{% endif %}
 		{% if document.ClPhGrDescription is not empty %}

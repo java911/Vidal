@@ -487,9 +487,10 @@ h1 {
 
 /* anons */
 .anons {
-	margin-top: 13px;
+	margin:     13px 0;
 	background: #f5f5f5;
 	padding:    3px 5px 5px;
+	color:      #476173;
 }
 .anons-head span {
 	color: #476173;
@@ -549,6 +550,10 @@ h1 {
 	border-radius:         4px;
 	-moz-border-radius:    4px;
 	-webkit-border-radius: 4px;
+}
+.block-info .block-head {
+	display: inline-block;
+	width:   145px;
 }
 
 /* atc */
@@ -903,16 +908,16 @@ h1 {
 .menu-pharmacy {
 	background-position: -390px 0;
 }
-.menu-drugs:hover {
+.menu-drugs:hover, .menu-drugs.active {
 	background-position: 0 -101px;
 }
-.menu-symptoms:hover {
+.menu-symptoms:hover, .menu-symptoms.active {
 	background-position: -130px -101px;
 }
-.menu-doctors:hover {
+.menu-doctors:hover, .menu-doctors.active {
 	background-position: -260px -101px;
 }
-.menu-pharmacy:hover {
+.menu-pharmacy:hover, .menu-pharmacy.active {
 	background-position: -390px -101px;
 }
 .menu-big a {
@@ -931,16 +936,16 @@ h1 {
 .menu-big .menu-pharmacy {
 	background-position: -390px -1px;
 }
-.menu-big .menu-drugs:hover {
+.menu-big .menu-drugs:hover, .menu-big .menu-drugs.active {
 	background-position: 0 -249px;
 }
-.menu-big .menu-symptoms:hover {
+.menu-big .menu-symptoms:hover, .menu-big .menu-symptoms.active {
 	background-position: -130px -249px;
 }
-.menu-big .menu-doctors:hover {
+.menu-big .menu-doctors:hover, .menu-big .menu-doctors.active {
 	background-position: -260px -249px;
 }
-.menu-big .menu-pharmacy:hover {
+.menu-big .menu-pharmacy:hover, .menu-big .menu-pharmacy.active {
 	background-position: -390px -249px;
 }
 
@@ -974,6 +979,9 @@ h1 {
 	-moz-border-radius:    4px;
 	-webkit-border-radius: 4px;
 	overflow:              hidden;
+}
+#vidal .tabs {
+	margin-bottom: 13px;
 }
 .tabs a {
 	display:         inline-block;
@@ -1014,4 +1022,39 @@ h1 {
 }
 .info-line span {
 	color: #333;
+}
+
+/* letters */
+.letters {
+	margin: 10px 0;
+}
+.letters > div {
+	overflow: hidden;
+}
+.letters input {
+	display:         inline-block;
+	width:           15px;
+	text-align:      center;
+	text-decoration: none;
+	color:           #62768A;
+	float:           left;
+	margin-right:    2px;
+	font-size:       14px;
+	outline:         none;
+	cursor:          pointer;
+	padding:         0;
+	background:      #F5F5F5;
+	border:          none;
+	line-height:     18px;
+}
+.letters input.en {
+	color: #434EA0;
+}
+.letters input.active, .letters input:hover {
+	background: #d71344;
+	color:      white;
+}
+.letters input:active {
+	position: relative;
+	top:      1px;
 }

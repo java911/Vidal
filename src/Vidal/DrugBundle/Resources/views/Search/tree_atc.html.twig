@@ -1,14 +1,13 @@
 <div class="block">
 	<div class="block-head atc-tree">
 		Список кодов АТХ
-		<a id="atc_expand" href="#" class="no-underline">развернуть</a>
-		<a id="atc_collapse" href="#" class="no-underline">свернуть</a>
+		<a id="atc_expand" href="#">развернуть</a>
+		<a id="atc_collapse" href="#">свернуть</a>
 	</div>
 	{% include 'VidalDrugBundle:Search:tree_atc_generated.html.twig' %}
 </div>
 
 
-<script src="{{ asset('bundles/vidalmain/javascripts/jquery.cookie.js') }}" type="text/javascript"></script>
 <script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -41,9 +40,9 @@
 		});
 		{% endfor %}
 
-		$("#ac_expand").click(function() {
+		$("#atc_expand").click(function() {
 			$tree.find('ul').show();
-			$tree.tfind('div.expandable-hitarea').removeClass('expandable-hitarea').addClass('collapsable-hitarea');
+			$tree.find('div.expandable-hitarea').removeClass('expandable-hitarea').addClass('collapsable-hitarea');
 			$tree.find('div.lastExpandable-hitarea').removeClass('lastExpandable-hitarea').addClass('lastCollapsable-hitarea');
 			$tree.find('li.expandable').removeClass('expandable').addClass('collapsable');
 			$tree.find('li.lastExpandable').removeClass('lastExpandable').addClass('lastCollapsable');
@@ -60,8 +59,8 @@
 			return false;
 		});
 
-		$tree.find('i > a').click(function() {
-			location.href = Routing.generate('atc', {'ATCCode': $(this).closest('li').attr('data')});
+		$tree.find('i').click(function() {
+			location.href = Routing.generate('atc', {'ATCCode': $(this).sibling('span').text()});
 			return false;
 		});
 	});

@@ -8,29 +8,29 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Команда генерации автодополнения показаний Nozology
+ * Команда генерации названий для автодополнения поисковой строки
  *
  * @package Vidal\DrugBundle\Command
  */
-class AutocompleteNozologyCommand extends ContainerAwareCommand
+class AutocompleteInfoPageCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:autocomplete_nozology')
-			->setDescription('Creates autocomplete_nozology type in Elastica');
+		$this->setName('vidal:autocomplete_infopage')
+			->setDescription('Creates autocomplete for InfoPage.RusName in Elastica');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln('--- vidal:autocomplete_nozology started');
+		$output->writeln('--- vidal:autocomplete_infopage started');
 
 		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
-		$nozologies = $em->getRepository('VidalDrugBundle:Nozology')->findAll();
+		$names = $em->getRepository('VidalDrugBundle:InfoPage')->getNames();
 
 		$elasticaClient = new \Elastica\Client();
 		$elasticaIndex  = $elasticaClient->getIndex('website');
-		$elasticaType   = $elasticaIndex->getType('autocomplete_nozology');
+		$elasticaType   = $elasticaIndex->getType('autocomplete_infopage');
 
 		# delete if exists
 		if ($elasticaType->exists()) {
@@ -43,7 +43,7 @@ class AutocompleteNozologyCommand extends ContainerAwareCommand
 
 		# Set mapping
 		$mapping->setProperties(array(
-			'code' => array('type' => 'string', 'include_in_all' => TRUE),
+			'id'   => array('type' => 'integer', 'include_in_all' => FALSE),
 			'name' => array('type' => 'string', 'include_in_all' => TRUE),
 		));
 
@@ -53,21 +53,19 @@ class AutocompleteNozologyCommand extends ContainerAwareCommand
 		# записываем на сервер документы автодополнения
 		$documents = array();
 
-		for ($i = 0; $i < count($nozologies); $i++) {
-			$documents[] = new \Elastica\Document($i + 1, array(
-				'code' => $nozologies[$i]['NozologyCode'],
-				'name' => $nozologies[$i]['Name'],
-			));
+		for ($i = 0; $i < count($names); $i++) {
+			$documents[] = new \Elastica\Document($i + 1, array('name' => $names[$i]));
 
 			if ($i && $i % 500 == 0) {
 				$elasticaType->addDocuments($documents);
 				$elasticaType->getIndex()->refresh();
 				$documents = array();
+				$output->writeln("... + $i");
 			}
 		}
 		$elasticaType->addDocuments($documents);
 		$elasticaType->getIndex()->refresh();
 
-		$output->writeln("+++ vidal:autocomplete_nozology loaded $i documents!");
+		$output->writeln("+++ vidal:autocomplete_infopage loaded $i documents!");
 	}
 }

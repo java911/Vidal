@@ -83,20 +83,142 @@ class CompanyRepository extends EntityRepository
 			->orderBy('c.LocalName', 'ASC')
 			->where("c.CountryEditionCode = 'RUS'");
 
-		# поиск по словам
+		# поиск по всем словам
 		$where = '';
 		$words = explode(' ', $q);
 
 		for ($i = 0; $i < count($words); $i++) {
 			$word = $words[$i];
 			if ($i > 0) {
-				$where .= ' OR ';
+				$where .= ' AND ';
 			}
 			$where .= "(c.LocalName LIKE '$word%' OR c.LocalName LIKE '% $word%')";
 		}
 
 		$qb->andWhere($where);
+		$results = $qb->getQuery()->getResult();
 
-		return $qb->getQuery()->getResult();
+		# поиск по одному слову
+		if (empty($results)) {
+			$where = '';
+			for ($i = 0; $i < count($words); $i++) {
+				$word = $words[$i];
+				if ($i > 0) {
+					$where .= ' OR ';
+				}
+				$where .= "(c.LocalName LIKE '$word%' OR c.LocalName LIKE '% $word%')";
+			}
+
+			$qb->where("c.CountryEditionCode = 'RUS'")
+				->andWhere($where);
+
+			return $qb->getQuery()->getResult();
+		}
+
+		return $results;
+	}
+
+	public function getQuery()
+	{
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb
+			->select('c')
+			->from('VidalDrugBundle:Company', 'c')
+			->where("c.CountryEditionCode = 'RUS'")
+			->orderBy('c.LocalName', 'ASC');
+
+		return $qb->getQuery();
+	}
+
+	public function getQueryByLetter($l)
+	{
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb
+			->select('c')
+			->from('VidalDrugBundle:Company', 'c')
+			->orderBy('c.LocalName', 'ASC')
+			->where("c.CountryEditionCode = 'RUS'")
+			->andWhere('c.LocalName LIKE :l')
+			->setParameter('l', $l . '%');
+
+		return $qb->getQuery();
+	}
+
+	public function findByQueryString($q)
+	{
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb
+			->select('c')
+			->from('VidalDrugBundle:Company', 'c')
+			->orderBy('c.LocalName', 'ASC')
+			->where("c.CountryEditionCode = 'RUS'");
+
+		# поиск по всем словам
+		$where = '';
+		$words = explode(' ', $q);
+
+		for ($i = 0; $i < count($words); $i++) {
+			$word = $words[$i];
+			if ($i > 0) {
+				$where .= ' AND ';
+			}
+			$where .= "(c.LocalName LIKE '$word%' OR c.LocalName LIKE '% $word%')";
+		}
+
+		$qb->andWhere($where);
+		$results = $qb->getQuery()->getResult();
+
+		# поиск по одному слову
+		if (empty($results)) {
+			$where = '';
+			for ($i = 0; $i < count($words); $i++) {
+				$word = $words[$i];
+				if ($i > 0) {
+					$where .= ' OR ';
+				}
+				$where .= "(c.LocalName LIKE '$word%' OR c.LocalName LIKE '% $word%')";
+			}
+
+			$qb->where("c.CountryEditionCode = 'RUS'")
+				->andWhere($where);
+
+			return $qb->getQuery()->getResult();
+		}
+
+		return $results;
+	}
+
+	public function getNames()
+	{
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb
+			->select('c.LocalName')
+			->from('VidalDrugBundle:Company', 'c')
+			->orderBy('c.LocalName', 'ASC')
+			->where("c.CountryEditionCode = 'RUS'");
+
+		$results = $qb->getQuery()->getResult();
+		$names   = array();
+
+		foreach ($results as $result) {
+			$name = preg_replace('/ &.+; /', ' ', $result['LocalName']);
+			$name = preg_replace('/&.+;/', ' ', $name);
+
+			$names[] = $name;
+		}
+
+		$uniques = array();
+
+		foreach ($names as $name) {
+			if (!isset($uniques[$name])) {
+				$uniques[$name] = '';
+			}
+		}
+
+		return array_keys($uniques);
 	}
 }

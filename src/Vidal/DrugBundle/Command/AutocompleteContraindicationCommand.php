@@ -65,7 +65,7 @@ class AutocompleteContraindicationCommand extends ContainerAwareCommand
 				$documents = array();
 			}
 		}
-
+		$elasticaType->addDocuments($documents);
 		$elasticaType->getIndex()->refresh();
 
 		$output->writeln("+++ vidal:autocomplete_contraindication loaded $i documents!");

@@ -241,97 +241,6 @@ class VidalController extends Controller
 	}
 
 	/**
-	 * Список препаратов по активному веществу: одно-монокомпонентные
-	 * @Route("veterinar/act_{MoleculeID}.{ext}", name="v_molecule", requirements={"MoleculeID":"\d+"}, defaults={"ext"="htm"})
-	 *
-	 * @Template("VidalVeterinarBundle:Vidal:molecule.html.twig")
-	 */
-	public function moleculeAction($MoleculeID)
-	{
-		$em       = $this->getDoctrine()->getManager('veterinar');
-		$molecule = $em->getRepository('VidalVeterinarBundle:Molecule')->findByMoleculeID($MoleculeID);
-
-		if (!$molecule) {
-			throw $this->createNotFoundException();
-		}
-
-		$document = $em->getRepository('VidalVeterinarBundle:Document')->findByMoleculeID($MoleculeID);
-
-		return array(
-			'molecule' => $molecule,
-			'document' => $document,
-		);
-	}
-
-	/**
-	 * Отображение списка препаратов, в состав которых входит активное вещество (Molecule)
-	 * @Route("veterinar/lact_{MoleculeID}.{ext}", name="v_molecule_included", requirements={"MoleculeID":"\d+"}, defaults={"ext"="htm"})
-	 *
-	 * @Template("VidalVeterinarBundle:Vidal:molecule_included.html.twig")
-	 */
-	public function moleculeIncludedAction($MoleculeID)
-	{
-		$em       = $this->getDoctrine()->getManager('veterinar');
-		$molecule = $em->getRepository('VidalVeterinarBundle:Molecule')->findByMoleculeID($MoleculeID);
-
-		if (!$molecule) {
-			throw $this->createNotFoundException();
-		}
-
-		# все продукты по активному веществу и отсеиваем дубли
-		$productsRaw = $em->getRepository('VidalVeterinarBundle:Product')->findByMoleculeID($MoleculeID);
-
-		if (empty($productsRaw)) {
-			return array('molecule' => $molecule);
-		}
-
-		$products   = array();
-		$productIds = array();
-
-		for ($i = 0; $i < count($productsRaw); $i++) {
-			$key = $productsRaw[$i]['ProductID'];
-
-			if (!isset($products[$key])) {
-				$products[$key] = $productsRaw[$i];
-				$productIds[]   = $key;
-			}
-		}
-
-		# препараты надо разбить на монокомнонентные и многокомпонентные группы
-		$components = $em->getRepository('VidalVeterinarBundle:Molecule')->countComponents($productIds);
-		$products1  = array();
-		$products2  = array();
-
-		foreach ($products as $id => $product) {
-			$components[$id] == 1
-				? $products1[$id] = $product
-				: $products2[$id] = $product;
-		}
-
-		uasort($products1, array($this, 'sortProducts'));
-		uasort($products2, array($this, 'sortProducts'));
-
-		return array(
-			'molecule'  => $molecule,
-			'products1' => $products1,
-			'products2' => $products2,
-			'companies' => $em->getRepository('VidalVeterinarBundle:Company')->findByProducts($productIds),
-			'pictures'  => $em->getRepository('VidalVeterinarBundle:Picture')->findByProductIds($productIds),
-		);
-	}
-
-	/**
-	 * Страничка рассшифровки МНН аббревиатур
-	 * @Route("veterinar/gnp.{ext}", name="v_gnp", defaults={"ext"="htm"})
-	 *
-	 * @Template("VidalVeterinarBundle:Vidal:gnp.html.twig")
-	 */
-	public function gnpAction()
-	{
-		return array();
-	}
-
-	/**
 	 * Описание по документу и отображение информации по препаратам или веществу
 	 * @Route("veterinar/opisanie/{name}.{ext}", name="v_document", requirements={"DocumentID":"\d+"}, defaults={"ext"="htm"})
 	 *
@@ -442,7 +351,7 @@ class VidalController extends Controller
 	}
 
 	/**
-	 * Функция генерации дерева с кодами АТС
+	 * Функция генерации дерева с кодами КФУ
 	 * @Route("/veterinar/kfu-generator", name="v_kfu_generator")
 	 * @Template("VidalVeterinarBundle:Vidal:kfu_generator.html.twig")
 	 */

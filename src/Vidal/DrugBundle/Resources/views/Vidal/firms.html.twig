@@ -3,19 +3,20 @@
 
 {% block vidal %}
 	{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' %}
-	{% include 'VidalDrugBundle:Vidal:inf_form.html.twig' %}
+	{% include 'VidalDrugBundle:Vidal:firms_form.html.twig' %}
 
 	<div class="info-line">
 		{% if l %}
-			Найдено представительств фирм на букву <i>{{ l }}</i>:
+			Найдено фирм-производителей {{ l in ['1','2','3','4','5','6','7','8','9','0'] ? 'c цифры' : 'на букву' }}
+			<i>{{ l }}</i>:
 		{% elseif q %}
 			{% if pagination.totalItemCount %}
-				Найдено представительств фирм запросу <i>{{ q }}</i>:
+				Найдено фирм-производителей по запросу <i>{{ q }}</i>:
 			{% else %}
-				Не найдено представительств фирм по запросу <i>{{ q }}</i>
+				Не найдено фирм-производителей по запросу <i>{{ q }}</i>
 			{% endif %}
 		{% else %}
-			Найдено представительств фирм:
+			Найдено фирм-производителей:
 		{% endif %}
 		<span>{{ pagination.totalItemCount }}</span>
 	</div>
@@ -26,13 +27,13 @@
 				<td>Название</td>
 				<td>Страна</td>
 			</tr>
-			{% for inf in pagination %}
+			{% for company in pagination %}
 				<tr>
 					<td>
 						<a class="no-underline"
-						   href="{{ path('inf_item', {'InfoPageID':inf.InfoPageID}) }}">{{ inf.RusName|raw }}</a>
+						   href="{{ path('firm_item', {'CompanyID':company.CompanyID}) }}">{{ company|raw }}</a>
 					</td>
-					<td>{{ inf.CountryCode }}</td>
+					<td>{{ company.CountryCode }}</td>
 				</tr>
 			{% endfor %}
 		</table>

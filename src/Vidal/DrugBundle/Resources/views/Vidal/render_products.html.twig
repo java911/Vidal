@@ -62,7 +62,7 @@
 								произведено:
 							{% endif %}
 						</span>
-							<a class="no-underline" href="{{ path('company', {'CompanyID':company.CompanyID}) }}">
+							<a class="no-underline" href="{{ path('firm_item', {'CompanyID':company.CompanyID}) }}">
 								{{ company.LocalName|raw }}
 							</a>
 							{% if company.Country is not empty %}

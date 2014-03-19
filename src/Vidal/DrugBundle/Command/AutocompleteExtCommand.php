@@ -56,18 +56,19 @@ class AutocompleteExtCommand extends ContainerAwareCommand
 		# Send mapping to type
 		$mapping->send();
 
-		# записываем на сервер документы автодополнения
-		$documents = array();
-
 		for ($i = 0; $i < count($names); $i++) {
+			$documents = array();
 			$documents[] = new \Elastica\Document($i + 1, array('name' => $names[$i]));
 
 			if ($i && $i % 500 == 0) {
 				$elasticaType->addDocuments($documents);
 				$elasticaType->getIndex()->refresh();
+				$documents = array();
 				$output->writeln("... + $i");
 			}
 		}
+		$elasticaType->addDocuments($documents);
+		$elasticaType->getIndex()->refresh();
 
 		$output->writeln("+++ vidal:autocomplete_ext loaded $i documents!");
 	}

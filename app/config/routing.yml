@@ -1,13 +1,13 @@
-vidal_veterinar:
-    resource: "@VidalVeterinarBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
 login:
     pattern: /login-submit
 
 logout:
     pattern: /logout
+
+vidal_veterinar:
+    resource: "@VidalVeterinarBundle/Controller/"
+    type:     annotation
+    prefix:   /
 
 vidal_main:
     resource: "@VidalMainBundle/Controller/"
