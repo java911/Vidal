@@ -51,20 +51,36 @@
                 {{ render(controller('VidalMainBundle:Symptom:body')) }}
             </td>
             <td style="vertical-align: top; text-align: right">
-               <ul class="list-disease" id="select-symptom">
-                   <li>болит голова</li>
-                   <li>болит голова</li>
-                   <li>болит голова</li>
-                   <li>болит голова</li>
-                   <li>болит голова</li>
-                   <li>болит голова</li>
-                   <li>болит голова</li>
-                   <li>болит голова</li>
-                   <li>болит голова</li>
-                   <li>болит голова</li>
-                   <li>болит голова</li>
-                   <li>болит голова</li>
-               </ul>
+                <ul class="list-disease" id="select-symptom">
+                    <li>болит голова</li>
+                    <li>болит голова</li>
+                    <li>болит голова</li>
+                    <li>болит голова</li>
+                    <li>болит голова</li>
+                    <li>болит голова</li>
+                    <li>болит голова</li>
+                    <li>болит голова</li>
+                    <li>болит голова</li>
+                    <li>болит голова</li>
+                    <li>болит голова</li>
+                    <li>болит голова</li>
+                </ul>
+                <br />
+                <br />
+                <ul class="list-disease" id="select-state">
+                    <li>болит голова</li>
+                    <li>болит голова</li>
+                    <li>болит голова</li>
+                    <li>болит голова</li>
+                    <li>болит голова</li>
+                    <li>болит голова</li>
+                    <li>болит голова</li>
+                    <li>болит голова</li>
+                    <li>болит голова</li>
+                    <li>болит голова</li>
+                    <li>болит голова</li>
+                    <li>болит голова</li>
+                </ul>
             </td>
         </tr>
     </table>
@@ -81,6 +97,7 @@
         var sex = 1;
         var party = 'all';
         var subParty = 'all';
+        var symptom  = 'all';
 
         $(document).ready(function(){
             $('select').chosen({
@@ -96,14 +113,14 @@
                 return false;
             });
 
-        // При смене пола меняет картику
+            // При смене пола меняет картику
             $('#select-sex').change(function(){
                 sex = $('#select-sex').val();
                 renderBody();
             });
 
-            $('#select-party').change(function(){
-                subParty = $(this).val();
+            $('#select-party li').change(function(){
+                subParty = $(this).attr('data-key');
                 renderSymptom();
             });
 
@@ -127,7 +144,19 @@
                         $("#body-render").html(html);
                     }
                 });
-            }
+            };
+
+            function renderState(){
+                url  = Routing.generate('render_state', { 'symptom' : symptom });
+                $.ajax({
+                    url: url,
+                    cache: false,
+                    success: function(html){
+                        $('#select-state').html(html);
+                    }
+                });
+            };
+
         });
     </script>
 {% endblock %}
@@ -142,7 +171,7 @@
         .list-disease{
             border: 1px solid #D71344;
             border-radius: 4px;
-            height: 400px;
+            height: 300px;
             overflow-y: auto;
             padding-left: 0;
         }

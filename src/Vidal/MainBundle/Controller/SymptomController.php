@@ -22,11 +22,23 @@ class SymptomController extends Controller{
      * @Route("/symptom/{party}", name="render_symptom", defaults = { "party"="all" }, options={"expose"=true})
      * @Template("VidalMainBundle:Disease:symptomList.html.twig")
      */
-    public function SymptomListAction($party = 'all'){
+    public function symptomListAction($party = 'all'){
         $party = $this->getDoctrine()->getRepository('VidalMainBundle:DiseaseParty')->findOneById($party);
         $symptoms = $party->getSymptoms();
         return array(
             'symptoms'   => $symptoms,
+        );
+    }
+
+    /**
+     * @Route("/states/{symptom}", name="render_state", defaults = { "symptom"="all" }, options={"expose"=true})
+     * @Template("VidalMainBundle:Disease:symptomList.html.twig")
+     */
+    public function stateListAction($symptom = 'all'){
+        $symptom = $this->getDoctrine()->getRepository('VidalMainBundle:DiseaseSymptom')->findOneById($symptom);
+        $states = $symptom->getStates();
+        return array(
+            'states'   => $states,
         );
     }
 
