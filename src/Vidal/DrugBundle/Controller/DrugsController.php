@@ -5,9 +5,13 @@ namespace Vidal\DrugBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DrugsController extends Controller
 {
+	const PHARM_PER_PAGE = 50;
+
 	/**
 	 * Препараты по коду АТХ
 	 *
@@ -77,7 +81,6 @@ class DrugsController extends Controller
 	public function atcAction()
 	{
 		$params = array(
-			'menu'       => 'drugs',
 			'menu_drugs' => 'atc',
 		);
 
@@ -87,7 +90,7 @@ class DrugsController extends Controller
 	/**
 	 * Препараты по КФУ
 	 *
-	 * @Route("drugs/kfu/{url}", name="kfu_item")
+	 * @Route("drugs/kfu/{url}", name="kfu_item", options={"expose":true})
 	 * @Template("VidalDrugBundle:Drugs:kfu_item.html.twig")
 	 */
 	public function kfuItemAction($url)
@@ -95,13 +98,23 @@ class DrugsController extends Controller
 		$em  = $this->getDoctrine()->getManager('drug');
 		$kfu = $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->findOneByUrl($url);
 
-		var_dump($kfu);
-		exit;
+		if (!$kfu) {
+			throw $this->createNotFoundException();
+		}
 
 		$params = array(
-			'menu'       => 'drugs',
 			'menu_drugs' => 'kfu',
+			'kfu'        => $kfu,
 		);
+
+		$products = $em->getRepository('VidalDrugBundle:Product')->findByKfu($kfu);
+
+		if (!empty($products)) {
+			$productIds          = $this->getProductIds($products);
+			$params['products']  = $products;
+			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
+			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
+		}
 
 		return $params;
 	}
@@ -115,7 +128,6 @@ class DrugsController extends Controller
 	public function kfuAction()
 	{
 		$params = array(
-			'menu'       => 'drugs',
 			'menu_drugs' => 'kfu',
 		);
 
@@ -155,5 +167,212 @@ class DrugsController extends Controller
 		}
 
 		return array('codes' => $grouped);
+	}
+
+	/**
+	 * Список компаний
+	 *
+	 * @Route("drugs/pharm-groups", name="pharm")
+	 * @Template("VidalDrugBundle:Drugs:pharm.html.twig")
+	 */
+	public function pharmAction(Request $request)
+	{
+		$em = $this->getDoctrine()->getManager('drug');
+		$q  = $request->query->get('q', null);
+		$l  = $request->query->get('l', null);
+		$p  = $request->query->get('p', 1);
+
+		//		$companies = $em->getRepository('VidalDrugBundle:PhThGroups')->getQuery()->getResult();
+		//		$letters   = array();
+		//		foreach ($companies as $company) {
+		//			$letter = mb_strtoupper(mb_substr($company->getName(), 0, 1, 'utf-8'), 'utf-8');
+		//			if (!isset($letters[$letter])) {
+		//				$letters[$letter] = '';
+		//			}
+		//		}
+		//		var_dump($letters);
+		//		exit;
+
+		if ($l) {
+			$query = $em->getRepository('VidalDrugBundle:PhThGroups')->getQueryByLetter($l);
+		}
+		elseif ($q) {
+			$query = $em->getRepository('VidalDrugBundle:PhThGroups')->findByQueryString($q);
+		}
+		else {
+			$query = $em->getRepository('VidalDrugBundle:PhThGroups')->getQuery();
+		}
+
+		$params = array(
+			'menu_drugs' => 'pharm',
+			'title'      => 'Фирмы-производители',
+			'q'          => $q,
+			'l'          => $l,
+			'pagination' => $this->get('knp_paginator')->paginate($query, $p, self::PHARM_PER_PAGE),
+		);
+
+		return $params;
+	}
+
+	/**
+	 * Список препаратов по фармако-терапевтической группе
+	 *
+	 * @Route("drugs/pharm-group/{id}", name="pharm_item", defaults={"id":"\d+"})
+	 * @Template("VidalDrugBundle:Drugs:pharm_item.html.twig")
+	 */
+	public function pharmItemAction($id)
+	{
+		$em        = $this->getDoctrine()->getManager('drug');
+		$phthgroup = $em->getRepository('VidalDrugBundle:PhThGroups')->findById($id);
+
+		if ($phthgroup === null) {
+			throw $this->createNotFoundException();
+		}
+
+		$params = array('phthgroup' => $phthgroup);
+
+		$products = $em->getRepository('VidalDrugBundle:Product')->findByPhThGroup($id);
+
+		if (!empty($products)) {
+			$productIds          = $this->getProductIds($products);
+			$params['products']  = $products;
+			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
+			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
+		}
+
+		return $params;
+	}
+
+	/**
+	 * Список препаратов и активных веществ по показанию (Nozology)
+	 *
+	 * @Route("drugs/nosology/{Code}", name="nosology_item", options={"expose":true})
+	 * @Route("poisk_preparatov/lno_{Code}", name="nosology_item_old")
+	 * @Template("VidalDrugBundle:Drugs:nosology_item.html.twig")
+	 */
+	public function nosologyItemAction(Request $request, $Code)
+	{
+		$em        = $this->getDoctrine()->getManager('drug');
+		$routeName = $request->get('_route');
+
+		if ($routeName == 'nosology_item_old') {
+			if ($pos = strpos($Code, '.html')) {
+				$Code = substr($Code, 0, $pos);
+			}
+			elseif ($pos = strpos($Code, '.htm')) {
+				$Code = substr($Code, 0, $pos);
+			}
+		}
+
+		$nozology = $em->getRepository('VidalDrugBundle:Nozology')->findByCode($Code);
+
+		if ($nozology === null) {
+			throw $this->createNotFoundException();
+		}
+
+		$documents = $em->getRepository('VidalDrugBundle:Document')->findByNozologyCode($Code);
+		$params    = array('nozology' => $nozology);
+
+		if (!empty($documents)) {
+			$params['molecules'] = $em->getRepository('VidalDrugBundle:Molecule')->findByDocuments1($documents);
+			$products1           = $em->getRepository('VidalDrugBundle:Product')->findByDocuments25($documents);
+			$products2           = $em->getRepository('VidalDrugBundle:Product')->findByDocuments4($documents);
+			$products            = array();
+
+			# надо слить продукты, исключая повторения и отсортировать по названию
+			foreach ($products1 as $id => $product) {
+				$products[] = $product;
+			}
+			foreach ($products2 as $id => $product) {
+				if (!isset($products1[$id])) {
+					$products[] = $product;
+				}
+			}
+			usort($products, function ($a, $b) {
+				return strcmp($a['RusName'], $b['RusName']);
+			});
+
+			$productIds          = $this->getProductIds($products);
+			$params['products']  = $products;
+			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
+			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
+		}
+
+		return $params;
+	}
+
+	/**
+	 * Список нозологических указателей
+	 *
+	 * @Route("drugs/nosology", name="nosology")
+	 * @Template("VidalDrugBundle:Drugs:nosology.html.twig")
+	 */
+	public function nosologyAction()
+	{
+		return array('menu_drugs' => 'nosology');
+	}
+
+	/**
+	 * Функция генерации дерева нозологических указателей
+	 *
+	 * @Route("drugs/nosology-generator", name="nosology_generator")
+	 * @Template("VidalDrugBundle:Drugs:nosology_generator.html.twig")
+	 */
+	public function nosologyGeneratorAction()
+	{
+		$em         = $this->getDoctrine()->getManager('drug');
+		$nozologies = $em->getRepository('VidalDrugBundle:Nozology')->findForTree();
+
+		$finds = array();
+
+		$i = 0;
+		foreach ($nozologies as $code => &$n) {
+			$n['i']  = $i;
+			$finds[] = $n;
+			$i++;
+		}
+
+		# надо сгруппировать по родителю (запихпуть в list родителя дочерние)
+		for ($i = 3; $i > 0; $i--) {
+			foreach ($nozologies as $code => &$nozology) {
+				if ($nozology['Level'] == $i) {
+					# надо найти родителя
+					$prev  = false;
+					$minus = 1;
+					while (!$prev) {
+						$prevIndex = $nozology['i'] - $minus;
+						if ($finds[$prevIndex]['Level'] < $nozology['Level']) {
+							$prev = $finds[$prevIndex];
+						}
+						$minus++;
+					}
+					$prevCode = $prev['Code'];
+					$nozologies[$prevCode]['list'][] = $nozology;
+				}
+			}
+		}
+
+		# надо взять только верхний уровень
+		$grouped = array();
+
+		foreach ($nozologies as $code => $nozology) {
+			if ($nozology['Level'] == 0) {
+				$grouped[] = $nozology;
+			}
+		}
+
+		return array('codes' => $grouped);
+	}
+
+	/** Получить массив идентификаторов продуктов */
+	private function getProductIds($products)
+	{
+		$productIds = array();
+
+		foreach ($products as $product) {
+			$productIds[] = $product['ProductID'];
+		}
+
+		return $productIds;
 	}
 }

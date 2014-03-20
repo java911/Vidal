@@ -1,4 +1,9 @@
 $(document).ready(function() {
+	jQuery.ui.autocomplete.prototype._resizeMenu = function () {
+		var ul = this.menu.element;
+		ul.outerWidth(534);
+	}
+
 	$('#search_form .search-query')
 		.autocomplete({
 			minLength: 2,

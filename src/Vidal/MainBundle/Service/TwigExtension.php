@@ -32,7 +32,8 @@ class TwigExtension extends \Twig_Extension
 		return array(
 			new \Twig_SimpleFilter('dateRu', array($this, 'dateRu')),
 			new \Twig_SimpleFilter('shortcut', array($this, 'shortcut')),
-			new \Twig_SimpleFilter('dateCreated', array($this, 'dateCreated'))
+			new \Twig_SimpleFilter('dateCreated', array($this, 'dateCreated')),
+			new \Twig_SimpleFilter('upperFirst', array($this, 'upperFirst')),
 		);
 	}
 
@@ -141,5 +142,10 @@ class TwigExtension extends \Twig_Extension
 		$reflect = new \ReflectionClass($object);
 
 		return $reflect->getShortName();
+	}
+
+	public function upperFirst($str)
+	{
+		return mb_strtoupper(mb_substr($str, 0, 1, 'utf-8'), 'utf-8') . mb_substr($str, 1, null, 'utf-8');
 	}
 }

@@ -6,7 +6,7 @@
 		{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' %}
 	{% endif %}
 
-	<div class="anons">Клинико-фармакологические указатели</div>
+	<div class="anons anons-drugs">Клинико-фармакологические указатели</div>
 
 	<div class="treeview-controls">
 		<a id="tree_expand" href="#">развернуть</a>
@@ -55,7 +55,7 @@
 			});
 
 			$tree.find('i').click(function() {
-				location.href = Routing.generate('atc', {'ATCCode': $(this).siblings('span').text()});
+				location.href = Routing.generate('kfu_item', {'url': $(this).closest('li').attr('data') });
 				return false;
 			});
 		});

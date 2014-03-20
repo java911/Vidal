@@ -39,6 +39,9 @@ class Nozology
 	 */
 	protected $articles;
 
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $total;
+
 	public function __construct()
 	{
 		$this->documents = new ArrayCollection();
@@ -160,5 +163,21 @@ class Nozology
 	public function getArticles()
 	{
 		return $this->articles;
+	}
+
+	/**
+	 * @param mixed $total
+	 */
+	public function setTotal($total)
+	{
+		$this->total = $total;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTotal()
+	{
+		return $this->total;
 	}
 }

@@ -11,13 +11,13 @@ class KfuTotalCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('drug:kfu_total')
+		$this->setName('vidal:kfu_total')
 			->setDescription('Kfu.total generator');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln('+++ drug:kfu_total started');
+		$output->writeln('+++ vidal:kfu_total started');
 
 		$em       = $this->getContainer()->get('doctrine')->getManager('drug');
 		$repo     = $em->getRepository('VidalDrugBundle:ClinicoPhPointers');
@@ -76,7 +76,7 @@ class KfuTotalCommand extends ContainerAwareCommand
 			}
 		}
 
-		$output->writeln('--- veterinar:drug_total completed');
+		$output->writeln('--- vidal:drug_total completed');
 	}
 
 	private function getDocumentIds($documents)

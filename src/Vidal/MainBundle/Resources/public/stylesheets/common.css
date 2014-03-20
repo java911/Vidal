@@ -492,6 +492,9 @@ h1 {
 	padding:    3px 5px 5px;
 	color:      #476173;
 }
+.anons-drugs {
+	margin-top: 0;
+}
 .anons-head span {
 	color: #476173;
 }
@@ -980,13 +983,14 @@ h1 {
 	-webkit-border-radius: 4px;
 	overflow:              hidden;
 }
-#vidal .tabs {
-	margin-bottom: 13px;
+.menu-drugs .tabs {
+	margin-bottom: 20px;
+	display:       inline-block;
 }
 .tabs a {
 	display:         inline-block;
 	float:           left;
-	padding:         6px 12px 7px;
+	padding:         6px 8px 7px;
 	text-decoration: none;
 	color:           #2e3f51;
 	font-weight:     bold;

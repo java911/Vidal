@@ -3,47 +3,44 @@
 
 {% block vidal %}
 	{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' %}
-	{% include 'VidalDrugBundle:Vidal:firms_form.html.twig' %}
+
+	<div class="anons anons-drugs">
+		Фармако-терапевтические группы ГосРеестра МинЗдрава РФ
+	</div>
+
+	{% include 'VidalDrugBundle:Drugs:pharm_form.html.twig' %}
 
 	<div class="info-line">
 		{% if l %}
-			Найдено фирм-производителей {{ l in ['1','2','3','4','5','6','7','8','9','0'] ? 'c цифры' : 'на букву' }}
-			<i>{{ l }}</i>:
+			Найдено групп на букву <i>{{ l }}</i>:
 			<span>{{ pagination.totalItemCount }}</span>
 		{% elseif q %}
 			{% if pagination.totalItemCount %}
-				Найдено фирм-производителей по запросу <i>{{ q }}</i>:
+				Найдено групп по запросу <i>{{ q }}</i>:
 				<span>{{ pagination.totalItemCount }}</span>
 			{% else %}
-				Не найдено фирм-производителей по запросу <i>{{ q }}</i>
+				Не найдено групп по запросу <i>{{ q }}</i>
 			{% endif %}
 		{% else %}
-			Найдено фирм-производителей:
+			Найдено групп:
 			<span>{{ pagination.totalItemCount }}</span>
 		{% endif %}
 	</div>
 
 	{% if pagination is defined and pagination.totalItemCount %}
-		<table class="products-table">
-			<tr class="products-table-header">
-				<td>Название</td>
-				<td>Страна</td>
-			</tr>
-			{% for company in pagination %}
-				<tr>
-					<td>
-						<a class="no-underline"
-						   href="{{ path('firm_item', {'CompanyID':company.CompanyID}) }}">{{ company|raw }}</a>
-					</td>
-					<td>{{ company.CountryCode }}</td>
-				</tr>
+		<ul class="pharm ul-style">
+			{% for pharm in pagination %}
+				<li>
+					<a href="{{ path('pharm_item', {'id': pharm.id}) }}">{{ pharm }}</a>
+				</li>
 			{% endfor %}
-		</table>
+		</ul>
 
 		<div class="navigation">
 			{{ knp_pagination_render(pagination) }}
 		</div>
 	{% endif %}
+
 {% endblock %}
 
 
@@ -61,6 +58,16 @@
 		}
 		#form_input {
 			width: 408px;
+		}
+		.pharm li {
+			margin-bottom: 5px;
+			line-height:   13px;
+		}
+		.pharm a {
+			text-decoration: none;
+		}
+		.pharm a:hover {
+			text-decoration: underline;
 		}
 	</style>
 {% endblock %}

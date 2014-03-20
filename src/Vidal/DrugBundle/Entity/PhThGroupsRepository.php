@@ -25,4 +25,100 @@ class PhThGroupsRepository extends EntityRepository
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
 	}
+
+	public function getQuery()
+	{
+		return $this->_em->createQuery('
+		 	SELECT g
+		 	FROM VidalDrugBundle:PhThGroups g
+		 	ORDER BY g.Name
+		');
+	}
+
+	public function getQueryByLetter($l)
+	{
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb
+			->select('g')
+			->from('VidalDrugBundle:PhThGroups', 'g')
+			->orderBy('g.Name', 'ASC')
+			->where('g.Name LIKE :l')
+			->setParameter('l', $l . '%');
+
+		return $qb->getQuery();
+	}
+
+	public function findByQueryString($q)
+	{
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb
+			->select('g')
+			->from('VidalDrugBundle:PhThGroups', 'g')
+			->orderBy('g.Name', 'ASC');
+
+		# поиск по всем словам
+		$where = '';
+		$words = explode(' ', $q);
+
+		for ($i = 0; $i < count($words); $i++) {
+			$word = $words[$i];
+			if ($i > 0) {
+				$where .= ' AND ';
+			}
+			$where .= "(g.Name LIKE '$word%' OR g.Name LIKE '% $word%')";
+		}
+
+		$qb->where($where);
+		$results = $qb->getQuery()->getResult();
+
+		# поиск по одному слову
+		if (empty($results)) {
+			$where = '';
+			for ($i = 0; $i < count($words); $i++) {
+				$word = $words[$i];
+				if ($i > 0) {
+					$where .= ' OR ';
+				}
+				$where .= "(g.Name LIKE '$word%' OR g.Name LIKE '% $word%')";
+			}
+
+			$qb->where($where);
+
+			return $qb->getQuery()->getResult();
+		}
+
+		return $results;
+	}
+
+	public function getNames()
+	{
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb
+			->select('g.Name')
+			->from('VidalDrugBundle:PhThGroups', 'g')
+			->orderBy('g.Name', 'ASC');
+
+		$results = $qb->getQuery()->getResult();
+		$names   = array();
+
+		foreach ($results as $result) {
+			$name = preg_replace('/ &.+; /', ' ', $result['Name']);
+			$name = preg_replace('/&.+;/', ' ', $name);
+
+			$names[] = $name;
+		}
+
+		$uniques = array();
+
+		foreach ($names as $name) {
+			if (!isset($uniques[$name])) {
+				$uniques[$name] = '';
+			}
+		}
+
+		return array_keys($uniques);
+	}
 }

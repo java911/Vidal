@@ -1,0 +1,15 @@
+{% for code in codes %}
+	<li data="{{ code.Code }}">
+		{% if code.list is defined %}
+			<span class="t">{{ code.Code }}</span>
+			{% if code.total %}
+				<i>{{ code.Name|raw }}</i>
+			{% else %}
+				<span>{{ code.Name|raw }}</span>
+			{% endif %}
+			<ul>{% include 'VidalDrugBundle:Drugs:nosology_generator_render.html.twig' with {'codes':code.list} %}</ul>
+		{% else %}
+			<i>{{ code.Name|raw }}</i>
+		{% endif %}
+	</li>
+{% endfor %}

@@ -270,7 +270,6 @@ class ProductRepository extends EntityRepository
 		$words = explode(' ', $q);
 
 		# поиск по всем словам вместе
-		$qbAnd = clone $qb;
 
 		for ($i = 0; $i < count($words); $i++) {
 			$word = $words[$i];
@@ -280,8 +279,8 @@ class ProductRepository extends EntityRepository
 			$where .= "(p.RusName LIKE '$word%' OR p.EngName LIKE '$word%' OR p.RusName LIKE '% $word%' OR p.EngName LIKE '% $word%')";
 		}
 
-		$qbAnd->andWhere($where);
-		$productsRaw = $qbAnd->getQuery()->getResult();
+		$qb->andWhere($where);
+		$productsRaw = $qb->getQuery()->getResult();
 
 		# поиск по любому из слов, если по всем не дал результата
 		if (empty($productsRaw)) {
@@ -295,7 +294,19 @@ class ProductRepository extends EntityRepository
 				$where .= "(p.RusName LIKE '$word%' OR p.EngName LIKE '$word%' OR p.RusName LIKE '% $word%' OR p.EngName LIKE '% $word%')";
 			}
 
-			$productsRaw = $qb->getQuery()->getResult();
+			# включать ли бады
+			if ($badIncluded) {
+				$qb->where("p.ProductTypeCode IN ('DRUG', 'GOME', 'BAD')");
+			}
+			else {
+				$qb->where("p.ProductTypeCode IN ('DRUG', 'GOME')");
+			}
+
+			$productsRaw = $qb
+				->andWhere("p.CountryEditionCode = 'RUS'")
+				->andWhere('p.MarketStatusID IN (1,2)')
+				->andWhere($where)
+				->getQuery()->getResult();
 		}
 
 		$products        = array();
@@ -534,6 +545,28 @@ class ProductRepository extends EntityRepository
 		}
 
 		return $marketStatuses;
+	}
+
+	public function findByKfu($kfu)
+	{
+		$id = $kfu->getClPhPointerID();
+
+		return $this->_em->createQuery('
+			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
+				p.RegistrationNumber, p.RegistrationDate,
+				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
+				d.Name DocumentName
+			FROM VidalDrugBundle:Product p
+			LEFT JOIN VidalDrugBundle:ProductDocument pd WITH pd.ProductID = p
+			LEFT JOIN VidalDrugBundle:Document d WITH pd.DocumentID = d
+
+			WHERE mn.MoleculeID = :MoleculeID AND
+				p.CountryEditionCode = \'RUS\' AND
+				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
+				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
+			ORDER BY d.ArticleID ASC
+		')->setParameter('MoleculeID', $MoleculeID)
+			->getResult();
 	}
 
 	public function findAllNames()

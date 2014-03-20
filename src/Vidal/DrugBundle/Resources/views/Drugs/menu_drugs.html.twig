@@ -1,10 +1,21 @@
-<div class="tabs">
-	<a href="{{ path('atc') }}" {{ menu_drugs == 'atc' ? 'class="active"' }}
-	   title="Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)">АТХ</a>
-	<a href="{{ path('kfu') }}" {{ menu_drugs == 'kfu' ? 'class="active"' }}
-	   title="Клинико-фармакологические указатели">КФУ</a>
-	<a href="{{ path('firms') }}" {{ menu_drugs == 'firms' ? 'class="active"' }}
-		>Фирмы-производители</a>
-	<a href="{{ path('inf') }}" {{ menu_drugs == 'inf' ? 'class="active"' }}
-		title="Представительства фирм">Представительства</a>
+<div class="menu-drugs">
+	<div class="tabs">
+		<a href="{{ path('atc') }}" {{ menu_drugs == 'atc' ? 'class="active"' }}
+		   title="Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)">АТХ</a>
+
+		<a href="{{ path('kfu') }}" {{ menu_drugs == 'kfu' ? 'class="active"' }}
+		   title="Клинико-фармакологические указатели">КФУ</a>
+
+		<a href="{{ path('pharm') }}" {{ menu_drugs == 'pharm' ? 'class="active"' }}
+		   title="Фармако-терапевтические группы ГосРеестра МинЗдрава РФ">ФТГ</a>
+
+		<a href="{{ path('nosology') }}" {{ menu_drugs == 'nosology' ? 'class="active"' }}
+			>Нозологические указатели</a>
+
+		<a href="{{ path('firms') }}" {{ menu_drugs == 'firms' ? 'class="active"' }}
+		   title="Фирмы-производители">Фирмы</a>
+
+		<a href="{{ path('inf') }}" {{ menu_drugs == 'inf' ? 'class="active"' }}
+		   title="Представительства фирм">Представительства</a>
+	</div>
 </div>

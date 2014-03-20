@@ -8,16 +8,18 @@
 	<div class="info-line">
 		{% if l %}
 			Найдено представительств фирм на букву <i>{{ l }}</i>:
+			<span>{{ pagination.totalItemCount }}</span>
 		{% elseif q %}
 			{% if pagination.totalItemCount %}
 				Найдено представительств фирм запросу <i>{{ q }}</i>:
+				<span>{{ pagination.totalItemCount }}</span>
 			{% else %}
 				Не найдено представительств фирм по запросу <i>{{ q }}</i>
 			{% endif %}
 		{% else %}
 			Найдено представительств фирм:
+			<span>{{ pagination.totalItemCount }}</span>
 		{% endif %}
-		<span>{{ pagination.totalItemCount }}</span>
 	</div>
 
 	{% if pagination is defined and pagination.totalItemCount %}
@@ -50,8 +52,14 @@
 		#form > * {
 			vertical-align: top;
 		}
+		#form_controls {
+			clear: both;
+		}
 		#form_submit {
-			margin: 0 0 0 12px;
+			float: right;
+		}
+		#form_input {
+			width: 408px;
 		}
 	</style>
 {% endblock %}

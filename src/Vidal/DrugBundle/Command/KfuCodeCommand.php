@@ -11,13 +11,13 @@ class KfuCodeCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('drug:kfu_code')
+		$this->setName('vidal:kfu_code')
 			->setDescription('Команда помещает разделы в один раздел');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln('+++ drug:kfu_code started');
+		$output->writeln('+++ vidal:kfu_code started');
 
 		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
@@ -72,6 +72,6 @@ class KfuCodeCommand extends ContainerAwareCommand
 
 		$em->flush();
 
-		$output->writeln('--- drug:kfu_code completed');
+		$output->writeln('--- vidal:kfu_code completed');
 	}
 }

@@ -1,9 +1,10 @@
 <form id="form" method="GET" action="{{ path('inf') }}">
 
-	<input id="form_input" type="text" name="q" placeholder="Введите слово для поиска..."
-		   value="{{ q is defined and q is not empty and not l ? q }}"/>
-
-	<input id="form_submit" type="submit" value="Найти" class="btn-red">
+	<div id="form_controls">
+		<input id="form_submit" type="submit" value="Найти" class="btn-red">
+		<input id="form_input" type="text" name="q" placeholder="Введите слово для поиска..."
+			   value="{{ q is defined and q is not empty and not l ? q }}"/>
+	</div>
 
 	<div class="letters">
 		<div>

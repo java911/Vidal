@@ -121,9 +121,6 @@
 					},
 					select:    function(event, ui) {
 						$(this.nextElementSibling).append('<li><i></i><span>' + ui.item.value + '</span><b>' + ui.item.code + '</b></li>');
-					},
-					close:     function(event, ui) {
-						this.value = '';
 					}
 				})
 				.data("ui-autocomplete")._renderItem =

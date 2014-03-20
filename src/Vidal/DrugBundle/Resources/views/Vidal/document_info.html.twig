@@ -13,19 +13,19 @@
 {% if phthgroups is defined and phthgroups is not empty %}
 	{% if phthgroups|length == 1 %}
 		<div class="block" id="phthgroup">
-			<span class="block-head">Фармако-терапевтическая группа ГосРеестра МинЗдрава РФ:</span>
+			<span class="block-head">Фармако-терапевтическая группа:</span>
 			<span class="block-content">
-				<a href="{{ path('phthgroup', {'id':phthgroups[0].id}) }}"
+				<a href="{{ path('pharm_item', {'id':phthgroups[0].id}) }}"
 				   class="no-underline">{{ phthgroups[0].Name|capitalize }}</a>
 			</span>
 		</div>
 	{% else %}
 		<div class="block">
-			<div class="block-head">Фармако-терапевтические группы ГосРеестра МинЗдрава РФ</div>
+			<div class="block-head">Фармако-терапевтические группы</div>
 			<div class="block-content">
 				<ul class="ul-style">
 					{% for g in phthgroups %}
-						<li>{{ loop.index > 1 ? ', ' }}<a href="{{ path('phthgroup', {'id':g.id}) }}"
+						<li>{{ loop.index > 1 ? ', ' }}<a href="{{ path('pharm_item', {'id':g.id}) }}"
 														  class="no-underline">{{ g.Name|capitalize }}</a>
 						</li>
 					{% endfor %}
@@ -71,7 +71,7 @@
 				{% for nozology in nozologies %}
 					<tr>
 						<td>{{ nozology.Code }}</td>
-						<td><a href="{{ path('nozology_code', {'NozologyCode':nozology.NozologyCode}) }}"
+						<td><a href="{{ path('nosology_item', {'Code':nozology.Code}) }}"
 							   class="no-underline">{{ nozology.Name|raw }}</a></td>
 					</tr>
 				{% endfor %}
