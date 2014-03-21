@@ -3,6 +3,7 @@
 
 {% set loz = asset('bundles/vidalmain/images/g2.gif') %}
 {% set Composition = product is defined ? product.Composition : document.CompiledComposition %}
+{% set isDoctor = is_granted('IS_AUTHENTICATED_REMEMBERED') %}
 
 
 {% block title %}
@@ -249,6 +250,11 @@
 				</textarea>
 			{% endspaceless %}
 		</div>
+	{% endif %}
+
+
+	{% if not isDoctor %}
+		{% include 'VidalMainBundle:Auth:login_popup.html.twig' %}
 	{% endif %}
 
 {% endblock %}

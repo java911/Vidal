@@ -40,7 +40,11 @@
 	<div class="block" id="influence">
 		<div class="block-head">Фармакологическое действие</div>
 		<div class="block-content">
-			{{ document.PhInfluence|raw }}
+			{% if isDoctor %}
+				{{ document.PhInfluence|raw }}
+			{% else %}
+				{% include 'VidalMainBundle:Auth:closed_info.html.twig' %}
+			{% endif %}
 		</div>
 	</div>
 {% endif %}
@@ -50,7 +54,11 @@
 	<div class="block" id="kinetics">
 		<div class="block-head">Фармакокинетика</div>
 		<div class="block-content">
-			{{ document.PhKinetics|raw }}
+			{% if isDoctor %}
+				{{ document.PhKinetics|raw }}
+			{% else %}
+				{% include 'VidalMainBundle:Auth:closed_info.html.twig' %}
+			{% endif %}
 		</div>
 	</div>
 {% endif %}
@@ -185,7 +193,11 @@
 	<div class="block" id="interaction">
 		<div class="block-head">Лекарственное взаимодействие</div>
 		<div class="block-content">
-			{{ document.Interaction|raw }}
+			{% if isDoctor %}
+				{{ document.Interaction|raw }}
+			{% else %}
+				{% include 'VidalMainBundle:Auth:closed_info.html.twig' %}
+			{% endif %}
 		</div>
 	</div>
 {% endif %}

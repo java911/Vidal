@@ -58,11 +58,27 @@
 <body>
 
 <div id="wrapper" class="wrapper">
+	<div class="h">
+		<img src="{{ asset('bundles/vidalmain/images/bg/b2.jpg') }}"/>
+	</div>
+
 	<header class="header">
 		<div class="header-content">
 			{% include 'VidalMainBundle::header.html.twig' %}
 		</div>
 	</header>
+
+	<style>
+		.h {
+			margin:        0 0 20px;
+			border-top:    2px solid #b9033c;
+			border-bottom: 2px solid #b9033c;
+		}
+		.h1 img {
+			width:  950px;
+			height: 90px;
+		}
+	</style>
 
 	<div class="middle">
 		{% block middle %}
@@ -91,6 +107,8 @@
 		{% include 'VidalMainBundle::footer.html.twig' %}
 	</div>
 </footer>
+
+<div id="overlay"></div>
 
 </body>
 </html>
