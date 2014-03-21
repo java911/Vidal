@@ -46,7 +46,23 @@ class SymptomController extends Controller{
             $diseases = $symptom->getDiseases();
         }
         return array(
-            'disease'   => $diseases,
+            'diseases'   => $diseases,
+        );
+    }
+
+    /**
+     * @Route("/state/{disease}", name="render_state", defaults = { "disease" = 0 }, options={"expose"=true})
+     * @Template("VidalMainBundle:Disease:stateList.html.twig")
+     */
+    public function stateListAction($disease = 'all'){
+        if ($disease == 'all'){
+            $states = $this->getDoctrine()->getRepository('VidalMainBundle:DiseaseState')->findAll();
+        }else{
+            $disease = $this->getDoctrine()->getRepository('VidalMainBundle:Disease')->findOneById($disease);
+            $states = $disease->getStates();
+        }
+        return array(
+            'states'   => $states,
         );
     }
 
