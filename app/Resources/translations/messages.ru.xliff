@@ -139,6 +139,48 @@
 				<target>Удаление новости</target>
 			</trans-unit>
 
+			<trans-unit id="sonata-11">
+				<source>Banner List</source>
+				<target>Баннеры</target>
+			</trans-unit>
+			<trans-unit id="sonata-11-1">
+				<source>Banner Show</source>
+				<target>Информация о баннере</target>
+			</trans-unit>
+			<trans-unit id="sonata-11-2">
+				<source>Banner Edit</source>
+				<target>Редактирование баннера</target>
+			</trans-unit>
+			<trans-unit id="sonata-11-3">
+				<source>Banner Create</source>
+				<target>Создание баннера</target>
+			</trans-unit>
+			<trans-unit id="sonata-11-4">
+				<source>Banner Delete</source>
+				<target>Удаление баннера</target>
+			</trans-unit>
+
+			<trans-unit id="sonata-12">
+				<source>Banner Group List</source>
+				<target>Баннерные места</target>
+			</trans-unit>
+			<trans-unit id="sonata-12-1">
+				<source>Banner Rotate Show</source>
+				<target>Информация о баннерном месте</target>
+			</trans-unit>
+			<trans-unit id="sonata-12-2">
+				<source>Banner Rotate Edit</source>
+				<target>Редактирование баннерного места</target>
+			</trans-unit>
+			<trans-unit id="sonata-12-3">
+				<source>Banner Rotate Create</source>
+				<target>Создание баннерного места</target>
+			</trans-unit>
+			<trans-unit id="sonata-12-4">
+				<source>Banner Rotate Delete</source>
+				<target>Удаление баннерного места</target>
+			</trans-unit>
+
         </body>
     </file>
 </xliff>

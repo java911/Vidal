@@ -58,27 +58,28 @@
 <body>
 
 <div id="wrapper" class="wrapper">
-	<div class="h">
-		<img src="{{ asset('bundles/vidalmain/images/bg/b2.jpg') }}"/>
-	</div>
+
+	{#<style>#}
+		{#.h {#}
+			{#position:      relative;#}
+			{#border-bottom: 2px solid #b9033c;#}
+			{#margin-bottom: -15px;#}
+			{#z-index:       10;#}
+		{#}#}
+		{#.h1 img {#}
+			{#width:  950px;#}
+			{#height: 90px;#}
+		{#}#}
+	{#</style>#}
+	{#<div class="h">#}
+		{#<img src="{{ asset('bundles/vidalmain/images/bg/b2.jpg') }}"/>#}
+	{#</div>#}
 
 	<header class="header">
 		<div class="header-content">
 			{% include 'VidalMainBundle::header.html.twig' %}
 		</div>
 	</header>
-
-	<style>
-		.h {
-			margin:        0 0 20px;
-			border-top:    2px solid #b9033c;
-			border-bottom: 2px solid #b9033c;
-		}
-		.h1 img {
-			width:  950px;
-			height: 90px;
-		}
-	</style>
 
 	<div class="middle">
 		{% block middle %}
