@@ -34,10 +34,15 @@
 		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/jquery-chosen/chosen.css') }}"/>
 		<link rel="stylesheet" type="text/css"
 			  href="{{ asset('bundles/vidalmain/jquery-ui/jquery-ui-1.10.4.custom.min.css') }}"/>
+		<!--[if lt IE 9]>
+		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/old_ie.css') }}"/>
+		<![endif]-->
 	{% endblock %}
 
 	{% block javascripts %}
-		<!--[if lt IE 9]><script src="{{ asset('bundles/vidalmain/javascripts/html5.js') }}"></script><![endif]-->
+		<!--[if lt IE 9]>
+		<script src="{{ asset('bundles/vidalmain/javascripts/html5.js') }}"></script>
+		<![endif]-->
 		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/jquery-1.9.1.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/ready.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
