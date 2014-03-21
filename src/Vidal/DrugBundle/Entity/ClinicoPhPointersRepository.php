@@ -51,4 +51,14 @@ class ClinicoPhPointersRepository extends EntityRepository
 			))
 			->execute();
 	}
+
+	public function findOneById($id)
+	{
+		return $this->_em->createQuery('
+			SELECT c
+			FROM VidalDrugBundle:ClinicoPhPointers c
+			WHERE c.ClPhPointerID = :id
+		')->setParameter('id', $id)
+			->getOneOrNullResult();
+	}
 }

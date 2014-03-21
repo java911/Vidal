@@ -55,7 +55,7 @@
 				});
 
 				$tree.on('click', 'i', function() {
-					location.href = Routing.generate('kfu_item', {'url': $(this).closest('li').attr('data') });
+					location.href = Routing.generate('kfu_item', {'id': $(this).closest('li').attr('data') });
 					return false;
 				});
 			});

@@ -11,13 +11,13 @@ class KfuUrlCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:kfu_name')
-			->setDescription('Company.Name generator');
+		$this->setName('vidal:kfu_url')
+			->setDescription('ClinicoPhPointers.url generator');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln('+++ vidal:kfu_name started');
+		$output->writeln('+++ vidal:kfu_url started');
 
 		$em        = $this->getContainer()->get('doctrine')->getManager('drug');
 		$companies = $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->findAll();
@@ -29,7 +29,7 @@ class KfuUrlCommand extends ContainerAwareCommand
 
 		$em->flush();
 
-		$output->writeln('--- vidal:kfu_name completed');
+		$output->writeln('--- vidal:kfu_url completed');
 	}
 
 	private function translit($text)

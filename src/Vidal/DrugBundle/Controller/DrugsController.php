@@ -102,13 +102,13 @@ class DrugsController extends Controller
 	/**
 	 * Препараты по КФУ
 	 *
-	 * @Route("drugs/kfu/{url}", name="kfu_item", options={"expose":true})
+	 * @Route("drugs/clinic-group/{id}", name="kfu_item", options={"expose":true})
 	 * @Template("VidalDrugBundle:Drugs:kfu_item.html.twig")
 	 */
-	public function kfuItemAction($url)
+	public function kfuItemAction($id)
 	{
 		$em  = $this->getDoctrine()->getManager('drug');
-		$kfu = $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->findOneByUrl($url);
+		$kfu = $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->findOneById($id);
 
 		if (!$kfu) {
 			throw $this->createNotFoundException();
@@ -135,7 +135,7 @@ class DrugsController extends Controller
 	 * Дерево КФУ
 	 *
 	 * @Route("drugs", name="drugs")
-	 * @Route("drugs/kfu", name="kfu")
+	 * @Route("drugs/clinic-groups", name="kfu")
 	 * @Template("VidalDrugBundle:Drugs:kfu.html.twig")
 	 */
 	public function kfuAction()

@@ -5,9 +5,9 @@
 			{% if code.total %}
 				<i>{{ code.Name|raw }}</i>
 			{% else %}
-				<span>{{ code.Name|raw }}</span>
+
 			{% endif %}
-			<ul>{% include 'VidalDrugBundle:Drugs:nosology_generator_render.html.twig' with {'codes':code.list} %}</ul>
+			<ul>{% include 'VidalDrugBundle:Drugs:kfu_generator_render.html.twig' with {'codes':code.list} %}</ul>
 		{% else %}
 			<i>{{ code.Name|raw }}</i>
 		{% endif %}

@@ -25,7 +25,7 @@
 	<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.js') }}" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$.getJSON(Routing.generate('kfu_ajax'), null, function(html) {
+			$.getJSON(Routing.generate('nosology_ajax'), null, function(html) {
 				$('#tree_placeholder').html(html);
 
 				var $tree = $('#tree');

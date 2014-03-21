@@ -1,14 +1,30 @@
 {% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
 
+
 {% set moleculeName = molecule.RusName is empty ? molecule.LatName|upper|raw : molecule.RusName|upper|raw %}
 
-{% block vidal %}
-	<h1><a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}">{{ molecule.LatName|upper|raw }}</a>
+
+{% block title %}
+	<h1>{{ molecule.LatName|upper|raw }}
 		{% if molecule.RusName is not empty %}
 			<span>({{ molecule.RusName|upper|raw }})</span>
 		{% endif %}
 	</h1>
+{% endblock %}
 
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<span>Активные вещества</span>
+		<i></i>
+		<span>{{ molecule.LatName|upper|raw }} (препараты)</span>
+	</div>
+{% endblock %}
+
+
+{% block vidal %}
 	<div class="block">
 		<span class="block-head">Международное наименование INN: </span>
 		<a href="{{ path('gnp') }}">{{ molecule.GNParent }}</a>
