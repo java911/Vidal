@@ -115,6 +115,22 @@ class DiseaseSymptom extends  BaseEntity
         return $this->title;
     }
 
+    /**
+     * @param mixed $diseases
+     */
+    public function setDiseases($diseases)
+    {
+        $this->diseases = $diseases;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDiseases()
+    {
+        return $this->diseases;
+    }
+
 
 
 

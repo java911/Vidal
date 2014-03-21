@@ -29,7 +29,7 @@
                     </optgroup>
                     <optgroup label="Туловище">
                         <option value="7">Шея</option>
-                        <option value="7">Грудь</option>
+                        <option value="8">Грудь</option>
                         <option value="16">Спина</option>
                         <option value="17">Поясница</option>
                         <option value="10">Верхняя часть живота</option>
@@ -51,36 +51,12 @@
                 {{ render(controller('VidalMainBundle:Symptom:body')) }}
             </td>
             <td style="vertical-align: top; text-align: right">
-                <ul class="list-disease" id="select-symptom">
-                    <li>болит голова</li>
-                    <li>болит голова</li>
-                    <li>болит голова</li>
-                    <li>болит голова</li>
-                    <li>болит голова</li>
-                    <li>болит голова</li>
-                    <li>болит голова</li>
-                    <li>болит голова</li>
-                    <li>болит голова</li>
-                    <li>болит голова</li>
-                    <li>болит голова</li>
-                    <li>болит голова</li>
-                </ul>
+                <ul class="list-disease" id="select-symptom"></ul>
                 <br />
-                <br />
-                <ul class="list-disease" id="select-state">
-                    <li>болит голова</li>
-                    <li>болит голова</li>
-                    <li>болит голова</li>
-                    <li>болит голова</li>
-                    <li>болит голова</li>
-                    <li>болит голова</li>
-                    <li>болит голова</li>
-                    <li>болит голова</li>
-                    <li>болит голова</li>
-                    <li>болит голова</li>
-                    <li>болит голова</li>
-                    <li>болит голова</li>
-                </ul>
+                <div id="list-box">
+                    <ul class="list-disease" id="select-disease"></ul>
+                    <a href="#">Назад</a>
+                </div>
             </td>
         </tr>
     </table>
@@ -98,8 +74,63 @@
         var party = 'all';
         var subParty = 'all';
         var symptom  = 'all';
+        var disease  = 0;
+
+        var party_men
+        party_men= '<optgroup label="Голова">'+
+                '<option value="1">Лоб</option>'+
+                '<option value="15">Затылок</option>'+
+                '<option value="2">Глаза</option>'+
+                '<option value="3">Уши</option>'+
+                '<option value="4">Нос</option>'+
+                '<option value="5">Губы</option>'+
+                '</optgroup>'+
+                '<optgroup label="Туловище">'+
+                '<option value="7">Шея</option>'+
+                '<option value="8">Грудь</option>'+
+                '<option value="16">Спина</option>'+
+                '<option value="17">Поясница</option>'+
+                '<option value="10">Верхняя часть живота</option>'+
+                '<option value="11">Средняя часть живота</option>'+
+                '<option value="31">Нижняя часть живота</option>'+
+                '<option value="27">Ягодицы</option>'+
+                '<option value="13">Гениталии</option>'+
+                '</optgroup>'+
+                '<optgroup label="Конечности">'+
+                '        <option value="9">Руки</option>'+
+                '<option value="6">ноги</option>'+
+                '</optgroup>'+
+                '<option value="14">Общие симптомы</option>';
+
+        var party_women
+        party_women= '<optgroup label="Голова">'+
+                '<option value="20">Лоб</option>'+
+                '<option value="34">Затылок</option>'+
+                '<option value="21">Глаза</option>'+
+                '<option value="22">Уши</option>'+
+                '<option value="23">Нос</option>'+
+                '<option value="24">Губы</option>'+
+                '</optgroup>'+
+                '<optgroup label="Туловище">'+
+                '<option value="26">Шея</option>'+
+                '<option value="27">Грудь</option>'+
+                '<option value="35">Спина</option>'+
+                '<option value="36">Поясница</option>'+
+                '<option value="29">Верхняя часть живота</option>'+
+                '<option value="30">Средняя часть живота</option>'+
+                '<option value="37">Ягодицы</option>'+
+                '<option value="38">Гениталии</option>'+
+                '</optgroup>'+
+                '<optgroup label="Конечности">'+
+                '<option value="28">Руки</option>'+
+                '<option value="25">ноги</option>'+
+                '</optgroup>'+
+                '<option value="33">Общие симптомы</option>';
+
+
 
         $(document).ready(function(){
+            // РАБОТАЕТ
             $('select').chosen({
                 disable_search: true,
                 no_results_text: "не найдено"
@@ -116,13 +147,45 @@
             // При смене пола меняет картику
             $('#select-sex').change(function(){
                 sex = $('#select-sex').val();
-                renderBody(); 
+                if (sex == 1){
+                    $('#select-party').html(party_men)
+                }else{
+                    $('#select-party').html(party_women)
+                }
+                $('#select-party').chosen({
+                    disable_search: true,
+                    no_results_text: "не найдено"
+                });
+                renderBody();
             });
 
-            $('#select-party li').change(function(){
-                subParty = $(this).attr('data-key');
-                renderSymptom();
+
+
+            $('#select-party').on('change',function(){
+                selectPatryChange($(this));
             });
+
+            $('#select-symptom').on('click','li',function(){
+                selectSymptomChange($(this));
+            });
+
+            $('#select-disease').on('click','li',function(){
+                selectDiseaseChange($(this));
+            });
+
+
+            function selectPatryChange(obj){
+                subParty = obj.val();
+                renderSymptom();
+            }
+            function selectSymptomChange(obj){
+                symptom = obj.attr('data-key');
+                renderDisease();
+            }
+            function selectDiseaseChange(obj){
+                disease = obj.attr('data-key');
+                renderState();
+            }
 
             function renderSymptom(){
                 url  = Routing.generate('render_symptom', { 'party' : subParty });
@@ -131,10 +194,10 @@
                     cache: false,
                     success: function(html){
                         $('#select-symptom').html(html);
+//                        $('#select-symptom li').bind('click', 'selectSymptomChange');
                     }
                 });
             };
-
             function renderBody(){
                 url  = Routing.generate('symptom_body', { 'sex' : sex , 'party' : party });
                 $.ajax({
@@ -145,9 +208,18 @@
                     }
                 });
             };
-
+            function renderDisease(){
+                url  = Routing.generate('render_disease', { 'symptom' : symptom });
+                $.ajax({
+                    url: url,
+                    cache: false,
+                    success: function(html){
+                        $('#select-disease').html(html);
+                    }
+                });
+            };
             function renderState(){
-                url  = Routing.generate('render_state', { 'symptom' : symptom });
+                url  = Routing.generate('render_state', { 'disease' : disease });
                 $.ajax({
                     url: url,
                     cache: false,
@@ -157,7 +229,10 @@
                 });
             };
 
+            renderSymptom();
         });
+
+
     </script>
 {% endblock %}
 
@@ -169,21 +244,22 @@
             text-align: left;
         }
         .list-disease{
-            border: 1px solid #D71344;
+            border: 2px solid #EEE;
             border-radius: 4px;
-            height: 300px;
+            max-height: 300px;
             overflow-y: auto;
             padding-left: 0;
         }
         .list-disease li{
             list-style: none;
-            padding: 3px 5px;
+            padding: 5px;
             margin-left: 0;
-            border-bottom: 1px solid #aaaaaa;
             text-align: left;
+            color: #D71344;
         }
         .list-disease li:hover{
-            background: #DDDDDD;
+            background: #D71344;
+            color: #FFF;
             cursor: pointer;
         }
 

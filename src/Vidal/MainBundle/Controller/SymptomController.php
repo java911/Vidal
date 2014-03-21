@@ -23,22 +23,30 @@ class SymptomController extends Controller{
      * @Template("VidalMainBundle:Disease:symptomList.html.twig")
      */
     public function symptomListAction($party = 'all'){
-        $party = $this->getDoctrine()->getRepository('VidalMainBundle:DiseaseParty')->findOneById($party);
-        $symptoms = $party->getSymptoms();
+        if ($party == 'all'){
+            $symptoms = $this->getDoctrine()->getRepository('VidalMainBundle:DiseaseSymptom')->findAll();
+        }else{
+            $party = $this->getDoctrine()->getRepository('VidalMainBundle:DiseaseParty')->findOneById($party);
+            $symptoms = $party->getSymptoms();
+        }
         return array(
             'symptoms'   => $symptoms,
         );
     }
 
     /**
-     * @Route("/states/{symptom}", name="render_state", defaults = { "symptom"="all" }, options={"expose"=true})
-     * @Template("VidalMainBundle:Disease:symptomList.html.twig")
+     * @Route("/diseases/{symptom}", name="render_disease", defaults = { "symptom"="all" }, options={"expose"=true})
+     * @Template("VidalMainBundle:Disease:diseaseList.html.twig")
      */
-    public function stateListAction($symptom = 'all'){
-        $symptom = $this->getDoctrine()->getRepository('VidalMainBundle:DiseaseSymptom')->findOneById($symptom);
-        $states = $symptom->getStates();
+    public function diseaseListAction($symptom = 'all'){
+        if ($symptom == 'all'){
+            $diseases = $this->getDoctrine()->getRepository('VidalMainBundle:Disease')->findAll();
+        }else{
+            $symptom = $this->getDoctrine()->getRepository('VidalMainBundle:DiseaseSymptom')->findOneById($symptom);
+            $diseases = $symptom->getDiseases();
+        }
         return array(
-            'states'   => $states,
+            'disease'   => $diseases,
         );
     }
 
