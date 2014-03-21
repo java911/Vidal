@@ -549,23 +549,21 @@ class ProductRepository extends EntityRepository
 
 	public function findByKfu($kfu)
 	{
-		$id = $kfu->getClPhPointerID();
-
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
 				p.RegistrationNumber, p.RegistrationDate,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
 				d.Name DocumentName
 			FROM VidalDrugBundle:Product p
-			LEFT JOIN VidalDrugBundle:ProductDocument pd WITH pd.ProductID = p
-			LEFT JOIN VidalDrugBundle:Document d WITH pd.DocumentID = d
-
-			WHERE mn.MoleculeID = :MoleculeID AND
-				p.CountryEditionCode = \'RUS\' AND
-				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
-				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
-			ORDER BY d.ArticleID ASC
-		')->setParameter('MoleculeID', $MoleculeID)
+			JOIN VidalDrugBundle:ProductDocument pd WITH pd.ProductID = p
+			JOIN VidalDrugBundle:Document d WITH pd.DocumentID = d
+			JOIN d.clphPointers pointer
+			WHERE pointer = :id
+				AND p.CountryEditionCode = \'RUS\'
+				AND p.MarketStatusID IN (1,2)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+			ORDER BY p.RusName ASC
+		')->setParameter('id', $kfu->getClPhPointerID())
 			->getResult();
 	}
 

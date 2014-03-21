@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DrugsController extends Controller
 {
@@ -74,7 +75,6 @@ class DrugsController extends Controller
 	/**
 	 * Дерево АТХ
 	 *
-	 * @Route("drugs", name="drugs")
 	 * @Route("drugs/atc", name="atc")
 	 * @Template("VidalDrugBundle:Drugs:atc.html.twig")
 	 */
@@ -85,6 +85,18 @@ class DrugsController extends Controller
 		);
 
 		return $params;
+	}
+
+	/**
+	 * [AJAX] Подгрузка дерева ATC
+	 *
+	 * @Route("drugs/atc-ajax", name="atc_ajax", options={"expose":true})
+	 */
+	public function atcAjaxAction()
+	{
+		$html = $this->renderView('VidalDrugBundle:Search:tree_atc_generated.html.twig');
+
+		return new JsonResponse($html);
 	}
 
 	/**
@@ -122,6 +134,7 @@ class DrugsController extends Controller
 	/**
 	 * Дерево КФУ
 	 *
+	 * @Route("drugs", name="drugs")
 	 * @Route("drugs/kfu", name="kfu")
 	 * @Template("VidalDrugBundle:Drugs:kfu.html.twig")
 	 */
@@ -132,6 +145,18 @@ class DrugsController extends Controller
 		);
 
 		return $params;
+	}
+
+	/**
+	 * [AJAX] Подгрузка дерева КФУ
+	 *
+	 * @Route("drugs/kfu-ajax", name="kfu_ajax", options={"expose":true})
+	 */
+	public function kfuAjaxAction()
+	{
+		$html = $this->renderView('VidalDrugBundle:Drugs:kfu_generated.html.twig');
+
+		return new JsonResponse($html);
 	}
 
 	/**
@@ -313,6 +338,18 @@ class DrugsController extends Controller
 	}
 
 	/**
+	 * [AJAX] Подгрузка дерева Нозологических указателей
+	 *
+	 * @Route("drugs/nosology-ajax", name="nosology_ajax", options={"expose":true})
+	 */
+	public function nosologyAjaxAction()
+	{
+		$html = $this->renderView('VidalDrugBundle:Drugs:nosology_generated.html.twig');
+
+		return new JsonResponse($html);
+	}
+
+	/**
 	 * Функция генерации дерева нозологических указателей
 	 *
 	 * @Route("drugs/nosology-generator", name="nosology_generator")
@@ -346,7 +383,7 @@ class DrugsController extends Controller
 						}
 						$minus++;
 					}
-					$prevCode = $prev['Code'];
+					$prevCode                        = $prev['Code'];
 					$nozologies[$prevCode]['list'][] = $nozology;
 				}
 			}

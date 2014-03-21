@@ -34,6 +34,6 @@ class PharmNameCommand extends ContainerAwareCommand
 
 	private function upperFirst($str)
 	{
-		return mb_strtoupper(mb_substr($str, 0, 1, 'utf-8'), 'utf-8') . mb_substr($str, 1, null, 'utf-8');
+		return mb_strtoupper(mb_substr($str, 0, 1, 'utf-8'), 'utf-8') . mb_substr($str, 1, 200, 'utf-8');
 	}
 }

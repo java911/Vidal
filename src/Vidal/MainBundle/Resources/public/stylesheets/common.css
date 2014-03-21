@@ -62,9 +62,30 @@ body {
 	height:     100%;
 }
 .header {
-	height:     118px;
-	background: url(../images/header.jpg) white no-repeat top left;
-	position:   relative;
+	height:   118px;
+	position: relative;
+}
+.header-link {
+	display:    block;
+	width:      143px;
+	height:     105px;
+	background: url(../images/header.jpg) no-repeat top left;
+}
+.header-about {
+	position:   absolute;
+	top:        46px;
+	left:       172px;
+	width:      230px;
+	height:     34px;
+	background: url(../images/header-about.jpg) no-repeat top left;
+}
+.header-search {
+	position:   absolute;
+	top:        53px;
+	left:       447px;
+	width:      63px;
+	height:     16px;
+	background: url(../images/header-search.jpg) no-repeat top left;
 }
 .middle {
 	width:    100%;
@@ -333,6 +354,13 @@ h1 {
 	-moz-user-select:      none;
 	-ms-user-select:       none;
 	user-select:           none;
+}
+.ajax-loader {
+	display:    block;
+	height:     32px;
+	width:      32px;
+	margin:     40px auto;
+	background: url(../images/ajax-loader.gif) no-repeat top left;
 }
 
 /* боковое меню */
@@ -761,7 +789,8 @@ h1 {
 	overflow: hidden;
 }
 .search .search-type {
-	width: 160px;
+	width:      160px;
+	visibility: hidden;
 }
 .search .search-query {
 	display:        inline-block;
