@@ -34,7 +34,7 @@
 						<a class="no-underline"
 						   href="{{ path('inf_item', {'InfoPageID':inf.InfoPageID}) }}">{{ inf.RusName|raw }}</a>
 					</td>
-					<td>{{ inf.CountryCode }}</td>
+					<td>{{ inf.Country is defined ? inf.Country : inf.CountryCode }}</td>
 				</tr>
 			{% endfor %}
 		</table>

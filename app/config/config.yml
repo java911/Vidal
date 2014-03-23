@@ -12,7 +12,7 @@ framework:
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
-    templating:      { engines: ['twig'], assets_version: v9 }
+    templating:      { engines: ['twig'], assets_version: v10 }
     form:            ~
     csrf_protection: false
     validation:      { enable_annotations: true }
@@ -64,7 +64,7 @@ doctrine:
                 driver:   %database_driver%
                 host:     %database_host%
                 port:     %database_port%
-                dbname:   %database_vidal%
+                dbname:   %database_drug%
                 user:     %database_user%
                 password: %database_password%
                 charset:  UTF8
@@ -72,7 +72,7 @@ doctrine:
                 driver:   %database_driver%
                 host:     %database_host%
                 port:     %database_port%
-                dbname:   veterinar
+                dbname:   %database_veterinar%
                 user:     %database_user%
                 password: %database_password%
                 charset:  UTF8

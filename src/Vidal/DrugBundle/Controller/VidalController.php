@@ -200,10 +200,10 @@ class VidalController extends Controller
 //		exit;
 
 		if ($l) {
-			$query = $em->getRepository('VidalDrugBundle:InfoPage')->getQueryByLetter($l);
+			$query = $em->getRepository('VidalDrugBundle:InfoPage')->findByLetter($l);
 		}
 		elseif ($q) {
-			$query = $em->getRepository('VidalDrugBundle:InfoPage')->findByQueryString($q);
+			$query = $em->getRepository('VidalDrugBundle:InfoPage')->findByQuery($q);
 		}
 		else {
 			$query = $em->getRepository('VidalDrugBundle:InfoPage')->getQuery();
