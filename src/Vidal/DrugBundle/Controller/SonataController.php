@@ -47,4 +47,35 @@ class SonataController extends Controller
 
 		return new JsonResponse($swapActive);
 	}
+
+	/**
+	 * Действие смены булева поля
+	 * @Route("/swap-main/{field}/{entity}/{id}", name = "swap_main")
+	 */
+	public function swapMainAction($field, $entity, $id)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$entity = 'VidalMainBundle:' . $entity;
+		$field = 'e.' . $field;
+
+		$isActive = $em->createQueryBuilder()
+			->select($field)
+			->from($entity, 'e')
+			->where('e.id = :id')
+			->setParameter('id', $id)
+			->getQuery()
+			->getSingleScalarResult();
+
+		$swapActive = $isActive ? 0 : 1;
+
+		$qb = $em->createQueryBuilder()
+			->update($entity, 'e')
+			->set($field, $swapActive)
+			->where('e.id = :id')
+			->setParameter('id', $id);
+
+		$qb->getQuery()->execute();
+
+		return new JsonResponse($swapActive);
+	}
 }

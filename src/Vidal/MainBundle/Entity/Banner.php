@@ -66,6 +66,12 @@ class Banner extends BaseEntity
 	/** @ORM\ManyToOne(targetEntity="BannerGroup", inversedBy="banners") */
 	protected $group;
 
+	/**
+	 * @ORM\OneToOne(targetEntity="Banner")
+	 * @ORM\JoinColumn(name="reference_id", referencedColumnName="id")
+	 */
+	protected $reference;
+
 	public function __construct()
 	{
 		$this->starts    = new \DateTime();
@@ -75,7 +81,15 @@ class Banner extends BaseEntity
 
 	public function __toString()
 	{
-		return empty($this->link) ? '' : $this->link;
+		if (!empty($this->link)) {
+			return '[' . $this->id . '] ' . $this->link;
+		}
+		elseif ($this->id) {
+			return '[' . $this->id . ']';
+		}
+		else {
+			return '';
+		}
 	}
 
 	/**
@@ -230,5 +244,26 @@ class Banner extends BaseEntity
 	public function getDisplayed()
 	{
 		return $this->displayed;
+	}
+
+	/**
+	 * @param mixed $reference
+	 */
+	public function setReference($reference)
+	{
+		$this->reference = $reference;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getReference()
+	{
+		return $this->reference;
+	}
+
+	public function isSwf()
+	{
+		return $this->banner['mimeType'] == 'application/x-shockwave-flash';
 	}
 }

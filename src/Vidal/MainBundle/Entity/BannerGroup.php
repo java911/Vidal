@@ -40,6 +40,9 @@ class BannerGroup
 	/** @ORM\Column(type="integer") */
 	protected $height;
 
+	/** @ORM\Column(length=50) */
+	protected $name;
+
 	public function __construct()
 	{
 		$this->banners = new ArrayCollection();
@@ -137,5 +140,21 @@ class BannerGroup
 	public function getWidth()
 	{
 		return $this->width;
+	}
+
+	/**
+	 * @param mixed $name
+	 */
+	public function setName($name)
+	{
+		$this->name = $name;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getName()
+	{
+		return $this->name;
 	}
 }

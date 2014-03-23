@@ -58,22 +58,7 @@
 <body>
 
 <div id="wrapper" class="wrapper">
-
-	{#<style>#}
-		{#.h {#}
-			{#position:      relative;#}
-			{#border-bottom: 2px solid #b9033c;#}
-			{#margin-bottom: -15px;#}
-			{#z-index:       10;#}
-		{#}#}
-		{#.h1 img {#}
-			{#width:  950px;#}
-			{#height: 90px;#}
-		{#}#}
-	{#</style>#}
-	{#<div class="h">#}
-		{#<img src="{{ asset('bundles/vidalmain/images/bg/b2.jpg') }}"/>#}
-	{#</div>#}
+	{{ render(controller('VidalMainBundle:Banner:render', {'groupId':2})) }}
 
 	<header class="header">
 		<div class="header-content">
@@ -100,6 +85,8 @@
 				{% include 'VidalMainBundle::right_sidebar.html.twig' %}
 			</aside>
 		{% endblock %}
+
+		{{ render(controller('VidalMainBundle:Banner:render', {'groupId':1})) }}
 	</div>
 </div>
 

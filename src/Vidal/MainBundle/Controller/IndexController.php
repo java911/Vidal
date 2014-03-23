@@ -19,7 +19,7 @@ class IndexController extends Controller
 	public function indexAction(Request $request)
 	{
 		$em     = $this->getDoctrine()->getManager();
-		$params = array();
+		$params = array('indexPage' => true);
 
 		$params['publicationsPagination'] = $this->get('knp_paginator')->paginate(
 			$em->getRepository('VidalMainBundle:Publication')->getQueryEnabled(),

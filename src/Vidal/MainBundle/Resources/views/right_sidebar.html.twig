@@ -1,0 +1,7 @@
+{% if indexPage is defined %}
+	{{ render(controller('VidalMainBundle:Banner:render', {'groupId':5})) }}
+	{{ render(controller('VidalMainBundle:Banner:render', {'groupId':6})) }}
+{% else %}
+	{{ render(controller('VidalMainBundle:Banner:render', {'groupId':3})) }}
+	{{ render(controller('VidalMainBundle:Banner:render', {'groupId':4})) }}
+{% endif %}

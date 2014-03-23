@@ -89,7 +89,7 @@ body {
 }
 .middle {
 	width:    100%;
-	padding:  8px 0 226px;
+	padding:  8px 0 140px;
 	position: relative;
 }
 .middle:after {
@@ -121,8 +121,8 @@ body {
 }
 .footer {
 	width:    950px;
-	margin:   -226px auto 0;
-	height:   226px;
+	margin:   -140px auto 0;
+	height:   140px;
 	position: relative;
 }
 .footer-content {
@@ -378,9 +378,8 @@ h1 {
 
 /* блок авторизации */
 .auth {
-	width:   112px;
-	margin:  40px 0 12px;
-	padding: 15px 10px 10px;
+	margin:  30px 0 12px;
+	padding: 10px;
 	border:  2px solid #eee;
 }
 .auth .auth-fail-message {
@@ -401,7 +400,7 @@ h1 {
 }
 .auth input {
 	height:        26px;
-	width:         96px;
+	width:         120px;
 	border-radius: 0;
 	border:        none;
 	background:    #e1e1e1;
@@ -413,8 +412,8 @@ h1 {
 	font-size:     14px;
 	color:         #999;
 }
-.auth a.submit {
-	width: 68px;
+.auth-submit {
+	text-align: center;
 }
 .auth-welcome {
 	margin-bottom: 10px;
@@ -431,7 +430,6 @@ h1 {
 	text-decoration: none;
 }
 .go-registration {
-	width:         138px;
 	margin-bottom: 20px;
 	font-size:     14px;
 	text-align:    center;
@@ -1148,4 +1146,42 @@ h1 {
 .letters input:active {
 	position: relative;
 	top:      1px;
+}
+
+/* banners */
+#banner_top {
+	position:      relative;
+	margin-bottom: -15px;
+	z-index:       10;
+}
+#banner_top img {
+	border:        none;
+	border-bottom: 2px solid #b9033c;
+}
+#banner_bottom {
+	clear:  both;
+	margin: 20px auto;
+}
+.banner.swf {
+	position:   relative;
+	text-align: center;
+	background: transparent;
+}
+.banner.swf > div {
+	position:   absolute;
+	background: transparent;
+	cursor:     pointer;
+}
+.banner a, .banner img {
+	display: block;
+}
+.left-sidebar .banner, .right-sidebar .banner {
+	margin-bottom: 15px;
+}
+.footer-banner {
+	text-align: center;
+}
+.footer-banner > div {
+	display:    inline-block;
+	margin-top: 20px;
 }
