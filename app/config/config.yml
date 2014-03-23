@@ -73,7 +73,7 @@ doctrine:
                 host:     %database_host%
                 port:     %database_port%
                 dbname:   %database_veterinar%
-                user:     %database_user%
+                user:     veterinar
                 password: %database_password%
                 charset:  UTF8
     orm:
