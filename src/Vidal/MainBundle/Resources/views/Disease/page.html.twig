@@ -20,23 +20,23 @@
                 Часть тела
                 <select class="symptom-select" id="select-party">
                     <optgroup label="Голова">
-                        <option value="1">Лоб</option>
-                        <option value="15">Затылок</option>
-                        <option value="2">Глаза</option>
-                        <option value="3">Уши</option>
-                        <option value="4">Нос</option>
-                        <option value="5">Губы</option>
+                        <option value="1"  intro="head" >Лоб</option>
+                        <option value="15" intro="head" >Затылок</option>
+                        <option value="2"  intro="head" >Глаза</option>
+                        <option value="3"  intro="head" >Уши</option>
+                        <option value="4"  intro="head" >Нос</option>
+                        <option value="5"  intro="head" >Губы</option>
                     </optgroup>
                     <optgroup label="Туловище">
-                        <option value="7">Шея</option>
-                        <option value="8">Грудь</option>
-                        <option value="16">Спина</option>
-                        <option value="17">Поясница</option>
-                        <option value="10">Верхняя часть живота</option>
-                        <option value="11">Средняя часть живота</option>
-                        <option value="31">Нижняя часть живота</option>
-                        <option value="27">Ягодицы</option>
-                        <option value="13">Гениталии</option>
+                        <option value="7"  intro="all">Шея</option>
+                        <option value="8"  intro="all">Грудь</option>
+                        <option value="16" intro="all-back">Спина</option>
+                        <option value="17" intro="all-back">Поясница</option>
+                        <option value="10" intro="all">Верхняя часть живота</option>
+                        <option value="11" intro="all">Средняя часть живота</option>
+                        <option value="31" intro="all">Нижняя часть живота</option>
+                        <option value="18" intro="all-back">Ягодицы</option>
+                        <option value="13" intro="all">Гениталии</option>
                     </optgroup>
                     <optgroup label="Конечности">
                         <option value="9">Руки</option>
@@ -81,54 +81,55 @@
 
         var party_men
         party_men= '<optgroup label="Голова">'+
-                '<option value="1">Лоб</option>'+
-                '<option value="15">Затылок</option>'+
-                '<option value="2">Глаза</option>'+
-                '<option value="3">Уши</option>'+
-                '<option value="4">Нос</option>'+
-                '<option value="5">Губы</option>'+
+                '<option value="1"  intro="head">Лоб</option>'+
+                '<option value="15" intro="head">Затылок</option>'+
+                '<option value="2"  intro="head">Глаза</option>'+
+                '<option value="3"  intro="head">Уши</option>'+
+                '<option value="4"  intro="head">Нос</option>'+
+                '<option value="5"  intro="head">Губы</option>'+
                 '</optgroup>'+
                 '<optgroup label="Туловище">'+
-                '<option value="7">Шея</option>'+
-                '<option value="8">Грудь</option>'+
-                '<option value="16">Спина</option>'+
-                '<option value="17">Поясница</option>'+
-                '<option value="10">Верхняя часть живота</option>'+
-                '<option value="11">Средняя часть живота</option>'+
-                '<option value="31">Нижняя часть живота</option>'+
-                '<option value="27">Ягодицы</option>'+
-                '<option value="13">Гениталии</option>'+
+                '<option value="7"  intro="all">Шея</option>'+
+                '<option value="8"  intro="all">Грудь</option>'+
+                '<option value="16" intro="all-back">Спина</option>'+
+                '<option value="17" intro="all-back">Поясница</option>'+
+                '<option value="10" intro="all">Верхняя часть живота</option>'+
+                '<option value="11" intro="all">Средняя часть живота</option>'+
+                '<option value="31" intro="all">Нижняя часть живота</option>'+
+                '<option value="18" intro="all-back">Ягодицы</option>'+
+                '<option value="13" intro="all">Гениталии</option>'+
                 '</optgroup>'+
                 '<optgroup label="Конечности">'+
-                '        <option value="9">Руки</option>'+
-                '<option value="6">ноги</option>'+
+                '<option value="9" intro="all">Руки</option>'+
+                '<option value="6" intro="all">ноги</option>'+
                 '</optgroup>'+
-                '<option value="14">Общие симптомы</option>';
+                '<option value="14" intro="all">Общие симптомы</option>';
 
         var party_women
         party_women= '<optgroup label="Голова">'+
-                '<option value="20">Лоб</option>'+
-                '<option value="34">Затылок</option>'+
-                '<option value="21">Глаза</option>'+
-                '<option value="22">Уши</option>'+
-                '<option value="23">Нос</option>'+
-                '<option value="24">Губы</option>'+
+                '<option value="20" intro="head" >Лоб</option>'+
+                '<option value="34" intro="head" >Затылок</option>'+
+                '<option value="21" intro="head" >Глаза</option>'+
+                '<option value="22" intro="head" >Уши</option>'+
+                '<option value="23" intro="head" >Нос</option>'+
+                '<option value="24" intro="head" >Губы</option>'+
                 '</optgroup>'+
                 '<optgroup label="Туловище">'+
-                '<option value="26">Шея</option>'+
-                '<option value="27">Грудь</option>'+
-                '<option value="35">Спина</option>'+
-                '<option value="36">Поясница</option>'+
-                '<option value="29">Верхняя часть живота</option>'+
-                '<option value="30">Средняя часть живота</option>'+
-                '<option value="37">Ягодицы</option>'+
-                '<option value="38">Гениталии</option>'+
+                '<option value="26" intro="all">Шея</option>'+
+                '<option value="27" intro="all">Грудь</option>'+
+                '<option value="35" intro="all-back">Спина</option>'+
+                '<option value="36" intro="all-back">Поясница</option>'+
+                '<option value="29" intro="all">Верхняя часть живота</option>'+
+                '<option value="30" intro="all">Средняя часть живота</option>'+
+                '<option value="31" intro="all">Нижняя часть живота</option>'+
+                '<option value="37" intro="all-back">Ягодицы</option>'+
+                '<option value="38" intro="all">Гениталии</option>'+
                 '</optgroup>'+
                 '<optgroup label="Конечности">'+
-                '<option value="28">Руки</option>'+
-                '<option value="25">ноги</option>'+
+                '<option value="28" intro="all">Руки</option>'+
+                '<option value="25" intro="all">ноги</option>'+
                 '</optgroup>'+
-                '<option value="33">Общие симптомы</option>';
+                '<option value="33" intro="all">Общие симптомы</option>';
 
 
 
@@ -139,7 +140,7 @@
                 no_results_text: "не найдено"
             });
 
-            $('area').click(function(){
+            $('#body-render').on('click','area', function(){
                 if ($(this).attr('intro') == 'head' ){
                     party = 'head';
                     renderBody();
@@ -171,6 +172,19 @@
 
 
             $('#select-party').on('change',function(){
+                p = $('#select-party').val();
+                if ( p == 1  || p == 15 || p == 2  || p == 3  || p == 4  || p == 5  || p == 20  || p == 34  || p == 21  || p == 22  || p == 23  || p == 24 ){
+                    party = 'head';
+                }else{
+                    if ( p == 7  || p == 8 || p == 10  || p == 11  || p == 31  || p == 13  || p == 9  || p == 6  || p == 14  || p == 25  || p == 28  || p == 33  || p == 26  || p == 27  || p == 29  || p == 30  || p == 38   ){
+                        party = 'all';
+                    }else{
+                        if ( p == 16  || p == 17 || p == 18  || p == 35  || p == 36  || p == 37   ){
+                            party = 'all-back';
+                        }
+                    }
+                }
+                renderBody();
                 selectPatryChange($(this));
             });
 
