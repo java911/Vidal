@@ -167,7 +167,7 @@ class VidalController extends Controller
 		$CompanyID = $company['CompanyID'];
 		$products  = $em->getRepository('VidalVeterinarBundle:Product')->findByCompany($CompanyID);
 		$params    = array(
-			'title'          => 'Фирмы-производители | Видаль-Ветеринар',
+			'title'          => $this->strip($company['CompanyName']) . ' | Фирмы-производители | Видаль-Ветеринар',
 			'menu_veterinar' => 'company',
 			'company'        => $company,
 			'products'       => $products,
@@ -219,7 +219,7 @@ class VidalController extends Controller
 
 		$picture     = $em->getRepository('VidalVeterinarBundle:Picture')->findByInfoPageID($InfoPageID);
 		$params      = array(
-			'title'          => 'Представительства фирм | Видаль-Ветеринар',
+			'title'          => $this->strip($infoPage['RusName']) . ' | Представительства фирм | Видаль-Ветеринар',
 			'menu_veterinar' => 'infoPage',
 			'infoPage'       => $infoPage,
 			'picture'        => $picture,
@@ -258,6 +258,7 @@ class VidalController extends Controller
 			throw $this->createNotFoundException();
 		}
 
+		$params['title']      = $this->strip($document->getRusName()) . ' | Видаль-Ветеринар';
 		$params['documentId'] = $document->getDocumentID();
 		$molecules            = $em->getRepository('VidalVeterinarBundle:Molecule')->findByDocumentID($DocumentID);
 
@@ -298,8 +299,9 @@ class VidalController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		$document  = $em->getRepository('VidalVeterinarBundle:Document')->findByProductDocument($ProductID);
-		$molecules = $em->getRepository('VidalVeterinarBundle:Molecule')->findByProductID($ProductID);
+		$params['title'] = $this->strip($product['RusName']) . ' | Видаль-Ветеринар';
+		$document        = $em->getRepository('VidalVeterinarBundle:Document')->findByProductDocument($ProductID);
+		$molecules       = $em->getRepository('VidalVeterinarBundle:Molecule')->findByProductID($ProductID);
 
 		if ($document) {
 			$articleId = $document->getArticleID();
@@ -418,5 +420,13 @@ class VidalController extends Controller
 	private function sortProducts($a, $b)
 	{
 		return strcasecmp($a['RusName'], $b['RusName']);
+	}
+
+	private function strip($string)
+	{
+		$pat = array('/<sup|b>(.*)<\/sup|b>/iu', '/&amp;/');
+		$rep = array('$1', '&');
+
+		return preg_replace($pat, $rep, $string);
 	}
 }

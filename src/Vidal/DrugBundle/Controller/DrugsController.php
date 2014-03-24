@@ -68,7 +68,8 @@ class DrugsController extends Controller
 			'products1' => $products1,
 			'products2' => $products2,
 			'companies' => $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds),
-			'pictures'  => $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds)
+			'pictures'  => $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds),
+			'title'     => $atc->getRusName() . ' - ' . $atc . ' | АТХ',
 		);
 	}
 
@@ -82,6 +83,7 @@ class DrugsController extends Controller
 	{
 		$params = array(
 			'menu_drugs' => 'atc',
+			'title'      => 'АТХ',
 		);
 
 		return $params;
@@ -117,6 +119,7 @@ class DrugsController extends Controller
 		$params = array(
 			'menu_drugs' => 'kfu',
 			'kfu'        => $kfu,
+			'title'      => $kfu . ' | Клинико-фармакологические указатели',
 		);
 
 		$products = $em->getRepository('VidalDrugBundle:Product')->findByKfu($kfu);
@@ -142,6 +145,7 @@ class DrugsController extends Controller
 	{
 		$params = array(
 			'menu_drugs' => 'kfu',
+			'title'      => 'Клинико-фармакологические указатели',
 		);
 
 		return $params;
@@ -230,7 +234,7 @@ class DrugsController extends Controller
 
 		$params = array(
 			'menu_drugs' => 'pharm',
-			'title'      => 'Фирмы-производители',
+			'title'      => '',
 			'q'          => $q,
 			'l'          => $l,
 			'pagination' => $this->get('knp_paginator')->paginate($query, $p, self::PHARM_PER_PAGE),
@@ -254,7 +258,10 @@ class DrugsController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		$params = array('phthgroup' => $phthgroup);
+		$params = array(
+			'phthgroup' => $phthgroup,
+			'title'     => $phthgroup . ' | Фирмы-производители',
+		);
 
 		$products = $em->getRepository('VidalDrugBundle:Product')->findByPhThGroup($id);
 
@@ -411,5 +418,13 @@ class DrugsController extends Controller
 		}
 
 		return $productIds;
+	}
+
+	private function strip($string)
+	{
+		$pat = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/&amp;/');
+		$rep = array('', '', '&');
+
+		return preg_replace($pat, $rep, $string);
 	}
 }

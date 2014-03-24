@@ -1,6 +1,9 @@
 {% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
 
 
+{% set isDoctor = is_granted('ROLE_DOCTOR') %}
+
+
 {% block title %}
 	<h1>{{ molecule.LatName|upper|raw }}
 		{% if molecule.RusName is not empty %}

@@ -3,7 +3,15 @@
 {% set withPhoto = publication.photo and is_file(publication.photo.path) %}
 
 {% block content %}
-	<h1>{{ publication }}</h1>
+	{# админу карандашик на правку #}
+	{% if is_granted('ROLE_ADMIN') %}
+		<a class="admin-edit fade" target="_blank"
+		   href="{{ path('admin_vidal_main_publication_edit', {'id':publication.id}) }}">
+			<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+		</a>
+	{% endif %}
+
+	<h1>{{ publication|raw }}</h1>
 
 	<div class="breadcrumbs">
 		<a href="{{ path('index') }}">Видаль</a>
@@ -12,16 +20,13 @@
 	</div>
 
 	<div class="publication">
-		<div class="publication-header{{ withPhoto ? ' with-photo' }}">
-			{% if withPhoto %}
+		{% if withPhoto %}
+			<div class="publication-header with-photo">
 				<div class="photo">
 					<img src="{{ publication.photo.path }}" alt="{{ publication.title }}"/>
 				</div>
-			{% endif %}
-			<div class="publication-announce">
-				{{ publication.announce|raw }}
 			</div>
-		</div>
+		{% endif %}
 
 		<div class="publication-body">
 			{{ publication.body|raw }}
@@ -40,6 +45,10 @@
 	<style type="text/css">
 		.publication {
 			font-size: 15px;
+			position:  relative;
+		}
+		.publication-body p:first-child {
+			margin-top: 0;
 		}
 		.publication-header {
 			margin-bottom: 20px;
@@ -55,9 +64,6 @@
 		}
 		.publication-header.with-photo .publication-announce {
 			margin-left: 205px;
-		}
-		.publication-announce p {
-			margin: 0;
 		}
 		.publication-date {
 			text-align: right;

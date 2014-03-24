@@ -116,6 +116,7 @@ class VidalController extends Controller
 			'productsRepresented' => $productsRepresented,
 			'products1'           => $products1,
 			'products2'           => $products2,
+			'title'               => $this->strip($company['CompanyName']) . ' | Фирмы-производители',
 		);
 	}
 
@@ -129,7 +130,11 @@ class VidalController extends Controller
 	{
 		$em       = $this->getDoctrine()->getManager('drug');
 		$products = $em->getRepository('VidalDrugBundle:Product')->findByClPhGroup($description);
-		$params   = array('products' => $products, 'description' => $description);
+		$params   = array(
+			'products'    => $products,
+			'description' => $description,
+			'title'       => 'Клинико-фармакологическая группа',
+		);
 
 		if (!empty($products)) {
 			$productIds          = $this->getProductIds($products);
@@ -158,8 +163,12 @@ class VidalController extends Controller
 		}
 
 		$picture     = $em->getRepository('VidalDrugBundle:Picture')->findByInfoPageID($InfoPageID);
-		$params      = array('infoPage' => $infoPage, 'picture' => $picture);
 		$documentIds = $em->getRepository('VidalDrugBundle:Document')->findIdsByInfoPageID($InfoPageID);
+		$params      = array(
+			'infoPage' => $infoPage,
+			'picture'  => $picture,
+			'title'    => $this->strip($infoPage['RusName']) . ' | Представительства фирм',
+		);
 
 		if (!empty($documentIds)) {
 			$products = $em->getRepository('VidalDrugBundle:Product')->findByDocumentIDs($documentIds);
@@ -188,16 +197,16 @@ class VidalController extends Controller
 		$l  = $request->query->get('l', null);
 		$p  = $request->query->get('p', 1);
 
-//		$companies = $em->getRepository('VidalDrugBundle:InfoPage')->getQuery()->getResult();
-//		$letters   = array();
-//		foreach ($companies as $company) {
-//			$letter = mb_strtoupper(mb_substr($company->getRusName(), 0, 1, 'utf-8'), 'utf-8');
-//			if (!isset($letters[$letter])) {
-//				$letters[$letter] = '';
-//			}
-//		}
-//		var_dump($letters);
-//		exit;
+		//		$companies = $em->getRepository('VidalDrugBundle:InfoPage')->getQuery()->getResult();
+		//		$letters   = array();
+		//		foreach ($companies as $company) {
+		//			$letter = mb_strtoupper(mb_substr($company->getRusName(), 0, 1, 'utf-8'), 'utf-8');
+		//			if (!isset($letters[$letter])) {
+		//				$letters[$letter] = '';
+		//			}
+		//		}
+		//		var_dump($letters);
+		//		exit;
 
 		if ($l) {
 			$query = $em->getRepository('VidalDrugBundle:InfoPage')->findByLetter($l);
@@ -241,6 +250,7 @@ class VidalController extends Controller
 		return array(
 			'molecule' => $molecule,
 			'document' => $document,
+			'title'    => $molecule . ' | Активные вещества',
 		);
 	}
 
@@ -299,6 +309,7 @@ class VidalController extends Controller
 			'products2' => $products2,
 			'companies' => $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds),
 			'pictures'  => $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds),
+			'title'     => $molecule . ' | Активные вещества в препаратах',
 		);
 	}
 
@@ -311,7 +322,9 @@ class VidalController extends Controller
 	 */
 	public function gnpAction()
 	{
-		return array();
+		return array(
+			'title' => 'Международные наименования - МНН',
+		);
 	}
 
 	/**
@@ -324,14 +337,17 @@ class VidalController extends Controller
 	 */
 	public function productAction($EngName, $ProductID)
 	{
-		$em     = $this->getDoctrine()->getManager('drug');
-		$params = array();
+		$em = $this->getDoctrine()->getManager('drug');
 
 		$product = $em->getRepository('VidalDrugBundle:Product')->findByProductID($ProductID);
 
 		if (!$product) {
 			throw $this->createNotFoundException();
 		}
+
+		$params = array(
+			'title' => $this->strip($product['RusName']) . ' | Препараты',
+		);
 
 		$document  = $em->getRepository('VidalDrugBundle:Document')->findByProductDocument($ProductID);
 		$molecules = $em->getRepository('VidalDrugBundle:Molecule')->findByProductID($ProductID);
@@ -416,6 +432,7 @@ class VidalController extends Controller
 			$DocumentID = $document->getDocumentID();
 		}
 
+		$params['title']      = $this->strip($document->getRusName()) . ' | Препараты';
 		$params['documentId'] = $document->getDocumentID();
 		$articleId            = $document->getArticleID();
 		$molecules            = $em->getRepository('VidalDrugBundle:Molecule')->findByDocumentID($DocumentID);
@@ -462,5 +479,13 @@ class VidalController extends Controller
 	private function sortProducts($a, $b)
 	{
 		return strcasecmp($a['RusName'], $b['RusName']);
+	}
+
+	private function strip($string)
+	{
+		$pat = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/&amp;/');
+		$rep = array('', '', '&');
+
+		return preg_replace($pat, $rep, $string);
 	}
 }

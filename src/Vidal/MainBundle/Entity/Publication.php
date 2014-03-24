@@ -32,6 +32,15 @@ class Publication extends BaseEntity
 	/** @ORM\ManyToOne(targetEntity="User", inversedBy="publications") */
 	protected $author;
 
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $keyword;
+
+	/** @ORM\ManyToOne(targetEntity="Subdivision", inversedBy="publications") */
+	protected $subdivision;
+
+	/** @ORM\ManyToOne(targetEntity="Subclass", inversedBy="publications") */
+	protected $subclass;
+
 	public function __construct()
 	{
 		$now = new \DateTime('now');
@@ -122,5 +131,53 @@ class Publication extends BaseEntity
 	public function getTitle()
 	{
 		return $this->title;
+	}
+
+	/**
+	 * @param mixed $subdivision
+	 */
+	public function setSubdivision($subdivision)
+	{
+		$this->subdivision = $subdivision;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSubdivision()
+	{
+		return $this->subdivision;
+	}
+
+	/**
+	 * @param mixed $keyword
+	 */
+	public function setKeyword($keyword)
+	{
+		$this->keyword = $keyword;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getKeyword()
+	{
+		return $this->keyword;
+	}
+
+	/**
+	 * @param mixed $subclass
+	 */
+	public function setSubclass($subclass)
+	{
+		$this->subclass = $subclass;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSubclass()
+	{
+		return $this->subclass;
 	}
 }

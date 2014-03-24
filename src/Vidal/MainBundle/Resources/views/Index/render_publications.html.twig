@@ -9,7 +9,7 @@
 			{% endif %}
 			<div>
 				<div class="publication-title">
-					<a href="{{ path('publication', {id:publication.id}) }}">{{ publication.title }}</a>
+					<a href="{{ path('publication', {id:publication.id}) }}">{{ publication.title|raw }}</a>
 				</div>
 				<div class="publication-announce">
 					{{ publication.announce|raw }}

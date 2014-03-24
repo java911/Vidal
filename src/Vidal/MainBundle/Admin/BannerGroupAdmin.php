@@ -61,7 +61,7 @@ class BannerGroupAdmin extends Admin
 			->add('title', null, array('label' => 'Название'))
 			->add('width', null, array('label' => 'Ширина'))
 			->add('height', null, array('label' => 'Высота'))
-			->add('enabled', null, array('label' => 'Активна', 'template' => 'EvrikaMainBundle:Preview:swap_enabled.html.twig'))
+			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled_main.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(

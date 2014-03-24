@@ -31,6 +31,17 @@
 
 
 {% block vidal %}
+	{# ссылка админу на редактирование #}
+	{% if is_granted('ROLE_ADMIN') %}
+		<a class="admin-edit fade" target="_blank"
+			href="{{ product is defined
+				? path('admin_vidal_drug_product_edit', {'id':product.ProductID})
+				: path('admin_vidal_drug_document_edit', {'id':document.DocumentID})
+			}}">
+			<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+		</a>
+	{% endif %}
+
 	{# Иконки использования при состояниях #}
 	{% if document is defined %}
 		{% include 'VidalDrugBundle:Vidal:document_conditions.html.twig' %}

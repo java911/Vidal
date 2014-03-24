@@ -8,7 +8,7 @@
 				{% if seotitle is defined and seotitle is not null %}
 					{{ seotitle }}
 				{% else %}
-					{{ title is defined and title is not null ? title ~ ' | ' }}Справочник лекарственных препаратов Видаль. Описание лекарственных средств.
+					{{ title is defined and title is not null ? title ~ ' | ' }}Vidal.ru - cправочник лекарственных препаратов
 				{% endif %}
 			{% endspaceless %}</title>
 		<meta name="description" content="{% spaceless %}
@@ -73,7 +73,9 @@
 					{% block menu %}
 						{% include 'VidalMainBundle::menu_small.html.twig' %}
 					{% endblock %}
-					{% block content %}{% endblock %}
+					<div class="content-body">
+						{% block content %}{% endblock %}
+					</div>
 				</main>
 			</div>
 

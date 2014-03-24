@@ -161,9 +161,6 @@ class AuthController extends Controller
 		return $this->redirect($this->generateUrl('profile'));
 	}
 
-	/**
-	 * Пока у нас не используется encoder будем по-простому
-	 */
 	private function calculateHash($user)
 	{
 		return md5(time() . $user->getUsername() . $user->getPassword());

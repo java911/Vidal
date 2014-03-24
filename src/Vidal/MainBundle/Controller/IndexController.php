@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 class IndexController extends Controller
 {
 	const PUBLICATIONS_INDEX_PAGE = 6;
-	const PUBLICATIONS_PER_PAGE   = 15;
+	const PUBLICATIONS_PER_PAGE   = 25;
 
 	/**
 	 * @Route("/", name="index")
@@ -19,7 +19,10 @@ class IndexController extends Controller
 	public function indexAction(Request $request)
 	{
 		$em     = $this->getDoctrine()->getManager();
-		$params = array('indexPage' => true);
+		$params = array(
+			'indexPage' => true,
+			'seotitle'  => 'Справочник лекарственных препаратов Видаль. Описание лекарственных средств',
+		);
 
 		$params['publicationsPagination'] = $this->get('knp_paginator')->paginate(
 			$em->getRepository('VidalMainBundle:Publication')->getQueryEnabled(),
@@ -31,7 +34,8 @@ class IndexController extends Controller
 	}
 
 	/**
-	 * @Route("/news/{id}", name="publication")
+	 * @Route("/novosti/novosti_{id}.{ext}", name="publication_old", defaults={"ext"="html"})
+	 * @Route("/novosti/{id}", name="publication")
 	 * @Template()
 	 */
 	public function publicationAction($id)
@@ -45,12 +49,12 @@ class IndexController extends Controller
 		return array(
 			'publication' => $publication,
 			'menu_left'   => 'news',
-			'title'       => $publication . ' | Новости',
+			'title'       => $this->strip($publication->getTitle()) . ' | Новости',
 		);
 	}
 
 	/**
-	 * @Route("/news", name="news")
+	 * @Route("/novosti", name="news")
 	 * @Template()
 	 */
 	public function newsAction(Request $request)
@@ -81,5 +85,13 @@ class IndexController extends Controller
 			'menu_left'       => 'qa',
 			'questionAnswers' => $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findAll(),
 		);
+	}
+
+	private function strip($string)
+	{
+		$pat = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/&amp;/');
+		$rep = array('', '', '&');
+
+		return preg_replace($pat, $rep, $string);
 	}
 }
