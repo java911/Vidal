@@ -66,7 +66,7 @@ doctrine:
                 driver:   %database_driver%
                 host:     %database_host%
                 port:     %database_port%
-                dbname:   %database_drug%
+                dbname:   %drug%
                 user:     %database_user%
                 password: %database_password%
                 charset:  UTF8
@@ -74,7 +74,7 @@ doctrine:
                 driver:   %database_driver%
                 host:     %database_host%
                 port:     %database_port%
-                dbname:   %database_veterinar%
+                dbname:   %veterinar%
                 user:     %database_user%
                 password: %database_password%
                 charset:  UTF8
