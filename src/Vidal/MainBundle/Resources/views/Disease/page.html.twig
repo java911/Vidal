@@ -144,6 +144,9 @@
                 if ($(this).attr('intro') == 'head' ){
                     party = 'head';
                     renderBody();
+                }else{
+                    subParty = $(this).attr('data-key');
+                    renderSymptom();
                 }
                 return false;
             });
