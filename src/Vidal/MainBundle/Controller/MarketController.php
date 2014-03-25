@@ -11,5 +11,7 @@ use Vidal\MainBundle\Entity\DiseaseParty;
 class MarketController extends Controller{
     protected $basket;
 
+    public function getDrugs(){
 
+    }
 }
