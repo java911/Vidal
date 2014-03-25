@@ -33,10 +33,14 @@ class DiseaseState extends  BaseEntity
 
     protected $body;
 
-
+    /**
+     * @ORM\OneToMany(targetEntity="DiseaseStateArticle", mappedBy="diseaseState")
+     */
+    protected $articles;
 
     public function __construct(){
         $this->diseases = new ArrayCollection();
+        $this->articles = new ArrayCollection();
     }
 
 
@@ -115,4 +119,29 @@ class DiseaseState extends  BaseEntity
         return $this->body;
     }
 
+    /**
+     * @param mixed $articles
+     */
+    public function setArticles($articles)
+    {
+        $this->articles = $articles;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getArticles()
+    {
+        return $this->articles;
+    }
+
+    public function addArticle($article)
+    {
+        $this->articles[] = $article;
+    }
+
+    public function removeArticle($article)
+    {
+        $this->articles->removeElement($article);
+    }
 }
