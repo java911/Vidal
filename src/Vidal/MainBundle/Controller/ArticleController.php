@@ -12,7 +12,7 @@ class ArticleController extends Controller
 	 * Конкретная статья рубрики
 	 *
 	 * @Route("/articles/{rubrique}/{link}", name="article")
-	 * @Route("/patsientam/entsiklopediya/{rubrique}/{link}")
+	 * @Route("/patsientam/entsiklopediya/{rubrique}/{link}.{ext}", name="article_old", defaults={"ext":"html"})
 	 *
 	 * @Template()
 	 */
@@ -38,8 +38,7 @@ class ArticleController extends Controller
 	 * Конкретная рубрика
 	 *
 	 * @Route("/articles/{rubrique}", name="rubrique")
-	 * @Route("/patsientam/entsiklopediya/{rubrique}/")
-	 * @Route("/patsientam/entsiklopediya/{rubrique}")
+	 * @Route("/patsientam/entsiklopediya/{rubrique}/", name="rubrique_old")
 	 *
 	 * @Template()
 	 */

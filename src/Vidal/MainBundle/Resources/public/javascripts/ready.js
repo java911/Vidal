@@ -35,5 +35,9 @@ $(document).ready(function() {
 			.appendTo(ul);
 	};
 
+	$('.admin-edit').click(function(e) {
+		e.stopPropagation();
+	});
+
 	$('#search_form .search-type').chosen({disable_search:true});
 });

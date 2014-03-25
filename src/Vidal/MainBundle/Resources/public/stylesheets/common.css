@@ -1185,6 +1185,9 @@ h1 {
 .banner {
 	position: relative;
 }
+.banner .admin-edit {
+	right: -20px;
+}
 #banner_top {
 	position:      relative;
 	margin-bottom: -15px;

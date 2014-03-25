@@ -234,7 +234,7 @@ class DrugsController extends Controller
 
 		$params = array(
 			'menu_drugs' => 'pharm',
-			'title'      => '',
+			'title'      => 'Фармако-терапевтические группы',
 			'q'          => $q,
 			'l'          => $l,
 			'pagination' => $this->get('knp_paginator')->paginate($query, $p, self::PHARM_PER_PAGE),
