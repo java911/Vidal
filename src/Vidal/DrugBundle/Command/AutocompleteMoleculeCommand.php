@@ -12,25 +12,24 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @package Vidal\DrugBundle\Command
  */
-class AutocompleteCompanyCommand extends ContainerAwareCommand
+class AutocompleteMoleculeCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:autocomplete_company')
-			->setDescription('Creates autocomplete for Company.LocalName in Elastica');
+		$this->setName('vidal:autocomplete_molecule')
+			->setDescription('Creates autocomplete for Molecule.LatName, Molecule.RusName');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln('--- vidal:autocomplete_company started');
+		$output->writeln('--- vidal:autocomplete_molecule started');
 
-		$em = $this->getContainer()->get('doctrine')->getManager('drug');
-
-		$names = $em->getRepository('VidalDrugBundle:Company')->getNames();
+		$em    = $this->getContainer()->get('doctrine')->getManager('drug');
+		$names = $em->getRepository('VidalDrugBundle:Molecule')->getNames();
 
 		$elasticaClient = new \Elastica\Client();
 		$elasticaIndex  = $elasticaClient->getIndex('website');
-		$elasticaType   = $elasticaIndex->getType('autocomplete_company');
+		$elasticaType   = $elasticaIndex->getType('autocomplete_molecule');
 
 		# delete if exists
 		if ($elasticaType->exists()) {
@@ -66,6 +65,6 @@ class AutocompleteCompanyCommand extends ContainerAwareCommand
 		$elasticaType->addDocuments($documents);
 		$elasticaType->getIndex()->refresh();
 
-		$output->writeln("+++ vidal:autocomplete_company loaded $i documents!");
+		$output->writeln("+++ vidal:autocomplete_molecule loaded $i documents!");
 	}
 }

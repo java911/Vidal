@@ -82,7 +82,6 @@ class RegisterType extends AbstractType
 					))
 			))
 			->add('submit', 'submit', array('label' => 'Зарегистрироваться'));
-
 	}
 
 	public function setDefaultOptions(OptionsResolverInterface $resolver)

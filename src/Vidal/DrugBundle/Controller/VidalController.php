@@ -11,6 +11,7 @@ class VidalController extends Controller
 {
 	const PRODUCTS_PER_PAGE  = 40;
 	const COMPANIES_PER_PAGE = 50;
+	const MOLECULES_PER_PAGE = 50;
 
 	/**
 	 * Список компаний
@@ -224,6 +225,49 @@ class VidalController extends Controller
 			'q'          => $q,
 			'l'          => $l,
 			'pagination' => $this->get('knp_paginator')->paginate($query, $p, self::COMPANIES_PER_PAGE),
+		);
+
+		return $params;
+	}
+
+	/**
+	 * @Route("/drugs/molecules", name="molecules")
+	 * @Template("VidalDrugBundle:Vidal:molecules.html.twig")
+	 */
+	public function moleculesAction(Request $request)
+	{
+		$em = $this->getDoctrine()->getManager('drug');
+		$q  = $request->query->get('q', null);
+		$l  = $request->query->get('l', null);
+		$p  = $request->query->get('p', 1);
+
+//		$molecules = $em->getRepository('VidalDrugBundle:Molecule')->getQuery()->getResult();
+//		$letters   = array();
+//		foreach ($molecules as $m) {
+//			$letter = mb_strtoupper(mb_substr($m->getRusName(), 0, 1, 'utf-8'), 'utf-8');
+//			if (!isset($letters[$letter])) {
+//				$letters[$letter] = '';
+//			}
+//		}
+//		var_dump($letters);
+//		exit;
+
+		if ($l) {
+			$query = $em->getRepository('VidalDrugBundle:Molecule')->getQueryByLetter($l);
+		}
+		elseif ($q) {
+			$query = $em->getRepository('VidalDrugBundle:Molecule')->getQueryByString($q);
+		}
+		else {
+			$query = $em->getRepository('VidalDrugBundle:Molecule')->getQuery();
+		}
+
+		$params = array(
+			'menu_drugs' => 'molecule',
+			'title'      => 'Активные вещества',
+			'q'          => $q,
+			'l'          => $l,
+			'pagination' => $this->get('knp_paginator')->paginate($query, $p, self::MOLECULES_PER_PAGE),
 		);
 
 		return $params;

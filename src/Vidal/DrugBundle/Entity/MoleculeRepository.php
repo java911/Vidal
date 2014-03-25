@@ -153,8 +153,116 @@ class MoleculeRepository extends EntityRepository
 			JOIN VidalDrugBundle:Document d WITH md.DocumentID = d
 			LEFT JOIN m.GNParent mnn
 			WHERE d IN (:documentIds)
-			ORDER BY m.LatName ASC
+			ORDER BY m.RusName ASC
 		')->setParameter('documentIds', $documentIds)
 			->getResult();
+	}
+
+	public function getNames()
+	{
+		$names = array();
+
+		$molecules = $this->_em->createQuery('
+		 	SELECT m.LatName
+		 	FROM VidalDrugBundle:Molecule m
+		 	ORDER BY m.LatName ASC
+		')->getResult();
+
+		foreach ($molecules as $m) {
+			$names[] = $m['LatName'];
+		}
+
+		$molecules = $this->_em->createQuery("
+		 	SELECT m.RusName
+		 	FROM VidalDrugBundle:Molecule m
+		 	WHERE m.RusName != ''
+		 	ORDER BY m.RusName ASC
+		")->getResult();
+
+		foreach ($molecules as $m) {
+			$name = $m['RusName'];
+			if (!empty($name)) {
+				$names[] = $name;
+			}
+		}
+
+		$uniques = array();
+
+		foreach ($names as $name) {
+			if (!isset($uniques[$name])) {
+				$uniques[$name] = '';
+			}
+		}
+
+		return array_keys($uniques);
+	}
+
+	public function getQueryByLetter($l)
+	{
+		$qb = $this->createQueryBuilder('m');
+		$qb->select('m');
+
+		if (in_array($l, array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'Y', 'Z'))) {
+			$qb->where('m.LatName LIKE :l')
+				->setParameter('l', $l . '%')
+				->orderBy('m.LatName', 'ASC');
+		}
+		else {
+			$qb->where('m.RusName LIKE :l')
+				->andWhere("m.RusName != ''")
+				->setParameter('l', $l . '%')
+				->orderBy('m.RusName', 'ASC');
+		}
+
+		return $qb->getQuery()->getResult();
+	}
+
+	public function getQueryByString($q)
+	{
+		$qb = $this->_em->createQueryBuilder('m');
+		$qb->select('m')
+			->from('VidalDrugBundle:Molecule', 'm')
+			->orderBy('m.RusName', 'ASC');
+
+		# поиск по всем словам
+		$where = '';
+		$words = explode(' ', $q);
+
+		for ($i = 0; $i < count($words); $i++) {
+			$word = $words[$i];
+			if ($i > 0) {
+				$where .= ' AND ';
+			}
+			$where .= "(m.LatName LIKE '$word%' OR m.LatName LIKE '% $word%' OR m.RusName LIKE '$word%' OR m.RusName LIKE '% $word%')";
+		}
+
+		$qb->andWhere($where);
+		$results = $qb->getQuery()->getResult();
+
+		# поиск по одному слову
+		if (empty($results)) {
+			$where = '';
+			for ($i = 0; $i < count($words); $i++) {
+				$word = $words[$i];
+				if ($i > 0) {
+					$where .= ' OR ';
+				}
+				$where .= "(m.LatName LIKE '$word%' OR m.LatName LIKE '% $word%' OR m.RusName LIKE '$word%' OR m.RusName LIKE '% $word%')";
+			}
+
+			$results = $qb->getQuery()->getResult();
+		}
+
+		return $results;
+	}
+
+	public function getQuery()
+	{
+		return $this->_em->createQuery("
+		 	SELECT m
+		 	FROM VidalDrugBundle:Molecule m
+		 	WHERE m.RusName != ''
+		 	ORDER BY m.RusName ASC
+		");
 	}
 }

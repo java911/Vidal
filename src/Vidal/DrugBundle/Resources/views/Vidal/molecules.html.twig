@@ -1,40 +1,92 @@
 {% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
 
 
-{% block vidal %}
-	{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' %}
+{% block title %}
+	<h1>Активные вещества</h1>
+{% endblock %}
 
-	<div class="anons anons-drugs">
-		Фармако-терапевтические группы ГосРеестра МинЗдрава РФ
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<span>Активные вещества</span>
 	</div>
+{% endblock %}
 
-	{% include 'VidalDrugBundle:Drugs:pharm_form.html.twig' %}
+
+{% block vidal %}
+	{% include 'VidalDrugBundle:Vidal:molecules_form.html.twig' %}
 
 	<div class="info-line">
 		{% if l %}
-			Найдено групп на букву <i>{{ l }}</i>:
+			Найдено активных веществ букву <i>{{ l }}</i>:
 			<span>{{ pagination.totalItemCount }}</span>
 		{% elseif q %}
 			{% if pagination.totalItemCount %}
-				Найдено групп по запросу <i>{{ q }}</i>:
+				Найдено активных веществ по запросу <i>{{ q }}</i>:
 				<span>{{ pagination.totalItemCount }}</span>
 			{% else %}
-				Не найдено групп по запросу <i>{{ q }}</i>
+				Не найдено активных веществ по запросу <i>{{ q }}</i>
 			{% endif %}
 		{% else %}
-			Найдено групп:
+			Найдено активных веществ:
 			<span>{{ pagination.totalItemCount }}</span>
 		{% endif %}
 	</div>
 
 	{% if pagination is defined and pagination.totalItemCount %}
-		<ul class="pharm ul-style">
-			{% for pharm in pagination %}
-				<li>
-					<a href="{{ path('pharm_item', {'id': pharm.id}) }}">{{ pharm }}</a>
-				</li>
-			{% endfor %}
-		</ul>
+		<table class="products-table molecules">
+			{% if l in ['A','B', 'C',  'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'Y', 'Z'] %}
+				<tr class="products-table-header">
+					<td style="width:30%">Название латинское</td>
+					<td style="width:30%">Название русское</td>
+					<td style="width:40%" title="Международное непатентованное наименование (МНН)">МНН</td>
+				</tr>
+				{% for molecule in pagination %}
+					<tr>
+						<td>
+							<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}">{{ molecule.LatName }}</a>
+						</td>
+						<td>
+							<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}">{{ molecule.RusName }}</a>
+						</td>
+						<td>
+							{% if molecule.GNParent is not empty %}
+								<a title="Международное непатентованное наименование (МНН)" href="{{ path('gnp') }}"
+								   class="no-underline mnn">{{ molecule.GNParent }}
+								</a>
+								<span class="small italic">{{ molecule.GNParent.description }}</span>
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+			{% else %}
+				<tr class="products-table-header">
+					<td style="width:30%">Название русское</td>
+					<td style="width:30%">Название латинское</td>
+					<td style="width:40%" title="Международное непатентованное наименование (МНН)">МНН</td>
+				</tr>
+				{% for molecule in pagination %}
+					<tr>
+						<td>
+							<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}">{{ molecule.RusName }}</a>
+						</td>
+						<td>
+							<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}">{{ molecule.LatName }}</a>
+						</td>
+						<td>
+							{% if molecule.GNParent is not empty %}
+								<a title="Международное непатентованное наименование (МНН)" href="{{ path('gnp') }}"
+								   class="no-underline mnn">{{ molecule.GNParent }}
+								</a>
+								<span class="small italic">{{ molecule.GNParent.description }}</span>
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+			{% endif %}
+		</table>
 
 		<div class="navigation">
 			{{ knp_pagination_render(pagination) }}
@@ -59,14 +111,12 @@
 		#form_input {
 			width: 408px;
 		}
-		.pharm li {
-			margin-bottom: 5px;
-			line-height:   13px;
-		}
-		.pharm a {
+		.molecules a {
+			display:         block;
 			text-decoration: none;
+			margin:          0 !important;
 		}
-		.pharm a:hover {
+		.molecules a:hover {
 			text-decoration: underline;
 		}
 	</style>

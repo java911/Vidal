@@ -21,7 +21,7 @@ class PublicationAdmin extends Admin
 				'_page'       => 1,
 				'_per_page'   => 25,
 				'_sort_order' => 'DESC',
-				'_sort_by'    => 'created'
+				'_sort_by'    => 'date'
 			);
 		}
 	}
@@ -34,7 +34,7 @@ class PublicationAdmin extends Admin
 			->add('announce', null, array('label' => 'Анонс'))
 			->add('body', null, array('label' => 'Основное содержимое'))
 			->add('enabled', null, array('label' => 'Активна'))
-			->add('created', null, array(
+			->add('date', null, array(
 				'label'  => 'Дата создания',
 				'widget' => 'single_text',
 				'format' => 'd.m.Y в H:i'
@@ -54,7 +54,7 @@ class PublicationAdmin extends Admin
 			->add('announce', null, array('label' => 'Анонс', 'required' => true))
 			->add('body', null, array('label' => 'Основное содержимое', 'required' => true))
 			->add('enabled', null, array('label' => 'Активна', 'required' => false))
-			->add('created', null, array(
+			->add('date', null, array(
 				'label'    => 'Дата создания',
 				'data'     => new \DateTime('now'),
 				'required' => true,
@@ -74,7 +74,7 @@ class PublicationAdmin extends Admin
 		$listMapper
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
-			->add('created', null, array(
+			->add('date', null, array(
 				'label'  => 'Дата создания',
 				'widget' => 'single_text',
 				'format' => 'd.m.Y в H:i'
