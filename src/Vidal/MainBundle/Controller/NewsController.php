@@ -73,4 +73,12 @@ class NewsController extends Controller
 //
 //		return $params;
 //	}
+
+	private function strip($string)
+	{
+		$pat = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/&amp;/');
+		$rep = array('', '', '&');
+
+		return preg_replace($pat, $rep, $string);
+	}
 }

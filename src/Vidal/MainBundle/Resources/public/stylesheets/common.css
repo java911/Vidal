@@ -852,7 +852,8 @@ h1 {
 	z-index:  10;
 }
 .admin-edit img {
-	width: 18px;
+	width:  18px;
+	border: none !important;
 }
 .admin-edit.fade {
 	opacity: 0.4;
@@ -1181,6 +1182,9 @@ h1 {
 }
 
 /* banners */
+.banner {
+	position: relative;
+}
 #banner_top {
 	position:      relative;
 	margin-bottom: -15px;

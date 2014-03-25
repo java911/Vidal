@@ -44,12 +44,4 @@ class IndexController extends Controller
 			'questionAnswers' => $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findAll(),
 		);
 	}
-
-	private function strip($string)
-	{
-		$pat = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/&amp;/');
-		$rep = array('', '', '&');
-
-		return preg_replace($pat, $rep, $string);
-	}
 }

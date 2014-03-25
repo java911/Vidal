@@ -32,7 +32,7 @@
 
 {% block vidal %}
 	{# ссылка админу на редактирование #}
-	{% if is_granted('ROLE_ADMIN') %}
+	{% if isAdmin %}
 		<a class="admin-edit fade" target="_blank"
 			href="{{ product is defined
 				? path('admin_vidal_drug_product_edit', {'id':product.ProductID})

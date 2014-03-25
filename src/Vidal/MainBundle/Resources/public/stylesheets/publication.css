@@ -2,6 +2,7 @@
 	margin: 20px 0;
 }
 .publication {
+	position:      relative;
 	margin-bottom: 15px;
 	overflow:      hidden;
 }
