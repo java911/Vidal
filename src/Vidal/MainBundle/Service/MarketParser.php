@@ -1,5 +1,6 @@
 <?php
 
+namespace Vidal\MainBundle\Service;
 
 class MarketParser{
     protected $url = 'http://vidal:3L29y4@ea.smacs.ru/exchange/price';

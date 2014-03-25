@@ -3,6 +3,7 @@
 namespace Vidal\MainBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity
@@ -25,6 +26,17 @@ class MarketCache
      * @ORM\Column(type ="boolean")
      */
     protected $document;
+
+    /**
+     * @ORM\Column(type ="text")
+     */
+    protected $body;
+
+    /**
+     * @ORM\Column(type = "datetime")
+     * @Gedmo\Timestampable(on = "create")
+     */
+    protected $created;
 
     /**
      * @param mixed $document
@@ -73,6 +85,39 @@ class MarketCache
     {
         return $this->target;
     }
+
+    /**
+     * @param mixed $created
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * @param mixed $body
+     */
+    public function setBody($body)
+    {
+        $this->body = $body;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBody()
+    {
+        return $this->body;
+    }
+
 
 
 }

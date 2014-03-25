@@ -1,4 +1,6 @@
-piluliCodeUrl.php<?php
+<?php
+
+namespace Vidal\MainBundle\Service;
 
 class MarketParser3{
     protected $url = 'http://www.zdravzona.ru/bitrix/catalog_export/yandex_b.php';

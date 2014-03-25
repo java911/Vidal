@@ -1,5 +1,7 @@
 <?php
 
+namespace Vidal\MainBundle\Service;
+
 class MarketParser2{
     protected $url = 'http://vidal:3L29y4@smacs.ru/exchange/price';
     protected $drugUrl = 'http://www.piluli.ru/product';
