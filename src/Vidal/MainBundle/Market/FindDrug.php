@@ -29,8 +29,14 @@ class FindDrug{
 
     protected $_em;
 
-    public function __construct(EntityManager $em){
+    public function __construct(EntityManager $em, $title, $id = ''){
+
         $this->_em = $em;
+
+        $this->title = $title;
+        if ( $id != '' ){
+            $this->id = $id;
+        }
 
         include 'piluliCodeUrl.php';
         $this->piluliCodeUrl = $mass;
@@ -83,7 +89,7 @@ class FindDrug{
     public function setCache($body){
         $time = time();
         $date = date('Y-m-d H:i:s',$time);
-        $title = iconv('WINDOWS-1251', 'UTF-8', $this->title);
+        #$title = iconv('WINDOWS-1251', 'UTF-8', $this->title);
         $caches = $this->_em->getRepository('VidalMainBundle:MarketCache')->findBy(
             array(
                 'target' => $this->id,
@@ -111,9 +117,10 @@ class FindDrug{
         $this->market_2 = new MarketParser2($this->piluliCodeUrl);
         $this->market_3 =  new MarketParser3();
 
-        $name = mb_strtolower($this->title);
-//        $name = $this->market_1->mb_ucfirst($name,'WINDOWS-1251');
-//        $name = iconv('WINDOWS-1251', 'UTF-8', $name);
+        #$name = mb_strtolower($this->title);
+        $name = $this->title;
+        #$name = $this->market_1->mb_ucfirst($name,'WINDOWS-1251');
+        #$name = iconv('WINDOWS-1251', 'UTF-8', $name);
 
         $massDrugs = $this->market_1->findDrug($name);
         $massPiluli = $this->market_2->findDrug($name);
@@ -124,25 +131,25 @@ class FindDrug{
             $body.= '<h2 id="buy">Цены в аптеке «Eapteka.ru»:</h2><br/>';
             $body.= '<table style="width: 100%;">';
             foreach ($massDrugs as $massDrug){
-                $body.= '<tr>';
-                $body.= '<td style=\"width: 120px; padding: 5px 7px;\">'.iconv('UTF-8', 'WINDOWS-1251', $massDrug['manufacturer']).'</td>';
-                $body.= '<td style=\"padding: 5px 7px;\">'.iconv('UTF-8', 'WINDOWS-1251', $massDrug['name']).'</td>';
-                $body.= '<td>'.iconv('UTF-8', 'WINDOWS-1251', $massDrug['price']).' руб. </td>';
-                $body.= '<td><a class=\"abuy\" target=\"_blank\" href=\"'.$massDrug['url'].'\">Купить</a></td>';
-                $body.= '</tr>';
+                $body.= "<tr>";
+                $body.= "<td style='width: 120px; padding: 5px 7px;'>".$massDrug['manufacturer']."</td>";
+                $body.= "<td style='padding: 5px 7px;'>".$massDrug['name']."</td>";
+                $body.= "<td>".$massDrug['price']." руб. </td>";
+                $body.= "<td><a class='abuy' target='_blank' href='".$massDrug['url']."'>Купить</a></td>";
+                $body.= "</tr>";
             }
-            $body.= '</table><br/><br/>';
+            $body.= "</table><br/><br/>";
         }
         if (!empty($massPiluli) ){
             $massDrugs = $massPiluli;
-            $body.= '<h2 id="buy">Цены в аптекe «Piluli.ru»:</h2><br/>';
+            $body.= '<h2 id=\'buy\'>Цены в аптекe «Piluli.ru»:</h2><br/>';
             $body.= '<table style="width: 100%;">';
             foreach ($massDrugs as $massDrug){
                 $body.= '<tr>';
-                $body.= '<td style=\"width: 120px; padding: 5px 7px;\">'.iconv('UTF-8', 'WINDOWS-1251', $massDrug['manufacturer']).'</td>';
-                $body.= '<td style=\"padding: 5px 7px;\">'.iconv('UTF-8', 'WINDOWS-1251', $massDrug['name']).'</td>';
-                $body.= '<td>'.iconv('UTF-8', 'WINDOWS-1251', $massDrug['price']).' руб. </td>';
-                $body.= '<td><a class=\"abuy2\" target=\"_blank\" href=\"'.$massDrug['url'].'\">Купить</a></td>';
+                $body.= '<td style=\'width: 120px; padding: 5px 7px;\'>'.$massDrug['manufacturer'].'</td>';
+                $body.= '<td style=\'padding: 5px 7px;\'>'.$massDrug['name'].'</td>';
+                $body.= '<td>'.$massDrug['price'].' руб. </td>';
+                $body.= '<td><a class=\'abuy2\' target=\'_blank\' href=\''.$massDrug['url'].'\'>Купить</a></td>';
                 $body.= '</tr>';
             }
             $body.= '</table><br/><br/>';
@@ -153,10 +160,10 @@ class FindDrug{
             $body.= '<table style="width: 100%;">';
             foreach ($massDrugs as $massDrug){
                 $body.= '<tr>';
-                $body.= '<td style=\"width: 120px; padding: 5px 7px;\">'.iconv('UTF-8', 'WINDOWS-1251', $massDrug['manufacturer']).'</td>';
-                $body.= '<td style=\"padding: 5px 7px;\">'.iconv('UTF-8', 'WINDOWS-1251', $massDrug['name']).'</td>';
-                $body.= '<td>'.iconv('UTF-8', 'WINDOWS-1251', $massDrug['price']).' руб. </td>';
-                $body.= '<td><a class=\"abuy3\" target=\"_blank\" href=\"'.$massDrug['url'].'\">Купить</a></td>';
+                $body.= '<td style=\'width: 120px; padding: 5px 7px;\'>'.$massDrug['manufacturer'].'</td>';
+                $body.= '<td style=\'padding: 5px 7px;\'>'.$massDrug['name'].'</td>';
+                $body.= '<td>'.$massDrug['price'].' руб. </td>';
+                $body.= '<td><a class=\'abuy3\' target=\'_blank\' href=\''.$massDrug['url'].'\'>Купить</a></td>';
                 $body.= '</tr>';
             }
             $body.= '</table><br/><br/>';

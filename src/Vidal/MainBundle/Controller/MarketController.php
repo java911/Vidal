@@ -29,9 +29,8 @@ class MarketController extends Controller{
     public function productListAction( $title = '' ){
 //        $findDrug = $this->get('findDrug.service');
         $em = $this->getDoctrine()->getManager();
-        $findDrug = new FindDrug($em);
-        $findDrug->setTitle( $title );
-        $findDrug->setId( 11 );
+        $findDrug = new FindDrug($em,$title);
+        $findDrug->setId( 14 );
         $findDrug->isDocument( false );
         $body = $findDrug->run();
 

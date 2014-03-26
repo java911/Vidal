@@ -13,7 +13,6 @@ class MarketParser{
     public function __construct(){
 
         $this->cachefile = dirname(dirname(__FILE__)).'/../../../../upload_vidal/'.$this->cachefile;
-        echo $this->cachefile;
 
         if (file_exists($this->cachefile) && time() - $this->cachetime < filemtime($this->cachefile)) {
             $this->getCache();
