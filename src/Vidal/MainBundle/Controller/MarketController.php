@@ -12,15 +12,30 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Vidal\MainBundle\Market\Drug;
 use Vidal\MainBundle\Market\FindDrug;
+use Vidal\MainBundle\Market\Market;
 
 class MarketController extends Controller{
 
-//    public function AddToBasket(){}
+    public function AddToBasket($productId,$count){
+        $market = new Market();
+        $product = $market->get($productId);
+        $market->set($product);
+        return $this->redirect($this->get('request')->server->get('HTTP_REFERER'));
+    }
 //
-//    public function setToBasket(){}
+    public function setToBasket($productId,$count){
+        $market = new Market();
+        $product = $market->get($productId);
+        $market->set($product);
+        return $this->redirect($this->get('request')->server->get('HTTP_REFERER'));
+    }
 //
-//    public function removeToBasket(){}
-//
+    public function removeToBasket($productId){
+        $market = new Market();
+        $product = $market->get($productId);
+        $market->remove($product);
+        return $this->redirect($this->get('request')->server->get('HTTP_REFERER'));
+    }
 //    public function basketList(){}
 
     /**
@@ -30,7 +45,7 @@ class MarketController extends Controller{
 //        $findDrug = $this->get('findDrug.service');
         $em = $this->getDoctrine()->getManager();
         $findDrug = new FindDrug($em,$title);
-        $findDrug->setId( 14 );
+        $findDrug->setId( 2 );
         $findDrug->isDocument( false );
         $body = $findDrug->run();
 

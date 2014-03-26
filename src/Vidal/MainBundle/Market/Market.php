@@ -5,7 +5,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use Symfony\Bundle\TwigBundle\TwigEngine as Templating;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class MarketService{
+class Market{
 
     protected $drugs;
 
@@ -21,7 +21,7 @@ class MarketService{
     }
 
     public function save(){
-        $this->session->set('basket') = $this->drugs;
+        $this->session->set('basket',$this->drugs);
     }
 
     public function get($key){
@@ -34,6 +34,7 @@ class MarketService{
 
     public function set($product){
         $this->drugs[$product->getCode()] = $product;
+        $this->save();
     }
 
     public function add($product){
@@ -42,11 +43,17 @@ class MarketService{
         }else{
             $this->drugs[$product->getCode()] = $product;
         }
+        $this->save();
     }
 
-    public function remove(){
+    public function remove($product){
         unset($this->drugs[$product->getCode()]);
+        $this->save();
     }
 
+    public function removeAll(){
+        unset($this->drugs);
+        $this->save();
+    }
 
 }
