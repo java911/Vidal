@@ -80,6 +80,24 @@ class SymptomController extends Controller{
     }
 
     /**
+     * @Route("/symptom-article/{stateId}", name="render_symptom_article", options={"expose"=true})
+     * @Template("VidalMainBundle:Disease:articleList.html.twig")
+     */
+    public function articleListAction($stateId){
+        $state = $this->getDoctrine()->getRepository('VidalMainBundle:DiseaseState')->findOneById($stateId);
+        $articlesId = $this->getDoctrine()->getRepository('VidalMainBundle:DiseaseStateArticle')->findByDiseaseState($state);
+        $articles = array();
+        foreach ( $articlesId as $article){
+            $articles[] = $this->getDoctrine()->getManager('drug')->getRepository('VidalDrugBundle:Article')->findOneById($article->getArticleId());
+        }
+        $articles = $articles;
+        return array(
+            'articles'   => $articles,
+        );
+    }
+
+
+    /**
      * @Route("/generatesymptomarticletarget")
      */
     public function stateArticleAction(){
