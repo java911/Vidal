@@ -108,4 +108,14 @@ class NozologyRepository extends EntityRepository
 		')->setParameter('nozologyCodes', $nozologyCodes)
 			->getResult();
 	}
+
+	public function findOneByNozologyCode($code)
+	{
+		return $this->_em->createQuery('
+			SELECT n
+			FROM VidalVeterinarBundle:Nozology n
+			WHERE n.NozologyCode = :code
+		')->setParameter('code', $code)
+			->getOneOrNullResult();
+	}
 }

@@ -42,9 +42,6 @@
 	{% endblock %}
 
 	{% block javascripts %}
-		<!--[if lt IE 9]>
-		<script src="{{ asset('bundles/vidalmain/javascripts/html5.js') }}"></script>
-		<![endif]-->
 		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/jquery-1.9.1.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/ready.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
@@ -62,43 +59,35 @@
 <div id="wrapper" class="wrapper">
 	{{ render(controller('VidalMainBundle:Banner:render', {'groupId':2})) }}
 
-	<header class="header">
-		<div class="header-content">
-			{% include 'VidalMainBundle::header.html.twig' %}
-		</div>
-	</header>
+	<div class="header">
+		{% include 'VidalMainBundle::header.html.twig' %}
+	</div>
 
-	<div class="middle">
-		{% block middle %}
-			<div class="container">
-				<main class="content">
+	<table class="middle">
+		<tr>
+			<td class="left-sidebar">
+				{% include 'VidalMainBundle::left_sidebar.html.twig' %}
+			</td>
+			<td class="main">
+				{% block main %}
 					{% block menu %}
 						{% include 'VidalMainBundle::menu_small.html.twig' %}
 					{% endblock %}
-					<div class="content-body">
+					<div class="content">
 						{% block content %}{% endblock %}
 					</div>
-				</main>
-			</div>
-
-			<aside class="left-sidebar">
-				{% include 'VidalMainBundle::left_sidebar.html.twig' %}
-			</aside>
-
-			<aside class="right-sidebar">
+				{% endblock %}
+			</td>
+			<td class="right-sidebar">
 				{% include 'VidalMainBundle::right_sidebar.html.twig' %}
-			</aside>
-		{% endblock %}
+			</td>
+		</tr>
+	</table>
 
-		{{ render(controller('VidalMainBundle:Banner:render', {'groupId':1})) }}
-	</div>
-</div>
-
-<footer class="footer">
-	<div class="footer-content">
+	<div class="footer">
 		{% include 'VidalMainBundle::footer.html.twig' %}
 	</div>
-</footer>
+</div>
 
 <div id="overlay"></div>
 

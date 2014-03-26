@@ -103,5 +103,4 @@ class ArticleRubrique
 	{
 		return $this->id;
 	}
-
 }

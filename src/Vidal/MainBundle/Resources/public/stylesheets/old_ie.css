@@ -16,3 +16,7 @@ input[type=url] {
 	line-height:    50px;
 	vertical-align: middle;
 }
+.tabs a {
+	font-size: 12px;
+	padding: 6px 6px 7px;
+}

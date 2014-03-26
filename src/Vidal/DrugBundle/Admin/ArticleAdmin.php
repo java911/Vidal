@@ -31,27 +31,27 @@ class ArticleAdmin extends Admin
 	{
 		$showMapper
 			->add('id')
+			->add('title', null, array('label' => 'Заголовок'))
 			->add('link', null, array('label' => 'Адрес страницы', 'help' => 'латинские буквы и цифры, слова через тире'))
 			->add('rubrique', null, array('label' => 'Рубрика'))
 			->add('type', null, array('label' => 'Категория'))
-			->add('title', null, array('label' => 'Заголовок'))
 			->add('announce', null, array('label' => 'Анонс'))
 			->add('body', null, array('label' => 'Основное содержимое'))
 			->add('forDoctor', null, array('label' => 'Только для врачей'))
 			->add('atc', null, array('label' => 'Код АТХ'))
 			->add('infoPage', null, array('label' => 'Информационная страница'))
 			->add('enabled', null, array('label' => 'Активна'))
-			->add('created', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
+			->add('date', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
 			->add('updated', null, array('label' => 'Дата последнего обновления', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'));
 	}
 
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
+			->add('title', null, array('label' => 'Заголовок', 'required' => true))
 			->add('link', null, array('label' => 'Адрес страницы', 'required' => true, 'help' => 'латинские буквы и цифры, слова через тире'))
 			->add('rubrique', null, array('label' => 'Рубрика', 'required' => true, 'empty_value' => 'выберите'))
 			->add('type', null, array('label' => 'Категория', 'required' => false, 'empty_value' => 'не указано'))
-			->add('title', null, array('label' => 'Заголовок', 'required' => true))
 			->add('announce', null, array('label' => 'Анонс', 'required' => true))
 			->add('body', null, array('label' => 'Основное содержимое', 'required' => true))
 			->add('forDoctor', null, array('label' => 'Только для врачей', 'required' => false))
@@ -86,6 +86,7 @@ class ArticleAdmin extends Admin
 				'required'      => false,
 				'empty_value'   => 'не указано',
 			))
+			->add('date', null, array('label' => 'Дата создания', 'required' => true))
 			->add('enabled', null, array('label' => 'Активна', 'required' => true));
 	}
 
@@ -93,10 +94,10 @@ class ArticleAdmin extends Admin
 	{
 		$datagridMapper
 			->add('id')
+			->add('title', null, array('label' => 'Заголовок'))
 			->add('link', null, array('label' => 'Адрес страницы'))
 			->add('rubrique', null, array('label' => 'Рубрика'))
 			->add('type', null, array('label' => 'Категория'))
-			->add('title', null, array('label' => 'Заголовок'))
 			->add('forDoctor', null, array('label' => 'Только для врачей'))
 			->add('enabled', null, array('label' => 'Активна'));
 	}
@@ -105,10 +106,10 @@ class ArticleAdmin extends Admin
 	{
 		$listMapper
 			->add('id')
+			->add('title', null, array('label' => 'Заголовок'))
 			->add('link', null, array('label' => 'Адрес страницы', 'help' => 'латинские буквы и цифры, слова через тире'))
 			->add('rubrique', null, array('label' => 'Рубрика'))
 			->add('type', null, array('label' => 'Категория'))
-			->add('title', null, array('label' => 'Заголовок'))
 			->add('atc', null, array('label' => 'Код АТХ'))
 			->add('infoPage', null, array('label' => 'Информационная страница'))
 			->add('created', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))

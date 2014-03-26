@@ -51,11 +51,13 @@ class ArticleController extends Controller
 			throw $this->createNotFoundException();
 		}
 
+		$articles = $em->getRepository('VidalDrugBundle:Article')->ofRubrique($rubrique);
+
 		return array(
 			'title'     => $rubrique . ' | Статьи',
 			'menu_left' => 'articles',
 			'rubrique'  => $rubrique,
-			'articles'  => $em->getRepository('VidalDrugBundle:Article')->ofRubrique($rubrique)
+			'articles'  => $articles,
 		);
 	}
 

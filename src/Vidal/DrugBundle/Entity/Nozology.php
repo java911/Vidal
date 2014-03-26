@@ -31,16 +31,16 @@ class Nozology
 	/** @ORM\Column(length=20, nullable=true) */
 	protected $Class;
 
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $total;
+
 	/**
 	 * @ORM\ManyToMany(targetEntity="Article", mappedBy="nozologies")
-	 * @ORM\JoinTable(name="article_nozology",
+	 * @ORM\JoinTable(name="article_n",
 	 * 		joinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")},
 	 * 		inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
 	 */
 	protected $articles;
-
-	/** @ORM\Column(type="integer", nullable=true) */
-	protected $total;
 
 	public function __construct()
 	{
@@ -150,22 +150,6 @@ class Nozology
 	}
 
 	/**
-	 * @param mixed $articles
-	 */
-	public function setArticles($articles)
-	{
-		$this->articles = $articles;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getArticles()
-	{
-		return $this->articles;
-	}
-
-	/**
 	 * @param mixed $total
 	 */
 	public function setTotal($total)
@@ -179,5 +163,21 @@ class Nozology
 	public function getTotal()
 	{
 		return $this->total;
+	}
+
+	/**
+	 * @param mixed $articles
+	 */
+	public function setArticles($articles)
+	{
+		$this->articles = $articles;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getArticles()
+	{
+		return $this->articles;
 	}
 }

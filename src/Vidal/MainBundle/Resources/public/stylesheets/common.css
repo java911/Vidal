@@ -50,7 +50,7 @@ html {
 body {
 	width:       100%;
 	height:      100%;
-	font-family: 'PT Sans', sans-serif;
+	font-family: 'PT Sans', Tahoma, Verdana, sans-serif;
 	color:       #333333;
 }
 .wrapper {
@@ -62,8 +62,8 @@ body {
 	height:     100%;
 }
 .header {
-	height:   118px;
-	position: relative;
+	position:       relative;
+	padding-bottom: 24px;
 }
 .header-link {
 	display:    block;
@@ -89,50 +89,30 @@ body {
 }
 .middle {
 	width:    100%;
-	padding:  8px 0 140px;
 	position: relative;
 }
-.middle:after {
-	display: table;
-	clear:   both;
-	content: '';
-}
-.container {
-	width: 100%;
-	float: left;
+.main {
+	padding: 0 28px;
 }
 .content {
-	padding:    0 220px 30px 196px;
-	min-height: 420px;
-}
-.content-body {
 	position: relative;
 }
 .left-sidebar {
-	float:         left;
-	width:         160px;
-	margin-left:   -100%;
-	margin-bottom: 100px;
-	position:      relative;
+	width:          160px;
+	position:       relative;
+	vertical-align: top;
 }
 .right-sidebar {
-	float:         left;
-	width:         200px;
-	margin-left:   -200px;
-	margin-bottom: 100px;
-	position:      relative;
+	width:          200px;
+	position:       relative;
+	vertical-align: top;
 }
 .footer {
-	width:      950px;
-	margin:     -140px auto 0;
-	height:     140px;
-	position:   relative;
-	background: url(../images/vidal-group.jpg) no-repeat right 70px;
-}
-.footer-content {
-	padding:    20px 10px 22px;
-	font-size:  80%;
+	margin-top: 32px;
 	border-top: 1px solid #d71344;
+	padding:    22px 10px 32px;
+	position:   relative;
+	font-size:  80%;
 }
 .footer-info {
 	max-width:  672px;
@@ -149,6 +129,13 @@ body {
 	display:       inline-block;
 	margin-bottom: 3px;
 	font-size:     90%;
+}
+.footer-logo {
+	display:  block;
+	border:   none;
+	position: absolute;
+	bottom:   6px;
+	right:    0;
 }
 
 /* глобальные теги */
@@ -1199,7 +1186,7 @@ h1 {
 }
 #banner_bottom {
 	clear:  both;
-	margin: 20px auto;
+	margin: 0 auto 20px;
 }
 .banner.swf {
 	position:   relative;

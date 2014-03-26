@@ -16,6 +16,29 @@ class NozologyRepository extends EntityRepository
 			->getOneOrNullResult();
 	}
 
+	public function findOneByNozologyCode($code)
+	{
+		$code = trim($code, ' ');
+
+		$result = $this->_em->createQuery('
+			SELECT n
+			FROM VidalDrugBundle:Nozology n
+			WHERE n.NozologyCode = :code
+		')->setParameter('code', $code)
+			->getOneOrNullResult();
+
+		if (!$result) {
+			$result = $this->_em->createQuery('
+				SELECT n
+				FROM VidalDrugBundle:Nozology n
+				WHERE n.Code = :code
+			')->setParameter('code', $code)
+					->getOneOrNullResult();
+		}
+
+		return $result;
+	}
+
 	public function findNozologyNames()
 	{
 		$names = array();
