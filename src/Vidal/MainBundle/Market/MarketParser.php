@@ -1,6 +1,6 @@
 <?php
 
-namespace Vidal\MainBundle\Service;
+namespace Vidal\MainBundle\Market;
 
 class MarketParser{
     protected $url = 'http://vidal:3L29y4@ea.smacs.ru/exchange/price';
@@ -11,6 +11,10 @@ class MarketParser{
 
 
     public function __construct(){
+
+        $this->cachefile = dirname(dirname(__FILE__)).'/../../../../upload_vidal/'.$this->cachefile;
+        echo $this->cachefile;
+
         if (file_exists($this->cachefile) && time() - $this->cachetime < filemtime($this->cachefile)) {
             $this->getCache();
         }else{

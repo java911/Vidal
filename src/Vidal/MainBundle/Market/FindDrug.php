@@ -1,5 +1,5 @@
 <?php
-namespace Vidal\MainBundle\Service;
+namespace Vidal\MainBundle\Market;
 
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use Symfony\Bundle\TwigBundle\TwigEngine as Templating;
@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Doctrine\ORM\EntityManager;
 use Vidal\MainBundle\Entity\MarketCache;
 
-class FindDrugService{
+class FindDrug{
 
     protected $market_1;
 
@@ -47,11 +47,17 @@ class FindDrugService{
         $this->title = $title;
     }
 
+    public function setId($id ){
+        $this->id = $id;
+    }
 
+    public function isDocument($isDocument){
+        $this->isDocument = $isDocument;
+    }
 
     public function getCache(){
         #$title = iconv('WINDOWS-1251', 'UTF-8', $this->title);
-        $body = $this->_em->getRepositoty('VidalMainBundle:MarketCache')-=>findOneBy(
+        $body = $this->_em->getRepository('VidalMainBundle:MarketCache')->findOneBy(
             array(
                 'target' => $this->id,
                 'document' => $this->isDocument,
@@ -78,13 +84,13 @@ class FindDrugService{
         $time = time();
         $date = date('Y-m-d H:i:s',$time);
         $title = iconv('WINDOWS-1251', 'UTF-8', $this->title);
-        $caches = $this->_em->getRepository('VidalMainBundle:MarketCache')->fondBy(
+        $caches = $this->_em->getRepository('VidalMainBundle:MarketCache')->findBy(
             array(
                 'target' => $this->id,
                 'document' => $this->isDocument,
             )
         );
-        foreach( $cachesas as $val){
+        foreach( $caches as $val){
             $this->_em->remove($val);
             $this->_em->flush();
         }

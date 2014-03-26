@@ -1,18 +1,18 @@
 <?php
 
-namespace Vidal\MainBundle\Service;
+namespace Vidal\MainBundle\Market;
 
-class MarketParser2{
-    protected $url = 'http://vidal:3L29y4@smacs.ru/exchange/price';
-    protected $drugUrl = 'http://www.piluli.ru/product';
+class MarketParser3{
+    protected $url = 'http://www.zdravzona.ru/bitrix/catalog_export/yandex_b.php';
     protected $cachetime = 6000;
-    protected $cachefile = 'cached2.xml';
+    protected $cachefile = 'cached3.xml';
     protected $xml;
-    protected $arUrl;
 
     /** Подгружает XML */
-    public function __construct($masUrl){
-        $this->arUrl = $masUrl;
+    public function __construct(){
+
+        $this->cachefile = dirname(dirname(__FILE__)).'/../../../../upload_vidal/'.$this->cachefile;
+
         if (file_exists($this->cachefile) && time() - $this->cachetime < filemtime($this->cachefile)) {
             $this->getCache();
         }else{
@@ -28,21 +28,15 @@ class MarketParser2{
 
     /** Ищет препарат в $xml */
     public function findDrug($name){
-        $elems = $this->xml->xpath("product[contains(concat(' ', name, ' '), ' $name ')]");
+        $elems = $this->xml->xpath("shop/offers/offer[contains(concat(' ',model, ' '), ' $name ')]");
         $arr = array();
-        $url = '';
         foreach ($elems as $elem){
-            if ( isset($this->arUrl["$elem->code"]) ){
-                $url =  $this->arUrl["$elem->code"] ;
-                $arr[] = array(
-                    'id' => $elem->code,
-                    'manufacturer' => $elem->manufacturer,
-                    'name' => $elem->name,
-                    'price' => $elem->price,
-                    'quantity' => $elem->quantity,
-                    'url'   => $url,
-                );
-            }
+            $arr[] = array(
+                'manufacturer' => $elem->vendor,
+                'name' => $elem->model,
+                'price' => $elem->price,
+                'url' => $elem->url,
+            );
         }
         return $arr;
     }
@@ -56,9 +50,6 @@ class MarketParser2{
     /** Загрузить в кеш */
     public function setCache(){
         $this->xml->asXML($this->cachefile);
-        #$cached = fopen($this->cachefile, 'w');
-        #fwrite($cached, $xml);
-        #fclose($cached);
     }
 
     public function replace_cyr ($path){
@@ -78,5 +69,10 @@ class MarketParser2{
 
 }
 
-include 'piluliCodeUrl.php';
-
+//$Market = new MarketParser3();
+//#$name = $Market->replace_cyr('АНАЛЬГИН');
+//
+//#$name = strtolower($name);
+//#echo $name.'<br />';
+//$array = $Market->findDrug('Медела');
+//print_r($array);

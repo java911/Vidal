@@ -1,5 +1,5 @@
 <?php
-namespace Vidal\MainBundle\Service;
+namespace Vidal\MainBundle\Market;
 
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use Symfony\Bundle\TwigBundle\TwigEngine as Templating;

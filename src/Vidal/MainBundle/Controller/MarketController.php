@@ -4,126 +4,38 @@ namespace Vidal\MainBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Response;
+//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Vidal\MainBundle\Entity\DiseaseParty;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
+use Vidal\MainBundle\Market\Drug;
+use Vidal\MainBundle\Market\FindDrug;
 
 class MarketController extends Controller{
-    protected $basket;
 
-    public function getDrugs(){
-        $ms['105'] = '463';
-        $ms['84'] = '147';
-        $ms['123'] = '440';
-        $ms['362'] = '302';
-        $ms['304'] = '299';
-        $ms['318'] = '541';
-        $ms['161'] = '517';
-        $ms['115'] = '489';
-        $ms['171'] = '362';
-        $ms['142'] = '141';
-        $ms['201'] = '342';
-        $ms['154'] = '276';
-        $ms['138'] = '312';
-        $ms['369'] = '377';
-        $ms['189'] = '450';
-        $ms['296'] = '301';
-        $ms['96'] = '529';
-        $ms['286'] = '309';
-        $ms['303'] = '367';
-        $ms['121'] = '519';
-        $ms['335'] = '418';
-        $ms['94'] = '409';
-        $ms['350'] = '234';
-        $ms['307'] = '503';
-        $ms['358'] = '502';
-        $ms['268'] = '332';
-        $ms['291'] = '329';
-        $ms['269'] = '348';
-        $ms['329'] = '438';
-        $ms['370'] = '330';
-        $ms['349'] = '369';
-        $ms['343'] = '333';
-        $ms['326'] = '394';
-        $ms['326'] = '300';
-        $ms['347'] = '289';
-        $ms['340'] = '334';
-        $ms['221'] = '288';
-        $ms['361'] = '534';
-        $ms['141'] = '516';
-        $ms['223'] = '536';
-        $ms['170'] = '535';
-        $ms['135'] = '313';
-        $ms['254'] = '121';
-        $ms['218'] = '284';
-        $ms['107'] = '306';
-        $ms['371'] = '292';
-        $ms['239'] = '146';
-        $ms['193'] = '337';
-        $ms['174'] = '344';
-        $ms['294'] = '258';
-        $ms['325'] = '439';
-        $ms['310'] = '494';
-        $ms['74'] = '505';
-        $ms['378'] = '224';
-        $ms['353'] = '257';
-        $ms['75'] = '391';
-        $ms['78'] = '145';
-        $ms['264'] = '264';
-        $ms['143'] = '114';
-        $ms['144'] = '373';
-        $ms['352'] = '414';
-        $ms['122'] = '484';
-        $ms['158'] = '350';
-        $ms['88'] = '422';
-        $ms['87'] = '515';
-        $ms['198'] = '388';
-        $ms['375'] = '184';
-        $ms['206'] = '328';
-        $ms['71'] = '223';
-        $ms['109'] = '415';
-        $ms['91'] = '365';
-        $ms['212'] = '372';
-        $ms['341'] = '295';
-        $ms['236'] = '345';
-        $ms['77'] = '483';
-        $ms['214'] = '364';
-        $ms['227'] = '346';
-        $ms['132'] = '417';
-        $ms['253'] = '187';
-        $ms['79'] = '179';
-        $ms['145'] = '520';
-        $ms['145'] = '521';
-        $ms['285'] = '363';
-        $ms['134'] = '144';
-        $ms['150'] = '411';
-        $ms['139'] = '504';
-        $ms['231'] = '287';
-        $ms['90'] = '66';
-        $ms['93'] = '347';
-        $ms['322'] = '380';
-        $ms['164'] = '291';
-        $ms['164'] = '290';
-        $ms['159'] = '107';
-        $ms['99'] = '121';
-        $ms['72'] = '293';
-        $ms['298'] = '491';
-        $ms['101'] = '305';
-        $ms['263'] = '384';
-        $ms['377'] = '533';
-        $ms['194'] = '403';
-        $ms['83'] = '178';
-        $ms['338'] = '401';
-        $ms['81'] = '177';
-        $ms['235'] = '399';
-        $ms['137'] = '314';
-        $ms['155'] = '471';
-        $ms['127'] = '349';
-        $ms['160'] = '286';
-        $ms['186'] = '338';
-        $ms['183'] = '338';
+//    public function AddToBasket(){}
+//
+//    public function setToBasket(){}
+//
+//    public function removeToBasket(){}
+//
+//    public function basketList(){}
 
+    /**
+     * @Route("/drug-list/{title}", name="drug_list",  options={"expose"=true})
+     */
+    public function productListAction( $title = '' ){
+//        $findDrug = $this->get('findDrug.service');
+        $em = $this->getDoctrine()->getManager();
+        $findDrug = new FindDrug($em);
+        $findDrug->setTitle( $title );
+        $findDrug->setId( 12 );
+        $findDrug->isDocument( false );
+        $body = $findDrug->run();
 
-
+        return new Response($body);
     }
+
 }
