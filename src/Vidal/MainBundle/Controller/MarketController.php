@@ -31,7 +31,7 @@ class MarketController extends Controller{
         $em = $this->getDoctrine()->getManager();
         $findDrug = new FindDrug($em);
         $findDrug->setTitle( $title );
-        $findDrug->setId( 12 );
+        $findDrug->setId( 11 );
         $findDrug->isDocument( false );
         $body = $findDrug->run();
 
