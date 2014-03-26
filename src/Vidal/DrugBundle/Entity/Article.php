@@ -18,9 +18,6 @@ class Article extends BaseEntity
 	/** @ORM\Column(type="text", nullable=true) */
 	protected $body;
 
-	/** @ORM\ManyToOne(targetEntity="ArticleRubrique", inversedBy="articles") */
-	protected $rubrique;
-
 	/** @ORM\Column(type="boolean") */
 	protected $forDoctor;
 
@@ -34,12 +31,9 @@ class Article extends BaseEntity
 	 */
 	protected $link;
 
-	/** @ORM\Column(length=255, nullable=true) */
-	protected $author;
-
 	/**
 	 * @ORM\ManyToMany(targetEntity="Nozology", inversedBy="articles")
-	 * @ORM\JoinTable(name="article_nozology",
+	 * @ORM\JoinTable(name="article_n",
 	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")})
 	 */
@@ -62,14 +56,6 @@ class Article extends BaseEntity
 	protected $products;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Document", inversedBy="articles")
-	 * @ORM\JoinTable(name="article_document",
-	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
-	 *        inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})
-	 */
-	protected $documents;
-
-	/**
 	 * @ORM\ManyToOne(targetEntity="ATC", inversedBy="articles")
 	 * @ORM\JoinColumn(name="atc", referencedColumnName="ATCCode")
 	 */
@@ -84,6 +70,30 @@ class Article extends BaseEntity
 	/** @ORM\ManyToOne(targetEntity="ArticleType", inversedBy="articles") */
 	protected $type;
 
+	/** @ORM\Column(type="datetime", nullable=true) */
+	protected $date;
+
+	/** @ORM\Column(length=500, nullable=true) */
+	protected $synonym;
+
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $metaTitle;
+
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $metaDescription;
+
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $metaKeywords;
+
+	/** @ORM\ManyToOne(targetEntity="ArticleRubrique", inversedBy="articles") */
+	protected $rubrique;
+
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $subdivision;
+
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $subclass;
+
 	public function __construct()
 	{
 		$this->nozologies = new ArrayCollection();
@@ -95,6 +105,7 @@ class Article extends BaseEntity
 		$now              = new \DateTime('now');
 		$this->created    = $now;
 		$this->updated    = $now;
+		$this->date       = $now;
 	}
 
 	public function __toString()
@@ -262,6 +273,13 @@ class Article extends BaseEntity
 		return $this->nozologies;
 	}
 
+	public function addNozology($nozology)
+	{
+		$this->nozologies[] = $nozology;
+
+		return $this;
+	}
+
 	/**
 	 * @param mixed $products
 	 */
@@ -276,22 +294,6 @@ class Article extends BaseEntity
 	public function getProducts()
 	{
 		return $this->products;
-	}
-
-	/**
-	 * @param mixed $rubrique
-	 */
-	public function setRubrique($rubrique)
-	{
-		$this->rubrique = $rubrique;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getRubrique()
-	{
-		return $this->rubrique;
 	}
 
 	/**
@@ -330,4 +332,149 @@ class Article extends BaseEntity
 	{
 		$this->documents[] = $document;
 	}
+
+	/**
+	 * @param mixed $date
+	 */
+	public function setDate($date)
+	{
+		$this->date = $date;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDate()
+	{
+		return $this->date;
+	}
+
+	/**
+	 * @param mixed $nozologyCodes
+	 */
+	public function setNozologyCodes($nozologyCodes)
+	{
+		$this->nozologyCodes = $nozologyCodes;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getNozologyCodes()
+	{
+		return $this->nozologyCodes;
+	}
+
+	/**
+	 * @param mixed $synonym
+	 */
+	public function setSynonym($synonym)
+	{
+		$this->synonym = $synonym;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSynonym()
+	{
+		return $this->synonym;
+	}
+
+	/**
+	 * @param mixed $metaDescription
+	 */
+	public function setMetaDescription($metaDescription)
+	{
+		$this->metaDescription = $metaDescription;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getMetaDescription()
+	{
+		return $this->metaDescription;
+	}
+
+	/**
+	 * @param mixed $metaKeywords
+	 */
+	public function setMetaKeywords($metaKeywords)
+	{
+		$this->metaKeywords = $metaKeywords;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getMetaKeywords()
+	{
+		return $this->metaKeywords;
+	}
+
+	/**
+	 * @param mixed $metaTitle
+	 */
+	public function setMetaTitle($metaTitle)
+	{
+		$this->metaTitle = $metaTitle;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getMetaTitle()
+	{
+		return $this->metaTitle;
+	}
+
+	/**
+	 * @param mixed $rubrique
+	 */
+	public function setRubrique($rubrique)
+	{
+		$this->rubrique = $rubrique;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getRubrique()
+	{
+		return $this->rubrique;
+	}
+
+	/**
+	 * @param mixed $subclass
+	 */
+	public function setSubclass($subclass)
+	{
+		$this->subclass = $subclass;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSubclass()
+	{
+		return $this->subclass;
+	}
+
+	/**
+	 * @param mixed $subdivision
+	 */
+	public function setSubdivision($subdivision)
+	{
+		$this->subdivision = $subdivision;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSubdivision()
+	{
+		return $this->subdivision;
+	}
+
 }

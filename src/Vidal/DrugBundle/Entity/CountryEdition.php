@@ -13,9 +13,6 @@ class CountryEdition
 	/** @ORM\Column(length=255) */
 	protected $RusName;
 
-	/** @ORM\OneToMany(targetEntity="InfoPage", mappedBy="CountryEditionCode") */
-	protected $infoPages;
-
 	/** @ORM\OneToMany(targetEntity="Product", mappedBy="CountryEditionCode") */
 	protected $products;
 
@@ -27,8 +24,7 @@ class CountryEdition
 
 	public function __construct()
 	{
-		$this->infoPages = new ArrayCollection();
-		$this->products  = new ArrayCollection();
+		$this->products         = new ArrayCollection();
 		$this->companies        = new ArrayCollection();
 		$this->documentEditions = new ArrayCollection;
 	}
@@ -84,22 +80,6 @@ class CountryEdition
 	public function getCompanies()
 	{
 		return $this->companies;
-	}
-
-	/**
-	 * @param mixed $infoPages
-	 */
-	public function setInfoPages(ArrayCollection $infoPages)
-	{
-		$this->infoPages = $infoPages;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getInfoPages()
-	{
-		return $this->infoPages;
 	}
 
 	/**

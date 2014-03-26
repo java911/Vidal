@@ -12,6 +12,7 @@ class ArticleRepository extends EntityRepository
 			SELECT a
 			FROM VidalDrugBundle:Article a
 			WHERE a.rubrique = :rubriqueId
+			ORDER BY a.date DESC
 		')->setParameter('rubriqueId', $rubrique->getId())
 			->getResult();
 	}

@@ -1,3 +1,5 @@
+{% set isAdmin = is_granted('ROLE_ADMIN') %}
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -8,7 +10,7 @@
 				{% if seotitle is defined and seotitle is not null %}
 					{{ seotitle }}
 				{% else %}
-					{{ title is defined and title is not null ? title ~ ' | ' }}Справочник лекарственных препаратов Видаль. Описание лекарственных средств.
+					{{ title is defined and title is not null ? title ~ ' | ' }}Vidal.ru - cправочник лекарственных препаратов
 				{% endif %}
 			{% endspaceless %}</title>
 		<meta name="description" content="{% spaceless %}
@@ -34,6 +36,9 @@
 		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/jquery-chosen/chosen.css') }}"/>
 		<link rel="stylesheet" type="text/css"
 			  href="{{ asset('bundles/vidalmain/jquery-ui/jquery-ui-1.10.4.custom.min.css') }}"/>
+		<!--[if lt IE 9]>
+		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/old_ie.css') }}"/>
+		<![endif]-->
 	{% endblock %}
 
 	{% block javascripts %}
@@ -52,39 +57,39 @@
 <body>
 
 <div id="wrapper" class="wrapper">
-	<header class="header">
-		<div class="header-content">
-			{% include 'VidalMainBundle::header.html.twig' %}
-		</div>
-	</header>
+	{{ render(controller('VidalMainBundle:Banner:render', {'groupId':2})) }}
 
-	<div class="middle">
-		{% block middle %}
-			<div class="container">
-				<main class="content">
+	<div class="header">
+		{% include 'VidalMainBundle::header.html.twig' %}
+	</div>
+
+	<table class="middle">
+		<tr>
+			<td class="left-sidebar">
+				{% include 'VidalMainBundle::left_sidebar.html.twig' %}
+			</td>
+			<td class="main">
+				{% block main %}
 					{% block menu %}
 						{% include 'VidalMainBundle::menu_small.html.twig' %}
 					{% endblock %}
-					{% block content %}{% endblock %}
-				</main>
-			</div>
-
-			<aside class="left-sidebar">
-				{% include 'VidalMainBundle::left_sidebar.html.twig' %}
-			</aside>
-
-			<aside class="right-sidebar">
+					<div class="content">
+						{% block content %}{% endblock %}
+					</div>
+				{% endblock %}
+			</td>
+			<td class="right-sidebar">
 				{% include 'VidalMainBundle::right_sidebar.html.twig' %}
-			</aside>
-		{% endblock %}
+			</td>
+		</tr>
+	</table>
+
+	<div class="footer">
+		{% include 'VidalMainBundle::footer.html.twig' %}
 	</div>
 </div>
 
-<footer class="footer">
-	<div class="footer-content">
-		{% include 'VidalMainBundle::footer.html.twig' %}
-	</div>
-</footer>
+<div id="overlay"></div>
 
 </body>
 </html>

@@ -18,7 +18,7 @@
 						<td style="width:10%">АТХ код</td>
 						<td style="width:40%">Название</td>
 						<td style="width:40%">Латинское название</td>
-						<td style="width:10%">Входит в группу</td>
+						<td style="width:10%">Входит в&nbsp;группу</td>
 					</tr>
 					{% for code, atc in atcCodes %}
 						<tr>
@@ -105,7 +105,7 @@
 				{% for company in firms %}
 					<tr>
 						<td>
-							<a class="no-underline" href="{{ path('company', {'CompanyID':company.CompanyID}) }}"
+							<a class="no-underline" href="{{ path('firm_item', {'CompanyID':company.CompanyID}) }}"
 								>{{ company.LocalName|raw }}{{ company.Property is not empty ? ', ' ~ company.Property|raw|replace({'&amp;':'&'}) }}</a>
 						</td>
 						<td>{{ company.Country }}</td>

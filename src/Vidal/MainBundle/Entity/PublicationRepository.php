@@ -12,7 +12,16 @@ class PublicationRepository extends EntityRepository
 			->select('p')
 			->from('VidalMainBundle:Publication', 'p')
 			->where('p.enabled = 1')
-			->orderBy('p.created', 'DESC')
+			->orderBy('p.date', 'DESC')
+			->getQuery();
+	}
+
+	public function getQueryPharm()
+	{
+		return $this->_em->createQueryBuilder('p')
+			->select('p')
+			->where('p.enabled = 1')
+			->orderBy('p.updated', 'DESC')
 			->getQuery();
 	}
 }

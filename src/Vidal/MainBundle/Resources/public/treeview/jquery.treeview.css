@@ -17,6 +17,16 @@
 	float: left;
 	cursor: pointer;
 }
+
+.treeview span, .treeview i {
+	webkit-touch-callout: none;
+	-webkit-user-select:  none;
+	-khtml-user-select:   none;
+	-moz-user-select:     none;
+	-ms-user-select:      none;
+	user-select:          none;
+}
+
 /* fix for IE6 */
 * html .hitarea {
 	display: inline;
@@ -34,7 +44,7 @@
 
 #treecontrol { margin: 1em 0; display: none; }
 
-.treeview .hover { color: red; cursor: pointer; }
+.treeview .hover { cursor: pointer; color: #394953; }
 
 .treeview li { background: url(images/treeview-default-line.gif) 0 0 no-repeat; }
 .treeview li.collapsable, .treeview li.expandable { background-position: 0 -176px; }
@@ -73,9 +83,13 @@
 .filetree li.expandable span.folder { background: url(images/folder-closed.gif) 0 0 no-repeat; }
 .filetree span.file { background: url(images/file.gif) 0 0 no-repeat; }
 
-.treeview li span { display: inline-block; vertical-align: top; line-height: 12px; }
-.treeview li > span { margin-left: 2px; font-size: 14px; color: #476173; }
-.treeview li.selected > span { font-weight: bold; color: #d00; }
-.treeview li > i { display: inline-block; margin-left: 10px; vertical-align: top; font-style: normal; }
-.treeview li > i a { color: #999; text-decoration: none; vertical-align: top; line-height: 12px; }
-.treeview li > i a:hover { text-decoration:underline; }
+.treeview li > span { margin-left: 2px; color: #476173; line-height: 15px; font-size: 15px; }
+.treeview li > span.t { color: #333; font-weight: bold; }
+.treeview li > span:hover { color: #d71344; }
+.treeview li.selected > span { font-weight: bold; color: #d71344; }
+.treeview li * { vertical-align: top; font-style: normal; font-weight: normal; }
+.treeview li > i, .treeview li > a { cursor: pointer; color: #333; line-height: 14px; font-size: 14px; text-decoration: underline; }
+.treeview li > i:hover, .treeview li > a:hover { color: #d71344; }
+.treeview li > b { display: inline-block; margin: 1px 0 0 3px; font-size: 13px; color: #888; font-weight: normal; }
+
+.treeview-controls a { display: inline-block; margin: 0 0 8px 8px; }

@@ -11,9 +11,32 @@ class NozologyRepository extends EntityRepository
 		return $this->_em->createQuery('
 			SELECT n.NozologyCode, n.Code, n.Name
 			FROM VidalDrugBundle:Nozology n
+			WHERE n.Code = :code
+		')->setParameter('code', $code)
+			->getOneOrNullResult();
+	}
+
+	public function findOneByNozologyCode($code)
+	{
+		$code = trim($code, ' ');
+
+		$result = $this->_em->createQuery('
+			SELECT n
+			FROM VidalDrugBundle:Nozology n
 			WHERE n.NozologyCode = :code
 		')->setParameter('code', $code)
 			->getOneOrNullResult();
+
+		if (!$result) {
+			$result = $this->_em->createQuery('
+				SELECT n
+				FROM VidalDrugBundle:Nozology n
+				WHERE n.Code = :code
+			')->setParameter('code', $code)
+					->getOneOrNullResult();
+		}
+
+		return $result;
 	}
 
 	public function findNozologyNames()
@@ -31,15 +54,6 @@ class NozologyRepository extends EntityRepository
 		}
 
 		return $names;
-	}
-
-	public function findAll()
-	{
-		return $this->_em->createQuery('
-		 	SELECT n.NozologyCode, n.Name
-		 	FROM VidalDrugBundle:Nozology n
-		 	ORDER BY n.Name ASC
-		')->getResult();
 	}
 
 	public function findByQuery($q)
@@ -81,7 +95,7 @@ class NozologyRepository extends EntityRepository
 			$nozologies = $qb->getQuery()->getResult();
 		}
 
-		for ($i=0, $c=count($nozologies); $i<$c; $i++) {
+		for ($i = 0, $c = count($nozologies); $i < $c; $i++) {
 			$nozologies[$i]['Name'] = preg_replace('/' . $q . '/iu', '<span class="query">$0</span>', $nozologies[$i]['Name']);
 		}
 
@@ -107,5 +121,23 @@ class NozologyRepository extends EntityRepository
 		 	WHERE n.NozologyCode IN (:nozologyCodes)
 		')->setParameter('nozologyCodes', $nozologyCodes)
 			->getResult();
+	}
+
+	public function findForTree()
+	{
+		$raw = $this->_em->createQuery('
+			SELECT n.Code, n.total, n.Name, n.Level, n.Class
+			FROM VidalDrugBundle:Nozology n
+			ORDER BY n.NozologyCode
+		')->getResult();
+
+		$nozologies = array();
+
+		foreach ($raw as $nozology) {
+			$key              = $nozology['Code'];
+			$nozologies[$key] = $nozology;
+		}
+
+		return $nozologies;
 	}
 }

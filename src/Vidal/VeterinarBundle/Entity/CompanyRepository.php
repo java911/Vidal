@@ -94,7 +94,7 @@ class CompanyRepository extends EntityRepository
 	public function findOwnersByProducts($productIds)
 	{
 		return $this->_em->createQuery('
-			SELECT DISTINCT c.CompanyID, pc.CompanyRusNote, pc.CompanyEngNote, c.LocalName, c.Property,
+			SELECT DISTINCT c.CompanyID, pc.CompanyRusNote, pc.CompanyEngNote, c.LocalName, c.Property, c.Name,
 				country.RusName Country
 			FROM VidalVeterinarBundle:Company c
 			LEFT JOIN VidalVeterinarBundle:ProductCompany pc WITH pc.CompanyID = c
@@ -108,7 +108,7 @@ class CompanyRepository extends EntityRepository
 	public function findDistributorsByProducts($productIds)
 	{
 		return $this->_em->createQuery('
-			SELECT DISTINCT c.CompanyID, pc.CompanyRusNote, pc.CompanyEngNote, c.LocalName, c.Property,
+			SELECT DISTINCT c.CompanyID, pc.CompanyRusNote, pc.CompanyEngNote, c.LocalName, c.Property, c.Name,
 				country.RusName Country
 			FROM VidalVeterinarBundle:Company c
 			LEFT JOIN VidalVeterinarBundle:ProductCompany pc WITH pc.CompanyID = c

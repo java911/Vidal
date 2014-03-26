@@ -1,0 +1,70 @@
+{% if banner %}
+	{% set group = 'banner_' ~ banner.group.name %}
+	{% set width = banner.group.width %}
+	{% set height = banner.group.height %}
+
+	{% if banner.reference %}
+		{% set banner = banner.reference %}
+	{% endif %}
+	{% set path = banner.banner.path %}
+
+	{% if is_file(path) %}
+		{% if banner.isSwf() %}
+			<div id="{{ group }}"
+				 class="banner swf"
+				 style="width:{{ width }}px; height:{{ height }}px"
+				 onclick="var $banner = $(this); $.get(Routing.generate('banner_clicked', {'bannerId': '{{ banner.id }}'})); window.open('{{ banner.link }}', '_blank'); /*_gaq.push(['_trackEvent', '{{ group }}', 'click', '%клик по баннеру%']);*/"
+				>
+				{% if is_granted('ROLE_ADMIN') %}
+					<a class="admin-edit fade" target="_blank"
+					   href="{{ path('admin_vidal_main_banner_edit', {'id':banner.id}) }}">
+						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+					</a>
+				{% endif %}
+				<div style="width:{{ width }}px; height:{{ height }}px"></div>
+				<object width="{{ width }}" height="{{ height }}" class="banner-rotate">
+					<param name="movie" value="{{ path }}">
+					<param name="quality" value="high"/>
+					<param name="play" value="true"/>
+					<param name="loop" value="true"/>
+					<param name="wmode" value="transparent"/>
+					<embed src="{{ path }}" width="{{ width }}" height="{{ height }}"
+						   wmode="transparent" bgcolor="#FFFFFF" quality="high"></embed>
+				</object>
+			</div>
+
+			{#<script type="text/javascript">#}
+			{#$(document).ready(function() {#}
+			{#_gaq.push(['_trackEvent', '{{ group }}', 'show', '%показы баннера%']);#}
+			{#});#}
+			{#</script>#}
+
+		{% else %}
+			<div id="{{ group }}" class="banner" style="width:{{ width }}px; height:{{ height }}px">
+				<a href="{{ banner.link }}" target="_blank">
+					<img src="{{ path }}" style="width:{{ width }}px; height:{{ height }}px"/>
+				</a>
+				{% if is_granted('ROLE_ADMIN') %}
+					<a class="admin-edit fade" target="_blank"
+					   href="{{ path('admin_vidal_main_banner_edit', {'id':banner.id}) }}">
+						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+					</a>
+				{% endif %}
+			</div>
+
+			<script type="text/javascript">
+				$(document).ready(function() {
+					//_gaq.push(['_trackEvent', '
+					{{ group }}', 'show', '%показ баннера%']);
+
+					$('#{{ group }} a').click(function() {
+						$.get(Routing.generate('banner_clicked', {'bannerId': '{{ banner.id }}'}));
+						//_gaq.push(['_trackEvent', '
+						{{ group }}', 'click', '%клик по баннеру%']);
+					});
+				});
+			</script>
+		{% endif %}
+	{% endif %}
+
+{% endif %}

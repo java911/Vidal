@@ -4,7 +4,7 @@ namespace Vidal\DrugBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/** @ORM\Entity @ORM\Table(name="clinicophpointers") */
+/** @ORM\Entity(repositoryClass="ClinicoPhPointersRepository") @ORM\Table(name="clinicophpointers") */
 class ClinicoPhPointers
 {
 	/** @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue */
@@ -32,6 +32,12 @@ class ClinicoPhPointers
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})
 	 */
 	protected $documents;
+
+	/** @ORM\Column(length=255) */
+	protected $url;
+
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $total;
 
 	public function __construct()
 	{
@@ -153,5 +159,53 @@ class ClinicoPhPointers
 	public function getDocuments()
 	{
 		return $this->documents;
+	}
+
+	/**
+	 * @param mixed $UsedInSp
+	 */
+	public function setUsedInSp($UsedInSp)
+	{
+		$this->UsedInSp = $UsedInSp;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getUsedInSp()
+	{
+		return $this->UsedInSp;
+	}
+
+	/**
+	 * @param mixed $total
+	 */
+	public function setTotal($total)
+	{
+		$this->total = $total;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTotal()
+	{
+		return $this->total;
+	}
+
+	/**
+	 * @param mixed $url
+	 */
+	public function setUrl($url)
+	{
+		$this->url = $url;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getUrl()
+	{
+		return $this->url;
 	}
 }

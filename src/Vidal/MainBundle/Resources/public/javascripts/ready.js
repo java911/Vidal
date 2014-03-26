@@ -1,4 +1,9 @@
 $(document).ready(function() {
+	jQuery.ui.autocomplete.prototype._resizeMenu = function () {
+		var ul = this.menu.element;
+		ul.outerWidth(534);
+	}
+
 	$('#search_form .search-query')
 		.autocomplete({
 			minLength: 2,
@@ -29,6 +34,10 @@ $(document).ready(function() {
 			.append("<a>" + item.label + "</a>")
 			.appendTo(ul);
 	};
+
+	$('.admin-edit').click(function(e) {
+		e.stopPropagation();
+	});
 
 	$('#search_form .search-type').chosen({disable_search:true});
 });

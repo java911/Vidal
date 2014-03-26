@@ -30,3 +30,6 @@
 	position: relative;
 	top:      1px;
 }
+.letters-controls > * {
+	vertical-align: top;
+}

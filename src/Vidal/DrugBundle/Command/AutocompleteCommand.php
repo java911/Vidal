@@ -62,8 +62,11 @@ class AutocompleteCommand extends ContainerAwareCommand
 			if ($i && $i % 500 == 0) {
 				$elasticaType->addDocuments($documents);
 				$elasticaType->getIndex()->refresh();
+				$documents = array();
 			}
 		}
+		$elasticaType->addDocuments($documents);
+		$elasticaType->getIndex()->refresh();
 
 		$output->writeln("+++ vidal:autocomplete loaded $i documents!");
 	}

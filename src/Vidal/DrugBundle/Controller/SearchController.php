@@ -25,7 +25,11 @@ class SearchController extends Controller
 		$q      = trim($q);
 		$t      = $request->query->get('t', 'all'); # тип запроса из селект-бокса
 		$p      = $request->query->get('p', 1); # номер страницы
-		$params = array('q' => $q, 't' => $t);
+		$params = array(
+			'q'     => $q,
+			't'     => $t,
+			'title' => 'Поиск',
+		);
 
 		# поисковый запрос не может быть меньше 2
 		if (mb_strlen($q, 'UTF-8') < 2) {
@@ -82,7 +86,11 @@ class SearchController extends Controller
 		$t           = $request->query->get('t', 'all'); # тип запроса из селект-бокса
 		$p           = $request->query->get('p', 1); # номер страницы
 		$badIncluded = $request->query->has('b'); # включать ли бады
-		$params      = array('q' => $q, 't' => $t);
+		$params      = array(
+			'q'     => $q,
+			't'     => $t,
+			'title' => 'Расширенный поиск',
+		);
 
 		# поисковый запрос не может быть меньше 2
 		if (empty($q)) {
@@ -156,7 +164,9 @@ class SearchController extends Controller
 	{
 		$em          = $this->getDoctrine()->getManager('drug');
 		$contraCodes = $nozologyCodes = null;
-		$params      = array();
+		$params      = array(
+			'title' => 'Поиск по показаниям/противопоказаниям',
+		);
 
 		if ($request->query->has('nozology')) {
 			$nozologyCodes = explode('-', $request->query->get('nozology'));
@@ -191,9 +201,9 @@ class SearchController extends Controller
 
 					$productIds = $this->getProductIds($products);
 
-					$params['productsPagination']   = $pagination;
-					$params['companies']            = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-					$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
+					$params['productsPagination'] = $pagination;
+					$params['companies']          = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
+					$params['pictures']           = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
 				}
 			}
 		}
@@ -216,11 +226,12 @@ class SearchController extends Controller
 		$n  = $request->query->has('n'); // только безрецептурные препараты
 
 		$params = array(
-			't'    => $t,
-			'p'    => $p,
-			'l'    => $l,
-			'n'    => $n,
-			'menu' => 'drugs',
+			't'     => $t,
+			'p'     => $p,
+			'l'     => $l,
+			'n'     => $n,
+			'menu'  => 'drugs',
+			'title' => 'Поиск по алфавиту',
 		);
 
 		if ($l != null) {

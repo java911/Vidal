@@ -25,7 +25,7 @@
 				{% for nozology in nozologies %}
 					<tr>
 						<td>{{ nozology.NozologyCode }}</td>
-						<td><a href="{{ path('nozology_code', {'NozologyCode':nozology.NozologyCode}) }}"
+						<td><a href="{{ path('nosology_item', {'NozologyCode':nozology.NozologyCode}) }}"
 							   class="no-underline">{{ nozology.Name|raw }}</a></td>
 					</tr>
 				{% endfor %}
@@ -212,7 +212,7 @@
 				{% for company in firms %}
 					<tr>
 						<td>
-							<a class="no-underline" href="{{ path('company', {'CompanyID':company.CompanyID}) }}"
+							<a class="no-underline" href="{{ path('firm_item', {'CompanyID':company.CompanyID}) }}"
 								>{{ company.LocalName|raw }}{{ company.Property is not empty ? ', ' ~ company.Property|raw|replace({'&amp;':'&'}) }}</a>
 						</td>
 						<td>{{ company.Country }}</td>
@@ -248,22 +248,6 @@
 
 	{% if atcTree is defined %}
 		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/treeview/jquery.treeview.css') }}"/>
-		<style type="text/css">
-			/* atc-tree */
-			.atc-tree {
-				margin-bottom: 8px;
-			}
-			.atc-tree a {
-				font-weight: normal;
-				font-size:   13px;
-			}
-			#atc_collapse {
-				margin-left: 50px;
-			}
-			#atc_expand {
-				margin-left: 10px;
-			}
-		</style>
 	{% endif %}
 {% endblock %}
 

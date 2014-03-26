@@ -1,4 +1,7 @@
 {% if products is defined and products|length %}
+	{% if isAdmin %}
+		{% include 'VidalDrugBundle:Vidal:render_products_admin.html.twig' %}
+	{% else %}
 	<table class="products-table">
 		<tr class="products-table-header">
 			<td class="products-table-loz"></td>
@@ -62,7 +65,7 @@
 								произведено:
 							{% endif %}
 						</span>
-							<a class="no-underline" href="{{ path('company', {'CompanyID':company.CompanyID}) }}">
+							<a class="no-underline" href="{{ path('firm_item', {'CompanyID':company.CompanyID}) }}">
 								{{ company.LocalName|raw }}
 							</a>
 							{% if company.Country is not empty %}
@@ -74,4 +77,5 @@
 			</tr>
 		{% endfor %}
 	</table>
+	{% endif %}
 {% endif %}

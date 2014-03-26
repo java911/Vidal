@@ -2,47 +2,64 @@
 
 
 {% block vidal %}
-	<h1>{{ infoPage.RusName|upper|raw }}
-		<span>(представительство{% if infoPage.Country is not empty and infoPage.Country != 'Unknown' %},
-			{{ infoPage.Country }}{% endif %})</span>
-	</h1>
+	{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' %}
+	{% include 'VidalDrugBundle:Vidal:inf_form.html.twig' %}
 
-	{# логотип компании и инфо #}
-	<table class="infopage">
-		<tr>
-			{% if picture %}
-				{% set path = '/upload/companies/' ~ picture.path %}
-				{% if is_file(path) %}
-					<td class="infopage-logo">
-						<img src="{{ path }}"/>
-					</td>
-				{% endif %}
+	<div class="info-line">
+		{% if l %}
+			Найдено представительств фирм на букву <i>{{ l }}</i>:
+			<span>{{ pagination.totalItemCount }}</span>
+		{% elseif q %}
+			{% if pagination.totalItemCount %}
+				Найдено представительств фирм запросу <i>{{ q }}</i>:
+				<span>{{ pagination.totalItemCount }}</span>
+			{% else %}
+				Не найдено представительств фирм по запросу <i>{{ q }}</i>
 			{% endif %}
-			<td class="infopage-about">
-				{{ infoPage.RusAddress|raw }}
-			</td>
-		</tr>
-	</table>
-
-	{# препараты #}
-	<div class="block">
-		<div class="block-head">Лекарственные препараты</div>
-		{% include 'VidalDrugBundle:Vidal:render_products.html.twig' %}
+		{% else %}
+			Найдено представительств фирм:
+			<span>{{ pagination.totalItemCount }}</span>
+		{% endif %}
 	</div>
+
+	{% if pagination is defined and pagination.totalItemCount %}
+		<table class="products-table">
+			<tr class="products-table-header">
+				<td>Название</td>
+				<td>Страна</td>
+			</tr>
+			{% for inf in pagination %}
+				<tr>
+					<td>
+						<a class="no-underline"
+						   href="{{ path('inf_item', {'InfoPageID':inf.InfoPageID}) }}">{{ inf.RusName|raw }}</a>
+					</td>
+					<td>{{ inf.Country is defined ? inf.Country : inf.CountryCode }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+
+		<div class="navigation">
+			{{ knp_pagination_render(pagination) }}
+		</div>
+	{% endif %}
 {% endblock %}
 
 
 {% block stylesheets %}
 	{{ parent() }}
 	<style type="text/css">
-		.infopage-logo img {
-			max-width:     200px;
-			max-height:    200px;
-			padding-right: 40px;
+		#form > * {
+			vertical-align: top;
 		}
-		.infopage-about p {
-			margin:    7px 0;
-			font-size: 12px;
+		#form_controls {
+			clear: both;
+		}
+		#form_submit {
+			float: right;
+		}
+		#form_input {
+			width: 408px;
 		}
 	</style>
 {% endblock %}

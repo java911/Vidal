@@ -50,7 +50,7 @@ html {
 body {
 	width:       100%;
 	height:      100%;
-	font-family: 'PT Sans', sans-serif;
+	font-family: 'PT Sans', Tahoma, Verdana, sans-serif;
 	color:       #333333;
 }
 .wrapper {
@@ -62,52 +62,57 @@ body {
 	height:     100%;
 }
 .header {
-	height:     118px;
-	background: url(../images/header.jpg) white no-repeat top left;
-	position:   relative;
+	position:       relative;
+	padding-bottom: 24px;
+}
+.header-link {
+	display:    block;
+	width:      143px;
+	height:     105px;
+	background: url(../images/header.jpg) no-repeat top left;
+}
+.header-about {
+	position:   absolute;
+	top:        49px;
+	left:       173px;
+	width:      230px;
+	height:     34px;
+	background: url(../images/header-about.jpg) no-repeat top left;
+}
+.header-search {
+	position:   absolute;
+	top:        53px;
+	left:       447px;
+	width:      63px;
+	height:     16px;
+	background: url(../images/header-search.jpg) no-repeat top left;
 }
 .middle {
 	width:    100%;
-	padding:  8px 0 226px;
 	position: relative;
 }
-.middle:after {
-	display: table;
-	clear:   both;
-	content: '';
-}
-.container {
-	width: 100%;
-	float: left;
+.main {
+	padding: 0 28px;
 }
 .content {
-	padding:    0 220px 30px 196px;
-	min-height: 420px;
-}
-.left-sidebar {
-	float:         left;
-	width:         160px;
-	margin-left:   -100%;
-	margin-bottom: 100px;
-	position:      relative;
-}
-.right-sidebar {
-	float:         left;
-	width:         200px;
-	margin-left:   -200px;
-	margin-bottom: 100px;
-	position:      relative;
-}
-.footer {
-	width:    950px;
-	margin:   -226px auto 0;
-	height:   226px;
 	position: relative;
 }
-.footer-content {
-	padding:    26px 10px 22px;
-	font-size:  80%;
+.left-sidebar {
+	width:          160px;
+	position:       relative;
+	vertical-align: top;
+}
+.right-sidebar {
+	width:          200px;
+	position:       relative;
+	vertical-align: top;
+}
+.footer {
+	margin-top: 32px;
 	border-top: 1px solid #d71344;
+	padding:    22px 10px 32px;
+	position:   relative;
+	font-size:  80%;
 }
 .footer-info {
 	max-width:  672px;
@@ -124,6 +129,13 @@ body {
 	display:       inline-block;
 	margin-bottom: 3px;
 	font-size:     90%;
+}
+.footer-logo {
+	display:  block;
+	border:   none;
+	position: absolute;
+	bottom:   6px;
+	right:    0;
 }
 
 /* глобальные теги */
@@ -334,6 +346,13 @@ h1 {
 	-ms-user-select:       none;
 	user-select:           none;
 }
+.ajax-loader {
+	display:    block;
+	height:     32px;
+	width:      32px;
+	margin:     40px auto;
+	background: url(../images/ajax-loader.gif) no-repeat top left;
+}
 
 /* боковое меню */
 .sidebar-menu .active {
@@ -350,16 +369,15 @@ h1 {
 
 /* блок авторизации */
 .auth {
-	width:   112px;
-	margin:  40px 0 12px;
-	padding: 15px 10px 10px;
+	margin:  30px 0 12px;
+	padding: 10px;
 	border:  2px solid #eee;
 }
 .auth .auth-fail-message {
 	display:    none;
 	margin:     10px 2px 0;
 	font-style: italic;
-	font-size:  90%;
+	font-size:  16px;
 	text-align: center;
 }
 .auth .auth-info {
@@ -373,7 +391,7 @@ h1 {
 }
 .auth input {
 	height:        26px;
-	width:         96px;
+	width:         120px;
 	border-radius: 0;
 	border:        none;
 	background:    #e1e1e1;
@@ -382,17 +400,17 @@ h1 {
 	display:       block;
 	margin-bottom: 4px;
 	font-style:    italic;
-	font-size:     80%;
+	font-size:     14px;
 	color:         #999;
 }
-.auth a.submit {
-	width: 68px;
+.auth-submit {
+	text-align: center;
 }
 .auth-welcome {
 	margin-bottom: 10px;
 	color:         #999;
 	font-style:    italic;
-	font-size:     90%;
+	font-size:     15px;
 }
 .auth-controls li {
 	margin-bottom: 10px;
@@ -403,10 +421,67 @@ h1 {
 	text-decoration: none;
 }
 .go-registration {
-	width:         138px;
 	margin-bottom: 20px;
 	font-size:     14px;
 	text-align:    center;
+}
+
+/* auth-popup */
+.auth-popup {
+	display:            none;
+	position:           fixed;
+	width:              200px;
+	padding:            18px 30px 26px;
+	top:                50%;
+	left:               50%;
+	margin-top:         -220px;
+	margin-left:        -130px;
+	background:         white;
+	border:             none;
+	z-index:            1001;
+	box-shadow:         0 0 10px rgba(0, 0, 0, 0.5);
+	-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow:    0 0 10px rgba(0, 0, 0, 0.5);
+}
+.auth-popup input {
+	width: 184px;
+}
+.auth-popup .auth-submit {
+	margin-top: 24px;
+	text-align: center;
+}
+.auth-popup-close {
+	display:  block;
+	position: absolute;
+	top:      0;
+	right:    0;
+	cursor:   pointer;
+	opacity:  0.3;
+}
+.auth-popup-close:hover {
+	opacity: 1;
+}
+.closed-info {
+	font-size:  15px;
+	background: beige;
+	padding:    6px 8px 7px;
+}
+.closed-info span {
+	margin-right: 6px;
+}
+#overlay {
+	position:       fixed;
+	display:        none;
+	top:            0;
+	left:           0;
+	width:          100%;
+	height:         100%;
+	background:     url('../images/bg/dia.png') repeat top left;
+	filter:         alpha(opacity=30);
+	-moz-opacity:   .3;
+	-khtml-opacity: .3;
+	opacity:        0.3;
+	z-index:        1000;
 }
 
 /* форма */
@@ -462,6 +537,9 @@ h1 {
 }
 
 /* drug */
+#vidal {
+	position: relative;
+}
 #vidal h1 {
 	margin-top: 0;
 }
@@ -487,9 +565,13 @@ h1 {
 
 /* anons */
 .anons {
-	margin-top: 13px;
+	margin:     13px 0;
 	background: #f5f5f5;
 	padding:    3px 5px 5px;
+	color:      #476173;
+}
+.anons-drugs {
+	margin-top: 0;
 }
 .anons-head span {
 	color: #476173;
@@ -525,7 +607,7 @@ h1 {
 	color: #6C8EA7;
 }
 .block-tip {
-	font-size: 11px;
+	font-size: 13px;
 	color:     #999;
 }
 .block-content {
@@ -549,6 +631,10 @@ h1 {
 	border-radius:         4px;
 	-moz-border-radius:    4px;
 	-webkit-border-radius: 4px;
+}
+.block-info .block-head {
+	display: inline-block;
+	width:   145px;
 }
 
 /* atc */
@@ -679,6 +765,12 @@ h1 {
 	font-size:   14px;
 	line-height: 17px;
 }
+.products-table-name.admin {
+	position: relative;
+}
+.products-table-name.admin:hover .admin-edit {
+	opacity: 1;
+}
 .products-table-company {
 	width:       30%;
 	font-size:   14px;
@@ -737,6 +829,26 @@ h1 {
 	border-bottom: 0;
 }
 
+/* admin-edit icon */
+.admin-edit {
+	display:  inline-block;
+	position: absolute;
+	top:      6px;
+	right:    0;
+	opacity:  0;
+	z-index:  10;
+}
+.admin-edit img {
+	width:  18px;
+	border: none !important;
+}
+.admin-edit.fade {
+	opacity: 0.4;
+}
+.admin-edit.fade:hover {
+	opacity: 1;
+}
+
 /* no-results */
 .no-results {
 	padding:    6px 10px 7px;
@@ -753,7 +865,8 @@ h1 {
 	overflow: hidden;
 }
 .search .search-type {
-	width: 160px;
+	width:      160px;
+	visibility: hidden;
 }
 .search .search-query {
 	display:        inline-block;
@@ -903,16 +1016,16 @@ h1 {
 .menu-pharmacy {
 	background-position: -390px 0;
 }
-.menu-drugs:hover {
+.menu-drugs:hover, .menu-drugs.active {
 	background-position: 0 -101px;
 }
-.menu-symptoms:hover {
+.menu-symptoms:hover, .menu-symptoms.active {
 	background-position: -130px -101px;
 }
-.menu-doctors:hover {
+.menu-doctors:hover, .menu-doctors.active {
 	background-position: -260px -101px;
 }
-.menu-pharmacy:hover {
+.menu-pharmacy:hover, .menu-pharmacy.active {
 	background-position: -390px -101px;
 }
 .menu-big a {
@@ -931,16 +1044,16 @@ h1 {
 .menu-big .menu-pharmacy {
 	background-position: -390px -1px;
 }
-.menu-big .menu-drugs:hover {
+.menu-big .menu-drugs:hover, .menu-big .menu-drugs.active {
 	background-position: 0 -249px;
 }
-.menu-big .menu-symptoms:hover {
+.menu-big .menu-symptoms:hover, .menu-big .menu-symptoms.active {
 	background-position: -130px -249px;
 }
-.menu-big .menu-doctors:hover {
+.menu-big .menu-doctors:hover, .menu-big .menu-doctors.active {
 	background-position: -260px -249px;
 }
-.menu-big .menu-pharmacy:hover {
+.menu-big .menu-pharmacy:hover, .menu-big .menu-pharmacy.active {
 	background-position: -390px -249px;
 }
 
@@ -975,10 +1088,14 @@ h1 {
 	-webkit-border-radius: 4px;
 	overflow:              hidden;
 }
+.menu-drugs .tabs {
+	margin-bottom: 20px;
+	display:       inline-block;
+}
 .tabs a {
 	display:         inline-block;
 	float:           left;
-	padding:         6px 12px 7px;
+	padding:         6px 8px 7px;
 	text-decoration: none;
 	color:           #2e3f51;
 	font-weight:     bold;
@@ -1014,4 +1131,83 @@ h1 {
 }
 .info-line span {
 	color: #333;
+}
+
+/* letters */
+.letters {
+	margin: 10px 0;
+}
+.letters > div {
+	overflow: hidden;
+}
+.letters input {
+	display:         inline-block;
+	width:           15px;
+	text-align:      center;
+	text-decoration: none;
+	color:           #62768A;
+	float:           left;
+	margin-right:    2px;
+	font-size:       14px;
+	outline:         none;
+	cursor:          pointer;
+	padding:         0;
+	background:      #F5F5F5;
+	border:          none;
+	line-height:     18px;
+}
+.letters input.en {
+	color: #434EA0;
+}
+.letters input.active, .letters input:hover {
+	background: #d71344;
+	color:      white;
+}
+.letters input:active {
+	position: relative;
+	top:      1px;
+}
+
+/* banners */
+.banner {
+	position: relative;
+}
+.banner .admin-edit {
+	right: -20px;
+}
+#banner_top {
+	position:      relative;
+	margin-bottom: -15px;
+	z-index:       10;
+}
+#banner_top img {
+	border:        none;
+	border-bottom: 2px solid #b9033c;
+}
+#banner_bottom {
+	clear:  both;
+	margin: 0 auto 20px;
+}
+.banner.swf {
+	position:   relative;
+	text-align: center;
+	background: transparent;
+}
+.banner.swf > div {
+	position:   absolute;
+	background: transparent;
+	cursor:     pointer;
+}
+.banner a, .banner img {
+	display: block;
+}
+.left-sidebar .banner, .right-sidebar .banner {
+	margin-bottom: 15px;
+}
+.footer-banner {
+	text-align: center;
+}
+.footer-banner > div {
+	display:    inline-block;
+	margin-top: 20px;
 }

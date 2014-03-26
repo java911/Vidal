@@ -1,5 +1,5 @@
 <div class="publications">
-	{% for publication in publications %}
+	{% for publication in publicationsPagination.items %}
 		{% set withPhoto = publication.photo and is_file(publication.photo.path) %}
 		<div class="publication{{ withPhoto ? ' with-photo' }}">
 			{% if withPhoto %}
@@ -9,13 +9,13 @@
 			{% endif %}
 			<div>
 				<div class="publication-title">
-					<a href="{{ path('publication', {id:publication.id}) }}">{{ publication.title }}</a>
+					<a href="{{ path('publication', {id:publication.id}) }}">{{ publication.title|raw }}</a>
 				</div>
 				<div class="publication-announce">
 					{{ publication.announce|raw }}
 				</div>
 				<div class="publication-date">
-					{{ publication.created|date('d.m.Y') }}
+					{{ publication.updated|date('d.m.Y') }}
 				</div>
 			</div>
 		</div>

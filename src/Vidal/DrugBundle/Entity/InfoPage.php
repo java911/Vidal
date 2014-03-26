@@ -51,10 +51,9 @@ class InfoPage
 	protected $DateTextModified;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="CountryEdition", inversedBy="infoPages")
-	 * @ORM\JoinColumn(name="CountryEditionCode", referencedColumnName="CountryEditionCode")
+	 * @ORM\Column(length=10)
 	 */
-	protected $CoutryEditionCode;
+	protected $CountryEditionCode;
 
 	/** @ORM\ManyToMany(targetEntity="Picture", mappedBy="infoPages") */
 	protected $pictures;
@@ -83,22 +82,6 @@ class InfoPage
 	public function __toString()
 	{
 		return $this->RusName;
-	}
-
-	/**
-	 * @param mixed $CoutryEditionCode
-	 */
-	public function setCoutryEditionCode($CoutryEditionCode)
-	{
-		$this->CoutryEditionCode = $CoutryEditionCode;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getCoutryEditionCode()
-	{
-		return $this->CoutryEditionCode;
 	}
 
 	/**
@@ -372,4 +355,22 @@ class InfoPage
 	{
 		return $this->represAndDistribs;
 	}
+
+	/**
+	 * @param mixed $CountryEditionCode
+	 */
+	public function setCountryEditionCode($CountryEditionCode)
+	{
+		$this->CountryEditionCode = $CountryEditionCode;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCountryEditionCode()
+	{
+		return $this->CountryEditionCode;
+	}
+
+
 }

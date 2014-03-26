@@ -1,1 +1,35 @@
-{% include 'VidalDrugBundle::vidal_search_form.html.twig' %}
+<a href="{{ path('index') }}" class="header-link"></a>
+
+<div class="header-about"></div>
+
+<div class="header-search"></div>
+
+<form id="search_form" class="search" method="get" action="{{ path('search') }}">
+	<select class="search-type" name="t">
+		<option value="all" {{ app.request.get('t') == 'all' ? 'selected="selected"' }}>
+			ВЕЗДЕ
+		</option>
+		<option value="product" {{ app.request.get('t') == 'product' ? 'selected="selected"' }}>
+			ПО ПРЕПАРАТУ
+		</option>
+		<option value="molecule" {{ app.request.get('t') == 'molecule' ? 'selected="selected"' }}>
+			ПО ВЕЩЕСТВУ
+		</option>
+		<option value="atc" {{ app.request.get('t') == 'atc' ? 'selected="selected"' }}>
+			ПО АТХ КОДУ
+		</option>
+		<option value="firm" {{ app.request.get('t') == 'firm' ? 'selected="selected"' }}>
+			ПО ПРОИЗВОДИТЕЛЮ
+		</option>
+	</select>
+
+	<div class="search-inputs bg-gray">
+		<input class="search-query" type="text" name="q" placeholder="Введите слово для поиска..."
+			   value="{{ app.request.attributes.get('_route') == 'search' ? app.request.get('q') }}"/>
+		<input type="submit" value="" class="search-submit"/>
+	</div>
+</form>
+
+<div class="searche-link">
+	<a href="{{ path('searche') }}">расширенный поиск</a>
+</div>

@@ -1,13 +1,30 @@
 {% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
 
 
-{% block vidal %}
+{% set isDoctor = is_granted('ROLE_DOCTOR') %}
+
+
+{% block title %}
 	<h1>{{ molecule.LatName|upper|raw }}
 		{% if molecule.RusName is not empty %}
 			<span>({{ molecule.RusName|upper|raw }})</span>
 		{% endif %}
 	</h1>
+{% endblock %}
 
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('molecules') }}">Активные вещества</a>
+		<i></i>
+		<span>{{ molecule.LatName|upper|raw }}</span>
+	</div>
+{% endblock %}
+
+
+{% block vidal %}
 	{% if molecule.GNParent is not empty %}
 		<div class="mnn anons">
 			<a title="Международное непатентованное наименование (МНН)" href="{{ path('gnp') }}"

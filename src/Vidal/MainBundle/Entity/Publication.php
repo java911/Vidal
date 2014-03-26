@@ -14,8 +14,8 @@ class Publication extends BaseEntity
 	 * @ORM\Column(type="array", nullable=true)
 	 * @FileStore\UploadableField(mapping="photo")
 	 * @Assert\Image(
-	 * 		maxSize="4M",
-	 *  	maxSizeMessage="Принимаются фотографии размером до 4 Мб"
+	 *        maxSize="4M",
+	 *    maxSizeMessage="Принимаются фотографии размером до 4 Мб"
 	 * )
 	 */
 	protected $photo;
@@ -32,11 +32,24 @@ class Publication extends BaseEntity
 	/** @ORM\ManyToOne(targetEntity="User", inversedBy="publications") */
 	protected $author;
 
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $keyword;
+
+	/** @ORM\ManyToOne(targetEntity="Subdivision", inversedBy="publications") */
+	protected $subdivision;
+
+	/** @ORM\ManyToOne(targetEntity="Subclass", inversedBy="publications") */
+	protected $subclass;
+
+	/** @ORM\Column(type="datetime", nullable=true) */
+	protected $date;
+
 	public function __construct()
 	{
-		$now = new \DateTime('now');
+		$now           = new \DateTime('now');
 		$this->created = $now;
 		$this->updated = $now;
+		$this->date    = $now;
 	}
 
 	public function __toString()
@@ -122,5 +135,69 @@ class Publication extends BaseEntity
 	public function getTitle()
 	{
 		return $this->title;
+	}
+
+	/**
+	 * @param mixed $subdivision
+	 */
+	public function setSubdivision($subdivision)
+	{
+		$this->subdivision = $subdivision;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSubdivision()
+	{
+		return $this->subdivision;
+	}
+
+	/**
+	 * @param mixed $keyword
+	 */
+	public function setKeyword($keyword)
+	{
+		$this->keyword = $keyword;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getKeyword()
+	{
+		return $this->keyword;
+	}
+
+	/**
+	 * @param mixed $subclass
+	 */
+	public function setSubclass($subclass)
+	{
+		$this->subclass = $subclass;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSubclass()
+	{
+		return $this->subclass;
+	}
+
+	/**
+	 * @param mixed $date
+	 */
+	public function setDate($date)
+	{
+		$this->date = $date;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDate()
+	{
+		return $this->date;
 	}
 }

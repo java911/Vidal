@@ -60,7 +60,7 @@ class Molecule
 
 	public function __toString()
 	{
-		return $this->LatName;
+		return empty($this->RusName) ? $this->LatName : $this->RusName;
 	}
 
 	public function getId()

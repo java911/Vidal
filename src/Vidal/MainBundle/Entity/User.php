@@ -283,7 +283,7 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	 */
 	public function eraseCredentials()
 	{
-		$this->password = null;
+
 	}
 
 	public function isEqualTo(UserInterface $user)

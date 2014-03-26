@@ -1,13 +1,23 @@
 {% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
 
 
-{% block vidal %}
-	<h1>{{ company.CompanyName|upper|raw }}{% if company.Property is not empty %}, {{ company.Property|raw }}{% endif %}
-		{% if company.Country is not empty  and company.Country != 'Unknown' %}
-			<span>({{ company.Country }})</span>
-		{% endif %}
-	</h1>
+{% block title %}
+	<h1>{{ company.CompanyName|upper|raw }}</h1>
+{% endblock %}
 
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('firms') }}">Фирмы-производители</a>
+		<i></i>
+		<span>{{ company.CompanyName|upper|raw }}</span>
+	</div>
+{% endblock %}
+
+
+{% block vidal %}
 	{# представительства #}
 	{% if productsRepresented is not empty %}
 		<div class="block">
@@ -15,7 +25,7 @@
 			<ul class="ul-style">
 				{% for product in productsRepresented %}
 					<li>
-						<a href="{{ path('inf', {'InfoPageID':product.InfoPageID}) }}" class="no-underline">
+						<a href="{{ path('inf_item', {'InfoPageID':product.InfoPageID}) }}" class="no-underline">
 							{{ product.InfoPageName }}</a>
 						{% if product.InfoPageCountry is not empty and product.InfoPageCountry != 'Unknown' %}
 							<span class="small">({{ product.InfoPageCountry }})</span>
@@ -70,7 +80,7 @@
 						</td>
 						<td class="products-table-company">
 							{% if product.InfoPageID %}
-								<a class="no-underline" href="{{ path('inf', {'InfoPageID':product.InfoPageID}) }}">
+								<a class="no-underline" href="{{ path('inf_item', {'InfoPageID':product.InfoPageID}) }}">
 									{{ product.InfoPageName|raw }}</a>
 								{% if product.InfoPageCountry is not empty and product.InfoPageCountry != 'Unknown' %}
 									<span class="small">({{ product.InfoPageCountry }})</span>

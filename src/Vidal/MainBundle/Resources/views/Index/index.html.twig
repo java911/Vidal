@@ -9,7 +9,12 @@
 {% block content %}
 	<div class="news">
 		<h1>НОВОСТИ</h1>
-		{% include 'VidalMainBundle:Index:render_publications.html.twig' with {publications:publicationsPagination.items} %}
+
+		{% if isAdmin %}
+			{% include 'VidalMainBundle:Index:render_publications_admin.html.twig' %}
+		{% else %}
+			{% include 'VidalMainBundle:Index:render_publications.html.twig' %}
+		{% endif %}
 	</div>
 {% endblock %}
 

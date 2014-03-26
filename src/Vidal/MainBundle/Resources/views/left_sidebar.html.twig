@@ -21,7 +21,7 @@
 </ul>
 
 {# блок авторизации или личного кабинета #}
-<div class="auth">
+<div class="auth auth-main">
 	{% if isLogged %}
 		<div class="auth-welcome">
 			Здравствуйте,<br/>
@@ -50,4 +50,11 @@
 	<div class="go-registration">
 		<a href="{{ path('registration') }}">Регистрация</a>
 	</div>
+{% endif %}
+
+{# баннеры #}
+{% if indexPage is defined %}
+	{{ render(controller('VidalMainBundle:Banner:render', {'groupId':7})) }}
+{% else %}
+	{{ render(controller('VidalMainBundle:Banner:render', {'groupId':8})) }}
 {% endif %}

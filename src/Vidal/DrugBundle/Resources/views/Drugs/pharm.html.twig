@@ -1,0 +1,73 @@
+{% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
+
+
+{% block vidal %}
+	{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' %}
+
+	<div class="anons anons-drugs">
+		Фармако-терапевтические группы ГосРеестра МинЗдрава РФ
+	</div>
+
+	{% include 'VidalDrugBundle:Drugs:pharm_form.html.twig' %}
+
+	<div class="info-line">
+		{% if l %}
+			Найдено групп на букву <i>{{ l }}</i>:
+			<span>{{ pagination.totalItemCount }}</span>
+		{% elseif q %}
+			{% if pagination.totalItemCount %}
+				Найдено групп по запросу <i>{{ q }}</i>:
+				<span>{{ pagination.totalItemCount }}</span>
+			{% else %}
+				Не найдено групп по запросу <i>{{ q }}</i>
+			{% endif %}
+		{% else %}
+			Найдено групп:
+			<span>{{ pagination.totalItemCount }}</span>
+		{% endif %}
+	</div>
+
+	{% if pagination is defined and pagination.totalItemCount %}
+		<ul class="pharm ul-style">
+			{% for pharm in pagination %}
+				<li>
+					<a href="{{ path('pharm_item', {'id': pharm.id}) }}">{{ pharm }}</a>
+				</li>
+			{% endfor %}
+		</ul>
+
+		<div class="navigation">
+			{{ knp_pagination_render(pagination) }}
+		</div>
+	{% endif %}
+
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		#form > * {
+			vertical-align: top;
+		}
+		#form_controls {
+			clear: both;
+		}
+		#form_submit {
+			float: right;
+		}
+		#form_input {
+			width: 408px;
+		}
+		.pharm li {
+			margin-bottom: 5px;
+			line-height:   13px;
+		}
+		.pharm a {
+			text-decoration: none;
+		}
+		.pharm a:hover {
+			text-decoration: underline;
+		}
+	</style>
+{% endblock %}

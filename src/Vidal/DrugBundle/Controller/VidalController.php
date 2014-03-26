@@ -9,16 +9,64 @@ use Symfony\Component\HttpFoundation\Response;
 
 class VidalController extends Controller
 {
-	const PRODUCTS_PER_PAGE = 40;
+	const PRODUCTS_PER_PAGE  = 40;
+	const COMPANIES_PER_PAGE = 50;
+	const MOLECULES_PER_PAGE = 50;
+
+	/**
+	 * Список компаний
+	 *
+	 * @Route("drugs/firms", name="firms")
+	 * @Template("VidalDrugBundle:Vidal:firms.html.twig")
+	 */
+	public function firmsAction(Request $request)
+	{
+		$em = $this->getDoctrine()->getManager('drug');
+		$q  = $request->query->get('q', null);
+		$l  = $request->query->get('l', null);
+		$p  = $request->query->get('p', 1);
+
+		//		$companies = $em->getRepository('VidalDrugBundle:Company')->getQuery()->getResult();
+		//		$letters   = array();
+		//		foreach ($companies as $company) {
+		//			$letter = mb_strtoupper(mb_substr($company->getLocalName(), 0, 1, 'utf-8'), 'utf-8');
+		//			if (!isset($letters[$letter])) {
+		//				$letters[$letter] = '';
+		//			}
+		//		}
+		//		var_dump($letters);
+		//		exit;
+
+		if ($l) {
+			$query = $em->getRepository('VidalDrugBundle:Company')->getQueryByLetter($l);
+		}
+		elseif ($q) {
+			$query = $em->getRepository('VidalDrugBundle:Company')->findByQueryString($q);
+		}
+		else {
+			$query = $em->getRepository('VidalDrugBundle:Company')->getQuery();
+		}
+
+		$params = array(
+			'menu_drugs' => 'firms',
+			'title'      => 'Фирмы-производители',
+			'q'          => $q,
+			'l'          => $l,
+			'pagination' => $this->get('knp_paginator')->paginate($query, $p, self::COMPANIES_PER_PAGE),
+		);
+
+		return $params;
+	}
 
 	/**
 	 * Список препаратов по компании
-	 * @Route("poisk_preparatov/fir_{CompanyID}.{ext}", name="company", requirements={"CompanyID":"\d+"}, defaults={"ext"="htm"})
-	 * @Route("poisk_preparatov/lfir_{CompanyID}.{ext}", name="company_products", requirements={"CompanyID":"\d+"}, defaults={"ext"="htm"})
 	 *
-	 * @Template("VidalDrugBundle:Vidal:company.html.twig")
+	 * @Route("drugs/firm/{CompanyID}", name="firm_item", requirements={"CompanyID":"\d+"})
+	 * @Route("poisk_preparatov/fir_{CompanyID}.{ext}", name="firm_item_old", requirements={"CompanyID":"\d+"}, defaults={"ext"="htm"})
+	 * @Route("poisk_preparatov/lfir_{CompanyID}.{ext}", name="firm_products_old", requirements={"CompanyID":"\d+"}, defaults={"ext"="htm"})
+	 * @Template("VidalDrugBundle:Vidal:firm_item.html.twig")
 	 */
-	public function companyAction($CompanyID)
+	public function firmItemAction($CompanyID)
 	{
 		$em      = $this->getDoctrine()->getManager('drug');
 		$company = $em->getRepository('VidalDrugBundle:Company')->findByCompanyID($CompanyID);
@@ -69,156 +117,28 @@ class VidalController extends Controller
 			'productsRepresented' => $productsRepresented,
 			'products1'           => $products1,
 			'products2'           => $products2,
-		);
-	}
-
-	/**
-	 * Список препаратов по коду АТХ
-	 * @Route("poisk_preparatov/lat_{ATCCode}.{ext}", name="atc", options={"expose":true}, defaults={"ext"="htm"})
-	 *
-	 * @Template("VidalDrugBundle:Vidal:atc.html.twig")
-	 */
-	public function atcAction($ATCCode)
-	{
-		$em  = $this->getDoctrine()->getManager('drug');
-		$atc = $em->getRepository('VidalDrugBundle:ATC')->findOneByATCCode($ATCCode);
-
-		if (!$atc) {
-			throw $this->createNotFoundException();
-		}
-
-		# все продукты по ATC-коду и отсеиваем дубли
-		$productsRaw = $em->getRepository('VidalDrugBundle:Product')->findByATCCode($ATCCode);
-		$products    = array();
-
-		if (empty($productsRaw)) {
-			return array('atc' => $atc);
-		}
-
-		for ($i = 0; $i < count($productsRaw); $i++) {
-			$key = $productsRaw[$i]['ProductID'];
-			if (!isset($productsRaw[$key])) {
-				$products[$key] = $productsRaw[$i];
-			}
-		}
-
-		# надо разбить на те, что с описанием(2,5) и остальные
-		$products1  = array();
-		$products2  = array();
-		$productIds = array();
-
-		foreach ($products as $id => $product) {
-			if ($product['ArticleID'] == 2 || $product['ArticleID'] == 5) {
-				$key = $product['DocumentID'];
-				if (!isset($products1[$key])) {
-					$products1[$key] = $product;
-				}
-			}
-			else {
-				$products2[] = $product;
-			}
-
-			$productIds[] = $id;
-		}
-
-		return array(
-			'atc'       => $atc,
-			'products1' => $products1,
-			'products2' => $products2,
-			'companies' => $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds),
-			'pictures'  => $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds)
+			'title'               => $this->strip($company['CompanyName']) . ' | Фирмы-производители',
 		);
 	}
 
 	/**
 	 * Список препаратов по клиннико-фармакологической группе
-	 * @Route("poisk_preparatov/cl-ph-group/{description}", name="clphgroup")
+	 *
+	 * @Route("drugs/cl-ph-group/{description}", name="clphgroup")
 	 * @Template("VidalDrugBundle:Vidal:clphgroup.html.twig")
 	 */
 	public function clphgroupAction($description)
 	{
 		$em       = $this->getDoctrine()->getManager('drug');
 		$products = $em->getRepository('VidalDrugBundle:Product')->findByClPhGroup($description);
-		$params   = array('products' => $products, 'description' => $description);
+		$params   = array(
+			'products'    => $products,
+			'description' => $description,
+			'title'       => 'Клинико-фармакологическая группа',
+		);
 
 		if (!empty($products)) {
 			$productIds          = $this->getProductIds($products);
-			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
-		}
-
-		return $params;
-	}
-
-	/**
-	 * Список препаратов по фармако-терапевтической группе
-	 * @Route("poisk_preparatov/ph-th-group/{id}", name="phthgroup", defaults={"id":"\d+"})
-	 * @Template("VidalDrugBundle:Vidal:phthgroup.html.twig")
-	 */
-	public function phthgroupAction($id)
-	{
-		$em        = $this->getDoctrine()->getManager('drug');
-		$phthgroup = $em->getRepository('VidalDrugBundle:PhThGroups')->findById($id);
-
-		if ($phthgroup === null) {
-			throw $this->createNotFoundException();
-		}
-
-		$products = $em->getRepository('VidalDrugBundle:Product')->findByPhThGroup($id);
-		$params   = array('phthgroup' => $phthgroup, 'products' => $products);
-
-		if (!empty($products)) {
-			$productIds          = $this->getProductIds($products);
-			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
-		}
-
-		return $params;
-	}
-
-	/**
-	 * Список препаратов и активных веществ по показанию (Nozology)
-	 * @Route("poisk_preparatov/lno_{NozologyCode}", name="nozology_code")
-	 * @Template("VidalDrugBundle:Vidal:nozology_code.html.twig")
-	 */
-	public function nozologyCodeAction($NozologyCode)
-	{
-		$em = $this->getDoctrine()->getManager('drug');
-
-		if ($pos = strpos($NozologyCode, '.htm')) {
-			$NozologyCode = substr($NozologyCode, $pos, 4);
-		}
-
-		$nozology = $em->getRepository('VidalDrugBundle:Nozology')->findByCode($NozologyCode);
-
-		if ($nozology === null) {
-			throw $this->createNotFoundException();
-		}
-
-		$documents = $em->getRepository('VidalDrugBundle:Document')->findByNozologyCode($NozologyCode);
-		$params    = array('nozology' => $nozology);
-
-		if (!empty($documents)) {
-			$params['molecules'] = $em->getRepository('VidalDrugBundle:Molecule')->findByDocuments1($documents);
-			$products1           = $em->getRepository('VidalDrugBundle:Product')->findByDocuments25($documents);
-			$products2           = $em->getRepository('VidalDrugBundle:Product')->findByDocuments4($documents);
-			$products            = array();
-
-			# надо слить продукты, исключая повторения и отсортировать по названию
-			foreach ($products1 as $id => $product) {
-				$products[] = $product;
-			}
-			foreach ($products2 as $id => $product) {
-				if (!isset($products1[$id])) {
-					$products[] = $product;
-				}
-			}
-			usort($products, function ($a, $b) {
-				return strcmp($a['RusName'], $b['RusName']);
-			});
-
-			$productIds          = $this->getProductIds($products);
-			$params['products']  = $products;
 			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
 			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
 		}
@@ -228,12 +148,13 @@ class VidalController extends Controller
 
 	/**
 	 * Страничка представительства и список препаратов
-	 * @Route("poisk_preparatov/inf_{InfoPageID}.{ext}", name="inf", requirements={"InfoPageID":"\d+"}, defaults={"ext"="htm"})
-	 * @Route("poisk_preparatov/linf_{InfoPageID}.{ext}", name="linf", requirements={"InfoPageID":"\d+"}, defaults={"ext"="htm"})
 	 *
-	 * @Template("VidalDrugBundle:Vidal:inf.html.twig")
+	 * @Route("drugs/company/{InfoPageID}", name="inf_item", requirements={"InfoPageID":"\d+"})
+	 * @Route("poisk_preparatov/inf_{InfoPageID}.{ext}", name="inf_item_old", requirements={"InfoPageID":"\d+"}, defaults={"ext"="htm"})
+	 * @Route("poisk_preparatov/linf_{InfoPageID}.{ext}", name="linf_item_old", requirements={"InfoPageID":"\d+"}, defaults={"ext"="htm"})
+	 * @Template("VidalDrugBundle:Vidal:inf_item.html.twig")
 	 */
-	public function infAction($InfoPageID)
+	public function infItemAction($InfoPageID)
 	{
 		$em       = $this->getDoctrine()->getManager('drug');
 		$infoPage = $em->getRepository('VidalDrugBundle:InfoPage')->findByInfoPageID($InfoPageID);
@@ -243,8 +164,12 @@ class VidalController extends Controller
 		}
 
 		$picture     = $em->getRepository('VidalDrugBundle:Picture')->findByInfoPageID($InfoPageID);
-		$params      = array('infoPage' => $infoPage, 'picture' => $picture);
 		$documentIds = $em->getRepository('VidalDrugBundle:Document')->findIdsByInfoPageID($InfoPageID);
+		$params      = array(
+			'infoPage' => $infoPage,
+			'picture'  => $picture,
+			'title'    => $this->strip($infoPage['RusName']) . ' | Представительства фирм',
+		);
 
 		if (!empty($documentIds)) {
 			$products = $em->getRepository('VidalDrugBundle:Product')->findByDocumentIDs($documentIds);
@@ -261,9 +186,98 @@ class VidalController extends Controller
 	}
 
 	/**
-	 * Список препаратов по активному веществу: одно-монокомпонентные
-	 * @Route("poisk_preparatov/act_{MoleculeID}.{ext}", name="molecule", requirements={"MoleculeID":"\d+"}, defaults={"ext"="htm"})
+	 * Страничка представительств
 	 *
+	 * @Route("drugs/companies", name="inf", requirements={"InfoPageID":"\d+"})
+	 * @Template("VidalDrugBundle:Vidal:inf.html.twig")
+	 */
+	public function infAction(Request $request)
+	{
+		$em = $this->getDoctrine()->getManager('drug');
+		$q  = $request->query->get('q', null);
+		$l  = $request->query->get('l', null);
+		$p  = $request->query->get('p', 1);
+
+		//		$companies = $em->getRepository('VidalDrugBundle:InfoPage')->getQuery()->getResult();
+		//		$letters   = array();
+		//		foreach ($companies as $company) {
+		//			$letter = mb_strtoupper(mb_substr($company->getRusName(), 0, 1, 'utf-8'), 'utf-8');
+		//			if (!isset($letters[$letter])) {
+		//				$letters[$letter] = '';
+		//			}
+		//		}
+		//		var_dump($letters);
+		//		exit;
+
+		if ($l) {
+			$query = $em->getRepository('VidalDrugBundle:InfoPage')->findByLetter($l);
+		}
+		elseif ($q) {
+			$query = $em->getRepository('VidalDrugBundle:InfoPage')->findByQuery($q);
+		}
+		else {
+			$query = $em->getRepository('VidalDrugBundle:InfoPage')->getQuery();
+		}
+
+		$params = array(
+			'menu_drugs' => 'inf',
+			'title'      => 'Представительства фирм',
+			'q'          => $q,
+			'l'          => $l,
+			'pagination' => $this->get('knp_paginator')->paginate($query, $p, self::COMPANIES_PER_PAGE),
+		);
+
+		return $params;
+	}
+
+	/**
+	 * @Route("/drugs/molecules", name="molecules")
+	 * @Template("VidalDrugBundle:Vidal:molecules.html.twig")
+	 */
+	public function moleculesAction(Request $request)
+	{
+		$em = $this->getDoctrine()->getManager('drug');
+		$q  = $request->query->get('q', null);
+		$l  = $request->query->get('l', null);
+		$p  = $request->query->get('p', 1);
+
+//		$molecules = $em->getRepository('VidalDrugBundle:Molecule')->getQuery()->getResult();
+//		$letters   = array();
+//		foreach ($molecules as $m) {
+//			$letter = mb_strtoupper(mb_substr($m->getRusName(), 0, 1, 'utf-8'), 'utf-8');
+//			if (!isset($letters[$letter])) {
+//				$letters[$letter] = '';
+//			}
+//		}
+//		var_dump($letters);
+//		exit;
+
+		if ($l) {
+			$query = $em->getRepository('VidalDrugBundle:Molecule')->getQueryByLetter($l);
+		}
+		elseif ($q) {
+			$query = $em->getRepository('VidalDrugBundle:Molecule')->getQueryByString($q);
+		}
+		else {
+			$query = $em->getRepository('VidalDrugBundle:Molecule')->getQuery();
+		}
+
+		$params = array(
+			'menu_drugs' => 'molecule',
+			'title'      => 'Активные вещества',
+			'q'          => $q,
+			'l'          => $l,
+			'pagination' => $this->get('knp_paginator')->paginate($query, $p, self::MOLECULES_PER_PAGE),
+		);
+
+		return $params;
+	}
+
+	/**
+	 * Список препаратов по активному веществу: одно-монокомпонентные
+	 *
+	 * @Route("drugs/molecule/{MoleculeID}", name="molecule", requirements={"MoleculeID":"\d+"})
+	 * @Route("poisk_preparatov/act_{MoleculeID}.{ext}", name="molecule_old", requirements={"MoleculeID":"\d+"}, defaults={"ext"="htm"})
 	 * @Template("VidalDrugBundle:Vidal:molecule.html.twig")
 	 */
 	public function moleculeAction($MoleculeID)
@@ -280,13 +294,15 @@ class VidalController extends Controller
 		return array(
 			'molecule' => $molecule,
 			'document' => $document,
+			'title'    => $molecule . ' | Активные вещества',
 		);
 	}
 
 	/**
 	 * Отображение списка препаратов, в состав которых входит активное вещество (Molecule)
-	 * @Route("poisk_preparatov/lact_{MoleculeID}.{ext}", name="molecule_included", requirements={"MoleculeID":"\d+"}, defaults={"ext"="htm"})
 	 *
+	 * @Route("drugs/molecule-in/{MoleculeID}", name="molecule_included", requirements={"MoleculeID":"\d+"})
+	 * @Route("poisk_preparatov/lact_{MoleculeID}.{ext}", name="molecule_included_old", requirements={"MoleculeID":"\d+"}, defaults={"ext"="htm"})
 	 * @Template("VidalDrugBundle:Vidal:molecule_included.html.twig")
 	 */
 	public function moleculeIncludedAction($MoleculeID)
@@ -337,36 +353,45 @@ class VidalController extends Controller
 			'products2' => $products2,
 			'companies' => $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds),
 			'pictures'  => $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds),
+			'title'     => $molecule . ' | Активные вещества в препаратах',
 		);
 	}
 
 	/**
 	 * Страничка рассшифровки МНН аббревиатур
-	 * @Route("poisk_preparatov/gnp.{ext}", name="gnp", defaults={"ext"="htm"})
 	 *
+	 * @Route("drugs/gnp", name="gnp")
+	 * @Route("poisk_preparatov/gnp.{ext}", name="gnp_old", defaults={"ext"="htm"})
 	 * @Template("VidalDrugBundle:Vidal:gnp.html.twig")
 	 */
 	public function gnpAction()
 	{
-		return array();
+		return array(
+			'title' => 'Международные наименования - МНН',
+		);
 	}
 
 	/**
 	 * Описание препарата
-	 * @Route("/poisk_preparatov/{EngName}__{ProductID}.{ext}", name="product", requirements={"ProductID":"\d+"}, defaults={"ext"="htm"})
+	 *
+	 * @Route("drugs/{EngName}__{ProductID}", name="product", requirements={"ProductID":"\d+"})
+	 * @Route("poisk_preparatov/{EngName}__{ProductID}.{ext}", name="product_old", requirements={"ProductID":"\d+"}, defaults={"ext"="htm"})
 	 *
 	 * @Template("VidalDrugBundle:Vidal:document.html.twig")
 	 */
 	public function productAction($EngName, $ProductID)
 	{
-		$em     = $this->getDoctrine()->getManager('drug');
-		$params = array();
+		$em = $this->getDoctrine()->getManager('drug');
 
 		$product = $em->getRepository('VidalDrugBundle:Product')->findByProductID($ProductID);
 
 		if (!$product) {
 			throw $this->createNotFoundException();
 		}
+
+		$params = array(
+			'title' => $this->strip($product['RusName']) . ' | Препараты',
+		);
 
 		$document  = $em->getRepository('VidalDrugBundle:Document')->findByProductDocument($ProductID);
 		$molecules = $em->getRepository('VidalDrugBundle:Molecule')->findByProductID($ProductID);
@@ -428,9 +453,10 @@ class VidalController extends Controller
 
 	/**
 	 * Описание по документу и отображение информации по препаратам или веществу
-	 * @Route("/poisk_preparatov/{EngName}~{DocumentID}.{ext}", name="document", requirements={"DocumentID":"\d+"}, defaults={"ext"="htm"})
-	 * @Route("/poisk_preparatov/{EngName}.{ext}", name="document_name", defaults={"ext"="htm"})
 	 *
+	 * @Route("drugs/{EngName}~{DocumentID}", name="document", requirements={"DocumentID":"\d+"})
+	 * @Route("poisk_preparatov/{EngName}~{DocumentID}.{ext}", name="document_old", requirements={"DocumentID":"\d+"}, defaults={"ext"="htm"})
+	 * @Route("poisk_preparatov/{EngName}.{ext}", name="document_name_old", defaults={"ext"="htm"})
 	 * @Template("VidalDrugBundle:Vidal:document.html.twig")
 	 */
 	public function documentAction($EngName, $DocumentID = null)
@@ -450,6 +476,7 @@ class VidalController extends Controller
 			$DocumentID = $document->getDocumentID();
 		}
 
+		$params['title']      = $this->strip($document->getRusName()) . ' | Препараты';
 		$params['documentId'] = $document->getDocumentID();
 		$articleId            = $document->getArticleID();
 		$molecules            = $em->getRepository('VidalDrugBundle:Molecule')->findByDocumentID($DocumentID);
@@ -496,5 +523,13 @@ class VidalController extends Controller
 	private function sortProducts($a, $b)
 	{
 		return strcasecmp($a['RusName'], $b['RusName']);
+	}
+
+	private function strip($string)
+	{
+		$pat = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/&amp;/');
+		$rep = array('', '', '&');
+
+		return preg_replace($pat, $rep, $string);
 	}
 }
