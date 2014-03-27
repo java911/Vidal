@@ -18,7 +18,7 @@ class MarketController extends Controller{
 
     /**
      * @Route("/add-to-basket/{code}/{count}", name="add_to_basket", defaults={"count"="1"}, options={"expose"=true})
-     * @Template("VidalMainBundle:list.html.twig")
+     * @Template("VidalMainBundle:Market:list.html.twig")
      */
     public function AddToBasket($code, $count = 1){
 
@@ -49,7 +49,7 @@ class MarketController extends Controller{
 
     /**
      * @Route("/set-to-basket/{code}/{count}", name="set_to_basket", defaults={"count"="1"}, options={"expose"=true})
-     * @Template("VidalMainBundle:list.html.twig")
+     * @Template("VidalMainBundle:Market:list.html.twig")
      */
     public function setToBasket($code, $count = 1){
         $basket = new Basket();
@@ -79,7 +79,7 @@ class MarketController extends Controller{
 
     /**
      * @Route("/remove-to-basket/{code}", name="remove_to_basket", options={"expose"=true})
-     * @Template("VidalMainBundle:list.html.twig")
+     * @Template("VidalMainBundle:Market:list.html.twig")
      */
     public function removeToBasket($code){
         $basket = new Basket();
@@ -90,7 +90,7 @@ class MarketController extends Controller{
 
     /**
      * @Route("/drug-list/{drugId}/{isDocs}", name="drug_list", defaults={"isDocs"="false"}, options={"expose"=true})
-     * @Template("VidalMainBundle:list.html.twig")
+     * @Template("VidalMainBundle:Market:list.html.twig")
      */
     public function productListAction( $drugId, $isDocs = false ){
         $cache = $this->getDoctrine()->getRepository('VidalMainBundle:MarketCache')->findOneBy(array('target' => $drugId, 'document' => $isDocs));
@@ -99,4 +99,11 @@ class MarketController extends Controller{
         return array('lists' => $lists);
     }
 
+    /**
+     * @Route("/basket-list", name="basket_list" )
+     * @Template("VidalMainBundle:Market:basket_list.html.twig")
+     */
+    public function basketListAction(){
+        return array();
+    }
 }

@@ -1,0 +1,103 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+{% block content %}
+    <h1>Корзина</h1>
+    <table>
+        <caption>Интернет-магазин E-apteka.ru</caption>
+        <tr>
+            <th>Наименование</th>
+            <th>Производитель</th>
+            <th>Цена</th>
+            <th>Количество</th>
+            <th>Сумма</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td class="basket-title"><a href="#" target="_blank">Анальгин</a></td>
+            <td class="basket-otg">ООО Русмедверв</td>
+            <td class="basket-price">122.0 руб</td>
+            <td class="basket-count"><input type="text" class="inp" value="2"></td>
+            <td class="basket-summa">244.0 руб</td>
+            <td class="basket-remove"><a href="#">x</a></td>
+        </tr>
+        <tr>
+            <td class="basket-title"><a href="#" target="_blank">Анальгин</a></td>
+            <td class="basket-otg">ООО Русмедверв</td>
+            <td class="basket-price">122.0 руб</td>
+            <td class="basket-count"><input type="text" class="inp" value="2"></td>
+            <td class="basket-summa">244.0 руб</td>
+            <td class="basket-remove"><a href="#">x</a></td>
+        </tr>
+        <tr>
+            <td class="basket-title"><a href="#" target="_blank">Анальгин</a></td>
+            <td class="basket-otg">ООО Русмедверв</td>
+            <td class="basket-price">122.0 руб</td>
+            <td class="basket-count"><input type="text" class="inp" value="2"></td>
+            <td class="basket-summa">244.0 руб</td>
+            <td class="basket-remove"><a href="#">x</a></td>
+        </tr>
+        <tr>
+            <td class="basket-itogo" colspan="6">
+                общая сумма: <span> 2500.0 руб</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="basket-submit" colspan="6">
+                <a href="#" class="btn-red">Оформить заказ</a>
+            </td>
+        </tr>
+    </table>
+
+    <table>
+        <caption>Интернет-магазин Zdravzona.ru</caption>
+        <tr>
+            <th>Наименование</th>
+            <th>Производитель</th>
+            <th>Цена</th>
+            <th>Количество</th>
+            <th>Сумма</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td class="basket-title"><a href="#" target="_blank">Анальгин</a></td>
+            <td class="basket-otg">ООО Русмедверв</td>
+            <td class="basket-price">122.0 руб</td>
+            <td class="basket-count"><input type="text" class="inp" value="2"></td>
+            <td class="basket-summa">244.0 руб</td>
+            <td class="basket-remove"><a href="#">x</a></td>
+        </tr>
+        <tr>
+            <td class="basket-title"><a href="#" target="_blank">Анальгин</a></td>
+            <td class="basket-otg">ООО Русмедверв</td>
+            <td class="basket-price">122.0 руб</td>
+            <td class="basket-count"><input type="text" class="inp" value="2"></td>
+            <td class="basket-summa">244.0 руб</td>
+            <td class="basket-remove"><a href="#">x</a></td>
+        </tr>
+        <tr>
+            <td class="basket-title"><a href="#" target="_blank">Анальгин</a></td>
+            <td class="basket-otg">ООО Русмедверв</td>
+            <td class="basket-price">122.0 руб</td>
+            <td class="basket-count"><input type="text" class="inp" value="2"></td>
+            <td class="basket-summa">244.0 руб</td>
+            <td class="basket-remove"><a href="#">x</a></td>
+        </tr>
+        <tr>
+            <td class="basket-itogo" colspan="6">
+                общая сумма: <span> 2500.0 руб</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="basket-submit" colspan="6">
+                <a href="#" class="btn-red">Оформить заказ</a>
+            </td>
+        </tr>
+    </table>
+{% block %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+
+    </style>
+{% endblock %}
