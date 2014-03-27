@@ -44,6 +44,10 @@
 	{# Иконки использования при состояниях #}
 	{% if document is defined %}
 		{% include 'VidalDrugBundle:Vidal:document_conditions.html.twig' %}
+    {% else %}
+        <div class="conditions">
+        {% include 'VidalMainBundle:Market:button.html.twig' %}
+        </div>
 	{% endif %}
 
 	{% if products is not empty %}
@@ -241,6 +245,8 @@
 	{% if document is defined %}
 		{% include 'VidalDrugBundle:Vidal:document_info.html.twig' %}
 	{% endif %}
+
+    {{ render( controller('VidalMainBundle:Market:productList',{ 'drugId' : 1, 'isDocs' : 'false' })) }}
 
 	{# блок получения ссылки #}
 	{% if product is defined or document is defined %}

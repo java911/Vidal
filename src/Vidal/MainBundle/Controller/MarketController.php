@@ -39,17 +39,18 @@ class MarketController extends Controller{
 //    public function basketList(){}
 
     /**
-     * @Route("/drug-list/{title}", name="drug_list",  options={"expose"=true})
+     * @Route("/drug-list/{drugId}/{isDocs}", name="drug_list", defaults={"isDocs"="false"}, options={"expose"=true})
+     * @Template("VidalMainBundle:Market:list.html.twig")
      */
-    public function productListAction( $title = '' ){
+    public function productListAction( $drugId, $isDocs = false ){
 //        $findDrug = $this->get('findDrug.service');
-        $em = $this->getDoctrine()->getManager();
-        $findDrug = new FindDrug($em,$title);
-        $findDrug->setId( 2 );
-        $findDrug->isDocument( false );
-        $body = $findDrug->run();
+//        $em = $this->getDoctrine()->getManager();
+//        $findDrug = new FindDrug($em,$title);
+//        $findDrug->setId( 2 );
+//        $findDrug->isDocument( false );
+//        $body = $findDrug->run();
 
-        return new Response($body);
+        return array();
     }
 
 }
