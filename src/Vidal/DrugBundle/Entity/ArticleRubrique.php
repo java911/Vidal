@@ -30,9 +30,19 @@ class ArticleRubrique
 	 */
 	protected $articles;
 
+	/** @ORM\Column(type="boolean") */
+	protected $public;
+
+	/**
+	 * @ORM\OneToOne(targetEntity="ArticleRubrique")
+	 * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+	 */
+	protected $parent;
+
 	public function __construct()
 	{
 		$this->articles = new ArrayCollection();
+		$this->public   = true;
 	}
 
 	public function __toString()
@@ -89,18 +99,42 @@ class ArticleRubrique
 	}
 
 	/**
-	 * @param mixed $id
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
-	}
-
-	/**
 	 * @return mixed
 	 */
 	public function getId()
 	{
 		return $this->id;
+	}
+
+	/**
+	 * @param mixed $parent
+	 */
+	public function setParent($parent)
+	{
+		$this->parent = $parent;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getParent()
+	{
+		return $this->parent;
+	}
+
+	/**
+	 * @param mixed $public
+	 */
+	public function setPublic($public)
+	{
+		$this->public = $public;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPublic()
+	{
+		return $this->public;
 	}
 }

@@ -118,8 +118,6 @@
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/jquery-chosen/chosen.css') }}"/>
-	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/jquery-chosen/chosen.css') }}"/>
 	<style type="text/css">
 		/* letters */
 		.veterinar-letters {
@@ -188,7 +186,6 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	<script type="text/javascript" src="{{ asset('bundles/vidalmain/jquery-chosen/chosen.jquery.min.js') }}"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('.veterinar-letters .{{ t }}').show();

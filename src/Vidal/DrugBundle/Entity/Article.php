@@ -19,7 +19,7 @@ class Article extends BaseEntity
 	protected $body;
 
 	/** @ORM\Column(type="boolean") */
-	protected $forDoctor;
+	protected $public;
 
 	/**
 	 * @ORM\Column(length=255, nullable=true)
@@ -94,13 +94,16 @@ class Article extends BaseEntity
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $subclass;
 
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $oldId;
+
 	public function __construct()
 	{
 		$this->nozologies = new ArrayCollection();
 		$this->molecules  = new ArrayCollection();
 		$this->products   = new ArrayCollection();
 		$this->documents  = new ArrayCollection();
-		$this->forDoctor  = false;
+		$this->public  = true;
 		$this->author     = 'Доктор Видаль: медицинская энциклопедия www.vidal.ru';
 		$now              = new \DateTime('now');
 		$this->created    = $now;
@@ -191,22 +194,6 @@ class Article extends BaseEntity
 	public function getDocuments()
 	{
 		return $this->documents;
-	}
-
-	/**
-	 * @param mixed $forDoctor
-	 */
-	public function setForDoctor($forDoctor)
-	{
-		$this->forDoctor = $forDoctor;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getForDoctor()
-	{
-		return $this->forDoctor;
 	}
 
 	/**
@@ -477,4 +464,35 @@ class Article extends BaseEntity
 		return $this->subdivision;
 	}
 
+	/**
+	 * @param mixed $public
+	 */
+	public function setPublic($public)
+	{
+		$this->public = $public;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPublic()
+	{
+		return $this->public;
+	}
+
+	/**
+	 * @param mixed $oldId
+	 */
+	public function setOldId($oldId)
+	{
+		$this->oldId = $oldId;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getOldId()
+	{
+		return $this->oldId;
+	}
 }

@@ -28,6 +28,11 @@
 			   value="{{ app.request.attributes.get('_route') == 'search' ? app.request.get('q') }}"/>
 		<input type="submit" value="" class="search-submit"/>
 	</div>
+
+	<div class="search-bad">
+		<input type="checkbox" id="bad" name="bad" class="checkbox" checked="checked"/>
+		<label for="search_bad_checkbox">включая БАДы</label>
+	</div>
 </form>
 
 <div class="searche-link">

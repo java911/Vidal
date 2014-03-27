@@ -54,7 +54,7 @@ body {
 	color:       #333333;
 }
 .wrapper {
-	width:      950px;
+	width:      966px;
 	margin:     0 auto;
 	padding:    0 15px;
 	min-height: 100%;
@@ -92,7 +92,7 @@ body {
 	position: relative;
 }
 .main {
-	padding: 0 28px;
+	padding: 0 36px;
 }
 .content {
 	position: relative;
@@ -881,6 +881,17 @@ h1 {
 	vertical-align: top;
 	font-style:     italic;
 	font-size:      14px;
+}
+.search-bad {
+	position:  absolute;
+	left:      0;
+	bottom:    -20px;
+	color:     #2f4053;
+	font-size: 14px;
+}
+.search-bad > * {
+	display:        inline-block;
+	vertical-align: top;
 }
 .search .search-inputs {
 	display: inline-block;

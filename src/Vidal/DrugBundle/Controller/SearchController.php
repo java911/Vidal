@@ -25,6 +25,7 @@ class SearchController extends Controller
 		$q      = trim($q);
 		$t      = $request->query->get('t', 'all'); # тип запроса из селект-бокса
 		$p      = $request->query->get('p', 1); # номер страницы
+		$bad    = $request->query->has('bad');
 		$params = array(
 			'q'     => $q,
 			't'     => $t,
@@ -42,7 +43,7 @@ class SearchController extends Controller
 		}
 
 		if ($t == 'all' || $t == 'product') {
-			$products = $em->getRepository('VidalDrugBundle:Product')->findByQuery($q);
+			$products = $em->getRepository('VidalDrugBundle:Product')->findByQuery($q, $bad);
 
 			$paginator                    = $this->get('knp_paginator');
 			$pagination                   = $paginator->paginate($products, $p, self::PRODUCTS_PER_PAGE);
