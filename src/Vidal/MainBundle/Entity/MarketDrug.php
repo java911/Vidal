@@ -36,6 +36,10 @@ class MarketDrug
     /**
      * @ORM\Column(type = "string")
      */
+    protected $url;
+    /**
+     * @ORM\Column(type = "string")
+     */
     protected $group;
 
     /**
@@ -123,8 +127,37 @@ class MarketDrug
         return $this->title;
     }
 
+    /**
+     * @param mixed $group
+     */
+    public function setGroup($group)
+    {
+        $this->group = $group;
+    }
 
+    /**
+     * @return mixed
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
 
+    /**
+     * @param mixed $url
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
 
 
 }
