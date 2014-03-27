@@ -4,6 +4,7 @@ namespace Vidal\MainBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -33,10 +34,21 @@ class MarketCache
     protected $body;
 
     /**
+     * @ORM\ManyToMany(targetEntity="MarketDrug", inversedBy="marketCache")
+     */
+    protected $drugs;
+
+
+    /**
      * @ORM\Column(type = "datetime")
      * @Gedmo\Timestampable(on = "create")
      */
     protected $created;
+
+
+    public function __construct(){
+        $this->drugs = new ArrayCollection();
+    }
 
     /**
      * @param mixed $document
@@ -118,6 +130,28 @@ class MarketCache
         return $this->body;
     }
 
+    /**
+     * @param mixed $drugs
+     */
+    public function setDrugs($drugs)
+    {
+        $this->drugs = $drugs;
+    }
 
+    /**
+     * @return mixed
+     */
+    public function getDrugs()
+    {
+        return $this->drugs;
+    }
+
+    public function addDrug($drug){
+        $this->drugs[] = $drug;
+    }
+
+    public function removeDrug($drug){
+        $this->drugs->removeElement($drug);
+    }
 
 }

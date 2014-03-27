@@ -16,7 +16,16 @@ use Vidal\MainBundle\Market\Market;
 
 class MarketController extends Controller{
 
-    public function AddToBasket($productId,$count){
+    /**
+     * @Route("/add-to-basket/{productId}/{group}/{count}", name="drug_list", defaults={"count"="1"}, options={"expose"=true})
+     * @Template("VidalMainBundle:list.html.twig")
+     */
+    public function AddToBasket($productId, $count){
+
+//        $product = $this
+
+//        $product =
+
         $market = new Market();
         $product = $market->get($productId);
         $market->set($product);
@@ -40,9 +49,14 @@ class MarketController extends Controller{
 
     /**
      * @Route("/drug-list/{drugId}/{isDocs}", name="drug_list", defaults={"isDocs"="false"}, options={"expose"=true})
-     * @Template("VidalMainBundle:Market:list.html.twig")
+     * @Template("VidalMainBundle:list.html.twig")
      */
     public function productListAction( $drugId, $isDocs = false ){
+        $body = $this->getDoctrine()->getRepository('VidalMainBundle:MarketCache')->findOneBy(array('target' => $drugId, 'document' => $isDocs));
+        if ( $body == null){
+            $body = '';
+        }
+
 //        $findDrug = $this->get('findDrug.service');
 //        $em = $this->getDoctrine()->getManager();
 //        $findDrug = new FindDrug($em,$title);
@@ -50,7 +64,7 @@ class MarketController extends Controller{
 //        $findDrug->isDocument( false );
 //        $body = $findDrug->run();
 
-        return array();
+        return array('body' => $body);
     }
 
 }
