@@ -26,3 +26,7 @@ services:
     email.service:
           class: Vidal\MainBundle\Service\EmailService
           arguments: [@service_container, @templating]
+
+    findDrug.service:
+          class: Vidal\MainBundle\Service\FindDrugService
+          arguments: [ @doctrine.orm.entity_manager ]

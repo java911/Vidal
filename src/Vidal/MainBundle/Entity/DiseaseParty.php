@@ -33,6 +33,7 @@ class DiseaseParty extends  BaseEntity
     protected  $offerId;
 
     /**
+     *
      * @ORM\Column(type = "integer")
      */
     protected $sex;

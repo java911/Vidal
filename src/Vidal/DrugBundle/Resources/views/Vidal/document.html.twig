@@ -34,10 +34,9 @@
 	{# ссылка админу на редактирование #}
 	{% if isAdmin %}
 		<a class="admin-edit fade" target="_blank"
-			href="{{ product is defined
-				? path('admin_vidal_drug_product_edit', {'id':product.ProductID})
-				: path('admin_vidal_drug_document_edit', {'id':document.DocumentID})
-			}}">
+		   href="{{ product is defined
+		   ? path('admin_vidal_drug_product_edit', {'id':product.ProductID})
+		   : path('admin_vidal_drug_document_edit', {'id':document.DocumentID}) }}">
 			<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
 		</a>
 	{% endif %}
@@ -252,11 +251,17 @@
 			{% spaceless %}
 				<textarea cols="92" rows="2">
 					{% if product is defined %}
-						<a href="{{ url('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}" target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+						<a href="{{ url('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"
+						   target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике
+							Видаль.</a>
 					{% elseif documentId is defined %}
-						<a href="{{ url('document', {'EngName':document.Name, 'DocumentID':document.DocumentID}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+						<a href="{{ url('document', {'EngName':document.Name, 'DocumentID':document.DocumentID}) }}"
+						   target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике
+							Видаль.</a>
 					{% else %}
-						<a href="{{ url('document', {'EngName':document.Name}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+						<a href="{{ url('document', {'EngName':document.Name}) }}"
+						   target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике
+							Видаль.</a>
 					{% endif %}
 				</textarea>
 			{% endspaceless %}
@@ -277,6 +282,32 @@
 		#dosage p img {
 			max-width:  600px;
 			max-height: 400px;
+		}
+		.market-block {
+			width: 100%;
+		}
+		.market-block table tr td {
+			font-size: 14px;
+			padding:   5px 0;
+		}
+		.market-block table {
+			width: 100%;
+		}
+		.market-price {
+			width:      60px;
+			text-align: right;
+		}
+		.market-basket {
+			width:      80px;
+			text-align: right;
+		}
+		.market-title {
+			text-transform: uppercase;
+			color:          #D71344;
+			padding:        5px 0;
+		}
+		.market-organization {
+			width: 180px;
 		}
 	</style>
 {% endblock %}
