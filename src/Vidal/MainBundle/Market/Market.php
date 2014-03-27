@@ -5,11 +5,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use Symfony\Bundle\TwigBundle\TwigEngine as Templating;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class Market{
+class Basket{
 
     protected $drugs;
-
-    protected $session;
 
     public function __construct(){
         $this->session = new Session();

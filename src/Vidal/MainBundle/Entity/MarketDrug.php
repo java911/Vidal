@@ -34,6 +34,11 @@ class MarketDrug
     protected $price;
 
     /**
+     * @ORM\Column(type = "string")
+     */
+    protected $group;
+
+    /**
      * @ORM\ManyToMany(targetEntity="MarketDrug", mappedBy="drugs")
      */
     protected $marketCache;
