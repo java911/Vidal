@@ -48,10 +48,6 @@ class MarketDrug
      */
     protected $manufacturer;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="MarketDrug", mappedBy="drugs")
-     */
-    protected $marketCache;
 
     /**
      * @param mixed $code
@@ -83,22 +79,6 @@ class MarketDrug
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param mixed $marketCache
-     */
-    public function setMarketCache($marketCache)
-    {
-        $this->marketCache = $marketCache;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMarketCache()
-    {
-        return $this->marketCache;
     }
 
     /**
