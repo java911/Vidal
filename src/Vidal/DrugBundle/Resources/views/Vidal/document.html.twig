@@ -246,7 +246,7 @@
 		{% include 'VidalDrugBundle:Vidal:document_info.html.twig' %}
 	{% endif %}
 
-    {{ render( controller('VidalMainBundle:Market:productList',{ 'drugId' : 1, 'isDocs' : 'false' })) }}
+    {{ render( controller('VidalMainBundle:Market:productList', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}
 
 	{# блок получения ссылки #}
 	{% if product is defined or document is defined %}

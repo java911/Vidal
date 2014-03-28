@@ -93,8 +93,33 @@ class MarketController extends Controller{
      * @Template("VidalMainBundle:Market:list.html.twig")
      */
     public function productListAction( $drugId, $isDocs = false ){
-        $cache = $this->getDoctrine()->getRepository('VidalMainBundle:MarketCache')->findOneBy(array('target' => $drugId, 'document' => $isDocs));
-        $lists = $cache->getDrugs();
+        if ( $isDocs == false ){
+            $drug = $this->getDoctrine()->getManager('drug')->getRepository('VidalDrugBundle:Product')->findOneBy(array('ProductID' => $drugId));
+        }else{
+            $drug = $this->getDoctrine()->getManager('drug')->getRepository('VidalDrugBundle:Document')->findOneBy(array('DocumentID' => $drugId));
+        }
+        if ($drug){
+            $RusName = $drug->getRusName();
+
+            $p    = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i');
+            $r    = array('', '');
+
+            $title = preg_replace($p, $r, $RusName);
+            $first = mb_substr($title,0,2);//первая буква
+            $last = mb_substr($title,2);//все кроме первой буквы
+            $last = mb_strtolower($last,'UTF-8');
+            $title =$first.$last;
+
+            $list = $this->getDoctrine()->getRepository('VidalMainBundle:MarketDrug')->find($title);
+
+            $lists = array();
+            foreach ( $list as $drug){
+                $lists[$drug->getGroupApt()][] = $drug;
+            }
+        }else{
+            $lists = array();
+        }
+
 
         return array('lists' => $lists);
     }
