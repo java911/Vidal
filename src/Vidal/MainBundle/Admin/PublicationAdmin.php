@@ -51,8 +51,8 @@ class PublicationAdmin extends Admin
 		$formMapper
 			->add('photo', 'iphp_file', array('label' => 'Фотография', 'required' => false))
 			->add('title', null, array('label' => 'Заголовок', 'required' => true))
-			->add('announce', null, array('label' => 'Анонс', 'required' => true))
-			->add('body', null, array('label' => 'Основное содержимое', 'required' => true))
+			->add('announce', null, array('label' => 'Анонс', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
+			->add('body', null, array('label' => 'Основное содержимое', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('enabled', null, array('label' => 'Активна', 'required' => false))
 			->add('date', null, array(
 				'label'    => 'Дата создания',

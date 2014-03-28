@@ -7,26 +7,47 @@
 	<div class="breadcrumbs">
 		<a href="{{ path('index') }}">Видаль</a>
 		<i></i>
-		<a href="{{ path('articles') }}">Статьи</a>
+		<a href="{{ path('articles') }}">Энциклопедии</a>
 		<i></i>
 		<span>{{ rubrique }}</span>
 	</div>
 
 	{% if articles|length %}
 		<div class="articles">
-			{% for article in articles %}
-				<div class="article">
-					<div class="article-title">
-						<a href="{{ path('article', {'rubrique':rubrique.rubrique, 'link':article.link}) }}">{{ article }}</a>
+			{% if isAdmin %}
+				{% for article in articles %}
+					<div class="article">
+						{# админам карандашик редактирования #}
+						<a class="admin-edit fade" target="_blank"
+						   href="{{ path('admin_vidal_drug_article_edit', {'id':article.id}) }}">
+							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+						</a>
+						<div class="article-title">
+							<a href="{{ path('article', {'rubrique':rubrique.rubrique, 'link':article.link}) }}">{{ article }}</a>
+						</div>
+						<div class="article-announse">
+							{{ article.announce|raw }}
+						</div>
+						<div class="article-footer">
+							<span class="article-date">{{ article.date|date('d.m.Y') }}</span>
+						</div>
 					</div>
-					<div class="article-announse">
-						{{ article.announce|raw }}
+				{% endfor %}
+			{% else %}
+				{% for article in articles %}
+					<div class="article">
+						<div class="article-title">
+							<a href="{{ path('article', {'rubrique':rubrique.rubrique, 'link':article.link}) }}">{{ article }}</a>
+						</div>
+						<div class="article-announse">
+							{{ article.announce|raw }}
+						</div>
+						<div class="article-footer">
+							<span class="article-date">{{ article.date|date('d.m.Y') }}</span>
+						</div>
 					</div>
-					<div class="article-footer">
-						<span class="article-date">{{ article.date|date('d.m.Y') }}</span>
-					</div>
-				</div>
-			{% endfor %}
+				{% endfor %}
+			{% endif %}
 		</div>
 	{% endif %}
 

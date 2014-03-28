@@ -55,42 +55,10 @@
 	{% endif %}
 
 	{# список статей с пагинацией #}
-	{% if pagination.totalItemCount %}
-		<div class="articles">
-			{% if app.environment == 'dev' %}
-				{% for article in pagination %}
-					<div class="article">
-						<div class="article-title">
-							<a href="/app_dev.php{{ sub.url }}{{ article.link }}_{{ article.oldId }}">{{ article }}</a>
-						</div>
-						<div class="article-announse">
-							{{ article.announce|raw }}
-						</div>
-						<div class="article-footer">
-							<span class="article-date">{{ article.date|date('d.m.Y') }}</span>
-						</div>
-					</div>
-				{% endfor %}
-			{% else %}
-				{% for article in pagination %}
-					<div class="article">
-						<div class="article-title">
-							<a href="{{ sub.url }}{{ article.link }}_{{ article.oldId }}">{{ article }}</a>
-						</div>
-						<div class="article-announse">
-							{{ article.announce|raw }}
-						</div>
-						<div class="article-footer">
-							<span class="article-date">{{ article.date|date('d.m.Y') }}</span>
-						</div>
-					</div>
-				{% endfor %}
-			{% endif %}
-		</div>
-
-		<div class="navigation">
-			{{ knp_pagination_render(pagination) }}
-		</div>
+	{% if isAdmin %}
+		{% include 'VidalMainBundle:Article:render_articles_admin.html.twig' %}
+	{% else %}
+		{% include 'VidalMainBundle:Article:render_articles.html.twig' %}
 	{% endif %}
 
 {% endblock %}

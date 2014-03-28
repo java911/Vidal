@@ -1,0 +1,47 @@
+{% if pagination.totalItemCount %}
+	<div class="articles">
+		{% if app.environment == 'dev' %}
+			{% for article in pagination %}
+				<div class="article">
+					{# админам карандашик редактирования #}
+					<a class="admin-edit fade" target="_blank"
+					   href="{{ path('admin_vidal_drug_article_edit', {'id':article.id}) }}">
+						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+					</a>
+					<div class="article-title">
+						<a href="/app_dev.php{{ sub.url }}{{ article.link }}_{{ article.oldId }}">{{ article }}</a>
+					</div>
+					<div class="article-announse">
+						{{ article.announce|raw }}
+					</div>
+					<div class="article-footer">
+						<span class="article-date">{{ article.date|date('d.m.Y') }}</span>
+					</div>
+				</div>
+			{% endfor %}
+		{% else %}
+			{% for article in pagination %}
+				<div class="article">
+					{# админам карандашик редактирования #}
+					<a class="admin-edit fade" target="_blank"
+					   href="{{ path('admin_vidal_drug_article_edit', {'id':article.id}) }}">
+						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+					</a>
+					<div class="article-title">
+						<a href="{{ sub.url }}{{ article.link }}_{{ article.oldId }}">{{ article }}</a>
+					</div>
+					<div class="article-announse">
+						{{ article.announce|raw }}
+					</div>
+					<div class="article-footer">
+						<span class="article-date">{{ article.date|date('d.m.Y') }}</span>
+					</div>
+				</div>
+			{% endfor %}
+		{% endif %}
+	</div>
+
+	<div class="navigation">
+		{{ knp_pagination_render(pagination) }}
+	</div>
+{% endif %}

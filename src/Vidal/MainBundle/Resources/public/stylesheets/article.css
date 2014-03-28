@@ -3,6 +3,7 @@
 	font-size: 14px;
 }
 .article {
+	position:      relative;
 	margin-bottom: 17px;
 }
 .article-title {
