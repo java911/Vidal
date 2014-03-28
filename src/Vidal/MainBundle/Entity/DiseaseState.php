@@ -9,7 +9,7 @@ use
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name = "DiseaseState")
+ * @ORM\Table(name = "diseasestate")
  */
 class DiseaseState extends  BaseEntity
 {

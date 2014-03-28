@@ -8,7 +8,7 @@ use
 
 /**
  * @ORM\Entity(repositoryClass = "DiseaseRepository")
- * @ORM\Table(name = "Disease")
+ * @ORM\Table(name = "disease")
  */
 class Disease extends BaseEntity
 {
