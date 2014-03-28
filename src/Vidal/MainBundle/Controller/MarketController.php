@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-use Vidal\MainBundle\Market\Drug;
+use Vidal\MainBundle\Market\Product;
 use Vidal\MainBundle\Market\FindDrug;
 use Vidal\MainBundle\Market\Basket;
 
@@ -35,7 +35,7 @@ class MarketController extends Controller{
                 $product->setCount($count);
                 $product->setTitle($pr->getTitle());
                 $product->setCode($pr->getCode());
-                $product->setGroup($pr->getGroup());
+                $product->getGroupApt($pr->getGroupApt());
                 $product->setPrice($pr->getPrice());
             }
         }

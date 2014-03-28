@@ -1,5 +1,5 @@
 <?php
-namespace Vidal\MainBundle\Service;
+namespace Vidal\MainBundle\Market;
 
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use Symfony\Bundle\TwigBundle\TwigEngine as Templating;
@@ -23,7 +23,19 @@ class Basket{
     }
 
     public function get($key){
-        return $this->drugs[$key];
+        if ( isset($this->drugs[$key]) ){
+            return $this->drugs[$key];
+        }else{
+            return null;
+        }
+    }
+
+    public function getProduct($code){
+        if ( isset($this->drugs[$code]) ){
+            return $this->drugs[$code];
+        }else{
+            return null;
+        }
     }
 
     public function getAll(){
@@ -51,6 +63,11 @@ class Basket{
 
     public function removeAll(){
         unset($this->drugs);
+        $this->save();
+    }
+
+    public function setProduct($product){
+        $this->drugs[$product->getCode()] = $product;
         $this->save();
     }
 
