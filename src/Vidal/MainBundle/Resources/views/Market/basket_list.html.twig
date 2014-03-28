@@ -1,0 +1,138 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+{% block content %}
+    <h1>Корзина</h1>
+    <table class="basket-table">
+        <caption>Интернет-магазин E-apteka.ru</caption>
+        <tr>
+            <th>Наименование</th>
+            <th>Производитель</th>
+            <th>Цена</th>
+            <th>Количество</th>
+            <th>Сумма</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td class="basket-title"><a href="#" target="_blank">Анальгин</a></td>
+            <td class="basket-otg">ООО Русмедверв</td>
+            <td class="basket-price">122.0&nbsp;р.</td>
+            <td class="basket-count"><input type="text" class="inp" value="2"></td>
+            <td class="basket-summa">244.0&nbsp;р.</td>
+            <td class="basket-remove"><a href="#">x</a></td>
+        </tr>
+        <tr>
+            <td class="basket-title"><a href="#" target="_blank">Анальгин</a></td>
+            <td class="basket-otg">ООО Русмедверв</td>
+            <td class="basket-price">122.0&nbsp;р.</td>
+            <td class="basket-count"><input type="text" class="inp" value="2"></td>
+            <td class="basket-summa">244.0&nbsp;р.</td>
+            <td class="basket-remove"><a href="#">x</a></td>
+        </tr>
+        <tr>
+            <td class="basket-title"><a href="#" target="_blank">Анальгин</a></td>
+            <td class="basket-otg">ООО Русмедверв</td>
+            <td class="basket-price">122.0&nbsp;р.</td>
+            <td class="basket-count"><input type="text" class="inp" value="2"></td>
+            <td class="basket-summa">244.0&nbsp;р.</td>
+            <td class="basket-remove"><a href="#">x</a></td>
+        </tr>
+        <tr>
+            <td class="basket-itogo" colspan="6">
+                Общая сумма: <span> 2500.0&nbsp;р.</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="basket-submit" colspan="6">
+                <a href="#" class="btn-red">Оформить заказ</a>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <br />
+    <br />
+    <table class="basket-table">
+        <caption>Интернет-магазин Zdravzona.ru</caption>
+        <tr>
+            <th>Наименование</th>
+            <th>Производитель</th>
+            <th>Цена</th>
+            <th>Количество</th>
+            <th>Сумма</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td class="basket-title"><a href="#" target="_blank">Анальгин</a></td>
+            <td class="basket-otg">ООО Русмедверв</td>
+            <td class="basket-price">122.0&nbsp;р.</td>
+            <td class="basket-count"><input type="text" class="inp" value="2"></td>
+            <td class="basket-summa">244.0&nbsp;р.</td>
+            <td class="basket-remove"><a href="#">x</a></td>
+        </tr>
+        <tr>
+            <td class="basket-title"><a href="#" target="_blank">Анальгин</a></td>
+            <td class="basket-otg">ООО Русмедверв</td>
+            <td class="basket-price">122.0&nbsp;р.</td>
+            <td class="basket-count"><input type="text" class="inp" value="2"></td>
+            <td class="basket-summa">244.0&nbsp;р.</td>
+            <td class="basket-remove"><a href="#">x</a></td>
+        </tr>
+        <tr>
+            <td class="basket-title"><a href="#" target="_blank">Анальгин</a></td>
+            <td class="basket-otg">ООО Русмедверв</td>
+            <td class="basket-price">122.0&nbsp;р.</td>
+            <td class="basket-count"><input type="text" class="inp" value="2"></td>
+            <td class="basket-summa">244.0&nbsp;р.</td>
+            <td class="basket-remove"><a href="#">x</a></td>
+        </tr>
+        <tr>
+            <td class="basket-itogo" colspan="6">
+                Общая сумма: <span> 2500.0&nbsp;р.</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="basket-submit" colspan="6">
+                <a href="#" class="btn-red">Оформить заказ</a>
+            </td>
+        </tr>
+    </table>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .basket-count input{
+            width: 30px;
+        }
+        .basket-otg{
+            width: 150px;
+        }
+        .basket-table tr td{
+            padding: 5px ;
+            border-bottom: 1px solid #CCCCCC;
+        }
+        .basket-table tr th{
+            padding: 10px ;
+            border-bottom: 2px solid #D71344;
+        }
+        .basket-table caption{
+            font-weight: bold;
+            font-size: 20px;
+            /*background: #D71344;*/
+            background: #F5F5F5;
+            color: #444444;
+            /*color: #FFFFFF;*/
+            padding: 5px;
+        }
+        .basket-itogo, .basket-submit{
+            text-align: right;
+            border-bottom: 0px !important;
+        }
+        .basket-itogo{
+            color: #444444;
+        }
+        .basket-itogo span{
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}

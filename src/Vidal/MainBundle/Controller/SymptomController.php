@@ -17,7 +17,7 @@ class SymptomController extends Controller{
      * @Template("VidalMainBundle:Disease:page.html.twig")
      */
     public function pageSymptomAction(){
-        return array();
+        return array('menu' => 'symptom_page');
     }
 
     /**

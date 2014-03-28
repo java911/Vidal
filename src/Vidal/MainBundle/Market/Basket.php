@@ -1,15 +1,13 @@
 <?php
-namespace Vidal\MainBundle\Service;
+namespace Vidal\MainBundle\Market;
 
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use Symfony\Bundle\TwigBundle\TwigEngine as Templating;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class Market{
+class Basket{
 
     protected $drugs;
-
-    protected $session;
 
     public function __construct(){
         $this->session = new Session();
@@ -25,7 +23,19 @@ class Market{
     }
 
     public function get($key){
-        return $this->drugs[$key];
+        if ( isset($this->drugs[$key]) ){
+            return $this->drugs[$key];
+        }else{
+            return null;
+        }
+    }
+
+    public function getProduct($code){
+        if ( isset($this->drugs[$code]) ){
+            return $this->drugs[$code];
+        }else{
+            return null;
+        }
     }
 
     public function getAll(){
@@ -53,6 +63,11 @@ class Market{
 
     public function removeAll(){
         unset($this->drugs);
+        $this->save();
+    }
+
+    public function setProduct($product){
+        $this->drugs[$product->getCode()] = $product;
         $this->save();
     }
 

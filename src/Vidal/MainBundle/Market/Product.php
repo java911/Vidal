@@ -4,9 +4,9 @@ namespace Vidal\MainBundle\Market;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use Symfony\Bundle\TwigBundle\TwigEngine as Templating;
 
-class Drug{
+class Product{
 
-    protected $name;
+    protected $title;
 
     protected $manufacturer;
 
@@ -17,7 +17,7 @@ class Drug{
     protected $count;
 
     // Группировка по названию аптеки
-    protected $group;
+    protected $groupApt;
 
     /**
      * @param mixed $code
@@ -36,20 +36,22 @@ class Drug{
     }
 
     /**
-     * @param mixed $group
+     * @param mixed $groupApt
      */
-    public function setGroup($group)
+    public function setGroupApt($groupApt)
     {
-        $this->group = $group;
+        $this->groupApt = $groupApt;
     }
 
     /**
      * @return mixed
      */
-    public function getGroup()
+    public function getGroupApt()
     {
-        return $this->group;
+        return $this->groupApt;
     }
+
+
 
     /**
      * @param mixed $manufacturer
@@ -68,20 +70,22 @@ class Drug{
     }
 
     /**
-     * @param mixed $name
+     * @param mixed $title
      */
-    public function setName($name)
+    public function setTitle($title)
     {
-        $this->name = $name;
+        $this->title = $title;
     }
 
     /**
      * @return mixed
      */
-    public function getName()
+    public function getTitle()
     {
-        return $this->name;
+        return $this->title;
     }
+
+
 
     /**
      * @param mixed $price

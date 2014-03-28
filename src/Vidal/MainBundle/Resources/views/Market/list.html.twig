@@ -1,102 +1,47 @@
 <br />
+
 <div class="market-block" id="market-block">
-    <div class="market-title">Интернет аптека «Eapteka.ru»:</div>
-    <table>
-        <tr>
-            <td class="market-organization">Татхимфармпрепараты</td>
-            <td><b>Анальгин</b> таблетки 500 мг, 10</td>
-            <td class="market-price">22.0 р.</td>
-            <td class="market-basket"><a href="#">В корзину</a></td>
-        </tr>
-        <tr>
-            <td class="market-organization">Татхимфармпрепараты</td>
-            <td><b>Анальгин</b> таблетки 500 мг, 10</td>
-            <td class="market-price">22.0 р.</td>
-            <td class="market-basket"><a href="#">В корзину</a></td>
-        </tr>
-        <tr>
-            <td class="market-organization">Татхимфармпрепараты</td>
-            <td><b>Анальгин</b> таблетки 500 мг, 10</td>
-            <td class="market-price">22.0 р.</td>
-            <td class="market-basket"><a href="#">В корзину</a></td>
-        </tr>
-        <tr>
-            <td class="market-organization">Татхимфармпрепараты</td>
-            <td><b>Анальгин</b> таблетки 500 мг, 10</td>
-            <td class="market-price">22.0 р.</td>
-            <td class="market-basket"><a href="#">В корзину</a></td>
-        </tr>
-        <tr>
-            <td class="market-organization">Татхимфармпрепараты</td>
-            <td><b>Анальгин</b> таблетки 500 мг, 10</td>
-            <td class="market-price">22.0 р.</td>
-            <td class="market-basket"><a href="#">В корзину</a></td>
-        </tr>
-        <tr>
-            <td class="market-organization">Татхимфармпрепараты</td>
-            <td><b>Анальгин</b> таблетки 500 мг, 10</td>
-            <td class="market-price">22.0 р.</td>
-            <td class="market-basket"><a href="#">В корзину</a></td>
-        </tr>
-        <tr>
-            <td class="market-organization">Татхимфармпрепараты</td>
-            <td><b>Анальгин</b> таблетки 500 мг, 10</td>
-            <td class="market-price">22.0 р.</td>
-            <td class="market-basket"><a href="#">В корзину</a></td>
-        </tr>
-        <tr>
-            <td class="market-organization">Татхимфармпрепараты</td>
-            <td><b>Анальгин</b> таблетки 500 мг, 10</td>
-            <td class="market-price">22.0 р.</td>
-            <td class="market-basket"><a href="#">В корзину</a></td>
-        </tr>
-        <tr>
-            <td class="market-organization">Татхимфармпрепараты</td>
-            <td><b>Анальгин</b> таблетки 500 мг, 10</td>
-            <td class="market-price">22.0 р.</td>
-            <td class="market-basket"><a href="#">В корзину</a></td>
-        </tr>
-    </table>
-    <div class="market-title">Интернет аптека «Piluli.ru»:</div>
-    <table>
-        <tr>
-            <td class="market-organization">Татхимфармпрепараты</td>
-            <td><b>Анальгин</b> таблетки 500 мг, 10</td>
-            <td class="market-price">22.0 р.</td>
-            <td class="market-basket"><a href="#">В корзину</a></td>
-        </tr>
-        <tr>
-            <td class="market-organization">Татхимфармпрепараты</td>
-            <td><b>Анальгин</b> таблетки 500 мг, 10</td>
-            <td class="market-price">22.0 р.</td>
-            <td class="market-basket"><a href="#">В корзину</a></td>
-        </tr>
-        <tr>
-            <td class="market-organization">Татхимфармпрепараты</td>
-            <td><b>Анальгин</b> таблетки 500 мг, 10</td>
-            <td class="market-price">22.0 р.</td>
-            <td class="market-basket"><a href="#">В корзину</a></td>
-        </tr>
-    </table>
-    <div class="market-title">Интернет аптека «Piluli.ru»:</div>
-    <table>
-        <tr>
-            <td class="market-organization">Татхимфармпрепараты</td>
-            <td><b>Анальгин</b> таблетки 500 мг, 10</td>
-            <td class="market-price">22.0 р.</td>
-            <td class="market-basket"><a href="#">В корзину</a></td>
-        </tr>
-        <tr>
-            <td class="market-organization">Татхимфармпрепараты</td>
-            <td><b>Анальгин</b> таблетки 500 мг, 10</td>
-            <td class="market-price">22.0 р.</td>
-            <td class="market-basket"><a href="#">В корзину</a></td>
-        </tr>
-        <tr>
-            <td class="market-organization">Татхимфармпрепараты</td>
-            <td><b>Анальгин</b> таблетки 500 мг, 10</td>
-            <td class="market-price">22.0 р.</td>
-            <td class="market-basket"><a href="#">В корзину</a></td>
-        </tr>
-    </table>
+    {#{{ dump(lists.eapteka) }}#}
+    {% if lists.eapteka is defined %}
+        <div class="market-title">Интернет аптека «Eapteka.ru»:</div>
+        <table>
+            {% for drug in lists.eapteka %}
+                <tr>
+                    <td class="market-organization">{{ drug.manufacturer }}</td>
+                    <td>{{ drug.title }}</td>
+                    <td class="market-price">{{ drug.price }}&nbsp;р.</td>
+                    <td class="market-basket"><a href="{{ path('add_to_basket', { 'code' : drug.code , 'count' : 1 }) }}" data-id="100" data-group="eapteka">В корзину</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if lists.piluli is defined %}
+        <div class="market-title">Интернет аптека «Piluli.ru»:</div>
+        <table>
+            {% for drug in lists.piluli %}
+                <tr>
+                    <td class="market-organization">{{ drug.manufacturer }}</td>
+                    <td>{{ drug.title }}</td>
+                    <td class="market-price">{{ drug.price }}&nbsp;р.</td>
+                    <td class="market-basket"><a href="{{ path('add_to_basket', { 'code' : drug.code , 'count' : 1 }) }}" data-id="100" data-group="eapteka">В корзину</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if lists.zdravzona is defined %}
+        <div class="market-title">Интернет аптека «Здравзона»:</div>
+        <table>
+            {% for drug in lists.zdravzona %}
+                <tr>
+                    <td class="market-organization">{{ drug.manufacturer }}</td>
+                    <td>{{ drug.title }}</td>
+                    <td class="market-price">{{ drug.price }}&nbsp;р.</td>
+                    <td class="market-basket"><a href="{{ path('add_to_basket', { 'code' : drug.code , 'count' : 1 }) }}" data-id="100" data-group="eapteka">В корзину</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
 </div>
