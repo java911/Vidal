@@ -139,4 +139,12 @@ class MarketController extends Controller{
             'amounts'  => $amounts,
         );
     }
+
+    /**
+     * @Route("/basket-order", name="basket_order" )
+     * @Template("VidalMainBundle:Market:basket_order.html.twig")
+     */
+    public function basketOrderAction(){
+        return array();
+    }
 }
