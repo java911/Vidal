@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+use Vidal\MainBundle\Entity\MarketOrder;
+
 use Vidal\MainBundle\Market\Product;
 use Vidal\MainBundle\Market\FindDrug;
 use Vidal\MainBundle\Market\Basket;
@@ -35,7 +37,8 @@ class MarketController extends Controller{
                 $product->setCount($count);
                 $product->setTitle($pr->getTitle());
                 $product->setCode($pr->getCode());
-                $product->getGroupApt($pr->getGroupApt());
+                $product->setGroupApt($pr->getGroupApt());
+                $product->setManufacturer($pr->getManufacturer());
                 $product->setPrice($pr->getPrice());
             }
         }
@@ -129,6 +132,42 @@ class MarketController extends Controller{
      * @Template("VidalMainBundle:Market:basket_list.html.twig")
      */
     public function basketListAction(){
-        return array();
+        $basket = new Basket();
+//        $basket->removeAll();
+        $products = $basket->getAll();
+        $amounts = $basket->getAmounts();
+        return array(
+            'products' => $products,
+            'amounts'  => $amounts,
+        );
+    }
+
+    /**
+     * @Route("/basket-order", name="basket_order" )
+     * @Template("VidalMainBundle:Market:basket_order.html.twig")
+     */
+    public function basketOrderAction(){
+        $request = $this->getRequest();
+        # генерация формы
+        $order   = new MarketOrder();
+        $builder = $this->createFormBuilder($order);
+        $builder
+            ->add('lastName', null, array('label' => 'Фамилия'))
+            ->add('firstName', null, array('label' => 'Имя'))
+            ->add('surName', null, array('label' => 'Отчество'))
+            ->add('email', null, array('label' => 'E-mail'))
+            ->add('phone', null, array('label' => 'Телефон'))
+            ->add('adress', null, array('label' => 'Адрес'))
+            ->add('comment', null, array('label' => 'Комментарий к доставке'))
+            ->add('groupApt', 'hidden')
+            ->add('submit', 'submit', array('label' => 'Отправить заказ', 'attr' => array('class' => 'btn-red')));
+        $form = $builder->getRequestHandler($request);
+        if ( $request->getMethod() == 'POST'){
+            if ( $form->isValid() ){
+                $order = $form->getViewData();
+            }
+        }
+
+        return array('form' => $form->createView());
     }
 }
