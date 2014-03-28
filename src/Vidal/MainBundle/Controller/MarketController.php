@@ -147,10 +147,10 @@ class MarketController extends Controller{
      * @Template("VidalMainBundle:Market:basket_order.html.twig")
      */
     public function basketOrderAction(){
-
+        $request = $this->getRequest();
         # генерация формы
         $order   = new MarketOrder();
-        $builder = $this->createForm($order);
+        $builder = $this->createFormBuilder($order);
         $builder
             ->add('lastName', null, array('label' => 'Фамилия'))
             ->add('firstName', null, array('label' => 'Имя'))
@@ -158,10 +158,15 @@ class MarketController extends Controller{
             ->add('email', null, array('label' => 'E-mail'))
             ->add('phone', null, array('label' => 'Телефон'))
             ->add('adress', null, array('label' => 'Адрес'))
-            ->add('body', null, array('label' => 'sdS'))
             ->add('comment', null, array('label' => 'Комментарий к доставке'))
-            ->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn-red')));
-        $form = $builder->getForm();
+            ->add('groupApt', 'hidden')
+            ->add('submit', 'submit', array('label' => 'Отправить заказ', 'attr' => array('class' => 'btn-red')));
+        $form = $builder->getRequestHandler($request);
+        if ( $request->getMethod() == 'POST'){
+            if ( $form->isValid() ){
+                $order = $form->getViewData();
+            }
+        }
 
         return array('form' => $form->createView());
     }

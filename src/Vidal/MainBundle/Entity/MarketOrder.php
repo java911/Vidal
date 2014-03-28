@@ -73,7 +73,7 @@ class MarketOrder
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    protected $group;
+    protected $groupApt;
 
     /**
      * @param mixed $adress
@@ -156,22 +156,6 @@ class MarketOrder
     }
 
     /**
-     * @param mixed $group
-     */
-    public function setGroup($group)
-    {
-        $this->group = $group;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getGroup()
-    {
-        return $this->group;
-    }
-
-    /**
      * @param mixed $id
      */
     public function setId($id)
@@ -235,5 +219,22 @@ class MarketOrder
         return $this->surName;
     }
 
-    
+    /**
+     * @param mixed $groupApt
+     */
+    public function setGroupApt($groupApt)
+    {
+        $this->groupApt = $groupApt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGroupApt()
+    {
+        return $this->groupApt;
+    }
+
+
+
 }
