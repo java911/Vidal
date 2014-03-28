@@ -92,8 +92,8 @@ class MarketController extends Controller{
      * @Route("/drug-list/{drugId}/{isDocs}", name="drug_list", defaults={"isDocs"="false"}, options={"expose"=true})
      * @Template("VidalMainBundle:Market:list.html.twig")
      */
-    public function productListAction( $drugId, $isDocs = false ){
-        if ( $isDocs == false ){
+    public function productListAction( $drugId, $isDocs = 'false' ){
+        if ( $isDocs == 'false' ){
             $drug = $this->getDoctrine()->getManager('drug')->getRepository('VidalDrugBundle:Product')->findOneBy(array('ProductID' => $drugId));
         }else{
             $drug = $this->getDoctrine()->getManager('drug')->getRepository('VidalDrugBundle:Document')->findOneBy(array('DocumentID' => $drugId));
