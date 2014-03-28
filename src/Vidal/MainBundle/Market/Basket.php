@@ -39,7 +39,11 @@ class Basket{
     }
 
     public function getAll(){
-        return $this->drugs;
+        $arr = array();
+        foreach($this->drugs as $drug){
+            $arr[$drug->getGroupApt()][]  = $drug;
+        }
+        return $arr;
     }
 
     public function set($product){
@@ -71,4 +75,15 @@ class Basket{
         $this->save();
     }
 
+    public function getAmounts(){
+        $arr = array();
+        foreach($this->drugs as $drug){
+            if (isset($arr[$drug->getGroupApt()])){
+                $arr[$drug->getGroupApt()]+=( $drug->getCount() * $drug->getPrice());
+            }else{
+                $arr[$drug->getGroupApt()]=( $drug->getCount() * $drug->getPrice());
+            }
+        }
+        return $arr;
+    }
 }

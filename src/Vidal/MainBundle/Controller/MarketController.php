@@ -129,6 +129,12 @@ class MarketController extends Controller{
      * @Template("VidalMainBundle:Market:basket_list.html.twig")
      */
     public function basketListAction(){
-        return array();
+        $basket = new Basket();
+        $products = $basket->getAll();
+        $amounts = $basket->getAmounts();
+        return array(
+            'products' => $products,
+            'amounts'  => $amounts,
+        );
     }
 }
