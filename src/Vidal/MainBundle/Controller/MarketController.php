@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+use Vidal\MainBundle\Entity\MarketOrder;
+
 use Vidal\MainBundle\Market\Product;
 use Vidal\MainBundle\Market\FindDrug;
 use Vidal\MainBundle\Market\Basket;
@@ -145,6 +147,22 @@ class MarketController extends Controller{
      * @Template("VidalMainBundle:Market:basket_order.html.twig")
      */
     public function basketOrderAction(){
-        return array();
+
+        # генерация формы
+        $order   = new MarketOrder();
+        $builder = $this->createForm($order);
+        $builder
+            ->add('lastName', null, array('label' => 'Фамилия'))
+            ->add('firstName', null, array('label' => 'Имя'))
+            ->add('surName', null, array('label' => 'Отчество'))
+            ->add('email', null, array('label' => 'E-mail'))
+            ->add('phone', null, array('label' => 'Телефон'))
+            ->add('adress', null, array('label' => 'Адрес'))
+            ->add('body', null, array('label' => 'sdS'))
+            ->add('comment', null, array('label' => 'Комментарий к доставке'))
+            ->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn-red')));
+        $form = $builder->getForm();
+
+        return array('form' => $form->createView());
     }
 }
