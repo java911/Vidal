@@ -25,9 +25,11 @@
 		{% endif %}
 	</div>
 
-	<div class="subdivision">
-		<div class="subdivision-announce">{{ sub.announce|raw }}</div>
-	</div>
+	{% if sub.announce is not empty %}
+		<div class="subdivision">
+			<div class="subdivision-announce">{{ sub.announce|raw }}</div>
+		</div>
+	{% endif %}
 
 	{# подразделы этого раздела #}
 	{% if sub.children.count > 0 %}

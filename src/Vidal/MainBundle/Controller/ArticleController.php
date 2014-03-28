@@ -134,8 +134,11 @@ class ArticleController extends Controller
 
 			# если это путь - заносим в массив для хлебных крошек, иначе - это статья
 			if ($pos === false) {
-				if (!empty($part)) {
-					$paths[] = $em->getRepository('VidalDrugBundle:Subdivision')->findOneByEngName($part);
+				if ($part != '') {
+					$path = $em->getRepository('VidalDrugBundle:Subdivision')->findOneByEngName($part);
+					if ($path) {
+						$paths[] = $path;
+					}
 				}
 			}
 			else {
