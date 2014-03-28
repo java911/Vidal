@@ -40,7 +40,7 @@ class MarketDrug
     /**
      * @ORM\Column(type = "string")
      */
-    protected $group;
+    protected $groupApt;
 
     /**
      * @ORM\ManyToMany(targetEntity="MarketDrug", mappedBy="drugs")
@@ -128,20 +128,21 @@ class MarketDrug
     }
 
     /**
-     * @param mixed $group
+     * @param mixed $groupApt
      */
-    public function setGroup($group)
+    public function setGroupApt($groupApt)
     {
-        $this->group = $group;
+        $this->groupApt = $groupApt;
     }
 
     /**
      * @return mixed
      */
-    public function getGroup()
+    public function getGroupApt()
     {
-        return $this->group;
+        return $this->groupApt;
     }
+
 
     /**
      * @param mixed $url

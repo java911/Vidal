@@ -69,10 +69,10 @@ class MarketParser3{
 
 }
 
-//$Market = new MarketParser3();
-//#$name = $Market->replace_cyr('ÀÍÀËÜÃÈÍ');
-//
-//#$name = strtolower($name);
-//#echo $name.'<br />';
-//$array = $Market->findDrug('Ìוהוכא');
-//print_r($array);
+$Market = new MarketParser3();
+#$name = $Market->replace_cyr('ÀÍÀËÜÃÈÍ');
+
+#$name = strtolower($name);
+#echo $name.'<br />';
+$array = $Market->findDrug('Ìוהוכא');
+print_r($array);

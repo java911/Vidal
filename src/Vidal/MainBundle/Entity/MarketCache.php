@@ -28,10 +28,6 @@ class MarketCache
      */
     protected $document;
 
-    /**
-     * @ORM\Column(type ="text")
-     */
-    protected $body;
 
     /**
      * @ORM\ManyToMany(targetEntity="MarketDrug", inversedBy="marketCache")
@@ -112,22 +108,6 @@ class MarketCache
     public function getCreated()
     {
         return $this->created;
-    }
-
-    /**
-     * @param mixed $body
-     */
-    public function setBody($body)
-    {
-        $this->body = $body;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getBody()
-    {
-        return $this->body;
     }
 
     /**

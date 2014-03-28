@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Vidal\MainBundle\Entity\MarketCache;
+use Vidal\MainBundle\Entity\MarketDrug;
 
 /**
  * Команда парсинга XML аптек для кеширования данных
@@ -25,6 +26,7 @@ class ParserXmlCommand extends ContainerAwareCommand
     protected $url_file_2 = 'http://vidal:3L29y4@smacs.ru/exchange/price';
     protected $url_file_3 = 'http://www.zdravzona.ru/bitrix/catalog_export/yandex_b.php';
 
+    protected $arUrl; # Для пилюль список URL
 
     protected function configure()
     {
@@ -40,12 +42,6 @@ class ParserXmlCommand extends ContainerAwareCommand
 
         $em = $this->getContainer()->get('doctrine')->getManager();
 
-
-        # очищаем таблицы кеширования
-        $em->createQuery('
-			DELETE FROM VidalMainBundle:MarketCache mc
-		')->execute();
-
         $em->createQuery('
 			DELETE FROM VidalMainBundle:MarketDrug md
 		')->execute();
@@ -53,89 +49,55 @@ class ParserXmlCommand extends ContainerAwareCommand
         # Загружаем файлы XML в Кеш
         $this->uploadFiles();
 
-        # Вначале пройдемся по документам ( их тупо меньше )
-        $drugs = $emDrug->getRepository('VidalMainBundle:Document')->findAll();
-
-        foreach ( $drugs as $drug){ # Это надолго
-
-            # Добавлем маркет контроллер
-            $marketCache = new MarketCache();
-            $marketCache->setTarget($drug->getId());
-            $marketCache->setDocument(true);
-
-            $em->persist($marketCache);
-            $em->flush($marketCache);
-            $em->refresh($marketCache);
-
-            # Удаляем из имени всякую хрень
-            $RusName = $drug->getRusName;
-            $p    = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i');
-            $r    = array('', '');
-            $name = preg_replace($p, $r, $RusName);
 
 
-            # Ищем в первом магазине и добавляем оттуда лекартсва
-            $array = $this->findShop_1($getRusName);
-            foreach($array as $pr){
-                $product = new MarketDrug();
-                $product->setCode($pr['code']);
-                $product->setTitle($pr->['title']);
-                $product->setPrice($pr->['price']);
-                $product->setManufacturer($pr->['manufacturer']);
-                $product->setUrl($pr->['url']);
-                $product->setGroup('eapteka');
-
-                $em->persist($product);
-                $em->flush($product);
-                $em->refresh($product);
-
-                $marketCache->addDrug($product);
-                $em->flush();
-            }
-
-            # Ищем во втором магазине и добавляем оттуда лекартсва
-            $array = $this->findShop_2($getRusName);
-            foreach($array as $pr){
-                $product = new MarketDrug();
-                $product->setCode($pr['code']);
-                $product->setTitle($pr->['title']);
-                $product->setPrice($pr->['price']);
-                $product->setManufacturer($pr->['manufacturer']);
-                $product->setUrl($pr->['url']);
-                $product->setGroup('piluli');
-
-                $em->persist($product);
-                $em->flush($product);
-                $em->refresh($product);
-
-                $marketCache->addDrug($product);
-                $em->flush();
-            }
-
-            # Ищем в третьем магазине и добавляем оттуда лекартсва
-            $array = $this->findShop_3($getRusName);
-            foreach($array as $pr){
-                $product = new MarketDrug();
-                $product->setCode($pr['code']);
-                $product->setTitle($pr->['title']);
-                $product->setPrice($pr->['price']);
-                $product->setManufacturer($pr->['manufacturer']);
-                $product->setUrl($pr->['url']);
-                $product->setGroup('zdravzona');
-
-                $em->persist($product);
-                $em->flush($product);
-                $em->refresh($product);
-
-                $marketCache->addDrug($product);
-                $em->flush();
-            }
-
-
-
+        # Ищем в первом магазине и добавляем оттуда лекарства
+        $array = $this->findShop_1('');
+        $c1 = count($array);
+        foreach($array as $pr){
+            $product = new MarketDrug();
+            $product->setCode($pr['code']);
+            $product->setTitle($pr['title']);
+            $product->setPrice($pr['price']);
+            $product->setUrl($pr['url']);
+            $product->setGroupApt('eapteka');
+            $em->persist($product);
+            $em->flush($product);
+            $output->writeln('<comment>'.$product->getTitle().'</comment>');
         }
 
+        # Ищем во втором магазине и добавляем оттуда лекартсва
+        $array = $this->findShop_2('');
+        $c2 = count($array);
+        foreach($array as $pr){
+            $product = new MarketDrug();
+            $product->setCode($pr['code']);
+            $product->setTitle($pr['title']);
+            $product->setPrice($pr['price']);
+            $product->setManufacturer($pr['manufacturer']);
+            $product->setUrl($pr['url']);
+            $product->setGroupApt('piluli');
+            $em->persist($product);
+            $em->flush($product);
+            $output->writeln('<comment>'.$product->getTitle().'</comment>');
+        }
 
+        # Ищем в третьем магазине и добавляем оттуда лекартсва
+        $array = $this->findShop_3('');
+        $c3 = count($array);
+        foreach($array as $pr){
+            $product = new MarketDrug();
+            $product->setCode($pr['code']);
+            $product->setTitle($pr['title']);
+            $product->setPrice($pr['price']);
+            $product->setManufacturer($pr['manufacturer']);
+            $product->setUrl($pr['url']);
+            $product->setGroupApt('zdravzona');
+            $em->persist($product);
+            $em->flush($product);
+            $output->writeln('<comment>'.$product->getTitle().'</comment>');
+        }
+        $output->writeln('<error>'.$c1.' - '.$c2.' - '.$c3.'</error>');
 
         $output->writeln('+++ vidal:parser completed!');
     }
@@ -150,29 +112,30 @@ class ParserXmlCommand extends ContainerAwareCommand
     }
 
     protected function findShop_1($title){
-        $elems = $this->cacheFile_1->xpath("product[contains(concat(' ', name, ' '), ' $name ')]");
+        $elems = $this->cacheFile_1->xpath("product[contains(concat(' ', name, ' '), ' $title ')]");
         $arr = array();
+        $drugUrl = 'http://www.eapteka.ru/goods/drugs/otolaryngology/rhinitis/?id=';
         foreach ($elems as $elem){
             $arr[] = array(
                 'code' => $elem->code,
                 'manufacturer' => $elem->manufacturer,
                 'title' => $elem->name,
                 'price' => $elem->price,
-                'url' => $this->drugUrl.$elem->code,
+                'url' => $drugUrl.$elem->code,
             );
         }
         return $arr;
     }
 
     protected function findShop_2($title){
-        $elems = $this->xml->xpath("product[contains(concat(' ', name, ' '), ' $name ')]");
+        $elems = $this->cacheFile_2->xpath("product[contains(concat(' ', name, ' '), ' $title ')]");
         $arr = array();
-        $url = '';
+        $drugUrl = 'http://www.piluli.ru/product';
         foreach ($elems as $elem){
             if ( isset($this->arUrl["$elem->code"]) ){
                 $url =  $this->arUrl["$elem->code"] ;
                 $arr[] = array(
-                    'code' => $elem->code,
+                    'code' => $elem['id'],
                     'manufacturer' => $elem->manufacturer,
                     'title' => $elem->name,
                     'price' => $elem->price,
@@ -184,6 +147,16 @@ class ParserXmlCommand extends ContainerAwareCommand
     }
 
     protected function findShop_3($title){
-
+        $elems = $this->cacheFile_3->xpath("shop/offers/offer[contains(concat(' ',model, ' '), ' $title ')]");
+        $arr = array();
+        foreach ($elems as $elem){
+            $arr[] = array(
+                'manufacturer' => $elem->vendor,
+                'name' => $elem->model,
+                'price' => $elem->price,
+                'url' => $elem->url,
+            );
+        }
+        return $arr;
     }
 }
