@@ -37,10 +37,16 @@ class MarketDrug
      * @ORM\Column(type = "string")
      */
     protected $url;
+
     /**
      * @ORM\Column(type = "string")
      */
     protected $groupApt;
+
+    /**
+     * @ORM\Column(type = "string")
+     */
+    protected $manufacturer;
 
     /**
      * @ORM\ManyToMany(targetEntity="MarketDrug", mappedBy="drugs")
@@ -158,6 +164,22 @@ class MarketDrug
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * @param mixed $manufacturer
+     */
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
     }
 
 
