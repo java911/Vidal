@@ -1,6 +1,13 @@
 <div class="menu menu-big">
-	<a href="{{ path('drugs') }}" class="menu-drugs{{ menu is defined and menu == 'drugs' ? ' active' }}"></a>
-	<a href="#" class="menu-symptoms{{ menu is defined and menu == 'symptoms' ? ' active' }}"></a>
-	<a href="#" class="menu-doctors{{ menu is defined and menu == 'doctors' ? ' active' }}"></a>
-	<a href="#" class="menu-pharmacy{{ menu is defined and menu == 'pharmacy' ? ' active' }}"></a>
+	{% if menu is defined %}
+		<a href="{{ path('drugs') }}" class="menu-drugs{{ menu == 'drugs' ? ' active' }}"></a>
+		<a href="#" class="menu-symptoms{{menu == 'symptoms' ? ' active' }}"></a>
+		<a href="{{ path('vracham') }}" class="menu-doctors{{menu == 'vracham' ? ' active' }}"></a>
+		<a href="#" class="menu-pharmacy{{menu == 'pharmacy' ? ' active' }}"></a>
+	{% else %}
+		<a href="{{ path('drugs') }}" class="menu-drugs"></a>
+		<a href="#" class="menu-symptoms"></a>
+		<a href="{{ path('vracham') }}" class="menu-doctors"></a>
+		<a href="#" class="menu-pharmacy"></a>
+	{% endif %}
 </div>

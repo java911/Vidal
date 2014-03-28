@@ -5,7 +5,7 @@ namespace Vidal\DrugBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/** @ORM\Entity @ORM\Table(name="subdivision") */
+/** @ORM\Entity(repositoryClass="SubdivisionRepository") @ORM\Table(name="subdivision") */
 class Subdivision
 {
 	/** @ORM\Column(type="integer") @ORM\Id @ORM\GeneratedValue */
@@ -19,6 +19,46 @@ class Subdivision
 
 	/** @ORM\Column(length=255, nullable=true) */
 	protected $url;
+
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $announce;
+
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $title;
+
+	/** @ORM\Column(length=500, nullable=true) */
+	protected $description;
+
+	/** @ORM\Column(length=500, nullable=true) */
+	protected $keywords;
+
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $parentId;
+
+	/**
+	 * @ORM\OneToMany(targetEntity="Subdivision", mappedBy="parent", fetch="EXTRA_LAZY")
+	 **/
+	protected $children;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="Subdivision", inversedBy="children")
+	 * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+	 **/
+	protected $parent;
+
+	/** @ORM\OneToMany(targetEntity="Article", mappedBy="subdivision", fetch="EXTRA_LAZY") */
+	protected $articles;
+
+	public function __construct()
+	{
+		$this->children = new ArrayCollection();
+		$this->articles = new ArrayCollection();
+	}
+
+	public function __toString()
+	{
+		return $this->name;
+	}
 
 	/**
 	 * @param mixed $engName
@@ -74,5 +114,133 @@ class Subdivision
 	public function getUrl()
 	{
 		return $this->url;
+	}
+
+	/**
+	 * @param mixed $announce
+	 */
+	public function setAnnounce($announce)
+	{
+		$this->announce = $announce;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getAnnounce()
+	{
+		return $this->announce;
+	}
+
+	/**
+	 * @param mixed $description
+	 */
+	public function setDescription($description)
+	{
+		$this->description = $description;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDescription()
+	{
+		return $this->description;
+	}
+
+	/**
+	 * @param mixed $keywords
+	 */
+	public function setKeywords($keywords)
+	{
+		$this->keywords = $keywords;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getKeywords()
+	{
+		return $this->keywords;
+	}
+
+	/**
+	 * @param mixed $title
+	 */
+	public function setTitle($title)
+	{
+		$this->title = $title;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTitle()
+	{
+		return $this->title;
+	}
+
+	/**
+	 * @param mixed $parentId
+	 */
+	public function setParentId($parentId)
+	{
+		$this->parentId = $parentId;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getParentId()
+	{
+		return $this->parentId;
+	}
+
+	/**
+	 * @param mixed $children
+	 */
+	public function setChildren($children)
+	{
+		$this->children = $children;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getChildren()
+	{
+		return $this->children;
+	}
+
+	/**
+	 * @param mixed $parent
+	 */
+	public function setParent($parent)
+	{
+		$this->parent = $parent;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getParent()
+	{
+		return $this->parent;
+	}
+
+	/**
+	 * @param mixed $articles
+	 */
+	public function setArticles($articles)
+	{
+		$this->articles = $articles;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getArticles()
+	{
+		return $this->articles;
 	}
 }

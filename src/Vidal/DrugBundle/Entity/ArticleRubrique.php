@@ -31,18 +31,13 @@ class ArticleRubrique
 	protected $articles;
 
 	/** @ORM\Column(type="boolean") */
-	protected $public;
-
-	/**
-	 * @ORM\OneToOne(targetEntity="ArticleRubrique")
-	 * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
-	 */
-	protected $parent;
+	protected $enabled;
 
 	public function __construct()
 	{
 		$this->articles = new ArrayCollection();
 		$this->public   = true;
+		$this->enabled  = true;
 	}
 
 	public function __toString()
@@ -107,34 +102,18 @@ class ArticleRubrique
 	}
 
 	/**
-	 * @param mixed $parent
+	 * @param mixed $enabled
 	 */
-	public function setParent($parent)
+	public function setEnabled($enabled)
 	{
-		$this->parent = $parent;
+		$this->enabled = $enabled;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getParent()
+	public function getEnabled()
 	{
-		return $this->parent;
-	}
-
-	/**
-	 * @param mixed $public
-	 */
-	public function setPublic($public)
-	{
-		$this->public = $public;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getPublic()
-	{
-		return $this->public;
+		return $this->enabled;
 	}
 }

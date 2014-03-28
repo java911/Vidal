@@ -16,7 +16,7 @@ class VidalController extends Controller
 	/**
 	 * Список компаний
 	 *
-	 * @Route("drugs/firms", name="firms")
+	 * @Route("/drugs/firms", name="firms")
 	 * @Template("VidalDrugBundle:Vidal:firms.html.twig")
 	 */
 	public function firmsAction(Request $request)
@@ -61,9 +61,9 @@ class VidalController extends Controller
 	/**
 	 * Список препаратов по компании
 	 *
-	 * @Route("drugs/firm/{CompanyID}", name="firm_item", requirements={"CompanyID":"\d+"})
-	 * @Route("poisk_preparatov/fir_{CompanyID}.{ext}", name="firm_item_old", requirements={"CompanyID":"\d+"}, defaults={"ext"="htm"})
-	 * @Route("poisk_preparatov/lfir_{CompanyID}.{ext}", name="firm_products_old", requirements={"CompanyID":"\d+"}, defaults={"ext"="htm"})
+	 * @Route("/drugs/firm/{CompanyID}", name="firm_item", requirements={"CompanyID":"\d+"})
+	 * @Route("/poisk_preparatov/fir_{CompanyID}.{ext}", name="firm_item_old", requirements={"CompanyID":"\d+"}, defaults={"ext"="htm"})
+	 * @Route("/poisk_preparatov/lfir_{CompanyID}.{ext}", name="firm_products_old", requirements={"CompanyID":"\d+"}, defaults={"ext"="htm"})
 	 * @Template("VidalDrugBundle:Vidal:firm_item.html.twig")
 	 */
 	public function firmItemAction($CompanyID)
@@ -124,7 +124,7 @@ class VidalController extends Controller
 	/**
 	 * Список препаратов по клиннико-фармакологической группе
 	 *
-	 * @Route("drugs/cl-ph-group/{description}", name="clphgroup")
+	 * @Route("/drugs/cl-ph-group/{description}", name="clphgroup")
 	 * @Template("VidalDrugBundle:Vidal:clphgroup.html.twig")
 	 */
 	public function clphgroupAction($description)
@@ -149,9 +149,9 @@ class VidalController extends Controller
 	/**
 	 * Страничка представительства и список препаратов
 	 *
-	 * @Route("drugs/company/{InfoPageID}", name="inf_item", requirements={"InfoPageID":"\d+"})
-	 * @Route("poisk_preparatov/inf_{InfoPageID}.{ext}", name="inf_item_old", requirements={"InfoPageID":"\d+"}, defaults={"ext"="htm"})
-	 * @Route("poisk_preparatov/linf_{InfoPageID}.{ext}", name="linf_item_old", requirements={"InfoPageID":"\d+"}, defaults={"ext"="htm"})
+	 * @Route("/drugs/company/{InfoPageID}", name="inf_item", requirements={"InfoPageID":"\d+"})
+	 * @Route("/poisk_preparatov/inf_{InfoPageID}.{ext}", name="inf_item_old", requirements={"InfoPageID":"\d+"}, defaults={"ext"="htm"})
+	 * @Route("/poisk_preparatov/linf_{InfoPageID}.{ext}", name="linf_item_old", requirements={"InfoPageID":"\d+"}, defaults={"ext"="htm"})
 	 * @Template("VidalDrugBundle:Vidal:inf_item.html.twig")
 	 */
 	public function infItemAction($InfoPageID)
@@ -188,7 +188,7 @@ class VidalController extends Controller
 	/**
 	 * Страничка представительств
 	 *
-	 * @Route("drugs/companies", name="inf", requirements={"InfoPageID":"\d+"})
+	 * @Route("/drugs/companies", name="inf", requirements={"InfoPageID":"\d+"})
 	 * @Template("VidalDrugBundle:Vidal:inf.html.twig")
 	 */
 	public function infAction(Request $request)
@@ -276,8 +276,8 @@ class VidalController extends Controller
 	/**
 	 * Список препаратов по активному веществу: одно-монокомпонентные
 	 *
-	 * @Route("drugs/molecule/{MoleculeID}", name="molecule", requirements={"MoleculeID":"\d+"})
-	 * @Route("poisk_preparatov/act_{MoleculeID}.{ext}", name="molecule_old", requirements={"MoleculeID":"\d+"}, defaults={"ext"="htm"})
+	 * @Route("/drugs/molecule/{MoleculeID}", name="molecule", requirements={"MoleculeID":"\d+"})
+	 * @Route("/poisk_preparatov/act_{MoleculeID}.{ext}", name="molecule_old", requirements={"MoleculeID":"\d+"}, defaults={"ext"="htm"})
 	 * @Template("VidalDrugBundle:Vidal:molecule.html.twig")
 	 */
 	public function moleculeAction($MoleculeID)
@@ -301,8 +301,8 @@ class VidalController extends Controller
 	/**
 	 * Отображение списка препаратов, в состав которых входит активное вещество (Molecule)
 	 *
-	 * @Route("drugs/molecule-in/{MoleculeID}", name="molecule_included", requirements={"MoleculeID":"\d+"})
-	 * @Route("poisk_preparatov/lact_{MoleculeID}.{ext}", name="molecule_included_old", requirements={"MoleculeID":"\d+"}, defaults={"ext"="htm"})
+	 * @Route("/drugs/molecule-in/{MoleculeID}", name="molecule_included", requirements={"MoleculeID":"\d+"})
+	 * @Route("/poisk_preparatov/lact_{MoleculeID}.{ext}", name="molecule_included_old", requirements={"MoleculeID":"\d+"}, defaults={"ext"="htm"})
 	 * @Template("VidalDrugBundle:Vidal:molecule_included.html.twig")
 	 */
 	public function moleculeIncludedAction($MoleculeID)
@@ -374,8 +374,8 @@ class VidalController extends Controller
 	/**
 	 * Описание препарата
 	 *
-	 * @Route("drugs/{EngName}__{ProductID}", name="product", requirements={"ProductID":"\d+"})
-	 * @Route("poisk_preparatov/{EngName}__{ProductID}.{ext}", name="product_old", requirements={"ProductID":"\d+"}, defaults={"ext"="htm"})
+	 * @Route("/drugs/{EngName}__{ProductID}", name="product", requirements={"ProductID":"\d+"})
+	 * @Route("/poisk_preparatov/{EngName}__{ProductID}.{ext}", name="product_old", requirements={"ProductID":"\d+"}, defaults={"ext"="htm"})
 	 *
 	 * @Template("VidalDrugBundle:Vidal:document.html.twig")
 	 */
@@ -454,9 +454,9 @@ class VidalController extends Controller
 	/**
 	 * Описание по документу и отображение информации по препаратам или веществу
 	 *
-	 * @Route("drugs/{EngName}~{DocumentID}", name="document", requirements={"DocumentID":"\d+"})
-	 * @Route("poisk_preparatov/{EngName}~{DocumentID}.{ext}", name="document_old", requirements={"DocumentID":"\d+"}, defaults={"ext"="htm"})
-	 * @Route("poisk_preparatov/{EngName}.{ext}", name="document_name_old", defaults={"ext"="htm"})
+	 * @Route("/drugs/{EngName}~{DocumentID}", name="document", requirements={"DocumentID":"\d+"})
+	 * @Route("/poisk_preparatov/{EngName}~{DocumentID}.{ext}", name="document_old", requirements={"DocumentID":"\d+"}, defaults={"ext"="htm"})
+	 * @Route("/poisk_preparatov/{EngName}.{ext}", name="document_name_old", defaults={"ext"="htm"})
 	 * @Template("VidalDrugBundle:Vidal:document.html.twig")
 	 */
 	public function documentAction($EngName, $DocumentID = null)
