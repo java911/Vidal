@@ -2,99 +2,117 @@
 
 {% block content %}
     <h1>Корзина</h1>
-    <table class="basket-table">
-        <caption>Интернет-магазин E-apteka.ru</caption>
-        <tr>
-            <th>Наименование</th>
-            <th>Производитель</th>
-            <th>Цена</th>
-            <th>Количество</th>
-            <th>Сумма</th>
-            <th></th>
-        </tr>
-        <tr>
-            <td class="basket-title"><a href="#" target="_blank">Анальгин</a></td>
-            <td class="basket-otg">ООО Русмедверв</td>
-            <td class="basket-price">122.0&nbsp;р.</td>
-            <td class="basket-count"><input type="text" class="inp" value="2"></td>
-            <td class="basket-summa">244.0&nbsp;р.</td>
-            <td class="basket-remove"><a href="#">x</a></td>
-        </tr>
-        <tr>
-            <td class="basket-title"><a href="#" target="_blank">Анальгин</a></td>
-            <td class="basket-otg">ООО Русмедверв</td>
-            <td class="basket-price">122.0&nbsp;р.</td>
-            <td class="basket-count"><input type="text" class="inp" value="2"></td>
-            <td class="basket-summa">244.0&nbsp;р.</td>
-            <td class="basket-remove"><a href="#">x</a></td>
-        </tr>
-        <tr>
-            <td class="basket-title"><a href="#" target="_blank">Анальгин</a></td>
-            <td class="basket-otg">ООО Русмедверв</td>
-            <td class="basket-price">122.0&nbsp;р.</td>
-            <td class="basket-count"><input type="text" class="inp" value="2"></td>
-            <td class="basket-summa">244.0&nbsp;р.</td>
-            <td class="basket-remove"><a href="#">x</a></td>
-        </tr>
-        <tr>
-            <td class="basket-itogo" colspan="6">
-                Общая сумма: <span> 2500.0&nbsp;р.</span>
-            </td>
-        </tr>
-        <tr>
-            <td class="basket-submit" colspan="6">
-                <a href="#" class="btn-red">Оформить заказ</a>
-            </td>
-        </tr>
-    </table>
-    <br />
-    <br />
-    <br />
-    <table class="basket-table">
-        <caption>Интернет-магазин Zdravzona.ru</caption>
-        <tr>
-            <th>Наименование</th>
-            <th>Производитель</th>
-            <th>Цена</th>
-            <th>Количество</th>
-            <th>Сумма</th>
-            <th></th>
-        </tr>
-        <tr>
-            <td class="basket-title"><a href="#" target="_blank">Анальгин</a></td>
-            <td class="basket-otg">ООО Русмедверв</td>
-            <td class="basket-price">122.0&nbsp;р.</td>
-            <td class="basket-count"><input type="text" class="inp" value="2"></td>
-            <td class="basket-summa">244.0&nbsp;р.</td>
-            <td class="basket-remove"><a href="#">x</a></td>
-        </tr>
-        <tr>
-            <td class="basket-title"><a href="#" target="_blank">Анальгин</a></td>
-            <td class="basket-otg">ООО Русмедверв</td>
-            <td class="basket-price">122.0&nbsp;р.</td>
-            <td class="basket-count"><input type="text" class="inp" value="2"></td>
-            <td class="basket-summa">244.0&nbsp;р.</td>
-            <td class="basket-remove"><a href="#">x</a></td>
-        </tr>
-        <tr>
-            <td class="basket-title"><a href="#" target="_blank">Анальгин</a></td>
-            <td class="basket-otg">ООО Русмедверв</td>
-            <td class="basket-price">122.0&nbsp;р.</td>
-            <td class="basket-count"><input type="text" class="inp" value="2"></td>
-            <td class="basket-summa">244.0&nbsp;р.</td>
-            <td class="basket-remove"><a href="#">x</a></td>
-        </tr>
-        <tr>
-            <td class="basket-itogo" colspan="6">
-                Общая сумма: <span> 2500.0&nbsp;р.</span>
-            </td>
-        </tr>
-        <tr>
-            <td class="basket-submit" colspan="6">
-                <a href="#" class="btn-red">Оформить заказ</a>
-            </td>
-        </tr>
-    </table>
+
+    {% if products.eapteka is defined %}
+        <table class="basket-table">
+            <caption>Интернет-магазин E-apteka.ru</caption>
+            <tr>
+                <th>Наименование</th>
+                <th>Производитель</th>
+                <th>Цена</th>
+                <th>Количество</th>
+                <th>Сумма</th>
+                <th></th>
+            </tr>
+            {% for drug in products.eapteka  %}
+                <tr>
+                    <td class="basket-title"><a href="#" target="_blank">{{ drug.title }}</a></td>
+                    <td class="basket-org">{{ drug.manufacturer }}</td>
+                    <td class="basket-price">{{ drug.price |number_format(2, '.', ',') }}&nbsp;р.</td>
+                    <td class="basket-count"><input type="text" class="inp" value="{{ drug.count }}"></td>
+                    <td class="basket-summa"><span class="summa-ajax">{{ ( drug.count * drug.price ) |number_format(2, '.', ',') }}</span>&nbsp;р.</td>
+                    <td class="basket-remove"><a href="{{ path('remove_to_basket', { 'code': drug.code } )}}">x</a></td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td class="basket-itogo" colspan="6">
+                    Общая сумма: <span> {{ amounts.eapteka |number_format(2, '.', ',') }}&nbsp;р.</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="basket-submit" colspan="6">
+                    <a href="#" class="btn-red">Оформить заказ</a>
+                </td>
+            </tr>
+        </table>
+        <br />
+        <br />
+        <br />
+    {% endif %}
+    {% if products.piluli is defined %}
+        <table class="basket-table">
+            <caption>Интернет-магазин Piluli.ru</caption>
+            <tr>
+                <th>Наименование</th>
+                <th>Производитель</th>
+                <th>Цена</th>
+                <th>Количество</th>
+                <th>Сумма</th>
+                <th></th>
+            </tr>
+            {% for drug in products.piluli  %}
+                <tr>
+                    <td class="basket-title"><a href="#" target="_blank">{{ drug.title }}</a></td>
+                    <td class="basket-org">{{ drug.manufacturer }}</td>
+                    <td class="basket-price">{{ drug.price |number_format(2, '.', ',') }}&nbsp;р.</td>
+                    <td class="basket-count"><input type="text" class="inp" value="{{ drug.count }}"></td>
+                    <td class="basket-summa"><span class="summa-ajax">{{ ( drug.count * drug.price ) |number_format(2, '.', ',') }}</span>&nbsp;р.</td>
+                    <td class="basket-remove"><a href="#">x</a></td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td class="basket-itogo" colspan="6">
+                    Общая сумма: <span> {{ amounts.piluli |number_format(2, '.', ',') }}&nbsp;р.</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="basket-submit" colspan="6">
+                    <a href="#" class="btn-red">Оформить заказ</a>
+                </td>
+            </tr>
+        </table>
+        <br />
+        <br />
+        <br />
+    {% endif %}
+    {% if products.zdravzona is defined %}
+        <table class="basket-table">
+            <caption>Интернет-магазин Zdravzona</caption>
+            <tr>
+                <th>Наименование</th>
+                <th>Производитель</th>
+                <th>Цена</th>
+                <th>Количество</th>
+                <th>Сумма</th>
+                <th></th>
+            </tr>
+            {% for drug in products.zdravzona  %}
+                <tr>
+                    <td class="basket-title"><a href="#" target="_blank">{{ drug.title }}</a></td>
+                    <td class="basket-org">{{ drug.manufacturer }}</td>
+                    <td class="basket-price">{{ drug.price |number_format(2, '.', ',') }}&nbsp;р.</td>
+                    <td class="basket-count"><input type="text" class="inp" value="{{ drug.count }}"></td>
+                    <td class="basket-summa"><span class="summa-ajax">{{ ( drug.count * drug.price ) |number_format(2, '.', ',') }}</span>&nbsp;р.</td>
+                    <td class="basket-remove"><a href="#">x</a></td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td class="basket-itogo" colspan="6">
+                    Общая сумма: <span> {{ amounts.zdravzona |number_format(2, '.', ',') }}&nbsp;р.</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="basket-submit" colspan="6">
+                    <a href="#" class="btn-red">Оформить заказ</a>
+                </td>
+            </tr>
+        </table>
+        <br />
+        <br />
+        <br />
+    {% endif %}
+
+
 {% endblock %}
 
 {% block stylesheets %}
@@ -134,6 +152,9 @@
         .basket-itogo span{
             font-size: 18px;
             font-weight: bold;
+        }
+        .basket-remove a{
+            text-decoration: none;
         }
     </style>
 {% endblock %}

@@ -35,7 +35,8 @@ class MarketController extends Controller{
                 $product->setCount($count);
                 $product->setTitle($pr->getTitle());
                 $product->setCode($pr->getCode());
-                $product->getGroupApt($pr->getGroupApt());
+                $product->setGroupApt($pr->getGroupApt());
+                $product->setManufacturer($pr->getManufacturer());
                 $product->setPrice($pr->getPrice());
             }
         }
@@ -130,6 +131,7 @@ class MarketController extends Controller{
      */
     public function basketListAction(){
         $basket = new Basket();
+//        $basket->removeAll();
         $products = $basket->getAll();
         $amounts = $basket->getAmounts();
         return array(

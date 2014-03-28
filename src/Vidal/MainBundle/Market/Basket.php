@@ -66,7 +66,7 @@ class Basket{
     }
 
     public function removeAll(){
-        unset($this->drugs);
+        $this->drugs = array();
         $this->save();
     }
 
