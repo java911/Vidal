@@ -88,14 +88,20 @@ class Article extends BaseEntity
 	/** @ORM\ManyToOne(targetEntity="ArticleRubrique", inversedBy="articles") */
 	protected $rubrique;
 
-	/** @ORM\Column(type="integer", nullable=true) */
+	/** @ORM\ManyToOne(targetEntity="Subdivision", inversedBy="articles") */
 	protected $subdivision;
 
 	/** @ORM\Column(type="integer", nullable=true) */
-	protected $subclass;
+	protected $subdivisionId;
+
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $subclassId;
 
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $oldId;
+
+	/** @ORM\Column(type="integer", nullable=false) */
+	protected $priority;
 
 	public function __construct()
 	{
@@ -103,12 +109,13 @@ class Article extends BaseEntity
 		$this->molecules  = new ArrayCollection();
 		$this->products   = new ArrayCollection();
 		$this->documents  = new ArrayCollection();
-		$this->public  = true;
+		$this->public     = true;
 		$this->author     = 'Доктор Видаль: медицинская энциклопедия www.vidal.ru';
 		$now              = new \DateTime('now');
 		$this->created    = $now;
 		$this->updated    = $now;
 		$this->date       = $now;
+		$this->priority   = 0;
 	}
 
 	public function __toString()
@@ -433,38 +440,6 @@ class Article extends BaseEntity
 	}
 
 	/**
-	 * @param mixed $subclass
-	 */
-	public function setSubclass($subclass)
-	{
-		$this->subclass = $subclass;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getSubclass()
-	{
-		return $this->subclass;
-	}
-
-	/**
-	 * @param mixed $subdivision
-	 */
-	public function setSubdivision($subdivision)
-	{
-		$this->subdivision = $subdivision;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getSubdivision()
-	{
-		return $this->subdivision;
-	}
-
-	/**
 	 * @param mixed $public
 	 */
 	public function setPublic($public)
@@ -494,5 +469,69 @@ class Article extends BaseEntity
 	public function getOldId()
 	{
 		return $this->oldId;
+	}
+
+	/**
+	 * @param mixed $subclassId
+	 */
+	public function setSubclassId($subclassId)
+	{
+		$this->subclassId = $subclassId;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSubclassId()
+	{
+		return $this->subclassId;
+	}
+
+	/**
+	 * @param mixed $subdivisionId
+	 */
+	public function setSubdivisionId($subdivisionId)
+	{
+		$this->subdivisionId = $subdivisionId;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSubdivisionId()
+	{
+		return $this->subdivisionId;
+	}
+
+	/**
+	 * @param mixed $subdivision
+	 */
+	public function setSubdivision($subdivision)
+	{
+		$this->subdivision = $subdivision;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSubdivision()
+	{
+		return $this->subdivision;
+	}
+
+	/**
+	 * @param mixed $priority
+	 */
+	public function setPriority($priority)
+	{
+		$this->priority = $priority;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPriority()
+	{
+		return $this->priority;
 	}
 }

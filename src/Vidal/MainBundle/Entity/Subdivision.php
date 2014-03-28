@@ -20,11 +20,29 @@ class Subdivision
 	/** @ORM\Column(length=255, nullable=true) */
 	protected $url;
 
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $announce;
+
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $title;
+
+	/** @ORM\Column(length=500, nullable=true) */
+	protected $description;
+
+	/** @ORM\Column(length=500, nullable=true) */
+	protected $keywords;
+
 	/** @ORM\OneToMany(targetEntity="Publication", mappedBy="Subdivision") */
 	protected $publications;
 
 	/** @ORM\OneToMany(targetEntity="Subclass", mappedBy="Subclass") */
 	protected $subclasses;
+
+	/**
+	 * @ORM\OneToOne(targetEntity="Subdivision")
+	 * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+	 */
+	protected $parent;
 
 	public function __construct()
 	{

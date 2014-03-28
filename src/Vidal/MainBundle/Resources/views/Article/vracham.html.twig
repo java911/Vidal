@@ -1,0 +1,51 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block content %}
+	<h1>ИНФОРМАЦИЯ ДЛЯ СПЕЦИАЛИСТОВ</h1>
+
+	{% if subs is not empty %}
+		<div class="rubriques">
+
+			{% set perColumn = subs|length // 2 %}
+
+			{% if app.environment == 'dev' %}
+				{% for sub in subs %}
+					{% if loop.index % perColumn == 1 %}
+						<div>
+						<ul class="ul">
+					{% endif %}
+
+					<li><a href="/app_dev.php{{ sub.url }}">{{ sub.name }}</a></li>
+
+					{% if loop.index % perColumn == 0 %}
+						</ul>
+						</div>
+					{% endif %}
+				{% endfor %}
+			{% else %}
+				{% for sub in subs %}
+					{% if loop.index % perColumn == 1 %}
+						<div>
+						<ul class="ul">
+					{% endif %}
+
+					<li><a href="{{ sub.url }}">{{ sub.name }}</a></li>
+
+					{% if loop.index % perColumn == 0 %}
+						</ul>
+						</div>
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+
+		</div>
+	{% endif %}
+
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/article.css') }}"/>
+{% endblock %}

@@ -18,14 +18,12 @@ class Article66Command extends ContainerAwareCommand
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$em  = $this->getContainer()->get('doctrine')->getManager('drug');
-		$pdo = $em->getConnection();
-
-		$sql  = 'SELECT * FROM message66';
-		$stmt = $pdo->prepare($sql);
+		$em   = $this->getContainer()->get('doctrine')->getManager('drug');
+		$pdo  = $em->getConnection();
+		$stmt = $pdo->prepare('SELECT * FROM message66');
 		$stmt->execute();
-
 		$results = $stmt->fetchAll();
+		$i       = 0;
 
 		foreach ($results as $r) {
 			$a = new Article();
@@ -35,16 +33,30 @@ class Article66Command extends ContainerAwareCommand
 			$a->setPublic(false);
 			$link = $r['Keyword'] == '' ? $this->translit($r['Title']) : $r['Keyword'];
 			$a->setLink($link);
-			$a->setDate($r['Date']);
 			$a->setSynonym($r['Synonym']);
 			$a->setMetaTitle($r['MetaTitle']);
 			$a->setMetaDescription($r['MetaDesc']);
 			$a->setMetaKeywords($r['MetaKeys']);
-			$a->setSubdivision($r['Subdivision_ID']);
-			$a->setSubclass($r['Sub_Class_ID']);
+			$subId = (int) $r['Subdivision_ID'];
+			$a->setSubdivisionId($subId);
+			$a->setSubclassId($r['Sub_Class_ID']);
 			$a->setOldId($r['Message_ID']);
 
-			exit;
+			$date    = new \DateTime($r['Date']);
+			$created = new \DateTime($r['Created']);
+			$updated = new \DateTime($r['LastUpdated']);
+			$a->setDate($date);
+			$a->setCreated($created);
+			$a->setUpdated($updated);
+
+			if ($subdivision = $em->getRepository('VidalDrugBundle:Subdivision')->findOneById($subId)) {
+				$a->setSubdivision($subdivision);
+			}
+
+			$i++;
+			$em->persist($a);
+			$em->flush($a);
+			$output->writeln($i);
 		}
 	}
 

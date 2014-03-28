@@ -7,9 +7,18 @@
 	<div class="breadcrumbs">
 		<a href="{{ path('index') }}">Видаль</a>
 		<i></i>
-		<a href="{{ path('articles') }}">Статьи</a>
-		<i></i>
-		<a href="{{ path('rubrique', {'rubrique':rubrique.rubrique}) }}">{{ rubrique }}</a>
+		<a href="{{ path('vracham') }}">Информация для специалистов</a>
+		{% if app.environment == 'dev' %}
+			{% for path in paths %}
+				<i></i>
+				<a href="/app_dev.php{{ path.url }}">{{ path }}</a>
+			{% endfor %}
+		{% else %}
+			{% for path in paths %}
+				<i></i>
+				<a href="{{ path.url }}">{{ path }}</a>
+			{% endfor %}
+		{% endif %}
 	</div>
 
 	{% include 'VidalMainBundle:Article:render_article.html.twig' %}

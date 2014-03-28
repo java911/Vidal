@@ -7,7 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="MarketDrugRepository")
- * @ORM\Table(name="marketDrug")
+ * @ORM\Table(name="marketdrug")
  */
 class MarketDrug
 {

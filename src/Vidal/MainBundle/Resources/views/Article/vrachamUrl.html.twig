@@ -1,0 +1,103 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block content %}
+	<h1>{{ sub }}</h1>
+
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('vracham') }}">Информация для специалистов</a>
+		{% if app.environment == 'dev' %}
+			{% for path in paths %}
+				{% if not loop.last %}
+					<i></i>
+					<a href="/app_dev.php{{ path.url }}">{{ path }}</a>
+				{% endif %}
+			{% endfor %}
+		{% else %}
+			{% for path in paths %}
+				{% if not loop.last %}
+					<i></i>
+					<a href="{{ path.url }}">{{ path }}</a>
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+	</div>
+
+	{% if sub.announce is not empty %}
+		<div class="subdivision">
+			<div class="subdivision-announce">{{ sub.announce|raw }}</div>
+		</div>
+	{% endif %}
+
+	{# подразделы этого раздела #}
+	{% if sub.children.count > 0 %}
+		<div class="subdivisions">
+			{% if app.environment == 'dev' %}
+				{% for subdivision in sub.children %}
+					<div class="subdivision">
+						<a href="/app_dev.php{{ subdivision.url }}">{{ subdivision.name }}</a>
+
+						<div class="subdivision-announce">{{ subdivision.announce|raw }}</div>
+					</div>
+				{% endfor %}
+			{% else %}
+				{% for subdivision in sub.children %}
+					<div class="subdivision">
+						<a href="{{ subdivision.url }}">{{ subdivision.name }}</a>
+
+						<div class="subdivision-announce">{{ subdivision.announce|raw }}</div>
+					</div>
+				{% endfor %}
+			{% endif %}
+		</div>
+	{% endif %}
+
+	{# список статей с пагинацией #}
+	{% if pagination.totalItemCount %}
+		<div class="articles">
+			{% if app.environment == 'dev' %}
+				{% for article in pagination %}
+					<div class="article">
+						<div class="article-title">
+							<a href="/app_dev.php{{ sub.url }}{{ article.link }}_{{ article.oldId }}">{{ article }}</a>
+						</div>
+						<div class="article-announse">
+							{{ article.announce|raw }}
+						</div>
+						<div class="article-footer">
+							<span class="article-date">{{ article.date|date('d.m.Y') }}</span>
+						</div>
+					</div>
+				{% endfor %}
+			{% else %}
+				{% for article in pagination %}
+					<div class="article">
+						<div class="article-title">
+							<a href="{{ sub.url }}{{ article.link }}_{{ article.oldId }}">{{ article }}</a>
+						</div>
+						<div class="article-announse">
+							{{ article.announce|raw }}
+						</div>
+						<div class="article-footer">
+							<span class="article-date">{{ article.date|date('d.m.Y') }}</span>
+						</div>
+					</div>
+				{% endfor %}
+			{% endif %}
+		</div>
+
+		<div class="navigation">
+			{{ knp_pagination_render(pagination) }}
+		</div>
+	{% endif %}
+
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/article.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/subdivision.css') }}"/>
+{% endblock %}

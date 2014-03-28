@@ -31,11 +31,12 @@ class ArticleRubriqueRepository extends EntityRepository
 		return $rubrique;
 	}
 
-	public function findActive()
+	public function findEnabled()
 	{
 		return $this->_em->createQuery('
 			SELECT r
 			FROM VidalDrugBundle:ArticleRubrique r
+			WHERE r.enabled = TRUE
 			ORDER BY r.title ASC
 		')->getResult();
 	}
