@@ -52,8 +52,8 @@ class ArticleAdmin extends Admin
 			->add('link', null, array('label' => 'Адрес страницы', 'required' => true, 'help' => 'латинские буквы и цифры, слова через тире'))
 			->add('rubrique', null, array('label' => 'Рубрика', 'required' => true, 'empty_value' => 'выберите'))
 			->add('type', null, array('label' => 'Категория', 'required' => false, 'empty_value' => 'не указано'))
-			->add('announce', null, array('label' => 'Анонс', 'required' => true))
-			->add('body', null, array('label' => 'Основное содержимое', 'required' => true))
+			->add('announce', null, array('label' => 'Анонс', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
+			->add('body', null, array('label' => 'Основное содержимое', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('public', null, array('label' => 'Только для врачей', 'required' => false, 'help' => 'Доступна всем, а без галочки - только врачам'))
 			->add('atc', 'entity', array(
 				'label'         => 'Код АТХ',

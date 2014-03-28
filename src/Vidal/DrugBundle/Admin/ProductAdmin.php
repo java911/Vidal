@@ -23,7 +23,7 @@ class productAdmin extends Admin
             ->add('RegistrationNumber', null, array('label' => 'Номер регистрации'))
             ->add('PPR')
             ->add('ZipInfo', null, array('label' => 'Форма выпуска'))
-            ->add('Composition', null, array('label' => 'Форма выпуска'))
+            ->add('Composition', null, array('label' => 'Форма выпуска', 'attr' => array('class' => 'ckeditorfull')))
             ->add('ProductTypeCode',null, array('label' => 'Тип препарата'))
             ->add('ItsMultiProduct', null, array('label' => 'мультипродукт'))
             ->add('BelongMultiProductID', null, array('label' => 'Мульти продукт ID'))
