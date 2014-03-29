@@ -33,7 +33,7 @@ class ArticleAdmin extends Admin
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
 			->add('link', null, array('label' => 'Адрес страницы', 'help' => 'латинские буквы и цифры, слова через тире'))
-			->add('rubrique', null, array('label' => 'Рубрика'))
+			->add('rubrique', null, array('label' => 'Рубрика', 'help' => 'Указывается только для публичих статей Энциклопедии'))
 			->add('type', null, array('label' => 'Категория'))
 			->add('announce', null, array('label' => 'Анонс'))
 			->add('body', null, array('label' => 'Основное содержимое'))
@@ -50,7 +50,7 @@ class ArticleAdmin extends Admin
 		$formMapper
 			->add('title', null, array('label' => 'Заголовок', 'required' => true))
 			->add('link', null, array('label' => 'Адрес страницы', 'required' => true, 'help' => 'латинские буквы и цифры, слова через тире'))
-			->add('rubrique', null, array('label' => 'Рубрика', 'required' => true, 'empty_value' => 'выберите'))
+			->add('rubrique', null, array('label' => 'Рубрика', 'required' => false, 'empty_value' => 'выберите', 'help' => 'Указывается только для публичих статей Энциклопедии'))
 			->add('type', null, array('label' => 'Категория', 'required' => false, 'empty_value' => 'не указано'))
 			->add('announce', null, array('label' => 'Анонс', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('body', null, array('label' => 'Основное содержимое', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
