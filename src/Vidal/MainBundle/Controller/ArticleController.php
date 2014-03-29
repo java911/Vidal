@@ -130,7 +130,7 @@ class ArticleController extends Controller
 		$paths    = array();
 
 		foreach ($urlParts as $part) {
-			$pos = strpos($part, '_');
+			$pos = strrpos($part, '_');
 
 			# если это путь - заносим в массив для хлебных крошек, иначе - это статья
 			if ($pos === false) {

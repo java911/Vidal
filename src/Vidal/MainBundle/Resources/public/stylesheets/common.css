@@ -907,7 +907,7 @@ h1 {
 #search_form {
 	position: absolute;
 	top:      36px;
-	left:     516px;
+	right:    0;
 }
 #search_form .chosen-container-single .chosen-single {
 	border-radius: 0;
@@ -950,7 +950,7 @@ h1 {
 .searche-link {
 	position:  absolute;
 	top:       92px;
-	left:      812px;
+	right:     0;
 	font-size: 14px;
 }
 .searche-link a {
