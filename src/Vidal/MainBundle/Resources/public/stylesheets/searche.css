@@ -33,7 +33,7 @@
 }
 #searche_form .controls {
 	position:   relative;
-	margin-top: 16px;
+	margin:     16px 0 10px;
 	clear:      both;
 	text-align: right;
 }
