@@ -71,10 +71,20 @@ class ATCRepository extends EntityRepository
 		return $atcCodes;
 	}
 
-	public function findAll()
+	public function findForTree()
+	{
+		return $this->_em->createQuery("
+			SELECT a.ATCCode id, a.RusName text
+			FROM VidalDrugBundle:ATC a
+			WHERE a.ParentATCCode = ''
+			ORDER BY a.ATCCode ASC
+		")->getResult();
+	}
+
+	public function jsonForTree()
 	{
 		$atcRaw = $this->_em->createQuery('
-			SELECT a.ATCCode, a.RusName, a.EngName, a.ParentATCCode
+			SELECT a.ATCCode id, a.RusName text, a.ParentATCCode
 			FROM VidalDrugBundle:ATC a
 			ORDER BY a.ATCCode ASC
 		')->getResult();
@@ -82,9 +92,8 @@ class ATCRepository extends EntityRepository
 		$atc = array();
 
 		for ($i = 0; $i < count($atcRaw); $i++) {
-			$key               = $atcRaw[$i]['ATCCode'];
+			$key               = $atcRaw[$i]['id'];
 			$atc[$key]         = $atcRaw[$i];
-			$atc[$key]['list'] = array();
 		}
 
 		return $atc;

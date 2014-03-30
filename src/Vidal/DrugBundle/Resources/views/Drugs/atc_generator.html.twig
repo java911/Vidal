@@ -3,7 +3,7 @@
 
 {% block vidal %}
 	<ul id="tree" class="treeview">
-		{% include 'VidalDrugBundle:Drugs:nosology_generator_render.html.twig' %}
+		{% include 'VidalDrugBundle:Drugs:atc_generator_render.html.twig' %}
 	</ul>
 {% endblock %}
 
@@ -25,7 +25,7 @@
 			$tree.treeview({
 				animated:  "fast",
 				collapsed: true,
-				url:       Routing.generate('nosology_ajax'),
+				url:       Routing.generate('atc_ajax'),
 				ajax: {
 					type: "post"
 				}

@@ -1,10 +1,8 @@
 {% for code in codes %}
-	<li data="{{ code.ClPhPointerID }}">
-		{% if code.list is defined %}
-			<span>{{ code.Name|raw }}</span>
-			<ul>{% include 'VidalDrugBundle:Drugs:kfu_generator_render.html.twig' with {'codes':code.list} %}</ul>
-		{% else %}
-			<i>{{ code.Name|raw }}</i>
-		{% endif %}
+	<li id="{{ code.id }}" class="hasChildren">
+		<span>{{ code.text|raw }}</span>
+		<ul>
+			<li><span class="placeholder">&nbsp;</span></li>
+		</ul>
 	</li>
 {% endfor %}

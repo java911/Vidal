@@ -18,19 +18,34 @@
 }
 
 /* searche_form */
+#searche_form {
+	position: relative;
+}
 #searche_form > * {
 	vertical-align: top;
 }
 #searche_form .search-query {
-	float: right;
-	width: 250px;
+	display:  block;
+	position: absolute;
+	width:    250px;
+	top:      0;
+	right:    0;
+}
+#searche_form .controls {
+	position:   relative;
+	margin-top: 16px;
+	clear:      both;
+	text-align: right;
 }
 #searche_form .search-type, #searche_form .chosen-container .chosen-drop {
 	width: 250px;
 }
 #searche_form .search-bad {
+	display:   inline-block;
+	position:  absolute;
+	left:      0;
+	top:       0;
 	font-size: 14px;
-	margin:    4px 3px 0 3px;
 	color:     #999;
 }
 #search_bad {

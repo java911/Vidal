@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 
 class SearchController extends Controller
@@ -263,6 +264,16 @@ class SearchController extends Controller
 		return $params;
 	}
 
+	/**
+	 * @Route("/searche/atc-full", name="atc_full", options={"expose":true})
+	 */
+	public function atcFullAction()
+	{
+		$html = $this->renderView('VidalDrugBundle:Search:atc_full.html.twig');
+
+		return new JsonResponse($html);
+	}
+
 	/** Получить массив идентификаторов продуктов */
 	private function getProductIds($products)
 	{
@@ -273,38 +284,5 @@ class SearchController extends Controller
 		}
 
 		return $productIds;
-	}
-
-	/**
-	 * Функция генерации дерева с кодами АТС
-	 * @Route("/tree/atc", name="tree_atc")
-	 */
-	public function treeAtcAction()
-	{
-		$em         = $this->getDoctrine()->getManager('drug');
-		$atcCodes   = $em->getRepository('VidalDrugBundle:ATC')->findAll();
-		$atcGrouped = array();
-
-		# надо сгруппировать по родителю
-		for ($i = 8; $i > 1; $i--) {
-			foreach ($atcCodes as $code => $atc) {
-				if (strlen($code) == $i && isset($atc['ParentATCCode'])) {
-					$key                           = $atc['ParentATCCode'];
-					$code                          = $atc['ATCCode'];
-					$atcCodes[$key]['list'][$code] = $atc;
-				}
-			}
-		}
-
-		# взять только первый уровень [A, B, C]
-		foreach ($atcCodes as $code => $atc) {
-			if (strlen($code) == 1) {
-				$atcGrouped[$code] = $atc;
-			}
-		}
-
-		return $this->render('VidalDrugBundle:Search:tree_atc_generator.html.twig', array(
-			'atcGrouped' => $atcGrouped,
-		));
 	}
 }

@@ -75,9 +75,6 @@
 				</div>
 			{% endif %}
 		</div>
-
-		{# раскрывающееся дерево АТХ #}
-		{% include 'VidalDrugBundle:Search:tree_atc.html.twig' %}
 	{% endif %}
 
 	{# Найдено активных веществ #}
@@ -244,10 +241,6 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/searche.css') }}"/>
-
-	{% if atcTree is defined %}
-		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/treeview/jquery.treeview.css') }}"/>
-	{% endif %}
 {% endblock %}
 
 

@@ -2,7 +2,7 @@
 
 
 {% block title %}
-	<h1>{{ kfu|raw }}</h1>
+	<h1>{{ kfu.Name|raw }}</h1>
 {% endblock %}
 
 
@@ -12,7 +12,7 @@
 		<i></i>
 		<a href="{{ path('kfu') }}" title="Клинико-фармакологические указатели">КФУ</a>
 		<i></i>
-		<span>{{ kfu|raw }}</span>
+		<span>{{ kfu.Name|raw }}</span>
 	</div>
 {% endblock %}
 
@@ -28,7 +28,6 @@
 	{% else %}
 		<div class="no-results">
 			Не найдено препаратов
-			<span>{{ phthgroup.Name|capitalize }}</span>
 		</div>
 	{% endif %}
 
