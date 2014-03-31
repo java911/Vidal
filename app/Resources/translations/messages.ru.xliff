@@ -181,6 +181,27 @@
 				<target>Удаление баннерного места</target>
 			</trans-unit>
 
+			<trans-unit id="sonata-13">
+				<source>Question Answer List</source>
+				<target>Ответы специалистов</target>
+			</trans-unit>
+			<trans-unit id="sonata-13-1">
+				<source>Question Answer Show</source>
+				<target>Ответ специалиста</target>
+			</trans-unit>
+			<trans-unit id="sonata-13-2">
+				<source>Question Answer Edit</source>
+				<target>Редактирование ответа специалиста</target>
+			</trans-unit>
+			<trans-unit id="sonata-13-3">
+				<source>Question Answer Create</source>
+				<target>Создание ответа специалиста</target>
+			</trans-unit>
+			<trans-unit id="sonata-13-4">
+				<source>Question Answer Delete</source>
+				<target>Удаление ответа специалиста</target>
+			</trans-unit>
+
         </body>
     </file>
 </xliff>

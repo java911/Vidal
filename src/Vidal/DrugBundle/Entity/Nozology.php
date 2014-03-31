@@ -37,20 +37,20 @@ class Nozology
 	/**
 	 * @ORM\ManyToMany(targetEntity="Article", mappedBy="nozologies")
 	 * @ORM\JoinTable(name="article_n",
-	 * 		joinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")},
-	 * 		inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
+	 *        joinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
 	 */
 	protected $articles;
 
 	public function __construct()
 	{
 		$this->documents = new ArrayCollection();
-		$this->articles = new ArrayCollection();
+		$this->articles  = new ArrayCollection();
 	}
 
 	public function __toString()
 	{
-		return $this->Name;
+		return $this->NozologyCode . ' - ' . $this->Name;
 	}
 
 	/**

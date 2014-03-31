@@ -13,7 +13,7 @@
 		<a href="{{ path('atc') }}"
 		   title="Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)">АТX</a>
 		<i></i>
-		<span>{{ atc }}</span>
+		<span>{{ atc.ATCCode }}</span>
 	</div>
 {% endblock %}
 
@@ -23,7 +23,7 @@
 
 	<div class="block">
 		<span class="block-head">АТХ код:</span>
-		<span><b>{{ atc }}</b></span>
+		<span><b>{{ atc.ATCCode }}</b></span>
 	</div>
 
 	<div class="block">

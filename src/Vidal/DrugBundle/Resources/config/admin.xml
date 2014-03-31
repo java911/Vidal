@@ -30,6 +30,14 @@
 			<argument />
 		</service>
 
+		<service id="sonata.admin.articletype" class="Vidal\DrugBundle\Admin\ArticleTypeAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Энциклопедия" label="Категории"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\ArticleType</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
 		<service id="sonata.admin.articlerubrique" class="Vidal\DrugBundle\Admin\ArticleRubriqueAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="Энциклопедия" label="Рубрики"/>
 			<argument />
@@ -38,10 +46,19 @@
 			<argument />
 		</service>
 
-		<service id="sonata.admin.articletype" class="Vidal\DrugBundle\Admin\ArticleTypeAdmin">
-			<tag name="sonata.admin" manager_type="orm" group="Энциклопедия" label="Категории"/>
+		<!-- Информация специалистам -->
+		<service id="sonata.admin.art" class="Vidal\DrugBundle\Admin\ArtAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Информация специалистам" label="Статьи"/>
 			<argument />
-			<argument>Vidal\DrugBundle\Entity\ArticleType</argument>
+			<argument>Vidal\DrugBundle\Entity\Art</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.arttype" class="Vidal\DrugBundle\Admin\ArtTypeAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Информация специалистам" label="Категории"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\ArtType</argument>
 			<argument>SonataAdminBundle:CRUD</argument>
 			<argument />
 		</service>

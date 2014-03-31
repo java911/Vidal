@@ -9,7 +9,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Doctrine\ORM\EntityRepository;
 
-class ArticleAdmin extends Admin
+class ArtAdmin extends Admin
 {
 	protected $datagridValues;
 
@@ -33,7 +33,7 @@ class ArticleAdmin extends Admin
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
 			->add('link', null, array('label' => 'Адрес страницы', 'help' => 'латинские буквы и цифры, слова через тире'))
-			->add('rubrique', null, array('label' => 'Рубрика', 'help' => 'Указывается только для публичих статей Энциклопедии'))
+			->add('subdivision', null, array('label' => 'Подраздел'))
 			->add('type', null, array('label' => 'Категория'))
 			->add('announce', null, array('label' => 'Анонс'))
 			->add('body', null, array('label' => 'Основное содержимое'))
@@ -46,7 +46,7 @@ class ArticleAdmin extends Admin
 		$formMapper
 			->add('title', null, array('label' => 'Заголовок', 'required' => true))
 			->add('link', null, array('label' => 'Адрес страницы', 'required' => true, 'help' => 'латинские буквы и цифры, слова через тире'))
-			->add('rubrique', null, array('label' => 'Рубрика', 'required' => true, 'empty_value' => 'выберите', 'help' => 'Указывается только для публичих статей Энциклопедии'))
+			->add('subdivision', null, array('label' => 'Подраздел', 'required' => true))
 			->add('type', null, array('label' => 'Категория', 'required' => false, 'empty_value' => 'не указано'))
 			->add('announce', null, array('label' => 'Анонс', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('body', null, array('label' => 'Основное содержимое', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
@@ -135,7 +135,7 @@ class ArticleAdmin extends Admin
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
 			->add('link', null, array('label' => 'Адрес страницы', 'help' => 'латинские буквы и цифры, слова через тире'))
-			->add('rubrique', null, array('label' => 'Рубрика'))
+			->add('subdivision', null, array('label' => 'Подраздел'))
 			->add('type', null, array('label' => 'Категория'))
 			->add('date', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
 			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))

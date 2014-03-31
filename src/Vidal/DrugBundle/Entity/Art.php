@@ -6,8 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/** @ORM\Entity(repositoryClass="ArticleRepository") @ORM\Table(name="article") */
-class Article extends BaseEntity
+/** @ORM\Entity(repositoryClass="ArtRepository") @ORM\Table(name="art") */
+class Art extends BaseEntity
 {
 	/** @ORM\Column(length=255) */
 	protected $title;
@@ -17,9 +17,6 @@ class Article extends BaseEntity
 
 	/** @ORM\Column(type="text", nullable=true) */
 	protected $body;
-
-	/** @ORM\Column(type="boolean") */
-	protected $public;
 
 	/**
 	 * @ORM\Column(length=255, nullable=true)
@@ -32,46 +29,46 @@ class Article extends BaseEntity
 	protected $link;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Nozology", inversedBy="articles")
-	 * @ORM\JoinTable(name="article_n",
-	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
+	 * @ORM\ManyToMany(targetEntity="Nozology", inversedBy="arts")
+	 * @ORM\JoinTable(name="art_n",
+	 *        joinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")})
 	 */
 	protected $nozologies;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Molecule", inversedBy="articles")
-	 * @ORM\JoinTable(name="article_molecule",
-	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
+	 * @ORM\ManyToMany(targetEntity="Molecule", inversedBy="arts")
+	 * @ORM\JoinTable(name="art_molecule",
+	 *        joinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")})
 	 */
 	protected $molecules;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Document", inversedBy="articles")
-	 * @ORM\JoinTable(name="article_document",
-	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
+	 * @ORM\ManyToMany(targetEntity="Document", inversedBy="arts")
+	 * @ORM\JoinTable(name="art_document",
+	 *        joinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})
 	 */
 	protected $documents;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="articles")
-	 * @ORM\JoinTable(name="article_atc",
-	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
+	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="arts")
+	 * @ORM\JoinTable(name="art_atc",
+	 *        joinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ATCCode", referencedColumnName="ATCCode")})
 	 */
 	protected $atcCodes;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="InfoPage", inversedBy="articles")
-	 * @ORM\JoinTable(name="article_infopage",
-	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
+	 * @ORM\ManyToMany(targetEntity="InfoPage", inversedBy="arts")
+	 * @ORM\JoinTable(name="art_infopage",
+	 *        joinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")})
 	 */
 	protected $infoPages;
 
-	/** @ORM\ManyToOne(targetEntity="ArticleType", inversedBy="articles") */
+	/** @ORM\ManyToOne(targetEntity="ArtType", inversedBy="arts") */
 	protected $type;
 
 	/** @ORM\Column(type="datetime", nullable=true) */
@@ -89,8 +86,8 @@ class Article extends BaseEntity
 	/** @ORM\Column(length=255, nullable=true) */
 	protected $metaKeywords;
 
-	/** @ORM\ManyToOne(targetEntity="ArticleRubrique", inversedBy="articles") */
-	protected $rubrique;
+	/** @ORM\ManyToOne(targetEntity="Subdivision", inversedBy="articles") */
+	protected $subdivision;
 
 	/** @ORM\Column(type="integer", nullable=false) */
 	protected $priority;
@@ -107,7 +104,7 @@ class Article extends BaseEntity
 		$this->molecules  = new ArrayCollection();
 		$this->documents  = new ArrayCollection();
 		$this->atcCodes   = new ArrayCollection();
-		$this->atcCodes   = new ArrayCollection();
+		$this->infoPages  = new ArrayCollection();
 		$this->public     = true;
 		$now              = new \DateTime('now');
 		$this->created    = $now;
@@ -262,22 +259,6 @@ class Article extends BaseEntity
 	}
 
 	/**
-	 * @param mixed $nozologyCodes
-	 */
-	public function setNozologyCodes($nozologyCodes)
-	{
-		$this->nozologyCodes = $nozologyCodes;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getNozologyCodes()
-	{
-		return $this->nozologyCodes;
-	}
-
-	/**
 	 * @param mixed $synonym
 	 */
 	public function setSynonym($synonym)
@@ -342,22 +323,6 @@ class Article extends BaseEntity
 	}
 
 	/**
-	 * @param mixed $rubrique
-	 */
-	public function setRubrique($rubrique)
-	{
-		$this->rubrique = $rubrique;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getRubrique()
-	{
-		return $this->rubrique;
-	}
-
-	/**
 	 * @param mixed $public
 	 */
 	public function setPublic($public)
@@ -371,22 +336,6 @@ class Article extends BaseEntity
 	public function getPublic()
 	{
 		return $this->public;
-	}
-
-	/**
-	 * @param mixed $oldId
-	 */
-	public function setOldId($oldId)
-	{
-		$this->oldId = $oldId;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getOldId()
-	{
-		return $this->oldId;
 	}
 
 	/**
