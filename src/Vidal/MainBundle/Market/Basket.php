@@ -86,4 +86,12 @@ class Basket{
         }
         return $arr;
     }
+
+    public function getCount(){
+        $count = 0;
+        foreach($this->drugs as $drug){
+            $count += $drug->getCount();
+        }
+        return $count;
+    }
 }

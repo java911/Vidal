@@ -18,6 +18,9 @@
 		<a href="{{ path('qa') }}"
 		   class="{{ menu_left is defined and menu_left == 'qa' ? 'active' : 'dotted' }}">Ответы специалистов</a>
 	</li>
+
+    {{ render(controller('VidalMainBundle:Market:countProduct')) }}
+
 </ul>
 
 {# блок авторизации или личного кабинета #}

@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 //use Sensio\Bundle\FrameworkExtraBundle\Configuration\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\Tests\Extension\Core\DataTransformer\DateTimeToArrayTransformerTest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -169,5 +170,16 @@ class MarketController extends Controller{
         }
 
         return array('form' => $form->createView());
+    }
+
+    /**
+     * @Route("/basket-count", name="basket_count" )
+     * @Template("VidalMainBundle:Market:basket_count.html.twig")
+     */
+    public function countProductAction(){
+        $basket = new Basket();
+        $count = $basket->getCount();
+
+        return array('count' => $count );
     }
 }
