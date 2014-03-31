@@ -15,6 +15,8 @@
                     <option value="1">Мужской</option>
                     <option value="2">Женский</option>
                 </select>
+                <img src="{{ asset('bundles/vidalmain/images/refresh.jpg') }}" id="refresh-body" title="Перевернуть" alt="Перевернуть">
+                <img src="{{ asset('bundles/vidalmain/images/back.png') }}" id="back-body" title="Вернуться" alt="Вернуться">
             </td>
             <td>
                 Часть тела
@@ -40,7 +42,7 @@
                     </optgroup>
                     <optgroup label="Конечности">
                         <option value="9">Руки</option>
-                        <option value="6">ноги</option>
+                        <option value="6">Ноги</option>
                     </optgroup>
                     <option value="14">Общие симптомы</option>
                 </select>
@@ -114,7 +116,7 @@
             '</optgroup>'+
             '<optgroup label="Конечности">'+
             '<option value="9" intro="all">Руки</option>'+
-            '<option value="6" intro="all">ноги</option>'+
+            '<option value="6" intro="all">Ноги</option>'+
             '</optgroup>'+
             '<option value="14" intro="all">Общие симптомы</option>';
 
@@ -140,7 +142,7 @@
             '</optgroup>'+
             '<optgroup label="Конечности">'+
             '<option value="28" intro="all">Руки</option>'+
-            '<option value="25" intro="all">ноги</option>'+
+            '<option value="25" intro="all">Ноги</option>'+
             '</optgroup>'+
             '<option value="33" intro="all">Общие симптомы</option>';
 
@@ -155,8 +157,12 @@
         $('#body-render').on('click','area', function(){
             if ($(this).attr('intro') == 'head' ){
                 party = 'head';
+                $('#refresh-body').css('display','none');
+                $('#back-body').css('display','block');
                 renderBody();
             }else{
+                $('#refresh-body').css('display','block');
+                $('#back-body').css('display','none');
                 subParty = $(this).attr('data-key');
                 $('#select-party').children('optgroup').children('option').filter(function(){ return $(this).val() == subParty }).attr('selected' , 'selected');
                 $('#select-party').trigger("chosen:updated");
@@ -324,6 +330,24 @@
             });
         };
 
+        $('#refresh-body').click(function(){
+            if (party == 'all'){
+                party = 'all-back';
+            }else{
+                if (party == 'all-back' ){
+                    party = 'all';
+                }
+            }
+            renderBody();
+        });
+
+        $('#back-body').click(function(){
+            $('#refresh-body').css('display','block');
+            $('#back-body').css('display','none');
+            party = 'all';
+            renderBody();
+        });
+
         renderSymptom();
     });
 
@@ -394,6 +418,23 @@
             display: none;
         }
         #h2-state{
+            display: none;
+        }
+        #refresh-body{
+            width: 32px;
+            position: absolute;
+            top: 95px;
+            left: 30px;
+            z-index: 999;
+            cursor: pointer;
+        }
+        #back-body{
+            width: 32px;
+            position: absolute;
+            top: 95px;
+            left: 30px;
+            z-index: 999;
+            cursor: pointer;
             display: none;
         }
     </style>
