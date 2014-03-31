@@ -1,6 +1,6 @@
 {% for article in articles %}
     <div class="article-item">
-        <a href="{{ path('article',{rubrique: article.rubrique, link: article.link}) }}">
+        <a href="{{ path('article',{rubrique: article.rubrique.rubrique, link: article.link}) }}">
             <div class="article-title">{{ article.title |  raw}}</div>
         </a>
         <div class="article-announce">{{ article.announce | raw}}</div>
