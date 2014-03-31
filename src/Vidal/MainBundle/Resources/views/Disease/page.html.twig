@@ -158,6 +158,8 @@
                 renderBody();
             }else{
                 subParty = $(this).attr('data-key');
+                $('#select-party').children('optgroup').children('option').filter(function(){ return $(this).val() == subParty }).attr('selected' , 'selected');
+                $('#select-party').trigger("chosen:updated");
                 renderSymptom();
             }
             return false;
@@ -236,6 +238,7 @@
             $('#state-back').fadeOut();
             $('#h2-disease').fadeIn(0);
             $('#h2-state').fadeOut(0);
+            document.location.href = '#h2-disease';
         });
 
         $('#select-disease').on('click','li',function(){
