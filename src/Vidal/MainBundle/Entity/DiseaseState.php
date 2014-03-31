@@ -20,7 +20,7 @@ class DiseaseState extends  BaseEntity
 
     /**
      * @ORM\ManyToMany(targetEntity = "Disease", inversedBy="states")
-     * @ORM\JoinTable(name="Disease_disease_state",
+     * @ORM\JoinTable(name="disease_disease_state",
      * 		joinColumns={@ORM\JoinColumn(name="state_id", referencedColumnName="id")},
      * 		inverseJoinColumns={@ORM\JoinColumn(name="disease_id", referencedColumnName="id")})
      */
