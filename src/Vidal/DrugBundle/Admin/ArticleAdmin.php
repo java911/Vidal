@@ -37,12 +37,8 @@ class ArticleAdmin extends Admin
 			->add('type', null, array('label' => 'Категория'))
 			->add('announce', null, array('label' => 'Анонс'))
 			->add('body', null, array('label' => 'Основное содержимое'))
-			->add('public', null, array('label' => 'Общедоступна', 'help' => 'Доступна всем, а без галочки - только врачам'))
-			->add('atc', null, array('label' => 'Код АТХ'))
-			->add('infoPage', null, array('label' => 'Информационная страница'))
 			->add('enabled', null, array('label' => 'Активна'))
-			->add('date', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
-			->add('updated', null, array('label' => 'Дата последнего обновления', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'));
+			->add('date', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'));
 	}
 
 	protected function configureFormFields(FormMapper $formMapper)
@@ -50,13 +46,12 @@ class ArticleAdmin extends Admin
 		$formMapper
 			->add('title', null, array('label' => 'Заголовок', 'required' => true))
 			->add('link', null, array('label' => 'Адрес страницы', 'required' => true, 'help' => 'латинские буквы и цифры, слова через тире'))
-			->add('rubrique', null, array('label' => 'Рубрика', 'required' => false, 'empty_value' => 'выберите', 'help' => 'Указывается только для публичих статей Энциклопедии'))
+			->add('rubrique', null, array('label' => 'Рубрика', 'required' => true, 'empty_value' => 'выберите', 'help' => 'Указывается только для публичих статей Энциклопедии'))
 			->add('type', null, array('label' => 'Категория', 'required' => false, 'empty_value' => 'не указано'))
 			->add('announce', null, array('label' => 'Анонс', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('body', null, array('label' => 'Основное содержимое', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
-			->add('public', null, array('label' => 'Только для врачей', 'required' => false, 'help' => 'Доступна всем, а без галочки - только врачам'))
-			->add('atc', 'entity', array(
-				'label'         => 'Код АТХ',
+			->add('atcCodes', 'entity', array(
+				'label'         => 'Коды АТХ',
 				'class'         => 'VidalDrugBundle:ATC',
 				'query_builder' => function (EntityRepository $er) {
 						return $er->createQueryBuilder('atc')
@@ -64,9 +59,23 @@ class ArticleAdmin extends Admin
 					},
 				'empty_value'   => 'не указано',
 				'required'      => false,
+				'multiple'      => true,
 			))
-			->add('infoPage', 'entity', array(
-				'label'         => 'Информационная страница',
+			->add('molecules', 'entity', array(
+				'label'         => 'Активные вещества',
+				'help'          => '(Molecule)',
+				'class'         => 'VidalDrugBundle:Molecule',
+				'query_builder' => function (EntityRepository $er) {
+						return $er->createQueryBuilder('m')
+							->orderBy('m.RusName', 'ASC');
+					},
+				'empty_value'   => 'не указано',
+				'required'      => false,
+				'multiple'      => true,
+			))
+			->add('infoPages', 'entity', array(
+				'label'         => 'Представительства',
+				'help'          => 'Информационные страницы (InfoPage)',
 				'class'         => 'VidalDrugBundle:InfoPage',
 				'query_builder' => function (EntityRepository $er) {
 						return $er->createQueryBuilder('ip')
@@ -74,20 +83,38 @@ class ArticleAdmin extends Admin
 					},
 				'empty_value'   => 'не указано',
 				'required'      => false,
+				'multiple'      => true,
 			))
 			->add('nozologies', 'entity', array(
 				'label'         => 'Заболевания МКБ-10',
+				'help'          => '(Nozology)',
 				'class'         => 'VidalDrugBundle:Nozology',
 				'query_builder' => function (EntityRepository $er) {
 						return $er->createQueryBuilder('n')
 							->orderBy('n.NozologyCode', 'ASC');
 					},
-				'multiple'      => true,
 				'required'      => false,
 				'empty_value'   => 'не указано',
+				'multiple'      => true,
 			))
+//			->add('documents', 'entity', array(
+//				'label'         => 'Описания препаратов',
+//				'help'          => '(Document)',
+//				'class'         => 'VidalDrugBundle:Document',
+//				'query_builder' => function (EntityRepository $er) {
+//						return $er->createQueryBuilder('d')
+//							->orderBy('d.RusName', 'ASC');
+//					},
+//				'required'      => false,
+//				'empty_value'   => 'не указано',
+//				'multiple'      => true,
+//			))
 			->add('date', null, array('label' => 'Дата создания', 'required' => true))
-			->add('enabled', null, array('label' => 'Активна', 'required' => true));
+			->add('synonym', null, array('label' => 'Синонимы', 'required' => false, 'help' => 'Через ;'))
+			->add('metaTitle', null, array('label' => 'Мета заголовок', 'required' => false))
+			->add('metaDescription', null, array('label' => 'Мета описание', 'required' => false))
+			->add('metaKeywords', null, array('label' => 'Мета ключевые слова', 'required' => false))
+			->add('enabled', null, array('label' => 'Активна', 'required' => false));
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -110,10 +137,7 @@ class ArticleAdmin extends Admin
 			->add('link', null, array('label' => 'Адрес страницы', 'help' => 'латинские буквы и цифры, слова через тире'))
 			->add('rubrique', null, array('label' => 'Рубрика'))
 			->add('type', null, array('label' => 'Категория'))
-			->add('atc', null, array('label' => 'Код АТХ'))
-			->add('infoPage', null, array('label' => 'Информационная страница'))
-			->add('created', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
-			->add('public', null, array('label' => 'Только для врачей', 'template' => 'VidalDrugBundle:Sonata:swap_public.html.twig'))
+			->add('date', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
 			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',

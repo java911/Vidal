@@ -50,22 +50,26 @@ class Article extends BaseEntity
 	/**
 	 * @ORM\ManyToMany(targetEntity="Document", inversedBy="articles")
 	 * @ORM\JoinTable(name="article_document",
-	 * 		joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
-	 *		inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})
+	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})
 	 */
 	protected $documents;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="ATC", inversedBy="articles")
-	 * @ORM\JoinColumn(name="atc", referencedColumnName="ATCCode")
+	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="articles")
+	 * @ORM\JoinTable(name="article_atc",
+	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="ATCCode", referencedColumnName="ATCCode")})
 	 */
-	protected $atc;
+	protected $atcCodes;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="InfoPage", inversedBy="articles")
-	 * @ORM\JoinColumn(name="infoPage", referencedColumnName="InfoPageID")
+	 * @ORM\ManyToMany(targetEntity="InfoPage", inversedBy="articles")
+	 * @ORM\JoinTable(name="article_infopage",
+	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")})
 	 */
-	protected $infoPage;
+	protected $infoPages;
 
 	/** @ORM\ManyToOne(targetEntity="ArticleType", inversedBy="articles") */
 	protected $type;
@@ -88,8 +92,8 @@ class Article extends BaseEntity
 	/** @ORM\ManyToOne(targetEntity="ArticleRubrique", inversedBy="articles") */
 	protected $rubrique;
 
-	/** @ORM\ManyToOne(targetEntity="Subdivision", inversedBy="articles") */
-	protected $subdivision;
+	/** @ORM\Column(type="integer", nullable=false) */
+	protected $priority;
 
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $subdivisionId;
@@ -97,19 +101,14 @@ class Article extends BaseEntity
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $subclassId;
 
-	/** @ORM\Column(type="integer", nullable=true) */
-	protected $oldId;
-
-	/** @ORM\Column(type="integer", nullable=false) */
-	protected $priority;
-
 	public function __construct()
 	{
 		$this->nozologies = new ArrayCollection();
 		$this->molecules  = new ArrayCollection();
 		$this->documents  = new ArrayCollection();
+		$this->atcCodes   = new ArrayCollection();
+		$this->atcCodes   = new ArrayCollection();
 		$this->public     = true;
-		$this->author     = 'Доктор Видаль: медицинская энциклопедия www.vidal.ru';
 		$now              = new \DateTime('now');
 		$this->created    = $now;
 		$this->updated    = $now;
@@ -139,38 +138,6 @@ class Article extends BaseEntity
 	}
 
 	/**
-	 * @param mixed $atc
-	 */
-	public function setAtc($atc)
-	{
-		$this->atc = $atc;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getAtc()
-	{
-		return $this->atc;
-	}
-
-	/**
-	 * @param mixed $author
-	 */
-	public function setAuthor($author)
-	{
-		$this->author = $author;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getAuthor()
-	{
-		return $this->author;
-	}
-
-	/**
 	 * @param mixed $body
 	 */
 	public function setBody($body)
@@ -184,22 +151,6 @@ class Article extends BaseEntity
 	public function getBody()
 	{
 		return $this->body;
-	}
-
-	/**
-	 * @param mixed $infoPage
-	 */
-	public function setInfoPage($infoPage)
-	{
-		$this->infoPage = $infoPage;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getInfoPage()
-	{
-		return $this->infoPage;
 	}
 
 	/**
@@ -516,5 +467,37 @@ class Article extends BaseEntity
 	public function getDocuments()
 	{
 		return $this->documents;
+	}
+
+	/**
+	 * @param mixed $atcCodes
+	 */
+	public function setAtcCodes($atcCodes)
+	{
+		$this->atcCodes = $atcCodes;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getAtcCodes()
+	{
+		return $this->atcCodes;
+	}
+
+	/**
+	 * @param mixed $infoPages
+	 */
+	public function setInfoPages($infoPages)
+	{
+		$this->infoPages = $infoPages;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getInfoPages()
+	{
+		return $this->infoPages;
 	}
 }

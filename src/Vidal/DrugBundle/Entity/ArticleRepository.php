@@ -16,15 +16,4 @@ class ArticleRepository extends EntityRepository
 		')->setParameter('rubriqueId', $rubrique->getId())
 			->getResult();
 	}
-
-	public function getQueryBySubdivision($subId)
-	{
-		return $this->_em->createQuery('
-			SELECT a
-			FROM VidalDrugBundle:Article a
-			WHERE a.subdivision = :subId
-				AND a.enabled = TRUE
-			ORDER BY a.date DESC, a.priority DESC
-		')->setParameter('subId', $subId);
-	}
 }

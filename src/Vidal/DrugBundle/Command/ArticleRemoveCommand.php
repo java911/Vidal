@@ -18,22 +18,25 @@ class ArticleRemoveCommand extends ContainerAwareCommand
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$em   = $this->getContainer()->get('doctrine')->getManager('drug');
+		$em       = $this->getContainer()->get('doctrine')->getManager('drug');
 		$articles = $em->createQuery('
 			SELECT a
-			FROM VidalDrugBundle:Article a
+			FROM VidalDrugBundle:Art a
 			ORDER BY a.priority DESC
 		')->getResult();
 
 		$grouped = array();
+		$removed = 0;
 
-		foreach ($articles as $article) {
-			$key = $article->getLink();
+		foreach ($articles as $a) {
+			$key = $a->getOldId();
 			if (!isset($grouped[$key])) {
-				$grouped[$key] = '';
+				$grouped[$key] = $a;
 			}
 			else {
-				$em->remove($article);
+				$em->remove($grouped[$key]);
+				$removed++;
+				$output->writeln($removed);
 			}
 		}
 

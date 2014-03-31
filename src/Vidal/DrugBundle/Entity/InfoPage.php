@@ -69,24 +69,39 @@ class InfoPage
 	 */
 	protected $represAndDistribs;
 
-	/** @ORM\OneToMany(targetEntity="Article", mappedBy="infoPage") */
+	/**
+	 * @ORM\ManyToMany(targetEntity="Article", mappedBy="infoPages")
+	 * @ORM\JoinTable(name="article_infopage",
+	 *        joinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
+	 */
 	protected $articles;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Art", mappedBy="infoPages")
+	 * @ORM\JoinTable(name="art_infopage",
+	 *        joinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")})
+	 */
+	protected $arts;
 
 	public function __construct()
 	{
 		$this->pictures          = new ArrayCollection();
 		$this->documentInfoPages = new ArrayCollection();
 		$this->articles          = new ArrayCollection();
+		$this->arts              = new ArrayCollection();
 	}
 
 	public function __toString()
 	{
-		return $this->RusName;
+		return $this->InfoPageID . ' - ' . $this->RusName;
 	}
 
 	/**
 	 * @param mixed $DateTextModified
 	 */
+
 	public function setDateTextModified($DateTextModified)
 	{
 		$this->DateTextModified = $DateTextModified;
@@ -372,5 +387,19 @@ class InfoPage
 		return $this->CountryEditionCode;
 	}
 
+	/**
+	 * @param mixed $arts
+	 */
+	public function setArts($arts)
+	{
+		$this->arts = $arts;
+	}
 
+	/**
+	 * @return mixed
+	 */
+	public function getArts()
+	{
+		return $this->arts;
+	}
 }

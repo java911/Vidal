@@ -5,8 +5,8 @@ namespace Vidal\DrugBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/** @ORM\Entity @ORM\Table(name="article_type") */
-class ArticleType
+/** @ORM\Entity @ORM\Table(name="art_type") */
+class ArtType
 {
 	/** @ORM\Column(type="integer") @ORM\Id @ORM\GeneratedValue */
 	protected $id;
@@ -14,33 +14,17 @@ class ArticleType
 	/** @ORM\Column(length=255, unique=true) */
 	protected $title;
 
-	/** @ORM\OneToMany(targetEntity="Article", mappedBy="type") */
-	protected $articles;
+	/** @ORM\OneToMany(targetEntity="Art", mappedBy="type") */
+	protected $arts;
 
 	public function __construct()
 	{
-		$this->articles = new ArrayCollection();
+		$this->arts = new ArrayCollection();
 	}
 
 	public function __toString()
 	{
 		return empty($this->title) ? '' : $this->title;
-	}
-
-	/**
-	 * @param mixed $articles
-	 */
-	public function setArticles($articles)
-	{
-		$this->articles = $articles;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getArticles()
-	{
-		return $this->articles;
 	}
 
 	/**
@@ -65,5 +49,21 @@ class ArticleType
 	public function getTitle()
 	{
 		return $this->title;
+	}
+
+	/**
+	 * @param mixed $arts
+	 */
+	public function setArts($arts)
+	{
+		$this->arts = $arts;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getArts()
+	{
+		return $this->arts;
 	}
 }

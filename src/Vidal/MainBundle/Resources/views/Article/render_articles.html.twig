@@ -4,7 +4,7 @@
 			{% for article in pagination %}
 				<div class="article">
 					<div class="article-title">
-						<a href="/app_dev.php{{ sub.url }}{{ article.link }}_{{ article.oldId }}">{{ article }}</a>
+						<a href="/app_dev.php{{ sub.url }}{{ article.link }}_{{ article.id }}">{{ article }}</a>
 					</div>
 					<div class="article-announse">
 						{{ article.announce|raw }}

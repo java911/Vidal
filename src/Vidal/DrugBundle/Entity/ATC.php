@@ -41,14 +41,28 @@ class ATC
 	 */
 	protected $documents;
 
-	/** @ORM\OneToMany(targetEntity="Article", mappedBy="atc") */
+	/**
+	 * @ORM\ManyToMany(targetEntity="Article", mappedBy="atcCodes")
+	 * @ORM\JoinTable(name="article_atc",
+	 *        joinColumns={@ORM\JoinColumn(name="ATCCode", referencedColumnName="ATCCode")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
+	 */
 	protected $articles;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Art", mappedBy="atcCodes")
+	 * @ORM\JoinTable(name="art_atc",
+	 *        joinColumns={@ORM\JoinColumn(name="ATCCode", referencedColumnName="ATCCode")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")})
+	 */
+	protected $arts;
 
 	public function __construct()
 	{
 		$this->children = new ArrayCollection();
 		$this->products = new ArrayCollection();
 		$this->articles = new ArrayCollection();
+		$this->arts     = new ArrayCollection();
 	}
 
 	public function getId()
@@ -58,7 +72,7 @@ class ATC
 
 	public function __toString()
 	{
-		return $this->ATCCode;
+		return $this->ATCCode . ' - ' . $this->RusName;
 	}
 
 	/**
@@ -203,5 +217,21 @@ class ATC
 	public function getDocuments()
 	{
 		return $this->documents;
+	}
+
+	/**
+	 * @param mixed $arts
+	 */
+	public function setArts($arts)
+	{
+		$this->arts = $arts;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getArts()
+	{
+		return $this->arts;
 	}
 }

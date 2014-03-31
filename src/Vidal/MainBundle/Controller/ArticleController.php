@@ -148,8 +148,8 @@ class ArticleController extends Controller
 					$part = substr($part, 0, $posDot);
 				}
 
-				$oldId   = substr($part, $pos + 1);
-				$article = $em->getRepository('VidalDrugBundle:Article')->findOneByOldId($oldId);
+				$id   = substr($part, $pos + 1);
+				$article = $em->getRepository('VidalDrugBundle:Article')->findOneById($id);
 
 				if (!$article) {
 					throw $this->createNotFoundException();
@@ -178,7 +178,7 @@ class ArticleController extends Controller
 		$params['paths'] = $paths;
 
 		$params['pagination'] = $this->get('knp_paginator')->paginate(
-			$em->getRepository('VidalDrugBundle:Article')->getQueryBySubdivision($sub->getId()),
+			$em->getRepository('VidalDrugBundle:Art')->getQueryBySubdivision($sub->getId()),
 			$request->query->get('p', 1),
 			self::ARTICLES_PER_PAGE
 		);
