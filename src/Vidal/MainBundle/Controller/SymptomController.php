@@ -87,11 +87,20 @@ class SymptomController extends Controller{
         $state = $this->getDoctrine()->getRepository('VidalMainBundle:DiseaseState')->findOneById($stateId);
         $articlesId = $this->getDoctrine()->getRepository('VidalMainBundle:DiseaseStateArticle')->findByDiseaseState($state);
         $articles = array();
-        foreach ( $articlesId as $article){
-            $articles[] = $this->getDoctrine()->getManager('drug')->getRepository('VidalDrugBundle:Article')->findOneById($article->getArticleId());
+        $article1 = null;
+        foreach ( $articlesId as $key => $article){
+            if ($key == 0){
+                $article1 = $this->getDoctrine()->getManager('drug')->getRepository('VidalDrugBundle:Article')->findOneById($article->getArticleId());
+            }else{
+                $articles[] = $this->getDoctrine()->getManager('drug')->getRepository('VidalDrugBundle:Article')->findOneById($article->getArticleId());
+            }
         }
+
+
+
         $articles = $articles;
         return array(
+            'article1'   => $article1,
             'articles'   => $articles,
         );
     }

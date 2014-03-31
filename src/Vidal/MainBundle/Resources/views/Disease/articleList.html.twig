@@ -1,3 +1,9 @@
+{% if article1 is not null %}
+    <div class="article-item">
+            <div class="article-title">{{ article1.title |  raw}}</div>
+        <div class="article-announce">{{ article1.body | raw}}</div>
+    </div>
+{% endif %}
 {% for article in articles %}
     <div class="article-item">
         <a href="{{ path('article',{rubrique: article.rubrique.rubrique, link: article.link}) }}">
