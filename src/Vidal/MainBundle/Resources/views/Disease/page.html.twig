@@ -51,6 +51,10 @@
                 {{ render(controller('VidalMainBundle:Symptom:body')) }}
             </td>
             <td style="vertical-align: top; text-align: right">
+                <br />
+                <div style="text-align: left">
+                    <h2 id="h2-symptom">Укажите симптом:</h2>
+                </div>
                 <ul class="list-disease" id="select-symptom"></ul>
                 <br />
                 <div id="list-box">
@@ -61,6 +65,7 @@
                         <ul class="list-disease" id="select-state"></ul>
                     </div>
                     <a href="#" id="state-back">Назад</a>
+                    <br />
                 </div>
             </td>
         </tr>
@@ -220,6 +225,8 @@
 //                $('#select-disease').fadeIn();
             $('#select-state').fadeOut();
             $('#state-back').fadeOut();
+            $('#h2-disease').fadeOut(0);
+            $('#h2-state').fadeOut(0);
         });
 
         $('#select-symptom').on('click','li',function(){
