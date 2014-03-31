@@ -54,13 +54,11 @@
 
 			<script type="text/javascript">
 				$(document).ready(function() {
-					//_gaq.push(['_trackEvent', '
-					{{ group }}', 'show', '%показ баннера%']);
+					{#_gaq.push(['_trackEvent', ' {{ group }}', 'show', '%показ баннера%']);#}
 
 					$('#{{ group }} a').click(function() {
 						$.get(Routing.generate('banner_clicked', {'bannerId': '{{ banner.id }}'}));
-						//_gaq.push(['_trackEvent', '
-						{{ group }}', 'click', '%клик по баннеру%']);
+						{#_gaq.push(['_trackEvent', '{{ group }}', 'click', '%клик по баннеру%']);#}
 					});
 				});
 			</script>

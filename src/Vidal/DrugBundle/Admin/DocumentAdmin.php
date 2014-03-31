@@ -16,7 +16,7 @@ class DocumentAdmin extends Admin
         $formMapper
             ->add('RusName', 'text', array('label' => 'Русское название'))
             ->add('EngName', 'text', array('label' => 'Латинское название'))
-            ->add('CompiledComposition', 'textarea', array('label' => 'Описание'))
+            ->add('CompiledComposition', 'textarea', array('label' => 'Описание', 'attr' => array('class' => 'ckeditorfull')))
             ->add('ArticleID', 'text', array('label' => 'Артикуль'))
             ->add('YearEdition', 'text', array('label' => 'Год выпуска'))
             ->add('Elaboration', null, array('label' => 'Разработчик'))

@@ -84,7 +84,7 @@
 .filetree span.file { background: url(images/file.gif) 0 0 no-repeat; }
 
 .treeview li > span { margin-left: 2px; color: #476173; line-height: 15px; font-size: 15px; }
-.treeview li > span.t { color: #333; font-weight: bold; }
+.treeview li > span.t { color: #333; font-weight: bold; margin-right: 5px; }
 .treeview li > span:hover { color: #d71344; }
 .treeview li.selected > span { font-weight: bold; color: #d71344; }
 .treeview li * { vertical-align: top; font-style: normal; font-weight: normal; }

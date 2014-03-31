@@ -125,8 +125,18 @@ class NozologyRepository extends EntityRepository
 
 	public function findForTree()
 	{
+		return $this->_em->createQuery('
+			SELECT n.Code id, n.Name text
+			FROM VidalDrugBundle:Nozology n
+			WHERE n.Level = 0
+			ORDER BY n.NozologyCode
+		')->getResult();
+	}
+
+	public function jsonForTree()
+	{
 		$raw = $this->_em->createQuery('
-			SELECT n.Code, n.total, n.Name, n.Level, n.Class
+			SELECT n.Code id, n.Name text, n.Level
 			FROM VidalDrugBundle:Nozology n
 			ORDER BY n.NozologyCode
 		')->getResult();
@@ -134,7 +144,7 @@ class NozologyRepository extends EntityRepository
 		$nozologies = array();
 
 		foreach ($raw as $nozology) {
-			$key              = $nozology['Code'];
+			$key              = $nozology['id'];
 			$nozologies[$key] = $nozology;
 		}
 

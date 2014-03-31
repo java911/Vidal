@@ -1,3 +1,5 @@
+{% set type = app.request.get('t') %}
+
 <a href="{{ path('index') }}" class="header-link"></a>
 
 <div class="header-about"></div>
@@ -6,19 +8,19 @@
 
 <form id="search_form" class="search" method="get" action="{{ path('search') }}">
 	<select class="search-type" name="t">
-		<option value="all" {{ app.request.get('t') == 'all' ? 'selected="selected"' }}>
+		<option value="all" {{ type == 'all' ? 'selected="selected"' }}>
 			ВЕЗДЕ
 		</option>
-		<option value="product" {{ app.request.get('t') == 'product' ? 'selected="selected"' }}>
+		<option value="product" {{ type == 'product' ? 'selected="selected"' }}>
 			ПО ПРЕПАРАТУ
 		</option>
-		<option value="molecule" {{ app.request.get('t') == 'molecule' ? 'selected="selected"' }}>
+		<option value="molecule" {{ type == 'molecule' ? 'selected="selected"' }}>
 			ПО ВЕЩЕСТВУ
 		</option>
-		<option value="atc" {{ app.request.get('t') == 'atc' ? 'selected="selected"' }}>
+		<option value="atc" {{ type == 'atc' ? 'selected="selected"' }}>
 			ПО АТХ КОДУ
 		</option>
-		<option value="firm" {{ app.request.get('t') == 'firm' ? 'selected="selected"' }}>
+		<option value="firm" {{ type == 'firm' ? 'selected="selected"' }}>
 			ПО ПРОИЗВОДИТЕЛЮ
 		</option>
 	</select>
@@ -30,8 +32,8 @@
 	</div>
 
 	<div class="search-bad">
-		<input type="checkbox" id="bad" name="bad" class="checkbox" checked="checked"/>
-		<label for="search_bad_checkbox">включая БАДы</label>
+		<input type="checkbox" id="bad" name="bad" class="checkbox"/>
+		<label for="bad">включая БАДы</label>
 	</div>
 </form>
 

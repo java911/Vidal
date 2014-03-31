@@ -33,7 +33,7 @@ class IndexController extends Controller
 	}
 
 	/**
-	 * @Route("/qa", name="qa")
+	 * @Route("/otvety_specialistov", name="qa")
 	 * @Template()
 	 */
 	public function qaAction()

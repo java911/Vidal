@@ -48,12 +48,12 @@ class Article extends BaseEntity
 	protected $molecules;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Product", inversedBy="articles")
-	 * @ORM\JoinTable(name="article_product",
-	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
-	 *        inverseJoinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")})
+	 * @ORM\ManyToMany(targetEntity="Document", inversedBy="articles")
+	 * @ORM\JoinTable(name="article_document",
+	 * 		joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
+	 *		inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})
 	 */
-	protected $products;
+	protected $documents;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="ATC", inversedBy="articles")
@@ -107,7 +107,6 @@ class Article extends BaseEntity
 	{
 		$this->nozologies = new ArrayCollection();
 		$this->molecules  = new ArrayCollection();
-		$this->products   = new ArrayCollection();
 		$this->documents  = new ArrayCollection();
 		$this->public     = true;
 		$this->author     = 'Доктор Видаль: медицинская энциклопедия www.vidal.ru';
@@ -188,22 +187,6 @@ class Article extends BaseEntity
 	}
 
 	/**
-	 * @param mixed $documents
-	 */
-	public function setDocuments($documents)
-	{
-		$this->documents = $documents;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getDocuments()
-	{
-		return $this->documents;
-	}
-
-	/**
 	 * @param mixed $infoPage
 	 */
 	public function setInfoPage($infoPage)
@@ -272,22 +255,6 @@ class Article extends BaseEntity
 		$this->nozologies[] = $nozology;
 
 		return $this;
-	}
-
-	/**
-	 * @param mixed $products
-	 */
-	public function setProducts($products)
-	{
-		$this->products = $products;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getProducts()
-	{
-		return $this->products;
 	}
 
 	/**
@@ -533,5 +500,21 @@ class Article extends BaseEntity
 	public function getPriority()
 	{
 		return $this->priority;
+	}
+
+	/**
+	 * @param mixed $documents
+	 */
+	public function setDocuments($documents)
+	{
+		$this->documents = $documents;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDocuments()
+	{
+		return $this->documents;
 	}
 }

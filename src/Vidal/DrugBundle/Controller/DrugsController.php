@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Lsw\SecureControllerBundle\Annotation\Secure;
 
 class DrugsController extends Controller
 {
@@ -94,11 +95,34 @@ class DrugsController extends Controller
 	 *
 	 * @Route("drugs/atc-ajax", name="atc_ajax", options={"expose":true})
 	 */
-	public function atcAjaxAction()
+	public function atcAjaxAction(Request $request)
 	{
-		$html = $this->renderView('VidalDrugBundle:Search:tree_atc_generated.html.twig');
+		if ($request->request->has('root')) {
+			$file = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Generated' . DIRECTORY_SEPARATOR . 'atc.json';
+			$json = json_decode(file_get_contents($file), true);
+			$root = $request->request->get('root');
+			$data = $json[$root]['children'];
 
-		return new JsonResponse($html);
+			return new JsonResponse($data);
+		}
+
+		return new JsonResponse();
+	}
+
+	/**
+	 * Функция генерации дерева с кодами ATC
+	 *
+	 * @Route("drugs/atc-generator", name="atc_generator")
+	 * @Template("VidalDrugBundle:Drugs:atc_generator.html.twig")
+	 * @Secure(roles="ROLE_ADMIN")
+	 */
+	public function atcGeneratorAction()
+	{
+		$em    = $this->getDoctrine()->getManager('drug');
+		$repo  = $em->getRepository('VidalDrugBundle:ATC');
+		$codes = $repo->findForTree();
+
+		return array('codes' => $codes);
 	}
 
 	/**
@@ -156,11 +180,18 @@ class DrugsController extends Controller
 	 *
 	 * @Route("drugs/kfu-ajax", name="kfu_ajax", options={"expose":true})
 	 */
-	public function kfuAjaxAction()
+	public function kfuAjaxAction(Request $request)
 	{
-		$html = $this->renderView('VidalDrugBundle:Drugs:kfu_generated.html.twig');
+		if ($request->request->has('root')) {
+			$file = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Generated' . DIRECTORY_SEPARATOR . 'kfu.json';
+			$json = json_decode(file_get_contents($file), true);
+			$root = $request->request->get('root');
+			$data = $json[$root]['children'];
 
-		return new JsonResponse($html);
+			return new JsonResponse($data);
+		}
+
+		return new JsonResponse();
 	}
 
 	/**
@@ -168,6 +199,7 @@ class DrugsController extends Controller
 	 *
 	 * @Route("drugs/kfu-generator", name="kfu_generator")
 	 * @Template("VidalDrugBundle:Drugs:kfu_generator.html.twig")
+	 * @Secure(roles="ROLE_ADMIN")
 	 */
 	public function kfuGeneratorAction()
 	{
@@ -175,27 +207,7 @@ class DrugsController extends Controller
 		$repo  = $em->getRepository('VidalDrugBundle:ClinicoPhPointers');
 		$codes = $repo->findForTree();
 
-		# надо сгруппировать по родителю (запихпуть в list родителя дочерние)
-		for ($i = 14; $i > 0; $i = $i - 3) {
-			foreach ($codes as $codeValue => $code) {
-				if (strlen($codeValue) == $i) {
-					$key = substr($codeValue, 0, -3);
-					if (isset($codes[$key]) && strlen($codeValue) > strlen($key)) {
-						$codes[$key]['list'][$codeValue] = $code;
-					}
-				}
-			}
-		}
-
-		$grouped = array();
-
-		foreach ($codes as $codeValue => $code) {
-			if (strlen($codeValue) == 2) {
-				$grouped[] = $code;
-			}
-		}
-
-		return array('codes' => $grouped);
+		return array('codes' => $codes);
 	}
 
 	/**
@@ -349,11 +361,18 @@ class DrugsController extends Controller
 	 *
 	 * @Route("drugs/nosology-ajax", name="nosology_ajax", options={"expose":true})
 	 */
-	public function nosologyAjaxAction()
+	public function nosologyAjaxAction(Request $request)
 	{
-		$html = $this->renderView('VidalDrugBundle:Drugs:nosology_generated.html.twig');
+		if ($request->request->has('root')) {
+			$file = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Generated' . DIRECTORY_SEPARATOR . 'nosology.json';
+			$json = json_decode(file_get_contents($file), true);
+			$root = $request->request->get('root');
+			$data = $json[$root]['children'];
 
-		return new JsonResponse($html);
+			return new JsonResponse($data);
+		}
+
+		return new JsonResponse();
 	}
 
 	/**
@@ -361,51 +380,14 @@ class DrugsController extends Controller
 	 *
 	 * @Route("drugs/nosology-generator", name="nosology_generator")
 	 * @Template("VidalDrugBundle:Drugs:nosology_generator.html.twig")
+	 * @Secure(roles="ROLE_ADMIN")
 	 */
 	public function nosologyGeneratorAction()
 	{
 		$em         = $this->getDoctrine()->getManager('drug');
 		$nozologies = $em->getRepository('VidalDrugBundle:Nozology')->findForTree();
 
-		$finds = array();
-
-		$i = 0;
-		foreach ($nozologies as $code => &$n) {
-			$n['i']  = $i;
-			$finds[] = $n;
-			$i++;
-		}
-
-		# надо сгруппировать по родителю (запихпуть в list родителя дочерние)
-		for ($i = 3; $i > 0; $i--) {
-			foreach ($nozologies as $code => &$nozology) {
-				if ($nozology['Level'] == $i) {
-					# надо найти родителя
-					$prev  = false;
-					$minus = 1;
-					while (!$prev) {
-						$prevIndex = $nozology['i'] - $minus;
-						if ($finds[$prevIndex]['Level'] < $nozology['Level']) {
-							$prev = $finds[$prevIndex];
-						}
-						$minus++;
-					}
-					$prevCode                        = $prev['Code'];
-					$nozologies[$prevCode]['list'][] = $nozology;
-				}
-			}
-		}
-
-		# надо взять только верхний уровень
-		$grouped = array();
-
-		foreach ($nozologies as $code => $nozology) {
-			if ($nozology['Level'] == 0) {
-				$grouped[] = $nozology;
-			}
-		}
-
-		return array('codes' => $grouped);
+		return array('codes' => $nozologies);
 	}
 
 	/** Получить массив идентификаторов продуктов */

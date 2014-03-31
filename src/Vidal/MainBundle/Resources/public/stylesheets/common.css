@@ -907,7 +907,7 @@ h1 {
 #search_form {
 	position: absolute;
 	top:      36px;
-	left:     516px;
+	right:    0;
 }
 #search_form .chosen-container-single .chosen-single {
 	border-radius: 0;
@@ -950,7 +950,7 @@ h1 {
 .searche-link {
 	position:  absolute;
 	top:       92px;
-	left:      812px;
+	right:     0;
 	font-size: 14px;
 }
 .searche-link a {
@@ -1012,7 +1012,7 @@ h1 {
 	float:             left;
 	width:             130px;
 	height:            99px;
-	background-image:  url(../images/bg/menu_small.png);
+	background-image:  url(../images/bg/menu_small2.png);
 	background-repeat: no-repeat;
 }
 .menu-drugs {
@@ -1040,7 +1040,7 @@ h1 {
 	background-position: -390px -101px;
 }
 .menu-big a {
-	background-image: url(../images/bg/menu_big.png);
+	background-image: url(../images/bg/menu_big2.png);
 	height:           246px;
 }
 .menu-big .menu-drugs {

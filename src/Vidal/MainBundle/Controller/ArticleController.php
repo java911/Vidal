@@ -59,7 +59,7 @@ class ArticleController extends Controller
 		$articles = $em->getRepository('VidalDrugBundle:Article')->ofRubrique($rubrique);
 
 		return array(
-			'title'     => $rubrique . ' | Статьи',
+			'title'     => $rubrique . ' | Энциклопедия',
 			'menu_left' => 'articles',
 			'rubrique'  => $rubrique,
 			'articles'  => $articles,
@@ -80,7 +80,7 @@ class ArticleController extends Controller
 		$em = $this->getDoctrine()->getManager('drug');
 
 		return array(
-			'title'     => 'Статьи',
+			'title'     => 'Энциклопедия',
 			'menu_left' => 'articles',
 			'rubriques' => $em->getRepository('VidalDrugBundle:ArticleRubrique')->findEnabled()
 		);
@@ -130,7 +130,7 @@ class ArticleController extends Controller
 		$paths    = array();
 
 		foreach ($urlParts as $part) {
-			$pos = strpos($part, '_');
+			$pos = strrpos($part, '_');
 
 			# если это путь - заносим в массив для хлебных крошек, иначе - это статья
 			if ($pos === false) {

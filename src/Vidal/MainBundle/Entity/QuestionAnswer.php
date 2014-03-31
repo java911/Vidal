@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class QuestionAnswer extends BaseEntity
 {
 	/**
-	 * @ORM\Column(length=255)
+	 * @ORM\Column(type="text")
 	 * @Assert\NotBlank(message="Пожалуйста, укажите вопрос")
 	 */
 	protected $question;
