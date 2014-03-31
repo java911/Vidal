@@ -166,6 +166,11 @@
         });
 
         $('#select-state').on('click','li', function(){
+            $('#select-state').children('li').css('background','#FFFFFF');
+            $('#select-state').children('li').css('color','#D71344');
+            $(this).css('background','#D71344');
+            $(this).css('color','#FFFFFF');
+
             state = $(this).attr('data-key');
             url  = Routing.generate('render_symptom_article', { 'stateId' : state });
             $.ajax({
@@ -186,6 +191,7 @@
             $('#select-disease').fadeIn();
             $('#select-state').fadeOut();
             $('#state-back').fadeOut();
+            $('#articles-box').html('');
             return false;
         });
 
@@ -229,23 +235,34 @@
             $('#state-back').fadeOut();
             $('#h2-disease').fadeOut(0);
             $('#h2-state').fadeOut(0);
+            $('#articles-box').html('');
         });
 
         $('#select-symptom').on('click','li',function(){
+            $('#select-symptom').children('li').css('background','#FFFFFF');
+            $('#select-symptom').children('li').css('color','#D71344');
+            $(this).css('background','#D71344');
+            $(this).css('color','#FFFFFF');
             selectSymptomChange($(this));
             $('#select-disease').fadeIn();
             $('#select-state').fadeOut();
             $('#state-back').fadeOut();
             $('#h2-disease').fadeIn(0);
             $('#h2-state').fadeOut(0);
+            $('#articles-box').html('');
             document.location.href = '#h2-disease';
         });
 
         $('#select-disease').on('click','li',function(){
+            $('#select-disease').children('li').css('background','#FFFFFF');
+            $('#select-disease').children('li').css('color','#D71344');
+            $(this).css('background','#D71344');
+            $(this).css('color','#FFFFFF');
             selectDiseaseChange($(this));
             $('#state-back').fadeIn();
             $('#h2-disease').fadeOut(0);
             $('#h2-state').fadeIn(0);
+            $('#articles-box').html('');
         });
 
 
