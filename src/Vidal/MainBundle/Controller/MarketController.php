@@ -182,4 +182,42 @@ class MarketController extends Controller{
 
         return array('count' => $count );
     }
+
+
+    /**
+     * @Route("/set-to-basket-ajax/{code}/{count}", name="set_to_basket_ajax", defaults={"count"="1"}, options={"expose"=true})
+     */
+    public function setToBasketAjax($code, $count = 1){
+        $basket = new Basket();
+        $summa = 0;
+        $product = null;
+        $product = $basket->getProduct($code);
+        if ($product != null ){
+            $product->setCount($count);
+        }else{
+            $pr = $this->getDoctrine()->getRepository('VidalMainBundle:MarketDrug')->findOneByCode($code);
+            if ($pr != null){
+                $product = new Product();
+                $product->setCount($count);
+                $product->setTitle($pr->getTitle());
+                $product->setCode($pr->getCode());
+                $product->setGroup($pr->getGroup());
+                $product->setPrice($pr->getPrice());
+            }
+        }
+        if ($product != null){
+            $basket->setProduct($product);
+            $basket->save();
+            $product = $basket->getProduct($code);
+
+            $summa = $product->getPrice() * $product->getCount();
+            $summa =  number_format($summa,2,'.',',');
+            $summaAll = $basket->getSumma();
+            $s1 = number_format(( isset($summaAll['eapteka']) ? $summaAll['eapteka'] : 0 ),2,'.',',');
+            $s2 = number_format(( isset($summaAll['piluli']) ? $summaAll['piluli'] : 0 ),2,'.',',');
+            $s3 = number_format(( isset($summaAll['zdravzona']) ? $summaAll['zdravzona'] : 0 ),2,'.',',');
+        }
+        return new Response($summa.'|'.$s1.'|'.$s2.'|'.$s3);
+    }
+
 }

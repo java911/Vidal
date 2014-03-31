@@ -19,9 +19,11 @@
                     <td class="basket-title"><a href="#" target="_blank">{{ drug.title }}</a></td>
                     <td class="basket-org">{{ drug.manufacturer }}</td>
                     <td class="basket-price">{{ drug.price |number_format(2, '.', ',') }}&nbsp;р.</td>
-                    <td class="basket-count"><input type="text" class="inp" value="{{ drug.count }}"></td>
-                    <td class="basket-summa"><span class="summa-ajax">{{ ( drug.count * drug.price ) |number_format(2, '.', ',') }}</span>&nbsp;р.</td>
-                    <td class="basket-remove"><a href="{{ path('remove_to_basket', { 'code': drug.code } )}}">x</a></td>
+                    <td class="basket-count">
+                        <input type="text" id="{{ drug.code }}" class="inp" value="{{ drug.count }}">
+                    </td>
+                    <td class="basket-summa"><span class="summa-ajax" id="sum_{{ drug.code }}">{{ ( drug.count * drug.price ) |number_format(2, '.', ',') }}</span>&nbsp;р.</td>
+                    <td class="basket-remove"><a href="#">x</a></td>
                 </tr>
             {% endfor %}
             <tr>
@@ -55,8 +57,10 @@
                     <td class="basket-title"><a href="#" target="_blank">{{ drug.title }}</a></td>
                     <td class="basket-org">{{ drug.manufacturer }}</td>
                     <td class="basket-price">{{ drug.price |number_format(2, '.', ',') }}&nbsp;р.</td>
-                    <td class="basket-count"><input type="text" class="inp" value="{{ drug.count }}"></td>
-                    <td class="basket-summa"><span class="summa-ajax">{{ ( drug.count * drug.price ) |number_format(2, '.', ',') }}</span>&nbsp;р.</td>
+                    <td class="basket-count">
+                        <input type="text" id="{{ drug.code }}" class="inp" value="{{ drug.count }}">
+                    </td>
+                    <td class="basket-summa"><span class="summa-ajax" id="sum_{{ drug.code }}">{{ ( drug.count * drug.price ) |number_format(2, '.', ',') }}</span>&nbsp;р.</td>
                     <td class="basket-remove"><a href="#">x</a></td>
                 </tr>
             {% endfor %}
@@ -91,8 +95,10 @@
                     <td class="basket-title"><a href="#" target="_blank">{{ drug.title }}</a></td>
                     <td class="basket-org">{{ drug.manufacturer }}</td>
                     <td class="basket-price">{{ drug.price |number_format(2, '.', ',') }}&nbsp;р.</td>
-                    <td class="basket-count"><input type="text" class="inp" value="{{ drug.count }}"></td>
-                    <td class="basket-summa"><span class="summa-ajax">{{ ( drug.count * drug.price ) |number_format(2, '.', ',') }}</span>&nbsp;р.</td>
+                    <td class="basket-count">
+                        <input type="text" id="{{ drug.code }}" class="inp" value="{{ drug.count }}">
+                    </td>
+                    <td class="basket-summa"><span class="summa-ajax" id="sum_{{ drug.code }}">{{ ( drug.count * drug.price ) |number_format(2, '.', ',') }}</span>&nbsp;р.</td>
                     <td class="basket-remove"><a href="#">x</a></td>
                 </tr>
             {% endfor %}
@@ -111,8 +117,31 @@
         <br />
         <br />
     {% endif %}
+{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function(){
+            $('.basket-count').children('input').change(function(){
+                var code = $(this).attr('id');
+                var count = $(this).val();
+                console.log($(this));
+                $.ajax({
+                    type: "GET",
+                    url: Routing.generate('set_to_basket_ajax',{'code' : code, 'count' : count }),
+                    success: function(msg){
+                        msg = msg.split('|');
+                        $('#sum_'+code).html(msg[0]);
+                        $('.basket-itogo').eq(0).children('span').html(msg[1]+'&nbsp;р.');
+                        $('.basket-itogo').eq(1).children('span').html(msg[2]+'&nbsp;р.');
+                        $('.basket-itogo').eq(2).children('span').html(msg[3]+'&nbsp;р.');
 
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block stylesheets %}

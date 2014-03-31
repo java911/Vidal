@@ -87,6 +87,18 @@ class Basket{
         return $arr;
     }
 
+    public function getSumma(){
+        $arr = array();
+        foreach($this->drugs as $drug){
+            if (isset($arr[$drug->getGroupApt()])){
+                $arr[$drug->getGroupApt()]+=( $drug->getCount() * $drug->getPrice());
+            }else{
+                $arr[$drug->getGroupApt()]=( $drug->getCount() * $drug->getPrice());
+            }
+        }
+        return $arr;
+    }
+
     public function getCount(){
         $count = 0;
         foreach($this->drugs as $drug){
