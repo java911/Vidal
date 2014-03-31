@@ -71,7 +71,7 @@ class MarketOrder
     protected $created;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $groupApt;
 

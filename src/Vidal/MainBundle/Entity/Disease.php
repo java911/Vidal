@@ -19,7 +19,7 @@ class Disease extends BaseEntity
 
 	/**
 	 * @ORM\ManyToMany(targetEntity = "DiseaseSymptom", inversedBy="diseases")
-	 * @ORM\JoinTable(name="Disease_symptom_disease",
+	 * @ORM\JoinTable(name="disease_symptom_disease",
 	 *        joinColumns={@ORM\JoinColumn(name="disease_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="symptom_id", referencedColumnName="id")})
 	 */
@@ -32,7 +32,7 @@ class Disease extends BaseEntity
 
 	/**
 	 * @ORM\ManyToMany(targetEntity = "DiseaseState", mappedBy="diseases")
-	 * @ORM\JoinTable(name="Disease_disease_state",
+	 * @ORM\JoinTable(name="disease_disease_state",
 	 *        joinColumns={@ORM\JoinColumn(name="disease_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="state_id", referencedColumnName="id")})
 	 */

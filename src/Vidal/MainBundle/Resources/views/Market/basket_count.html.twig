@@ -1,0 +1,6 @@
+{% if count > 0 %}
+    <li>
+        <a href="{{ path('basket_list') }}"
+           class="{{ menu_left is defined and menu_left == 'basket_list' ? 'active' : 'dotted' }}">Корзина ( {{ count }} )</a>
+    </li>
+{% endif %}
