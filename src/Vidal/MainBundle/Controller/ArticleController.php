@@ -59,7 +59,7 @@ class ArticleController extends Controller
 		$articles = $em->getRepository('VidalDrugBundle:Article')->ofRubrique($rubrique);
 
 		return array(
-			'title'     => $rubrique . ' | Статьи',
+			'title'     => $rubrique . ' | Энциклопедия',
 			'menu_left' => 'articles',
 			'rubrique'  => $rubrique,
 			'articles'  => $articles,
@@ -80,7 +80,7 @@ class ArticleController extends Controller
 		$em = $this->getDoctrine()->getManager('drug');
 
 		return array(
-			'title'     => 'Статьи',
+			'title'     => 'Энциклопедия',
 			'menu_left' => 'articles',
 			'rubriques' => $em->getRepository('VidalDrugBundle:ArticleRubrique')->findEnabled()
 		);

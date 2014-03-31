@@ -6,22 +6,47 @@
 
 	{% if questionAnswers|length %}
 		<div class="qa-wrap">
-			{% for qa in questionAnswers %}
-				<div class="qa">
-					<div class="qa-header">
-						<div class="qa-controls">
-							<div class="qa-expand">показать</div>
-							<div class="qa-collapse">свернуть</div>
+			{% if isAdmin %}
+				{% for qa in questionAnswers %}
+					<div class="qa">
+						{# админам карандашик редактирования #}
+						<a class="admin-edit fade" target="_blank"
+						   href="{{ path('admin_vidal_main_questionanswer_edit', {'id':qa.id}) }}">
+							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+						</a>
+
+						<div class="qa-header">
+							<div class="qa-controls">
+								<div class="qa-expand">показать</div>
+								<div class="qa-collapse">свернуть</div>
+							</div>
+							<div class="qa-question">
+								{{ qa.question }}
+							</div>
 						</div>
-						<div class="qa-question">
-							{{ qa.question }}
+						<div class="qa-answer">
+							{{ qa.answer|raw }}
 						</div>
 					</div>
-					<div class="qa-answer">
-						{{ qa.answer|raw }}
+				{% endfor %}
+			{% else %}
+				{% for qa in questionAnswers %}
+					<div class="qa">
+						<div class="qa-header">
+							<div class="qa-controls">
+								<div class="qa-expand">показать</div>
+								<div class="qa-collapse">свернуть</div>
+							</div>
+							<div class="qa-question">
+								{{ qa.question }}
+							</div>
+						</div>
+						<div class="qa-answer">
+							{{ qa.answer|raw }}
+						</div>
 					</div>
-				</div>
-			{% endfor %}
+				{% endfor %}
+			{% endif %}
 		</div>
 	{% endif %}
 
@@ -32,6 +57,7 @@
 	{{ parent() }}
 	<style type="text/css">
 		.qa {
+			position:      relative;
 			border:        3px solid #eee;
 			margin-bottom: 10px;
 			padding:       11px 12px 10px;
