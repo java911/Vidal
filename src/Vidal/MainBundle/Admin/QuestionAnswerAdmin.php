@@ -48,8 +48,8 @@ class QuestionAnswerAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('question', null, array('label' => 'Вопрос', 'required' => true))
-			->add('answer', null, array('label' => 'Ответ', 'required' => true))
+			->add('question', null, array('label' => 'Вопрос', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
+			->add('answer', null, array('label' => 'Ответ', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('enabled', null, array('label' => 'Активен', 'required' => false))
 			->add('created', null, array(
 				'label'    => 'Дата создания',
