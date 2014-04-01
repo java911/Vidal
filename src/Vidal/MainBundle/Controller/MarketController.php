@@ -218,18 +218,21 @@ class MarketController extends Controller{
                 $order->setBody($xml);
                 $order->setEnabled(true);
                 $em->flush($order);
+
+                if ($group != 'zdravzona' ){
+                    $url = 'http://smacs.ru/feedbacks/'.md5($group.'_'.$order->getId().'vidal3L29y4');
+                    return $this->render("VidalMainBundle:Market:order_success.html.twig",array( 'url' => $url ));
+                }else{
+                    return $this->render("VidalMainBundle:Market:order_success_2.html.twig");
+                }
+
+            }else{
+                return array('form' => $form->createView());
             }
+        }else{
+            return array('form' => $form->createView());
         }
 
-//        $form = $builder->getRequestHandler($request);
-
-//        if ( $request->getMethod() == 'POST'){
-//            if ( $form->isValid() ){
-//                $order = $form->getViewData();
-//            }
-//        }
-
-        return array('form' => $form->createView());
     }
 
     /**
