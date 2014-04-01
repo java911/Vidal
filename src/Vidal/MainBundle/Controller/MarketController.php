@@ -29,6 +29,15 @@ class MarketController extends Controller{
                         '11' => '250',
                     );
 
+    protected $shippingTitle = array(
+        '1' => 'Курьером по Москве в пределах МКАД - 100 руб.',
+        '2' => 'Курьером по Москве за пределами МКАД - 150 руб.',
+        '3' => 'Ближнее Подмосковье - 250 руб.',
+        '4' => 'Подмосковье - 400 руб.',
+        '6' => 'Почтой по России (EMS)',
+        '10' => 'Самовывоз',
+        '11' => 'Срочная доставка в течение 2-х часов - 250 руб.',
+    );
     protected $status = array(
         0 => 'принят',
         1 => 'в обработке',
@@ -190,6 +199,7 @@ class MarketController extends Controller{
             ->add('email', null, array('label' => 'E-mail'))
             ->add('phone', null, array('label' => 'Телефон'))
             ->add('adress', null, array('label' => 'Адрес'))
+            ->add('shipping', 'choice', array('label' => 'Комментарий к доставке', 'choices' => $this->shippingTitle, 'attr' => array( 'class' => 'delivery-select')))
             ->add('comment', null, array('label' => 'Комментарий к доставке'))
             ->add('groupApt', 'hidden')
             ->add('submit', 'submit', array('label' => 'Отправить заказ', 'attr' => array('class' => 'btn-red')));
