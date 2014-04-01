@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Doctrine\ORM\EntityRepository;
+use Vidal\DrugBundle\Transformer\DocumentTransformer;
 
 class ArticleAdmin extends Admin
 {
@@ -43,6 +44,9 @@ class ArticleAdmin extends Admin
 
 	protected function configureFormFields(FormMapper $formMapper)
 	{
+		$em                  = $this->getModelManager()->getEntityManager($this->getSubject());
+		$documentTransformer = new DocumentTransformer($em);
+
 		$formMapper
 			->add('title', null, array('label' => 'Заголовок', 'required' => true))
 			->add('link', null, array('label' => 'Адрес страницы', 'required' => true, 'help' => 'латинские буквы и цифры, слова через тире'))
@@ -97,18 +101,9 @@ class ArticleAdmin extends Admin
 				'empty_value'   => 'не указано',
 				'multiple'      => true,
 			))
-//			->add('documents', 'entity', array(
-//				'label'         => 'Описания препаратов',
-//				'help'          => '(Document)',
-//				'class'         => 'VidalDrugBundle:Document',
-//				'query_builder' => function (EntityRepository $er) {
-//						return $er->createQueryBuilder('d')
-//							->orderBy('d.RusName', 'ASC');
-//					},
-//				'required'      => false,
-//				'empty_value'   => 'не указано',
-//				'multiple'      => true,
-//			))
+//			->add($formMapper->create('documents', 'text', array('label' => 'Описания препаратов', 'required' => false, 'by_reference' => false))
+//					->addModelTransformer($documentTransformer)
+//			)
 			->add('date', null, array('label' => 'Дата создания', 'required' => true))
 			->add('synonym', null, array('label' => 'Синонимы', 'required' => false, 'help' => 'Через ;'))
 			->add('metaTitle', null, array('label' => 'Мета заголовок', 'required' => false))
