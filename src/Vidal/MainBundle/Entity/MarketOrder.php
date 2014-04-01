@@ -76,6 +76,21 @@ class MarketOrder
     protected $groupApt;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $enabled = false;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $shipping = 1;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    protected $body = '';
+
+    /**
      * @param mixed $adress
      */
     public function setAdress($adress)
@@ -233,6 +248,54 @@ class MarketOrder
     public function getGroupApt()
     {
         return $this->groupApt;
+    }
+
+    /**
+     * @param mixed $enabled
+     */
+    public function setEnabled($enabled = false)
+    {
+        $this->enabled = $enabled;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param mixed $shipping
+     */
+    public function setShipping($shipping = 1)
+    {
+        $this->shipping = $shipping;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getShipping()
+    {
+        return $this->shipping;
+    }
+
+    /**
+     * @param mixed $body
+     */
+    public function setBody($body = '')
+    {
+        $this->body = $body;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBody()
+    {
+        return $this->body;
     }
 
 
