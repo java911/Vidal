@@ -240,4 +240,12 @@ class DocumentRepository extends EntityRepository
 
 		return $indications;
 	}
+
+	public function findOneByText($text)
+	{
+		$pos = strpos($text, ' ');
+		$id = intval(substr($text, 0, $pos));
+
+		return $this->findOneById($id);
+	}
 }

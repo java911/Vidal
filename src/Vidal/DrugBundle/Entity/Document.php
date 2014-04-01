@@ -213,7 +213,7 @@ class Document
 
 	public function __toString()
 	{
-		return empty($this->RusName) ? '' : $this->RusName;
+		return $this->getDocumentID() . (empty($this->RusName) ? '' : ' - ' . $this->RusName);
 	}
 
 	/**
