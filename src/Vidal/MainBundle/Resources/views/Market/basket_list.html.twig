@@ -23,7 +23,7 @@
                         <input type="text" id="{{ drug.code }}" class="inp" value="{{ drug.count }}">
                     </td>
                     <td class="basket-summa"><span class="summa-ajax" id="sum_{{ drug.code }}">{{ ( drug.count * drug.price ) |number_format(2, '.', ',') }}</span>&nbsp;р.</td>
-                    <td class="basket-remove"><a href="#">x</a></td>
+                    <td class="basket-remove"><a href="{{ path('remove_to_basket',{ 'code' : drug.code }) }}">x</a></td>
                 </tr>
             {% endfor %}
             <tr>
@@ -61,7 +61,7 @@
                         <input type="text" id="{{ drug.code }}" class="inp" value="{{ drug.count }}">
                     </td>
                     <td class="basket-summa"><span class="summa-ajax" id="sum_{{ drug.code }}">{{ ( drug.count * drug.price ) |number_format(2, '.', ',') }}</span>&nbsp;р.</td>
-                    <td class="basket-remove"><a href="#">x</a></td>
+                    <td class="basket-remove"><a href="{{ path('remove_to_basket',{ 'code' : drug.code }) }}">x</a></td>
                 </tr>
             {% endfor %}
             <tr>
@@ -99,7 +99,7 @@
                         <input type="text" id="{{ drug.code }}" class="inp" value="{{ drug.count }}">
                     </td>
                     <td class="basket-summa"><span class="summa-ajax" id="sum_{{ drug.code }}">{{ ( drug.count * drug.price ) |number_format(2, '.', ',') }}</span>&nbsp;р.</td>
-                    <td class="basket-remove"><a href="#">x</a></td>
+                    <td class="basket-remove"><a href="{{ path('remove_to_basket',{ 'code' : drug.code }) }}">x</a></td>
                 </tr>
             {% endfor %}
             <tr>
