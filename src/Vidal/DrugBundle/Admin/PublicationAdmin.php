@@ -69,6 +69,7 @@ class PublicationAdmin extends Admin
 				'empty_value'   => 'не указано',
 				'required'      => false,
 				'multiple'      => true,
+				'attr'          => array('placeholder' => 'Начните вводить название или ID'),
 			))
 			->add('molecules', 'entity', array(
 				'label'         => 'Активные вещества',
@@ -81,6 +82,7 @@ class PublicationAdmin extends Admin
 				'empty_value'   => 'не указано',
 				'required'      => false,
 				'multiple'      => true,
+				'attr'          => array('placeholder' => 'Начните вводить название или ID'),
 			))
 			->add('infoPages', 'entity', array(
 				'label'         => 'Представительства',
@@ -88,11 +90,13 @@ class PublicationAdmin extends Admin
 				'class'         => 'VidalDrugBundle:InfoPage',
 				'query_builder' => function (EntityRepository $er) {
 						return $er->createQueryBuilder('ip')
+							->where("ip.CountryEditionCode = 'RUS'")
 							->orderBy('ip.RusName', 'ASC');
 					},
 				'empty_value'   => 'не указано',
 				'required'      => false,
 				'multiple'      => true,
+				'attr'          => array('placeholder' => 'Начните вводить название или ID'),
 			))
 			->add('nozologies', 'entity', array(
 				'label'         => 'Заболевания МКБ-10',
@@ -105,6 +109,7 @@ class PublicationAdmin extends Admin
 				'required'      => false,
 				'empty_value'   => 'не указано',
 				'multiple'      => true,
+				'attr'          => array('placeholder' => 'Начните вводить название или ID'),
 			))
 			->add($formMapper->create('documents', 'text', array(
 					'label'        => 'Описания препаратов',
