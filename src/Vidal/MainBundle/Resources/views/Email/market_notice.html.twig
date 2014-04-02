@@ -24,19 +24,21 @@
             <td>{{ order.getSurName }}</td>
         </tr>
         <tr>
+            <td>E-mail:</td>
+            <td>{{ order.getEmail }}</td>
+        </tr>
+        <tr>
+            <td>Телефон:</td>
+            <td>{{ order.getPhone }}</td>
+        </tr>
+        <tr>
             <td>Адрес:</td>
             <td>{{ order.getAdress }}</td>
         </tr>
         <tr>
             <td>Способ доставки:</td>
             <td>
-                {{ order.shipping }}
-            </td>
-        </tr>
-        <tr>
-            <td>Стоимость доставки:</td>
-            <td>
-                {{ order.shippingPrice }}
+                {{ ship }}
             </td>
         </tr>
         <tr>
@@ -74,6 +76,7 @@
             <td></td>
             <td></td>
             <td colspan="2" align="right">
+                <br/>
                 <b>ИТОГО: {{ summa }}&nbsp;р.</b>
             </td>
         </tr>

@@ -106,4 +106,12 @@ class Basket{
         }
         return $count;
     }
+
+    public function clear($group){
+        foreach($this->drugs as $drug){
+            if ($drug->getGroupApt() == $drug){
+                unset($drug);
+            }
+        }
+    }
 }
