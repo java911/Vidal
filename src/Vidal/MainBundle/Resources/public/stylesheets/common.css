@@ -338,6 +338,10 @@ h1 {
 .raspberry {
 	color: #d71344;
 }
+#vidal .highlight {
+	color:       #d71344;
+	font-weight: bold;
+}
 .no-selection * {
 	-webkit-touch-callout: none;
 	-webkit-user-select:   none;
@@ -1221,4 +1225,23 @@ h1 {
 .footer-banner > div {
 	display:    inline-block;
 	margin-top: 20px;
+}
+
+/* description */
+.description {
+	border:        3px solid #eee;
+	font-size:     14px !important;
+	margin-bottom: 10px;
+	color:         #555;
+}
+.description > span {
+	display:       block;
+	background:    #f5f5f5;
+	padding:       4px 12px 7px;
+	color:         #476173;
+	font-size:     15px;
+	border-bottom: 1px solid #eee;
+}
+.description > div {
+	padding: 6px 12px 8px;
 }

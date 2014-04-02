@@ -6,7 +6,19 @@
 		{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' %}
 	{% endif %}
 
-	<div class="anons anons-drugs">Клинико-фармакологические указатели</div>
+	<div class="description">
+		<span>Клинико-фармакологический указатель</span>
+
+		<div>
+			Позволяет искать группы препаратов.
+			Cоставлен на основании материалов, представленных в российских и зарубежных монографиях по
+			фармакологии с использованием публикаций в периодических медицинских изданиях последних лет.
+			<br/>
+			<i>Например</i>:
+			<a href="#17983" data="17983">Гомеопатические средства</a>,
+			<a href="#17200" data="17217">Вакцины</a>.
+		</div>
+	</div>
 
 	{% include 'VidalDrugBundle:Drugs:kfu_generated.html.twig' %}
 {% endblock %}
@@ -48,6 +60,24 @@
 			$tree.on('click', 'i', function() {
 				location.href = Routing.generate('kfu_item', {'id': $(this).closest('li').attr('id') });
 				return false;
+			});
+
+			$('a[data="17983"]').click(function() {
+				$('#tree_collapse').click();
+				$tree.find('span').removeClass('highlight');
+				$('#17983 > div').click();
+				$('#17983 > span').addClass('highlight');
+			});
+
+			$('a[data="17217"]').click(function() {
+				$('#tree_collapse').click();
+				$tree.find('span').removeClass('highlight');
+				$('#17200 > div').click();
+				$('#17200 > span').addClass('highlight');
+				setTimeout(function() {
+					$('#17217 > div').click();
+					$('#17217 > span').addClass('highlight');
+				}, 1000);
 			});
 		});
 	</script>
