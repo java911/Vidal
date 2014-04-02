@@ -216,7 +216,7 @@ class MarketController extends Controller{
 
                 $xml = $this->generateXml($group, $order);
                 $basket = new Basket();
-                $this->zdrazonaSend($group, $order, $basket);
+                $this->mailSend($group, $order, $basket);
                 $order->setBody($xml);
                 $order->setEnabled(true);
                 $em->flush($order);
@@ -307,6 +307,7 @@ class MarketController extends Controller{
                             <total_cost>156.93</total_cost>
                             <order_time>".   time($order->getCreated())."</order_time>
                             <products>";
+
         $footer = "         </products>
                         </order>
                     </orders>";
@@ -321,11 +322,11 @@ class MarketController extends Controller{
                                 </product>";
         }
 
-        return $header.$xml.$header;
+        return $header.$xml.$footer;
     }
 
 
-    public function zdrazonaSend($group, $order,Basket $basket){
+    public function mailSend($group, $order,Basket $basket){
         $summa = $basket->getAmounts();
         $summa = $summa[$group];
         $basket = $basket->getAll();
@@ -337,5 +338,14 @@ class MarketController extends Controller{
             array('VidalMainBundle:Email:market_notice.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa )),
             'Покупка с сайта Vidal.ru'
         );
+
+        $this->get('email.service')->send(
+//            "zakaz@zdravzona.ru",
+            "tulupov.m@gmail.com",
+            array('VidalMainBundle:Email:market_notice_user.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa )),
+            'Покупка с сайта Vidal.ru'
+        );
     }
+
+
 }
