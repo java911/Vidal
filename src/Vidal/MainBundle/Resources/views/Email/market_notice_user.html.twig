@@ -1,10 +1,11 @@
 {% extends 'VidalMainBundle::minimal_layout.html.twig' %}
 
 {% block body %}
-    <p>Здравствуйте. Ваш заказ принят.</p>
 
-    <h2>
-        <b>Ваши данные по заказу:</b>
+    <h2 style="width: 600px;">
+        <div style="background: #D71344 !important; color: #FFF !important; padding: 5px 10px; font-size: 16px;">
+            <b>Здравствуйте. Ваш заказ принят. Ваши данные по заказу:</b>
+        </div>
     </h2>
     <table>
         <tr>
@@ -47,21 +48,23 @@
         </tr>
     </table>
 
-    <h2>
-        <b>Заказанные товары:</b>
+    <h2 style="width: 600px;">
+        <div style="background: #D71344 !important; color: #FFF !important; padding: 5px 10px; font-size: 16px;">
+            <b>Заказанные товары:</b>
+        </div>
     </h2>
 
-    <table>
+    <table style="width: 600px; border: 1px solid #EEE;" cellspacing="0">
         <tr>
-            <td><b>Код</b></td>
-            <td><b>Название</b></td>
-            <td><b>Цена</b></td>
-            <td><b>Количество</b></td>
+            <td style="border: 1px solid #EEE; text-align: center;"><b>Код</b></td>
+            <td style="border: 1px solid #EEE; text-align: center;"><b>Название</b></td>
+            <td style="border: 1px solid #EEE; text-align: center;"><b>Цена</b></td>
+            <td style="border: 1px solid #EEE; text-align: center;"><b>Количество</b></td>
         </tr>
 
         {% for product in basket %}
             <tr>
-                <td>{{ product.code }}</td>
+                <td>{{ product.id }}</td>
                 <td>{{ product.title }}</td>
                 <td>{{ product.price }}&nbsp;р.</td>
                 <td align="center">{{ product.count }} шт.</td>

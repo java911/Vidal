@@ -221,6 +221,8 @@ class MarketController extends Controller{
                 $order->setEnabled(true);
                 $em->flush($order);
 
+                $basket->clear($group);
+
                 if ($group != 'zdravzona' ){
                     $url = 'http://smacs.ru/feedbacks/'.md5($group.'_'.$order->getId().'vidal3L29y4');
                     return $this->render("VidalMainBundle:Market:order_success.html.twig",array( 'url' => $url ));
@@ -333,17 +335,17 @@ class MarketController extends Controller{
         $basket = $basket[$group];
         # уведомление магазина о покупке
         $this->get('email.service')->send(
-//            "zakaz@zdravzona.ru",
-              "tulupov.m@gmail.com",
+            array('tulupov.m@gmail.com','zakaz@zdravzona.ru'),
             array('VidalMainBundle:Email:market_notice.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa )),
-            'Покупка с сайта Vidal.ru'
+            'Заказ с сайта Vidal.ru'
         );
 
         $this->get('email.service')->send(
 //            "zakaz@zdravzona.ru",
-            "tulupov.m@gmail.com",
+//            "tulupov.m@gmail.com",
+            array('tulupov.m@gmail.com',$order->getEmail()),
             array('VidalMainBundle:Email:market_notice_user.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa )),
-            'Покупка с сайта Vidal.ru'
+            'Заказ с сайта Vidal.ru'
         );
     }
 
