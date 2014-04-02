@@ -23,7 +23,7 @@ class DataController extends Controller
 		$pat = array('/<br\\/?>/i', '/<\\/?su(p|b)>/i', '/&.+;/i');
 		$rep = array('', '', '');
 
-		$productNames = [];
+		$productNames = array();
 		$fileName = __DIR__ . DIRECTORY_SEPARATOR . 'vidal.products.txt';
 
 		foreach ($products as $product) {

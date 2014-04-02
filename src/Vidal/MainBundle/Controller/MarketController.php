@@ -199,7 +199,7 @@ class MarketController extends Controller{
             ->add('email', null, array('label' => 'E-mail'))
             ->add('phone', null, array('label' => 'Телефон'))
             ->add('adress', null, array('label' => 'Адрес'))
-            ->add('shipping', 'choice', array('label' => 'Комментарий к доставке', 'choices' => $this->shippingTitle, 'attr' => array( 'class' => 'delivery-select')))
+            ->add('shipping', 'choice', array('label' => 'Выбор доставки', 'choices' => $this->shippingTitle, 'attr' => array( 'class' => 'delivery-select')))
             ->add('comment', null, array('label' => 'Комментарий к доставке'))
             ->add('groupApt', 'hidden')
             ->add('submit', 'submit', array('label' => 'Отправить заказ', 'attr' => array('class' => 'btn-red')));
@@ -209,6 +209,7 @@ class MarketController extends Controller{
         if ($request->isMethod('POST')) {
             if ($form->isValid()){
                 $order = $form->getData();
+                $order->setShippingPrice($this->shipping[$order->getShipping()]);
                 $em->persist($order);
                 $em->flush($order);
                 $em->refresh($order);
@@ -320,5 +321,15 @@ class MarketController extends Controller{
         }
 
         return $header.$xml.$header;
+    }
+
+
+    public function zdrazonaSend($group, $order, $order){
+        # уведомление магазина о покупке
+        $this->get('email.service')->send(
+            "zakaz@zdravzona.ru",
+            array('VidalMainBundle:Email:market_notice.html.twig', array('group' => $group, 'order' => $order, 'order' => $order)),
+            'Покупка с сайта Vidal.ru'
+        );
     }
 }
