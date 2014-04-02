@@ -40,10 +40,6 @@ class AutocompleteDocumentCommand extends ContainerAwareCommand
 		}
 
 		$output->writeln('... got names');
-		for ($i=0; $i<200; $i++) {
-			$output->writeln($names[$i]);
-		}
-		exit;
 
 		$elasticaClient = new \Elastica\Client();
 		$elasticaIndex  = $elasticaClient->getIndex('website');
