@@ -44,4 +44,12 @@ class IndexController extends Controller
 			'questionAnswers' => $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findAll(),
 		);
 	}
+
+    /**
+     * @Route("/pharmacies-map", name="pharmacies_map")
+     * @Template("VidalMainBundle:Index:map.html.twig")
+     */
+    public function pharmaciesMapAction(){
+        return array();
+    }
 }

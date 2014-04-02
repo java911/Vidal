@@ -19,6 +19,44 @@ use Vidal\MainBundle\Market\Basket;
 
 class MarketController extends Controller{
 
+    protected $shipping = Array(
+                        '1' => '100',
+                        '2' => '150',
+                        '3' => '250',
+                        '4' => '400',
+                        '6' => '',
+                        '10' => '',
+                        '11' => '250',
+                    );
+
+    protected $shippingTitle = array(
+        '1' => 'Курьером по Москве в пределах МКАД - 100 руб.',
+        '2' => 'Курьером по Москве за пределами МКАД - 150 руб.',
+        '3' => 'Ближнее Подмосковье - 250 руб.',
+        '4' => 'Подмосковье - 400 руб.',
+        '6' => 'Почтой по России (EMS)',
+        '10' => 'Самовывоз',
+        '11' => 'Срочная доставка в течение 2-х часов - 250 руб.',
+    );
+    protected $status = array(
+        0 => 'принят',
+        1 => 'в обработке',
+        2 => 'дозваниваемся',
+        3 => 'подтверждён',
+        4 => 'доставлен',
+        5 => 'отменён',
+        6 => 'отправлен',
+        7 => 'нет лекарств',
+        8 => 'ожидание оплаты',
+        9 => 'создаётся оператором',
+        10 => 'лекарства заказаны',
+        11 => 'недовоз',
+        12 => 'возврат от курьеров',
+        13 => 'собран',
+        14 => 'ожидание товара',
+        15 => 'товар проверен',
+    );
+
     /**
      * @Route("/add-to-basket/{code}/{count}", name="add_to_basket", defaults={"count"="1"}, options={"expose"=true})
      * @Template("VidalMainBundle:Market:list.html.twig")
@@ -69,7 +107,7 @@ class MarketController extends Controller{
                 $product->setCount($count);
                 $product->setTitle($pr->getTitle());
                 $product->setCode($pr->getCode());
-                $product->setGroup($pr->getGroup());
+                $product->setGroupApt($pr->getGroupApt());
                 $product->setPrice($pr->getPrice());
             }
         }
@@ -148,6 +186,8 @@ class MarketController extends Controller{
      * @Template("VidalMainBundle:Market:basket_order.html.twig")
      */
     public function basketOrderAction($group){
+
+        $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         # генерация формы
         $order   = new MarketOrder();
@@ -159,19 +199,40 @@ class MarketController extends Controller{
             ->add('email', null, array('label' => 'E-mail'))
             ->add('phone', null, array('label' => 'Телефон'))
             ->add('adress', null, array('label' => 'Адрес'))
+            ->add('shipping', 'choice', array('label' => 'Комментарий к доставке', 'choices' => $this->shippingTitle, 'attr' => array( 'class' => 'delivery-select')))
             ->add('comment', null, array('label' => 'Комментарий к доставке'))
             ->add('groupApt', 'hidden')
             ->add('submit', 'submit', array('label' => 'Отправить заказ', 'attr' => array('class' => 'btn-red')));
-        $form = $builder->getForm();
-//        $form = $builder->getRequestHandler($request);
+        $form    = $builder->getForm();
+        $form->handleRequest($request);
 
-//        if ( $request->getMethod() == 'POST'){
-//            if ( $form->isValid() ){
-//                $order = $form->getViewData();
-//            }
-//        }
+        if ($request->isMethod('POST')) {
+            if ($form->isValid()){
+                $order = $form->getData();
+                $em->persist($order);
+                $em->flush($order);
+                $em->refresh($order);
 
-        return array('form' => $form->createView());
+                $xml = $this->generateXml($group, $order);
+
+                $order->setBody($xml);
+                $order->setEnabled(true);
+                $em->flush($order);
+
+                if ($group != 'zdravzona' ){
+                    $url = 'http://smacs.ru/feedbacks/'.md5($group.'_'.$order->getId().'vidal3L29y4');
+                    return $this->render("VidalMainBundle:Market:order_success.html.twig",array( 'url' => $url ));
+                }else{
+                    return $this->render("VidalMainBundle:Market:order_success_2.html.twig");
+                }
+
+            }else{
+                return array('form' => $form->createView());
+            }
+        }else{
+            return array('form' => $form->createView());
+        }
+
     }
 
     /**
@@ -184,7 +245,6 @@ class MarketController extends Controller{
 
         return array('count' => $count );
     }
-
 
     /**
      * @Route("/set-to-basket-ajax/{code}/{count}", name="set_to_basket_ajax", defaults={"count"="1"}, options={"expose"=true})
@@ -222,4 +282,43 @@ class MarketController extends Controller{
         return new Response($summa.'|'.$s1.'|'.$s2.'|'.$s3);
     }
 
+
+    public function generateXml($group, $order){
+
+        $basket = new Basket();
+        $products = $basket->getAll();
+        $products = $products[$group];
+
+        $header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+                    <orders>
+                        <order>
+	                        <order_code>".   $order->getId()."_1234</order_code>
+	                        <name>".         $order->getLastName()." ".$order->getFirstName()." ".$order->getSurName()."</name>
+                            <phone>".        $order->getPhone()."</phone>
+                            <email>".        $order->getEmail()."</email>
+                            <address>".      $order->getAdress()."</address>
+                            <comment>".      $order->getComment()."</comment>
+                            <shipping_id>".  $order->getShipping()."</shipping_id>
+                            <shipping_cost>".$this->shipping[$order->getShipping()]."</shipping_cost>
+                            <payment_id>".   $order->getId()."</payment_id>
+                            <discount>0</discount>
+                            <total_cost>156.93</total_cost>
+                            <order_time>".   time($order->getCreated())."</order_time>
+                            <products>";
+        $footer = "         </products>
+                        </order>
+                    </orders>";
+
+        $xml = '';
+        foreach ( $products as $product){
+            $xml .= "            <product>
+                                    <code>".$product->getCode()."</code>
+                                    <name>".$product->getTitle()."</name>
+                                    <amount>".$product->getCount()."</amount>
+                                    <price>".$product->getPrice()."</price>
+                                </product>";
+        }
+
+        return $header.$xml.$header;
+    }
 }
