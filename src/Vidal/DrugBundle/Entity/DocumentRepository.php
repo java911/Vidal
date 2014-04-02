@@ -246,6 +246,6 @@ class DocumentRepository extends EntityRepository
 		$pos = strpos($text, ' ');
 		$id = intval(substr($text, 0, $pos));
 
-		return $this->findOneById($id);
+		return $this->findById($id);
 	}
 }

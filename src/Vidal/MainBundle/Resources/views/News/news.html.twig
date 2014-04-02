@@ -1,22 +1,26 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
-{% block content %}
-
+{% block title %}
 	<h1>НОВОСТИ</h1>
+{% endblock %}
 
+
+{% block nav %}
 	<div class="breadcrumbs">
 		<a href="{{ path('index') }}">Видаль</a>
 		<i></i>
 		<span>Новости</span>
 	</div>
+{% endblock %}
 
+
+{% block content %}
 	{% if isAdmin %}
 		{% include 'VidalMainBundle:News:render_publications_admin.html.twig' %}
 	{% else %}
 		{% include 'VidalMainBundle:News:render_publications.html.twig' %}
 	{% endif %}
-
 {% endblock %}
 
 

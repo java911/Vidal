@@ -1,9 +1,7 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
-{% block content %}
-	<h1>{{ sub }}</h1>
-
+{% block nav %}
 	<div class="breadcrumbs">
 		<a href="{{ path('index') }}">Видаль</a>
 		<i></i>
@@ -24,7 +22,15 @@
 			{% endfor %}
 		{% endif %}
 	</div>
+{% endblock %}
 
+
+{% block title %}
+	<h1>{{ sub }}</h1>
+{% endblock %}
+
+
+{% block content %}
 	{% if sub.announce is not empty %}
 		<div class="subdivision">
 			<div class="subdivision-announce">{{ sub.announce|raw }}</div>

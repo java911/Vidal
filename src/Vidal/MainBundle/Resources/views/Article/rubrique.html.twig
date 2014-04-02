@@ -1,15 +1,21 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
-{% block content %}
+{% block title %}
 	<h1>{{ rubrique }}</h1>
+{% endblock %}
 
+
+{% block nav %}
 	<div class="breadcrumbs">
 		<a href="{{ path('index') }}">Видаль</a>
 		<i></i>
 		<a href="{{ path('articles') }}">Энциклопедия</a>
 	</div>
+{% endblock %}
 
+
+{% block content %}
 	{% if articles|length %}
 		<div class="articles">
 			{% if isAdmin %}

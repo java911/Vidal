@@ -295,6 +295,6 @@ class Publication extends BaseEntity
 
 	public function removeDocument(Document $document)
 	{
-		$this->documents->removeElement($document);
+		return $this;
 	}
 }

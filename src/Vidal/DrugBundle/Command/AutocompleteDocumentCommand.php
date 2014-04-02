@@ -64,18 +64,14 @@ class AutocompleteDocumentCommand extends ContainerAwareCommand
 		$mapping->send();
 
 		for ($i = 0; $i < count($names); $i++) {
-			$documents   = array();
-			$documents[] = new \Elastica\Document($i + 1, array('name' => $names[$i]));
+			$document = new \Elastica\Document($i + 1, array('name' => $names[$i]));
+			$elasticaType->addDocument($document);
+			$elasticaType->getIndex()->refresh();
 
 			if ($i && $i % 500 == 0) {
-				$elasticaType->addDocuments($documents);
-				$elasticaType->getIndex()->refresh();
-				$documents = array();
 				$output->writeln("... + $i");
 			}
 		}
-		$elasticaType->addDocuments($documents);
-		$elasticaType->getIndex()->refresh();
 
 		$output->writeln("+++ vidal:autocomplete_document loaded $i documents!");
 	}

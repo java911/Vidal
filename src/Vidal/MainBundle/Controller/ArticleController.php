@@ -130,10 +130,15 @@ class ArticleController extends Controller
 		$paths    = array();
 
 		foreach ($urlParts as $part) {
-			$pos = strrpos($part, '_');
+			$pos  = strrpos($part, '_');
+			$pos2 = false;
+
+			if ($pos === false) {
+				$pos2 = strpos($part, '.html');
+			}
 
 			# если это путь - заносим в массив для хлебных крошек, иначе - это статья
-			if ($pos === false) {
+			if ($pos === false && $pos2 === false) {
 				if ($part != '') {
 					$path = $em->getRepository('VidalDrugBundle:Subdivision')->findOneByEngName($part);
 					if ($path) {
@@ -142,14 +147,19 @@ class ArticleController extends Controller
 				}
 			}
 			else {
-				# надо отсечь с конца .html
-				$posDot = strpos($part, '.');
-				if ($posDot !== false) {
-					$part = substr($part, 0, $posDot);
+				if ($pos) {
+					# надо отсечь с конца .html
+					$posDot = strpos($part, '.');
+					if ($posDot !== false) {
+						$part = substr($part, 0, $posDot);
+					}
+					$id      = substr($part, $pos + 1);
+					$article = $em->getRepository('VidalDrugBundle:Art')->findOneById($id);
 				}
-
-				$id   = substr($part, $pos + 1);
-				$article = $em->getRepository('VidalDrugBundle:Article')->findOneById($id);
+				else {
+					$link = substr($part, 0, $pos2);
+					$article = $em->getRepository('VidalDrugBundle:Art')->findOneByLink($link);
+				}
 
 				if (!$article) {
 					throw $this->createNotFoundException();

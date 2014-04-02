@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Doctrine\ORM\EntityRepository;
-use Vidal\DrugBundle\Transformer\DocumentsTransformer;
+use Vidal\DrugBundle\Transformer\DocumentTransformer;
 
 class ArticleAdmin extends Admin
 {
@@ -44,8 +44,8 @@ class ArticleAdmin extends Admin
 
 	protected function configureFormFields(FormMapper $formMapper)
 	{
-		$em                   = $this->getModelManager()->getEntityManager($this->getSubject());
-		$documentsTransformer = new DocumentsTransformer($em);
+		$em                  = $this->getModelManager()->getEntityManager($this->getSubject());
+		$documentTransformer = new DocumentTransformer($em, $this->getSubject());
 
 		$formMapper
 			->add('title', null, array('label' => 'Заголовок', 'required' => true))
@@ -102,9 +102,11 @@ class ArticleAdmin extends Admin
 				'multiple'      => true,
 			))
 			->add($formMapper->create('documents', 'text', array(
-					'label'        => 'Идентификаторы описаний препаратов (Document) через ;',
+					'label'        => 'Описания препаратов',
 					'required'     => false,
-					'by_reference' => false))->addModelTransformer($documentsTransformer)
+					'by_reference' => false,
+					'attr'         => array('class' => 'doc'),
+				))->addModelTransformer($documentTransformer)
 			)
 			->add('date', null, array('label' => 'Дата создания', 'required' => true))
 			->add('synonym', null, array('label' => 'Синонимы', 'required' => false, 'help' => 'Через ;'))
