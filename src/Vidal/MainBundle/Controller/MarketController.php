@@ -199,7 +199,7 @@ class MarketController extends Controller{
             ->add('email', null, array('label' => 'E-mail'))
             ->add('phone', null, array('label' => 'Телефон'))
             ->add('adress', null, array('label' => 'Адрес'))
-            ->add('shipping', 'choice', array('label' => 'Комментарий к доставке', 'choices' => $this->shippingTitle, 'attr' => array( 'class' => 'delivery-select')))
+            ->add('shipping', 'choice', array('label' => 'Выбор доставки', 'choices' => $this->shippingTitle, 'attr' => array( 'class' => 'delivery-select')))
             ->add('comment', null, array('label' => 'Комментарий к доставке'))
             ->add('groupApt', 'hidden')
             ->add('submit', 'submit', array('label' => 'Отправить заказ', 'attr' => array('class' => 'btn-red')));
@@ -209,12 +209,14 @@ class MarketController extends Controller{
         if ($request->isMethod('POST')) {
             if ($form->isValid()){
                 $order = $form->getData();
+                $order->setShippingPrice($this->shipping[$order->getShipping()]);
                 $em->persist($order);
                 $em->flush($order);
                 $em->refresh($order);
 
                 $xml = $this->generateXml($group, $order);
-
+                $basket = new Basket();
+                $this->mailSend($group, $order, $basket);
                 $order->setBody($xml);
                 $order->setEnabled(true);
                 $em->flush($order);
@@ -305,6 +307,7 @@ class MarketController extends Controller{
                             <total_cost>156.93</total_cost>
                             <order_time>".   time($order->getCreated())."</order_time>
                             <products>";
+
         $footer = "         </products>
                         </order>
                     </orders>";
@@ -319,6 +322,30 @@ class MarketController extends Controller{
                                 </product>";
         }
 
-        return $header.$xml.$header;
+        return $header.$xml.$footer;
     }
+
+
+    public function mailSend($group, $order,Basket $basket){
+        $summa = $basket->getAmounts();
+        $summa = $summa[$group];
+        $basket = $basket->getAll();
+        $basket = $basket[$group];
+        # уведомление магазина о покупке
+        $this->get('email.service')->send(
+//            "zakaz@zdravzona.ru",
+              "tulupov.m@gmail.com",
+            array('VidalMainBundle:Email:market_notice.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa )),
+            'Покупка с сайта Vidal.ru'
+        );
+
+        $this->get('email.service')->send(
+//            "zakaz@zdravzona.ru",
+            "tulupov.m@gmail.com",
+            array('VidalMainBundle:Email:market_notice_user.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa )),
+            'Покупка с сайта Vidal.ru'
+        );
+    }
+
+
 }

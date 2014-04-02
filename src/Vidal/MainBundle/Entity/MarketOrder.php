@@ -86,6 +86,10 @@ class MarketOrder
     protected $shipping = 1;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    protected $shippingPrice;
+    /**
      * @ORM\Column(type="text")
      */
     protected $body = '';
@@ -296,6 +300,22 @@ class MarketOrder
     public function getBody()
     {
         return $this->body;
+    }
+
+    /**
+     * @param mixed $shippingPrice
+     */
+    public function setShippingPrice($shippingPrice)
+    {
+        $this->shippingPrice = $shippingPrice;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getShippingPrice()
+    {
+        return $this->shippingPrice;
     }
 
 

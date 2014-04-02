@@ -1,0 +1,76 @@
+{% extends 'VidalMainBundle::minimal_layout.html.twig' %}
+
+{% block body %}
+
+    <table>
+        <tr>
+            <td>Фамилия:</td>
+            <td>{{ order.getLastName }}</td>
+        </tr>
+        <tr>
+            <td>Имя:</td>
+            <td>{{ order.getFirstName }}</td>
+        </tr>
+        <tr>
+            <td>Отчество:</td>
+            <td>{{ order.getSurName }}</td>
+        </tr>
+        <tr>
+            <td>Адрес:</td>
+            <td>{{ order.getAdress }}</td>
+        </tr>
+        <tr>
+            <td>Способ доставки:</td>
+            <td>
+                {{ order.shipping }}
+            </td>
+        </tr>
+        <tr>
+            <td>Стоимость доставки:</td>
+            <td>
+                {{ order.shippingPrice }}
+            </td>
+        </tr>
+        <tr>
+            <td>Комментарий к доставке:</td>
+            <td>
+                {{ order.comment }}
+            </td>
+        </tr>
+    </table>
+
+    <h2>
+        Заказанные товары
+    </h2>
+
+    <table>
+        <tr>
+            <td><b>Код</b></td>
+            <td><b>Название</b></td>
+            <td><b>Цена</b></td>
+            <td><b>Количество</b></td>
+        </tr>
+
+        {% for product in basket %}
+            <tr>
+                <td>{{ product.code }}</td>
+                <td>{{ product.title }}</td>
+                <td>{{ product.price }}&nbsp;р.</td>
+                <td align="center">{{ product.count }} шт.</td>
+            </tr>
+        {% endfor %}
+
+        <tr>
+            <td></td>
+            <td></td>
+            <td colspan="2" align="right">
+                <b>ИТОГО: {{ summa }}&nbsp;р.</b>
+            </td>
+        </tr>
+    </table>
+
+
+
+
+    {%  include 'VidalMainBundle:Email:signature.html.twig' %}
+{% endblock %}
