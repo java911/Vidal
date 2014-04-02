@@ -20,14 +20,14 @@ use Vidal\MainBundle\Market\Basket;
 class MarketController extends Controller{
 
     protected $shipping = Array(
-                        '1' => '100',
-                        '2' => '150',
-                        '3' => '250',
-                        '4' => '400',
-                        '6' => '',
-                        '10' => '',
-                        '11' => '250',
-                    );
+        '1' => '100',
+        '2' => '150',
+        '3' => '250',
+        '4' => '400',
+        '6' => '',
+        '10' => '',
+        '11' => '250',
+    );
 
     protected $shippingTitle = array(
         '1' => 'Курьером по Москве в пределах МКАД - 100 руб.',
@@ -216,10 +216,19 @@ class MarketController extends Controller{
 
                 $xml = $this->generateXml($group, $order);
                 $basket = new Basket();
-                $this->mailSend($group, $order, $basket);
+
+                if ($group == 'zdavzona'){
+                    $this->mailSend($group, $order, $basket);
+                }else{
+                    $this->emacsSend($order);
+                }
+
+
                 $order->setBody($xml);
                 $order->setEnabled(true);
                 $em->flush($order);
+
+                $basket->clear($group);
 
                 if ($group != 'zdravzona' ){
                     $url = 'http://smacs.ru/feedbacks/'.md5($group.'_'.$order->getId().'vidal3L29y4');
@@ -333,19 +342,42 @@ class MarketController extends Controller{
         $basket = $basket[$group];
         # уведомление магазина о покупке
         $this->get('email.service')->send(
-//            "zakaz@zdravzona.ru",
-              "tulupov.m@gmail.com",
-            array('VidalMainBundle:Email:market_notice.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa )),
-            'Покупка с сайта Vidal.ru'
+            array('tulupov.m@gmail.com','zakaz@zdravzona.ru'),
+            array('VidalMainBundle:Email:market_notice.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa, 'ship' => $this->shippingTitle[$order->getShipping()] )),
+            'Заказ с сайта Vidal.ru'
         );
 
         $this->get('email.service')->send(
 //            "zakaz@zdravzona.ru",
-            "tulupov.m@gmail.com",
-            array('VidalMainBundle:Email:market_notice_user.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa )),
-            'Покупка с сайта Vidal.ru'
+//            "tulupov.m@gmail.com",
+            array('tulupov.m@gmail.com',$order->getEmail()),
+            array('VidalMainBundle:Email:market_notice_user.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa, 'ship' => $this->shippingTitle[$order->getShipping()] )),
+            'Заказ с сайта Vidal.ru'
         );
     }
 
+    public function emacsSend(MarketOrder $order){
 
-}
+        if ( $order->getGroupApt() == 'eapteka'){
+            $url = 'http://login:password@smacs.ru/exchange/price';
+        }elseif ( $order->getGroupApt() == 'piluli'){
+                $url = 'http://login:password@ea.smacs.ru/exchange/price';
+            }
+
+            $xml = $order->getBody();
+
+        if( $curl = curl_init() ) {
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $xml);
+            $out = curl_exec($curl);
+            echo $out;
+            curl_close($curl);
+        }
+
+        exit;
+    }
+
+
+    }

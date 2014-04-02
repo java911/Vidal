@@ -54,7 +54,7 @@ class ParserXmlCommand extends ContainerAwareCommand
 
 
 
-        # Ищем в первом магазине и добавляем оттуда лекарства
+//        # Ищем в первом магазине и добавляем оттуда лекарства
         $array = $this->findShop_1('');
         $c1 = count($array);
         $output->writeln('<error> Count => '.$c1.'</error>');
@@ -128,7 +128,7 @@ class ParserXmlCommand extends ContainerAwareCommand
         #$elems = $this->cacheFile_1->xpath("product[contains(concat(' ', name, ' '), ' $title ')]");
         $elems =  $this->cacheFile_1;
         $arr = array();
-       $drugUrl = 'http://www.eapteka.ru/goods/drugs/otolaryngology/rhinitis/?id=';
+        $drugUrl = 'http://www.eapteka.ru/goods/drugs/otolaryngology/rhinitis/?id=';
         foreach ($elems as $elem){
             $arr[] = array(
                 'code' => $elem->code,
