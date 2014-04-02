@@ -6,10 +6,13 @@
 {% endblock %}
 
 
+{% block title %}
+	<h1>НОВОСТИ</h1>
+{% endblock %}
+
+
 {% block content %}
 	<div class="news">
-		<h1>НОВОСТИ</h1>
-
 		{% if isAdmin %}
 			{% include 'VidalMainBundle:News:render_publications_admin.html.twig' %}
 		{% else %}

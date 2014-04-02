@@ -1,9 +1,12 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
-{% block content %}
+{% block title %}
 	<h1>РЕДАКТИРОВАНИЕ ПРОФИЛЯ</h1>
+{% endblock %}
 
+
+{% block content %}
 	{% if not user.emailConfirmed %}
 		<div class="thanks">
 			Для того чтобы получить доступ к функциям сайта осталось лишь подтвердить электронный адрес

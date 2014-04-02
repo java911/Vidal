@@ -1,9 +1,12 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
-{% block content %}
+{% block title %}
 	<h1>ВОПРОС-ОТВЕТ</h1>
+{% endblock %}
 
+
+{% block content %}
 	{% if questionAnswers|length %}
 		<div class="qa-wrap">
 			{% if isAdmin %}
@@ -65,8 +68,8 @@
 			color: #d71344;
 		}
 		.qa-answer {
-			font-size:   15px;
-			display: none;
+			font-size: 15px;
+			display:   none;
 		}
 	</style>
 {% endblock %}
