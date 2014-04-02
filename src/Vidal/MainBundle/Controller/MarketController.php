@@ -215,7 +215,8 @@ class MarketController extends Controller{
                 $em->refresh($order);
 
                 $xml = $this->generateXml($group, $order);
-
+                $basket = new Basket();
+                $this->zdrazonaSend($group, $order, $basket);
                 $order->setBody($xml);
                 $order->setEnabled(true);
                 $em->flush($order);
@@ -324,11 +325,16 @@ class MarketController extends Controller{
     }
 
 
-    public function zdrazonaSend($group, $order, $order){
+    public function zdrazonaSend($group, $order,Basket $basket){
+        $summa = $basket->getAmounts();
+        $summa = $summa[$group];
+        $basket = $basket->getAll();
+        $basket = $basket[$group];
         # уведомление магазина о покупке
         $this->get('email.service')->send(
-            "zakaz@zdravzona.ru",
-            array('VidalMainBundle:Email:market_notice.html.twig', array('group' => $group, 'order' => $order, 'order' => $order)),
+//            "zakaz@zdravzona.ru",
+              "tulupov.m@gmail.com",
+            array('VidalMainBundle:Email:market_notice.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa )),
             'Покупка с сайта Vidal.ru'
         );
     }

@@ -37,7 +37,36 @@
                 {{ order.comment }}
             </td>
         </tr>
+    </table>
 
+    <h2>
+        Заказанные товары
+    </h2>
+
+    <table>
+        <tr>
+            <td><b>Код</b></td>
+            <td><b>Название</b></td>
+            <td><b>Цена</b></td>
+            <td><b>Количество</b></td>
+        </tr>
+
+        {% for product in basket %}
+            <tr>
+                <td>{{ product.code }}</td>
+                <td>{{ product.title }}</td>
+                <td>{{ product.price }}&nbsp;р.</td>
+                <td>{{ product.count }} шт.</td>
+            </tr>
+        {% endfor %}
+
+        <tr>
+            <td></td>
+            <td></td>
+            <td colspan="2" align="right">
+                ИТОГО: {{ summa }}&nbsp;р.
+            </td>
+        </tr>
     </table>
 
 
