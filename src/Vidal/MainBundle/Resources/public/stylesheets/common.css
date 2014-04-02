@@ -1070,11 +1070,11 @@ h1 {
 
 /* breadcrumbs */
 .breadcrumbs {
-	margin-bottom: 24px;
-	font-size:     14px;
-	font-family:   'PT Sans Caption', sans-serif;
-	color:         #2f4053;
-	line-height:   17px;
+	margin:      -14px 0 20px;
+	font-size:   14px;
+	font-family: 'PT Sans Caption', sans-serif;
+	color:       #2f4053;
+	line-height: 17px;
 }
 .breadcrumbs > * {
 	display:        inline-block;
