@@ -149,7 +149,7 @@ class ArticleController extends Controller
 				}
 
 				$id   = substr($part, $pos + 1);
-				$article = $em->getRepository('VidalDrugBundle:Article')->findOneById($id);
+				$article = $em->getRepository('VidalDrugBundle:Art')->findOneById($id);
 
 				if (!$article) {
 					throw $this->createNotFoundException();

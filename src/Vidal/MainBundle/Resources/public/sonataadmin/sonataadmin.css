@@ -123,3 +123,12 @@ ul.items {
 #filter_searchTags_value_chosen .chosen-drop {
 	width: 510px;
 }
+
+.doc {
+	width: 543px !important;
+}
+.ui-menu-item em {
+	font-style:  normal;
+	font-weight: bold;
+	color:       #444;
+}

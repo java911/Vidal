@@ -51,9 +51,8 @@ class PublicationAdmin extends Admin
 
 	protected function configureFormFields(FormMapper $formMapper)
 	{
-		$em                   = $this->getModelManager()->getEntityManager($this->getSubject());
-		$documentsTransformer = new DocumentsTransformer($em);
-		$documentTransformer  = new DocumentTransformer($em);
+		$em                  = $this->getModelManager()->getEntityManager($this->getSubject());
+		$documentTransformer = new DocumentTransformer($em, $this->getSubject());
 
 		$formMapper
 			->add('photo', 'iphp_file', array('label' => 'Фотография', 'required' => false))
@@ -108,21 +107,7 @@ class PublicationAdmin extends Admin
 				'multiple'      => true,
 			))
 			->add($formMapper->create('documents', 'text', array(
-					'label'        => 'Идентификаторы описаний препаратов (Document) через ;',
-					'required'     => false,
-					'by_reference' => false,
-					'attr'         => array('class' => 'doc'),
-				))->addModelTransformer($documentsTransformer)
-			)
-//			->add($formMapper->create('documents', 'text', array(
-//					'label'        => 'Идентификаторы описаний препаратов (Document) через ;',
-//					'required'     => false,
-//					'by_reference' => false,
-//					'attr'         => array('class' => 'doc'),
-//				))->addModelTransformer($documentsTransformer)
-//			)
-			->add($formMapper->create('documents', 'text', array(
-					'label'        => 'Добавить описание',
+					'label'        => 'Описания препаратов',
 					'required'     => false,
 					'by_reference' => false,
 					'attr'         => array('class' => 'doc'),
