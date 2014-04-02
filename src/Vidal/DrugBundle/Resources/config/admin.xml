@@ -5,10 +5,10 @@
     <services>
 
 		<!-- Содержимое -->
-		<service id="sonata.admin.publication" class="Vidal\MainBundle\Admin\PublicationAdmin">
+		<service id="sonata.admin.publication" class="Vidal\DrugBundle\Admin\PublicationAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="Содержимое" label="Новости"/>
 			<argument />
-			<argument>Vidal\MainBundle\Entity\Publication</argument>
+			<argument>Vidal\DrugBundle\Entity\Publication</argument>
 			<argument>SonataAdminBundle:CRUD</argument>
 			<argument />
 		</service>

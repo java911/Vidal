@@ -105,7 +105,6 @@ class Art extends BaseEntity
 		$this->documents  = new ArrayCollection();
 		$this->atcCodes   = new ArrayCollection();
 		$this->infoPages  = new ArrayCollection();
-		$this->public     = true;
 		$now              = new \DateTime('now');
 		$this->created    = $now;
 		$this->updated    = $now;
@@ -240,6 +239,11 @@ class Art extends BaseEntity
 	public function addDocument(Document $document)
 	{
 		$this->documents[] = $document;
+	}
+
+	public function removeDocument(Document $document)
+	{
+		$this->documents->removeElement($document);
 	}
 
 	/**

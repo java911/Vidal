@@ -34,6 +34,7 @@
 	{# ссылка админу на редактирование #}
 	{% if isAdmin %}
 		<a class="admin-edit fade" target="_blank"
+		   title="DocumentID: {{ document.DocumentID }}"
 		   href="{{ product is defined
 		   ? path('admin_vidal_drug_product_edit', {'id':product.ProductID})
 		   : path('admin_vidal_drug_document_edit', {'id':document.DocumentID}) }}">

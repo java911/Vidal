@@ -9,8 +9,9 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Doctrine\ORM\EntityRepository;
 use Vidal\DrugBundle\Transformer\DocumentsTransformer;
+use Vidal\DrugBundle\Transformer\DocumentTransformer;
 
-class ArticleAdmin extends Admin
+class PublicationAdmin extends Admin
 {
 	protected $datagridValues;
 
@@ -23,7 +24,7 @@ class ArticleAdmin extends Admin
 				'_page'       => 1,
 				'_per_page'   => 25,
 				'_sort_order' => 'DESC',
-				'_sort_by'    => 'created'
+				'_sort_by'    => 'date'
 			);
 		}
 	}
@@ -33,25 +34,30 @@ class ArticleAdmin extends Admin
 		$showMapper
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
-			->add('link', null, array('label' => 'Адрес страницы', 'help' => 'латинские буквы и цифры, слова через тире'))
-			->add('rubrique', null, array('label' => 'Рубрика', 'help' => 'Указывается только для публичих статей Энциклопедии'))
-			->add('type', null, array('label' => 'Категория'))
 			->add('announce', null, array('label' => 'Анонс'))
 			->add('body', null, array('label' => 'Основное содержимое'))
 			->add('enabled', null, array('label' => 'Активна'))
-			->add('date', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'));
+			->add('date', null, array(
+				'label'  => 'Дата создания',
+				'widget' => 'single_text',
+				'format' => 'd.m.Y в H:i'
+			))
+			->add('updated', null, array(
+				'label'  => 'Дата последнего обновления',
+				'widget' => 'single_text',
+				'format' => 'd.m.Y в H:i'
+			));
 	}
 
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$em                   = $this->getModelManager()->getEntityManager($this->getSubject());
 		$documentsTransformer = new DocumentsTransformer($em);
+		$documentTransformer  = new DocumentTransformer($em);
 
 		$formMapper
+			->add('photo', 'iphp_file', array('label' => 'Фотография', 'required' => false))
 			->add('title', null, array('label' => 'Заголовок', 'required' => true))
-			->add('link', null, array('label' => 'Адрес страницы', 'required' => true, 'help' => 'латинские буквы и цифры, слова через тире'))
-			->add('rubrique', null, array('label' => 'Рубрика', 'required' => true, 'empty_value' => 'выберите', 'help' => 'Указывается только для публичих статей Энциклопедии'))
-			->add('type', null, array('label' => 'Категория', 'required' => false, 'empty_value' => 'не указано'))
 			->add('announce', null, array('label' => 'Анонс', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('body', null, array('label' => 'Основное содержимое', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('atcCodes', 'entity', array(
@@ -104,14 +110,30 @@ class ArticleAdmin extends Admin
 			->add($formMapper->create('documents', 'text', array(
 					'label'        => 'Идентификаторы описаний препаратов (Document) через ;',
 					'required'     => false,
-					'by_reference' => false))->addModelTransformer($documentsTransformer)
+					'by_reference' => false,
+					'attr'         => array('class' => 'doc'),
+				))->addModelTransformer($documentsTransformer)
 			)
-			->add('date', null, array('label' => 'Дата создания', 'required' => true))
-			->add('synonym', null, array('label' => 'Синонимы', 'required' => false, 'help' => 'Через ;'))
-			->add('metaTitle', null, array('label' => 'Мета заголовок', 'required' => false))
-			->add('metaDescription', null, array('label' => 'Мета описание', 'required' => false))
-			->add('metaKeywords', null, array('label' => 'Мета ключевые слова', 'required' => false))
-			->add('enabled', null, array('label' => 'Активна', 'required' => false));
+//			->add($formMapper->create('documents', 'text', array(
+//					'label'        => 'Идентификаторы описаний препаратов (Document) через ;',
+//					'required'     => false,
+//					'by_reference' => false,
+//					'attr'         => array('class' => 'doc'),
+//				))->addModelTransformer($documentsTransformer)
+//			)
+			->add($formMapper->create('documents', 'text', array(
+					'label'        => 'Добавить описание',
+					'required'     => false,
+					'by_reference' => false,
+					'attr'         => array('class' => 'doc'),
+				))->addModelTransformer($documentTransformer)
+			)
+			->add('enabled', null, array('label' => 'Активна', 'required' => false))
+			->add('date', null, array(
+				'label'    => 'Дата создания',
+				'data'     => new \DateTime('now'),
+				'required' => true,
+			));
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -119,10 +141,6 @@ class ArticleAdmin extends Admin
 		$datagridMapper
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
-			->add('link', null, array('label' => 'Адрес страницы'))
-			->add('rubrique', null, array('label' => 'Рубрика'))
-			->add('type', null, array('label' => 'Категория'))
-			->add('public', null, array('label' => 'Только для врачей'))
 			->add('enabled', null, array('label' => 'Активна'));
 	}
 
@@ -131,11 +149,12 @@ class ArticleAdmin extends Admin
 		$listMapper
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
-			->add('link', null, array('label' => 'Адрес страницы', 'help' => 'латинские буквы и цифры, слова через тире'))
-			->add('rubrique', null, array('label' => 'Рубрика'))
-			->add('type', null, array('label' => 'Категория'))
-			->add('date', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
-			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
+			->add('date', null, array(
+				'label'  => 'Дата создания',
+				'widget' => 'single_text',
+				'format' => 'd.m.Y в H:i'
+			))
+			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled_main.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(

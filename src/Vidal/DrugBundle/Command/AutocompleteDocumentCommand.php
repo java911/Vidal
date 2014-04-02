@@ -24,11 +24,22 @@ class AutocompleteDocumentCommand extends ContainerAwareCommand
 	{
 		$output->writeln('--- vidal:autocomplete_document started');
 
-		$em = $this->getContainer()->get('doctrine')->getManager('drug');
+		$em    = $this->getContainer()->get('doctrine')->getManager('drug');
+		$names = array();
 
-		$names = $em->getRepository('VidalDrugBundle:Document')->findProductNames();
+		$documents = $em->createQuery('
+			SELECT d.DocumentID, d.RusName
+			FROM VidalDrugBundle:Document d
+			ORDER BY d.RusName ASC
+		')->getResult();
 
-		$names = array_unique($names);
+		$output->writeln('... got documents');
+
+		foreach ($documents as $document) {
+			$names[] = $document['DocumentID'] . ' - ' . $this->strip($document['RusName']);
+		}
+
+		$output->writeln('... got names');
 
 		$elasticaClient = new \Elastica\Client();
 		$elasticaIndex  = $elasticaClient->getIndex('website');
@@ -53,7 +64,7 @@ class AutocompleteDocumentCommand extends ContainerAwareCommand
 		$mapping->send();
 
 		for ($i = 0; $i < count($names); $i++) {
-			$documents = array();
+			$documents   = array();
 			$documents[] = new \Elastica\Document($i + 1, array('name' => $names[$i]));
 
 			if ($i && $i % 500 == 0) {
@@ -67,5 +78,13 @@ class AutocompleteDocumentCommand extends ContainerAwareCommand
 		$elasticaType->getIndex()->refresh();
 
 		$output->writeln("+++ vidal:autocomplete_document loaded $i documents!");
+	}
+
+	private function strip($string)
+	{
+		$pat = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/&amp;/');
+		$rep = array('', '', '&');
+
+		return preg_replace($pat, $rep, $string);
 	}
 }

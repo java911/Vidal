@@ -245,6 +245,11 @@ class Article extends BaseEntity
 		$this->documents[] = $document;
 	}
 
+	public function removeDocument(Document $document)
+	{
+		$this->documents->removeElement($document);
+	}
+
 	/**
 	 * @param mixed $date
 	 */

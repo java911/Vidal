@@ -18,7 +18,7 @@ class DocumentTransformer implements DataTransformerInterface
 
 	public function transform($document)
 	{
-		return $document ? $document->__toString() : '';
+		return '';
 	}
 
 	public function reverseTransform($text)

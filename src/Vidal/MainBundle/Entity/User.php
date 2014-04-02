@@ -102,9 +102,6 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	 */
 	protected $academicDegree;
 
-	/** @ORM\OneToMany(targetEntity="Publication", mappedBy="author") */
-	protected $publications;
-
 	/** @ORM\Column(length=255, nullable=true) */
 	protected $phone;
 
@@ -547,22 +544,6 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 		$this->avatar = array();
 
 		return $this;
-	}
-
-	/**
-	 * @param mixed $publications
-	 */
-	public function setPublications($publications)
-	{
-		$this->publications = $publications;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getPublications()
-	{
-		return $this->publications;
 	}
 
 	/**

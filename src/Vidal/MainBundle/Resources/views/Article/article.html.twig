@@ -1,9 +1,12 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
-{% block content %}
-	<h1>{{ article }}</h1>
+{% block title %}
+	<h1>{{ article.title }}</h1>
+{% endblock %}
 
+
+{% block nav %}
 	<div class="breadcrumbs">
 		<a href="{{ path('index') }}">Видаль</a>
 		<i></i>
@@ -11,9 +14,11 @@
 		<i></i>
 		<a href="{{ path('rubrique', {'rubrique':rubrique.rubrique}) }}">{{ rubrique }}</a>
 	</div>
+{% endblock %}
 
+
+{% block content %}
 	{% include 'VidalMainBundle:Article:render_article.html.twig' %}
-
 {% endblock %}
 
 

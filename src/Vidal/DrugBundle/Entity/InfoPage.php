@@ -85,12 +85,21 @@ class InfoPage
 	 */
 	protected $arts;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="Publication", mappedBy="infoPages")
+	 * @ORM\JoinTable(name="publication_infopage",
+	 *        joinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")})
+	 */
+	protected $publications;
+
 	public function __construct()
 	{
 		$this->pictures          = new ArrayCollection();
 		$this->documentInfoPages = new ArrayCollection();
 		$this->articles          = new ArrayCollection();
 		$this->arts              = new ArrayCollection();
+		$this->publications      = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -401,5 +410,21 @@ class InfoPage
 	public function getArts()
 	{
 		return $this->arts;
+	}
+
+	/**
+	 * @param mixed $publications
+	 */
+	public function setPublications($publications)
+	{
+		$this->publications = $publications;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPublications()
+	{
+		return $this->publications;
 	}
 }

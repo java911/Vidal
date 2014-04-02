@@ -17,14 +17,14 @@ class IndexController extends Controller
 	 */
 	public function indexAction(Request $request)
 	{
-		$em     = $this->getDoctrine()->getManager();
+		$em     = $this->getDoctrine()->getManager('drug');
 		$params = array(
 			'indexPage' => true,
 			'seotitle'  => 'Справочник лекарственных препаратов Видаль. Описание лекарственных средств',
 		);
 
 		$params['publicationsPagination'] = $this->get('knp_paginator')->paginate(
-			$em->getRepository('VidalMainBundle:Publication')->getQueryEnabled(),
+			$em->getRepository('VidalDrugBundle:Publication')->getQueryEnabled(),
 			$request->query->get('p', 1),
 			self::PUBLICATIONS_INDEX_PAGE
 		);

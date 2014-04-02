@@ -42,10 +42,28 @@ class Nozology
 	 */
 	protected $articles;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="Art", mappedBy="nozologies")
+	 * @ORM\JoinTable(name="art_n",
+	 *        joinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")})
+	 */
+	protected $arts;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Publication", mappedBy="nozologies")
+	 * @ORM\JoinTable(name="publication_n",
+	 *        joinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")})
+	 */
+	protected $publications;
+
 	public function __construct()
 	{
-		$this->documents = new ArrayCollection();
-		$this->articles  = new ArrayCollection();
+		$this->documents    = new ArrayCollection();
+		$this->articles     = new ArrayCollection();
+		$this->arts         = new ArrayCollection();
+		$this->publications = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -179,5 +197,37 @@ class Nozology
 	public function getArticles()
 	{
 		return $this->articles;
+	}
+
+	/**
+	 * @param mixed $arts
+	 */
+	public function setArts($arts)
+	{
+		$this->arts = $arts;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getArts()
+	{
+		return $this->arts;
+	}
+
+	/**
+	 * @param mixed $publications
+	 */
+	public function setPublications($publications)
+	{
+		$this->publications = $publications;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPublications()
+	{
+		return $this->publications;
 	}
 }

@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Doctrine\ORM\EntityRepository;
+use Vidal\DrugBundle\Transformer\DocumentsTransformer;
 
 class ArtAdmin extends Admin
 {
@@ -43,6 +44,9 @@ class ArtAdmin extends Admin
 
 	protected function configureFormFields(FormMapper $formMapper)
 	{
+		$em                   = $this->getModelManager()->getEntityManager($this->getSubject());
+		$documentsTransformer = new DocumentsTransformer($em);
+
 		$formMapper
 			->add('title', null, array('label' => 'Заголовок', 'required' => true))
 			->add('link', null, array('label' => 'Адрес страницы', 'required' => true, 'help' => 'латинские буквы и цифры, слова через тире'))
@@ -97,18 +101,13 @@ class ArtAdmin extends Admin
 				'empty_value'   => 'не указано',
 				'multiple'      => true,
 			))
-//			->add('documents', 'entity', array(
-//				'label'         => 'Описания препаратов',
-//				'help'          => '(Document)',
-//				'class'         => 'VidalDrugBundle:Document',
-//				'query_builder' => function (EntityRepository $er) {
-//						return $er->createQueryBuilder('d')
-//							->orderBy('d.RusName', 'ASC');
-//					},
-//				'required'      => false,
-//				'empty_value'   => 'не указано',
-//				'multiple'      => true,
-//			))
+			->add($formMapper->create('documents', 'text', array(
+					'label'        => 'Идентификаторы описаний препаратов (Document) через ;',
+					'required'     => false,
+					'by_reference' => false,
+					'attr'         => array('class' => 'doc'),
+				))->addModelTransformer($documentsTransformer)
+			)
 			->add('date', null, array('label' => 'Дата создания', 'required' => true))
 			->add('synonym', null, array('label' => 'Синонимы', 'required' => false, 'help' => 'Через ;'))
 			->add('metaTitle', null, array('label' => 'Мета заголовок', 'required' => false))
@@ -123,9 +122,8 @@ class ArtAdmin extends Admin
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
 			->add('link', null, array('label' => 'Адрес страницы'))
-			->add('rubrique', null, array('label' => 'Рубрика'))
+			->add('subdivision', null, array('label' => 'Рубрика'))
 			->add('type', null, array('label' => 'Категория'))
-			->add('public', null, array('label' => 'Только для врачей'))
 			->add('enabled', null, array('label' => 'Активна'));
 	}
 
@@ -134,7 +132,6 @@ class ArtAdmin extends Admin
 		$listMapper
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
-			->add('link', null, array('label' => 'Адрес страницы', 'help' => 'латинские буквы и цифры, слова через тире'))
 			->add('subdivision', null, array('label' => 'Подраздел'))
 			->add('type', null, array('label' => 'Категория'))
 			->add('date', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
