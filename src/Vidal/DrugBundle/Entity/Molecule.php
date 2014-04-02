@@ -51,11 +51,29 @@ class Molecule
 	 */
 	protected $articles;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="Art", mappedBy="molecules")
+	 * @ORM\JoinTable(name="art_molecule",
+	 *        joinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")})
+	 */
+	protected $arts;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Publication", mappedBy="molecules")
+	 * @ORM\JoinTable(name="publication_molecule",
+	 *        joinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")})
+	 */
+	protected $publications;
+
 	public function __construct()
 	{
 		$this->moleculeDocuments = new ArrayCollection();
 		$this->moleculeNames     = new ArrayCollection();
 		$this->articles          = new ArrayCollection();
+		$this->arts              = new ArrayCollection();
+		$this->publications      = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -242,5 +260,37 @@ class Molecule
 	public function getArticles()
 	{
 		return $this->articles;
+	}
+
+	/**
+	 * @param mixed $arts
+	 */
+	public function setArts($arts)
+	{
+		$this->arts = $arts;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getArts()
+	{
+		return $this->arts;
+	}
+
+	/**
+	 * @param mixed $publications
+	 */
+	public function setPublications($publications)
+	{
+		$this->publications = $publications;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPublications()
+	{
+		return $this->publications;
 	}
 }

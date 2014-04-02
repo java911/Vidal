@@ -1,6 +1,6 @@
 <?php
 
-namespace Vidal\MainBundle\Entity;
+namespace Vidal\DrugBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -10,7 +10,7 @@ class PublicationRepository extends EntityRepository
 	{
 		return $this->_em->createQueryBuilder()
 			->select('p')
-			->from('VidalMainBundle:Publication', 'p')
+			->from('VidalDrugBundle:Publication', 'p')
 			->where('p.enabled = 1')
 			->orderBy('p.date', 'DESC')
 			->getQuery();
@@ -20,6 +20,7 @@ class PublicationRepository extends EntityRepository
 	{
 		return $this->_em->createQueryBuilder('p')
 			->select('p')
+			->from('VidalDrugBundle:Publication', 'p')
 			->where('p.enabled = 1')
 			->orderBy('p.updated', 'DESC')
 			->getQuery();

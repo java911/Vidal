@@ -47,12 +47,16 @@ class Subdivision
 	protected $parent;
 
 	/** @ORM\OneToMany(targetEntity="Article", mappedBy="subdivision", fetch="EXTRA_LAZY") */
-	protected $articles;
+	protected $arts;
+
+	/** @ORM\OneToMany(targetEntity="Publication", mappedBy="subdivision", fetch="EXTRA_LAZY") */
+	protected $publications;
 
 	public function __construct()
 	{
-		$this->children = new ArrayCollection();
-		$this->articles = new ArrayCollection();
+		$this->children     = new ArrayCollection();
+		$this->arts         = new ArrayCollection();
+		$this->publications = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -229,18 +233,34 @@ class Subdivision
 	}
 
 	/**
-	 * @param mixed $articles
+	 * @param mixed $arts
 	 */
-	public function setArticles($articles)
+	public function setArts($arts)
 	{
-		$this->articles = $articles;
+		$this->arts = $arts;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getArticles()
+	public function getArts()
 	{
-		return $this->articles;
+		return $this->arts;
+	}
+
+	/**
+	 * @param mixed $publications
+	 */
+	public function setPublications($publications)
+	{
+		$this->publications = $publications;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPublications()
+	{
+		return $this->publications;
 	}
 }

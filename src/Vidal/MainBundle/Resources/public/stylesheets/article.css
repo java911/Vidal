@@ -2,6 +2,9 @@
 .articles {
 	font-size: 14px;
 }
+.article-wrap {
+	position: relative;
+}
 .article {
 	position:      relative;
 	margin-bottom: 17px;

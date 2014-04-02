@@ -12,9 +12,9 @@
 	</div>
 
 	{% if isAdmin %}
-		{% include 'VidalMainBundle:Index:render_publications_admin.html.twig' %}
+		{% include 'VidalMainBundle:News:render_publications_admin.html.twig' %}
 	{% else %}
-		{% include 'VidalMainBundle:Index:render_publications.html.twig' %}
+		{% include 'VidalMainBundle:News:render_publications.html.twig' %}
 	{% endif %}
 
 {% endblock %}

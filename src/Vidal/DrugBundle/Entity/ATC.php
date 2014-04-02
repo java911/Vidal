@@ -57,12 +57,21 @@ class ATC
 	 */
 	protected $arts;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="Publication", mappedBy="atcCodes")
+	 * @ORM\JoinTable(name="publication_atc",
+	 *        joinColumns={@ORM\JoinColumn(name="ATCCode", referencedColumnName="ATCCode")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")})
+	 */
+	protected $publications;
+
 	public function __construct()
 	{
-		$this->children = new ArrayCollection();
-		$this->products = new ArrayCollection();
-		$this->articles = new ArrayCollection();
-		$this->arts     = new ArrayCollection();
+		$this->children     = new ArrayCollection();
+		$this->products     = new ArrayCollection();
+		$this->articles     = new ArrayCollection();
+		$this->arts         = new ArrayCollection();
+		$this->publications = new ArrayCollection();
 	}
 
 	public function getId()
@@ -233,5 +242,21 @@ class ATC
 	public function getArts()
 	{
 		return $this->arts;
+	}
+
+	/**
+	 * @param mixed $publications
+	 */
+	public function setPublications($publications)
+	{
+		$this->publications = $publications;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPublications()
+	{
+		return $this->publications;
 	}
 }
