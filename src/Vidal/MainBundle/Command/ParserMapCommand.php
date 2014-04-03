@@ -7,8 +7,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Vidal\MainBundle\Entity\MarketCache;
-use Vidal\MainBundle\Entity\MarketDrug;
+use Vidal\MainBundle\Entity\MapRegion;
+use Vidal\MainBundle\Entity\MapCoord;
 
 /**
  * Команда парсинга XML аптек для кеширования данных
@@ -29,7 +29,9 @@ class ParserMapCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $this->dir = '/var/www/upload_vidal/map/';
+        $this->dir = '/var/www/upload_vidal/map/map/';
+
+        $em = $this->getContainer()->get('doctrine')->getManager();
 
         $output->writeln('--- vidal:parser started');
         # Подключаем пилюли URL
@@ -38,19 +40,34 @@ class ParserMapCommand extends ContainerAwareCommand
             if ($dh = opendir($this->dir)) {
                 while (($file = readdir($dh)) !== false) {
                     if (filetype($this->dir . $file) == 'file'){
-                        $str = "Файл: $file : тип: " . filetype($this->dir . $file);
+                        $str = "Файл: ( ".$this->dir .$file .": тип: " . filetype($this->dir . $file);
                         $output->writeln($str);
+                        $body = file_get_contents($this->dir . $file );
+                        $json = json_decode($body);
+//                        var_dump($json);
+//                        exit;
+                        $region = new MapRegion();
+                        $region->setTitle($file);
 
+                        $em->persist($region);
+                        $em->flush($region);
+                        $em->refresh($region);
 
+                        foreach( $json as $key => $val){
+                            $coord = new MapCoord();
+                            $coord->setId($val->id);
+                            $coord->setLatitude($val->Latitude);
+                            $coord->setLongitude($val->Longitude);
+                            $coord->setRegion($region);
+                            $em->persist($coord);
+                            $em->flush($coord);
+                        }
 
                     }
                 }
                 closedir($dh);
             }
         }
-
-
-
     }
 
 }
