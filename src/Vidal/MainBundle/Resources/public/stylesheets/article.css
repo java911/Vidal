@@ -18,6 +18,9 @@
 .article-body {
 	margin-bottom: 12px;
 }
+.article-body p:first-child {
+	margin-top: 0;
+}
 .article-announse {
 	margin-bottom: 6px;
 }

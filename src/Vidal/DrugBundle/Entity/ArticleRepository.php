@@ -16,4 +16,27 @@ class ArticleRepository extends EntityRepository
 		')->setParameter('rubriqueId', $rubrique->getId())
 			->getResult();
 	}
+
+	public function findLast($top)
+	{
+		return $this->_em->createQuery('
+			SELECT a
+			FROM VidalDrugBundle:Article a
+			WHERE a.enabled = TRUE
+			ORDER BY a.date DESC
+		')->setMaxResults($top)
+			->getResult();
+	}
+
+	public function findFrom($from, $max)
+	{
+		return $this->_em->createQuery('
+			SELECT a
+			FROM VidalDrugBundle:Article a
+			WHERE a.enabled = TRUE
+			ORDER BY a.date DESC
+		')->setFirstResult($from)
+			->setMaxResults($max)
+			->getResult();
+	}
 }

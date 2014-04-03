@@ -1,6 +1,11 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
+{% block title %}
+	<h1>{{ sub }}</h1>
+{% endblock %}
+
+
 {% block nav %}
 	<div class="breadcrumbs">
 		<a href="{{ path('index') }}">Видаль</a>
@@ -22,11 +27,6 @@
 			{% endfor %}
 		{% endif %}
 	</div>
-{% endblock %}
-
-
-{% block title %}
-	<h1>{{ sub }}</h1>
 {% endblock %}
 
 

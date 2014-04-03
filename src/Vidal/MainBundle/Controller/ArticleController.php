@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Lsw\SecureControllerBundle\Annotation\Secure;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ArticleController extends Controller
 {
@@ -32,7 +33,7 @@ class ArticleController extends Controller
 		}
 
 		return array(
-			'title'     => $article . ' | ' . $rubrique,
+			'title'     => $this->strip($article . '') . ' | ' . $rubrique,
 			'menu_left' => 'articles',
 			'rubrique'  => $rubrique,
 			'article'   => $article
@@ -157,7 +158,7 @@ class ArticleController extends Controller
 					$article = $em->getRepository('VidalDrugBundle:Art')->findOneById($id);
 				}
 				else {
-					$link = substr($part, 0, $pos2);
+					$link    = substr($part, 0, $pos2);
 					$article = $em->getRepository('VidalDrugBundle:Art')->findOneByLink($link);
 				}
 
@@ -194,5 +195,13 @@ class ArticleController extends Controller
 		);
 
 		return $params;
+	}
+
+	private function strip($string)
+	{
+		$pat = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/&amp;/');
+		$rep = array('', '', '&');
+
+		return preg_replace($pat, $rep, $string);
 	}
 }
