@@ -7,8 +7,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Vidal\MainBundle\Entity\MarketCache;
-use Vidal\MainBundle\Entity\MarketDrug;
+use Vidal\MainBundle\Entity\MapRegion;
+use Vidal\MainBundle\Entity\MapCoord;
 
 /**
  * Команда парсинга XML аптек для кеширования данных
@@ -31,6 +31,8 @@ class ParserMapCommand extends ContainerAwareCommand
 
         $this->dir = '/var/www/upload_vidal/map/';
 
+        $em = $this->getContainer()->get('doctrine')->getManager();
+
         $output->writeln('--- vidal:parser started');
         # Подключаем пилюли URL
 
@@ -40,17 +42,30 @@ class ParserMapCommand extends ContainerAwareCommand
                     if (filetype($this->dir . $file) == 'file'){
                         $str = "Файл: $file : тип: " . filetype($this->dir . $file);
                         $output->writeln($str);
+                        $body = file_get_contents($this->dir . $file);
+                        $json = json_encode($body);
+                        $region = new MapRegion();
+                        $region->setTitle($file);
 
+                        $em->persist($region);
+                        $em->flush($region);
+                        $em->refresh($region);
 
+                        foreach( $json as $key => $val){
+                            $coord = new MapCoord();
+                            $coord->setId($val->id);
+                            $coord->setLatitude($val->Latitude);
+                            $coord->setLongitude($val->Longitude);
+                            $coord->setRegion($region);
+                            $em->persist($coord);
+                            $em->flush($coord);
+                        }
 
                     }
                 }
                 closedir($dh);
             }
         }
-
-
-
     }
 
 }
