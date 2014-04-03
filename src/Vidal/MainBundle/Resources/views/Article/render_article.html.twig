@@ -1,0 +1,16 @@
+<div class="article-wrap">
+	{# админам карандашик редактирования #}
+	{% if is_granted('ROLE_ADMIN') %}
+		<a class="admin-edit fade" target="_blank"
+		   href="{{ path('admin_vidal_drug_article_edit', {'id':article.id}) }}">
+			<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+		</a>
+	{% endif %}
+
+	<div class="article-body">
+		{{ article.body|raw }}
+	</div>
+	<div class="article-footer">
+		<span class="article-date">{{ article.date|date('d.m.Y') }}</span>
+	</div>
+</div>

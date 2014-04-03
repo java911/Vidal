@@ -45,6 +45,32 @@
 		</div>
 	{% endif %}
 
+	{# Найдено препаратов #}
+	{% if productsPagination is defined %}
+		{% if productsPagination is not empty %}
+			<div class="block">
+				<div class="block-anons">
+					<div class="block-head">
+						Найдено препаратов: <span>{{ productsPagination.totalItemCount }}</span>
+					</div>
+				</div>
+			</div>
+			<div class="navigation">
+				{{ knp_pagination_render(productsPagination) }}
+			</div>
+			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':productsPagination.items} %}
+			{% if productsPagination.totalItemCount > 15 %}
+				<div class="navigation">
+					{{ knp_pagination_render(productsPagination) }}
+				</div>
+			{% endif %}
+		{% elseif t == 'product' %}
+			<div class="no-results">
+				Не найдено результатов по препарату <span>{{ q }}</span>
+			</div>
+		{% endif %}
+	{% endif %}
+
 	{# Найдено активных веществ #}
 	{% if molecules is defined %}
 		{% if molecules is not empty %}
@@ -63,27 +89,16 @@
 		{% endif %}
 	{% endif %}
 
-	{# Найдено препаратов #}
-	{% if productsPagination is defined %}
-		{% if productsPagination is not empty %}
-			<div class="block">
-				<div class="block-anons">
-					<div class="block-head">
-						Найдено препаратов: <span>{{ productsPagination.totalItemCount }}</span>
-					</div>
+	{# Найдено БАДов #}
+	{% if bads is defined %}
+		<div class="block">
+			<div class="block-anons">
+				<div class="block-head">
+					Найдено БАДов: <span>{{ bads|length }}</span>
 				</div>
 			</div>
-
-			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':productsPagination.items} %}
-
-			<div class="navigation">
-				{{ knp_pagination_render(productsPagination) }}
-			</div>
-		{% elseif t == 'product' %}
-			<div class="no-results">
-				Не найдено результатов по препарату <span>{{ q }}</span>
-			</div>
-		{% endif %}
+		</div>
+		{% include 'VidalDrugBundle:Vidal:render_bads.html.twig' %}
 	{% endif %}
 
 	{# поиск по производителю #}
