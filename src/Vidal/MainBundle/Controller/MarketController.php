@@ -316,7 +316,7 @@ class MarketController extends Controller{
                             <comment>".      $order->getComment()."</comment>
                             <shipping_id>".  $order->getShipping()."</shipping_id>
                             <shipping_cost>".$this->shipping[$order->getShipping()]."</shipping_cost>
-                            <payment_id>".   $order->getId()."</payment_id>
+                            <payment_id>1</payment_id>
                             <discount>0</discount>
                             <total_cost>".   $summa."</total_cost>
                             <order_time>".   time($order->getCreated())."</order_time>
