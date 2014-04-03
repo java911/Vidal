@@ -7,6 +7,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Vidal\MainBundle\Entity\MapRegion;
+use Vidal\MainBundle\Entity\MapCoord;
 
 class IndexController extends Controller
 {
@@ -78,6 +80,18 @@ class IndexController extends Controller
 	 */
 	public function pharmaciesMapAction()
 	{
-		return array();
+        $coords = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findOneById(87);
+
+		return array('coords' => $coords);
 	}
+
+    /**
+     * @Route("/pharmacies-map-ajax", name="pharmacies_map_ajax", options={"expose":true})
+     * @Template("VidalMainBundle:Index:map_ajax.json.twig")
+     */
+    public function ajaxmapAction(){
+
+
+        return array();
+    }
 }

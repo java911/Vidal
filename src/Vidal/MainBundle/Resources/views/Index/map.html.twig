@@ -2,7 +2,7 @@
 
 
 {% block title %}
-	<h1>КАРТА АПТЕК</h1>
+    <h1>КАРТА АПТЕК</h1>
 {% endblock %}
 
 
@@ -30,42 +30,42 @@
     <script src="http://dimik.github.io/ymaps/examples/multi-geocoder/list-collection.js" type="text/javascript"></script>
 
     {#<script type="text/javascript">#}
-        {#ymaps.ready(init);#}
-        {#var myMap,#}
-                {#myPlacemark;#}
+    {#ymaps.ready(init);#}
+    {#var myMap,#}
+    {#myPlacemark;#}
 
-        {#function init(){#}
-            {#myMap = new ymaps.Map ("map", {#}
-                {#center: [55.76, 37.64],#}
-                {#zoom: 10,#}
-                {#behaviors: ['default', 'scrollZoom']#}
-            {#},{#}
-                {#draggable: true, // метку можно перемещать#}
-                {#preset: 'twirl#whiteStretchyIcon'#}
-            {#});#}
-
-
-            {#myMap.controls.add( new ymaps.control.ZoomControl());#}
-            {#myMap.controls.add('typeSelector');#}
+    {#function init(){#}
+    {#myMap = new ymaps.Map ("map", {#}
+    {#center: [55.76, 37.64],#}
+    {#zoom: 10,#}
+    {#behaviors: ['default', 'scrollZoom']#}
+    {#},{#}
+    {#draggable: true, // метку можно перемещать#}
+    {#preset: 'twirl#whiteStretchyIcon'#}
+    {#});#}
 
 
-            {#var myCoord = [ymaps.geolocation.latitude, ymaps.geolocation.longitude];#}
+    {#myMap.controls.add( new ymaps.control.ZoomControl());#}
+    {#myMap.controls.add('typeSelector');#}
 
-            {#var mGeocoder = new MultiGeocoder({ boundedBy : myMap.getBounds() });#}
 
-            {#// Геокодирование массива адресов и координат.#}
-            {#mGeocoder.geocode(myCoord,[#}
-                        {#"Аптека",#}
-                    {#],{ results: 100 })#}
-                    {#.then(function (res) {#}
-                        {#// Асинхронно получаем коллекцию найденных геообъектов.#}
-                        {#myMap.geoObjects.add(res.geoObjects);#}
-                    {#},#}
-                    {#function (err) {#}
-                        {#console.log(err);#}
-                    {#});#}
+    {#var myCoord = [ymaps.geolocation.latitude, ymaps.geolocation.longitude];#}
 
-        {#}#}
+    {#var mGeocoder = new MultiGeocoder({ boundedBy : myMap.getBounds() });#}
+
+    {#// Геокодирование массива адресов и координат.#}
+    {#mGeocoder.geocode(myCoord,[#}
+    {#"Аптека",#}
+    {#],{ results: 100 })#}
+    {#.then(function (res) {#}
+    {#// Асинхронно получаем коллекцию найденных геообъектов.#}
+    {#myMap.geoObjects.add(res.geoObjects);#}
+    {#},#}
+    {#function (err) {#}
+    {#console.log(err);#}
+    {#});#}
+
+    {#}#}
     {#</script>#}
     <script type="text/javascript">
 
@@ -182,7 +182,9 @@
             if(xhr && xhr.readyState != 4){
                 xhr.abort();
             }
-            xhr = $.post('/_action/DrugStore/getMapTiles/', tiles, function(stores) {
+            xhr = $.post('{{ path('pharmacies_map_ajax') }}', tiles, function(stores) {
+                stores = JSON.parse(stores);
+                console.log(stores);
                 $.each(stores, function(index, store) {
                     if (addedStores['store_id_' + store.id] === 1) return;
                     addedStores['store_id_' + store.id] = 1;
@@ -193,7 +195,6 @@
                     );
                 });
             });
-
 
         }
 
