@@ -210,31 +210,34 @@ class MarketController extends Controller{
             if ($form->isValid()){
                 $order = $form->getData();
                 $order->setShippingPrice($this->shipping[$order->getShipping()]);
+                $order->setGroupApt($group);
                 $em->persist($order);
                 $em->flush($order);
                 $em->refresh($order);
 
                 $xml = $this->generateXml($group, $order);
                 $basket = new Basket();
-
-                if ($group == 'zdavzona'){
-                    $this->mailSend($group, $order, $basket);
-                }else{
-                    $this->emacsSend($order);
-                }
-
-
                 $order->setBody($xml);
-                $order->setEnabled(true);
-                $em->flush($order);
-
-                $basket->clear($group);
-
-                if ($group != 'zdravzona' ){
-                    $url = 'http://smacs.ru/feedbacks/'.md5($group.'_'.$order->getId().'vidal3L29y4');
-                    return $this->render("VidalMainBundle:Market:order_success.html.twig",array( 'url' => $url ));
+                $succes = false;
+                if ($group == 'zdavzona'){
+                    $succes = $this->mailSend($group, $order, $basket);
                 }else{
-                    return $this->render("VidalMainBundle:Market:order_success_2.html.twig");
+                    $succes = $this->emacsSend($order);
+                }
+                if ($succes == true ){
+                    $order->setEnabled(true);
+                    $em->flush($order);
+
+                    $basket->clear($group);
+
+                    if ($group != 'zdravzona' ){
+                        $url = 'http://smacs.ru/feedbacks/'.md5($group.'_'.$order->getId().'vidal3L29y4');
+                        return $this->render("VidalMainBundle:Market:order_success.html.twig",array( 'url' => $url ));
+                    }else{
+                        return $this->render("VidalMainBundle:Market:order_success_2.html.twig");
+                    }
+                }else{
+                    return array();
                 }
 
             }else{
@@ -299,11 +302,13 @@ class MarketController extends Controller{
         $basket = new Basket();
         $products = $basket->getAll();
         $products = $products[$group];
+        $summa = $basket->getAmounts();
+        $summa = $summa[$group];
 
         $header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
                     <orders>
                         <order>
-	                        <order_code>".   $order->getId()."_1234</order_code>
+	                        <order_code>".   "vidal_".$order->getId()."</order_code>
 	                        <name>".         $order->getLastName()." ".$order->getFirstName()." ".$order->getSurName()."</name>
                             <phone>".        $order->getPhone()."</phone>
                             <email>".        $order->getEmail()."</email>
@@ -313,8 +318,9 @@ class MarketController extends Controller{
                             <shipping_cost>".$this->shipping[$order->getShipping()]."</shipping_cost>
                             <payment_id>".   $order->getId()."</payment_id>
                             <discount>0</discount>
-                            <total_cost>156.93</total_cost>
+                            <total_cost>".   $summa."</total_cost>
                             <order_time>".   time($order->getCreated())."</order_time>
+                            <card></card>
                             <products>";
 
         $footer = "         </products>
@@ -359,24 +365,36 @@ class MarketController extends Controller{
     public function emacsSend(MarketOrder $order){
 
         if ( $order->getGroupApt() == 'eapteka'){
-            $url = 'http://login:password@smacs.ru/exchange/price';
+            $url = 'http://vidal:3L29y4@ea.smacs.ru/exchange';
+//            $url = 'vidal.loc/test.php';
         }elseif ( $order->getGroupApt() == 'piluli'){
-                $url = 'http://login:password@ea.smacs.ru/exchange/price';
-            }
-
-            $xml = $order->getBody();
-
-        if( $curl = curl_init() ) {
-            curl_setopt($curl, CURLOPT_URL, $url);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
-            curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $xml);
-            $out = curl_exec($curl);
-            echo $out;
-            curl_close($curl);
+            $url = 'http://vidal:3L29y4@@smacs.ru/exchange';
         }
 
-        exit;
+        $xml = $order->getBody();
+
+        $xml = simplexml_load_string($xml);
+        $xml = $xml->asXML();
+
+        if( $curl = curl_init() ) {
+
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLINFO_HEADER_OUT, true);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, 'xml='.$xml);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+            $data = curl_exec($curl);
+
+            curl_close($curl);
+
+        }
+        $xml = simplexml_load_string($data);
+        if ($xml->error->error_code){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 
