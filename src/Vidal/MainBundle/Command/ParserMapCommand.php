@@ -29,7 +29,7 @@ class ParserMapCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $this->dir = '/var/www/upload_vidal/map/';
+        $this->dir = '/var/www/upload_vidal/map/map/';
 
         $em = $this->getContainer()->get('doctrine')->getManager();
 
@@ -40,10 +40,12 @@ class ParserMapCommand extends ContainerAwareCommand
             if ($dh = opendir($this->dir)) {
                 while (($file = readdir($dh)) !== false) {
                     if (filetype($this->dir . $file) == 'file'){
-                        $str = "Файл: $file : тип: " . filetype($this->dir . $file);
+                        $str = "Файл: ( ".$this->dir .$file .": тип: " . filetype($this->dir . $file);
                         $output->writeln($str);
-                        $body = file_get_contents($this->dir . $file);
-                        $json = json_encode($body);
+                        $body = file_get_contents($this->dir . $file );
+                        $json = json_decode($body);
+//                        var_dump($json);
+//                        exit;
                         $region = new MapRegion();
                         $region->setTitle($file);
 
