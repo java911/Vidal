@@ -64,7 +64,7 @@ class ArticleAdmin extends Admin
 				'empty_value'   => 'не указано',
 				'required'      => false,
 				'multiple'      => true,
-				'attr'          => array('placeholder' => 'Начните вводить название или ID'),
+				'attr'          => array('placeholder' => 'Начните вводить название или код'),
 			))
 			->add('molecules', 'entity', array(
 				'label'         => 'Активные вещества',
@@ -104,7 +104,7 @@ class ArticleAdmin extends Admin
 				'required'      => false,
 				'empty_value'   => 'не указано',
 				'multiple'      => true,
-				'attr'          => array('placeholder' => 'Начните вводить название или ID'),
+				'attr'          => array('placeholder' => 'Начните вводить название или код'),
 			))
 			->add($formMapper->create('documents', 'text', array(
 					'label'        => 'Описания препаратов',

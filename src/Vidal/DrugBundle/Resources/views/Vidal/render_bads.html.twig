@@ -8,7 +8,7 @@
 		<td title="Владелец регистрационного удостоверения">Владелец рег/уд</td>
 	</tr>
 
-	{% for id, product in products %}
+	{% for id, product in bads %}
 		{% set id = product.ProductID %}
 		<tr>
 			<td class="products-table-loz">
@@ -17,19 +17,21 @@
 						 title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>
 				{% endif %}
 			</td>
-			<td class="products-table-name admin">
+			<td class="products-table-name{% if isAdmin %} admin{% endif %}">
 				<a class="no-underline"
 				   href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}">
 					{{ product.RusName|raw }}</a>
 				{# админу карандашик на редактирование #}
-				<a class="admin-edit" target="_blank"
-				   href="{{ path('admin_vidal_drug_product_edit', {'id':product.ProductID}) }}">
-					<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-				</a>
+				{% if isAdmin %}
+					<a class="admin-edit" target="_blank"
+					   href="{{ path('admin_vidal_drug_product_edit', {'id':product.ProductID}) }}">
+						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+					</a>
+				{% endif %}
 			</td>
 			<td class="products-table-picture">
-				{% if pictures[id] is defined %}
-					{% set path = '/upload/products/' ~ pictures[id] %}
+				{% if bad_pictures[id] is defined %}
+					{% set path = '/upload/products/' ~ bad_pictures[id] %}
 					{% if is_file(path) %}
 						<a class="no-underline"
 						   href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"
@@ -56,7 +58,7 @@
 			</td>
 			<td class="products-table-company">
 				{# компании регистраторы/производители препарата #}
-				{% for company in companies[id] %}
+				{% for company in bad_companies[id] %}
 					<div>
 						<span class="tip">
 							{% if company.ItsMainCompany %}
@@ -73,19 +75,6 @@
 							<span class="small">({{ company.Country }})</span>
 						{% endif %}
 					</div>
-					{# представительство #}
-					{% if infoPages is defined and infoPages[product.DocumentID] is defined %}
-						{% set inf = infoPages[product.DocumentID] %}
-						<div>
-							<span class="tip">представительство:</span>
-							<a class="no-underline" href="{{ path('inf_item', {'InfoPageID':inf.InfoPageID}) }}">
-								{{ inf.RusName|raw }}
-							</a>
-							{% if inf.Country is not empty %}
-								<span class="small">({{ inf.Country }})</span>
-							{% endif %}
-						</div>
-					{% endif %}
 				{% endfor %}
 			</td>
 		</tr>

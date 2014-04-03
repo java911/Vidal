@@ -45,11 +45,12 @@ class IndexController extends Controller
 		);
 	}
 
-    /**
-     * @Route("/pharmacies-map", name="pharmacies_map")
-     * @Template("VidalMainBundle:Index:map.html.twig")
-     */
-    public function pharmaciesMapAction(){
-        return array();
-    }
+	/**
+	 * @Route("/pharmacies-map", name="pharmacies_map")
+	 * @Template("VidalMainBundle:Index:map.html.twig")
+	 */
+	public function pharmaciesMapAction()
+	{
+		return array();
+	}
 }

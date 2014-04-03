@@ -12,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 
 class SearchController extends Controller
 {
-	const PRODUCTS_PER_PAGE = 30;
+	const PRODUCTS_PER_PAGE = 20;
 
 	/**
 	 * @Route("/search", name="search")
@@ -44,7 +44,28 @@ class SearchController extends Controller
 		}
 
 		if ($t == 'all' || $t == 'product') {
-			$products = $em->getRepository('VidalDrugBundle:Product')->findByQuery($q, $bad);
+			$productsRaw = $em->getRepository('VidalDrugBundle:Product')->findByQuery($q, $bad);
+
+			# если включаем бады, то их надо в отдельную группу
+			if ($bad) {
+				$products = array();
+				$bads     = array();
+				foreach ($productsRaw as $product) {
+					$product['ProductTypeCode'] == 'BAD'
+						? $bads[] = $product
+						: $products[] = $product;
+				}
+				if (count($bads)) {
+					$badIds                  = $this->getProductIds($bads);
+					$params['bads']          = $bads;
+					$params['bad_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($badIds);
+					$params['bad_pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($badIds);
+					$params['bad_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($bads);
+				}
+			}
+			else {
+				$products = $productsRaw;
+			}
 
 			$paginator                    = $this->get('knp_paginator');
 			$pagination                   = $paginator->paginate($products, $p, self::PRODUCTS_PER_PAGE);
@@ -54,6 +75,7 @@ class SearchController extends Controller
 				$productIds          = $this->getProductIds($pagination);
 				$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
 				$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
+				$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($pagination);
 			}
 		}
 

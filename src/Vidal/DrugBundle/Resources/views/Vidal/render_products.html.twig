@@ -73,6 +73,19 @@
 							{% endif %}
 						</div>
 					{% endfor %}
+					{# представительство #}
+					{% if infoPages is defined and infoPages[product.DocumentID] is defined %}
+						{% set inf = infoPages[product.DocumentID] %}
+						<div>
+						<span class="tip">представительство:</span>
+							<a class="no-underline" href="{{ path('inf_item', {'InfoPageID':inf.InfoPageID}) }}">
+								{{ inf.RusName|raw }}
+							</a>
+							{% if inf.Country is not empty %}
+								<span class="small">({{ inf.Country }})</span>
+							{% endif %}
+						</div>
+					{% endif %}
 				</td>
 			</tr>
 		{% endfor %}

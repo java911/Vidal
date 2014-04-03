@@ -248,11 +248,12 @@ class ProductRepository extends EntityRepository
 
 		$qb
 			->select('p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.ProductID,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
-				d.Indication, d.ArticleID')
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, pt.ProductTypeCode,
+				d.Indication, d.ArticleID, d.DocumentID')
 			->from('VidalDrugBundle:Product', 'p')
 			->leftJoin('VidalDrugBundle:ProductDocument', 'pd', 'WITH', 'pd.ProductID = p')
 			->leftJoin('VidalDrugBundle:Document', 'd', 'WITH', 'pd.DocumentID = d')
+			->leftJoin('VidalDrugBundle:ProductType', 'pt', 'WITH', 'p.ProductTypeCode = pt.ProductTypeCode')
 			->orderBy('p.RusName', 'ASC')
 			->addOrderBy('pd.Ranking', 'DESC')
 			->andWhere("p.CountryEditionCode = 'RUS'")

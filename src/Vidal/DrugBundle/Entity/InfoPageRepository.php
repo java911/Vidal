@@ -17,6 +17,43 @@ class InfoPageRepository extends EntityRepository
 			->getOneOrNullResult();
 	}
 
+	public function findByProducts($products)
+	{
+		$documentIds = array();
+
+		foreach ($products as $product) {
+			$key = $product['DocumentID'];
+			if (!isset($documentIds[$key])) {
+				$documentIds[$key] = '';
+			}
+		}
+
+		$documentIds = array_keys($documentIds);
+
+		$infoPages = $this->_em->createQuery("
+			SELECT DISTINCT i.InfoPageID, i.RusName, c.RusName Country, d.DocumentID
+			FROM VidalDrugBundle:InfoPage i
+			LEFT JOIN VidalDrugBundle:DocumentInfoPage di WITH di.InfoPageID = i
+			LEFT JOIN VidalDrugBundle:Country c WITH i.CountryCode = c
+			LEFT JOIN VidalDrugBundle:Document d WITH di.DocumentID = d.DocumentID
+			WHERE i.CountryEditionCode = 'RUS'
+				AND di.DocumentID IN (:documentIds)
+			ORDER BY di.Ranking DESC
+		")->setParameter('documentIds', $documentIds)
+			->getResult();
+
+		# надо сгруппировать по ID документа
+		$results = array();
+		foreach ($infoPages as $infoPage) {
+			$key = $infoPage['DocumentID'];
+			if (!isset($results[$key])) {
+				$results[$key] = $infoPage;
+			}
+		}
+
+		return $results;
+	}
+
 	public function findByDocumentID($DocumentID)
 	{
 		return $this->_em->createQuery("

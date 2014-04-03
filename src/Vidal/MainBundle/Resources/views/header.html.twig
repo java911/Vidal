@@ -32,7 +32,8 @@
 	</div>
 
 	<div class="search-bad">
-		<input type="checkbox" id="bad" name="bad" class="checkbox"/>
+		<input type="checkbox" id="bad" name="bad"
+			   class="checkbox"{% if app.request.get('bad') %} checked="checked"{% endif %}/>
 		<label for="bad">включая БАДы</label>
 	</div>
 </form>
