@@ -6,10 +6,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class IndexController extends Controller
 {
-	const PUBLICATIONS_INDEX_PAGE = 7;
+	const PUBLICATIONS_SHOW = 4;
+	const PUBLICATIONS_LOAD = 4;
+	const ARTICLES_SHOW     = 4;
+	const ARTICLES_LOAD     = 4;
 
 	/**
 	 * @Route("/", name="index")
@@ -17,19 +21,42 @@ class IndexController extends Controller
 	 */
 	public function indexAction(Request $request)
 	{
-		$em     = $this->getDoctrine()->getManager('drug');
-		$params = array(
-			'indexPage' => true,
-			'seotitle'  => 'Справочник лекарственных препаратов Видаль. Описание лекарственных средств',
-		);
+		$em = $this->getDoctrine()->getManager('drug');
 
-		$params['publicationsPagination'] = $this->get('knp_paginator')->paginate(
-			$em->getRepository('VidalDrugBundle:Publication')->getQueryEnabled(),
-			$request->query->get('p', 1),
-			self::PUBLICATIONS_INDEX_PAGE
+		$params = array(
+			'indexPage'    => true,
+			'seotitle'     => 'Справочник лекарственных препаратов Видаль. Описание лекарственных средств',
+			'publications' => $em->getRepository('VidalDrugBundle:Publication')->findLast(self::PUBLICATIONS_SHOW),
+			'articles'     => $em->getRepository('VidalDrugBundle:Article')->findLast(self::ARTICLES_SHOW),
 		);
 
 		return $params;
+	}
+
+	/**
+	 * [AJAX] Подгрузка еще нескольких статей на главную
+	 * @Route("/ajax-articles/{from}", name="ajax_articles", options={"expose":true})
+	 */
+	public function ajaxArticlesAction($from)
+	{
+		$em       = $this->getDoctrine()->getManager('drug');
+		$articles = $em->getRepository('VidalDrugBundle:Article')->findFrom($from, self::ARTICLES_LOAD);
+		$html     = $this->renderView('VidalMainBundle:Article:ajax_articles.html.twig', array('articles' => $articles));
+
+		return new JsonResponse($html);
+	}
+
+	/**
+	 * [AJAX] Подгрузка еще нескольких новостей на главную
+	 * @Route("/ajax-news/{from}", name="ajax_news", options={"expose":true})
+	 */
+	public function ajaxNewsAction($from)
+	{
+		$em       = $this->getDoctrine()->getManager('drug');
+		$news = $em->getRepository('VidalDrugBundle:Publication')->findFrom($from, self::PUBLICATIONS_LOAD);
+		$html     = $this->renderView('VidalMainBundle:Article:ajax_news.html.twig', array('news' => $news));
+
+		return new JsonResponse($html);
 	}
 
 	/**

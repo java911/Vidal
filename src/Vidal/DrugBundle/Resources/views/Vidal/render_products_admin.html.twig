@@ -58,35 +58,48 @@
 				{# компании регистраторы/производители препарата #}
 				{% for company in companies[id] %}
 					<div>
-						<span class="tip">
-							{% if company.ItsMainCompany %}
-							{% elseif company.CompanyRusNote is not empty %}
-								{{ company.CompanyRusNote }}:
-							{% else %}
-								произведено:
+						{% if company.ItsMainCompany %}
+							<a class="no-underline"
+							   href="{{ path('firm_item', {'CompanyID':company.CompanyID}) }}">
+								{{ company.LocalName|raw }}
+							</a>
+							{% if company.Country is not empty and company.Country != 'Unknown' %}
+								<span class="small">({{ company.Country }})</span>
 							{% endif %}
-						</span>
-						<a class="no-underline" href="{{ path('firm_item', {'CompanyID':company.CompanyID}) }}">
-							{{ company.LocalName|raw }}
-						</a>
-						{% if company.Country is not empty %}
-							<span class="small">({{ company.Country }})</span>
+						{% elseif company.CompanyRusNote is not empty and company.CompanyRusNote != 'представительство' %}
+							<span class="tip">{{ company.CompanyRusNote }}:</span>
+							<a class="no-underline"
+							   href="{{ path('firm_item', {'CompanyID':company.CompanyID}) }}">
+								{{ company.LocalName|raw }}
+							</a>
+							{% if company.Country is not empty and company.Country != 'Unknown' %}
+								<span class="small">({{ company.Country }})</span>
+							{% endif %}
+						{% else %}
+							<span class="tip">произведено</span>
+							<a class="no-underline"
+							   href="{{ path('firm_item', {'CompanyID':company.CompanyID}) }}">
+								{{ company.LocalName|raw }}
+							</a>
+							{% if company.Country is not empty and company.Country != 'Unknown' %}
+								<span class="small">({{ company.Country }})</span>
+							{% endif %}
 						{% endif %}
 					</div>
-					{# представительство #}
-					{% if infoPages is defined and infoPages[product.DocumentID] is defined %}
-						{% set inf = infoPages[product.DocumentID] %}
-						<div>
-							<span class="tip">представительство:</span>
-							<a class="no-underline" href="{{ path('inf_item', {'InfoPageID':inf.InfoPageID}) }}">
-								{{ inf.RusName|raw }}
-							</a>
-							{% if inf.Country is not empty %}
-								<span class="small">({{ inf.Country }})</span>
-							{% endif %}
-						</div>
-					{% endif %}
 				{% endfor %}
+				{# представительство #}
+				{% if infoPages is defined and infoPages[product.DocumentID] is defined %}
+					{% set inf = infoPages[product.DocumentID] %}
+					<div>
+						<span class="tip">представительство:</span>
+						<a class="no-underline" href="{{ path('inf_item', {'InfoPageID':inf.InfoPageID}) }}">
+							{{ inf.RusName|raw }}
+						</a>
+						{% if inf.Country is not empty and inf.Country != 'Unknown' %}
+							<span class="small">({{ inf.Country }})</span>
+						{% endif %}
+					</div>
+				{% endif %}
 			</td>
 		</tr>
 	{% endfor %}

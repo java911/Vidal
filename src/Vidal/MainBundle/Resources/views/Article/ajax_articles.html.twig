@@ -1,0 +1,21 @@
+<div class="more-articles to-show">
+	{% for article in articles %}
+		<div class="article">
+			<a class="article-title"
+			   href="{{ path('article', {'rubrique':article.rubrique.rubrique, 'link':article.link}) }}">
+				{{ article.title|raw }}
+			</a>
+
+			<div class="article-announce">
+				{{ article.announce|raw }}
+			</div>
+			<div class="article-footer">
+				<span>Рубрика</span>:
+				<a href="{{ path('rubrique', {'rubrique':article.rubrique.rubrique}) }}"
+					>{{ article.rubrique.title }}</a>
+
+				<div class="article-date">{{ article.date|date('d.m.Y') }}</div>
+			</div>
+		</div>
+	{% endfor %}
+</div>

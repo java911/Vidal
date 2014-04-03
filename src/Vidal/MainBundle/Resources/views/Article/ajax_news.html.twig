@@ -1,0 +1,23 @@
+<div class="more-news to-show">
+	{% for publication in news %}
+		{% set withPhoto = publication.photo and is_file(publication.photo.path) %}
+		<div class="publication{{ withPhoto ? ' with-photo' }}">
+			{% if withPhoto %}
+				<a class="photo" href="{{ path('publication', {id:publication.id}) }}">
+					<img src="{{ publication.photo.path }}" alt="{{ publication.title }}"/>
+				</a>
+			{% endif %}
+			<div>
+				<div class="publication-title">
+					<a href="{{ path('publication', {id:publication.id}) }}">{{ publication.title|raw }}</a>
+				</div>
+				<div class="publication-announce">
+					{{ publication.announce|raw }}
+				</div>
+				<div class="publication-date">
+					{{ publication.date|date('d.m.Y') }}
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+</div>

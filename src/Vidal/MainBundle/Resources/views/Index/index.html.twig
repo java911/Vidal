@@ -12,17 +12,148 @@
 
 
 {% block content %}
-	<div class="news">
-		{% if isAdmin %}
-			{% include 'VidalMainBundle:News:render_publications_admin.html.twig' %}
-		{% else %}
-			{% include 'VidalMainBundle:News:render_publications.html.twig' %}
-		{% endif %}
+	<div class="title">
+		<a href="{{ path('articles') }}">Статьи энциклопедии</a>
 	</div>
+	<div class="articles">
+		{% for article in articles %}
+			<div class="article">
+				<a class="article-title"
+				   href="{{ path('article', {'rubrique':article.rubrique.rubrique, 'link':article.link}) }}">
+					{{ article.title|raw }}
+				</a>
+
+				<div class="article-announce">
+					{{ article.announce|raw }}
+				</div>
+				<div class="article-footer">
+					<span>Рубрика</span>:
+					<a href="{{ path('rubrique', {'rubrique':article.rubrique.rubrique}) }}"
+						>{{ article.rubrique.title }}</a>
+
+					<div class="article-date">{{ article.date|date('d.m.Y') }}</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+	<a href="#" id="more_articles">еще</a>
+
+	<div class="title title-news">
+		<a href="{{ path('news') }}">Последние новости</a>
+	</div>
+	<div class="news">
+		{% for publication in publications %}
+			{% set withPhoto = publication.photo and is_file(publication.photo.path) %}
+			<div class="publication{{ withPhoto ? ' with-photo' }}">
+				{% if withPhoto %}
+					<a class="photo" href="{{ path('publication', {id:publication.id}) }}">
+						<img src="{{ publication.photo.path }}" alt="{{ publication.title }}"/>
+					</a>
+				{% endif %}
+				<div>
+					<div class="publication-title">
+						<a href="{{ path('publication', {id:publication.id}) }}">{{ publication.title|raw }}</a>
+					</div>
+					<div class="publication-announce">
+						{{ publication.announce|raw }}
+					</div>
+					<div class="publication-date">
+						{{ publication.date|date('d.m.Y') }}
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+	<a href="#" id="more_news">еще</a>
 {% endblock %}
 
 
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/publication.css') }}"/>
+	<style tyle="text/css">
+		h1 {
+			margin-bottom: 12px;
+		}
+		.title-news {
+			margin-top: 20px;
+		}
+
+		.articles, .news {
+			padding: 10px 10px 0;
+		}
+		.article, .publication {
+			padding-bottom: 10px;
+			border-bottom:  1px solid #ddd;
+			margin-bottom:  8px;
+		}
+		.article-title {
+			display:         block;
+			margin-bottom:   5px;
+			font-weight:     bold;
+			text-decoration: none;
+			font-size:       17px;
+		}
+		.article-title:hover {
+			text-decoration: underline;
+		}
+		.article-announce, .publication-announce {
+			margin-bottom: 6px;
+			font-size:     14px;
+		}
+		.article-announce p {
+			margin: 0;
+		}
+		.article-footer {
+			position:   relative;
+			min-height: 15px;
+		}
+		.article-date {
+			position:   absolute;
+			right:      0;
+			bottom:     0;
+			font-size:  13px;
+			font-style: italic;
+			color:      gray;
+		}
+		.article-footer {
+			font-size: 13px;
+		}
+		.article-footer span {
+			color: #2f4053;
+		}
+		.article-footer a {
+			text-decoration: none;
+		}
+		.article-footer a:hover {
+			text-decoration: underline;
+		}
+
+		/* more */
+		#more_news, #more_articles {
+			padding-left: 8px;
+		}
+	</style>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#more_articles').click(function() {
+				$.getJSON(Routing.generate('ajax_articles', {'from': $('.article').size()}), null, function(html) {
+					$('.articles').append(html);
+				});
+				return false;
+			});
+
+			$('#more_news').click(function() {
+				$.getJSON(Routing.generate('ajax_news', {'from': $('.publication').size()}), null, function(html) {
+					$('.news').append(html);
+				});
+				return false;
+			});
+		});
+	</script>
 {% endblock %}
