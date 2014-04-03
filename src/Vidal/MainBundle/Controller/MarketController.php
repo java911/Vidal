@@ -231,7 +231,7 @@ class MarketController extends Controller{
                     $basket->clear($group);
 
                     if ($group != 'zdravzona' ){
-                        $url = 'http://smacs.ru/feedbacks/'.md5($group.'_'.$order->getId().'vidal3L29y4');
+                        $url = 'http://smacs.ru/feedbacks/'.md5('vidal_'.$order->getId().'vidal3L29y4');
                         return $this->render("VidalMainBundle:Market:order_success.html.twig",array( 'url' => $url ));
                     }else{
                         return $this->render("VidalMainBundle:Market:order_success_2.html.twig");
