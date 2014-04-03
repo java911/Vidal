@@ -40,11 +40,12 @@
 	margin-right: 15px;
 }
 .rubriques li {
+	position:      relative;
 	display:       table;
 	width:         100%;
 	margin-bottom: 10px;
 }
-.rubriques a {
+.rubriques a:first-child {
 	display:         table-cell;
 	vertical-align:  middle;
 	height:          34px;
@@ -57,6 +58,6 @@
 	font-size:       14px;
 	background:      url(../images/down.png) no-repeat 98% 50%;
 }
-.rubriques a:hover {
+.rubriques a:first-child:hover {
 	border-color: #e1e1e1;
 }

@@ -147,6 +147,16 @@ body {
 	bottom:   6px;
 	right:    0;
 }
+.footer-contacts {
+	position: absolute;
+	bottom:   15px;
+	left:     0;
+}
+.footer-contacts a {
+	margin-right: 15px;
+	font-size:    15px;
+	font-weight:  bold;
+}
 
 /* глобальные теги */
 a {
@@ -1099,7 +1109,7 @@ h1 span {
 /* breadcrumbs */
 .breadcrumbs {
 	margin:      -10px 0 20px;
-	font-size:   13px;
+	font-size:   14px;
 	font-family: 'PT Sans Caption', sans-serif;
 	color:       #2f4053;
 	line-height: 17px;

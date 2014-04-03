@@ -2,23 +2,31 @@
 
 
 {% block title %}
-	<h1>ЭНЦИКЛОПЕДИЯ</h1>
+	<h1>О КОМПАНИИ</h1>
 {% endblock %}
 
 
 {% block content %}
 	<div class="rubriques">
-		{% if rubriques|length %}
-			{% set perColumn = rubriques|length // 2 %}
+		{% if items|length %}
+			{% set perColumn = items|length // 2 %}
 
-			{% for rubrique in rubriques %}
+			{% for about in items %}
 
 				{% if loop.index % perColumn == 1 %}
 					<div>
 					<ul class="ul">
 				{% endif %}
 
-				<li><a href="{{ path('rubrique', {'rubrique':rubrique.rubrique}) }}">{{ rubrique }}</a></li>
+				<li>
+					<a href="{{ path('about', {'url':about.url}) }}">{{ about.title }}</a>
+					{% if isAdmin %}
+						<a class="admin-edit fade" target="_blank"
+						   href="{{ path('admin_vidal_main_about_edit', {'id':about.id}) }}">
+							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+						</a>
+					{% endif %}
+				</li>
 
 				{% if loop.index % perColumn == 0 %}
 					</ul>
@@ -28,7 +36,6 @@
 			{% endfor %}
 		{% endif %}
 	</div>
-
 {% endblock %}
 
 

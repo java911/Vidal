@@ -113,7 +113,7 @@ class ArticleController extends Controller
 	 * Отдельная категория (subdivision) со статьями
 	 *
 	 * @Route("/vracham/Informatsiya-dlya-spetsialistov/{url}", name="vracham_url", requirements={"url"=".+"})
-	 * @Route("/vracham/Informatsiya-dlya-spetsialistov/{url}/", requirements={"name"=".+"})
+	 * @Route("/vracham/Informatsiya-dlya-spetsialistov/{url}/", requirements={"url"=".+"})
 	 * @Secure(roles="ROLE_DOCTOR")
 	 *
 	 * @Template()
