@@ -26,12 +26,13 @@ class MapCoord
     /**
      * @ORM\Column(type = "text")
      */
-    protected $text;
+    protected $text = '';
 
     /**
      * @ORM\Column(type = "integer")
      */
     protected $offerId;
+
     /**
      * @ORM\Column(type = "string")
      */
@@ -130,7 +131,7 @@ class MapCoord
     /**
      * @param mixed $text
      */
-    public function setText($text)
+    public function setText($text = '')
     {
         $this->text = $text;
     }
@@ -160,5 +161,5 @@ class MapCoord
     }
 
 
-    
+
 }
