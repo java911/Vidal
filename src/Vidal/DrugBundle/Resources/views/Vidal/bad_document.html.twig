@@ -95,7 +95,59 @@
 			</div>
 		{% endif %}
 
-		{% include 'VidalDrugBundle:Vidal:document_navigation.html.twig' %}
+		{% include 'VidalDrugBundle:Vidal:bad_document_navigation.html.twig' %}
+	{% endif %}
+
+	{# Состав #}
+	<div class="block" id="composition">
+		<div class="block-head">Состав</div>
+		<div class="block-content composition">
+			{{ Composition|replace({
+			'[PRING]':'<i class"pring">Вспомогательные вещества</i>:',
+			'&loz;':'<img class="loz" src="'~loz~'" title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>'
+			})|raw }}
+		</div>
+	</div>
+
+	{# Лекарственные формы #}
+	{% if products is defined and products|length %}
+		<div class="block">
+			<div class="block-head">Форма выпуска и упаковка</div>
+			<div class="block-content">
+				<table class="products-table">
+					{% for p in products %}
+						<tr>
+							<td class="products-table-loz">
+								{% if p.NonPrescriptionDrug %}
+									<img src="{{ loz }}" class="loz"
+										 title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>
+								{% endif %}
+							</td>
+							<td class="products-table-name">
+								<a href="{{ path('product', {'EngName':p.Name, 'ProductID':p.ProductID}) }}"
+								   class="no-underline">{{ p.RusName|raw }}</a>
+							</td>
+							<td class="products-table-zip">
+								<div>{{ p.ZipInfo }}</div>
+								<span>Разрешено к применению в России</span><br/>
+								<span>
+									<i style="color:#476173;">Свидетельство о государственной регистрации</i>:<br/>
+									{{ p.RegistrationNumber }}
+									{% if p.RegistrationDate is not null %}
+										от {{ p.RegistrationDate|date('d.m.Y') }}
+									{% endif %}
+								</span>
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	{% endif %}
+
+	{# блоки описания документа #}
+	{% if document is defined %}
+		{% include 'VidalDrugBundle:Vidal:bad_document_info.html.twig' %}
 	{% endif %}
 
 	{# Блок регистратора/владельца/представительства #}
@@ -193,58 +245,6 @@
 				</ul>
 			{% endif %}
 		</div>
-	{% endif %}
-
-	{# Лекарственные формы #}
-	{% if products is defined and products|length %}
-		<div class="block">
-			<div class="block-head">{{ products|length == 1 ? 'Лекарственная форма' : 'Лекарственные формы' }}</div>
-			<div class="block-content">
-				<table class="products-table">
-					{% for p in products %}
-						<tr>
-							<td class="products-table-loz">
-								{% if p.NonPrescriptionDrug %}
-									<img src="{{ loz }}" class="loz"
-										 title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>
-								{% endif %}
-							</td>
-							<td class="products-table-name">
-								<a href="{{ path('product', {'EngName':p.Name, 'ProductID':p.ProductID}) }}"
-								   class="no-underline">{{ p.RusName|raw }}</a>
-							</td>
-							<td class="products-table-zip">
-								<div>{{ p.ZipInfo }}</div>
-								<span>рег. №: {{ p.RegistrationNumber }}
-									{% if p.RegistrationDate is not null %}
-										от {{ p.RegistrationDate|date('d.m.Y') }}
-									{% endif %}
-									{% if p.MarketStatus %}
-										<i>- {{ p.MarketStatus }}</i>
-									{% endif %}
-								</span>
-							</td>
-						</tr>
-					{% endfor %}
-				</table>
-			</div>
-		</div>
-	{% endif %}
-
-	{# Форма выпуска, состав и упаковка #}
-	<div class="block" id="composition">
-		<div class="block-head">Форма выпуска, состав и упаковка</div>
-		<div class="block-content composition">
-			{{ Composition|replace({
-			'[PRING]':'<i class"pring">Вспомогательные вещества</i>:',
-			'&loz;':'<img class="loz" src="'~loz~'" title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>'
-			})|raw }}
-		</div>
-	</div>
-
-	{# блоки описания документа #}
-	{% if document is defined %}
-		{% include 'VidalDrugBundle:Vidal:document_info.html.twig' %}
 	{% endif %}
 
     {{ render( controller('VidalMainBundle:Market:productList', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}

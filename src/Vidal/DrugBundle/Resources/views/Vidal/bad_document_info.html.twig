@@ -1,3 +1,81 @@
+{# Показания к применению препарата #}
+{% if document.Indication is not empty %}
+	<div class="block" id="indication">
+		<div class="block-content">
+			{{ document.Indication|raw }}
+		</div>
+		{% if nozologies is defined and nozologies is not empty %}
+			<table class="products-table">
+				<tr class="products-table-header">
+					<td style="width:78px">Код МКБ-10</td>
+					<td>Показание</td>
+				</tr>
+				{% for nozology in nozologies %}
+					<tr>
+						<td>{{ nozology.Code }}</td>
+						<td><a href="{{ path('nosology_item', {'Code':nozology.Code}) }}"
+							   class="no-underline">{{ nozology.Name|raw }}</a></td>
+					</tr>
+				{% endfor %}
+			</table>
+		{% endif %}
+	</div>
+{% endif %}
+
+{# Свойства #}
+{% if document.PhInfluence is not empty %}
+	<div class="block" id="influence">
+		<div class="block-head">Свойства</div>
+		<div class="block-content">
+			{% if isDoctor %}
+				{{ document.PhInfluence|raw }}
+			{% else %}
+				{% include 'VidalMainBundle:Auth:closed_info.html.twig' %}
+			{% endif %}
+		</div>
+	</div>
+{% endif %}
+
+{# Рекомендации по применению #}
+{% if document.Dosage is not empty %}
+	<div class="block" id="dosage">
+		<div class="block-head"></div>
+		<div class="block-content">
+			{{ document.Dosage|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Противопоказания #}
+{% if document.ContraIndication is not empty %}
+	<div class="block" id="contra">
+		<div class="block-head">Противопоказания</div>
+		<div class="block-content">
+			{{ document.ContraIndication|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Условия и сроки хранения #}
+{% if document.StorageCondition is not empty %}
+	<div class="block" id="storage">
+		<div class="block-head">Условия и сроки хранения</div>
+		<div class="block-content">
+			{{ document.StorageCondition|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Условия отпуска #}
+{% if document.PharmDelivery is not empty %}
+	<div class="block" id="pharm">
+		<div class="block-head">Условия отпуска</div>
+		<div class="block-content">
+			{{ document.PharmDelivery|raw }}
+		</div>
+	</div>
+{% endif %}
+
 {# Клинико-фармакологическая группа #}
 {% if document.ClPhGrDescription is not empty %}
 	<div class="block" id="group">
@@ -35,20 +113,6 @@
 	{% endif %}
 {% endif %}
 
-{# Фармакологическое действие #}
-{% if document.PhInfluence is not empty %}
-	<div class="block" id="influence">
-		<div class="block-head">Фармакологическое действие</div>
-		<div class="block-content">
-			{% if isDoctor %}
-				{{ document.PhInfluence|raw }}
-			{% else %}
-				{% include 'VidalMainBundle:Auth:closed_info.html.twig' %}
-			{% endif %}
-		</div>
-	</div>
-{% endif %}
-
 {# Фармакокинетика #}
 {% if document.PhKinetics is not empty %}
 	<div class="block" id="kinetics">
@@ -63,57 +127,12 @@
 	</div>
 {% endif %}
 
-{# Показания к применению препарата #}
-{% if document.Indication is not empty %}
-	<div class="block" id="indication">
-		<div class="block-head">Показания</div>
-		<div class="block-content">
-			{{ document.Indication|raw }}
-		</div>
-		{% if nozologies is defined and nozologies is not empty %}
-			<table class="products-table">
-				<tr class="products-table-header">
-					<td style="width:78px">Код МКБ-10</td>
-					<td>Показание</td>
-				</tr>
-				{% for nozology in nozologies %}
-					<tr>
-						<td>{{ nozology.Code }}</td>
-						<td><a href="{{ path('nosology_item', {'Code':nozology.Code}) }}"
-							   class="no-underline">{{ nozology.Name|raw }}</a></td>
-					</tr>
-				{% endfor %}
-			</table>
-		{% endif %}
-	</div>
-{% endif %}
-
-{# Режим дозирования #}
-{% if document.Dosage is not empty %}
-	<div class="block" id="dosage">
-		<div class="block-head">Режим дозирования</div>
-		<div class="block-content">
-			{{ document.Dosage|raw }}
-		</div>
-	</div>
-{% endif %}
-
 {# Побочное действие #}
 {% if document.SideEffects is not empty %}
 	<div class="block" id="side_effects">
 		<div class="block-head">Побочное действие</div>
 		<div class="block-content">
 			{{ document.SideEffects|raw }}
-		</div>
-	</div>
-{% endif %}
-
-{# Противопоказания к применению препарата #}
-{% if document.ContraIndication is not empty %}
-	<div class="block" id="contra">
-		<div class="block-head">Противопоказания к применению</div>
-		<div class="block-content">
-			{{ document.ContraIndication|raw }}
 		</div>
 	</div>
 {% endif %}
@@ -198,26 +217,6 @@
 			{% else %}
 				{% include 'VidalMainBundle:Auth:closed_info.html.twig' %}
 			{% endif %}
-		</div>
-	</div>
-{% endif %}
-
-{# Условия отпуска из аптек #}
-{% if document.PharmDelivery is not empty %}
-	<div class="block" id="pharm">
-		<div class="block-head">Условия отпуска из аптек</div>
-		<div class="block-content">
-			{{ document.PharmDelivery|raw }}
-		</div>
-	</div>
-{% endif %}
-
-{# Условия и сроки хранения #}
-{% if document.StorageCondition is not empty %}
-	<div class="block" id="storage">
-		<div class="block-head">Условия и сроки хранения</div>
-		<div class="block-content">
-			{{ document.StorageCondition|raw }}
 		</div>
 	</div>
 {% endif %}

@@ -126,58 +126,67 @@ class IndexController extends Controller
 		return $params;
 	}
 
-	/** @Route("/Vidal/partneram/podpisnaya-kompaniya-SV/", name="r1") */
+	/** @Route("/Vidal/partneram/podpisnaya-kompaniya-SV/") */
 	public function r1()
 	{
 		return $this->redirect($this->generateUrl('about', array('url' => 'spravochnik-vidal')), 301);
 	}
 
-	/** @Route("/Vidal/partneram/marketing-Vidal-Specialist/", name="r2") */
+	/** @Route("/Vidal/partneram/marketing-Vidal-Specialist/") */
 	public function r2()
 	{
 		return $this->redirect($this->generateUrl('about', array('url' => 'vidal-specialist')), 301);
 	}
 
-	/** @Route("/Vidal/partneram/email-mailing/", name="r3") */
+	/** @Route("/Vidal/partneram/email-mailing/") */
 	public function r3()
 	{
 		return $this->redirect($this->generateUrl('about', array('url' => 'email-mailing')), 301);
 	}
 
-	/** @Route("/Vidal/partneram/basi-dannih-vrachi-sng/", name="r4") */
+	/** @Route("/Vidal/partneram/basi-dannih-vrachi-sng/") */
 	public function r4()
 	{
 		return $this->redirect($this->generateUrl('about', array('url' => 'vrachi-sng')), 301);
 	}
 
-	/** @Route("/Vrachi-Rossii/", name="r5") */
+	/** @Route("/Vrachi-Rossii/") */
 	public function r5()
 	{
 		return $this->redirect($this->generateUrl('about', array('url' => 'vrachi-rossii')), 301);
 	}
 
-	/** @Route("/Vidal/partneram/Vidal-Vizit/", name="r6") */
+	/** @Route("/Vidal/partneram/Vidal-Vizit/") */
 	public function r6()
 	{
 		return $this->redirect($this->generateUrl('about', array('url' => 'vidal-vizit')), 301);
 	}
 
-	/** @Route("/Vidal/partneram/Vidal-Vizit/", name="r7") */
+	/** @Route("/Vidal/partneram/Vidal-Vizit/") */
 	public function r7()
 	{
 		return $this->redirect($this->generateUrl('about', array('url' => 'cd-versiya')), 301);
 	}
 
-	/** @Route("/Vidal/partneram/Kontakti-kommercheskii-otdel/", name="r8") */
+	/** @Route("/Vidal/partneram/Kontakti-kommercheskii-otdel/") */
 	public function r8()
 	{
 		return $this->redirect($this->generateUrl('about', array('url' => 'kommercheskii-otdel')), 301);
 	}
 
-	/** @Route("/Vidal/partneram/Krames-obucheniye-patients/", name="r9") */
+	/** @Route("/Vidal/partneram/Krames-obucheniye-patients/") */
 	public function r9()
 	{
 		return $this->redirect($this->generateUrl('about', array('url' => 'obucheniye')), 301);
+	}
+
+	/** @Route("/patsientam/tema-mesyatsa/{link}/") */
+	public function r10($link)
+	{
+		return $this->redirect($this->generateUrl('article', array(
+			'rubrique' => 'health',
+			'link'     => trim($link, '/')
+		)), 301);
 	}
 
 	/**
@@ -200,9 +209,9 @@ class IndexController extends Controller
 	 */
 	public function pharmaciesMapAction($id = 87)
 	{
-        $cities = $this->getDoctrine()->getRepository('VidalMainBundle:MapRegion')->findAll();
-        $thisCities = $this->getDoctrine()->getRepository('VidalMainBundle:MapRegion')->findOneById($id);
-		$coords = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findOneById(87);
+		$cities     = $this->getDoctrine()->getRepository('VidalMainBundle:MapRegion')->findAll();
+		$thisCities = $this->getDoctrine()->getRepository('VidalMainBundle:MapRegion')->findOneById($id);
+		$coords     = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findOneById(87);
 
 		return array('cities' => $cities, 'thisCity' => $thisCities);
 	}
@@ -211,46 +220,51 @@ class IndexController extends Controller
 	 * @Route("/pharmacies-map-ajax/{cityId}", name="pharmacies_map_ajax", options={"expose"=true})
 	 * @Template("VidalMainBundle:Index:map_ajax.json.twig")
 	 */
-	public function ajaxmapAction($cityId){
+	public function ajaxmapAction($cityId)
+	{
 
 		$region = $this->getDoctrine()->getRepository('VidalMainBundle:MapRegion')->findOneById($cityId);
 		$coords = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findByRegion($region);
 
-
 		return array('coords' => $coords);
 	}
 
-    /**
-     * @Route("/getMapHintContent/{id}", name="getMapHintContent", options={"expose"=true})
-     */
-    public function getMapHintContentaction($id){
-        $em = $this->getDoctrine()->getManager();
-        $coord = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findOneByOfferId($id);
-        if ( $coord->getTitle() == '' or $coord->getTitle() == null ){
-            $html = @file_get_contents('http://apteka.ru/_action/DrugStore/getMapHintContent/'.$id.'/');
-            $html = preg_replace('#<a.*>.*</a>#USi', '', $html);
-            $coord->setTitle($html);
-            $em->flush($coord);
-        }else{
-            $html = $coord->getTitle();
-        }
-        return new Response($html);
-    }
-    /**
-     * @Route("/getMapBalloonContent/{id}", name="getMapBalloonContent", options={"expose"=true})
-     */
-    public function getMapBalloonContent($id){
-        $em = $this->getDoctrine()->getManager();
-        $coord = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findOneByOfferId($id);
-        if ( $coord->getText() == '' or $coord->getText() == null ){
-            $html = @file_get_contents('http://apteka.ru/_action/DrugStore/getMapBalloonContent/'.$id.'/');
-            $html = preg_replace('/Аптека не относится к выбранному региону/', '', $html);
-            $html = preg_replace('#<a.*>.*</a>#USi', '', $html);
-            $coord->setText($html);
-            $em->flush($coord);
-        }else{
-            $html = $coord->getTitle();
-        }
-        return new Response($html);
-    }
+	/**
+	 * @Route("/getMapHintContent/{id}", name="getMapHintContent", options={"expose"=true})
+	 */
+	public function getMapHintContentaction($id)
+	{
+		$em    = $this->getDoctrine()->getManager();
+		$coord = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findOneByOfferId($id);
+		if ($coord->getTitle() == '' or $coord->getTitle() == null) {
+			$html = @file_get_contents('http://apteka.ru/_action/DrugStore/getMapHintContent/' . $id . '/');
+			$html = preg_replace('#<a.*>.*</a>#USi', '', $html);
+			$coord->setTitle($html);
+			$em->flush($coord);
+		}
+		else {
+			$html = $coord->getTitle();
+		}
+		return new Response($html);
+	}
+
+	/**
+	 * @Route("/getMapBalloonContent/{id}", name="getMapBalloonContent", options={"expose"=true})
+	 */
+	public function getMapBalloonContent($id)
+	{
+		$em    = $this->getDoctrine()->getManager();
+		$coord = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findOneByOfferId($id);
+		if ($coord->getText() == '' or $coord->getText() == null) {
+			$html = @file_get_contents('http://apteka.ru/_action/DrugStore/getMapBalloonContent/' . $id . '/');
+			$html = preg_replace('/Аптека не относится к выбранному региону/', '', $html);
+			$html = preg_replace('#<a.*>.*</a>#USi', '', $html);
+			$coord->setText($html);
+			$em->flush($coord);
+		}
+		else {
+			$html = $coord->getTitle();
+		}
+		return new Response($html);
+	}
 }
