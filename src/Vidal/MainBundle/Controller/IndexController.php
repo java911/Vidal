@@ -13,180 +13,171 @@ use Lsw\SecureControllerBundle\Annotation\Secure;
 
 class IndexController extends Controller
 {
-	const PUBLICATIONS_SHOW = 4;
-	const PUBLICATIONS_LOAD = 4;
-	const ARTICLES_SHOW     = 4;
-	const ARTICLES_LOAD     = 4;
+    const PUBLICATIONS_SHOW = 4;
+    const PUBLICATIONS_LOAD = 4;
+    const ARTICLES_SHOW     = 4;
+    const ARTICLES_LOAD     = 4;
 
-	/**
-	 * @Route("/", name="index")
-	 * @Template()
-	 */
-	public function indexAction(Request $request)
-	{
-		$em = $this->getDoctrine()->getManager('drug');
+    /**
+     * @Route("/", name="index")
+     * @Template()
+     */
+    public function indexAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager('drug');
 
-		$params = array(
-			'indexPage'    => true,
-			'seotitle'     => 'Справочник лекарственных препаратов Видаль. Описание лекарственных средств',
-			'publications' => $em->getRepository('VidalDrugBundle:Publication')->findLast(self::PUBLICATIONS_SHOW),
-			'articles'     => $em->getRepository('VidalDrugBundle:Article')->findLast(self::ARTICLES_SHOW),
-		);
+        $params = array(
+            'indexPage'    => true,
+            'seotitle'     => 'Справочник лекарственных препаратов Видаль. Описание лекарственных средств',
+            'publications' => $em->getRepository('VidalDrugBundle:Publication')->findLast(self::PUBLICATIONS_SHOW),
+            'articles'     => $em->getRepository('VidalDrugBundle:Article')->findLast(self::ARTICLES_SHOW),
+        );
 
-		return $params;
-	}
+        return $params;
+    }
 
-	/**
-	 * [AJAX] Подгрузка еще нескольких статей на главную
-	 * @Route("/ajax-articles/{from}", name="ajax_articles", options={"expose":true})
-	 */
-	public function ajaxArticlesAction($from)
-	{
-		$em       = $this->getDoctrine()->getManager('drug');
-		$articles = $em->getRepository('VidalDrugBundle:Article')->findFrom($from, self::ARTICLES_LOAD);
-		$html     = $this->renderView('VidalMainBundle:Article:ajax_articles.html.twig', array('articles' => $articles));
+    /**
+     * [AJAX] Подгрузка еще нескольких статей на главную
+     * @Route("/ajax-articles/{from}", name="ajax_articles", options={"expose":true})
+     */
+    public function ajaxArticlesAction($from)
+    {
+        $em       = $this->getDoctrine()->getManager('drug');
+        $articles = $em->getRepository('VidalDrugBundle:Article')->findFrom($from, self::ARTICLES_LOAD);
+        $html     = $this->renderView('VidalMainBundle:Article:ajax_articles.html.twig', array('articles' => $articles));
 
-		return new JsonResponse($html);
-	}
+        return new JsonResponse($html);
+    }
 
-	/**
-	 * [AJAX] Подгрузка еще нескольких новостей на главную
-	 * @Route("/ajax-news/{from}", name="ajax_news", options={"expose":true})
-	 */
-	public function ajaxNewsAction($from)
-	{
-		$em   = $this->getDoctrine()->getManager('drug');
-		$news = $em->getRepository('VidalDrugBundle:Publication')->findFrom($from, self::PUBLICATIONS_LOAD);
-		$html = $this->renderView('VidalMainBundle:Article:ajax_news.html.twig', array('news' => $news));
+    /**
+     * [AJAX] Подгрузка еще нескольких новостей на главную
+     * @Route("/ajax-news/{from}", name="ajax_news", options={"expose":true})
+     */
+    public function ajaxNewsAction($from)
+    {
+        $em   = $this->getDoctrine()->getManager('drug');
+        $news = $em->getRepository('VidalDrugBundle:Publication')->findFrom($from, self::PUBLICATIONS_LOAD);
+        $html = $this->renderView('VidalMainBundle:Article:ajax_news.html.twig', array('news' => $news));
 
-		return new JsonResponse($html);
-	}
+        return new JsonResponse($html);
+    }
 
-	/**
-	 * @Route("/otvety_specialistov", name="qa")
-	 * @Template()
-	 */
-	public function qaAction()
-	{
-		return array(
-			'title'           => 'Вопрос-ответ',
-			'menu_left'       => 'qa',
-			'questionAnswers' => $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findAll(),
-		);
-	}
+    /**
+     * @Route("/otvety_specialistov", name="qa")
+     * @Template()
+     */
+    public function qaAction()
+    {
+        return array(
+            'title'           => 'Вопрос-ответ',
+            'menu_left'       => 'qa',
+            'questionAnswers' => $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findAll(),
+        );
+    }
 
-	/**
-	 * @Route("/Vidal/vidal-russia/{url}", name="vidal_russia_item", requirements={"url"=".+"})
-	 */
-	public function vidalRussiaItemAction($url)
-	{
-		$url = trim($url, '/');
+    /**
+     * @Route("/Vidal/vidal-russia/{url}", name="vidal_russia_item", requirements={"url"=".+"})
+     */
+    public function vidalRussiaItemAction($url)
+    {
+        $url = trim($url, '/');
 
-		return $this->forward('VidalMainBundle:Index:about', array('url' => $url));
-	}
+        return $this->forward('VidalMainBundle:Index:about', array('url' => $url));
+    }
 
-	/**
-	 * О компании
-	 * @Route("/o-nas", name="onas")
-	 * @Route("/Vidal/vidal-russia/", name="vidal_russia")
-	 *
-	 * @Template()
-	 */
-	public function onasAction()
-	{
-		$params = array(
-			'title'     => 'О компании',
-			'menu_left' => 'about',
-			'items'     => $this->getDoctrine()->getRepository('VidalMainBundle:About')->findByEnabled(true),
-		);
+    /**
+     * О компании
+     * @Route("/o-nas", name="onas")
+     * @Route("/Vidal/vidal-russia/", name="vidal_russia")
+     *
+     * @Template()
+     */
+    public function onasAction()
+    {
+        $params = array(
+            'title'     => 'О компании',
+            'menu_left' => 'about',
+            'items'     => $this->getDoctrine()->getRepository('VidalMainBundle:About')->findByEnabled(true),
+        );
 
-		return $params;
-	}
+        return $params;
+    }
 
-	/**
-	 * О компании
-	 * @Route("/o-nas/{url}", name="about")
-	 *
-	 * @Template()
-	 */
-	public function aboutAction($url)
-	{
-		$about = $this->getDoctrine()->getRepository('VidalMainBundle:About')->findOneByUrl($url);
+    /**
+     * О компании
+     * @Route("/o-nas/{url}", name="about")
+     *
+     * @Template()
+     */
+    public function aboutAction($url)
+    {
+        $about = $this->getDoctrine()->getRepository('VidalMainBundle:About')->findOneByUrl($url);
 
-		if (empty($about)) {
-			throw $this->createNotFoundException();
-		}
+        if (empty($about)) {
+            throw $this->createNotFoundException();
+        }
 
-		$params = array(
-			'title'     => 'О компании',
-			'menu_left' => 'about',
-			'about'     => $about,
-		);
+        $params = array(
+            'title'     => 'О компании',
+            'menu_left' => 'about',
+            'about'     => $about,
+        );
 
-		return $params;
-	}
+        return $params;
+    }
 
-	/** @Route("/Vidal/partneram/podpisnaya-kompaniya-SV/") */
-	public function r1()
-	{
-		return $this->redirect($this->generateUrl('about', array('url' => 'spravochnik-vidal')), 301);
-	}
+    /** @Route("/Vidal/partneram/podpisnaya-kompaniya-SV/", name="r1") */
+    public function r1()
+    {
+        return $this->redirect($this->generateUrl('about', array('url' => 'spravochnik-vidal')), 301);
+    }
 
-	/** @Route("/Vidal/partneram/marketing-Vidal-Specialist/") */
-	public function r2()
-	{
-		return $this->redirect($this->generateUrl('about', array('url' => 'vidal-specialist')), 301);
-	}
+    /** @Route("/Vidal/partneram/marketing-Vidal-Specialist/", name="r2") */
+    public function r2()
+    {
+        return $this->redirect($this->generateUrl('about', array('url' => 'vidal-specialist')), 301);
+    }
 
-	/** @Route("/Vidal/partneram/email-mailing/") */
+	/** @Route("/Vidal/partneram/email-mailing/", name="r3") */
 	public function r3()
 	{
 		return $this->redirect($this->generateUrl('about', array('url' => 'email-mailing')), 301);
 	}
 
-	/** @Route("/Vidal/partneram/basi-dannih-vrachi-sng/") */
+	/** @Route("/Vidal/partneram/basi-dannih-vrachi-sng/", name="r4") */
 	public function r4()
 	{
 		return $this->redirect($this->generateUrl('about', array('url' => 'vrachi-sng')), 301);
 	}
 
-	/** @Route("/Vrachi-Rossii/") */
+	/** @Route("/Vrachi-Rossii/", name="r5") */
 	public function r5()
 	{
 		return $this->redirect($this->generateUrl('about', array('url' => 'vrachi-rossii')), 301);
 	}
 
-	/** @Route("/Vidal/partneram/Vidal-Vizit/") */
+	/** @Route("/Vidal/partneram/Vidal-Vizit/", name="r6") */
 	public function r6()
 	{
 		return $this->redirect($this->generateUrl('about', array('url' => 'vidal-vizit')), 301);
 	}
 
-	/** @Route("/Vidal/partneram/Vidal-Vizit/") */
+	/** @Route("/Vidal/partneram/Vidal-Vizit/", name="r7") */
 	public function r7()
 	{
 		return $this->redirect($this->generateUrl('about', array('url' => 'cd-versiya')), 301);
 	}
 
-	/** @Route("/Vidal/partneram/Kontakti-kommercheskii-otdel/") */
+	/** @Route("/Vidal/partneram/Kontakti-kommercheskii-otdel/", name="r8") */
 	public function r8()
 	{
 		return $this->redirect($this->generateUrl('about', array('url' => 'kommercheskii-otdel')), 301);
 	}
 
-	/** @Route("/Vidal/partneram/Krames-obucheniye-patients/") */
+	/** @Route("/Vidal/partneram/Krames-obucheniye-patients/", name="r9") */
 	public function r9()
 	{
 		return $this->redirect($this->generateUrl('about', array('url' => 'obucheniye')), 301);
-	}
-
-	/** @Route("/patsientam/tema-mesyatsa/{link}/") */
-	public function r10($link)
-	{
-		return $this->redirect($this->generateUrl('article', array(
-			'rubrique' => 'health',
-			'link'     => trim($link, '/')
-		)), 301);
 	}
 
 	/**
@@ -203,68 +194,64 @@ class IndexController extends Controller
 		);
 	}
 
-	/**
-	 * @Route("/pharmacies-map", name="pharmacies_map")
-	 * @Template("VidalMainBundle:Index:map.html.twig")
-	 */
-	public function pharmaciesMapAction($id = 87)
-	{
-		$cities     = $this->getDoctrine()->getRepository('VidalMainBundle:MapRegion')->findAll();
-		$thisCities = $this->getDoctrine()->getRepository('VidalMainBundle:MapRegion')->findOneById($id);
-		$coords     = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findOneById(87);
+    /**
+     * @Route("/pharmacies-map", name="pharmacies_map")
+     * @Template("VidalMainBundle:Index:map.html.twig")
+     */
+    public function pharmaciesMapAction($id = 87)
+    {
+        $cities = $this->getDoctrine()->getRepository('VidalMainBundle:MapRegion')->findAll();
+        $thisCities = $this->getDoctrine()->getRepository('VidalMainBundle:MapRegion')->findOneById($id);
 
-		return array('cities' => $cities, 'thisCity' => $thisCities);
-	}
+        return array('menu'=> 'pharmacies_map', 'cities' => $cities, 'thisCity' => $thisCities);
+    }
 
-	/**
-	 * @Route("/pharmacies-map-ajax/{cityId}", name="pharmacies_map_ajax", options={"expose"=true})
-	 * @Template("VidalMainBundle:Index:map_ajax.json.twig")
-	 */
-	public function ajaxmapAction($cityId)
-	{
+    /**
+     * @Route("/pharmacies-map-ajax/{cityId}", name="pharmacies_map_ajax", options={"expose"=true})
+     * @Template("VidalMainBundle:Index:map_ajax.json.twig")
+     */
+    public function ajaxmapAction($cityId){
 
-		$region = $this->getDoctrine()->getRepository('VidalMainBundle:MapRegion')->findOneById($cityId);
-		$coords = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findByRegion($region);
+        $region = $this->getDoctrine()->getRepository('VidalMainBundle:MapRegion')->findOneById($cityId);
+        $coords = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findByRegion($region);
 
-		return array('coords' => $coords);
-	}
 
-	/**
-	 * @Route("/getMapHintContent/{id}", name="getMapHintContent", options={"expose"=true})
-	 */
-	public function getMapHintContentaction($id)
-	{
-		$em    = $this->getDoctrine()->getManager();
-		$coord = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findOneByOfferId($id);
-		if ($coord->getTitle() == '' or $coord->getTitle() == null) {
-			$html = @file_get_contents('http://apteka.ru/_action/DrugStore/getMapHintContent/' . $id . '/');
-			$html = preg_replace('#<a.*>.*</a>#USi', '', $html);
-			$coord->setTitle($html);
-			$em->flush($coord);
-		}
-		else {
-			$html = $coord->getTitle();
-		}
-		return new Response($html);
-	}
+        return array('coords' => $coords);
+    }
 
-	/**
-	 * @Route("/getMapBalloonContent/{id}", name="getMapBalloonContent", options={"expose"=true})
-	 */
-	public function getMapBalloonContent($id)
-	{
-		$em    = $this->getDoctrine()->getManager();
-		$coord = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findOneByOfferId($id);
-		if ($coord->getText() == '' or $coord->getText() == null) {
-			$html = @file_get_contents('http://apteka.ru/_action/DrugStore/getMapBalloonContent/' . $id . '/');
-			$html = preg_replace('/Аптека не относится к выбранному региону/', '', $html);
-			$html = preg_replace('#<a.*>.*</a>#USi', '', $html);
-			$coord->setText($html);
-			$em->flush($coord);
-		}
-		else {
-			$html = $coord->getTitle();
-		}
-		return new Response($html);
-	}
+    /**
+     * @Route("/getMapHintContent/{id}", name="getMapHintContent", options={"expose"=true})
+     */
+    public function getMapHintContentaction($id){
+        $em = $this->getDoctrine()->getManager();
+        $coord = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findOneByOfferId($id);
+        if ( $coord->getTitle() == '' or $coord->getTitle() == null ){
+            $html = @file_get_contents('http://apteka.ru/_action/DrugStore/getMapHintContent/'.$id.'/');
+            $html = preg_replace('#<a.*>.*</a>#USi', '', $html);
+            $coord->setTitle($html);
+            $em->flush($coord);
+        }else{
+            $html = $coord->getTitle();
+        }
+        return new Response($html);
+    }
+    /**
+     * @Route("/getMapBalloonContent/{id}", name="getMapBalloonContent", options={"expose"=true})
+     */
+    public function getMapBalloonContent($id){
+        $em = $this->getDoctrine()->getManager();
+        $coord = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findOneByOfferId($id);
+        if ( $coord->getText() == '' or $coord->getText() == null ){
+            $html = @file_get_contents('http://apteka.ru/_action/DrugStore/getMapBalloonContent/'.$id.'/');
+            $html = preg_replace('/Аптека не относится к выбранному региону/', '', $html);
+            $html = preg_replace('#<a.*>.*</a>#USi', '', $html);
+            $coord->setText($html);
+            $em->flush($coord);
+        }else{
+            $html = $coord->getTitle();
+        }
+        return new Response($html);
+    }
+
+
 }
