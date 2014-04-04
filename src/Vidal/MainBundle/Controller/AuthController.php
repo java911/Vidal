@@ -54,6 +54,7 @@ class AuthController extends Controller
 
 		if ($form->isValid()) {
 			$user->setHash($this->calculateHash($user));
+			$user->setLastLogin(new \DateTime('now'));
 
 			$em->persist($user);
 			$em->flush();
@@ -125,6 +126,7 @@ class AuthController extends Controller
 			$user->setEmailConfirmed(true);
 			$user->setHash($this->calculateHash($user));
 			$user->setRoles('ROLE_DOCTOR');
+			$user->setLastLogin(new \DateTime('now'));
 			$em->flush();
 
 			$this->resetToken($user);
@@ -191,8 +193,8 @@ class AuthController extends Controller
 	{
 		$username = $request->request->get('username');
 		$password = $request->request->get('password');
-
-		$user = $this->getDoctrine()->getRepository('VidalMainBundle:User')->findOneByUsername($username);
+		$em       = $this->getDoctrine()->getManager();
+		$user     = $em->getRepository('VidalMainBundle:User')->findOneByUsername($username);
 
 		if (!$user) {
 			return new JsonResponse(array('success' => 'no'));
@@ -203,7 +205,7 @@ class AuthController extends Controller
 		# пользователей со старой БД проверям с помощью mysql-функций
 		if ($user->getOldUser()) {
 			$password = mysql_real_escape_string($password);
-			$pdo      = $this->getDoctrine()->getManager()->getConnection();
+			$pdo      = $em->getConnection();
 
 			$stmt = $pdo->prepare("SELECT PASSWORD('$password') as password");
 			$stmt->execute();
@@ -224,6 +226,8 @@ class AuthController extends Controller
 		}
 
 		$this->resetToken($user);
+		$user->setLastLogin(new \DateTime('now'));
+		$em->flush();
 
 		return new JsonResponse(array('success' => 'yes'));
 	}
