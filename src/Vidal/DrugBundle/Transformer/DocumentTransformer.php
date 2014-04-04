@@ -24,22 +24,15 @@ class DocumentTransformer implements DataTransformerInterface
 	public function transform($documents)
 	{
 		return '';
-
-//		if (count($documents) < 1) {
-//			return '';
-//		}
-//
-//		$documentIds = array();
-//
-//		foreach ($documents as $document) {
-//			$documentIds[] = $document->getDocumentID();
-//		}
-//
-//		return implode(';', $documentIds);
 	}
 
 	public function reverseTransform($text)
 	{
+		$text = trim($text);
+		if (empty($text)) {
+			return null;
+		}
+
 		$document = $this->em->getRepository('VidalDrugBundle:Document')->findOneByText($text);
 
 		if ($document) {

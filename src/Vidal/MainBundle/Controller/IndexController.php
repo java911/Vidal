@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Vidal\MainBundle\Entity\MapRegion;
 use Vidal\MainBundle\Entity\MapCoord;
+use Lsw\SecureControllerBundle\Annotation\Secure;
 
 class IndexController extends Controller
 {
@@ -125,24 +126,91 @@ class IndexController extends Controller
 		return $params;
 	}
 
+	/** @Route("/Vidal/partneram/podpisnaya-kompaniya-SV/", name="r1") */
+	public function r1()
+	{
+		return $this->redirect($this->generateUrl('about', array('url' => 'spravochnik-vidal')), 301);
+	}
+
+	/** @Route("/Vidal/partneram/marketing-Vidal-Specialist/", name="r2") */
+	public function r2()
+	{
+		return $this->redirect($this->generateUrl('about', array('url' => 'vidal-specialist')), 301);
+	}
+
+	/** @Route("/Vidal/partneram/email-mailing/", name="r3") */
+	public function r3()
+	{
+		return $this->redirect($this->generateUrl('about', array('url' => 'email-mailing')), 301);
+	}
+
+	/** @Route("/Vidal/partneram/basi-dannih-vrachi-sng/", name="r4") */
+	public function r4()
+	{
+		return $this->redirect($this->generateUrl('about', array('url' => 'vrachi-sng')), 301);
+	}
+
+	/** @Route("/Vrachi-Rossii/", name="r5") */
+	public function r5()
+	{
+		return $this->redirect($this->generateUrl('about', array('url' => 'vrachi-rossii')), 301);
+	}
+
+	/** @Route("/Vidal/partneram/Vidal-Vizit/", name="r6") */
+	public function r6()
+	{
+		return $this->redirect($this->generateUrl('about', array('url' => 'vidal-vizit')), 301);
+	}
+
+	/** @Route("/Vidal/partneram/Vidal-Vizit/", name="r7") */
+	public function r7()
+	{
+		return $this->redirect($this->generateUrl('about', array('url' => 'cd-versiya')), 301);
+	}
+
+	/** @Route("/Vidal/partneram/Kontakti-kommercheskii-otdel/", name="r8") */
+	public function r8()
+	{
+		return $this->redirect($this->generateUrl('about', array('url' => 'kommercheskii-otdel')), 301);
+	}
+
+	/** @Route("/Vidal/partneram/Krames-obucheniye-patients/", name="r9") */
+	public function r9()
+	{
+		return $this->redirect($this->generateUrl('about', array('url' => 'obucheniye')), 301);
+	}
+
+	/**
+	 * @Route("/vracham/expert/", name="vracham_expert")
+	 * @Secure(roles="ROLE_DOCTOR")
+	 * @Template
+	 */
+	public function vrachamExpertAction()
+	{
+		return array(
+			'title' => 'Видаль-Эксперт',
+			'menu'  => 'vracham',
+		);
+	}
+
 	/**
 	 * @Route("/pharmacies-map", name="pharmacies_map")
 	 * @Template("VidalMainBundle:Index:map.html.twig")
 	 */
 	public function pharmaciesMapAction()
 	{
-        $coords = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findOneById(87);
+		$coords = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findOneById(87);
 
 		return array('coords' => $coords);
 	}
 
-    /**
-     * @Route("/pharmacies-map-ajax", name="pharmacies_map_ajax", options={"expose":true})
-     * @Template("VidalMainBundle:Index:map_ajax.json.twig")
-     */
-    public function ajaxmapAction(){
+	/**
+	 * @Route("/pharmacies-map-ajax", name="pharmacies_map_ajax", options={"expose":true})
+	 * @Template("VidalMainBundle:Index:map_ajax.json.twig")
+	 */
+	public function ajaxmapAction()
+	{
 
-
-        return array();
-    }
+		return array();
+	}
 }
