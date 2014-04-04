@@ -11,7 +11,7 @@
         <tr>
             <td>
                 Пол
-                <select class="symptom-select" id="select-sex" style="width: 200px">
+                <select class="symptom-select" id="select-sex" style="width: 100px">
                     <option value="1">Мужской</option>
                     <option value="2">Женский</option>
                 </select>
@@ -52,7 +52,7 @@
             <td id="body-render">
                 {{ render(controller('VidalMainBundle:Symptom:body')) }}
             </td>
-            <td style="vertical-align: top; text-align: right">
+            <td style="vertical-align: top; text-align: left">
                 <br />
                 <div style="text-align: left">
                     <h2 id="h2-symptom">Укажите симптом:</h2>
@@ -222,7 +222,7 @@
 
         $('#select-party').on('change',function(){
             p = $('#select-party').val();
-            if ( p == 1  || p == 15 || p == 2  || p == 3  || p == 4  || p == 5  || p == 20  || p == 34  || p == 21  || p == 22  || p == 23  || p == 24 ){
+            if ( p == 1  || p == 15 || p == 2  || p == 3  || p == 4  || p == 5  || p == 20  || p == 34  || p == 21  || p == 22  || p == 23  || p == 250 ){
                 party = 'head';
             }else{
                 if ( p == 7  || p == 8 || p == 10  || p == 11  || p == 31  || p == 13  || p == 9  || p == 6  || p == 14  || p == 25  || p == 28  || p == 33  || p == 26  || p == 27  || p == 29  || p == 30  || p == 38   ){
@@ -367,7 +367,7 @@
             width: 664px;
         }
         .symptom-select{
-            width: 250px;
+            width: 240px;
             text-align: left;
         }
         .list-disease{
@@ -437,5 +437,10 @@
             cursor: pointer;
             display: none;
         }
+        #body-render{
+            width: 200px !important;
+        }
+
+
     </style>
 {% endblock %}
