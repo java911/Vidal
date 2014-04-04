@@ -32,6 +32,7 @@ class MapCoord
      * @ORM\Column(type = "integer")
      */
     protected $offerId;
+
     /**
      * @ORM\Column(type = "string")
      */
@@ -160,5 +161,5 @@ class MapCoord
     }
 
 
-    
+
 }
