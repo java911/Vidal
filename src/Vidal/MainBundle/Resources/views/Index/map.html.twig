@@ -7,6 +7,15 @@
 
 
 {% block content %}
+    <div class="iption">
+        <select class="select">
+            {% for city in cities %}
+                <option value="{{ city.id }}" {{ thisCity.id ==  city.id ? 'selected="selected"' : ''}}>{{ city.title }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <br/>
+    <br/>
     <div class="map" id="map"></div>
 {% endblock %}
 
@@ -107,7 +116,7 @@
                 hintContent: 'Загрузка...'
             }, {
                 preset: 'twirl#hospitalIcon',
-                iconImageHref: '/bitrix/templates/apteka/files/marker_apt1.png',
+                iconImageHref: '{{ asset('bundles/vidalmain/images/apt.png') }}',
                 iconImageSize: [20, 20],
                 iconImageOffset: [-10, -10]
             });
@@ -206,17 +215,21 @@
             var geoObjectProperties = e.get('balloon').getData().geoObject.properties;
             if (geoObjectProperties.get('balloonContentLoaded')) return;
             var drugStoreId = geoObjectProperties.get('drugStoreId');
-            $.post('/_action/DrugStore/getMapBalloonContent/' + drugStoreId + '/?redirect=', function(balloon) {
+
+            $.post(Routing.generate('getMapBalloonContent',{ 'id' : drugStoreId }), function(balloon) {
                 geoObjectProperties.set('balloonContent', balloon);
                 geoObjectProperties.set('balloonContentLoaded', true);
             });
+
+
         });
 
         myMap.events.add('hintshow', function (e) {
             var geoObjectProperties = e.get('hint').getData().geoObject.properties;
             if (geoObjectProperties.get('hintContentLoaded')) return;
             var drugStoreId = geoObjectProperties.get('drugStoreId');
-            $.post('/_action/DrugStore/getMapHintContent/' + drugStoreId + '/', function(balloon) {
+
+            $.post(Routing.generate('getMapHintContent',{ 'id' : drugStoreId }), function(balloon) {
                 geoObjectProperties.set('hintContent', balloon);
                 geoObjectProperties.set('hintContentLoaded', true);
             });
@@ -358,6 +371,12 @@
             $('.ymaps-b-form-input__input').val($(this).val());
         });
 
+    });
+    $(document).ready(function(){
+        $('select').chosen({
+            disable_search: true,
+            no_results_text: "не найдено"
+        });
     });
 
     </script>
