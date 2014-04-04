@@ -35,8 +35,18 @@ class ProfileType extends AbstractType
 
 		$builder
 			->add('avatar', 'iphp_file', array('label' => 'Аватар', 'required' => false))
-			->add('lastName', null, array('label' => 'Фамилия'))
-			->add('firstName', null, array('label' => 'Имя'))
+			->add('lastName', null, array(
+				'label'       => 'Фамилия',
+				'constraints' => array(new NotBlank(array(
+					'message' => 'Укажите свою фамилию'
+				)))
+			))
+			->add('firstName', null, array(
+				'label'       => 'Имя',
+				'constraints' => array(new NotBlank(array(
+					'message' => 'Укажите свое имя'
+				)))
+			))
 			->add('surName', null, array('label' => 'Отчество', 'required' => false))
 			->add('birthdate', 'date', array(
 				'label'  => 'Дата рождения',

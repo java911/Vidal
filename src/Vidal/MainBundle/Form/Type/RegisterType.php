@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints\True;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Doctrine\ORM\EntityManager;
 use Vidal\MainBundle\Form\DataTransformer\CityToStringTransformer;
 use Vidal\MainBundle\Form\DataTransformer\YearToNumberTransformer;
@@ -43,14 +44,28 @@ class RegisterType extends AbstractType
 					'message' => 'Русские буквы в пароле недопустимы'
 				)))
 			))
-			->add('lastName', null, array('label' => 'Фамилия'))
-			->add('firstName', null, array('label' => 'Имя'))
+			->add('lastName', null, array(
+				'label'       => 'Фамилия',
+				'constraints' => array(new NotBlank(array(
+					'message' => 'Укажите свою фамилию'
+				)))
+			))
+			->add('firstName', null, array(
+				'label'       => 'Имя',
+				'constraints' => array(new NotBlank(array(
+					'message' => 'Укажите свое имя'
+				)))
+			))
 			->add('surName', null, array('label' => 'Отчество', 'required' => false))
 			->add('birthdate', 'date', array(
 				'label'  => 'Дата рождения',
 				'years'  => range(date('Y') - 111, date('Y')),
 				'data'   => new \DateTime('1970-01-01'),
 				'format' => 'dd MMMM yyyy',
+				'constraints' => array(
+					new NotBlank(array('message' => 'Укажите дату своего рождения')),
+					new DateTime(array('message' => 'Дата рождения указана в неверно')),
+				)
 			))
 			->add(
 				$builder->create('city', 'text', array('label' => 'Город'))->addModelTransformer($cityToStringTransformer)
