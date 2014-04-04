@@ -181,6 +181,7 @@ class IndexController extends Controller
 	}
 
 	/**
+	 * @Route("/pharmacies-map/{id}", name="pharmacies_map", defaults = { "id" = 87 }, options={"expose"=true})
 	 * @Route("/vracham/expert/", name="vracham_expert")
 	 * @Secure(roles="ROLE_DOCTOR")
 	 * @Template
@@ -197,19 +198,46 @@ class IndexController extends Controller
 	 * @Route("/pharmacies-map", name="pharmacies_map")
 	 * @Template("VidalMainBundle:Index:map.html.twig")
 	 */
-	public function pharmaciesMapAction()
+	public function pharmaciesMapAction($id = 87)
 	{
+        $cities = $this->getDoctrine()->getRepository('VidalMainBundle:MapRegion')->findAll();
+        $thisCities = $this->getDoctrine()->getRepository('VidalMainBundle:MapRegion')->findOneById($id);
 		$coords = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findOneById(87);
+
+		return array('cities' => $cities, 'thisCity' => $thisCities);
+	}
+
+	/**
+	 * @Route("/pharmacies-map-ajax/{cityId}", name="pharmacies_map_ajax", options={"expose"=true})
+	 * @Template("VidalMainBundle:Index:map_ajax.json.twig")
+	 */
+	public function ajaxmapAction($cityId){
+
+		$region = $this->getDoctrine()->getRepository('VidalMainBundle:MapRegion')->findOneById($cityId);
+		$coords = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findByRegion($region);
+
 
 		return array('coords' => $coords);
 	}
 
-	/**
-	 * @Route("/pharmacies-map-ajax", name="pharmacies_map_ajax", options={"expose":true})
-	 * @Template("VidalMainBundle:Index:map_ajax.json.twig")
-	 */
-	public function ajaxmapAction()
-	{
+    /**
+     * @Route("/getMapHintContent/{id}", name="getMapHintContent", options={"expose"=true})
+     */
+    public function getMapHintContentaction($id){
+        $html = @file_get_contents('http://apteka.ru/_action/DrugStore/getMapHintContent/'.$id.'/');
+        $html = preg_replace('#<a.*>.*</a>#USi', '', $html);
+        return new Response($html);
+    }
+    /**
+     * @Route("/getMapBalloonContent/{id}", name="getMapBalloonContent", options={"expose"=true})
+     */
+    public function getMapBalloonContent($id){
+        $html = @file_get_contents('http://apteka.ru/_action/DrugStore/getMapBalloonContent/'.$id.'/');
+        $html = preg_replace('/Аптека не относится к выбранному региону/', '', $html);
+        $html = preg_replace('#<a.*>.*</a>#USi', '', $html);
+        return new Response($html);
+    }
+
 
 		return array();
 	}
