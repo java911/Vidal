@@ -154,17 +154,33 @@ class IndexController extends Controller
      * @Route("/getMapHintContent/{id}", name="getMapHintContent", options={"expose"=true})
      */
     public function getMapHintContentaction($id){
-        $html = @file_get_contents('http://apteka.ru/_action/DrugStore/getMapHintContent/'.$id.'/');
-        $html = preg_replace('#<a.*>.*</a>#USi', '', $html);
+        $em = $this->getDoctrine()->getManager();
+        $coord = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findOneByOfferId($id);
+        if ( $coord->getTitle() == '' or $coord->getTitle() == null ){
+            $html = @file_get_contents('http://apteka.ru/_action/DrugStore/getMapHintContent/'.$id.'/');
+            $html = preg_replace('#<a.*>.*</a>#USi', '', $html);
+            $coord->setTitle($html);
+            $em->flush($coord);
+        }else{
+            $html = $coord->getTitle();
+        }
         return new Response($html);
     }
     /**
      * @Route("/getMapBalloonContent/{id}", name="getMapBalloonContent", options={"expose"=true})
      */
     public function getMapBalloonContent($id){
-        $html = @file_get_contents('http://apteka.ru/_action/DrugStore/getMapBalloonContent/'.$id.'/');
-        $html = preg_replace('/Аптека не относится к выбранному региону/', '', $html);
-        $html = preg_replace('#<a.*>.*</a>#USi', '', $html);
+        $em = $this->getDoctrine()->getManager();
+        $coord = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findOneByOfferId($id);
+        if ( $coord->getText() == '' or $coord->getText() == null ){
+            $html = @file_get_contents('http://apteka.ru/_action/DrugStore/getMapBalloonContent/'.$id.'/');
+            $html = preg_replace('/Аптека не относится к выбранному региону/', '', $html);
+            $html = preg_replace('#<a.*>.*</a>#USi', '', $html);
+            $coord->setText($html);
+            $em->flush($coord);
+        }else{
+            $html = $coord->getTitle();
+        }
         return new Response($html);
     }
 
