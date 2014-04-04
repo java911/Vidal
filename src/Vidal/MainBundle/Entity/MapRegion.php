@@ -133,5 +133,5 @@ class MapRegion
         return $this->longitude;
     }
 
-    
+
 }
