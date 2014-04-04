@@ -237,8 +237,4 @@ class IndexController extends Controller
         $html = preg_replace('#<a.*>.*</a>#USi', '', $html);
         return new Response($html);
     }
-
-
-		return array();
-	}
 }
