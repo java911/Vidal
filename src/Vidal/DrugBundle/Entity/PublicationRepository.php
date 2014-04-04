@@ -29,13 +29,13 @@ class PublicationRepository extends EntityRepository
 			->getResult();
 	}
 
-	public function getQueryPharm()
+	public function getQueryEnabled()
 	{
-		return $this->_em->createQueryBuilder('p')
-			->select('p')
-			->from('VidalDrugBundle:Publication', 'p')
-			->where('p.enabled = 1')
-			->orderBy('p.updated', 'DESC')
-			->getQuery();
+		return $this->_em->createQuery('
+			SELECT p
+			FROM VidalDrugBundle:Publication p
+			WHERE p.enabled = TRUE
+			ORDER BY p.date DESC
+		');
 	}
 }

@@ -185,7 +185,7 @@ class AuthController extends Controller
 
 	/**
 	 * [AJAX] Логин через асинхронный запрос
-	 * @Route("/ajax/login", name="ajax_login", options={"expose"=true})
+	 * @Route("/ajax-login", name="ajax_login", options={"expose"=true})
 	 */
 	public function ajaxLoginAction(Request $request)
 	{
@@ -194,7 +194,32 @@ class AuthController extends Controller
 
 		$user = $this->getDoctrine()->getRepository('VidalMainBundle:User')->findOneByUsername($username);
 
-		if (!$user || $user->getPassword() !== $password) {
+		if (!$user) {
+			return new JsonResponse(array('success' => 'no'));
+		}
+
+		$pwReal = $user->getPassword();
+
+		# пользователей со старой БД проверям с помощью mysql-функций
+		if ($user->getOldUser()) {
+			$password = mysql_real_escape_string($password);
+			$pdo      = $this->getDoctrine()->getManager()->getConnection();
+
+			$stmt = $pdo->prepare("SELECT PASSWORD('$password') as password");
+			$stmt->execute();
+			$pw1 = $stmt->fetch();
+			$pw1 = $pw1['password'];
+
+			$stmt = $pdo->prepare("SELECT OLD_PASSWORD('$password') as password");
+			$stmt->execute();
+			$pw2 = $stmt->fetch();
+			$pw2 = $pw2['password'];
+
+			if ($pw1 !== $pwReal && $pw2 !== $pwReal) {
+				return new JsonResponse(array('success' => 'no'));
+			}
+		}
+		elseif ($pwReal !== $password) {
 			return new JsonResponse(array('success' => 'no'));
 		}
 

@@ -54,9 +54,9 @@ class IndexController extends Controller
 	 */
 	public function ajaxNewsAction($from)
 	{
-		$em       = $this->getDoctrine()->getManager('drug');
+		$em   = $this->getDoctrine()->getManager('drug');
 		$news = $em->getRepository('VidalDrugBundle:Publication')->findFrom($from, self::PUBLICATIONS_LOAD);
-		$html     = $this->renderView('VidalMainBundle:Article:ajax_news.html.twig', array('news' => $news));
+		$html = $this->renderView('VidalMainBundle:Article:ajax_news.html.twig', array('news' => $news));
 
 		return new JsonResponse($html);
 	}
@@ -72,6 +72,57 @@ class IndexController extends Controller
 			'menu_left'       => 'qa',
 			'questionAnswers' => $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findAll(),
 		);
+	}
+
+	/**
+	 * @Route("/Vidal/vidal-russia/{url}", name="vidal_russia_item", requirements={"url"=".+"})
+	 */
+	public function vidalRussiaItemAction($url)
+	{
+		$url = trim($url, '/');
+
+		return $this->forward('VidalMainBundle:Index:about', array('url' => $url));
+	}
+
+	/**
+	 * О компании
+	 * @Route("/o-nas", name="onas")
+	 * @Route("/Vidal/vidal-russia/", name="vidal_russia")
+	 *
+	 * @Template()
+	 */
+	public function onasAction()
+	{
+		$params = array(
+			'title'     => 'О компании',
+			'menu_left' => 'about',
+			'items'     => $this->getDoctrine()->getRepository('VidalMainBundle:About')->findByEnabled(true),
+		);
+
+		return $params;
+	}
+
+	/**
+	 * О компании
+	 * @Route("/o-nas/{url}", name="about")
+	 *
+	 * @Template()
+	 */
+	public function aboutAction($url)
+	{
+		$about = $this->getDoctrine()->getRepository('VidalMainBundle:About')->findOneByUrl($url);
+
+		if (empty($about)) {
+			throw $this->createNotFoundException();
+		}
+
+		$params = array(
+			'title'     => 'О компании',
+			'menu_left' => 'about',
+			'about'     => $about,
+		);
+
+		return $params;
 	}
 
 	/**

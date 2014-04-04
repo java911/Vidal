@@ -1,0 +1,40 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block title %}
+	<h1>{{ about.title }}</h1>
+{% endblock %}
+
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('onas') }}">О компании</a>
+		<i></i>
+		<span>{{ about.title }}</span>
+	</div>
+{% endblock %}
+
+
+{% block content %}
+	<div class="about">
+		{% if isAdmin %}
+			<a class="admin-edit fade" target="_blank"
+			   href="{{ path('admin_vidal_main_about_edit', {'id':about.id}) }}">
+				<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+			</a>
+		{% endif %}
+		{{ about.body|raw }}
+	</div>
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.about {
+			position: relative;
+		}
+	</style>
+{% endblock %}
