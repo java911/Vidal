@@ -14,9 +14,24 @@ class MapCoord
     /**
      * @ORM\Id
      * @ORM\Column(type = "integer")
+     * @ORM\GeneratedValue
      */
     protected $id;
 
+    /**
+     * @ORM\Column(type = "string")
+     */
+    protected $title;
+
+    /**
+     * @ORM\Column(type = "text")
+     */
+    protected $text;
+
+    /**
+     * @ORM\Column(type = "integer")
+     */
+    protected $offerId;
     /**
      * @ORM\Column(type = "string")
      */
@@ -96,5 +111,54 @@ class MapCoord
         return $this->region;
     }
 
+    /**
+     * @param mixed $offerId
+     */
+    public function setOfferId($offerId)
+    {
+        $this->offerId = $offerId;
+    }
 
+    /**
+     * @return mixed
+     */
+    public function getOfferId()
+    {
+        return $this->offerId;
+    }
+
+    /**
+     * @param mixed $text
+     */
+    public function setText($text)
+    {
+        $this->text = $text;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    /**
+     * @param mixed $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+
+    
 }

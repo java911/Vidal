@@ -75,7 +75,7 @@ class IndexController extends Controller
 	}
 
 	/**
-	 * @Route("/pharmacies-map/{id}", name="pharmacies_map", defaults = { "id" = 87 })
+	 * @Route("/pharmacies-map/{id}", name="pharmacies_map", defaults = { "id" = 87 }, options={"expose"=true})
 	 * @Template("VidalMainBundle:Index:map.html.twig")
 	 */
 	public function pharmaciesMapAction($id = 87)
@@ -87,13 +87,16 @@ class IndexController extends Controller
 	}
 
     /**
-     * @Route("/pharmacies-map-ajax", name="pharmacies_map_ajax", options={"expose"=true})
+     * @Route("/pharmacies-map-ajax/{cityId}", name="pharmacies_map_ajax", options={"expose"=true})
      * @Template("VidalMainBundle:Index:map_ajax.json.twig")
      */
-    public function ajaxmapAction(){
+    public function ajaxmapAction($cityId){
+
+        $region = $this->getDoctrine()->getRepository('VidalMainBundle:MapRegion')->findOneById($cityId);
+        $coords = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findByRegion($region);
 
 
-        return array();
+        return array('coords' => $coords);
     }
 
     /**
@@ -109,7 +112,7 @@ class IndexController extends Controller
      */
     public function getMapBalloonContent($id){
         $html = @file_get_contents('http://apteka.ru/_action/DrugStore/getMapBalloonContent/'.$id.'/');
-//        $html = preg_replace('Аптека не относится к выбранному региону', '', $html);
+        $html = preg_replace('/Аптека не относится к выбранному региону/', '', $html);
         $html = preg_replace('#<a.*>.*</a>#USi', '', $html);
         return new Response($html);
     }

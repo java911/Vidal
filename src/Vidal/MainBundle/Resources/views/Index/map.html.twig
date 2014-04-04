@@ -191,7 +191,7 @@
             if(xhr && xhr.readyState != 4){
                 xhr.abort();
             }
-            xhr = $.post('{{ path('pharmacies_map_ajax') }}', tiles, function(stores) {
+            xhr = $.post('{{ path('pharmacies_map_ajax',{ cityId : thisCity.id }) }}', tiles, function(stores) {
                 stores = JSON.parse(stores);
                 console.log(stores);
                 $.each(stores, function(index, store) {
@@ -372,12 +372,19 @@
         });
 
     });
+
+
     $(document).ready(function(){
         $('select').chosen({
             disable_search: true,
             no_results_text: "не найдено"
         });
-    });
 
+        $('.select').change(function(){
+            url = Routing.generate('pharmacies_map', { 'id': $(this).val() });
+            window.location.href = url;
+        });
+
+    });
     </script>
 {% endblock %}
