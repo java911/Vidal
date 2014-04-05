@@ -54,13 +54,18 @@ class ParserMapCommand extends ContainerAwareCommand
                         $em->refresh($region);
 
                         foreach( $json as $key => $val){
-                            $coord = new MapCoord();
-                            $coord->setId($val->id);
-                            $coord->setLatitude($val->Latitude);
-                            $coord->setLongitude($val->Longitude);
-                            $coord->setRegion($region);
-                            $em->persist($coord);
-                            $em->flush($coord);
+
+                            $coord = $em->getRepository('VidalMainBundle:MapCoord')->findOneById($val->id);
+                            if ($coord == null){
+                                $coord = new MapCoord();
+                                $coord->setOfferId($val->id);
+                                $coord->setLatitude($val->Latitude);
+                                $coord->setLongitude($val->Longitude);
+                                $coord->setRegion($region);
+                                $em->persist($coord);
+                                $em->flush($coord);
+                                $output->writeln("<comment>\t".$val->id."</comment>");
+                            }
                         }
 
                     }

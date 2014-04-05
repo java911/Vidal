@@ -54,6 +54,7 @@ class AuthController extends Controller
 
 		if ($form->isValid()) {
 			$user->setHash($this->calculateHash($user));
+			$user->setLastLogin(new \DateTime('now'));
 
 			$em->persist($user);
 			$em->flush();
@@ -125,6 +126,7 @@ class AuthController extends Controller
 			$user->setEmailConfirmed(true);
 			$user->setHash($this->calculateHash($user));
 			$user->setRoles('ROLE_DOCTOR');
+			$user->setLastLogin(new \DateTime('now'));
 			$em->flush();
 
 			$this->resetToken($user);
@@ -185,20 +187,47 @@ class AuthController extends Controller
 
 	/**
 	 * [AJAX] Логин через асинхронный запрос
-	 * @Route("/ajax/login", name="ajax_login", options={"expose"=true})
+	 * @Route("/ajax-login", name="ajax_login", options={"expose"=true})
 	 */
 	public function ajaxLoginAction(Request $request)
 	{
 		$username = $request->request->get('username');
 		$password = $request->request->get('password');
+		$em       = $this->getDoctrine()->getManager();
+		$user     = $em->getRepository('VidalMainBundle:User')->findOneByUsername($username);
 
-		$user = $this->getDoctrine()->getRepository('VidalMainBundle:User')->findOneByUsername($username);
+		if (!$user) {
+			return new JsonResponse(array('success' => 'no'));
+		}
 
-		if (!$user || $user->getPassword() !== $password) {
+		$pwReal = $user->getPassword();
+
+		# пользователей со старой БД проверям с помощью mysql-функций
+		if ($user->getOldUser()) {
+			$password = mysql_real_escape_string($password);
+			$pdo      = $em->getConnection();
+
+			$stmt = $pdo->prepare("SELECT PASSWORD('$password') as password");
+			$stmt->execute();
+			$pw1 = $stmt->fetch();
+			$pw1 = $pw1['password'];
+
+			$stmt = $pdo->prepare("SELECT OLD_PASSWORD('$password') as password");
+			$stmt->execute();
+			$pw2 = $stmt->fetch();
+			$pw2 = $pw2['password'];
+
+			if ($pw1 !== $pwReal && $pw2 !== $pwReal) {
+				return new JsonResponse(array('success' => 'no'));
+			}
+		}
+		elseif ($pwReal !== $password) {
 			return new JsonResponse(array('success' => 'no'));
 		}
 
 		$this->resetToken($user);
+		$user->setLastLogin(new \DateTime('now'));
+		$em->flush();
 
 		return new JsonResponse(array('success' => 'yes'));
 	}

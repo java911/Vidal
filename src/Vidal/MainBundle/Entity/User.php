@@ -42,7 +42,6 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 
 	/**
 	 * @ORM\Column(type="string")
-	 * @Assert\NotBlank(message="Укажите свою фамилию")
 	 */
 	protected $lastName;
 
@@ -80,16 +79,12 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	protected $university;
 
 	/**
-	 * @ORM\Column(type="date")
+	 * @ORM\Column(type="date", nullable=true)
 	 * @Assert\NotBlank(message = "Укажите год окончания ВУЗа")
 	 */
 	protected $graduateYear;
 
-	/**
-	 * @ORM\Column(type="date")
-	 * @Assert\NotBlank(message="Укажите дату своего рождения")
-	 * @Assert\DateTime(message="Дата указана в неверно")
-	 */
+	/** @ORM\Column(type="date", nullable=true) */
 	protected $birthdate;
 
 	/** @ORM\Column(type="boolean") */
@@ -147,12 +142,24 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	/** @ORM\Column(type="text", nullable=true) */
 	protected $jobPublications;
 
+	# поля со старой базы данных на всякий случай
+
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $oldCompany;
+
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $oldLogin;
+
+	/** @ORM\Column(type="boolean") */
+	protected $oldUser;
+
 	public function __construct()
 	{
 		$this->emailConfirmed = false;
 		$this->hideBirthdate  = false;
 		$this->hidePhone      = false;
 		$this->hideIcq        = false;
+		$this->oldUser        = false;
 		$this->roles          = 'ROLE_UNCONFIRMED';
 	}
 
@@ -784,5 +791,53 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	public function getJobStage()
 	{
 		return $this->jobStage;
+	}
+
+	/**
+	 * @param mixed $oldCompany
+	 */
+	public function setOldCompany($oldCompany)
+	{
+		$this->oldCompany = $oldCompany;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getOldCompany()
+	{
+		return $this->oldCompany;
+	}
+
+	/**
+	 * @param mixed $oldLogin
+	 */
+	public function setOldLogin($oldLogin)
+	{
+		$this->oldLogin = $oldLogin;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getOldLogin()
+	{
+		return $this->oldLogin;
+	}
+
+	/**
+	 * @param mixed $oldUser
+	 */
+	public function setOldUser($oldUser)
+	{
+		$this->oldUser = $oldUser;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getOldUser()
+	{
+		return $this->oldUser;
 	}
 }

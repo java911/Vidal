@@ -241,16 +241,16 @@ class VidalController extends Controller
 		$l  = $request->query->get('l', null);
 		$p  = $request->query->get('p', 1);
 
-//		$molecules = $em->getRepository('VidalDrugBundle:Molecule')->getQuery()->getResult();
-//		$letters   = array();
-//		foreach ($molecules as $m) {
-//			$letter = mb_strtoupper(mb_substr($m->getRusName(), 0, 1, 'utf-8'), 'utf-8');
-//			if (!isset($letters[$letter])) {
-//				$letters[$letter] = '';
-//			}
-//		}
-//		var_dump($letters);
-//		exit;
+		//		$molecules = $em->getRepository('VidalDrugBundle:Molecule')->getQuery()->getResult();
+		//		$letters   = array();
+		//		foreach ($molecules as $m) {
+		//			$letter = mb_strtoupper(mb_substr($m->getRusName(), 0, 1, 'utf-8'), 'utf-8');
+		//			if (!isset($letters[$letter])) {
+		//				$letters[$letter] = '';
+		//			}
+		//		}
+		//		var_dump($letters);
+		//		exit;
 
 		if ($l) {
 			$query = $em->getRepository('VidalDrugBundle:Molecule')->getQueryByLetter($l);
@@ -432,12 +432,12 @@ class VidalController extends Controller
 				$params['articleId'] = $document->getArticleId();
 				$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByDocumentID($document->getDocumentID());
 			}
+			else {
+				throw $this->createNotFoundException();
+			}
 		}
 
-		if ($document) {
-			$params['nozologies'] = $em->getRepository('VidalDrugBundle:Nozology')->findByDocumentID($document->getDocumentID());
-		}
-
+		$params['nozologies']   = $em->getRepository('VidalDrugBundle:Nozology')->findByDocumentID($document->getDocumentID());
 		$productIds             = array($product['ProductID']);
 		$params['product']      = $product;
 		$params['products']     = array($product);
@@ -445,8 +445,19 @@ class VidalController extends Controller
 		$params['atcCodes']     = $em->getRepository('VidalDrugBundle:ATC')->findByProducts($productIds);
 		$params['owners']       = $em->getRepository('VidalDrugBundle:Company')->findOwnersByProducts($productIds);
 		$params['distributors'] = $em->getRepository('VidalDrugBundle:Company')->findDistributorsByProducts($productIds);
-		$params['pictures']     = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds);
 		$params['phthgroups']   = $em->getRepository('VidalDrugBundle:PhThGroups')->findByProductId($ProductID);
+
+		# бады выводятся по-другому
+		if ($document->getArticleID() == 6 || $product['ProductTypeCode'] == 'BAD') {
+			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds);
+
+			return $this->render("VidalDrugBundle:Vidal:bad_document.html.twig", $params);
+		}
+		else {
+			$now                = new \DateTime('now');
+			$year               = (int) $now->format('Y');
+			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds, $year);
+		}
 
 		return $params;
 	}

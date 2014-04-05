@@ -60,7 +60,7 @@ class NozologyRepository extends EntityRepository
 	{
 		$qb = $this->_em->createQueryBuilder();
 
-		$qb->select('DISTINCT n.NozologyCode, n.Name')
+		$qb->select('DISTINCT n.Code, n.Name')
 			->from('VidalDrugBundle:Nozology', 'n')
 			->orderBy('n.Name', 'ASC');
 

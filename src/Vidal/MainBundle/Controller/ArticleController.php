@@ -16,9 +16,7 @@ class ArticleController extends Controller
 
 	/**
 	 * Конкретная статья рубрики
-	 *
-	 * @Route("/articles/{rubrique}/{link}", name="article")
-	 * @Route("/patsientam/entsiklopediya/{rubrique}/{link}.{ext}", name="article_old", defaults={"ext":"html"})
+	 * @Route("/encyclopedia/{rubrique}/{link}", name="article")
 	 *
 	 * @Template()
 	 */
@@ -42,9 +40,7 @@ class ArticleController extends Controller
 
 	/**
 	 * Конкретная рубрика
-	 *
-	 * @Route("/articles/{rubrique}", name="rubrique")
-	 * @Route("/patsientam/entsiklopediya/{rubrique}/", name="rubrique_old")
+	 * @Route("/encyclopedia/{rubrique}", name="rubrique")
 	 *
 	 * @Template()
 	 */
@@ -68,11 +64,43 @@ class ArticleController extends Controller
 	}
 
 	/**
-	 * Рубрики статей видаля
-	 *
-	 * @Route("/articles", name="articles")
 	 * @Route("/patsientam/entsiklopediya/")
 	 * @Route("/patsientam/entsiklopediya")
+	 */
+	public function r1()
+	{
+		return $this->redirect($this->generateUrl('articles'), 301);
+	}
+
+	/**
+	 * @Route("/patsientam/entsiklopediya/{rubrique}/")
+	 */
+	public function r2($rubrique)
+	{
+		return $this->redirect($this->generateUrl('rubrique', array('rubrique' => $rubrique), 301));
+	}
+
+	/** @Route("/patsientam/entsiklopediya/{rubrique}/{link}.{ext}", defaults={"ext":"html"}) */
+	public function r3($rubrique, $link)
+	{
+		return $this->redirect($this->generateUrl('article', array(
+			'rubrique' => $rubrique,
+			'link'     => $link,
+		), 301));
+	}
+
+	/**
+	 * @Route("/vracham/Informatsiya-dlya-spetsialistov")
+	 * @Route("/vracham/Informatsiya-dlya-spetsialistov/")
+	 */
+	public function r4()
+	{
+		return $this->redirect($this->generateUrl('vracham'), 301);
+	}
+
+	/**
+	 * Рубрики статей видаля
+	 * @Route("/encyclopedia", name="articles")
 	 *
 	 * @Template()
 	 */
@@ -90,8 +118,6 @@ class ArticleController extends Controller
 	/**
 	 * Категории статей для врачей
 	 *
-	 * @Route("/vracham/Informatsiya-dlya-spetsialistov")
-	 * @Route("/vracham/Informatsiya-dlya-spetsialistov/")
 	 * @Route("/vracham", name="vracham")
 	 * @Secure(roles="ROLE_DOCTOR")
 	 *
