@@ -22,7 +22,7 @@
 		</service>
 
 		<service id="sonata.admin.qa" class="Vidal\MainBundle\Admin\QuestionAnswerAdmin">
-			<tag name="sonata.admin" manager_type="orm" group="Содержимое" label="Вопрос-Ответ"/>
+			<tag name="sonata.admin" manager_type="orm" group="Содержимое" label="Ответы специалистов"/>
 			<argument />
 			<argument>Vidal\MainBundle\Entity\QuestionAnswer</argument>
 			<argument>SonataAdminBundle:CRUD</argument>

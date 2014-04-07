@@ -202,6 +202,69 @@
 				<target>Удаление ответа специалиста</target>
 			</trans-unit>
 
+			<trans-unit id="sonata-14">
+				<source>About List</source>
+				<target>О компании</target>
+			</trans-unit>
+			<trans-unit id="sonata-14-1">
+				<source>About Show</source>
+				<target>Раздел о компании</target>
+			</trans-unit>
+			<trans-unit id="sonata-14-2">
+				<source>About Edit</source>
+				<target>Редактирование раздела о компании</target>
+			</trans-unit>
+			<trans-unit id="sonata-14-3">
+				<source>About Create</source>
+				<target>Создание раздела о компании</target>
+			</trans-unit>
+			<trans-unit id="sonata-14-4">
+				<source>About Delete</source>
+				<target>Удаление раздела о компании</target>
+			</trans-unit>
+
+			<trans-unit id="sonata-15">
+				<source>Art List</source>
+				<target>Статьи специалистам</target>
+			</trans-unit>
+			<trans-unit id="sonata-15-1">
+				<source>Art Show</source>
+				<target>Статья специалистам</target>
+			</trans-unit>
+			<trans-unit id="sonata-15-2">
+				<source>Art Edit</source>
+				<target>Редактирование статьи специалистам</target>
+			</trans-unit>
+			<trans-unit id="sonata-15-3">
+				<source>Art Create</source>
+				<target>Создание статьи специалистам</target>
+			</trans-unit>
+			<trans-unit id="sonata-15-4">
+				<source>Art Delete</source>
+				<target>Удаление статьи специалистам</target>
+			</trans-unit>
+
+			<trans-unit id="sonata-16">
+				<source>Art Type List</source>
+				<target>Категории статей специалистам</target>
+			</trans-unit>
+			<trans-unit id="sonata-16-1">
+				<source>Art Type Show</source>
+				<target>Категория статей специалистам</target>
+			</trans-unit>
+			<trans-unit id="sonata-16-2">
+				<source>Art Type Edit</source>
+				<target>Редактирование категории статей специалистам</target>
+			</trans-unit>
+			<trans-unit id="sonata-16-3">
+				<source>Art Type Create</source>
+				<target>Создание категории статей специалистам</target>
+			</trans-unit>
+			<trans-unit id="sonata-16-4">
+				<source>Art Type Delete</source>
+				<target>Удаление категории статей специалистам</target>
+			</trans-unit>
+
         </body>
     </file>
 </xliff>
