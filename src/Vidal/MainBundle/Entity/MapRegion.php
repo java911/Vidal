@@ -138,5 +138,22 @@ class MapRegion
         return $this->longitude;
     }
 
+    /**
+     * @param mixed $zoom
+     */
+    public function setZoom($zoom)
+    {
+        $this->zoom = $zoom;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getZoom()
+    {
+        return $this->zoom;
+    }
+
+    
 
 }
