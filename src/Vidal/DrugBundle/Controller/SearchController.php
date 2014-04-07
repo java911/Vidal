@@ -110,13 +110,14 @@ class SearchController extends Controller
 	 */
 	public function searcheAction(Request $request)
 	{
-		$em          = $this->getDoctrine()->getManager('drug');
-		$q           = $request->query->get('q', ''); # поисковый запрос
-		$q           = trim($q);
-		$t           = $request->query->get('t', 'all'); # тип запроса из селект-бокса
-		$p           = $request->query->get('p', 1); # номер страницы
-		$badIncluded = $request->query->has('b'); # включать ли бады
-		$params      = array(
+		$em  = $this->getDoctrine()->getManager('drug');
+		$q   = $request->query->get('q', ''); # поисковый запрос
+		$q   = trim($q);
+		$t   = $request->query->get('t', 'all'); # тип запроса из селект-бокса
+		$p   = $request->query->get('p', 1); # номер страницы
+		$bad = $request->query->has('b'); # включать ли бады
+
+		$params = array(
 			'q'     => $q,
 			't'     => $t,
 			'title' => 'Расширенный поиск',
@@ -136,15 +137,38 @@ class SearchController extends Controller
 		}
 
 		if ($t == 'all' || $t == 'product') {
-			$products                     = $em->getRepository('VidalDrugBundle:Product')->findByQuery($q, $badIncluded);
+			$productsRaw = $em->getRepository('VidalDrugBundle:Product')->findByQuery($q, $bad);
+
+			# если включаем бады, то их надо в отдельную группу
+			if ($bad) {
+				$products = array();
+				$bads     = array();
+				foreach ($productsRaw as $product) {
+					$product['ProductTypeCode'] == 'BAD'
+						? $bads[] = $product
+						: $products[] = $product;
+				}
+				if (count($bads)) {
+					$badIds                  = $this->getProductIds($bads);
+					$params['bads']          = $bads;
+					$params['bad_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($badIds);
+					$params['bad_pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($badIds);
+					$params['bad_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($bads);
+				}
+			}
+			else {
+				$products = $productsRaw;
+			}
+
 			$paginator                    = $this->get('knp_paginator');
 			$pagination                   = $paginator->paginate($products, $p, self::PRODUCTS_PER_PAGE);
 			$params['productsPagination'] = $pagination;
 
 			if ($pagination->getTotalItemCount()) {
 				$productIds          = $this->getProductIds($pagination);
-				$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);;
-				$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
+				$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
+				$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
+				$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($pagination);
 			}
 		}
 
@@ -183,7 +207,7 @@ class SearchController extends Controller
 			}
 
 			# поиск по заболеванию (это статьи и синонимы)
-			if ($t == 'disease') {
+			if ($t == 'all' || $t == 'disease') {
 				$params['articles'] = $em->getRepository('VidalDrugBundle:Article')->findByQuery($q);
 			}
 		}
