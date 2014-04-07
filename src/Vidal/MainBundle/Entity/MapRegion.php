@@ -154,6 +154,6 @@ class MapRegion
         return $this->zoom;
     }
 
-    
+
 
 }

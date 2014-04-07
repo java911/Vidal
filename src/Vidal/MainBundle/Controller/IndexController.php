@@ -181,7 +181,6 @@ class IndexController extends Controller
     }
 
     /**
-     * @Route("/pharmacies-map/{id}", name="pharmacies_map", defaults = { "id" = 87 }, options={"expose"=true})
      * @Route("/vracham/expert/", name="vracham_expert")
      * @Secure(roles="ROLE_DOCTOR")
      * @Template
@@ -195,7 +194,7 @@ class IndexController extends Controller
     }
 
     /**
-     * @Route("/pharmacies-map", name="pharmacies_map")
+     * @Route("/pharmacies-map/{id}", name="pharmacies_map", defaults = { "id" = 87 }, options={"expose"=true})
      * @Template("VidalMainBundle:Index:map.html.twig")
      */
     public function pharmaciesMapAction($id = 87)
