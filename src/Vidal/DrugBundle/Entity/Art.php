@@ -98,6 +98,9 @@ class Art extends BaseEntity
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $subclassId;
 
+	/** @ORM\ManyToMany(targetEntity="ArtTag", mappedBy="arts") */
+	protected $tags;
+
 	public function __construct()
 	{
 		$this->nozologies = new ArrayCollection();
@@ -105,6 +108,7 @@ class Art extends BaseEntity
 		$this->documents  = new ArrayCollection();
 		$this->atcCodes   = new ArrayCollection();
 		$this->infoPages  = new ArrayCollection();
+		$this->tags       = new ArrayCollection();
 		$now              = new \DateTime('now');
 		$this->created    = $now;
 		$this->updated    = $now;
@@ -327,22 +331,6 @@ class Art extends BaseEntity
 	}
 
 	/**
-	 * @param mixed $public
-	 */
-	public function setPublic($public)
-	{
-		$this->public = $public;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getPublic()
-	{
-		return $this->public;
-	}
-
-	/**
 	 * @param mixed $subclassId
 	 */
 	public function setSubclassId($subclassId)
@@ -452,5 +440,21 @@ class Art extends BaseEntity
 	public function getInfoPages()
 	{
 		return $this->infoPages;
+	}
+
+	/**
+	 * @param mixed $tags
+	 */
+	public function setTags($tags)
+	{
+		$this->tags = $tags;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTags()
+	{
+		return $this->tags;
 	}
 }

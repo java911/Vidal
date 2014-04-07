@@ -86,7 +86,8 @@ class SearchController extends Controller
 
 		# поиск по АТХ коду
 		if ($t == 'atc') {
-			$params['atcCodes'] = $em->getRepository('VidalDrugBundle:ATC')->findByQuery($q);
+			$qUpper             = mb_strtoupper($q, 'utf-8');
+			$params['atcCodes'] = $em->getRepository('VidalDrugBundle:ATC')->findByQuery($qUpper);
 		}
 
 		# поиск по производителю
@@ -95,7 +96,7 @@ class SearchController extends Controller
 		}
 
 		# поиск по заболеванию (это статьи и синонимы)
-		if ($t == 'disease') {
+		if ($t == 'all' || $t == 'disease') {
 			$params['articles'] = $em->getRepository('VidalDrugBundle:Article')->findByQuery($q);
 		}
 
@@ -161,7 +162,8 @@ class SearchController extends Controller
 
 			# поиск по АТХ коду
 			if ($t == 'atc') {
-				$params['atcCodes'] = $em->getRepository('VidalDrugBundle:ATC')->findByQuery($q);
+				$qUpper             = mb_strtoupper($q, 'utf-8');
+				$params['atcCodes'] = $em->getRepository('VidalDrugBundle:ATC')->findByQuery($qUpper);
 				$params['atcTree']  = true;
 			}
 
