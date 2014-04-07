@@ -161,8 +161,8 @@
                 $('#back-body').css('display','block');
                 renderBody();
             }else{
-                $('#refresh-body').css('display','block');
-                $('#back-body').css('display','none');
+//                $('#refresh-body').css('display','block');
+//                $('#back-body').css('display','none');
                 subParty = $(this).attr('data-key');
                 $('#select-party').children('optgroup').children('option').filter(function(){ return $(this).val() == subParty }).attr('selected' , 'selected');
                 $('#select-party').trigger("chosen:updated");
@@ -224,12 +224,18 @@
             p = $('#select-party').val();
             if ( p == 1  || p == 15 || p == 2  || p == 3  || p == 4  || p == 5  || p == 20  || p == 34  || p == 21  || p == 22  || p == 23  || p == 250 ){
                 party = 'head';
+                $('#refresh-body').css('display','none');
+                $('#back-body').css('display','block');
             }else{
                 if ( p == 7  || p == 8 || p == 10  || p == 11  || p == 31  || p == 13  || p == 9  || p == 6  || p == 14  || p == 25  || p == 28  || p == 33  || p == 26  || p == 27  || p == 29  || p == 30  || p == 38   ){
                     party = 'all';
+                    $('#refresh-body').css('display','block');
+                    $('#back-body').css('display','none');
                 }else{
                     if ( p == 16  || p == 17 || p == 18  || p == 35  || p == 36  || p == 37   ){
                         party = 'all-back';
+                        $('#refresh-body').css('display','block');
+                        $('#back-body').css('display','none');
                     }
                 }
             }
