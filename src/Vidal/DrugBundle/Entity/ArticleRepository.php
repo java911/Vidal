@@ -48,12 +48,16 @@ class ArticleRepository extends EntityRepository
 			LEFT JOIN a.rubrique r
 			WHERE a.enabled = TRUE
 				AND (a.title LIKE :l1 OR a.title LIKE :l2 OR a.synonym LIKE :l3 OR a.synonym LIKE :l4)
+				AND a.title NOT LIKE :l5
+				AND a.synonym NOT LIKE :l6
 			ORDER BY a.title ASC
 		')->setParameters(array(
 				'l1' => $l . '%',
 				'l2' => '% ' . $l . '%',
 				'l3' => $l . '%',
 				'l4' => '% ' . $l . '%',
+				'l5' => '% ' . $l . ' %',
+				'l6' => '% ' . $l . ' %',
 			))
 			->getResult();
 	}
