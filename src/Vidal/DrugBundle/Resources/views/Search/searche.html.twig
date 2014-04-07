@@ -24,8 +24,8 @@
 				</tr>
 				{% for nozology in nozologies %}
 					<tr>
-						<td>{{ nozology.NozologyCode }}</td>
-						<td><a href="{{ path('nosology_item', {'NozologyCode':nozology.NozologyCode}) }}"
+						<td>{{ nozology.Code }}</td>
+						<td><a href="{{ path('nosology_item', {'Code':nozology.Code}) }}"
 							   class="no-underline">{{ nozology.Name|raw }}</a></td>
 					</tr>
 				{% endfor %}

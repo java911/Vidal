@@ -27,13 +27,13 @@
 
 	<div class="search-inputs bg-gray">
 		<input class="search-query" type="text" name="q" placeholder="Введите слово для поиска..."
+			   autocomplete="off"
 			   value="{{ app.request.attributes.get('_route') == 'search' ? app.request.get('q') }}"/>
 		<input type="submit" value="" class="search-submit"/>
 	</div>
 
 	<div class="search-bad">
-		<input type="checkbox" id="bad" name="bad"
-			   class="checkbox"{% if app.request.get('bad') %} checked="checked"{% endif %}/>
+		<input type="checkbox" id="bad" name="bad" class="checkbox" checked="checked"/>
 		<label for="bad">включая БАДы</label>
 	</div>
 </form>

@@ -27,6 +27,7 @@
 	</select>
 
 	<input class="search-query border-radius" type="text" name="q" placeholder="Введите слово для поиска..."
+		   autocomplete="off"
 		   value="{{ app.request.attributes.get('_route') == 'searche' ? app.request.get('q') }}"/>
 
 	<div class="controls">

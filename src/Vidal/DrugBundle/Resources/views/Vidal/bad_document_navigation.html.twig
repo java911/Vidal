@@ -1,0 +1,63 @@
+<div class="navigation">
+	<i></i>
+
+	<div class="navigation-items">
+		{% if Composition is defined and Composition is not empty %}
+			<div><a href="#composition">Состав</a></div>
+		{% endif %}
+		{% if products is defined and products|length %}
+			<div>
+				<a href="#products_table">Форма выпуска и упаковка</a>
+			</div>
+		{% endif %}
+		{% if document.Dosage is not empty %}
+			<div><a href="#dosage">Рекомендации по применению</a></div>
+		{% endif %}
+		{% if document.ContraIndication is not empty %}
+			<div><a href="#contra">Противопоказания</a></div>
+		{% endif %}
+		{% if document.StorageCondition is not empty %}
+			<div><a href="#storage">Условия и сроки хранения</a></div>
+		{% endif %}
+		{% if document.PharmDelivery is not empty %}
+			<div><a href="#pharm">Условия отпуска</a></div>
+		{% endif %}
+		{% if document.ClPhGrDescription is not empty %}
+			<div><a href="#group">Клинико-фармакологическая группа</a></div>
+		{% endif %}
+		{% if phthgroups is defined and phthgroups is not empty %}
+			{% if phthgroups|length == 1 %}
+				<div><a href="#phthgroup" title="Фармако-терапевтическая группа ГосРеестра МинЗдрава РФ"
+						>Фармако-терапевтическая группа</a></div>
+			{% else %}
+				<div><a href="#phthgroup" title="Фармако-терапевтические группы ГосРеестра МинЗдрава РФ"
+						>Фармако-терапевтические группы</a></div>
+			{% endif %}
+		{% endif %}
+		{% if document.PhKinetics is not empty %}
+			<div><a href="#kinetics">Фармакокинетика</a></div>
+		{% endif %}
+		{% if document.SideEffects is not empty %}
+			<div><a href="#side_effects">Побочное действие</a></div>
+		{% endif %}
+		{% if document.SideEffects is not empty %}
+			<div><a href="#special">Особые указания</a></div>
+		{% endif %}
+		{% if document.OverDosage is not empty %}
+			<div><a href="#over_dosage">Передозировка</a></div>
+		{% endif %}
+		{% if document.Interaction is not empty %}
+			<div><a href="#interaction">Лекарственное взаимодействие</a></div>
+		{% endif %}
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('.conditions a, .navigation a').click(function() {
+			var selector = $(this).attr('href');
+			$(selector).addClass('block-highlight');
+			setTimeout(function() { $(selector).removeClass('block-highlight'); }, 2000);
+		});
+	});
+</script>
