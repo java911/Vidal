@@ -16,4 +16,4 @@ class InfoController extends Controller
 	{
 		return array();
 	}
-}
+} 
