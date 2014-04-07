@@ -24,6 +24,11 @@ class MapRegion
     protected $longitude;
 
     /**
+     * @ORM\Column(type = "integer")
+     */
+    protected $zoom;
+
+    /**
      * @ORM\Id
      * @ORM\Column(type = "integer")
      * @ORM\GeneratedValue
@@ -132,6 +137,23 @@ class MapRegion
     {
         return $this->longitude;
     }
+
+    /**
+     * @param mixed $zoom
+     */
+    public function setZoom($zoom)
+    {
+        $this->zoom = $zoom;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getZoom()
+    {
+        return $this->zoom;
+    }
+
 
 
 }

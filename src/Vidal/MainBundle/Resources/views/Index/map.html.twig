@@ -84,8 +84,8 @@
 
     function init(){
         myMap = new ymaps.Map ("map", {
-            center: [55.754, 37.58],
-            zoom: 10        });
+            center: [{{ thisCity.latitude }}, {{ thisCity.longitude }}],
+            zoom: {{ thisCity.zoom }}        });
 
         // myMap.behaviors.enable('scrollZoom');
 
