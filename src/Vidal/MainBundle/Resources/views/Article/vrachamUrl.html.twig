@@ -43,15 +43,32 @@
 			{% if app.environment == 'dev' %}
 				{% for subdivision in sub.children %}
 					<div class="subdivision">
-						<a href="/app_dev.php{{ subdivision.url }}">{{ subdivision.name }}</a>
+						<a class="subdivision-link" href="/app_dev.php{{ subdivision.url }}">
+							{{ subdivision.name }}
+						</a>
 
 						<div class="subdivision-announce">{{ subdivision.announce|raw }}</div>
+
+						{# админам карандашик редактирования #}
+						{% if isAdmin %}
+							<a class="admin-edit fade" target="_blank"
+							   href="{{ path('admin_vidal_drug_subdivision_edit', {'id':subdivision.id}) }}">
+								<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+							</a>
+						{% endif %}
 					</div>
 				{% endfor %}
 			{% else %}
 				{% for subdivision in sub.children %}
 					<div class="subdivision">
-						<a href="{{ subdivision.url }}">{{ subdivision.name }}</a>
+						<a class="subdivision-a" href="{{ subdivision.url }}">{{ subdivision.name }}</a>
+
+						{% if isAdmin %}
+							<a class="admin-edit fade" target="_blank"
+							   href="{{ path('admin_vidal_drug_subdivision_edit', {'id':subdivision.id}) }}">
+								<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+							</a>
+						{% endif %}
 
 						<div class="subdivision-announce">{{ subdivision.announce|raw }}</div>
 					</div>

@@ -94,6 +94,11 @@ class SearchController extends Controller
 			$params['firms'] = $em->getRepository('VidalDrugBundle:Company')->findByQuery($q);
 		}
 
+		# поиск по заболеванию (это статьи и синонимы)
+		if ($t == 'disease') {
+			$params['articles'] = $em->getRepository('VidalDrugBundle:Article')->findByQuery($q);
+		}
+
 		return $params;
 	}
 
@@ -173,6 +178,11 @@ class SearchController extends Controller
 			# поиск по фармако-терапевтической группе
 			if ($t == 'phthgroup') {
 				$params['phthgroups'] = $em->getRepository('VidalDrugBundle:Product')->findPhThGroupsByQuery($q);
+			}
+
+			# поиск по заболеванию (это статьи и синонимы)
+			if ($t == 'disease') {
+				$params['articles'] = $em->getRepository('VidalDrugBundle:Article')->findByQuery($q);
 			}
 		}
 
@@ -287,6 +297,45 @@ class SearchController extends Controller
 	}
 
 	/**
+	 * @Route("/search/disease", name="searche_disease")
+	 * @Template("VidalDrugBundle:Search:searche_disease.html.twig")
+	 */
+	public function diseaseAction(Request $request)
+	{
+		$l  = $request->query->get('l', null);
+		$q  = $request->query->get('q', null);
+		$em = $this->getDoctrine()->getManager('drug');
+
+		$params = array(
+			'title' => 'Список болезней по алфавиту',
+			'l'     => $l,
+			'q'     => $q,
+		);
+
+		if ($l) {
+			$articles           = $em->getRepository('VidalDrugBundle:Article')->findDisease($l);
+			$params['articles'] = $this->highlight($articles, $l);
+		}
+		elseif ($q) {
+			$q                  = trim($q);
+			$params['articles'] = $em->getRepository('VidalDrugBundle:Article')->findByQuery($q);
+		}
+		else {
+
+		}
+
+		return $params;
+	}
+
+	/**
+	 * @Route("/patsientam/spisok-boleznei-po-alfavitu/")
+	 */
+	public function r1()
+	{
+		return $this->redirect($this->generateUrl('disease'), 301);
+	}
+
+	/**
 	 * @Route("/searche/atc-full", name="atc_full", options={"expose":true})
 	 */
 	public function atcFullAction()
@@ -306,5 +355,30 @@ class SearchController extends Controller
 		}
 
 		return $productIds;
+	}
+
+	private function highlight($articles, $l)
+	{
+		foreach ($articles as &$article) {
+			# подсвечиваем заголовок статьи
+			$words = explode(' ', $article['title']);
+			$title = '';
+			foreach ($words as $word) {
+				$firstLetter = mb_strtoupper(mb_substr($word, 0, 1, 'utf-8'), 'utf-8');
+				$title[]     = $firstLetter == $l ? '<b>' . $word . '</b>' : $word;
+			}
+			$article['title'] = implode(' ', $title);
+
+			# подсвечиваем синонимы
+			$words = explode(' ', $article['synonym']);
+			$title = '';
+			foreach ($words as $word) {
+				$firstLetter = mb_strtoupper(mb_substr($word, 0, 1, 'utf-8'), 'utf-8');
+				$title[]     = $firstLetter == $l ? '<b>' . $word . '</b>' : $word;
+			}
+			$article['synonym'] = implode(' ', $title);
+		}
+
+		return $articles;
 	}
 }

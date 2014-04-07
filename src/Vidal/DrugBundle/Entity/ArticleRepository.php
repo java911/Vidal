@@ -39,4 +39,68 @@ class ArticleRepository extends EntityRepository
 			->setMaxResults($max)
 			->getResult();
 	}
+
+	public function findDisease($l)
+	{
+		return $this->_em->createQuery('
+			SELECT a.title, a.synonym, a.link, r.rubrique rubrique
+			FROM VidalDrugBundle:Article a
+			LEFT JOIN a.rubrique r
+			WHERE a.enabled = TRUE
+				AND (a.title LIKE :l1 OR a.title LIKE :l2 OR a.synonym LIKE :l3 OR a.synonym LIKE :l4)
+			ORDER BY a.title ASC
+		')->setParameters(array(
+				'l1' => $l . '%',
+				'l2' => '% ' . $l . '%',
+				'l3' => $l . '%',
+				'l4' => '% ' . $l . '%',
+			))
+			->getResult();
+	}
+
+	public function findByQuery($q)
+	{
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select('a.title, a.synonym, a.link, r.rubrique rubrique')
+			->from('VidalDrugBundle:Article', 'a')
+			->leftJoin('a.rubrique', 'r')
+			->where('a.enabled = TRUE')
+			->orderBy('a.title', 'ASC');
+
+		# поиск по словам
+		$where = '';
+		$words = explode(' ', $q);
+
+		# находим все слова
+		for ($i = 0; $i < count($words); $i++) {
+			$word = $words[$i];
+			if ($i > 0) {
+				$where .= ' AND ';
+			}
+			$where .= "(a.title LIKE '$word%' OR a.title LIKE '% $word%' OR a.synonym LIKE '$word%' OR a.synonym LIKE '% $word%')";
+		}
+
+		$qb->andWhere($where);
+		$articles = $qb->getQuery()->getResult();
+
+		# находим какое-либо из слов, если нет результата
+		if (empty($articles)) {
+			$where = '';
+
+			for ($i = 0; $i < count($words); $i++) {
+				$word = $words[$i];
+				if ($i > 0) {
+					$where .= ' OR ';
+				}
+				$where .= "(a.title LIKE '$word%' OR a.title LIKE '% $word%' OR a.synonym LIKE '$word%' OR a.synonym LIKE '% $word%')";
+			}
+
+			$qb->where('a.enabled = TRUE');
+			$qb->andWhere($where);
+			$articles = $qb->getQuery()->getResult();
+		}
+
+		return $articles;
+	}
 }

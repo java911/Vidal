@@ -265,6 +265,27 @@
 				<target>Удаление категории статей специалистам</target>
 			</trans-unit>
 
+			<trans-unit id="sonata-17">
+				<source>Subdivision List</source>
+				<target>Разделы</target>
+			</trans-unit>
+			<trans-unit id="sonata-17-1">
+				<source>Subdivision Show</source>
+				<target>Раздел</target>
+			</trans-unit>
+			<trans-unit id="sonata-17-2">
+				<source>Subdivision Edit</source>
+				<target>Редактирование раздела</target>
+			</trans-unit>
+			<trans-unit id="sonata-17-3">
+				<source>Subdivision Create</source>
+				<target>Создание раздела</target>
+			</trans-unit>
+			<trans-unit id="sonata-17-4">
+				<source>Subdivision Delete</source>
+				<target>Удаление раздела</target>
+			</trans-unit>
+
         </body>
     </file>
 </xliff>

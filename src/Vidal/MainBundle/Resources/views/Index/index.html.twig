@@ -18,6 +18,14 @@
 	<div class="articles">
 		{% for article in articles %}
 			<div class="article">
+				{# админам карандашик редактирования #}
+				{% if isAdmin %}
+					<a class="admin-edit fade" target="_blank"
+					   href="{{ path('admin_vidal_drug_article_edit', {'id':article.id}) }}">
+						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+					</a>
+				{% endif %}
+
 				<a class="article-title"
 				   href="{{ path('article', {'rubrique':article.rubrique.rubrique, 'link':article.link}) }}">
 					{{ article.title|raw }}
@@ -27,7 +35,7 @@
 					{{ article.announce|raw }}
 				</div>
 				<div class="article-footer">
-					<span>Рубрика</span>:
+					<span>Рубрика:</span>
 					<a href="{{ path('rubrique', {'rubrique':article.rubrique.rubrique}) }}"
 						>{{ article.rubrique.title }}</a>
 
@@ -45,6 +53,14 @@
 		{% for publication in publications %}
 			{% set withPhoto = publication.photo and is_file(publication.photo.path) %}
 			<div class="publication{{ withPhoto ? ' with-photo' }}">
+				{# админам карандашик редактирования #}
+				{% if isAdmin %}
+					<a class="admin-edit fade" target="_blank"
+					   href="{{ path('admin_vidal_drug_publication_edit', {'id':publication.id}) }}">
+						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+					</a>
+				{% endif %}
+
 				{% if withPhoto %}
 					<a class="photo" href="{{ path('publication', {id:publication.id}) }}">
 						<img src="{{ publication.photo.path }}" alt="{{ publication.title }}"/>
@@ -83,6 +99,7 @@
 			padding: 10px 10px 0;
 		}
 		.article, .publication {
+			position:       relative;
 			padding-bottom: 10px;
 			border-bottom:  1px solid #ddd;
 			margin-bottom:  8px;
@@ -98,7 +115,7 @@
 			text-decoration: underline;
 		}
 		.article-announce, .publication-announce {
-			margin-bottom: 6px;
+			margin-bottom: 8px;
 			font-size:     14px;
 		}
 		.article-announce p {
@@ -120,10 +137,11 @@
 			font-size: 13px;
 		}
 		.article-footer span {
-			color: #2f4053;
+			color: #888;
 		}
 		.article-footer a {
 			text-decoration: none;
+			color:           #2f4053;
 		}
 		.article-footer a:hover {
 			text-decoration: underline;

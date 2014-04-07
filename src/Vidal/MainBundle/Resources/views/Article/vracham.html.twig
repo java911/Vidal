@@ -19,7 +19,18 @@
 						<ul class="ul">
 					{% endif %}
 
-					<li><a href="/app_dev.php{{ sub.url }}">{{ sub.name }}</a></li>
+					<li>
+						<a href="/app_dev.php{{ sub.url }}">
+							{{ sub.name }}
+							{# админам карандашик редактирования #}
+							{% if isAdmin %}
+								<a class="admin-edit fade" target="_blank"
+								   href="{{ path('admin_vidal_drug_subdivision_edit', {'id':sub.id}) }}">
+									<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+								</a>
+							{% endif %}
+						</a>
+					</li>
 
 					{% if loop.index % perColumn == 0 %}
 						</ul>
@@ -33,7 +44,18 @@
 						<ul class="ul">
 					{% endif %}
 
-					<li><a href="{{ sub.url }}">{{ sub.name }}</a></li>
+					<li>
+						<a href="{{ sub.url }}">
+							{{ sub.name }}
+							{# админам карандашик редактирования #}
+							{% if isAdmin %}
+								<a class="admin-edit fade" target="_blank"
+								   href="{{ path('admin_vidal_drug_subdivision_edit', {'id':sub.id}) }}">
+									<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+								</a>
+							{% endif %}
+						</a>
+					</li>
 
 					{% if loop.index % perColumn == 0 %}
 						</ul>

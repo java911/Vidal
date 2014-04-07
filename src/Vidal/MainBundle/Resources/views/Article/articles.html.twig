@@ -18,7 +18,18 @@
 					<ul class="ul">
 				{% endif %}
 
-				<li><a href="{{ path('rubrique', {'rubrique':rubrique.rubrique}) }}">{{ rubrique }}</a></li>
+				<li>
+					<a href="{{ path('rubrique', {'rubrique':rubrique.rubrique}) }}">
+						{{ rubrique }}
+						{# админам карандашик редактирования #}
+						{% if isAdmin %}
+							<a class="admin-edit fade" target="_blank"
+							   href="{{ path('admin_vidal_drug_articlerubrique_edit', {'id':rubrique.id}) }}">
+								<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+							</a>
+						{% endif %}
+					</a>
+				</li>
 
 				{% if loop.index % perColumn == 0 %}
 					</ul>
