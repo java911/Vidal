@@ -24,6 +24,11 @@ class MapRegion
     protected $longitude;
 
     /**
+     * @ORM\Column(type = "integer")
+     */
+    protected $zoom;
+
+    /**
      * @ORM\Id
      * @ORM\Column(type = "integer")
      * @ORM\GeneratedValue
