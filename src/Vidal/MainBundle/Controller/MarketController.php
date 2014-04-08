@@ -229,10 +229,9 @@ class MarketController extends Controller{
                     $em->flush($order);
 
                     $basket->clear($group);
-
                     if ($group != 'zdravzona' ){
-                        $url = 'http://smacs.ru/feedbacks/'.md5('vidal_'.$order->getId().'vidal3L29y4');
-                        return $this->render("VidalMainBundle:Market:order_success.html.twig",array( 'url' => $url ));
+//                        $url = 'http://smacs.ru/feedbacks/'.md5('vidal_'.$order->getId().'vidal3L29y4');
+                        return $this->render("VidalMainBundle:Market:order_success_2.html.twig");
                     }else{
                         return $this->render("VidalMainBundle:Market:order_success_2.html.twig");
                     }
@@ -390,8 +389,7 @@ class MarketController extends Controller{
             curl_close($curl);
 
         }
-//        var_dump($data);
-//        exit;
+
         $xml = simplexml_load_string($data);
         if ($xml->error->error_code){
             return true;
