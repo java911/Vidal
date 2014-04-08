@@ -13,7 +13,7 @@ class ArtTag
 	/** @ORM\Column(length=30) */
 	protected $text;
 
-	/** @ORM\ManyToMany(targetEntity="Art", inversedBy="tags") */
+	/** @ORM\ManyToMany(targetEntity="Art", mappedBy="tags") */
 	protected $arts;
 
 	public function __construct()

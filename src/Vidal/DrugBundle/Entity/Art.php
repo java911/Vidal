@@ -98,7 +98,7 @@ class Art extends BaseEntity
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $subclassId;
 
-	/** @ORM\ManyToMany(targetEntity="ArtTag", mappedBy="arts") */
+	/** @ORM\ManyToMany(targetEntity="ArtTag", inversedBy="arts") */
 	protected $tags;
 
 	public function __construct()
@@ -456,5 +456,19 @@ class Art extends BaseEntity
 	public function getTags()
 	{
 		return $this->tags;
+	}
+
+	public function addTag(ArtTag $tag)
+	{
+		if (!$this->tags->contains($tag)) {
+			$this->tags[] = $tag;
+		}
+
+		return $this;
+	}
+
+	public function removeTag($tag)
+	{
+		$this->tags->removeElement($tag);
 	}
 }

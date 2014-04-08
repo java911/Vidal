@@ -8,8 +8,8 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Doctrine\ORM\EntityRepository;
-use Vidal\DrugBundle\Transformer\DocumentsTransformer;
 use Vidal\DrugBundle\Transformer\DocumentTransformer;
+use Vidal\DrugBundle\Transformer\PublicationTagTransformer;
 
 class PublicationAdmin extends Admin
 {
@@ -51,14 +51,22 @@ class PublicationAdmin extends Admin
 
 	protected function configureFormFields(FormMapper $formMapper)
 	{
-		$em                  = $this->getModelManager()->getEntityManager($this->getSubject());
-		$documentTransformer = new DocumentTransformer($em, $this->getSubject());
+		$em                        = $this->getModelManager()->getEntityManager($this->getSubject());
+		$documentTransformer       = new DocumentTransformer($em, $this->getSubject());
+		$publicationTagTransformer = new PublicationTagTransformer($em, $this->getSubject());
 
 		$formMapper
 			->add('photo', 'iphp_file', array('label' => 'Фотография', 'required' => false))
 			->add('title', null, array('label' => 'Заголовок', 'required' => true))
 			->add('announce', null, array('label' => 'Анонс', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('body', null, array('label' => 'Основное содержимое', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
+			->add('tags', null, array('label' => 'Теги', 'required' => false, 'help' => 'Выберите существующие теги или добавьте новый ниже'))
+			->add($formMapper->create('created', 'text', array(
+					'label'        => 'Создать тег',
+					'required'     => false,
+					'by_reference' => false,
+				))->addModelTransformer($publicationTagTransformer)
+			)
 			->add('atcCodes', 'entity', array(
 				'label'         => 'Коды АТХ',
 				'class'         => 'VidalDrugBundle:ATC',

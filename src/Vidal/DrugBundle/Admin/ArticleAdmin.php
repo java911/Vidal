@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Doctrine\ORM\EntityRepository;
 use Vidal\DrugBundle\Transformer\DocumentTransformer;
+use Vidal\DrugBundle\Transformer\ArticleTagTransformer;
 
 class ArticleAdmin extends Admin
 {
@@ -44,8 +45,9 @@ class ArticleAdmin extends Admin
 
 	protected function configureFormFields(FormMapper $formMapper)
 	{
-		$em                  = $this->getModelManager()->getEntityManager($this->getSubject());
-		$documentTransformer = new DocumentTransformer($em, $this->getSubject());
+		$em                    = $this->getModelManager()->getEntityManager($this->getSubject());
+		$documentTransformer   = new DocumentTransformer($em, $this->getSubject());
+		$articleTagTransformer = new ArticleTagTransformer($em, $this->getSubject());
 
 		$formMapper
 			->add('title', null, array('label' => 'Заголовок', 'required' => true))
@@ -54,6 +56,13 @@ class ArticleAdmin extends Admin
 			->add('type', null, array('label' => 'Категория', 'required' => false, 'empty_value' => 'не указано'))
 			->add('announce', null, array('label' => 'Анонс', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('body', null, array('label' => 'Основное содержимое', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
+			->add('tags', null, array('label' => 'Теги', 'required' => false, 'help' => 'Выберите существующие теги или добавьте новый ниже'))
+			->add($formMapper->create('created', 'text', array(
+					'label'        => 'Создать тег',
+					'required'     => false,
+					'by_reference' => false,
+				))->addModelTransformer($articleTagTransformer)
+			)
 			->add('atcCodes', 'entity', array(
 				'label'         => 'Коды АТХ',
 				'class'         => 'VidalDrugBundle:ATC',
