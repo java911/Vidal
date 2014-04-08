@@ -108,10 +108,11 @@ class Basket{
     }
 
     public function clear($group){
-        foreach($this->drugs as $drug){
-            if ($drug->getGroupApt() == $drug){
-                unset($drug);
+        foreach($this->drugs as $key => $drug){
+            if ($drug->getGroupApt() == $group){
+                unset($this->drugs[$key]);
             }
         }
+        $this->save();
     }
 }

@@ -10,7 +10,7 @@ use Symfony\Component\Form\Tests\Extension\Core\DataTransformer\DateTimeToArrayT
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-
+use Symfony\Component\HttpFoundation\Session\Session;
 use Vidal\MainBundle\Entity\MarketOrder;
 
 use Vidal\MainBundle\Market\Product;
@@ -187,10 +187,19 @@ class MarketController extends Controller{
      */
     public function basketOrderAction($group){
 
+        $session = new Session();
+//        if (!$session->isStarted()){
+//            $session->start();
+//        }
+
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         # генерация формы
-        $order   = new MarketOrder();
+        if ($session->has('userOrder') != null && $session->has('userOrder') != false){
+            $order = $session->get('userOrder');
+        }else{
+            $order   = new MarketOrder();
+        }
         $builder = $this->createFormBuilder($order);
         $builder
             ->add('lastName', null, array('label' => 'Фамилия'))
@@ -199,6 +208,7 @@ class MarketController extends Controller{
             ->add('email', null, array('label' => 'E-mail'))
             ->add('phone', null, array('label' => 'Телефон'))
             ->add('adress', null, array('label' => 'Адрес'))
+
             ->add('shipping', 'choice', array('label' => 'Выбор доставки', 'choices' => $this->shippingTitle, 'attr' => array( 'class' => 'delivery-select')))
             ->add('comment', null, array('label' => 'Комментарий к доставке'))
             ->add('groupApt', 'hidden')
@@ -215,6 +225,10 @@ class MarketController extends Controller{
                 $em->flush($order);
                 $em->refresh($order);
 
+                # Заливаем информацию о заказе в сессиюы
+                $session->set('userOrder',$order);
+
+
                 $xml = $this->generateXml($group, $order);
                 $basket = new Basket();
                 $order->setBody($xml);
@@ -222,17 +236,16 @@ class MarketController extends Controller{
                 if ($group == 'zdavzona'){
                     $succes = $this->mailSend($group, $order, $basket);
                 }else{
-                    $succes = $this->emacsSend($order);
+                    $succes = $this->emacsSend($group, $order, $basket);
                 }
                 if ($succes == true ){
                     $order->setEnabled(true);
                     $em->flush($order);
 
                     $basket->clear($group);
-
                     if ($group != 'zdravzona' ){
-                        $url = 'http://smacs.ru/feedbacks/'.md5('vidal_'.$order->getId().'vidal3L29y4');
-                        return $this->render("VidalMainBundle:Market:order_success.html.twig",array( 'url' => $url ));
+//                        $url = 'http://smacs.ru/feedbacks/'.md5('vidal_'.$order->getId().'vidal3L29y4');
+                        return $this->render("VidalMainBundle:Market:order_success_2.html.twig");
                     }else{
                         return $this->render("VidalMainBundle:Market:order_success_2.html.twig");
                     }
@@ -320,7 +333,6 @@ class MarketController extends Controller{
                             <discount>0</discount>
                             <total_cost>".   $summa."</total_cost>
                             <order_time>".   time($order->getCreated())."</order_time>
-                            <card></card>
                             <products>";
 
         $footer = "         </products>
@@ -348,6 +360,7 @@ class MarketController extends Controller{
         $basket = $basket[$group];
         # уведомление магазина о покупке
         $this->get('email.service')->send(
+//            "tulupov.m@gmail.com",
             array('tulupov.m@gmail.com','zakaz@zdravzona.ru'),
             array('VidalMainBundle:Email:market_notice.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa, 'ship' => $this->shippingTitle[$order->getShipping()] )),
             'Заказ с сайта Vidal.ru'
@@ -362,13 +375,14 @@ class MarketController extends Controller{
         );
     }
 
-    public function emacsSend(MarketOrder $order){
+    public function emacsSend($group, $order,Basket $basket){
 
         if ( $order->getGroupApt() == 'eapteka'){
             $url = 'http://vidal:3L29y4@ea.smacs.ru/exchange';
 //            $url = 'vidal.loc/test.php';
         }elseif ( $order->getGroupApt() == 'piluli'){
-            $url = 'http://vidal:3L29y4@@smacs.ru/exchange';
+            $url = 'http://vidal:3L29y4@smacs.ru/exchange';
+//                $url = 'vidal.loc/test.php';
         }
 
         $xml = $order->getBody();
@@ -389,8 +403,18 @@ class MarketController extends Controller{
             curl_close($curl);
 
         }
+        $summa = $basket->getAmounts();
+        $summa = $summa[$group];
+        $basket = $basket->getAll();
+        $basket = $basket[$group];
         $xml = simplexml_load_string($data);
         if ($xml->error->error_code){
+            $this->get('email.service')->send(
+//            "tulupov.m@gmail.com",
+                array('tulupov.m@gmail.com',$order->getEmail()),
+                array('VidalMainBundle:Email:market_notice_user.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa, 'ship' => $this->shippingTitle[$order->getShipping()] )),
+                'Заказ с сайта Vidal.ru'
+            );
             return true;
         }else{
             return false;
