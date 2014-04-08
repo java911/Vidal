@@ -26,6 +26,9 @@
 		<a href="{{ path('shkola') }}" {{ not app.request.get('h') ? : 'style="display:none"' }}"
 		   class="{{ menu_left is defined and menu_left == 'shkola' ? 'active' : 'dotted' }}">Школа здоровья</a>
 	</li>
+    <li>
+		<a href="/reckittbenckiser/index.html" class="dotted" target="_blank">Без боли</a>
+	</li>
 
     {{ render(controller('VidalMainBundle:Market:countProduct')) }}
 </ul>
