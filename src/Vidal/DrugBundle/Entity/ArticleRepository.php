@@ -107,4 +107,15 @@ class ArticleRepository extends EntityRepository
 
 		return $articles;
 	}
+
+	public function findByRubriqueId($id)
+	{
+		return $this->_em->createQuery('
+			SELECT a
+			FROM VidalDrugBundle:Article a
+			WHERE a.enabled = 1 AND a.rubrique = :id
+			ORDER BY a.title ASC
+		')->setParameter('id', $id)
+			->getResult();
+	}
 }

@@ -22,9 +22,12 @@
 		<a href="{{ path('onas') }}"
 		   class="{{ menu_left is defined and menu_left == 'about' ? 'active' : 'dotted' }}">О компании</a>
 	</li>
+	<li>
+		<a href="{{ path('shkola') }}" {{ not app.request.get('h') ? : 'style="display:none"' }}"
+		   class="{{ menu_left is defined and menu_left == 'shkola' ? 'active' : 'dotted' }}">Школа здоровья</a>
+	</li>
 
     {{ render(controller('VidalMainBundle:Market:countProduct')) }}
-
 </ul>
 
 {# блок авторизации или личного кабинета #}

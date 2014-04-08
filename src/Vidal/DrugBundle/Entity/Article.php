@@ -101,6 +101,9 @@ class Article extends BaseEntity
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $subclassId;
 
+	/** @ORM\ManyToMany(targetEntity="ArticleTag", inversedBy="arts") */
+	protected $tags;
+
 	public function __construct()
 	{
 		$this->nozologies = new ArrayCollection();
@@ -108,6 +111,7 @@ class Article extends BaseEntity
 		$this->documents  = new ArrayCollection();
 		$this->atcCodes   = new ArrayCollection();
 		$this->atcCodes   = new ArrayCollection();
+		$this->tags       = new ArrayCollection();
 		$this->public     = true;
 		$now              = new \DateTime('now');
 		$this->created    = $now;
@@ -267,22 +271,6 @@ class Article extends BaseEntity
 	}
 
 	/**
-	 * @param mixed $nozologyCodes
-	 */
-	public function setNozologyCodes($nozologyCodes)
-	{
-		$this->nozologyCodes = $nozologyCodes;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getNozologyCodes()
-	{
-		return $this->nozologyCodes;
-	}
-
-	/**
 	 * @param mixed $synonym
 	 */
 	public function setSynonym($synonym)
@@ -379,22 +367,6 @@ class Article extends BaseEntity
 	}
 
 	/**
-	 * @param mixed $oldId
-	 */
-	public function setOldId($oldId)
-	{
-		$this->oldId = $oldId;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getOldId()
-	{
-		return $this->oldId;
-	}
-
-	/**
 	 * @param mixed $subclassId
 	 */
 	public function setSubclassId($subclassId)
@@ -424,22 +396,6 @@ class Article extends BaseEntity
 	public function getSubdivisionId()
 	{
 		return $this->subdivisionId;
-	}
-
-	/**
-	 * @param mixed $subdivision
-	 */
-	public function setSubdivision($subdivision)
-	{
-		$this->subdivision = $subdivision;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getSubdivision()
-	{
-		return $this->subdivision;
 	}
 
 	/**
@@ -504,5 +460,35 @@ class Article extends BaseEntity
 	public function getInfoPages()
 	{
 		return $this->infoPages;
+	}
+
+	/**
+	 * @param mixed $tags
+	 */
+	public function setTags($tags)
+	{
+		$this->tags = $tags;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTags()
+	{
+		return $this->tags;
+	}
+
+	public function addTag(ArticleTag $tag)
+	{
+		if (!$this->tags->contains($tag)) {
+			$this->tags[] = $tag;
+		}
+
+		return $this;
+	}
+
+	public function removeTag($tag)
+	{
+		$this->tags->removeElement($tag);
 	}
 }

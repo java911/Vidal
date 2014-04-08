@@ -78,17 +78,21 @@ class Publication extends BaseEntity
 	 */
 	protected $infoPages;
 
+	/** @ORM\ManyToMany(targetEntity="PublicationTag", inversedBy="publications") */
+	protected $tags;
+
 	public function __construct()
 	{
-		$now           = new \DateTime('now');
-		$this->created = $now;
-		$this->updated = $now;
-		$this->date    = $now;
+		$now              = new \DateTime('now');
+		$this->created    = $now;
+		$this->updated    = $now;
+		$this->date       = $now;
 		$this->nozologies = new ArrayCollection();
 		$this->molecules  = new ArrayCollection();
 		$this->documents  = new ArrayCollection();
 		$this->atcCodes   = new ArrayCollection();
 		$this->infoPages  = new ArrayCollection();
+		$this->tags       = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -296,5 +300,35 @@ class Publication extends BaseEntity
 	public function removeDocument(Document $document)
 	{
 		return $this;
+	}
+
+	/**
+	 * @param mixed $tags
+	 */
+	public function setTags($tags)
+	{
+		$this->tags = $tags;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTags()
+	{
+		return $this->tags;
+	}
+
+	public function addTag(PublicationTag $tag)
+	{
+		if (!$this->tags->contains($tag)) {
+			$this->tags[] = $tag;
+		}
+
+		return $this;
+	}
+
+	public function removeTag($tag)
+	{
+		$this->tags->removeElement($tag);
 	}
 }

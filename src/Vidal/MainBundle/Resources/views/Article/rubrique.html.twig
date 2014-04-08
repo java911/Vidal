@@ -18,43 +18,28 @@
 {% block content %}
 	{% if articles|length %}
 		<div class="articles">
-			{% if isAdmin %}
-				{% for article in articles %}
-					<div class="article">
-						{# админам карандашик редактирования #}
+			{% for article in articles %}
+				<div class="article">
+					{# админам карандашик редактирования #}
+					{% if isAdmin %}
 						<a class="admin-edit fade" target="_blank"
 						   href="{{ path('admin_vidal_drug_article_edit', {'id':article.id}) }}">
 							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
 						</a>
-						<div class="article-title">
-							<a href="{{ path('article', {'rubrique':rubrique.rubrique, 'link':article.link}) }}">{{ article }}</a>
-						</div>
-						<div class="article-announse">
-							{{ article.announce|raw }}
-						</div>
-						<div class="article-footer">
-							<span class="article-date">{{ article.date|date('d.m.Y') }}</span>
-						</div>
+					{% endif %}
+					<div class="article-title">
+						<a href="{{ path('article', {'rubrique':rubrique.rubrique, 'link':article.link}) }}">{{ article.title|raw }}</a>
 					</div>
-				{% endfor %}
-			{% else %}
-				{% for article in articles %}
-					<div class="article">
-						<div class="article-title">
-							<a href="{{ path('article', {'rubrique':rubrique.rubrique, 'link':article.link}) }}">{{ article }}</a>
-						</div>
-						<div class="article-announse">
-							{{ article.announce|raw }}
-						</div>
-						<div class="article-footer">
-							<span class="article-date">{{ article.date|date('d.m.Y') }}</span>
-						</div>
+					<div class="article-announse">
+						{{ article.announce|raw }}
 					</div>
-				{% endfor %}
-			{% endif %}
+					<div class="article-footer">
+						<span class="article-date">{{ article.date|date('d.m.Y') }}</span>
+					</div>
+				</div>
+			{% endfor %}
 		</div>
 	{% endif %}
-
 {% endblock %}
 
 
