@@ -10,7 +10,7 @@ use Symfony\Component\Form\Tests\Extension\Core\DataTransformer\DateTimeToArrayT
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-
+use Symfony\Component\HttpFoundation\Session\Session;
 use Vidal\MainBundle\Entity\MarketOrder;
 
 use Vidal\MainBundle\Market\Product;
@@ -187,10 +187,19 @@ class MarketController extends Controller{
      */
     public function basketOrderAction($group){
 
+        $session = new Session();
+//        if (!$session->isStarted()){
+//            $session->start();
+//        }
+
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         # генерация формы
-        $order   = new MarketOrder();
+        if ($session->has('userOrder') != null && $session->has('userOrder') != false){
+            $order = $session->get('userOrder');
+        }else{
+            $order   = new MarketOrder();
+        }
         $builder = $this->createFormBuilder($order);
         $builder
             ->add('lastName', null, array('label' => 'Фамилия'))
@@ -199,6 +208,7 @@ class MarketController extends Controller{
             ->add('email', null, array('label' => 'E-mail'))
             ->add('phone', null, array('label' => 'Телефон'))
             ->add('adress', null, array('label' => 'Адрес'))
+
             ->add('shipping', 'choice', array('label' => 'Выбор доставки', 'choices' => $this->shippingTitle, 'attr' => array( 'class' => 'delivery-select')))
             ->add('comment', null, array('label' => 'Комментарий к доставке'))
             ->add('groupApt', 'hidden')
@@ -214,6 +224,10 @@ class MarketController extends Controller{
                 $em->persist($order);
                 $em->flush($order);
                 $em->refresh($order);
+
+                # Заливаем информацию о заказе в сессиюы
+                $session->set('userOrder',$order);
+
 
                 $xml = $this->generateXml($group, $order);
                 $basket = new Basket();
