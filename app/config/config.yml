@@ -115,7 +115,13 @@ iphp_file_store:
                  translit: ~
         photo:
             upload_dir: %upload_dir%/photo
-            upload_path: /upload/photo/
+            upload_path: /upload/photo
+            overwrite_duplicates: false
+            namer:
+                 translit: ~
+        video:
+            upload_dir: %upload_dir%/video
+            upload_path: /upload/video
             overwrite_duplicates: false
             namer:
                  translit: ~
