@@ -320,7 +320,6 @@ class MarketController extends Controller{
                             <discount>0</discount>
                             <total_cost>".   $summa."</total_cost>
                             <order_time>".   time($order->getCreated())."</order_time>
-                            <card></card>
                             <products>";
 
         $footer = "         </products>
@@ -348,15 +347,16 @@ class MarketController extends Controller{
         $basket = $basket[$group];
         # уведомление магазина о покупке
         $this->get('email.service')->send(
-            array('tulupov.m@gmail.com','zakaz@zdravzona.ru'),
+            "tulupov.m@gmail.com",
+//            array('tulupov.m@gmail.com','zakaz@zdravzona.ru'),
             array('VidalMainBundle:Email:market_notice.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa, 'ship' => $this->shippingTitle[$order->getShipping()] )),
             'Заказ с сайта Vidal.ru'
         );
 
         $this->get('email.service')->send(
 //            "zakaz@zdravzona.ru",
-//            "tulupov.m@gmail.com",
-            array('tulupov.m@gmail.com',$order->getEmail()),
+            "tulupov.m@gmail.com",
+//            array('tulupov.m@gmail.com',$order->getEmail()),
             array('VidalMainBundle:Email:market_notice_user.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa, 'ship' => $this->shippingTitle[$order->getShipping()] )),
             'Заказ с сайта Vidal.ru'
         );
@@ -368,7 +368,8 @@ class MarketController extends Controller{
             $url = 'http://vidal:3L29y4@ea.smacs.ru/exchange';
 //            $url = 'vidal.loc/test.php';
         }elseif ( $order->getGroupApt() == 'piluli'){
-            $url = 'http://vidal:3L29y4@@smacs.ru/exchange';
+            $url = 'http://vidal:3L29y4@smacs.ru/exchange';
+//                $url = 'vidal.loc/test.php';
         }
 
         $xml = $order->getBody();
@@ -389,6 +390,8 @@ class MarketController extends Controller{
             curl_close($curl);
 
         }
+//        var_dump($data);
+//        exit;
         $xml = simplexml_load_string($data);
         if ($xml->error->error_code){
             return true;
