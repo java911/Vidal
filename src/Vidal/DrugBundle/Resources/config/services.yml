@@ -5,3 +5,16 @@ services:
     elastica.service:
         class: Vidal\DrugBundle\Service\ElasticaService
         arguments: [@lingua.service]
+
+    drug.subscriber:
+        class: Vidal\DrugBundle\Service\DoctrineEventSubscriber
+        arguments: [@service_container]
+        tags:
+            - { name: doctrine.event_subscriber, connection: drug }
+
+    drug.timestampable:
+        class: Gedmo\Timestampable\TimestampableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: drug }
+        calls:
+            - [ setAnnotationReader, [ @annotation_reader ] ]

@@ -57,7 +57,7 @@ class ArtAdmin extends Admin
 			->add('announce', null, array('label' => 'Анонс', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('body', null, array('label' => 'Основное содержимое', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('tags', null, array('label' => 'Теги', 'required' => false, 'help' => 'Выберите существующие теги или добавьте новый ниже'))
-			->add($formMapper->create('created', 'text', array(
+			->add($formMapper->create('hidden', 'text', array(
 					'label'        => 'Создать тег',
 					'required'     => false,
 					'by_reference' => false,
@@ -127,6 +127,7 @@ class ArtAdmin extends Admin
 			->add('metaTitle', null, array('label' => 'Мета заголовок', 'required' => false))
 			->add('metaDescription', null, array('label' => 'Мета описание', 'required' => false))
 			->add('metaKeywords', null, array('label' => 'Мета ключевые слова', 'required' => false))
+			->add('video', 'iphp_file', array('label' => 'Видео', 'required' => false, 'help' => 'Загрузить флеш-видео в формате .flv'))
 			->add('enabled', null, array('label' => 'Активна', 'required' => false));
 	}
 

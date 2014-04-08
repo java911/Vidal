@@ -5,8 +5,9 @@ namespace Vidal\DrugBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Iphp\FileStoreBundle\Mapping\Annotation as FileStore;
 
-/** @ORM\Entity(repositoryClass="ArtRepository") @ORM\Table(name="art") */
+/** @ORM\Entity(repositoryClass="ArtRepository") @ORM\Table(name="art") @FileStore\Uploadable */
 class Art extends BaseEntity
 {
 	/** @ORM\Column(length=255) */
@@ -100,6 +101,26 @@ class Art extends BaseEntity
 
 	/** @ORM\ManyToMany(targetEntity="ArtTag", inversedBy="arts") */
 	protected $tags;
+
+	/**
+	 * @ORM\Column(type="array", nullable=true)
+	 * @FileStore\UploadableField(mapping="video")
+	 * @Assert\File(
+	 * 		maxSize="100M",
+	 * 		maxSizeMessage="Видео не может быть больше 100Мб",
+	 * 		mimeTypesMessage="Видео должно быть в формате .flv"
+	 * )
+	 */
+	protected $video;
+
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $videoWidth;
+
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $videoHeight;
+
+	/** @ORM\Column(length=10, nullable=true) */
+	protected $hidden;
 
 	public function __construct()
 	{
@@ -470,5 +491,69 @@ class Art extends BaseEntity
 	public function removeTag($tag)
 	{
 		$this->tags->removeElement($tag);
+	}
+
+	/**
+	 * @param mixed $video
+	 */
+	public function setVideo($video)
+	{
+		$this->video = $video;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getVideo()
+	{
+		return $this->video;
+	}
+
+	/**
+	 * @param mixed $videoHeight
+	 */
+	public function setVideoHeight($videoHeight)
+	{
+		$this->videoHeight = $videoHeight;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getVideoHeight()
+	{
+		return $this->videoHeight;
+	}
+
+	/**
+	 * @param mixed $videoWidth
+	 */
+	public function setVideoWidth($videoWidth)
+	{
+		$this->videoWidth = $videoWidth;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getVideoWidth()
+	{
+		return $this->videoWidth;
+	}
+
+	/**
+	 * @param mixed $hidden
+	 */
+	public function setHidden($hidden)
+	{
+		$this->hidden = $hidden;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getHidden()
+	{
+		return $this->hidden;
 	}
 }

@@ -22,8 +22,8 @@
 		<a href="{{ path('onas') }}"
 		   class="{{ menu_left is defined and menu_left == 'about' ? 'active' : 'dotted' }}">О компании</a>
 	</li>
-	<li>
-		<a href="{{ path('shkola') }}" {{ not app.request.get('h') ? : 'style="display:none"' }}"
+	<li style="display:none">
+		<a href="{{ path('shkola') }}"
 		   class="{{ menu_left is defined and menu_left == 'shkola' ? 'active' : 'dotted' }}">Школа здоровья</a>
 	</li>
 
