@@ -360,16 +360,16 @@ class MarketController extends Controller{
         $basket = $basket[$group];
         # уведомление магазина о покупке
         $this->get('email.service')->send(
-            "tulupov.m@gmail.com",
-//            array('tulupov.m@gmail.com','zakaz@zdravzona.ru'),
+//            "tulupov.m@gmail.com",
+            array('tulupov.m@gmail.com','zakaz@zdravzona.ru'),
             array('VidalMainBundle:Email:market_notice.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa, 'ship' => $this->shippingTitle[$order->getShipping()] )),
             'Заказ с сайта Vidal.ru'
         );
 
         $this->get('email.service')->send(
 //            "zakaz@zdravzona.ru",
-            "tulupov.m@gmail.com",
-//            array('tulupov.m@gmail.com',$order->getEmail()),
+//            "tulupov.m@gmail.com",
+            array('tulupov.m@gmail.com',$order->getEmail()),
             array('VidalMainBundle:Email:market_notice_user.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa, 'ship' => $this->shippingTitle[$order->getShipping()] )),
             'Заказ с сайта Vidal.ru'
         );
