@@ -236,7 +236,7 @@ class MarketController extends Controller{
                 if ($group == 'zdavzona'){
                     $succes = $this->mailSend($group, $order, $basket);
                 }else{
-                    $succes = $this->emacsSend($order);
+                    $succes = $this->emacsSend($group, $order, $basket);
                 }
                 if ($succes == true ){
                     $order->setEnabled(true);
@@ -375,7 +375,7 @@ class MarketController extends Controller{
         );
     }
 
-    public function emacsSend(MarketOrder $order){
+    public function emacsSend($group, $order,Basket $basket){
 
         if ( $order->getGroupApt() == 'eapteka'){
             $url = 'http://vidal:3L29y4@ea.smacs.ru/exchange';
@@ -403,9 +403,18 @@ class MarketController extends Controller{
             curl_close($curl);
 
         }
-
+        $summa = $basket->getAmounts();
+        $summa = $summa[$group];
+        $basket = $basket->getAll();
+        $basket = $basket[$group];
         $xml = simplexml_load_string($data);
         if ($xml->error->error_code){
+            $this->get('email.service')->send(
+//            "tulupov.m@gmail.com",
+                array('tulupov.m@gmail.com',$order->getEmail()),
+                array('VidalMainBundle:Email:market_notice_user.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa, 'ship' => $this->shippingTitle[$order->getShipping()] )),
+                'Заказ с сайта Vidal.ru'
+            );
             return true;
         }else{
             return false;
