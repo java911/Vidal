@@ -432,12 +432,8 @@ class VidalController extends Controller
 				$params['articleId'] = $document->getArticleId();
 				$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByDocumentID($document->getDocumentID());
 			}
-			else {
-				throw $this->createNotFoundException();
-			}
 		}
 
-		$params['nozologies']   = $em->getRepository('VidalDrugBundle:Nozology')->findByDocumentID($document->getDocumentID());
 		$productIds             = array($product['ProductID']);
 		$params['product']      = $product;
 		$params['products']     = array($product);
@@ -447,8 +443,12 @@ class VidalController extends Controller
 		$params['distributors'] = $em->getRepository('VidalDrugBundle:Company')->findDistributorsByProducts($productIds);
 		$params['phthgroups']   = $em->getRepository('VidalDrugBundle:PhThGroups')->findByProductId($ProductID);
 
+		if (isset($params['document'])) {
+			$params['nozologies'] = $em->getRepository('VidalDrugBundle:Nozology')->findByDocumentID($document->getDocumentID());
+		}
+
 		# бады выводятся по-другому
-		if ($document->getArticleID() == 6 || $product['ProductTypeCode'] == 'BAD') {
+		if ($product['ProductTypeCode'] == 'BAD') {
 			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds);
 
 			return $this->render("VidalDrugBundle:Vidal:bad_document.html.twig", $params);

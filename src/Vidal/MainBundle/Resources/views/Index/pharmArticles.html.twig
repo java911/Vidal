@@ -27,3 +27,13 @@
 		{% endfor %}
 	</div>
 {% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.pharm-articles img {
+			margin-right: 15px;
+		}
+	</style>
+{% endblock %}

@@ -42,15 +42,6 @@
 		</a>
 	{% endif %}
 
-	{# Иконки использования при состояниях #}
-	{% if document is defined %}
-		{% include 'VidalDrugBundle:Vidal:document_conditions.html.twig' %}
-    {% else %}
-        <div class="conditions">
-        {% include 'VidalMainBundle:Market:button.html.twig' %}
-        </div>
-	{% endif %}
-
 	{% if products is not empty %}
 		<div class="pictures">
 			{% for picture in pictures %}
