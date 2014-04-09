@@ -89,23 +89,10 @@
 		{% include 'VidalDrugBundle:Vidal:bad_document_navigation.html.twig' %}
 	{% endif %}
 
-	{# Состав #}
-	{% if Composition is not empty %}
-	<div class="block" id="composition">
-		<div class="block-head">Состав</div>
-		<div class="block-content composition">
-			{{ Composition|replace({
-			'[PRING]':'<i class"pring">Вспомогательные вещества</i>:',
-			'&loz;':'<img class="loz" src="'~loz~'" title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>'
-			})|raw }}
-		</div>
-	</div>
-	{% endif %}
-
 	{# Лекарственные формы #}
 	{% if products is defined and products|length %}
 		<div class="block">
-			<div class="block-head">Форма выпуска и упаковка</div>
+			<div class="block-head">Лекарственная форма, состав и упаковка</div>
 			<div class="block-content">
 				<table class="products-table">
 					{% for p in products %}
@@ -134,6 +121,17 @@
 						</tr>
 					{% endfor %}
 				</table>
+
+				{# Состав #}
+				{% if Composition is not empty %}
+					<div class="bad-composition">
+						{{ Composition|replace({
+						'[PRING]':'<i class"pring">Вспомогательные вещества</i>:',
+						'&loz;':'<img class="loz" src="'~loz~'" title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>'
+						})|raw }}
+					</div>
+				{% endif %}
+
 			</div>
 		</div>
 	{% endif %}
@@ -240,7 +238,7 @@
 		</div>
 	{% endif %}
 
-    {{ render( controller('VidalMainBundle:Market:productList', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}
+	{{ render( controller('VidalMainBundle:Market:productList', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}
 
 	{# блок получения ссылки #}
 	{% if product is defined or document is defined %}
@@ -251,11 +249,17 @@
 			{% spaceless %}
 				<textarea cols="92" rows="2">
 					{% if product is defined %}
-						<a href="{{ url('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}" target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+						<a href="{{ url('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"
+						   target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике
+							Видаль.</a>
 					{% elseif documentId is defined %}
-						<a href="{{ url('document', {'EngName':document.Name, 'DocumentID':document.DocumentID}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+						<a href="{{ url('document', {'EngName':document.Name, 'DocumentID':document.DocumentID}) }}"
+						   target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике
+							Видаль.</a>
 					{% else %}
-						<a href="{{ url('document', {'EngName':document.Name}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+						<a href="{{ url('document', {'EngName':document.Name}) }}"
+						   target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике
+							Видаль.</a>
 					{% endif %}
 				</textarea>
 			{% endspaceless %}

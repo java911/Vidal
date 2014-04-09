@@ -447,8 +447,8 @@ class VidalController extends Controller
 			$params['nozologies'] = $em->getRepository('VidalDrugBundle:Nozology')->findByDocumentID($document->getDocumentID());
 		}
 
-		# бады выводятся по-другому
-		if ($product['ProductTypeCode'] == 'BAD') {
+		# БАДы выводятся по-другому
+		if ($product['ProductTypeCode'] == 'BAD' || ($document && $document->getArticleID() == 6)) {
 			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds);
 
 			return $this->render("VidalDrugBundle:Vidal:bad_document.html.twig", $params);

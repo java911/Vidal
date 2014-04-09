@@ -106,7 +106,7 @@ class DocumentRepository extends EntityRepository
 				SELECT d
 				FROM VidalDrugBundle:Document d
 				LEFT JOIN VidalDrugBundle:ProductDocument pd WITH pd.DocumentID = d
-				WHERE pd.ProductID = :ProductID AND d.ArticleID IN (4,3,1)
+				WHERE pd.ProductID = :ProductID AND d.ArticleID IN (4,3,1,6)
 				ORDER BY d.ArticleID DESC
 			')->setParameter('ProductID', $ProductID)
 				->setMaxResults(1)
