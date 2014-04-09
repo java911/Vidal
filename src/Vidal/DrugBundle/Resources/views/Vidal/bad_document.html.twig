@@ -90,6 +90,7 @@
 	{% endif %}
 
 	{# Состав #}
+	{% if Composition is not empty %}
 	<div class="block" id="composition">
 		<div class="block-head">Состав</div>
 		<div class="block-content composition">
@@ -99,6 +100,7 @@
 			})|raw }}
 		</div>
 	</div>
+	{% endif %}
 
 	{# Лекарственные формы #}
 	{% if products is defined and products|length %}
