@@ -120,30 +120,23 @@ class CompanyRepository extends EntityRepository
 
 	public function getQuery()
 	{
-		$qb = $this->_em->createQueryBuilder();
-
-		$qb
-			->select('c')
-			->from('VidalDrugBundle:Company', 'c')
-			->where("c.CountryEditionCode = 'RUS'")
-			->orderBy('c.LocalName', 'ASC');
-
-		return $qb->getQuery();
+		return $this->_em->createQuery("
+			SELECT c
+			FROM VidalDrugBundle:Company c
+			WHERE c.CountryEditionCode = 'RUS'
+			ORDER BY c.LocalName ASC
+		");
 	}
 
 	public function getQueryByLetter($l)
 	{
-		$qb = $this->_em->createQueryBuilder();
-
-		$qb
-			->select('c')
-			->from('VidalDrugBundle:Company', 'c')
-			->orderBy('c.LocalName', 'ASC')
-			->where("c.CountryEditionCode = 'RUS'")
-			->andWhere('c.LocalName LIKE :l')
-			->setParameter('l', $l . '%');
-
-		return $qb->getQuery();
+		return $this->_em->createQuery("
+			SELECT c
+			FROM VidalDrugBundle:Company c
+			WHERE c.CountryEditionCode = 'RUS'
+				AND c.LocalName LIKE :l
+			ORDER BY c.LocalName ASC
+		")->setParameter('l', $l . '%');
 	}
 
 	public function findByQueryString($q)

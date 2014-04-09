@@ -162,6 +162,7 @@ class VidalController extends Controller
 				$params['products']  = $products;
 				$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
 				$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
+				$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 			}
 		}
 
@@ -277,7 +278,7 @@ class VidalController extends Controller
 		return array(
 			'molecule' => $molecule,
 			'document' => $document,
-			'title'    => $molecule . ' | Активные вещества',
+			'title'    => $molecule->getTitle() . ' | Активные вещества',
 		);
 	}
 
@@ -336,7 +337,8 @@ class VidalController extends Controller
 			'products2' => $products2,
 			'companies' => $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds),
 			'pictures'  => $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds),
-			'title'     => $molecule . ' | Активные вещества в препаратах',
+			'infoPages' => $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($productsRaw),
+			'title'     => $molecule->getTitle() . ' | Активные вещества в препаратах',
 		);
 	}
 

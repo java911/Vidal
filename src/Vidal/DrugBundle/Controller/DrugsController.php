@@ -31,45 +31,15 @@ class DrugsController extends Controller
 		}
 
 		# все продукты по ATC-коду и отсеиваем дубли
-		$productsRaw = $em->getRepository('VidalDrugBundle:Product')->findByATCCode($ATCCode);
-		$products    = array();
-
-		if (empty($productsRaw)) {
-			return array('atc' => $atc);
-		}
-
-		for ($i = 0; $i < count($productsRaw); $i++) {
-			$key = $productsRaw[$i]['ProductID'];
-			if (!isset($productsRaw[$key])) {
-				$products[$key] = $productsRaw[$i];
-			}
-		}
-
-		# надо разбить на те, что с описанием(2,5) и остальные
-		$products1  = array();
-		$products2  = array();
-		$productIds = array();
-
-		foreach ($products as $id => $product) {
-			if ($product['ArticleID'] == 2 || $product['ArticleID'] == 5) {
-				$key = $product['DocumentID'];
-				if (!isset($products1[$key])) {
-					$products1[$key] = $product;
-				}
-			}
-			else {
-				$products2[] = $product;
-			}
-
-			$productIds[] = $id;
-		}
+		$products   = $em->getRepository('VidalDrugBundle:Product')->findByATCCode($ATCCode);
+		$productIds = $this->getProductIds($products);
 
 		return array(
 			'atc'       => $atc,
-			'products1' => $products1,
-			'products2' => $products2,
+			'products'  => $products,
 			'companies' => $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds),
 			'pictures'  => $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds),
+			'infoPages' => $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products),
 			'title'     => $atc->getRusName() . ' - ' . $atc . ' | АТХ',
 		);
 	}
@@ -153,6 +123,7 @@ class DrugsController extends Controller
 			$params['products']  = $products;
 			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
 			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
+			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 		}
 
 		return $params;
@@ -272,7 +243,7 @@ class DrugsController extends Controller
 
 		$params = array(
 			'phthgroup' => $phthgroup,
-			'title'     => $phthgroup . ' | Фирмы-производители',
+			'title'     => $phthgroup['Name'] . ' | Фармако-терапевтические группы',
 		);
 
 		$products = $em->getRepository('VidalDrugBundle:Product')->findByPhThGroup($id);
@@ -282,6 +253,7 @@ class DrugsController extends Controller
 			$params['products']  = $products;
 			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
 			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
+			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 		}
 
 		return $params;
@@ -340,6 +312,7 @@ class DrugsController extends Controller
 			$params['products']  = $products;
 			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
 			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
+			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 		}
 
 		return $params;

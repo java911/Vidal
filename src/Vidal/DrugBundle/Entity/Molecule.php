@@ -81,6 +81,11 @@ class Molecule
 		return $this->MoleculeID . ' - ' . (empty($this->RusName) ? $this->LatName : $this->RusName);
 	}
 
+	public function getTitle()
+	{
+		return empty($this->RusName) ? $this->LatName : $this->RusName;
+	}
+
 	public function getId()
 	{
 		return $this->MoleculeID;
