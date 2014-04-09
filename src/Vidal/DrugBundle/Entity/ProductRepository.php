@@ -7,14 +7,14 @@ class ProductRepository extends EntityRepository
 {
 	public function findByProductID($ProductID)
 	{
-		return $this->_em->createQuery('
+		return $this->_em->createQuery("
 			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.Composition, pt.ProductTypeCode
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			LEFT JOIN VidalDrugBundle:ProductType pt WITH pt.ProductTypeCode = p.ProductTypeCode
-			WHERE p = :ProductID
-		')->setParameter('ProductID', $ProductID)
+			WHERE p = :ProductID AND p.CountryEditionCode = 'RUS'
+		")->setParameter('ProductID', $ProductID)
 			->getOneOrNullresult();
 	}
 
