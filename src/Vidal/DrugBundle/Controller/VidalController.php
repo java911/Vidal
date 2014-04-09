@@ -123,6 +123,7 @@ class VidalController extends Controller
 			$productIds          = $this->getProductIds($products);
 			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
 			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
+			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 		}
 
 		return $params;
@@ -375,7 +376,7 @@ class VidalController extends Controller
 			'title' => $this->strip($product['RusName']) . ' | Препараты',
 		);
 
-		$document  = $em->getRepository('VidalDrugBundle:Document')->findByProductDocument($ProductID);
+		$document  = $em->getRepository('VidalDrugBundle:Document')->findByProduct($product);
 		$molecules = $em->getRepository('VidalDrugBundle:Molecule')->findByProductID($ProductID);
 
 		if ($document) {

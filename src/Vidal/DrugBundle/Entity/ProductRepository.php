@@ -205,9 +205,6 @@ class ProductRepository extends EntityRepository
 
 	public function findByInfoPageID($InfoPageID)
 	{
-		//
-		//d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
-		//		d.Name DocumentName, d.ClPhGrDescription
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
 				p.RegistrationNumber, p.RegistrationDate

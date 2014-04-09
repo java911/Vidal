@@ -23,7 +23,7 @@
 	<div class="breadcrumbs">
 		<a href="{{ path('index') }}">Видаль</a>
 		<i></i>
-		<a href="{{ path('drugs') }}">Препараты</a>
+		<a href="{{ path('searche_letter') }}">БАДы</a>
 		<i></i>
 		<span>{{ product is defined ? product.RusName|raw : document.RusName|raw }}</span>
 	</div>
@@ -34,7 +34,6 @@
 	{# ссылка админу на редактирование #}
 	{% if isAdmin %}
 		<a class="admin-edit fade" target="_blank"
-		   title="DocumentID: {{ document.DocumentID }}"
 		   href="{{ product is defined
 		   ? path('admin_vidal_drug_product_edit', {'id':product.ProductID})
 		   : path('admin_vidal_drug_document_edit', {'id':document.DocumentID}) }}">
@@ -75,7 +74,7 @@
 								<div>{{ p.ZipInfo }}</div>
 								<span>Разрешено к применению в России</span><br/>
 								<span>
-									<i style="color:#476173;">Свидетельство о государственной регистрации</i>:<br/>
+									<i style="color:#476173;">Свидетельство о государственной регистрации БАД к пище:</i>:<br/>
 									{{ p.RegistrationNumber }}
 									{% if p.RegistrationDate is not null %}
 										от {{ p.RegistrationDate|date('d.m.Y') }}

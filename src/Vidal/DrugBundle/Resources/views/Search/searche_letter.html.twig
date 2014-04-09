@@ -1,6 +1,11 @@
 {% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
 
 
+{% if t =='o' %}
+	{% set from = 'bad' %}
+{% endif %}
+
+
 {% block vidal %}
 	{% include 'VidalDrugBundle:Search:menu.html.twig' %}
 

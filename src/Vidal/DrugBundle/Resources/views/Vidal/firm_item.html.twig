@@ -36,10 +36,6 @@
 		</div>
 	{% endif %}
 
-	{% if isAdmin %}
-		{% include 'VidalDrugBundle:Vidal:render_products_admin.html.twig' %}
-	{% else %}
-		{% include 'VidalDrugBundle:Vidal:render_products.html.twig' %}
-	{% endif %}
+	{% include 'VidalDrugBundle:Vidal:render_products.html.twig' %}
 
 {% endblock %}

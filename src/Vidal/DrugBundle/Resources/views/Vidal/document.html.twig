@@ -23,7 +23,9 @@
 	<div class="breadcrumbs">
 		<a href="{{ path('index') }}">Видаль</a>
 		<i></i>
-		<a href="{{ path('drugs') }}">Препараты</a>
+		<a href="{{ path('drugs') }}">
+			{{ app.request.get('from') == 'bad' ? 'Препараты и БАДы' : 'Препараты' }}
+		</a>
 		<i></i>
 		<span>{{ product is defined ? product.RusName|raw : document.RusName|raw }}</span>
 	</div>
