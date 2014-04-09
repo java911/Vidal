@@ -75,50 +75,32 @@ class VidalController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		$productsRaw = $em->getRepository('VidalDrugBundle:Product')->findByOwner($CompanyID);
+		$products = $em->getRepository('VidalDrugBundle:Product')->findByOwner($CompanyID);
 
 		# находим представительства
 		$productsRepresented = array();
-		for ($i = 0; $i < count($productsRaw); $i++) {
-			$key = $productsRaw[$i]['InfoPageID'];
+		for ($i = 0; $i < count($products); $i++) {
+			$key = $products[$i]['InfoPageID'];
 			if (!empty($key) && !isset($productsRepresented[$key])) {
-				$productsRepresented[$key] = $productsRaw[$i];
+				$productsRepresented[$key] = $products[$i];
 			}
 		}
 
-		# отсеиваем дубли
-		$products = array();
-
-		for ($i = 0; $i < count($productsRaw); $i++) {
-			$key = $productsRaw[$i]['ProductID'];
-			if (!isset($productsRaw[$key])) {
-				$products[$key] = $productsRaw[$i];
-			}
-		}
-
-		# надо разбить на те, что с представительством и описанием(2,5) и остальные
-		$products1 = array();
-		$products2 = array();
-
-		foreach ($products as $id => $product) {
-			if ($product['InfoPageID'] && ($product['ArticleID'] == 2 || $product['ArticleID'] == 5)) {
-				$key = $product['DocumentID'];
-				if (!isset($products1[$key])) {
-					$products1[$key] = $product;
-				}
-			}
-			else {
-				$products2[] = $product;
-			}
-		}
-
-		return array(
+		$params = array(
+			'title'               => $this->strip($company['CompanyName']) . ' | Фирмы-производители',
 			'company'             => $company,
 			'productsRepresented' => $productsRepresented,
-			'products1'           => $products1,
-			'products2'           => $products2,
-			'title'               => $this->strip($company['CompanyName']) . ' | Фирмы-производители',
+			'products'            => $products,
 		);
+
+		if (!empty($products)) {
+			$productIds          = $this->getProductIds($products);
+			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
+			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
+			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
+		}
+
+		return $params;
 	}
 
 	/**

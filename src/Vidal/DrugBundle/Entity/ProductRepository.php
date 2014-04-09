@@ -165,8 +165,8 @@ class ProductRepository extends EntityRepository
 
 	public function findByOwner($CompanyID)
 	{
-		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
+		$productsRaw = $this->_em->createQuery('
+			SELECT p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.ZipInfo,
 				p.RegistrationNumber, p.RegistrationDate,
 				country.RusName CompanyCountry,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
@@ -188,6 +188,19 @@ class ProductRepository extends EntityRepository
 			ORDER BY p.RusName ASC
 		')->setParameter('CompanyID', $CompanyID)
 			->getResult();
+
+		# надо отсеять дубли препаратов
+		$products = array();
+
+		foreach ($productsRaw as $product) {
+			$key = $product['ProductID'];
+
+			if (!isset($products[$key])) {
+				$products[$key] = $product;
+			}
+		}
+
+		return array_values($products);
 	}
 
 	public function findByInfoPageID($InfoPageID)

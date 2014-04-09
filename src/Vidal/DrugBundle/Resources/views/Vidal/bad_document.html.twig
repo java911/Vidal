@@ -53,46 +53,10 @@
 		</div>
 	{% endif %}
 
-	{% if document is defined %}
-		{# Объявление, описание чего пойдет ниже #}
-		{% if articleId is defined %}
-			<div class="anons">
-				{% if articleId == 1 or articleId == 4 %}
-					<div class="anons-head">
-						<span>Описание активных компонентов препарата</span>
-						{% if product is defined %}
-							<span class="anons-product">{{ product.RusName|raw }}</span>
-							<span>({{ product.EngName|raw }})</span>
-						{% else %}
-							<span class="anons-product">{{ document.RusName|raw }}</span>
-							<span>({{ document.EngName|raw }})</span>
-						{% endif %}
-					</div>
-					<div class="anons-content">
-						Приведенная научная информация является обобщающей и не может быть использована для принятия
-						решения о возможности применения конкретного лекарственного препарата.
-					</div>
-				{% else %}
-					<div class="anons-head">
-						<span>Описание лекарственного препарата</span>
-						<span class="anons-product">{{ document.RusName|raw }}</span>
-						<span>({{ document.EngName|raw }})</span>
-					</div>
-					<div class="anons-content">
-						Основано на официально утвержденной инструкции по применению препарата
-						и сделано в {{ document.YearEdition }} году.
-					</div>
-				{% endif %}
-			</div>
-		{% endif %}
-
-		{% include 'VidalDrugBundle:Vidal:bad_document_navigation.html.twig' %}
-	{% endif %}
-
-	{# Лекарственные формы #}
+	{# Форма выпуска #}
 	{% if products is defined and products|length %}
 		<div class="block">
-			<div class="block-head">Лекарственная форма, состав и упаковка</div>
+			<div class="block-head">Форма выпуска, состав и упаковка</div>
 			<div class="block-content">
 				<table class="products-table">
 					{% for p in products %}
