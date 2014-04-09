@@ -75,14 +75,60 @@ class IndexController extends Controller
 		);
 	}
 
+	/** @Route("/Vidal/vidal-russia/Novosti-pharmatsevticheskih-kompanii/") */
+	public function r10()
+	{
+		return $this->redirect($this->generateUrl('pharm_news'), 301);
+	}
+
 	/**
 	 * @Route("/Vidal/vidal-russia/{url}", name="vidal_russia_item", requirements={"url"=".+"})
 	 */
-	public function vidalRussiaItemAction($url)
+	public function r11($url)
 	{
 		$url = trim($url, '/');
 
-		return $this->forward('VidalMainBundle:Index:about', array('url' => $url));
+		return $this->redirect($this->generateUrl('about', array('url' => $url)), 301);
+	}
+
+	/**
+	 * @Route("/o-nas/Novosti-pharmatsevticheskih-kompanii/{companyId}", name="pharm_articles")
+	 *
+	 * @Template
+	 */
+	public function pharmArticlesAction($companyId)
+	{
+		$em       = $this->getDoctrine()->getManager('drug');
+		$company  = $em->getRepository('VidalDrugBundle:OldCompany')->findOneById($companyId);
+		$articles = $em->getRepository('VidalDrugBundle:OldArticle')->findByCompanyId($company->getId());
+
+		$params = array(
+			'title'     => $company . ' | Новости Фармацевтических компаний',
+			'company'   => $company,
+			'articles'  => $articles,
+			'menu_left' => 'about'
+		);
+
+		return $params;
+	}
+
+	/**
+	 * @Route("/o-nas/Novosti-pharmatsevticheskih-kompanii", name="pharm_news")
+	 *
+	 * @Template
+	 */
+	public function pharmNewsAction()
+	{
+		$em        = $this->getDoctrine()->getManager('drug');
+		$companies = $em->getRepository('VidalDrugBundle:OldCompany')->findWithArticles();
+
+		$params = array(
+			'title'     => 'Новости Фармацевтических компаний',
+			'companies' => $companies,
+			'menu_left' => 'about'
+		);
+
+		return $params;
 	}
 
 	/**
@@ -90,7 +136,7 @@ class IndexController extends Controller
 	 * @Route("/o-nas", name="onas")
 	 * @Route("/Vidal/vidal-russia/", name="vidal_russia")
 	 *
-	 * @Template()
+	 * @Template
 	 */
 	public function onasAction()
 	{

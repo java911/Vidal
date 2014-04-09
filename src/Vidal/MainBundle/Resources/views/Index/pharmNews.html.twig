@@ -1,0 +1,45 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block title %}
+	<h1>Новости Фармацевтических компаний</h1>
+{% endblock %}
+
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('onas') }}">О компании</a>
+	</div>
+{% endblock %}
+
+
+{% block content %}
+	<ul class="ul-style pharms">
+		{% for company in companies %}
+			<li>
+				<a href="{{ path('pharm_articles', {'companyId':company.id}) }}">
+					{{ company.title|raw }}
+				</a>
+			</li>
+		{% endfor %}
+	</ul>
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.pharms li {
+			margin-bottom: 5px;
+		}
+		.pharms a {
+			color:           #2f4053;
+			text-decoration: none;
+		}
+		.pharms a:hover {
+			text-decoration: underline;
+		}
+	</style>
+{% endblock %}

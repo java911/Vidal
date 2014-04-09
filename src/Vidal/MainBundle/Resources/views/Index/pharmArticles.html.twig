@@ -1,0 +1,29 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block title %}
+	<h1>{{ company|raw }}</h1>
+{% endblock %}
+
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('onas') }}">О компании</a>
+		<i></i>
+		<a href="{{ path('pharm_news') }}">Новости Фармацевтических компаний</a>
+	</div>
+{% endblock %}
+
+
+{% block content %}
+	<div class="pharm-articles">
+		{% for article in articles %}
+			<div>
+				{{ article.text|raw }}
+			</div>
+			<hr/>
+		{% endfor %}
+	</div>
+{% endblock %}
