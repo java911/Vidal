@@ -286,6 +286,27 @@
 				<target>Удаление раздела</target>
 			</trans-unit>
 
+			<trans-unit id="sonata-18">
+				<source>Module List</source>
+				<target>Модули</target>
+			</trans-unit>
+			<trans-unit id="sonata-18-1">
+				<source>Модуль</source>
+				<target>Раздел</target>
+			</trans-unit>
+			<trans-unit id="sonata-18-2">
+				<source>Module Edit</source>
+				<target>Редактирование модуля</target>
+			</trans-unit>
+			<trans-unit id="sonata-18-3">
+				<source>Module Create</source>
+				<target>Создание модуля</target>
+			</trans-unit>
+			<trans-unit id="sonata-18-4">
+				<source>Module Delete</source>
+				<target>Удаление модуля</target>
+			</trans-unit>
+
         </body>
     </file>
 </xliff>
