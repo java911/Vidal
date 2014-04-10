@@ -145,7 +145,13 @@ class ArtAdmin extends Admin
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
 			->add('link', null, array('label' => 'Адрес страницы'))
-			->add('subdivision', null, array('label' => 'Рубрика'))
+			->add('subdivision', null, array(
+				'label'         => 'Подраздел',
+				'query_builder' => function (EntityRepository $er) {
+						return $er->createQueryBuilder('s')
+							->orderBy('s.name', 'ASC');
+					},
+			))
 			->add('type', null, array('label' => 'Категория'))
 			->add('priority', null, array('label' => 'Приоритет'))
 			->add('enabled', null, array('label' => 'Активна'));
