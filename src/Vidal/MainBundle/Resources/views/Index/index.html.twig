@@ -12,6 +12,8 @@
 
 
 {% block content %}
+	{{ render(controller('VidalMainBundle:Index:Module', {'moduleId':1})) }}
+
 	{# Последние новости #}
 	<div class="title title-news">
 		<a href="{{ path('news') }}">Последние новости</a>

@@ -47,10 +47,10 @@
 	{# Иконки использования при состояниях #}
 	{% if document is defined %}
 		{% include 'VidalDrugBundle:Vidal:document_conditions.html.twig' %}
-    {% else %}
-        <div class="conditions">
-        {% include 'VidalMainBundle:Market:button.html.twig' %}
-        </div>
+	{% else %}
+		<div class="conditions">
+			{% include 'VidalMainBundle:Market:button.html.twig' %}
+		</div>
 	{% endif %}
 
 	{% if products is not empty %}
@@ -249,7 +249,7 @@
 		{% include 'VidalDrugBundle:Vidal:document_info.html.twig' %}
 	{% endif %}
 
-    {{ render( controller('VidalMainBundle:Market:productList', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}
+	{{ render( controller('VidalMainBundle:Market:productList', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}
 
 	{# блок получения ссылки #}
 	{% if product is defined or document is defined %}
@@ -260,11 +260,17 @@
 			{% spaceless %}
 				<textarea cols="92" rows="2">
 					{% if product is defined %}
-						<a href="{{ url('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}" target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+						<a href="{{ url('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"
+						   target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике
+							Видаль.</a>
 					{% elseif documentId is defined %}
-						<a href="{{ url('document', {'EngName':document.Name, 'DocumentID':document.DocumentID}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+						<a href="{{ url('document', {'EngName':document.Name, 'DocumentID':document.DocumentID}) }}"
+						   target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике
+							Видаль.</a>
 					{% else %}
-						<a href="{{ url('document', {'EngName':document.Name}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+						<a href="{{ url('document', {'EngName':document.Name}) }}"
+						   target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике
+							Видаль.</a>
 					{% endif %}
 				</textarea>
 			{% endspaceless %}
@@ -312,6 +318,12 @@
 		.market-organization {
 			width: 180px;
 		}
+		.mkb {
+			margin-top: 6px;
+		}
+		.mkb .products-table {
+			display: none;
+		}
 	</style>
 {% endblock %}
 
@@ -323,6 +335,12 @@
 			$('.copy textarea')
 				.focus(function() { $(this).css('opacity', '1'); })
 				.blur(function() { $(this).css('opacity', '0.5'); });
+
+			$('.mkb-show').click(function() {
+				$('.mkb .products-table').show();
+				$(this).hide();
+				return false;
+			});
 		});
 	</script>
 {% endblock %}

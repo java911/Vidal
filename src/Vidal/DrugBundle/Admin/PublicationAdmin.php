@@ -58,6 +58,7 @@ class PublicationAdmin extends Admin
 		$formMapper
 			->add('photo', 'iphp_file', array('label' => 'Фотография', 'required' => false))
 			->add('title', null, array('label' => 'Заголовок', 'required' => true))
+			->add('priority', null, array('label' => 'Приоритет', 'required' => false,  'help' => 'Закреплено на главной по приоритету. Оставьте пустым, чтоб снять приоритет'))
 			->add('announce', null, array('label' => 'Анонс', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('body', null, array('label' => 'Основное содержимое', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('tags', null, array('label' => 'Теги', 'required' => false, 'help' => 'Выберите существующие теги или добавьте новый ниже'))
@@ -136,6 +137,7 @@ class PublicationAdmin extends Admin
 		$datagridMapper
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
+			->add('priority', null, array('label' => 'Приоритет'))
 			->add('enabled', null, array('label' => 'Активна'));
 	}
 
@@ -149,6 +151,7 @@ class PublicationAdmin extends Admin
 				'widget' => 'single_text',
 				'format' => 'd.m.Y в H:i'
 			))
+			->add('priority', null, array('label' => 'Приоритет'))
 			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled_main.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',

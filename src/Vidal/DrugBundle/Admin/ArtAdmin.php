@@ -54,6 +54,7 @@ class ArtAdmin extends Admin
 			->add('link', null, array('label' => 'Адрес страницы', 'required' => true, 'help' => 'латинские буквы и цифры, слова через тире'))
 			->add('subdivision', null, array('label' => 'Подраздел', 'required' => true))
 			->add('type', null, array('label' => 'Категория', 'required' => false, 'empty_value' => 'не указано'))
+			->add('priority', null, array('label' => 'Приоритет', 'required' => false,  'help' => 'Закреплено на главной по приоритету. Оставьте пустым, чтоб снять приоритет'))
 			->add('announce', null, array('label' => 'Анонс', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('body', null, array('label' => 'Основное содержимое', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('tags', null, array('label' => 'Теги', 'required' => false, 'help' => 'Выберите существующие теги или добавьте новый ниже'))
@@ -139,6 +140,7 @@ class ArtAdmin extends Admin
 			->add('link', null, array('label' => 'Адрес страницы'))
 			->add('subdivision', null, array('label' => 'Рубрика'))
 			->add('type', null, array('label' => 'Категория'))
+			->add('priority', null, array('label' => 'Приоритет'))
 			->add('enabled', null, array('label' => 'Активна'));
 	}
 
@@ -149,6 +151,7 @@ class ArtAdmin extends Admin
 			->add('title', null, array('label' => 'Заголовок'))
 			->add('subdivision', null, array('label' => 'Подраздел'))
 			->add('type', null, array('label' => 'Категория'))
+			->add('priority', null, array('label' => 'Приоритет'))
 			->add('date', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
 			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
 			->add('_action', 'actions', array(

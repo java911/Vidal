@@ -101,6 +101,9 @@ class Publication extends BaseEntity
 	/** @ORM\Column(length=10, nullable=true) */
 	protected $hidden;
 
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $priority;
+
 	public function __construct()
 	{
 		$now              = new \DateTime('now');
@@ -133,7 +136,7 @@ class Publication extends BaseEntity
 	 */
 	public function getAnnounce()
 	{
-		return $this->announce;
+		return str_replace(array('&reg;', '®'), array('<sup>&reg;</sup>', '<sup>®</sup>'), $this->announce);
 	}
 
 	/**
@@ -149,7 +152,7 @@ class Publication extends BaseEntity
 	 */
 	public function getBody()
 	{
-		return $this->body;
+		return str_replace(array('&reg;', '®'), array('<sup>&reg;</sup>', '<sup>®</sup>'), $this->body);
 	}
 
 	/**
@@ -181,7 +184,7 @@ class Publication extends BaseEntity
 	 */
 	public function getTitle()
 	{
-		return $this->title;
+		return str_replace(array('&reg;', '®'), array('<sup>&reg;</sup>', '<sup>®</sup>'), $this->title);
 	}
 
 	/**
@@ -414,5 +417,21 @@ class Publication extends BaseEntity
 	public function getHidden()
 	{
 		return $this->hidden;
+	}
+
+	/**
+	 * @param mixed $priority
+	 */
+	public function setPriority($priority)
+	{
+		$this->priority = $priority;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPriority()
+	{
+		return $this->priority;
 	}
 }

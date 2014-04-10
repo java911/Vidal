@@ -290,6 +290,19 @@ class IndexController extends Controller
 	}
 
 	/**
+	 * @Route("/module/{moduleId}", name="module")
+	 *
+	 * @Template
+	 */
+	public function moduleAction($moduleId)
+	{
+		$em     = $this->getDoctrine()->getManager();
+		$module = $em->getRepository('VidalMainBundle:Module')->findOneById($moduleId);
+
+		return array('module' => $module);
+	}
+
+	/**
 	 * @Route("/pharmacies-map/{id}", name="pharmacies_map", defaults = { "id" = 87 }, options={"expose"=true})
 	 * @Template("VidalMainBundle:Index:map.html.twig")
 	 */

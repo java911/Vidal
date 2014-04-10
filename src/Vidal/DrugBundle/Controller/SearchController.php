@@ -97,7 +97,12 @@ class SearchController extends Controller
 
 		# поиск по заболеванию (это статьи и синонимы)
 		if ($t == 'all' || $t == 'disease') {
-			$params['articles'] = $em->getRepository('VidalDrugBundle:Article')->findByQuery($q);
+			$articles = $em->getRepository('VidalDrugBundle:Article')->findByQuery($q);
+			# если есть БАДы, то исключаем дублирующие их статьи
+			if (isset($params['bads']) && !empty($articles)) {
+				$articles = $this->excludeBads($articles, $params['bads']);
+			}
+			$params['articles'] = $articles;
 		}
 
 		return $params;
@@ -208,7 +213,12 @@ class SearchController extends Controller
 
 			# поиск по заболеванию (это статьи и синонимы)
 			if ($t == 'all' || $t == 'disease') {
-				$params['articles'] = $em->getRepository('VidalDrugBundle:Article')->findByQuery($q);
+				$articles = $em->getRepository('VidalDrugBundle:Article')->findByQuery($q);
+				# если есть БАДы, то исключаем дублирующие их статьи
+				if (isset($params['bads']) && !empty($articles)) {
+					$articles = $this->excludeBads($articles, $params['bads']);
+				}
+				$params['articles'] = $articles;
 			}
 		}
 
@@ -406,5 +416,33 @@ class SearchController extends Controller
 		}
 
 		return $articles;
+	}
+
+	private function excludeBads($articlesRaw, $bads)
+	{
+		$badNames = array();
+		$articles = array();
+
+		foreach ($bads as $bad) {
+			$badNames[] = $this->stripLower($bad['RusName']);
+		}
+
+		foreach ($articlesRaw as $article) {
+			$title = $this->stripLower($article['title']);
+
+			if (!in_array($title, $badNames)) {
+				$articles[] = $article;
+			}
+		}
+
+		return $articles;
+	}
+
+	private function stripLower($string)
+	{
+		$pat = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/&amp;/', '/®/');
+		$rep = array('', '', '&', '');
+
+		return mb_strtolower(preg_replace($pat, $rep, $string), 'utf-8');
 	}
 }

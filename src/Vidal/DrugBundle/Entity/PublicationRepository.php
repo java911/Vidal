@@ -12,7 +12,7 @@ class PublicationRepository extends EntityRepository
 			SELECT p
 			FROM VidalDrugBundle:Publication p
 			WHERE p.enabled = TRUE
-			ORDER BY p.date DESC
+			ORDER BY p.priority DESC, p.date DESC
 		')->setMaxResults($top)
 			->getResult();
 	}
@@ -23,7 +23,7 @@ class PublicationRepository extends EntityRepository
 			SELECT p
 			FROM VidalDrugBundle:Publication p
 			WHERE p.enabled = TRUE
-			ORDER BY p.date DESC
+			ORDER BY p.priority DESC, p.date DESC
 		')->setFirstResult($from)
 			->setMaxResults($max)
 			->getResult();
