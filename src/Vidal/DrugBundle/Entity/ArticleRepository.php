@@ -23,7 +23,7 @@ class ArticleRepository extends EntityRepository
 			SELECT a
 			FROM VidalDrugBundle:Article a
 			WHERE a.enabled = TRUE
-			ORDER BY a.date DESC
+			ORDER BY a.priority DESC, a.date DESC
 		')->setMaxResults($top)
 			->getResult();
 	}
@@ -34,7 +34,7 @@ class ArticleRepository extends EntityRepository
 			SELECT a
 			FROM VidalDrugBundle:Article a
 			WHERE a.enabled = TRUE
-			ORDER BY a.date DESC
+			ORDER BY a.priority DESC, a.date DESC
 		')->setFirstResult($from)
 			->setMaxResults($max)
 			->getResult();
