@@ -1001,7 +1001,6 @@ h1 span {
 
 /* search-info */
 .search-info {
-	height:       16px;
 	margin-left:  5px;
 	padding-left: 22px;
 	font-size:    15px;
@@ -1280,4 +1279,12 @@ h1 span {
 }
 .description > div {
 	padding: 6px 12px 8px;
+}
+
+/* overwrite link colors */
+#wrapper .article-wrap a,
+#wrapper .article-wrap a font,
+#wrapper .publication a,
+#wrapper .publication a font {
+	color: #d71344;
 }

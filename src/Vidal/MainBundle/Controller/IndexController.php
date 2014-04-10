@@ -13,7 +13,7 @@ use Lsw\SecureControllerBundle\Annotation\Secure;
 
 class IndexController extends Controller
 {
-	const PUBLICATIONS_SHOW = 4;
+	const PUBLICATIONS_SHOW = 5;
 	const PUBLICATIONS_LOAD = 4;
 	const ARTICLES_SHOW     = 4;
 	const ARTICLES_LOAD     = 4;
