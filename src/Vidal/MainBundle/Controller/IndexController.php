@@ -292,7 +292,7 @@ class IndexController extends Controller
 	/**
 	 * @Route("/module/{moduleId}", name="module")
 	 *
-	 * @Template
+	 * @Template("VidalMainBundle:Index:module.html.twig")
 	 */
 	public function moduleAction($moduleId)
 	{

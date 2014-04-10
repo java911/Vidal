@@ -74,7 +74,8 @@
 								<div>{{ p.ZipInfo }}</div>
 								<span>Разрешено к применению в России</span><br/>
 								<span>
-									<i style="color:#476173;">Свидетельство о государственной регистрации БАД к пище:</i>:<br/>
+									<i style="color:#476173;">Свидетельство о государственной регистрации БАД к
+										пище:</i>:<br/>
 									{{ p.RegistrationNumber }}
 									{% if p.RegistrationDate is not null %}
 										от {{ p.RegistrationDate|date('d.m.Y') }}
@@ -270,6 +271,12 @@
 		.market-organization {
 			width: 180px;
 		}
+		.mkb {
+			margin-top: 6px;
+		}
+		.mkb .products-table {
+			display: none;
+		}
 	</style>
 {% endblock %}
 
@@ -281,6 +288,12 @@
 			$('.copy textarea')
 				.focus(function() { $(this).css('opacity', '1'); })
 				.blur(function() { $(this).css('opacity', '0.5'); });
+
+			$('.mkb-show').click(function() {
+				$('.mkb .products-table').show();
+				$(this).hide();
+				return false;
+			});
 		});
 	</script>
 {% endblock %}
