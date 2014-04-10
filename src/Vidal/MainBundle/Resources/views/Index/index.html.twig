@@ -12,40 +12,7 @@
 
 
 {% block content %}
-	<div class="title">
-		<a href="{{ path('articles') }}">Статьи энциклопедии</a>
-	</div>
-	<div class="articles">
-		{% for article in articles %}
-			<div class="article">
-				{# админам карандашик редактирования #}
-				{% if isAdmin %}
-					<a class="admin-edit fade" target="_blank"
-					   href="{{ path('admin_vidal_drug_article_edit', {'id':article.id}) }}">
-						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-					</a>
-				{% endif %}
-
-				<a class="article-title"
-				   href="{{ path('article', {'rubrique':article.rubrique.rubrique, 'link':article.link}) }}">
-					{{ article.title|raw }}
-				</a>
-
-				<div class="article-announce">
-					{{ article.announce|raw }}
-				</div>
-				<div class="article-footer">
-					<span>Рубрика:</span>
-					<a href="{{ path('rubrique', {'rubrique':article.rubrique.rubrique}) }}"
-						>{{ article.rubrique.title }}</a>
-
-					<div class="article-date">{{ article.date|date('d.m.Y') }}</div>
-				</div>
-			</div>
-		{% endfor %}
-	</div>
-	<a href="#" id="more_articles">еще</a>
-
+	{# Последние новости #}
 	<div class="title title-news">
 		<a href="{{ path('news') }}">Последние новости</a>
 	</div>
@@ -81,6 +48,42 @@
 		{% endfor %}
 	</div>
 	<a href="#" id="more_news">еще</a>
+
+	{# Статьи энциклопедии #}
+	<div class="title title-articles">
+		<a href="{{ path('articles') }}">Статьи энциклопедии</a>
+	</div>
+	<div class="articles">
+		{% for article in articles %}
+			<div class="article">
+				{# админам карандашик редактирования #}
+				{% if isAdmin %}
+					<a class="admin-edit fade" target="_blank"
+					   href="{{ path('admin_vidal_drug_article_edit', {'id':article.id}) }}">
+						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+					</a>
+				{% endif %}
+
+				<a class="article-title"
+				   href="{{ path('article', {'rubrique':article.rubrique.rubrique, 'link':article.link}) }}">
+					{{ article.title|raw }}
+				</a>
+
+				<div class="article-announce">
+					{{ article.announce|raw }}
+				</div>
+				<div class="article-footer">
+					<span>Рубрика:</span>
+					<a href="{{ path('rubrique', {'rubrique':article.rubrique.rubrique}) }}"
+						>{{ article.rubrique.title }}</a>
+
+					<div class="article-date">{{ article.date|date('d.m.Y') }}</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+	<a href="#" id="more_articles">еще</a>
+
 {% endblock %}
 
 
@@ -91,7 +94,7 @@
 		h1 {
 			margin-bottom: 12px;
 		}
-		.title-news {
+		.title-articles {
 			margin-top: 20px;
 		}
 

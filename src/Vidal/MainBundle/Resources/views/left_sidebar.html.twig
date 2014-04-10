@@ -1,4 +1,4 @@
-{% set isLogged = is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+{% set isLogged = app.user and is_granted('IS_AUTHENTICATED_REMEMBERED') %}
 
 {# блок основных боковых меню #}
 <ul class="sidebar-menu ul">

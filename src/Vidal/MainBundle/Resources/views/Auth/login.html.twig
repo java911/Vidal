@@ -3,7 +3,11 @@
 
 {% block content %}
 	<div class="auth-required">
-		Для доступа к странице необходимо авторизоваться
+		<div class="ar1">В данном разделе размещена информация для медицинских специалистов.</div>
+		<div class="ar2">
+			Для доступа <a href="#username" id="goto-auth">авторизуйтесь</a> или
+			<a href="{{ path('registration') }}">зарегистрируйтесь</a>.
+		</div>
 	</div>
 {% endblock %}
 
@@ -12,11 +16,34 @@
 	{{ parent() }}
 	<style type="text/css">
 		.auth-required {
-			margin-top:  54px;
+			width:       450px;
+			margin:      40px auto 0;
 			text-align:  center;
 			font-weight: bold;
-			font-size:   20px;
+			font-size:   18px;
 			color:       #2f4053;
+			font-style:  italic;
+		}
+		.auth-required a {
+			text-decoration: none;
+		}
+		.auth-required a:hover {
+			text-decoration: underline;
+		}
+		.ar1 {
+			margin-bottom: 24px;
 		}
 	</style>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#goto-auth').click(function() {
+				$('#username').focus();
+			});
+		});
+	</script>
 {% endblock %}

@@ -25,7 +25,7 @@ class AuthController extends Controller
 	 * @Route("/login", name="login")
 	 * @Template()
 	 */
-	public function loginAction(Request $request)
+	public function loginAction()
 	{
 		if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
 			return new RedirectResponse($this->generateUrl('index'));

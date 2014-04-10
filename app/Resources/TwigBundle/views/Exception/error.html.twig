@@ -1,62 +1,53 @@
-{% extends ('VidalDrugBundle::layout.html.twig') %}
+{% extends ('VidalMainBundle::layout.html.twig') %}
 
-{% block main %}
-	<div style="text-align: center">
-		{% if status_code == 404 %}
-            <table style="width: 600px;" align='center'>
-                <tr>
-                    <td style="text-align: left; padding-left: 10px;">
-                        <h3>К сожалению, запрошенная Вами страница не найдена на сервере по одной из следующих причин:
-                            <br /><br />
-                            <ul style="font-weight: normal">
-                                <li>неправильно набран адрес</li>
-                                <li>такой страницы никогда не было на этом сайте</li>
-                                <li>такая страница была, но по этому адресу ее больше нет</li>
-                                <li>Такая страница есть, но она временно недоступна</li>
-                            </ul>
 
-                            Далее вы можете:
+{% block content %}
+	{% if status_code == 404 %}
+		<div class="not-found">
+			<img src="{{ asset('bundles/vidalmain/images/not_found.jpeg') }}"/>
 
-                            <ul style="font-weight: normal">
-                                <li>Обновить текущую страницу (нажав F5)</li>
-                                <li>Перейти на <a href="{{ path('_welcome') }}" style='text-decoration: underline;'>главную страницу сайте</a></li>
-                                <li>Если ошибка повторится в дальнейшем, сообщите администратору сайта.</li>
-                            </ul>
-                        </h3>
-                    </td>
-                </tr>
-            </table>
-		{% elseif status_code == 403 %}
-            <table style="width: 600px;" align='center'>
-                <tr>
-                    <td style="text-align: center; padding-left: 10px;">
-                        <h3> У вас нет доступа к этой части сайта.
-                            {% if app.user.type == 'doctor' %}
+			<ul class="ul-style">
+				<li>Возможно, неправильно набран адрес страницы</li>
+				<li>Или старая ссылка более не существует<br>
+					(страница была удалена или поменяла адрес)
+				</li>
+			</ul>
+		</div>
+	{% elseif status_code == 403 %}
 
-                            <br /><br />
-                                <div style="text-align: left;">
-                                    <ul style="font-weight: normal">
-                                        <li>Сюда имеют доступ только врачи, а вы не прошли тест или не подтвердили свой e-mail адрес, зайдите в свой
-                                            <a href="{{ path('edit_profile') }}" style='text-decoration: underline;'> профайл </a> чтобы узнать точную причину
-                                        </li>
-                                        <br />
-                                        <li>Если ваш статус врача подтвержден, но вы все равно видите это сообщение,
-                                            значит у вас и правда нет доступа сюда. Если вы считаете что доступ у вас должен быть,
-                                            обратитесь в редакцию сайта с помощью <a href="{{ path('contacts') }}" style='text-decoration: underline;'>формы обратной связи</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <br />
-                            {% else %}
-                                <br /><br />У вас нет доступа сюда. Если вы считаете что доступ у вас должен быть, обратитесь в редакцию сайта с помощью <a href="{{ path('contacts') }}" style='text-decoration: underline;'>формы обратной связи</a>
-                            {% endif %}
-                        </h3>
-                    </td>
-                </tr>
-            </table>
-		{% else %}
-            <h1 style="text-align: center">К сожалению, возникли трудности:</h1><br/><br/>
-			<h3>Ваш запрос сейчас не может быть обработан. Мы в курсе этой ошибки и работаем над её устранением. Попробуйте заглянуть чуть позже</h3>
-		{% endif %}
-	</div>
+	{% else %}
+		<h1>К сожалению, возникли трудности:</h1><br/><br/>
+		<h3>Ваш запрос сейчас не может быть обработан. Мы в курсе этой ошибки и работаем над её устранением.
+			Попробуйте заглянуть чуть позже</h3>
+	{% endif %}
+
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.not-found {
+			position: relative;
+		}
+		.not-found img {
+			display:  block;
+			position: absolute;
+			top:      10px;
+			left:     15px;
+			width:    200px;
+		}
+		.not-found ul {
+			display:     block;
+			position:    absolute;
+			left:        234px;
+			top:         12px;
+			font-size:   15px;
+			font-weight: bold;
+			font-style:  italic;
+		}
+		.not-found li {
+			margin-bottom: 13px;
+		}
+	</style>
 {% endblock %}
