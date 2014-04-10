@@ -1,6 +1,9 @@
 <br />
-
-<div class="market-block" id="market-block">
+<div class="conditions">
+    <h1 class="market-btn" style="cursor: pointer; text-decoration: underline; display: inline">Показать цены онлайн аптек </h1>
+    <a class="submit btn-red market-btn" href="#market-block" style="float: right; font-weight: bold;">Купить</a>
+</div>
+<div class="market-block" id="market-block" style="display: none">
     {#{{ dump(lists.eapteka) }}#}
     {% if lists.eapteka is defined %}
         <div class="market-title">Интернет аптека «Eapteka.ru»:</div>
@@ -43,5 +46,16 @@
             {% endfor %}
         </table>
     {% endif %}
-
 </div>
+
+<script>
+    $(document).ready(function(){
+       $('.market-btn').click(function(){
+           if ( $('.market-block').css('display') == 'none' ){
+                $('.market-block').fadeIn();
+           }else{
+               $('.market-block').fadeOut();
+           }
+       });
+    });
+</script>
