@@ -52,9 +52,16 @@ class ArtAdmin extends Admin
 		$formMapper
 			->add('title', null, array('label' => 'Заголовок', 'required' => true))
 			->add('link', null, array('label' => 'Адрес страницы', 'required' => true, 'help' => 'латинские буквы и цифры, слова через тире'))
-			->add('subdivision', null, array('label' => 'Подраздел', 'required' => true))
+			->add('subdivision', null, array(
+				'label'         => 'Подраздел',
+				'required'      => true,
+				'query_builder' => function (EntityRepository $er) {
+						return $er->createQueryBuilder('s')
+							->orderBy('s.name', 'ASC');
+					},
+			))
 			->add('type', null, array('label' => 'Категория', 'required' => false, 'empty_value' => 'не указано'))
-			->add('priority', null, array('label' => 'Приоритет', 'required' => false,  'help' => 'Закреплено на главной по приоритету. Оставьте пустым, чтоб снять приоритет'))
+			->add('priority', null, array('label' => 'Приоритет', 'required' => false, 'help' => 'Закреплено на главной по приоритету. Оставьте пустым, чтоб снять приоритет'))
 			->add('announce', null, array('label' => 'Анонс', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('body', null, array('label' => 'Основное содержимое', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('tags', null, array('label' => 'Теги', 'required' => false, 'help' => 'Выберите существующие теги или добавьте новый ниже'))

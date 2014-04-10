@@ -55,7 +55,7 @@ class ModuleAdmin extends Admin
 		$listMapper
 			->add('id')
 			->add('help', null, array('label' => 'Пояснение'))
-			->add('enabled', null, array('label' => 'Активен', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
+			->add('enabled', null, array('label' => 'Активен', 'template' => 'VidalDrugBundle:Sonata:swap_enabled_main.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(

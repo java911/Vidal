@@ -7,11 +7,43 @@
 
 
 {% block content %}
-	<div class="rubriques">
-		{% if items|length %}
-			{% set perColumn = items|length // 2 %}
+	<div class="rubriques top">
+		{% set about = itemsTop[0] %}
+		<div>
+			<ul class="ul">
+				<li>
+					<a href="{{ path('about', {'url':about.url}) }}">{{ about.title }}</a>
+					{% if isAdmin %}
+						<a class="admin-edit fade" target="_blank"
+						   href="{{ path('admin_vidal_main_about_edit', {'id':about.id}) }}">
+							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+						</a>
+					{% endif %}
+				</li>
+			</ul>
+		</div>
 
-			{% for about in items %}
+		{% set about = itemsTop[1] %}
+		<div>
+			<ul class="ul">
+				<li>
+					<a href="{{ path('about', {'url':about.url}) }}">{{ about.title }}</a>
+					{% if isAdmin %}
+						<a class="admin-edit fade" target="_blank"
+						   href="{{ path('admin_vidal_main_about_edit', {'id':about.id}) }}">
+							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+						</a>
+					{% endif %}
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="rubriques bottom">
+		{% if itemsBottom|length %}
+			{% set perColumn = itemsBottom|length // 2 %}
+
+			{% for about in itemsBottom %}
 
 				{% if loop.index % perColumn == 1 %}
 					<div>

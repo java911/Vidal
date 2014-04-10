@@ -141,9 +141,10 @@ class IndexController extends Controller
 	public function onasAction()
 	{
 		$params = array(
-			'title'     => 'О компании',
-			'menu_left' => 'about',
-			'items'     => $this->getDoctrine()->getRepository('VidalMainBundle:About')->findByEnabled(true),
+			'title'       => 'О компании',
+			'menu_left'   => 'about',
+			'itemsTop'    => $this->getDoctrine()->getRepository('VidalMainBundle:About')->findTop(),
+			'itemsBottom' => $this->getDoctrine()->getRepository('VidalMainBundle:About')->findBottom(),
 		);
 
 		return $params;
