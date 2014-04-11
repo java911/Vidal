@@ -67,6 +67,14 @@ class Molecule
 	 */
 	protected $publications;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="PharmArticle", mappedBy="molecules")
+	 * @ORM\JoinTable(name="pharm_article_molecule",
+	 *        joinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="pharm_article_id", referencedColumnName="id")})
+	 */
+	protected $pharmArticle;
+
 	public function __construct()
 	{
 		$this->moleculeDocuments = new ArrayCollection();
@@ -74,6 +82,7 @@ class Molecule
 		$this->articles          = new ArrayCollection();
 		$this->arts              = new ArrayCollection();
 		$this->publications      = new ArrayCollection();
+		$this->pharmArticle      = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -297,5 +306,21 @@ class Molecule
 	public function getPublications()
 	{
 		return $this->publications;
+	}
+
+	/**
+	 * @param mixed $pharmArticle
+	 */
+	public function setPharmArticle($pharmArticle)
+	{
+		$this->pharmArticle = $pharmArticle;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPharmArticle()
+	{
+		return $this->pharmArticle;
 	}
 }

@@ -98,9 +98,14 @@ class IndexController extends Controller
 	 */
 	public function pharmArticlesAction($companyId)
 	{
-		$em       = $this->getDoctrine()->getManager('drug');
-		$company  = $em->getRepository('VidalDrugBundle:OldCompany')->findOneById($companyId);
-		$articles = $em->getRepository('VidalDrugBundle:OldArticle')->findByCompanyId($company->getId());
+		$em      = $this->getDoctrine()->getManager('drug');
+		$company = $em->getRepository('VidalDrugBundle:PharmCompany')->findOneById($companyId);
+
+		if (!$company) {
+			throw $this->createNotFoundException();
+		}
+
+		$articles = $em->getRepository('VidalDrugBundle:PharmArticle')->findByCompanyId($companyId);
 
 		$params = array(
 			'title'     => $company . ' | Новости Фармацевтических компаний',
@@ -120,7 +125,7 @@ class IndexController extends Controller
 	public function pharmNewsAction()
 	{
 		$em        = $this->getDoctrine()->getManager('drug');
-		$companies = $em->getRepository('VidalDrugBundle:OldCompany')->findWithArticles();
+		$companies = $em->getRepository('VidalDrugBundle:PharmCompany')->findWithArticles();
 
 		$params = array(
 			'title'     => 'Новости Фармацевтических компаний',

@@ -214,6 +214,14 @@ class Document
 	 */
 	protected $publications;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="PharmArticle", mappedBy="documents")
+	 * @ORM\JoinTable(name="pharm_article_document",
+	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="pharm_article_id", referencedColumnName="id")})
+	 */
+	protected $pharmArticles;
+
 	public function __construct()
 	{
 		$this->atcCodes          = new ArrayCollection();
@@ -227,6 +235,7 @@ class Document
 		$this->articles          = new ArrayCollection();
 		$this->arts              = new ArrayCollection();
 		$this->publications      = new ArrayCollection();
+		$this->pharmArticles     = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -1112,5 +1121,21 @@ class Document
 	public function getPublications()
 	{
 		return $this->publications;
+	}
+
+	/**
+	 * @param mixed $pharmArticles
+	 */
+	public function setPharmArticles($pharmArticles)
+	{
+		$this->pharmArticles = $pharmArticles;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPharmArticles()
+	{
+		return $this->pharmArticles;
 	}
 }

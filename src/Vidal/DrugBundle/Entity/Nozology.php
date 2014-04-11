@@ -58,12 +58,21 @@ class Nozology
 	 */
 	protected $publications;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="PharmArticle", mappedBy="nozologies")
+	 * @ORM\JoinTable(name="pharm_article_n",
+	 *        joinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="pharm_article_id", referencedColumnName="id")})
+	 */
+	protected $pharmArticles;
+
 	public function __construct()
 	{
-		$this->documents    = new ArrayCollection();
-		$this->articles     = new ArrayCollection();
-		$this->arts         = new ArrayCollection();
-		$this->publications = new ArrayCollection();
+		$this->documents     = new ArrayCollection();
+		$this->articles      = new ArrayCollection();
+		$this->arts          = new ArrayCollection();
+		$this->publications  = new ArrayCollection();
+		$this->pharmArticles = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -229,5 +238,21 @@ class Nozology
 	public function getPublications()
 	{
 		return $this->publications;
+	}
+
+	/**
+	 * @param mixed $pharmArticles
+	 */
+	public function setPharmArticles($pharmArticles)
+	{
+		$this->pharmArticles = $pharmArticles;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPharmArticles()
+	{
+		return $this->pharmArticles;
 	}
 }

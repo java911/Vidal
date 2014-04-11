@@ -93,6 +93,14 @@ class InfoPage
 	 */
 	protected $publications;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="PharmArticle", mappedBy="infoPages")
+	 * @ORM\JoinTable(name="pharm_article_infopage",
+	 *        joinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="pharm_article_id", referencedColumnName="id")})
+	 */
+	protected $pharmArticles;
+
 	public function __construct()
 	{
 		$this->pictures          = new ArrayCollection();
@@ -100,6 +108,7 @@ class InfoPage
 		$this->articles          = new ArrayCollection();
 		$this->arts              = new ArrayCollection();
 		$this->publications      = new ArrayCollection();
+		$this->pharmArticles     = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -426,5 +435,21 @@ class InfoPage
 	public function getPublications()
 	{
 		return $this->publications;
+	}
+
+	/**
+	 * @param mixed $pharmArticles
+	 */
+	public function setPharmArticles($pharmArticles)
+	{
+		$this->pharmArticles = $pharmArticles;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPharmArticles()
+	{
+		return $this->pharmArticles;
 	}
 }

@@ -43,14 +43,17 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, 
 	display: block;
 }
 sup, sub {
-	font-size:   12px;
-	font-family: sans-serif;
-	display:     inline-block;
-	line-height: 4px;
+	padding-left:    1px;
+	font-size:       13px;
+	font-family:     sans-serif;
+	line-height:     9px;
+	text-decoration: none;
 }
 sup {
-	padding-top:    2px;
 	vertical-align: top;
+}
+sub {
+	vertical-align: bottom;
 }
 
 /* стили контейнеров */
@@ -190,6 +193,7 @@ h1 {
 	color:         #d71344;
 	font-weight:   bold;
 	margin-bottom: 20px;
+	position:      relative;
 }
 h1 span {
 	font-style: italic;
@@ -1304,12 +1308,24 @@ h1 span {
 
 /* overwrite article/publication styles */
 #wrapper .article-wrap a,
-#wrapper .article-wrap a font,
+#wrapper .article-wrap a *,
 #wrapper .publication a,
-#wrapper .publication a font {
+#wrapper .publication a * {
 	color: #d71344;
 }
 #wrapper .article-wrap img,
 #wrapper .publication img {
 	max-width: 520px;
+}
+#wrapper .article-wrap a,
+#wrapper .article-wrap a *,
+#wrapper .publication a,
+#wrapper .publication a *{
+	text-decoration: none;
+}
+#wrapper .article-wrap a:hover,
+#wrapper .article-wrap a *:hover,
+#wrapper .publication a:hover,
+#wrapper .publication a *:hover {
+	text-decoration: underline;
 }

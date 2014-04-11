@@ -65,13 +65,22 @@ class ATC
 	 */
 	protected $publications;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="PharmArticle", mappedBy="atcCodes")
+	 * @ORM\JoinTable(name="pharm_article_atc",
+	 *        joinColumns={@ORM\JoinColumn(name="ATCCode", referencedColumnName="ATCCode")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="pharm_article_id", referencedColumnName="id")})
+	 */
+	protected $pharmArticles;
+
 	public function __construct()
 	{
-		$this->children     = new ArrayCollection();
-		$this->products     = new ArrayCollection();
-		$this->articles     = new ArrayCollection();
-		$this->arts         = new ArrayCollection();
-		$this->publications = new ArrayCollection();
+		$this->children      = new ArrayCollection();
+		$this->products      = new ArrayCollection();
+		$this->articles      = new ArrayCollection();
+		$this->arts          = new ArrayCollection();
+		$this->publications  = new ArrayCollection();
+		$this->pharmArticles = new ArrayCollection();
 	}
 
 	public function getId()
@@ -258,5 +267,21 @@ class ATC
 	public function getPublications()
 	{
 		return $this->publications;
+	}
+
+	/**
+	 * @param mixed $pharmArticles
+	 */
+	public function setPharmArticles($pharmArticles)
+	{
+		$this->pharmArticles = $pharmArticles;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPharmArticles()
+	{
+		return $this->pharmArticles;
 	}
 }

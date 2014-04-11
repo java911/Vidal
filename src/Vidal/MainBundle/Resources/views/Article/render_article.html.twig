@@ -1,14 +1,6 @@
 {% set video = article.video and article.video.path is defined ? article.video.path : null %}
 
 <div class="article-wrap">
-	{# админам карандашик редактирования #}
-	{% if is_granted('ROLE_ADMIN') %}
-		<a class="admin-edit fade" target="_blank"
-		   href="{{ path('admin_vidal_drug_article_edit', {'id':article.id}) }}">
-			<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-		</a>
-	{% endif %}
-
 	{% if article.video and article.video.path is defined %}
 		{% set width = article.videoWidth > 480 ? 480 : module.videoWidth %}
 		{% set height = article.videoWidth > 480
