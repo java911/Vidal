@@ -70,21 +70,26 @@
 		<div class="block-content">
 			{{ document.Indication|raw }}
 		</div>
-		{% if nozologies is defined and nozologies is not empty %}
-			<table class="products-table">
-				<tr class="products-table-header">
-					<td style="width:78px">Код МКБ-10</td>
-					<td>Показание</td>
+	</div>
+{% endif %}
+
+{# Коды МКБ-10 #}
+{% if nozologies is defined and nozologies is not empty %}
+	<div class="mkb">
+		<a href="#" class="mkb-show">Коды МКБ-10</a>
+		<table class="products-table">
+			<tr class="products-table-header">
+				<td style="width:78px">Код МКБ-10</td>
+				<td>Показание</td>
+			</tr>
+			{% for nozology in nozologies %}
+				<tr>
+					<td>{{ nozology.Code }}</td>
+					<td><a href="{{ path('nosology_item', {'Code':nozology.Code}) }}"
+						   class="no-underline">{{ nozology.Name|raw }}</a></td>
 				</tr>
-				{% for nozology in nozologies %}
-					<tr>
-						<td>{{ nozology.Code }}</td>
-						<td><a href="{{ path('nosology_item', {'Code':nozology.Code}) }}"
-							   class="no-underline">{{ nozology.Name|raw }}</a></td>
-					</tr>
-				{% endfor %}
-			</table>
-		{% endif %}
+			{% endfor %}
+		</table>
 	</div>
 {% endif %}
 

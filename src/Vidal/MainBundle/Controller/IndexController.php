@@ -98,9 +98,14 @@ class IndexController extends Controller
 	 */
 	public function pharmArticlesAction($companyId)
 	{
-		$em       = $this->getDoctrine()->getManager('drug');
-		$company  = $em->getRepository('VidalDrugBundle:OldCompany')->findOneById($companyId);
-		$articles = $em->getRepository('VidalDrugBundle:OldArticle')->findByCompanyId($company->getId());
+		$em      = $this->getDoctrine()->getManager('drug');
+		$company = $em->getRepository('VidalDrugBundle:PharmCompany')->findOneById($companyId);
+
+		if (!$company) {
+			throw $this->createNotFoundException();
+		}
+
+		$articles = $em->getRepository('VidalDrugBundle:PharmArticle')->findByCompanyId($companyId);
 
 		$params = array(
 			'title'     => $company . ' | Новости Фармацевтических компаний',
@@ -120,7 +125,7 @@ class IndexController extends Controller
 	public function pharmNewsAction()
 	{
 		$em        = $this->getDoctrine()->getManager('drug');
-		$companies = $em->getRepository('VidalDrugBundle:OldCompany')->findWithArticles();
+		$companies = $em->getRepository('VidalDrugBundle:PharmCompany')->findWithArticles();
 
 		$params = array(
 			'title'     => 'Новости Фармацевтических компаний',
@@ -141,9 +146,10 @@ class IndexController extends Controller
 	public function onasAction()
 	{
 		$params = array(
-			'title'     => 'О компании',
-			'menu_left' => 'about',
-			'items'     => $this->getDoctrine()->getRepository('VidalMainBundle:About')->findByEnabled(true),
+			'title'       => 'О компании',
+			'menu_left'   => 'about',
+			'itemsTop'    => $this->getDoctrine()->getRepository('VidalMainBundle:About')->findTop(),
+			'itemsBottom' => $this->getDoctrine()->getRepository('VidalMainBundle:About')->findBottom(),
 		);
 
 		return $params;
@@ -287,6 +293,19 @@ class IndexController extends Controller
 			'title' => 'Видаль-Эксперт',
 			'menu'  => 'vracham',
 		);
+	}
+
+	/**
+	 * @Route("/module/{moduleId}", name="module")
+	 *
+	 * @Template("VidalMainBundle:Index:module.html.twig")
+	 */
+	public function moduleAction($moduleId)
+	{
+		$em     = $this->getDoctrine()->getManager();
+		$module = $em->getRepository('VidalMainBundle:Module')->findOneById($moduleId);
+
+		return array('module' => $module);
 	}
 
 	/**

@@ -29,6 +29,14 @@
 			<argument />
 		</service>
 
+		<service id="sonata.admin.module" class="Vidal\MainBundle\Admin\ModuleAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Содержимое" label="Модули"/>
+			<argument />
+			<argument>Vidal\MainBundle\Entity\Module</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
 		<!-- Энциклопедия -->
 		<service id="sonata.admin.article" class="Vidal\DrugBundle\Admin\ArticleAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="Энциклопедия" label="Статьи"/>
@@ -75,6 +83,23 @@
 			<tag name="sonata.admin" manager_type="orm" group="Информация специалистам" label="Разделы"/>
 			<argument />
 			<argument>Vidal\DrugBundle\Entity\Subdivision</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<!-- Фарм-компании -->
+		<service id="sonata.admin.pharmArticle" class="Vidal\DrugBundle\Admin\PharmArticleAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Фармацевтические компании" label="Новости"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\PharmArticle</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.pharmCompany" class="Vidal\DrugBundle\Admin\PharmCompanyAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Фармацевтические компании" label="Компании"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\PharmCompany</argument>
 			<argument>SonataAdminBundle:CRUD</argument>
 			<argument />
 		</service>

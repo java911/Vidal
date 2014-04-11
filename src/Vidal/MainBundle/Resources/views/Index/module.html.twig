@@ -1,0 +1,26 @@
+{% if module %}
+	{% set isAdmin = app.user and is_granted('ROLE_ADMIN') %}
+
+	{% if isAdmin %}
+		<a class="admin-edit fade" target="_blank"
+		   href="{{ path('admin_vidal_main_module_edit', {'id':module.id}) }}">
+			<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+		</a>
+	{% endif %}
+
+	{% if module.enabled %}
+		<div class="module">
+
+			{% if module.title is not empty %}
+				<div class="module-title">
+					{{ module.title|raw }}
+				</div>
+			{% endif %}
+			{% if module.body is not empty %}
+				<div class="module-body">
+					{{ module.body|raw }}
+				</div>
+			{% endif %}
+		</div>
+	{% endif %}
+{% endif %}

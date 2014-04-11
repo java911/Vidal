@@ -312,6 +312,12 @@
 		.market-organization {
 			width: 180px;
 		}
+		.mkb {
+			margin-top: 6px;
+		}
+		.mkb .products-table {
+			display: none;
+		}
 	</style>
 {% endblock %}
 
@@ -323,6 +329,12 @@
 			$('.copy textarea')
 				.focus(function() { $(this).css('opacity', '1'); })
 				.blur(function() { $(this).css('opacity', '0.5'); });
+
+			$('.mkb-show').click(function() {
+				$('.mkb .products-table').show();
+				$(this).hide();
+				return false;
+			});
 		});
 	</script>
 {% endblock %}

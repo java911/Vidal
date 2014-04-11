@@ -2,7 +2,16 @@
 
 
 {% block title %}
-	<h1>{{ article.title|raw }}</h1>
+	<h1>
+		{{ article.title|raw }}
+		{# админам карандашик редактирования #}
+		{% if is_granted('ROLE_ADMIN') %}
+			<a class="admin-edit fade" target="_blank"
+			   href="{{ path('admin_vidal_drug_article_edit', {'id':article.id}) }}">
+				<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+			</a>
+		{% endif %}
+	</h1>
 {% endblock %}
 
 

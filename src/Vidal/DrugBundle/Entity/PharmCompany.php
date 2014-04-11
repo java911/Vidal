@@ -5,8 +5,8 @@ namespace Vidal\DrugBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/** @ORM\Entity(repositoryClass="OldCompanyRepository") @ORM\Table(name="old_company") */
-class OldCompany
+/** @ORM\Entity(repositoryClass="PharmCompanyRepository") @ORM\Table(name="pharm_company") */
+class PharmCompany
 {
 	/** @ORM\Column(type="integer") @ORM\Id @ORM\GeneratedValue */
 	protected $id;
@@ -14,12 +14,16 @@ class OldCompany
 	/** @ORM\Column(length=255) */
 	protected $title;
 
-	/** @ORM\OneToMany(targetEntity="OldArticle", mappedBy="oldCompany") */
-	protected $oldArticles;
+	/** @ORM\OneToMany(targetEntity="PharmArticle", mappedBy="company") */
+	protected $articles;
+
+	/** @ORM\Column(type="boolean") */
+	protected $enabled;
 
 	public function __construct()
 	{
-		$this->oldArticles = new ArrayCollection();
+		$this->articles = new ArrayCollection();
+		$this->enabled  = true;
 	}
 
 	public function __toString()
@@ -52,18 +56,34 @@ class OldCompany
 	}
 
 	/**
-	 * @param mixed $oldArticles
+	 * @param mixed $articles
 	 */
-	public function setOldArticles($oldArticles)
+	public function setArticles($articles)
 	{
-		$this->oldArticles = $oldArticles;
+		$this->articles = $articles;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getOldArticles()
+	public function getArticles()
 	{
-		return $this->oldArticles;
+		return $this->articles;
+	}
+
+	/**
+	 * @param mixed $enabled
+	 */
+	public function setEnabled($enabled)
+	{
+		$this->enabled = $enabled;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getEnabled()
+	{
+		return $this->enabled;
 	}
 }

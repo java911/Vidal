@@ -43,15 +43,17 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, 
 	display: block;
 }
 sup, sub {
-	font-size:    12px;
-	font-family:  sans-serif;
-	display:      inline-block;
-	line-height:  4px;
-	padding-left: 1px;
+	padding-left:    1px;
+	font-size:       13px;
+	font-family:     sans-serif;
+	line-height:     9px;
+	text-decoration: none;
 }
 sup {
-	padding-top:    2px;
 	vertical-align: top;
+}
+sub {
+	vertical-align: bottom;
 }
 
 /* стили контейнеров */
@@ -191,6 +193,7 @@ h1 {
 	color:         #d71344;
 	font-weight:   bold;
 	margin-bottom: 20px;
+	position:      relative;
 }
 h1 span {
 	font-style: italic;
@@ -1281,10 +1284,48 @@ h1 span {
 	padding: 6px 12px 8px;
 }
 
-/* overwrite link colors */
+/* module */
+.module {
+	position:      relative;
+	border:        3px solid #eee;
+	font-size:     14px !important;
+	color:         #555;
+	margin-bottom: 24px;
+}
+.module p {
+	margin: 0;
+}
+.module-title {
+	background:    #f5f5f5;
+	padding:       4px 10px 6px;
+	color:         #476173;
+	font-size:     15px;
+	border-bottom: 1px solid #eee;
+}
+.module-body {
+	padding: 5px 10px 7px;
+}
+
+/* overwrite article/publication styles */
 #wrapper .article-wrap a,
-#wrapper .article-wrap a font,
+#wrapper .article-wrap a *,
 #wrapper .publication a,
-#wrapper .publication a font {
+#wrapper .publication a * {
 	color: #d71344;
+}
+#wrapper .article-wrap img,
+#wrapper .publication img {
+	max-width: 520px;
+}
+#wrapper .article-wrap a,
+#wrapper .article-wrap a *,
+#wrapper .publication a,
+#wrapper .publication a *{
+	text-decoration: none;
+}
+#wrapper .article-wrap a:hover,
+#wrapper .article-wrap a *:hover,
+#wrapper .publication a:hover,
+#wrapper .publication a *:hover {
+	text-decoration: underline;
 }

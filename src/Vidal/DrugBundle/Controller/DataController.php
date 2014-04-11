@@ -10,33 +10,30 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DataController extends Controller
 {
+	protected $ids = array();
+
 	/**
-	 * @Route("/data/products", name="data_products")
+	 * @Route("/tt", name="data_products")
 	 */
-	public function productsAction()
+	public function ttAction()
 	{
-		$products = $this->getDoctrine()
-			->getRepository('VidalDrugBundle:Product')
-			->findAllNames();
+		$em   = $this->getDoctrine()->getManager('drug');
+		$subs = $em->getRepository('VidalDrugBundle:Subdivision')->findVracham();
 
-		# отсекаем по регулярке все теги
-		$pat = array('/<br\\/?>/i', '/<\\/?su(p|b)>/i', '/&.+;/i');
-		$rep = array('', '', '');
+		$this->populate($subs);
 
-		$productNames = array();
-		$fileName = __DIR__ . DIRECTORY_SEPARATOR . 'vidal.products.txt';
+		echo '(' . implode(',', $this->ids) . ')'; exit;
+	}
 
-		foreach ($products as $product) {
-			$productNames[] = preg_replace($pat, $rep, $product['RusName']);
+	private function populate($subs)
+	{
+		foreach ($subs as $sub) {
+			$this->ids[] = $sub->getId();
+			$children    = $sub->getChildren();
+
+			if (!empty($children)) {
+				$this->populate($children);
+			}
 		}
-
-		$productNames = array_unique($productNames);
-
-		foreach ($productNames as $name) {
-			file_put_contents($fileName, $name . PHP_EOL, FILE_APPEND);
-		}
-
-		echo 'completed';
-		exit;
 	}
 }

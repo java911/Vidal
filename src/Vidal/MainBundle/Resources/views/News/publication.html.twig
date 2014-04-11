@@ -4,7 +4,16 @@
 
 
 {% block title %}
-	<h1>{{ publication|raw }}</h1>
+	<h1>
+		{{ publication|raw }}
+		{# админу карандашик на правку #}
+		{% if isAdmin %}
+			<a class="admin-edit fade" target="_blank"
+			   href="{{ path('admin_vidal_drug_publication_edit', {'id':publication.id}) }}">
+				<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+			</a>
+		{% endif %}
+	</h1>
 {% endblock %}
 
 
@@ -18,14 +27,6 @@
 
 
 {% block content %}
-	{# админу карандашик на правку #}
-	{% if isAdmin %}
-		<a class="admin-edit fade" target="_blank"
-		   href="{{ path('admin_vidal_drug_publication_edit', {'id':publication.id}) }}">
-			<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-		</a>
-	{% endif %}
-
 	<div class="publication">
 		{% if withPhoto %}
 			<div class="publication-header with-photo">

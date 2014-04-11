@@ -93,7 +93,7 @@ class Article extends BaseEntity
 	/** @ORM\ManyToOne(targetEntity="ArticleRubrique", inversedBy="articles") */
 	protected $rubrique;
 
-	/** @ORM\Column(type="integer", nullable=false) */
+	/** @ORM\Column(type="integer", nullable=true) */
 	protected $priority;
 
 	/** @ORM\Column(type="integer", nullable=true) */
@@ -138,7 +138,6 @@ class Article extends BaseEntity
 		$this->created    = $now;
 		$this->updated    = $now;
 		$this->date       = $now;
-		$this->priority   = 0;
 	}
 
 	public function __toString()
@@ -159,7 +158,7 @@ class Article extends BaseEntity
 	 */
 	public function getAnnounce()
 	{
-		return $this->announce;
+		return str_replace(array('&reg;', '®'), array('<sup>&reg;</sup>', '<sup>®</sup>'), $this->announce);
 	}
 
 	/**
@@ -175,7 +174,7 @@ class Article extends BaseEntity
 	 */
 	public function getBody()
 	{
-		return $this->body;
+		return str_replace(array('&reg;', '®'), array('<sup>&reg;</sup>', '<sup>®</sup>'), $this->body);
 	}
 
 	/**
@@ -246,7 +245,7 @@ class Article extends BaseEntity
 	 */
 	public function getTitle()
 	{
-		return $this->title;
+		return str_replace(array('&reg;', '®'), array('<sup>&reg;</sup>', '<sup>®</sup>'), $this->title);
 	}
 
 	/**

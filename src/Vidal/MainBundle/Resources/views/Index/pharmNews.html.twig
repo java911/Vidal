@@ -19,6 +19,13 @@
 	<ul class="ul-style pharms">
 		{% for company in companies %}
 			<li>
+				{% if isAdmin %}
+					<a class="admin-edit fade" target="_blank"
+					   href="{{ path('admin_vidal_drug_pharmcompany_edit', {'id':company.id}) }}">
+						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+					</a>
+				{% endif %}
+
 				<a href="{{ path('pharm_articles', {'companyId':company.id}) }}">
 					{{ company.title|raw }}
 				</a>
@@ -33,6 +40,7 @@
 	<style type="text/css">
 		.pharms li {
 			margin-bottom: 5px;
+			position:      relative;
 		}
 		.pharms a {
 			color:           #2f4053;

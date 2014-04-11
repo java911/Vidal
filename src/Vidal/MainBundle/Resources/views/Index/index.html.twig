@@ -12,9 +12,11 @@
 
 
 {% block content %}
+	{{ render(controller('VidalMainBundle:Index:Module', {'moduleId':1})) }}
+
 	{# Последние новости #}
 	<div class="title title-news">
-		<a href="{{ path('news') }}">Последние новости</a>
+		<a href="{{ path('news') }}">Последние новости медицины</a>
 	</div>
 	<div class="news">
 		{% for publication in publications %}
@@ -40,8 +42,10 @@
 					<div class="publication-announce">
 						{{ publication.announce|raw }}
 					</div>
-					<div class="publication-date">
-						{{ publication.date|date('d.m.Y') }}
+					<div class="publication-footer">
+						<div class="publication-date">
+							{{ publication.date|date('d.m.Y') }}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -51,7 +55,7 @@
 
 	{# Статьи энциклопедии #}
 	<div class="title title-articles">
-		<a href="{{ path('articles') }}">Статьи энциклопедии</a>
+		<a href="{{ path('articles') }}">Статьи</a>
 	</div>
 	<div class="articles">
 		{% for article in articles %}
@@ -118,26 +122,24 @@
 			text-decoration: underline;
 		}
 		.article-announce, .publication-announce {
-			margin-bottom: 8px;
+			margin-bottom: 6px;
 			font-size:     14px;
 		}
 		.article-announce p {
 			margin: 0;
 		}
-		.article-footer {
-			position:   relative;
-			min-height: 15px;
+		.article-footer,
+		.publication-footer {
+			overflow:  hidden;
+			font-size: 13px;
 		}
-		.article-date {
-			position:   absolute;
-			right:      0;
-			bottom:     0;
+		.article-date,
+		.publication-date {
+			display:    inline-block;
+			float:      right;
 			font-size:  13px;
 			font-style: italic;
-			color:      gray;
-		}
-		.article-footer {
-			font-size: 13px;
+			color:      #959595;
 		}
 		.article-footer span {
 			color: #888;

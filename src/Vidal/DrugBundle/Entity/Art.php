@@ -90,13 +90,13 @@ class Art extends BaseEntity
 	/** @ORM\ManyToOne(targetEntity="Subdivision", inversedBy="articles") */
 	protected $subdivision;
 
-	/** @ORM\Column(type="integer", nullable=false) */
+	/** @ORM\Column(type="integer", nullable=true) */
 	protected $priority;
 
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $subdivisionId;
 
-	/** @ORM\Column(type="integer", nullable=true) */
+	/** @ORM\Column(type="integer") */
 	protected $subclassId;
 
 	/** @ORM\ManyToMany(targetEntity="ArtTag", inversedBy="arts") */
@@ -134,7 +134,6 @@ class Art extends BaseEntity
 		$this->created    = $now;
 		$this->updated    = $now;
 		$this->date       = $now;
-		$this->priority   = 0;
 	}
 
 	public function __toString()
@@ -155,7 +154,7 @@ class Art extends BaseEntity
 	 */
 	public function getAnnounce()
 	{
-		return $this->announce;
+		return str_replace(array('&reg;', '®'), array('<sup>&reg;</sup>', '<sup>®</sup>'), $this->announce);
 	}
 
 	/**
@@ -171,7 +170,7 @@ class Art extends BaseEntity
 	 */
 	public function getBody()
 	{
-		return $this->body;
+		return str_replace(array('&reg;', '®'), array('<sup>&reg;</sup>', '<sup>®</sup>'), $this->body);
 	}
 
 	/**
@@ -242,7 +241,7 @@ class Art extends BaseEntity
 	 */
 	public function getTitle()
 	{
-		return $this->title;
+		return str_replace(array('&reg;', '®'), array('<sup>&reg;</sup>', '<sup>®</sup>'), $this->title);
 	}
 
 	/**

@@ -286,6 +286,69 @@
 				<target>Удаление раздела</target>
 			</trans-unit>
 
+			<trans-unit id="sonata-18">
+				<source>Module List</source>
+				<target>Модули</target>
+			</trans-unit>
+			<trans-unit id="sonata-18-1">
+				<source>Module Show</source>
+				<target>Раздел</target>
+			</trans-unit>
+			<trans-unit id="sonata-18-2">
+				<source>Module Edit</source>
+				<target>Редактирование модуля</target>
+			</trans-unit>
+			<trans-unit id="sonata-18-3">
+				<source>Module Create</source>
+				<target>Создание модуля</target>
+			</trans-unit>
+			<trans-unit id="sonata-18-4">
+				<source>Module Delete</source>
+				<target>Удаление модуля</target>
+			</trans-unit>
+
+			<trans-unit id="sonata-19">
+				<source>Pharm Article List</source>
+				<target>Фарм. статьи</target>
+			</trans-unit>
+			<trans-unit id="sonata-19-1">
+				<source>Pharm Article Show</source>
+				<target>Фарм. статья</target>
+			</trans-unit>
+			<trans-unit id="sonata-19-2">
+				<source>Pharm Article Edit</source>
+				<target>Редактирование фарм. статьи</target>
+			</trans-unit>
+			<trans-unit id="sonata-19-3">
+				<source>Pharm Article Create</source>
+				<target>Создание фарм. статьи</target>
+			</trans-unit>
+			<trans-unit id="sonata-19-4">
+				<source>Pharm Article Delete</source>
+				<target>Удаление фарм. статьи</target>
+			</trans-unit>
+
+			<trans-unit id="sonata-20">
+				<source>Pharm Company List</source>
+				<target>Фарм. компании</target>
+			</trans-unit>
+			<trans-unit id="sonata-20-1">
+				<source>Pharm Company Show</source>
+				<target>Фарм. компания</target>
+			</trans-unit>
+			<trans-unit id="sonata-20-2">
+				<source>Pharm Company Edit</source>
+				<target>Редактирование фарм. компании</target>
+			</trans-unit>
+			<trans-unit id="sonata-20-3">
+				<source>Pharm Company Create</source>
+				<target>Создание фарм. компании</target>
+			</trans-unit>
+			<trans-unit id="sonata-20-4">
+				<source>Pharm Company Delete</source>
+				<target>Удаление фарм. компании</target>
+			</trans-unit>
+
         </body>
     </file>
 </xliff>

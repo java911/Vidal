@@ -16,9 +16,13 @@ class PublicationTag
 	/** @ORM\ManyToMany(targetEntity="Publication", mappedBy="tags") */
 	protected $publications;
 
+	/** @ORM\ManyToMany(targetEntity="PharmArticle", mappedBy="tags") */
+	protected $pharmArticles;
+
 	public function __construct()
 	{
-		$this->publications = new ArrayCollection();
+		$this->publications  = new ArrayCollection();
+		$this->pharmArticles = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -72,5 +76,21 @@ class PublicationTag
 	public function getPublications()
 	{
 		return $this->publications;
+	}
+
+	/**
+	 * @param mixed $pharmArticles
+	 */
+	public function setPharmArticles($pharmArticles)
+	{
+		$this->pharmArticles = $pharmArticles;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPharmArticles()
+	{
+		return $this->pharmArticles;
 	}
 }

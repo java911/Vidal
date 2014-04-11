@@ -2,7 +2,16 @@
 
 
 {% block title %}
-	<h1>{{ company|raw }}</h1>
+	<h1>
+		{% if isAdmin %}
+			<a class="admin-edit fade" target="_blank"
+			   href="{{ path('admin_vidal_drug_pharmcompany_edit', {'id':company.id}) }}">
+				<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+			</a>
+		{% endif %}
+
+		{{ company|raw }}
+	</h1>
 {% endblock %}
 
 
@@ -21,6 +30,13 @@
 	<div class="pharm-articles">
 		{% for article in articles %}
 			<div>
+				{% if isAdmin %}
+					<a class="admin-edit fade" target="_blank"
+					   href="{{ path('admin_vidal_drug_pharmarticle_edit', {'id':article.id}) }}">
+						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+					</a>
+				{% endif %}
+
 				{{ article.text|raw }}
 			</div>
 			<hr/>
@@ -34,6 +50,9 @@
 	<style type="text/css">
 		.pharm-articles img {
 			margin-right: 15px;
+		}
+		.pharm-articles > div {
+			position: relative;
 		}
 	</style>
 {% endblock %}

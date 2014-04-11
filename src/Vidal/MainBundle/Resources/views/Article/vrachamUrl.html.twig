@@ -78,11 +78,7 @@
 	{% endif %}
 
 	{# список статей с пагинацией #}
-	{% if isAdmin %}
-		{% include 'VidalMainBundle:Article:render_articles_admin.html.twig' %}
-	{% else %}
-		{% include 'VidalMainBundle:Article:render_articles.html.twig' %}
-	{% endif %}
+	{% include 'VidalMainBundle:Article:render_articles.html.twig' %}
 
 {% endblock %}
 

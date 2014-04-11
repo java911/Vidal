@@ -29,9 +29,9 @@
 {% block content %}
 	<div class="article-wrap">
 		{# админам карандашик редактирования #}
-		{% if is_granted('ROLE_ADMIN') %}
+		{% if isAdmin %}
 			<a class="admin-edit fade" target="_blank"
-			   href="{{ path('admin_vidal_drug_article_edit', {'id':article.id}) }}">
+			   href="{{ path('admin_vidal_drug_art_edit', {'id':article.id}) }}">
 				<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
 			</a>
 		{% endif %}
