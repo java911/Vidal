@@ -1,11 +1,11 @@
-.subdivision {
+.announce {
 	position:      relative;
 	margin-bottom: 15px;
 	padding:       12px;
 	border:        3px solid #eee;
 	font-size:     14px;
 }
-.subdivision-link {
+.announce .announce-link {
 	display:       block;
 	padding-right: 24px;
 	color:         #2f4053;
@@ -14,9 +14,9 @@
 	font-family:   'PT Sans Caption', sans-serif;
 	font-size:     15px;
 }
-.subdivision p {
+.announce p {
 	margin: 10px 0;
 }
-.subdivision p:first-child {
+.announce p:first-child {
 	margin-top: 0;
 }

@@ -1,0 +1,90 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block title %}
+	<h1>{{ sub }}</h1>
+{% endblock %}
+
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('vracham') }}">Информация для специалистов</a>
+		{% if app.environment == 'dev' %}
+			{% for path in paths %}
+				{% if not loop.last %}
+					<i></i>
+					<a href="/app_dev.php{{ path.url }}">{{ path }}</a>
+				{% endif %}
+			{% endfor %}
+		{% else %}
+			{% for path in paths %}
+				{% if not loop.last %}
+					<i></i>
+					<a href="{{ path.url }}">{{ path }}</a>
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+	</div>
+{% endblock %}
+
+
+{% block content %}
+	{% if sub.announce is not empty %}
+		<div class="subdivision">
+			<div class="subdivision-announce">{{ sub.announce|raw }}</div>
+		</div>
+	{% endif %}
+
+	{# подразделы этого раздела #}
+	{% if sub.children.count > 0 %}
+		<div class="subdivisions">
+			{% if app.environment == 'dev' %}
+				{% for subdivision in sub.children %}
+					<div class="subdivision">
+						<a class="subdivision-link" href="/app_dev.php{{ subdivision.url }}">
+							{{ subdivision.name }}
+						</a>
+
+						<div class="subdivision-announce">{{ subdivision.announce|raw }}</div>
+
+						{# админам карандашик редактирования #}
+						{% if isAdmin %}
+							<a class="admin-edit fade" target="_blank"
+							   href="{{ path('admin_vidal_drug_subdivision_edit', {'id':subdivision.id}) }}">
+								<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+							</a>
+						{% endif %}
+					</div>
+				{% endfor %}
+			{% else %}
+				{% for subdivision in sub.children %}
+					<div class="subdivision">
+						<a class="subdivision-a" href="{{ subdivision.url }}">{{ subdivision.name }}</a>
+
+						{% if isAdmin %}
+							<a class="admin-edit fade" target="_blank"
+							   href="{{ path('admin_vidal_drug_subdivision_edit', {'id':subdivision.id}) }}">
+								<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+							</a>
+						{% endif %}
+
+						<div class="subdivision-announce">{{ subdivision.announce|raw }}</div>
+					</div>
+				{% endfor %}
+			{% endif %}
+		</div>
+	{% endif %}
+
+	{# список статей с пагинацией #}
+	{% include 'VidalMainBundle:Article:render_articles.html.twig' %}
+
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/article.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/subdivision.css') }}"/>
+{% endblock %}
