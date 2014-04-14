@@ -154,7 +154,7 @@
             no_results_text: "не найдено"
         });
 
-        $('#body-render').on('click','area', function(){
+        $('#body-render').on('click','rect', function(){
             if ($(this).attr('intro') == 'head' ){
                 party = 'head';
                 $('#refresh-body').css('display','none');
@@ -447,7 +447,18 @@
         #body-render{
             width: 200px !important;
         }
-
+        #Navigation{
+            height: 350px;
+        }
+        svg rect{
+            fill-opacity: 0;
+            fill: #CC0000;
+        }
+        svg rect:hover{
+            fill-opacity: 0.5;
+            fill: #CC0000;
+            cursor: pointer;
+        }
 
     </style>
 {% endblock %}
