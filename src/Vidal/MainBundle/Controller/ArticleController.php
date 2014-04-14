@@ -224,6 +224,7 @@ class ArticleController extends Controller
 	}
 
     /**
+     * @Secure(roles="ROLE_DOCTOR")
      * @Route("/vracham/expert/Vidal-CD/", name="vracham_expert_cd")
      * @Template()
      */
