@@ -200,7 +200,8 @@ class ArtAdmin extends Admin
 				'query_builder' => function (EntityRepository $er) {
 						$type = $this->getSubject()->getType();
 						if (!$type) {
-							return null;
+							return $er->createQueryBuilder('c')
+								->where('c.type = 0');
 						}
 						return $er->createQueryBuilder('c')
 							->where('c.type = :type')
