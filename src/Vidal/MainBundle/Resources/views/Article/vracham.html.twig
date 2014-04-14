@@ -8,6 +8,13 @@
 
 {% block content %}
 	{% if subs is not empty %}
+
+        <a class="aa" href="{{ path('vracham_expert_cd') }}"><b>Электронный справочник Видаль</b></a>
+        <br/>
+        <br/>
+        <a class="aa" href="http://vidal.cloudapp.net/mobile/" target="_blank"><b>Поиск аналогов по МНН</b></a>
+        <br/>
+        <br/>
 		<div class="rubriques">
 
 			{% set perColumn = subs|length // 2 %}
@@ -73,4 +80,12 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/article.css') }}"/>
+    <style>
+        {{ parent() }}
+        .aa{
+            margin-right: 15px;
+            font-size: 15px;
+            font-weight: bold;
+        }
+    </style>
 {% endblock %}
