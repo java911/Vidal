@@ -223,6 +223,14 @@ class ArticleController extends Controller
 		return $params;
 	}
 
+    /**
+     * @Route("/vracham/expert/Vidal-CD/", name="vracham_expert_cd")
+     * @Template()
+     */
+    public function vrachamExpertCdAction(){
+        return array();
+    }
+
 	private function strip($string)
 	{
 		$pat = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/&amp;/');
