@@ -11,20 +11,42 @@ class ArtType
 	/** @ORM\Column(type="integer") @ORM\Id @ORM\GeneratedValue */
 	protected $id;
 
-	/** @ORM\Column(length=255, unique=true) */
+	/** @ORM\Column(length=255) */
 	protected $title;
+
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $announce;
+
+	/** @ORM\Column(length=255) */
+	protected $url;
+
+	/** @ORM\Column(type="boolean") */
+	protected $enabled;
 
 	/** @ORM\OneToMany(targetEntity="Art", mappedBy="type") */
 	protected $arts;
 
+	/** @ORM\ManyToOne(targetEntity="ArtRubrique", inversedBy="types") */
+	protected $rubrique;
+
+	/** @ORM\OneToMany(targetEntity="ArtCategory", mappedBy="type", fetch="EXTRA_LAZY") */
+	protected $categories;
+
 	public function __construct()
 	{
-		$this->arts = new ArrayCollection();
+		$this->enabled    = true;
+		$this->arts       = new ArrayCollection();
+		$this->categories = new ArrayCollection();
 	}
 
 	public function __toString()
 	{
 		return empty($this->title) ? '' : $this->title;
+	}
+
+	public function getIs()
+	{
+		return 'type';
 	}
 
 	/**
@@ -65,5 +87,85 @@ class ArtType
 	public function getArts()
 	{
 		return $this->arts;
+	}
+
+	/**
+	 * @param mixed $rubrique
+	 */
+	public function setRubrique($rubrique)
+	{
+		$this->rubrique = $rubrique;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getRubrique()
+	{
+		return $this->rubrique;
+	}
+
+	/**
+	 * @param mixed $categories
+	 */
+	public function setCategories($categories)
+	{
+		$this->categories = $categories;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCategories()
+	{
+		return $this->categories;
+	}
+
+	/**
+	 * @param mixed $url
+	 */
+	public function setUrl($url)
+	{
+		$this->url = $url;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getUrl()
+	{
+		return $this->url;
+	}
+
+	/**
+	 * @param mixed $announce
+	 */
+	public function setAnnounce($announce)
+	{
+		$this->announce = $announce;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getAnnounce()
+	{
+		return $this->announce;
+	}
+
+	/**
+	 * @param mixed $enabled
+	 */
+	public function setEnabled($enabled)
+	{
+		$this->enabled = $enabled;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getEnabled()
+	{
+		return $this->enabled;
 	}
 }

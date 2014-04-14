@@ -876,7 +876,7 @@ h1 span {
 .admin-edit {
 	display:  inline-block;
 	position: absolute;
-	top:      6px;
+	top:      0;
 	right:    0;
 	opacity:  0;
 	z-index:  10;
@@ -1306,25 +1306,33 @@ h1 span {
 	padding: 5px 10px 7px;
 }
 
-/* overwrite article/publication styles */
+/* перебиваем кривые стили статей и новостей */
 #wrapper .article-wrap a,
 #wrapper .article-wrap a *,
+#wrapper .article-body a,
+#wrapper .article-body a *,
 #wrapper .publication a,
 #wrapper .publication a * {
 	color: #d71344;
 }
 #wrapper .article-wrap img,
+#wrapper .article-body img,
 #wrapper .publication img {
 	max-width: 520px;
 }
 #wrapper .article-wrap a,
 #wrapper .article-wrap a *,
+#wrapper .article-body a,
+#wrapper .article-body a *,
+#wrapper .publication a *
 #wrapper .publication a,
-#wrapper .publication a *{
+#wrapper .publication a * {
 	text-decoration: none;
 }
 #wrapper .article-wrap a:hover,
 #wrapper .article-wrap a *:hover,
+#wrapper .article-body a:hover,
+#wrapper .article-body a *:hover
 #wrapper .publication a:hover,
 #wrapper .publication a *:hover {
 	text-decoration: underline;

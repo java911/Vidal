@@ -21,7 +21,7 @@ class ArtTypeAdmin extends Admin
 				'_page'       => 1,
 				'_per_page'   => 25,
 				'_sort_order' => 'ASC',
-				'_sort_by'    => 'title'
+				'_sort_by'    => 'rubrique'
 			);
 		}
 	}
@@ -30,25 +30,40 @@ class ArtTypeAdmin extends Admin
 	{
 		$showMapper
 			->add('id')
-			->add('title', null, array('label' => 'Название'));
+			->add('title', null, array('label' => 'Заголовок'))
+			->add('url', null, array('label' => 'Адрес страницы', 'help' => 'латинские буквы и цифры, слова через тире'))
+			->add('rubrique', null, array('label' => 'Раздел'))
+			->add('enabled', null, array('label' => 'Активна'));
 	}
 
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('title', null, array('label' => 'Название', 'required' => true));
+			->add('title', null, array('label' => 'Заголовок', 'required' => true))
+			->add('url', null, array('label' => 'Адрес страницы', 'required' => true, 'help' => 'латинские буквы и цифры, слова через тире'))
+			->add('rubrique', null, array('label' => 'Раздел', 'required' => true))
+			->add('announce', null, array('label' => 'Анонс', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
+			->add('enabled', null, array('label' => 'Активна', 'required' => false));
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
-			->add('title', null, array('label' => 'Название'));
+			->add('id')
+			->add('title', null, array('label' => 'Заголовок'))
+			->add('url', null, array('label' => 'Адрес страницы'))
+			->add('rubrique', null, array('label' => 'Раздел'))
+			->add('enabled', null, array('label' => 'Активна'));
 	}
 
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-			->add('title', null, array('label' => 'Название'))
+			->add('id')
+			->add('title', null, array('label' => 'Заголовок'))
+			->add('url', null, array('label' => 'Адрес страницы'))
+			->add('rubrique', null, array('label' => 'Раздел'))
+			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(

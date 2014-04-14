@@ -1,0 +1,180 @@
+<?php
+
+namespace Vidal\DrugBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+
+/** @ORM\Entity(repositoryClass="ArtRubriqueRepository") @ORM\Table(name="art_rubrique") */
+class ArtRubrique
+{
+	/** @ORM\Column(type="integer") @ORM\Id @ORM\GeneratedValue */
+	protected $id;
+
+	/** @ORM\Column(type="boolean") */
+	protected $enabled;
+
+	/** @ORM\Column(length=255) */
+	protected $title;
+
+	/** @ORM\Column(length=255) */
+	protected $url;
+
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $announce;
+
+	/** @ORM\OneToMany(targetEntity="Art", mappedBy="rubrique") */
+	protected $arts;
+
+	/** @ORM\OneToMany(targetEntity="ArtType", mappedBy="rubrique", fetch="EXTRA_LAZY") */
+	protected $types;
+
+	/** @ORM\OneToMany(targetEntity="ArtCategory", mappedBy="rubrique") */
+	protected $categories;
+
+	public function __construct()
+	{
+		$this->enabled    = true;
+		$this->arts       = new ArrayCollection();
+		$this->types      = new ArrayCollection();
+		$this->categories = new ArrayCollection();
+	}
+
+	public function __toString()
+	{
+		return $this->title;
+	}
+
+	public function getIs()
+	{
+		return 'rubrique';
+	}
+
+	/**
+	 * @param mixed $announce
+	 */
+	public function setAnnounce($announce)
+	{
+		$this->announce = $announce;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getAnnounce()
+	{
+		return $this->announce;
+	}
+
+	/**
+	 * @param mixed $arts
+	 */
+	public function setArts($arts)
+	{
+		$this->arts = $arts;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getArts()
+	{
+		return $this->arts;
+	}
+
+	/**
+	 * @param mixed $enabled
+	 */
+	public function setEnabled($enabled)
+	{
+		$this->enabled = $enabled;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getEnabled()
+	{
+		return $this->enabled;
+	}
+
+	/**
+	 * @param mixed $id
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	/**
+	 * @param mixed $title
+	 */
+	public function setTitle($title)
+	{
+		$this->title = $title;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTitle()
+	{
+		return $this->title;
+	}
+
+	/**
+	 * @param mixed $types
+	 */
+	public function setTypes($types)
+	{
+		$this->types = $types;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTypes()
+	{
+		return $this->types;
+	}
+
+	/**
+	 * @param mixed $categories
+	 */
+	public function setCategories($categories)
+	{
+		$this->categories = $categories;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCategories()
+	{
+		return $this->categories;
+	}
+
+	/**
+	 * @param mixed $url
+	 */
+	public function setUrl($url)
+	{
+		$this->url = $url;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getUrl()
+	{
+		return $this->url;
+	}
+}

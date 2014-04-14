@@ -23,9 +23,9 @@ class SonataController extends Controller
 	 */
 	public function swapAction($field, $entity, $id)
 	{
-		$em = $this->getDoctrine()->getManager('drug');
+		$em     = $this->getDoctrine()->getManager('drug');
 		$entity = 'VidalDrugBundle:' . $entity;
-		$field = 'e.' . $field;
+		$field  = 'e.' . $field;
 
 		$isActive = $em->createQueryBuilder()
 			->select($field)
@@ -54,9 +54,9 @@ class SonataController extends Controller
 	 */
 	public function swapMainAction($field, $entity, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
+		$em     = $this->getDoctrine()->getManager();
 		$entity = 'VidalMainBundle:' . $entity;
-		$field = 'e.' . $field;
+		$field  = 'e.' . $field;
 
 		$isActive = $em->createQueryBuilder()
 			->select($field)
@@ -77,5 +77,41 @@ class SonataController extends Controller
 		$qb->getQuery()->execute();
 
 		return new JsonResponse($swapActive);
+	}
+
+	/**
+	 * [AJAX] Подгрузка категорий
+	 * @Route("/admin/types-of-rubrique/{rubriqueId}", name="types_of_rubrique", options={"expose":true})
+	 */
+	public function typesOfRubrique($rubriqueId)
+	{
+		$em      = $this->getDoctrine()->getManager('drug');
+		$results = $em->createQuery('
+			SELECT t.id, t.title
+			FROM VidalDrugBundle:ArtType t
+			WHERE t.rubrique = :rubriqueId
+			ORDER BY t.title ASC
+		')->setParameter('rubriqueId', $rubriqueId)
+			->getResult();
+
+		return new JsonResponse($results);
+	}
+
+	/**
+	 * [AJAX] Подгрузка категорий
+	 * @Route("/admin/categories-of-type/{typeId}", name="categories_of_type", options={"expose":true})
+	 */
+	public function categoriesOfType($typeId)
+	{
+		$em      = $this->getDoctrine()->getManager('drug');
+		$results = $em->createQuery('
+			SELECT c.id, c.title
+			FROM VidalDrugBundle:ArtCategory c
+			WHERE c.type = :typeId
+			ORDER BY c.title ASC
+		')->setParameter('typeId', $typeId)
+			->getResult();
+
+		return new JsonResponse($results);
 	}
 }

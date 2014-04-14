@@ -1,8 +1,11 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
+{% set item = category is defined ? category : (type is defined ? type : rubrique) %}
+
+
 {% block title %}
-	<h1>{{ sub }}</h1>
+	<h1>{{ item.title }}</h1>
 {% endblock %}
 
 
@@ -11,71 +14,100 @@
 		<a href="{{ path('index') }}">Видаль</a>
 		<i></i>
 		<a href="{{ path('vracham') }}">Информация для специалистов</a>
-		{% if app.environment == 'dev' %}
-			{% for path in paths %}
-				{% if not loop.last %}
-					<i></i>
-					<a href="/app_dev.php{{ path.url }}">{{ path }}</a>
-				{% endif %}
-			{% endfor %}
-		{% else %}
-			{% for path in paths %}
-				{% if not loop.last %}
-					<i></i>
-					<a href="{{ path.url }}">{{ path }}</a>
-				{% endif %}
-			{% endfor %}
+
+		{% if type is defined and type %}
+			<i></i>
+			<a href="{{ path('art', {'url':rubrique.url}) }}">{{ rubrique.title }}</a>
+		{% endif %}
+
+		{% if category is defined and category %}
+			<i></i>
+			<a href="{{ path('art', {'url':[rubrique.url, type.url]|join('/') }) }}">{{ type.title }}</a>
 		{% endif %}
 	</div>
 {% endblock %}
 
 
 {% block content %}
-	{% if sub.announce is not empty %}
-		<div class="subdivision">
-			<div class="subdivision-announce">{{ sub.announce|raw }}</div>
+	{% if item.announce is not empty %}
+		<div class="divisions">
+			<div>{{ item.announce|raw }}</div>
 		</div>
 	{% endif %}
 
-	{# подразделы этого раздела #}
-	{% if sub.children.count > 0 %}
-		<div class="subdivisions">
-			{% if app.environment == 'dev' %}
-				{% for subdivision in sub.children %}
-					<div class="subdivision">
-						<a class="subdivision-link" href="/app_dev.php{{ subdivision.url }}">
-							{{ subdivision.name }}
+	<style>
+		.divisions > div {
+			position:      relative;
+			margin-bottom: 15px;
+			padding:       9px 12px 10px;
+			border:        3px solid #eee;
+			font-size:     14px;
+		}
+		.divisions .link {
+			font-size:       16px;
+			color:           #2f4053;
+			font-weight:     bold;
+			text-decoration: none;
+		}
+		.divisions .link:hover {
+			text-decoration: underline;
+		}
+		.divisions .announce {
+			margin-top: 10px;
+		}
+		.divisions. announce * {
+			font-size: 14px;
+		}
+		.divisions .announce p {
+			margin: 6px 0;
+		}
+		.divisions .announce p:first-child {
+			margin-top: 0;
+		}
+		.divisions .announce p:last-child {
+			margin-bottom: 0;
+		}
+	</style>
+
+	<div class="divisions">
+		{% if item.is == 'rubrique' %}
+			{% for type in rubrique.types %}
+				<div>
+					{% if isAdmin %}
+						<a class="admin-edit fade" target="_blank"
+						   href="{{ path('admin_vidal_drug_arttype_edit', {'id':type.id}) }}">
+							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
 						</a>
+					{% endif %}
+					<a class="link"
+					   href="{{ path('art', {'url':[rubrique.url, type.url]|join('/') }) }}">{{ type.title }}</a>
 
-						<div class="subdivision-announce">{{ subdivision.announce|raw }}</div>
+					{% if type.announce is not empty %}
+						<div class="announce">{{ type.announce|raw }}</div>
+					{% endif %}
+				</div>
+			{% endfor %}
+		{% elseif item.is == 'type' %}
+			{% for category in type.categories %}
+				<div>
+					{% if isAdmin %}
+						<a class="admin-edit fade" target="_blank"
+						   href="{{ path('admin_vidal_drug_artcategory_edit', {'id':type.id}) }}">
+							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+						</a>
+					{% endif %}
+					<a class="link"
+					   href="{{ path('art', {'url':[rubrique.url, type.url, category.url]|join('/') }) }}">{{ category.title }}</a>
 
-						{# админам карандашик редактирования #}
-						{% if isAdmin %}
-							<a class="admin-edit fade" target="_blank"
-							   href="{{ path('admin_vidal_drug_subdivision_edit', {'id':subdivision.id}) }}">
-								<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-							</a>
-						{% endif %}
-					</div>
-				{% endfor %}
-			{% else %}
-				{% for subdivision in sub.children %}
-					<div class="subdivision">
-						<a class="subdivision-a" href="{{ subdivision.url }}">{{ subdivision.name }}</a>
+					{% if category.announce is not empty %}
+						<div class="announce">{{ type.announce|raw }}</div>
+					{% endif %}
+				</div>
+			{% endfor %}
+		{% elseif item.is == 'category' %}
 
-						{% if isAdmin %}
-							<a class="admin-edit fade" target="_blank"
-							   href="{{ path('admin_vidal_drug_subdivision_edit', {'id':subdivision.id}) }}">
-								<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-							</a>
-						{% endif %}
-
-						<div class="subdivision-announce">{{ subdivision.announce|raw }}</div>
-					</div>
-				{% endfor %}
-			{% endif %}
-		</div>
-	{% endif %}
+		{% endif %}
+	</div>
 
 	{# список статей с пагинацией #}
 	{% include 'VidalMainBundle:Article:render_articles.html.twig' %}
@@ -86,5 +118,4 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/article.css') }}"/>
-	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/subdivision.css') }}"/>
 {% endblock %}

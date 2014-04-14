@@ -4,16 +4,16 @@ namespace Vidal\DrugBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
-class ArtRepository extends EntityRepository
+class ArtRubriqueRepository extends EntityRepository
 {
-	public function getQueryBySubdivision($subId)
+	public function findActive()
 	{
 		return $this->_em->createQuery('
-			SELECT a
-			FROM VidalDrugBundle:Art a
-			WHERE a.subdivision = :subId
-				AND a.enabled = TRUE
-			ORDER BY a.date DESC, a.priority DESC
-		')->setParameter('subId', $subId);
+			SELECT r
+			FROM VidalDrugBundle:ArtRubrique r
+			WHERE r.enabled = TRUE
+				AND (SIZE(r.types) > 0 OR SIZE(r.arts) > 0)
+			ORDER BY r.title
+		')->getResult();
 	}
 }

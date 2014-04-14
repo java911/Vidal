@@ -35,7 +35,7 @@ class ArtAdmin extends Admin
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
 			->add('link', null, array('label' => 'Адрес страницы', 'help' => 'латинские буквы и цифры, слова через тире'))
-			->add('subdivision', null, array('label' => 'Подраздел'))
+			->add('rubrique', null, array('label' => 'Раздел'))
 			->add('type', null, array('label' => 'Категория'))
 			->add('announce', null, array('label' => 'Анонс'))
 			->add('body', null, array('label' => 'Основное содержимое'))
@@ -45,22 +45,49 @@ class ArtAdmin extends Admin
 
 	protected function configureFormFields(FormMapper $formMapper)
 	{
-		$em                  = $this->getModelManager()->getEntityManager($this->getSubject());
-		$documentTransformer = new DocumentTransformer($em, $this->getSubject());
-		$artTagTransformer   = new ArtTagTransformer($em, $this->getSubject());
+		$subject             = $this->getSubject();
+		$em                  = $this->getModelManager()->getEntityManager($subject);
+		$documentTransformer = new DocumentTransformer($em, $subject);
+		$artTagTransformer   = new ArtTagTransformer($em, $subject);
 
 		$formMapper
 			->add('title', null, array('label' => 'Заголовок', 'required' => true))
 			->add('link', null, array('label' => 'Адрес страницы', 'required' => true, 'help' => 'латинские буквы и цифры, слова через тире'))
-			->add('subdivision', null, array(
-				'label'         => 'Подраздел',
+			->add('rubrique', null, array(
+				'label'         => 'Раздел',
 				'required'      => true,
+				'attr'          => array('class' => 'art-rubrique'),
 				'query_builder' => function (EntityRepository $er) {
-						return $er->createQueryBuilder('s')
-							->orderBy('s.name', 'ASC');
+						return $er->createQueryBuilder('r')
+							->orderBy('r.title', 'ASC');
 					},
 			))
-			->add('type', null, array('label' => 'Категория', 'required' => false, 'empty_value' => 'не указано'))
+			->add('type', null, array(
+				'label'         => 'Категория',
+				'required'      => false,
+				'attr'          => array('class' => 'art-type'),
+				'query_builder' => function (EntityRepository $er) {
+						return $er->createQueryBuilder('t')
+							->where('t.rubrique = :rubrique')
+							->setParameter('rubrique', $this->getSubject()->getRubrique()->getId())
+							->orderBy('t.title', 'ASC');
+					},
+			))
+			->add('category', null, array(
+				'label'         => 'Подкатегория',
+				'required'      => false,
+				'attr'          => array('class' => 'art-category'),
+				'query_builder' => function (EntityRepository $er) {
+						$type = $this->getSubject()->getType();
+						if (!$type) {
+							return null;
+						}
+						return $er->createQueryBuilder('c')
+							->where('c.type = :type')
+							->setParameter('type', $type->getId())
+							->orderBy('c.title', 'ASC');
+					},
+			))
 			->add('priority', null, array('label' => 'Приоритет', 'required' => false, 'help' => 'Закреплено на главной по приоритету. Оставьте пустым, чтоб снять приоритет'))
 			->add('announce', null, array('label' => 'Анонс', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('body', null, array('label' => 'Основное содержимое', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
@@ -145,14 +172,41 @@ class ArtAdmin extends Admin
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
 			->add('link', null, array('label' => 'Адрес страницы'))
-			->add('subdivision', null, array(
-				'label'         => 'Подраздел',
+			->add('rubrique', null, array(
+				'label'         => 'Раздел',
+				'required'      => true,
+				'attr'          => array('class' => 'art-rubrique'),
 				'query_builder' => function (EntityRepository $er) {
-						return $er->createQueryBuilder('s')
-							->orderBy('s.name', 'ASC');
+						return $er->createQueryBuilder('r')
+							->orderBy('r.title', 'ASC');
 					},
 			))
-			->add('type', null, array('label' => 'Категория'))
+			->add('type', null, array(
+				'label'         => 'Категория',
+				'required'      => false,
+				'attr'          => array('class' => 'art-type'),
+				'query_builder' => function (EntityRepository $er) {
+						return $er->createQueryBuilder('t')
+							->where('t.rubrique = :rubrique')
+							->setParameter('rubrique', $this->getSubject()->getRubrique()->getId())
+							->orderBy('t.title', 'ASC');
+					},
+			))
+			->add('category', null, array(
+				'label'         => 'Подкатегория',
+				'required'      => false,
+				'attr'          => array('class' => 'art-category'),
+				'query_builder' => function (EntityRepository $er) {
+						$type = $this->getSubject()->getType();
+						if (!$type) {
+							return null;
+						}
+						return $er->createQueryBuilder('c')
+							->where('c.type = :type')
+							->setParameter('type', $type->getId())
+							->orderBy('c.title', 'ASC');
+					},
+			))
 			->add('priority', null, array('label' => 'Приоритет'))
 			->add('enabled', null, array('label' => 'Активна'));
 	}
@@ -162,8 +216,9 @@ class ArtAdmin extends Admin
 		$listMapper
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
-			->add('subdivision', null, array('label' => 'Подраздел'))
+			->add('rubrique', null, array('label' => 'Раздел'))
 			->add('type', null, array('label' => 'Категория'))
+			->add('category', null, array('label' => 'Подкатегория'))
 			->add('priority', null, array('label' => 'Приоритет'))
 			->add('date', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
 			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
