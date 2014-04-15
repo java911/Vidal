@@ -5,7 +5,7 @@ namespace Vidal\DrugBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/** @ORM\Entity @ORM\Table(name="art_category") */
+/** @ORM\Entity(repositoryClass="ArtCategoryRepository") @ORM\Table(name="art_category") */
 class ArtCategory
 {
 	/** @ORM\Column(type="integer") @ORM\Id @ORM\GeneratedValue */

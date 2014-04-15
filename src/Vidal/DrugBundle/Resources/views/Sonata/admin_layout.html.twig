@@ -419,9 +419,7 @@ file that was distributed with this source code.
 					{% endif %}
 
 					{% if _content is not empty %}
-						{% if app.user.id not in [44511,44360] %}
-							<div class="sonata-ba-content">{{ _content|raw }}</div>
-						{% endif %}
+						<div class="sonata-ba-content">{{ _content|raw }}</div>
 					{% endif %}
 
 					{% if _show is not empty %}
@@ -441,6 +439,11 @@ file that was distributed with this source code.
 						<div class="sonata-ba-list">
 							{{ _list_table|raw }}
 						</div>
+					{% endif %}
+
+					{# тут кнопки под панелью управления (для администраторов) #}
+					{% if route in ['sonata_admin_dashboard', 'admin_vidal_drug_art_list'] %}
+						<a class="btn" href="{{ path('art_move') }}">Перемещение статей</a>
 					{% endif %}
 
 				{% endblock %}

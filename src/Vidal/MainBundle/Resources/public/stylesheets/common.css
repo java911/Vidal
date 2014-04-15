@@ -1314,7 +1314,8 @@ h1 span {
 #wrapper .publication a,
 #wrapper .publication a *
 #wrapper .article-item a,
-#wrapper .article-item a * {
+#wrapper .article-item a *,
+{
 	color: #d71344;
 }
 
@@ -1334,7 +1335,8 @@ h1 span {
 #wrapper .article-item a *,
 #wrapper .publication a *
 #wrapper .publication a,
-#wrapper .publication a * {
+#wrapper .publication a *,
+{
 	text-decoration: none;
 }
 
@@ -1345,6 +1347,7 @@ h1 span {
 #wrapper .article-item a:hover,
 #wrapper .article-item a *:hover,
 #wrapper .publication a:hover,
-#wrapper .publication a *:hover {
+#wrapper .publication a *:hover,
+{
 	text-decoration: underline;
 }

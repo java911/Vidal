@@ -169,7 +169,7 @@ class ArticleController extends Controller
 			);
 		}
 		elseif ($count == 2) {
-			$params['type'] = $em->getRepository('VidalDrugBundle:ArtType')->findOneByUrl($parts[1]);
+			$params['type'] = $em->getRepository('VidalDrugBundle:ArtType')->rubriqueUrl($rubrique, $parts[1]);
 			if ($params['type']->getCategories()->count() == 0) {
 				$params['pagination'] = $this->get('knp_paginator')->paginate(
 					$em->getRepository('VidalDrugBundle:Art')->getQueryByType($params['type']),
@@ -179,8 +179,9 @@ class ArticleController extends Controller
 			}
 		}
 		elseif ($count == 3) {
-			$params['type']       = $em->getRepository('VidalDrugBundle:ArtType')->findOneByUrl($parts[1]);
-			$params['category']   = $em->getRepository('VidalDrugBundle:ArtCategory')->findOneByUrl($parts[2]);
+			$type                 = $em->getRepository('VidalDrugBundle:ArtType')->rubriqueUrl($rubrique, $parts[1]);
+			$params['type']       = $type;
+			$params['category']   = $em->getRepository('VidalDrugBundle:ArtCategory')->typeUrl($type, $parts[2]);
 			$params['pagination'] = $this->get('knp_paginator')->paginate(
 				$em->getRepository('VidalDrugBundle:Art')->getQueryByCategory($params['category']),
 				$request->query->get('p', 1),

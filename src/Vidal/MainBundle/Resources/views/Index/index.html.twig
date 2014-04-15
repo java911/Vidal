@@ -16,7 +16,7 @@
 
 	{# Последние новости #}
 	<div class="title title-news">
-		<a href="{{ path('news') }}">Последние новости медицины</a>
+		<a href="{{ path('news') }}">Новости медицины и фармации</a>
 	</div>
 	<div class="news">
 		{% for publication in publications %}
@@ -51,7 +51,7 @@
 			</div>
 		{% endfor %}
 	</div>
-	<a href="#" id="more_news">еще</a>
+	<a href="{{ path('news') }}" id="more_news">все</a>
 
 	{# Статьи энциклопедии #}
 	<div class="title title-articles">
@@ -86,7 +86,7 @@
 			</div>
 		{% endfor %}
 	</div>
-	<a href="#" id="more_articles">еще</a>
+	<a href="{{ path('articles') }}" id="more_articles">все</a>
 
 {% endblock %}
 
@@ -157,26 +157,4 @@
 			padding-left: 8px;
 		}
 	</style>
-{% endblock %}
-
-
-{% block javascripts %}
-	{{ parent() }}
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$('#more_articles').click(function() {
-				$.getJSON(Routing.generate('ajax_articles', {'from': $('.article').size()}), null, function(html) {
-					$('.articles').append(html);
-				});
-				return false;
-			});
-
-			$('#more_news').click(function() {
-				$.getJSON(Routing.generate('ajax_news', {'from': $('.publication').size()}), null, function(html) {
-					$('.news').append(html);
-				});
-				return false;
-			});
-		});
-	</script>
 {% endblock %}
