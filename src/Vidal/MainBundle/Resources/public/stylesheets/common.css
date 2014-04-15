@@ -1312,27 +1312,38 @@ h1 span {
 #wrapper .article-body a,
 #wrapper .article-body a *,
 #wrapper .publication a,
-#wrapper .publication a * {
+#wrapper .publication a *
+#wrapper .article-item a,
+#wrapper .article-item a * {
 	color: #d71344;
 }
+
 #wrapper .article-wrap img,
 #wrapper .article-body img,
-#wrapper .publication img {
+#wrapper .publication img,
+#wrapper .article-item img,
+{
 	max-width: 520px;
 }
+
 #wrapper .article-wrap a,
 #wrapper .article-wrap a *,
 #wrapper .article-body a,
 #wrapper .article-body a *,
+#wrapper .article-item a,
+#wrapper .article-item a *,
 #wrapper .publication a *
 #wrapper .publication a,
 #wrapper .publication a * {
 	text-decoration: none;
 }
+
 #wrapper .article-wrap a:hover,
 #wrapper .article-wrap a *:hover,
 #wrapper .article-body a:hover,
 #wrapper .article-body a *:hover
+#wrapper .article-item a:hover,
+#wrapper .article-item a *:hover,
 #wrapper .publication a:hover,
 #wrapper .publication a *:hover {
 	text-decoration: underline;
