@@ -87,9 +87,6 @@ class Art extends BaseEntity
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $priority;
 
-	/** @ORM\Column(type="integer") */
-	protected $subclassId;
-
 	/** @ORM\ManyToMany(targetEntity="ArtTag", inversedBy="arts") */
 	protected $tags;
 
@@ -348,22 +345,6 @@ class Art extends BaseEntity
 	public function getMetaTitle()
 	{
 		return $this->metaTitle;
-	}
-
-	/**
-	 * @param mixed $subclassId
-	 */
-	public function setSubclassId($subclassId)
-	{
-		$this->subclassId = $subclassId;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getSubclassId()
-	{
-		return $this->subclassId;
 	}
 
 	/**
