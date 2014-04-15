@@ -126,7 +126,7 @@ file that was distributed with this source code.
 					return $("<li></li>").data("item.autocomplete", item).append("<a>" + item.label + "</a>").appendTo(ul);
 				};
 
-			{% if object.documents.count %}
+			{% if object.documents and object.documents.count %}
 			var ul = $('<ul>{% for document in object.documents %}<li>{{ document|raw }}</li>{% endfor %}</ul>');
 			$('.doc').parent().append(ul);
 			{% endif %}
@@ -142,12 +142,15 @@ file that was distributed with this source code.
 			var $selectType = $('.art-type, #filter_type_value');
 			var $selectCategory = $('.art-category, #filter_category_value');
 
+			$selectRubrique.select2('destroy');
+			$selectType.select2('destroy');
+			$selectCategory.select2('destroy');
+
 			$selectRubrique.change(function() {
 				if (this.value) {
 					$.getJSON(Routing.generate('types_of_rubrique', {'rubriqueId': this.value}), null, function(data) {
 						if (data.length == 0) {
-							$selectType.select2('val', '');
-							$selectType.select2('enable', false);
+							$selectType.prop('disabled', 'disabled');
 						}
 						else {
 							$selectType.find('option').remove();
@@ -155,50 +158,95 @@ file that was distributed with this source code.
 							$.each(data, function(index, option) {
 								$selectType.append($('<option></option>').val(option.id).text(option.title));
 							});
-							$selectType.select2('enable', true);
-							$selectType.select2('val', '');
-							$selectType.trigger('change');
+							$selectType.prop('disabled', false);
 						}
 					});
 				}
 				else {
-					$selectType.select2('val', '');
-					$selectType.select2('enable', false);
+					$selectType.prop('disabled', 'disabled');
 				}
 			});
 
 			$selectType.change(function() {
-
 				if (this.value) {
 					$.getJSON(Routing.generate('categories_of_type', {'typeId': this.value}), null, function(data) {
 						if (data.length == 0) {
-							$selectCategory.select2('val', '');
-							$selectCategory.select2('enable', false);
+							$selectCategory.prop('disabled', 'disabled');
 						}
 						else {
-
 							$selectCategory.find('option').remove();
 							$selectCategory.append($('<option></option>'));
 							$.each(data, function(index, option) {
 								$selectCategory.append($('<option></option>').val(option.id).text(option.title));
 							});
-							$selectCategory.select2('enable', true);
-							$selectCategory.select2('val', '');
-							$selectCategory.trigger('change');
+							$selectCategory.prop('disabled', false);
 						}
 					});
 				}
 				else {
-					$selectCategory.select2('val', '');
-					$selectCategory.select2('enable', false);
+					$selectCategory.prop('disabled', 'disabled');
 				}
 			});
 
+			{% if object is defined %}
+			{% if object.rubrique %}
+			$.getJSON(Routing.generate('types_of_rubrique', {'rubriqueId': '{{ object.rubrique.id }}'}), null, function(data) {
+				if (data.length == 0) {
+					$selectType.prop('disabled', 'disabled');
+				}
+				else {
+					$selectType.find('option').remove();
+					$selectType.append($('<option></option>'));
+					$.each(data, function(index, option) {
+						var $tag = $('<option></option>').val(option.id).text(option.title);
+						{% if object.type %}
+						if (option.id == '{{ object.type.id }}') {
+							$tag.attr('selected', 'selected')
+						}
+						{% endif %}
+						$selectType.append($tag);
+					});
+					$selectType.prop('disabled', false);
+				}
+			});
+			{% endif %}
+			{% else %}
+			$selectType.find('option').remove();
+			$selectType.append($('<option></option>'));
+			{% endif %}
+
+			{% if object is defined %}
+			{% if object.type %}
+			$.getJSON(Routing.generate('categories_of_type', {'typeId': '{{ object.type.id }}'}), null, function(data) {
+				if (data.length == 0) {
+					$selectCategory.prop('disabled', 'disabled');
+				}
+				else {
+					$selectCategory.find('option').remove();
+					$selectCategory.append($('<option></option>'));
+					$.each(data, function(index, option) {
+						var $tag = $('<option></option>').val(option.id).text(option.title);
+						{% if object.category %}
+						if (option.id == '{{ object.category.id }}') {
+							$tag.attr('selected', 'selected')
+						}
+						{% endif %}
+						$selectCategory.append($tag);
+					});
+					$selectCategory.prop('disabled', false);
+				}
+			});
+			{% endif %}
+			{% else %}
+			$selectCategory.find('option').remove();
+			$selectCategory.append($('<option></option>'));
+			{% endif %}
+
 			if ($selectType.find('option').length < 2) {
-				$selectType.select2('enable', false);
+				$selectType.prop('disabled', 'disabled');
 			}
 			if ($selectCategory.find('option').length < 2) {
-				$selectCategory.select2('enable', false);
+				$selectCategory.prop('disabled', 'disabled');
 			}
 		});
 	</script>

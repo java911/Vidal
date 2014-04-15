@@ -46,6 +46,7 @@ class ArtAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$subject             = $this->getSubject();
+		$rubrique            = $subject->getRubrique();
 		$em                  = $this->getModelManager()->getEntityManager($subject);
 		$documentTransformer = new DocumentTransformer($em, $subject);
 		$artTagTransformer   = new ArtTagTransformer($em, $subject);
@@ -62,35 +63,8 @@ class ArtAdmin extends Admin
 							->orderBy('r.title', 'ASC');
 					},
 			))
-			->add('type', null, array(
-				'label'         => 'Категория',
-				'required'      => false,
-				'attr'          => array('class' => 'art-type'),
-				'query_builder' => function (EntityRepository $er) {
-						$rubrique   = $this->getSubject()->getRubrique();
-						$rubriqueId = $rubrique ? $rubrique->getId() : 0;
-						return $er->createQueryBuilder('t')
-							->where('t.rubrique = :rubriqueId')
-							->setParameter('rubriqueId', $rubriqueId)
-							->orderBy('t.title', 'ASC');
-					},
-			))
-			->add('category', null, array(
-				'label'         => 'Подкатегория',
-				'required'      => false,
-				'attr'          => array('class' => 'art-category'),
-				'query_builder' => function (EntityRepository $er) {
-						$type = $this->getSubject()->getType();
-						if (!$type) {
-							return $er->createQueryBuilder('c')
-								->where('c.type = 0');
-						}
-						return $er->createQueryBuilder('c')
-							->where('c.type = :type')
-							->setParameter('type', $type->getId())
-							->orderBy('c.title', 'ASC');
-					},
-			))
+			->add('type', null, array('label' => 'Категория', 'required' => false, 'attr' => array('class' => 'art-type')))
+			->add('category', null, array('label' => 'Подкатегория', 'required' => false, 'attr' => array('class' => 'art-category')))
 			->add('priority', null, array('label' => 'Приоритет', 'required' => false, 'help' => 'Закреплено на главной по приоритету. Оставьте пустым, чтоб снять приоритет'))
 			->add('announce', null, array('label' => 'Анонс', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('body', null, array('label' => 'Основное содержимое', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
@@ -184,33 +158,8 @@ class ArtAdmin extends Admin
 							->orderBy('r.title', 'ASC');
 					},
 			))
-			->add('type', null, array(
-				'label'         => 'Категория',
-				'required'      => false,
-				'attr'          => array('class' => 'art-type'),
-				'query_builder' => function (EntityRepository $er) {
-						return $er->createQueryBuilder('t')
-							->where('t.rubrique = :rubrique')
-							->setParameter('rubrique', $this->getSubject()->getRubrique()->getId())
-							->orderBy('t.title', 'ASC');
-					},
-			))
-			->add('category', null, array(
-				'label'         => 'Подкатегория',
-				'required'      => false,
-				'attr'          => array('class' => 'art-category'),
-				'query_builder' => function (EntityRepository $er) {
-						$type = $this->getSubject()->getType();
-						if (!$type) {
-							return $er->createQueryBuilder('c')
-								->where('c.type = 0');
-						}
-						return $er->createQueryBuilder('c')
-							->where('c.type = :type')
-							->setParameter('type', $type->getId())
-							->orderBy('c.title', 'ASC');
-					},
-			))
+			->add('type', null, array('label' => 'Категория', 'attr' => array('class' => 'art-type')))
+			->add('category', null, array('label' => 'Подкатегория', 'attr' => array('class' => 'art-category')))
 			->add('priority', null, array('label' => 'Приоритет'))
 			->add('enabled', null, array('label' => 'Активна'));
 	}
