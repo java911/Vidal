@@ -67,9 +67,11 @@ class ArtAdmin extends Admin
 				'required'      => false,
 				'attr'          => array('class' => 'art-type'),
 				'query_builder' => function (EntityRepository $er) {
+						$rubrique   = $this->getSubject()->getRubrique();
+						$rubriqueId = $rubrique ? $rubrique->getId() : 0;
 						return $er->createQueryBuilder('t')
-							->where('t.rubrique = :rubrique')
-							->setParameter('rubrique', $this->getSubject()->getRubrique()->getId())
+							->where('t.rubrique = :rubriqueId')
+							->setParameter('rubriqueId', $rubriqueId)
 							->orderBy('t.title', 'ASC');
 					},
 			))
