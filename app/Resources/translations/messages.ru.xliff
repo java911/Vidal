@@ -349,6 +349,69 @@
 				<target>Удаление фарм. компании</target>
 			</trans-unit>
 
+			<trans-unit id="sonata-21">
+				<source>Art Rubrique List</source>
+				<target>Разделы специалистам</target>
+			</trans-unit>
+			<trans-unit id="sonata-21-1">
+				<source>Art Rubrique Show</source>
+				<target>Раздел специалистам</target>
+			</trans-unit>
+			<trans-unit id="sonata-21-2">
+				<source>Art Rubrique Edit</source>
+				<target>Редактирование раздела специалистам</target>
+			</trans-unit>
+			<trans-unit id="sonata-21-3">
+				<source>Art Rubrique Create</source>
+				<target>Создание раздела специалистам</target>
+			</trans-unit>
+			<trans-unit id="sonata-21-4">
+				<source>Art Rubrique Delete</source>
+				<target>Удаление раздела специалистам</target>
+			</trans-unit>
+
+			<trans-unit id="sonata-22">
+				<source>Art Type List</source>
+				<target>Категории специалистам</target>
+			</trans-unit>
+			<trans-unit id="sonata-22-1">
+				<source>Art Type Show</source>
+				<target>Категория специалистам</target>
+			</trans-unit>
+			<trans-unit id="sonata-22-2">
+				<source>Art Type Edit</source>
+				<target>Редактирование категории специалистам</target>
+			</trans-unit>
+			<trans-unit id="sonata-22-3">
+				<source>Art Type Create</source>
+				<target>Создание категории специалистам</target>
+			</trans-unit>
+			<trans-unit id="sonata-22-4">
+				<source>Art Type Delete</source>
+				<target>Удаление категории специалистам</target>
+			</trans-unit>
+
+			<trans-unit id="sonata-23">
+				<source>Art Category List</source>
+				<target>Подкатегории специалистам</target>
+			</trans-unit>
+			<trans-unit id="sonata-23-1">
+				<source>Art Category Show</source>
+				<target>Подкатегория специалистам</target>
+			</trans-unit>
+			<trans-unit id="sonata-23-2">
+				<source>Art Category Edit</source>
+				<target>Редактирование подкатегории специалистам</target>
+			</trans-unit>
+			<trans-unit id="sonata-23-3">
+				<source>Art Category Create</source>
+				<target>Создание подкатегории специалистам</target>
+			</trans-unit>
+			<trans-unit id="sonata-23-4">
+				<source>Art Category Delete</source>
+				<target>Удаление подкатегории специалистам</target>
+			</trans-unit>
+
         </body>
     </file>
 </xliff>

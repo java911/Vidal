@@ -102,7 +102,7 @@ class Article extends BaseEntity
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $subclassId;
 
-	/** @ORM\ManyToMany(targetEntity="ArticleTag", inversedBy="arts") */
+	/** @ORM\ManyToMany(targetEntity="ArticleTag", inversedBy="articles") */
 	protected $tags;
 
 	/**

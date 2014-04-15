@@ -5,8 +5,8 @@ namespace Vidal\DrugBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/** @ORM\Entity @ORM\Table(name="art_type") */
-class ArtType
+/** @ORM\Entity @ORM\Table(name="art_category") */
+class ArtCategory
 {
 	/** @ORM\Column(type="integer") @ORM\Id @ORM\GeneratedValue */
 	protected $id;
@@ -23,20 +23,19 @@ class ArtType
 	/** @ORM\Column(type="boolean") */
 	protected $enabled;
 
-	/** @ORM\OneToMany(targetEntity="Art", mappedBy="type") */
+	/** @ORM\OneToMany(targetEntity="Art", mappedBy="category") */
 	protected $arts;
 
-	/** @ORM\ManyToOne(targetEntity="ArtRubrique", inversedBy="types") */
+	/** @ORM\ManyToOne(targetEntity="ArtRubrique", inversedBy="categories") */
 	protected $rubrique;
 
-	/** @ORM\OneToMany(targetEntity="ArtCategory", mappedBy="type", fetch="EXTRA_LAZY") */
-	protected $categories;
+	/** @ORM\ManyToOne(targetEntity="ArtType", inversedBy="categories") */
+	protected $type;
 
 	public function __construct()
 	{
-		$this->enabled    = true;
-		$this->arts       = new ArrayCollection();
-		$this->categories = new ArrayCollection();
+		$this->enabled = true;
+		$this->arts    = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -46,7 +45,7 @@ class ArtType
 
 	public function getIs()
 	{
-		return 'type';
+		return 'category';
 	}
 
 	/**
@@ -106,19 +105,19 @@ class ArtType
 	}
 
 	/**
-	 * @param mixed $categories
+	 * @param mixed $type
 	 */
-	public function setCategories($categories)
+	public function setType($type)
 	{
-		$this->categories = $categories;
+		$this->type = $type;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getCategories()
+	public function getType()
 	{
-		return $this->categories;
+		return $this->type;
 	}
 
 	/**

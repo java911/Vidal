@@ -125,14 +125,74 @@ class ArticleController extends Controller
 	 */
 	public function vrachamAction()
 	{
-		$em   = $this->getDoctrine()->getManager('drug');
-		$subs = $em->getRepository('VidalDrugBundle:Subdivision')->findVracham();
+		$em        = $this->getDoctrine()->getManager('drug');
+		$rubriques = $em->getRepository('VidalDrugBundle:ArtRubrique')->findActive();
 
 		return array(
-			'title' => 'Информация для специалистов',
-			'menu'  => 'vracham',
-			'subs'  => $subs,
+			'title'     => 'Информация для специалистов',
+			'menu'      => 'vracham',
+			'rubriques' => $rubriques,
 		);
+	}
+
+	/**
+	 * Категории статей для врачей
+	 *
+	 * @Route("/vracham/{url}", name="art", requirements={"url"=".+"})
+	 * @Secure(roles="ROLE_DOCTOR")
+	 *
+	 * @Template()
+	 */
+	public function artAction(Request $request, $url)
+	{
+		$parts    = explode('/', $url);
+		$em       = $this->getDoctrine()->getManager('drug');
+		$rubrique = $em->getRepository('VidalDrugBundle:ArtRubrique')->findOneByUrl($parts[0]);
+		$params   = array(
+			'menu'     => 'vracham',
+			'rubrique' => $rubrique,
+		);
+
+		$pos = strpos($url, '~');
+		if ($pos !== false) {
+			$id                = substr($url, $pos + 1);
+			$params['article'] = $em->getRepository('VidalDrugBundle:Art')->findOneById($id);
+			array_pop($parts);
+		}
+		$count = count($parts);
+
+		if ($count == 1 and $rubrique->getTypes()->count() == 0) {
+			$params['pagination'] = $this->get('knp_paginator')->paginate(
+				$em->getRepository('VidalDrugBundle:Art')->getQueryByRubrique($rubrique),
+				$request->query->get('p', 1),
+				self::ARTICLES_PER_PAGE
+			);
+		}
+		elseif ($count == 2) {
+			$params['type'] = $em->getRepository('VidalDrugBundle:ArtType')->findOneByUrl($parts[1]);
+			if ($params['type']->getCategories()->count() == 0) {
+				$params['pagination'] = $this->get('knp_paginator')->paginate(
+					$em->getRepository('VidalDrugBundle:Art')->getQueryByType($params['type']),
+					$request->query->get('p', 1),
+					self::ARTICLES_PER_PAGE
+				);
+			}
+		}
+		elseif ($count == 3) {
+			$params['type']       = $em->getRepository('VidalDrugBundle:ArtType')->findOneByUrl($parts[1]);
+			$params['category']   = $em->getRepository('VidalDrugBundle:ArtCategory')->findOneByUrl($parts[2]);
+			$params['pagination'] = $this->get('knp_paginator')->paginate(
+				$em->getRepository('VidalDrugBundle:Art')->getQueryByCategory($params['category']),
+				$request->query->get('p', 1),
+				self::ARTICLES_PER_PAGE
+			);
+		}
+
+		if (isset($params['article'])) {
+			return $this->render('VidalMainBundle:Article:art_item.html.twig', $params);
+		}
+
+		return $params;
 	}
 
 	/**
@@ -223,14 +283,15 @@ class ArticleController extends Controller
 		return $params;
 	}
 
-    /**
-     * @Secure(roles="ROLE_DOCTOR")
-     * @Route("/vracham/expert/Vidal-CD/", name="vracham_expert_cd")
-     * @Template()
-     */
-    public function vrachamExpertCdAction(){
-        return array();
-    }
+	/**
+	 * @Secure(roles="ROLE_DOCTOR")
+	 * @Route("/vracham/expert/Vidal-CD/", name="vracham_expert_cd")
+	 * @Template()
+	 */
+	public function vrachamExpertCdAction()
+	{
+		return array();
+	}
 
 	private function strip($string)
 	{

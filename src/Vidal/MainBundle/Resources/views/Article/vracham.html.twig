@@ -7,72 +7,40 @@
 
 
 {% block content %}
-	{% if subs is not empty %}
+	<a class="aa" href="{{ path('vracham_expert_cd') }}"><b>Электронный справочник Видаль</b></a>
+	<br/>
+	<br/>
+	<a class="aa" href="http://vidal.cloudapp.net/mobile/" target="_blank"><b>Поиск аналогов по МНН</b></a>
+	<br/>
+	<br/>
+	<div class="rubriques">
+		{% set perColumn = rubriques|length // 2 %}
 
-        <a class="aa" href="{{ path('vracham_expert_cd') }}"><b>Электронный справочник Видаль</b></a>
-        <br/>
-        <br/>
-        <a class="aa" href="http://vidal.cloudapp.net/mobile/" target="_blank"><b>Поиск аналогов по МНН</b></a>
-        <br/>
-        <br/>
-		<div class="rubriques">
-
-			{% set perColumn = subs|length // 2 %}
-
-			{% if app.environment == 'dev' %}
-				{% for sub in subs %}
-					{% if loop.index % perColumn == 1 %}
-						<div>
-						<ul class="ul">
-					{% endif %}
-
-					<li>
-						<a href="/app_dev.php{{ sub.url }}">
-							{{ sub.name }}
-							{# админам карандашик редактирования #}
-							{% if isAdmin %}
-								<a class="admin-edit fade" target="_blank"
-								   href="{{ path('admin_vidal_drug_subdivision_edit', {'id':sub.id}) }}">
-									<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-								</a>
-							{% endif %}
-						</a>
-					</li>
-
-					{% if loop.index % perColumn == 0 %}
-						</ul>
-						</div>
-					{% endif %}
-				{% endfor %}
-			{% else %}
-				{% for sub in subs %}
-					{% if loop.index % perColumn == 1 %}
-						<div>
-						<ul class="ul">
-					{% endif %}
-
-					<li>
-						<a href="{{ sub.url }}">
-							{{ sub.name }}
-							{# админам карандашик редактирования #}
-							{% if isAdmin %}
-								<a class="admin-edit fade" target="_blank"
-								   href="{{ path('admin_vidal_drug_subdivision_edit', {'id':sub.id}) }}">
-									<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-								</a>
-							{% endif %}
-						</a>
-					</li>
-
-					{% if loop.index % perColumn == 0 %}
-						</ul>
-						</div>
-					{% endif %}
-				{% endfor %}
+		{% for rubrique in rubriques %}
+			{% if loop.index % perColumn == 1 %}
+				<div>
+				<ul class="ul">
 			{% endif %}
 
-		</div>
-	{% endif %}
+			<li>
+				<a href="{{ path('art', {'url':rubrique.url}) }}">
+					{{ rubrique.title }}
+					{# админам карандашик редактирования #}
+					{% if isAdmin %}
+						<a class="admin-edit fade" target="_blank"
+						   href="{{ path('admin_vidal_drug_artrubrique_edit', {'id':rubrique.id}) }}">
+							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+						</a>
+					{% endif %}
+				</a>
+			</li>
+
+			{% if loop.index % perColumn == 0 %}
+				</ul>
+				</div>
+			{% endif %}
+		{% endfor %}
+	</div>
 
 {% endblock %}
 
@@ -80,12 +48,12 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/article.css') }}"/>
-    <style>
-        {{ parent() }}
-        .aa{
-            margin-right: 15px;
-            font-size: 15px;
-            font-weight: bold;
-        }
-    </style>
+	<style>
+		{{ parent() }}
+		.aa {
+			margin-right: 15px;
+			font-size:    15px;
+			font-weight:  bold;
+		}
+	</style>
 {% endblock %}

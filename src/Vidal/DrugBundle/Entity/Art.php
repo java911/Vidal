@@ -69,9 +69,6 @@ class Art extends BaseEntity
 	 */
 	protected $infoPages;
 
-	/** @ORM\ManyToOne(targetEntity="ArtType", inversedBy="arts") */
-	protected $type;
-
 	/** @ORM\Column(type="datetime", nullable=true) */
 	protected $date;
 
@@ -87,14 +84,8 @@ class Art extends BaseEntity
 	/** @ORM\Column(length=255, nullable=true) */
 	protected $metaKeywords;
 
-	/** @ORM\ManyToOne(targetEntity="Subdivision", inversedBy="articles") */
-	protected $subdivision;
-
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $priority;
-
-	/** @ORM\Column(type="integer", nullable=true) */
-	protected $subdivisionId;
 
 	/** @ORM\Column(type="integer") */
 	protected $subclassId;
@@ -106,9 +97,9 @@ class Art extends BaseEntity
 	 * @ORM\Column(type="array", nullable=true)
 	 * @FileStore\UploadableField(mapping="video")
 	 * @Assert\File(
-	 * 		maxSize="100M",
-	 * 		maxSizeMessage="Видео не может быть больше 100Мб",
-	 * 		mimeTypesMessage="Видео должно быть в формате .flv"
+	 *        maxSize="100M",
+	 *        maxSizeMessage="Видео не может быть больше 100Мб",
+	 *        mimeTypesMessage="Видео должно быть в формате .flv"
 	 * )
 	 */
 	protected $video;
@@ -121,6 +112,15 @@ class Art extends BaseEntity
 
 	/** @ORM\Column(length=10, nullable=true) */
 	protected $hidden;
+
+	/** @ORM\ManyToOne(targetEntity="ArtRubrique", inversedBy="arts") */
+	protected $rubrique;
+
+	/** @ORM\ManyToOne(targetEntity="ArtType", inversedBy="arts") */
+	protected $type;
+
+	/** @ORM\ManyToOne(targetEntity="ArtCategory", inversedBy="arts") */
+	protected $category;
 
 	public function __construct()
 	{
@@ -367,38 +367,6 @@ class Art extends BaseEntity
 	}
 
 	/**
-	 * @param mixed $subdivisionId
-	 */
-	public function setSubdivisionId($subdivisionId)
-	{
-		$this->subdivisionId = $subdivisionId;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getSubdivisionId()
-	{
-		return $this->subdivisionId;
-	}
-
-	/**
-	 * @param mixed $subdivision
-	 */
-	public function setSubdivision($subdivision)
-	{
-		$this->subdivision = $subdivision;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getSubdivision()
-	{
-		return $this->subdivision;
-	}
-
-	/**
 	 * @param mixed $priority
 	 */
 	public function setPriority($priority)
@@ -554,5 +522,37 @@ class Art extends BaseEntity
 	public function getHidden()
 	{
 		return $this->hidden;
+	}
+
+	/**
+	 * @param mixed $rubrique
+	 */
+	public function setRubrique($rubrique)
+	{
+		$this->rubrique = $rubrique;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getRubrique()
+	{
+		return $this->rubrique;
+	}
+
+	/**
+	 * @param mixed $category
+	 */
+	public function setCategory($category)
+	{
+		$this->category = $category;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCategory()
+	{
+		return $this->category;
 	}
 }

@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class ArtTypeAdmin extends Admin
+class ArtRubriqueAdmin extends Admin
 {
 	protected $datagridValues;
 
@@ -21,7 +21,7 @@ class ArtTypeAdmin extends Admin
 				'_page'       => 1,
 				'_per_page'   => 25,
 				'_sort_order' => 'ASC',
-				'_sort_by'    => 'rubrique'
+				'_sort_by'    => 'title'
 			);
 		}
 	}
@@ -32,8 +32,7 @@ class ArtTypeAdmin extends Admin
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
 			->add('url', null, array('label' => 'Адрес страницы', 'help' => 'латинские буквы и цифры, слова через тире'))
-			->add('rubrique', null, array('label' => 'Раздел'))
-			->add('enabled', null, array('label' => 'Активна'));
+			->add('enabled', null, array('label' => 'Активен'));
 	}
 
 	protected function configureFormFields(FormMapper $formMapper)
@@ -41,9 +40,8 @@ class ArtTypeAdmin extends Admin
 		$formMapper
 			->add('title', null, array('label' => 'Заголовок', 'required' => true))
 			->add('url', null, array('label' => 'Адрес страницы', 'required' => true, 'help' => 'латинские буквы и цифры, слова через тире'))
-			->add('rubrique', null, array('label' => 'Раздел', 'required' => true))
 			->add('announce', null, array('label' => 'Анонс', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
-			->add('enabled', null, array('label' => 'Активна', 'required' => false));
+			->add('enabled', null, array('label' => 'Активен', 'required' => false));
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -52,8 +50,7 @@ class ArtTypeAdmin extends Admin
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
 			->add('url', null, array('label' => 'Адрес страницы'))
-			->add('rubrique', null, array('label' => 'Раздел'))
-			->add('enabled', null, array('label' => 'Активна'));
+			->add('enabled', null, array('label' => 'Активен'));
 	}
 
 	protected function configureListFields(ListMapper $listMapper)
@@ -62,8 +59,7 @@ class ArtTypeAdmin extends Admin
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
 			->add('url', null, array('label' => 'Адрес страницы'))
-			->add('rubrique', null, array('label' => 'Раздел'))
-			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
+			->add('enabled', null, array('label' => 'Активен', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(

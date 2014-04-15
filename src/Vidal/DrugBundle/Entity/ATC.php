@@ -16,14 +16,11 @@ class ATC
 	/** @ORM\Column(length=255) */
 	protected $EngName;
 
-	/** @ORM\Column(length=10) @ORM\ManyToOne(targetEntity="ATC", inversedBy="children") */
+	/** @ORM\Column(length=10, nullable=true) */
 	protected $ParentATCCode;
 
 	/** @ORM\Column(type="boolean") */
 	protected $ShowInExport = false;
-
-	/** @ORM\OneToMany(targetEntity="ATC", mappedBy="ParentATCCode") */
-	protected $children;
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Product", mappedBy="atcCodes")
@@ -75,7 +72,6 @@ class ATC
 
 	public function __construct()
 	{
-		$this->children      = new ArrayCollection();
 		$this->products      = new ArrayCollection();
 		$this->articles      = new ArrayCollection();
 		$this->arts          = new ArrayCollection();
@@ -171,22 +167,6 @@ class ATC
 	public function getShowInExport()
 	{
 		return $this->ShowInExport;
-	}
-
-	/**
-	 * @param mixed $children
-	 */
-	public function setChildren(ArrayCollection $children)
-	{
-		$this->children = $children;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getChildren()
-	{
-		return $this->children;
 	}
 
 	/**

@@ -132,3 +132,10 @@ ul.items {
 	font-weight: bold;
 	color:       #444;
 }
+
+/* select2 width */
+.art-rubrique,
+.art-type,
+.art-category {
+	width: 556px !important;
+}

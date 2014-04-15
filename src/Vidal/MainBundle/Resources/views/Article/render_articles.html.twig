@@ -1,50 +1,30 @@
 {% set isAdmin = app.user and is_granted('ROLE_ADMIN') %}
+{% set basePath = category is defined
+? [rubrique.url, type.url, category.url]|join('/')
+: (type is defined ? [rubrique.url, type.url]|join('/') : rubrique.url ) %}
 
-{% if pagination.totalItemCount %}
+{% if pagination is defined and pagination.totalItemCount %}
 	<div class="articles">
-		{% if app.environment == 'dev' %}
-			{% for article in pagination %}
-				<div class="article">
-					{# админам карандашик редактирования #}
-					{% if isAdmin %}
-						<a class="admin-edit fade" target="_blank"
-						   href="{{ path('admin_vidal_drug_art_edit', {'id':article.id}) }}">
-							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-						</a>
-					{% endif %}
-					<div class="article-title">
-						<a href="/app_dev.php{{ sub.url }}{{ article.link }}_{{ article.id }}">{{ article }}</a>
-					</div>
-					<div class="article-announse">
-						{{ article.announce|raw }}
-					</div>
-					<div class="article-footer">
-						<span class="article-date">{{ article.date|date('d.m.Y') }}</span>
-					</div>
+		{% for art in pagination %}
+			<div class="article">
+				{# админам карандашик редактирования #}
+				{% if isAdmin %}
+					<a class="admin-edit fade" target="_blank"
+					   href="{{ path('admin_vidal_drug_art_edit', {'id':art.id}) }}">
+						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+					</a>
+				{% endif %}
+				<div class="article-title">
+					<a href="{{ path('art', {'url':basePath ~ '/' ~ art.link ~ '~' ~ art.id}) }}">{{ art.title|raw }}</a>
 				</div>
-			{% endfor %}
-		{% else %}
-			{% for article in pagination %}
-				<div class="article">
-					{# админам карандашик редактирования #}
-					{% if isAdmin %}
-						<a class="admin-edit fade" target="_blank"
-						   href="{{ path('admin_vidal_drug_art_edit', {'id':article.id}) }}">
-							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-						</a>
-					{% endif %}
-					<div class="article-title">
-						<a href="{{ sub.url }}{{ article.link }}_{{ article.id }}">{{ article }}</a>
-					</div>
-					<div class="article-announse">
-						{{ article.announce|raw }}
-					</div>
-					<div class="article-footer">
-						<span class="article-date">{{ article.date|date('d.m.Y') }}</span>
-					</div>
+				<div class="article-announse">
+					{{ art.announce|raw }}
 				</div>
-			{% endfor %}
-		{% endif %}
+				<div class="article-footer">
+					<span class="article-date">{{ art.date|date('d.m.Y') }}</span>
+				</div>
+			</div>
+		{% endfor %}
 	</div>
 
 	<div class="navigation">
