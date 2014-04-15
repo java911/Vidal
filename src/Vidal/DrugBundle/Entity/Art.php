@@ -84,14 +84,8 @@ class Art extends BaseEntity
 	/** @ORM\Column(length=255, nullable=true) */
 	protected $metaKeywords;
 
-	/** @ORM\ManyToOne(targetEntity="Subdivision", inversedBy="articles") */
-	protected $subdivision;
-
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $priority;
-
-	/** @ORM\Column(type="integer", nullable=true) */
-	protected $subdivisionId;
 
 	/** @ORM\Column(type="integer") */
 	protected $subclassId;
@@ -370,38 +364,6 @@ class Art extends BaseEntity
 	public function getSubclassId()
 	{
 		return $this->subclassId;
-	}
-
-	/**
-	 * @param mixed $subdivisionId
-	 */
-	public function setSubdivisionId($subdivisionId)
-	{
-		$this->subdivisionId = $subdivisionId;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getSubdivisionId()
-	{
-		return $this->subdivisionId;
-	}
-
-	/**
-	 * @param mixed $subdivision
-	 */
-	public function setSubdivision($subdivision)
-	{
-		$this->subdivision = $subdivision;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getSubdivision()
-	{
-		return $this->subdivision;
 	}
 
 	/**

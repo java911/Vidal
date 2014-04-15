@@ -73,7 +73,7 @@ class Molecule
 	 *        joinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="pharm_article_id", referencedColumnName="id")})
 	 */
-	protected $pharmArticle;
+	protected $pharmArticles;
 
 	public function __construct()
 	{
@@ -82,7 +82,7 @@ class Molecule
 		$this->articles          = new ArrayCollection();
 		$this->arts              = new ArrayCollection();
 		$this->publications      = new ArrayCollection();
-		$this->pharmArticle      = new ArrayCollection();
+		$this->pharmArticles     = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -309,18 +309,18 @@ class Molecule
 	}
 
 	/**
-	 * @param mixed $pharmArticle
+	 * @param mixed $pharmArticles
 	 */
-	public function setPharmArticle($pharmArticle)
+	public function setPharmArticles($pharmArticles)
 	{
-		$this->pharmArticle = $pharmArticle;
+		$this->pharmArticles = $pharmArticles;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getPharmArticle()
+	public function getPharmArticles()
 	{
-		return $this->pharmArticle;
+		return $this->pharmArticles;
 	}
 }
