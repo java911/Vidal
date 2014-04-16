@@ -1346,3 +1346,14 @@ h1 span {
 .publication a *:hover {
 	text-decoration: underline !important;
 }
+
+.article-wrap p,
+.article-wrap p *,
+.article-body p,
+.article-body p *,
+.article-item p,
+.article-item p *,
+.publication p,
+.publication p * {
+	line-height: inherit !important;
+}
