@@ -24,7 +24,12 @@
 .article-announse {
 	margin-bottom: 6px;
 }
+.article-footer {
+	overflow: hidden;
+}
 .article-date {
+	display:    inline-block;
+	float:      right;
 	font-size:  13px;
 	font-style: italic;
 	color:      gray;

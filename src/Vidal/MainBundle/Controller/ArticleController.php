@@ -199,21 +199,30 @@ class ArticleController extends Controller
 		}
 		$count = count($parts);
 
-		if ($count == 1 and $rubrique->getTypes()->count() == 0) {
-			$params['pagination'] = $this->get('knp_paginator')->paginate(
-				$em->getRepository('VidalDrugBundle:Art')->getQueryByRubrique($rubrique),
-				$request->query->get('p', 1),
-				self::ARTICLES_PER_PAGE
-			);
-		}
-		elseif ($count == 2) {
-			$params['type'] = $em->getRepository('VidalDrugBundle:ArtType')->rubriqueUrl($rubrique, $parts[1]);
-			if ($params['type']->getCategories()->count() == 0) {
+		if ($count == 1) {
+			if ($rubrique->getTypes()->count() == 0) {
 				$params['pagination'] = $this->get('knp_paginator')->paginate(
-					$em->getRepository('VidalDrugBundle:Art')->getQueryByType($params['type']),
+					$em->getRepository('VidalDrugBundle:Art')->getQueryByRubrique($rubrique),
 					$request->query->get('p', 1),
 					self::ARTICLES_PER_PAGE
 				);
+			}
+			else {
+				$params['types'] = $em->getRepository('VidalDrugBundle:ArtType')->findByRubrique($rubrique);
+			}
+		}
+		elseif ($count == 2) {
+			$type           = $em->getRepository('VidalDrugBundle:ArtType')->rubriqueUrl($rubrique, $parts[1]);
+			$params['type'] = $type;
+			if ($params['type']->getCategories()->count() == 0) {
+				$params['pagination'] = $this->get('knp_paginator')->paginate(
+					$em->getRepository('VidalDrugBundle:Art')->getQueryByType($type),
+					$request->query->get('p', 1),
+					self::ARTICLES_PER_PAGE
+				);
+			}
+			else {
+				$params['categories'] = $em->getRepository('VidalDrugBundle:ArtCategory')->findByType($type);
 			}
 		}
 		elseif ($count == 3) {

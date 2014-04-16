@@ -18,4 +18,15 @@ class ArtTypeRepository extends EntityRepository
 			->setParameter('url', $url)
 			->getOneOrNullResult();
 	}
+
+	public function findByRubrique($rubrique)
+	{
+		return $this->_em->createQuery('
+			SELECT t
+			FROM VidalDrugBundle:ArtType t
+			WHERE t.enabled = 1 AND t.rubrique = :rubrique
+			ORDER BY t.priority DESC, t.title ASC
+		')->setParameter('rubrique', $rubrique->getId())
+			->getResult();
+	}
 }

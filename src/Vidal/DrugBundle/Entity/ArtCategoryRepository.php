@@ -18,4 +18,15 @@ class ArtCategoryRepository extends EntityRepository
 			->setParameter('url', $url)
 			->getOneOrNullResult();
 	}
+
+	public function findByType($type)
+	{
+		return $this->_em->createQuery('
+			SELECT c
+			FROM VidalDrugBundle:ArtCategory c
+			WHERE c.enabled = 1 AND c.type = :type
+			ORDER BY c.priority DESC, c.title ASC
+		')->setParameter('type', $type->getId())
+			->getResult();
+	}
 }

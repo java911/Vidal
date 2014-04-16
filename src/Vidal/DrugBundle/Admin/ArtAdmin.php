@@ -172,6 +172,7 @@ class ArtAdmin extends Admin
 			->add('rubrique', null, array('label' => 'Раздел'))
 			->add('type', null, array('label' => 'Категория'))
 			->add('category', null, array('label' => 'Подкатегория'))
+			->add('tags', null, array('label' => 'Теги', 'template' => 'VidalDrugBundle:Sonata:tags.html.twig'))
 			->add('priority', null, array('label' => 'Приоритет'))
 			->add('date', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
 			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))

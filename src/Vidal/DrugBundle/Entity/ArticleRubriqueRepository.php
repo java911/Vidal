@@ -37,7 +37,7 @@ class ArticleRubriqueRepository extends EntityRepository
 			SELECT r
 			FROM VidalDrugBundle:ArticleRubrique r
 			WHERE r.enabled = TRUE
-			ORDER BY r.title ASC
+			ORDER BY r.priority DESC, r.title ASC
 		')->getResult();
 	}
 }

@@ -32,6 +32,9 @@ class ArtType
 	/** @ORM\OneToMany(targetEntity="ArtCategory", mappedBy="type", fetch="EXTRA_LAZY") */
 	protected $categories;
 
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $priority;
+
 	public function __construct()
 	{
 		$this->enabled    = true;
@@ -167,5 +170,21 @@ class ArtType
 	public function getEnabled()
 	{
 		return $this->enabled;
+	}
+
+	/**
+	 * @param mixed $priority
+	 */
+	public function setPriority($priority)
+	{
+		$this->priority = $priority;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPriority()
+	{
+		return $this->priority;
 	}
 }

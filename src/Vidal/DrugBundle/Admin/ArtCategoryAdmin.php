@@ -34,6 +34,7 @@ class ArtCategoryAdmin extends Admin
 			->add('url', null, array('label' => 'Адрес страницы', 'help' => 'латинские буквы и цифры, слова через тире'))
 			->add('rubrique', null, array('label' => 'Раздел'))
 			->add('type', null, array('label' => 'Категория'))
+			->add('priority', null, array('label' => 'Приоритет'))
 			->add('enabled', null, array('label' => 'Активна'));
 	}
 
@@ -45,6 +46,7 @@ class ArtCategoryAdmin extends Admin
 			->add('rubrique', null, array('label' => 'Раздел', 'required' => true, 'empty_value' => 'выберите', 'attr' => array('class' => 'art-rubrique')))
 			->add('type', null, array('label' => 'Категория', 'required' => true, 'attr' => array('class' => 'art-type')))
 			->add('announce', null, array('label' => 'Анонс', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
+			->add('priority', null, array('label' => 'Приоритет', 'required' => false))
 			->add('enabled', null, array('label' => 'Активна', 'required' => false));
 	}
 
@@ -64,6 +66,7 @@ class ArtCategoryAdmin extends Admin
 					},
 			))
 			->add('type', null, array('label' => 'Категория', 'attr' => array('class' => 'art-type')))
+			->add('priority', null, array('label' => 'Приоритет'))
 			->add('enabled', null, array('label' => 'Активна'));
 	}
 
@@ -75,6 +78,7 @@ class ArtCategoryAdmin extends Admin
 			->add('url', null, array('label' => 'Адрес страницы'))
 			->add('rubrique', null, array('label' => 'Раздел'))
 			->add('type', null, array('label' => 'Категория'))
+			->add('priority', null, array('label' => 'Приоритет'))
 			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',

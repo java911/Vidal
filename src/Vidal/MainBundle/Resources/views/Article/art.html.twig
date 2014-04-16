@@ -36,8 +36,8 @@
 	{% endif %}
 
 	<div class="divisions">
-		{% if item.is == 'rubrique' %}
-			{% for type in rubrique.types %}
+		{% if types is defined %}
+			{% for type in types %}
 				<div>
 					{% if isAdmin %}
 						<a class="admin-edit fade" target="_blank"
@@ -53,8 +53,8 @@
 					{% endif %}
 				</div>
 			{% endfor %}
-		{% elseif item.is == 'type' %}
-			{% for category in type.categories %}
+		{% elseif categories is defined %}
+			{% for category in categories %}
 				<div>
 					{% if isAdmin %}
 						<a class="admin-edit fade" target="_blank"
