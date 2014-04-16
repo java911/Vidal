@@ -1307,47 +1307,43 @@ h1 span {
 }
 
 /* перебиваем кривые стили статей и новостей */
-#wrapper .article-wrap a,
-#wrapper .article-wrap a *,
-#wrapper .article-body a,
-#wrapper .article-body a *,
-#wrapper .publication a,
-#wrapper .publication a *
-#wrapper .article-item a,
-#wrapper .article-item a *,
-{
-	color: #d71344;
+.article-wrap a,
+.article-wrap a *,
+.article-body a,
+.article-body a *,
+.publication a,
+.publication a *,
+.article-item a,
+.article-item a * {
+	color: #d71344 !important;
 }
 
-#wrapper .article-wrap img,
-#wrapper .article-body img,
-#wrapper .publication img,
-#wrapper .article-item img,
-{
-	max-width: 520px;
+.article-wrap img,
+.article-body img,
+.publication img,
+.article-item img {
+	max-width: 520px !important;
 }
 
-#wrapper .article-wrap a,
-#wrapper .article-wrap a *,
-#wrapper .article-body a,
-#wrapper .article-body a *,
-#wrapper .article-item a,
-#wrapper .article-item a *,
-#wrapper .publication a *
-#wrapper .publication a,
-#wrapper .publication a *,
-{
-	text-decoration: none;
+.article-wrap a,
+.article-wrap a *,
+.article-body a,
+.article-body a *,
+.article-item a,
+.article-item a *,
+.publication a *
+.publication a,
+.publication a * {
+	text-decoration: none !important;
 }
 
-#wrapper .article-wrap a:hover,
-#wrapper .article-wrap a *:hover,
-#wrapper .article-body a:hover,
-#wrapper .article-body a *:hover
-#wrapper .article-item a:hover,
-#wrapper .article-item a *:hover,
-#wrapper .publication a:hover,
-#wrapper .publication a *:hover,
-{
-	text-decoration: underline;
+.article-wrap a:hover,
+.article-wrap a *:hover,
+.article-body a:hover,
+.article-body a *:hover
+.article-item a:hover,
+.article-item a *:hover,
+.publication a:hover,
+.publication a *:hover {
+	text-decoration: underline !important;
 }

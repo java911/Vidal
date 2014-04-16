@@ -222,6 +222,9 @@ class Document
 	 */
 	protected $pharmArticles;
 
+	/** @ORM\OneToMany(targetEntity="PharmPortfolio", mappedBy="DocumentID") */
+	protected $portfolios;
+
 	public function __construct()
 	{
 		$this->atcCodes          = new ArrayCollection();
@@ -236,6 +239,7 @@ class Document
 		$this->arts              = new ArrayCollection();
 		$this->publications      = new ArrayCollection();
 		$this->pharmArticles     = new ArrayCollection();
+		$this->portfolios        = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -1137,5 +1141,21 @@ class Document
 	public function getPharmArticles()
 	{
 		return $this->pharmArticles;
+	}
+
+	/**
+	 * @param mixed $portfolios
+	 */
+	public function setPortfolios($portfolios)
+	{
+		$this->portfolios = $portfolios;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPortfolios()
+	{
+		return $this->portfolios;
 	}
 }

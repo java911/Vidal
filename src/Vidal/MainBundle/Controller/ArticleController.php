@@ -136,6 +136,44 @@ class ArticleController extends Controller
 	}
 
 	/**
+	 * @Route("/vracham/podrobno-o-preparate", name="portfolio")
+	 *
+	 * @Template
+	 */
+	public function portfolioAction()
+	{
+		$em     = $this->getDoctrine()->getManager('drug');
+		$params = array(
+			'title'      => 'Портфели препаратов',
+			'portfolios' => $em->getRepository('VidalDrugBundle:PharmPortfolio')->findActive(),
+		);
+
+		return $params;
+	}
+
+	/**
+	 * @Route("/vracham/podrobno-o-preparate/{url}", name="portfolio_item")
+	 *
+	 * @Template
+	 */
+	public function portfolioItemAction($url)
+	{
+		$em        = $this->getDoctrine()->getManager('drug');
+		$portfolio = $em->getRepository('VidalDrugBundle:PharmPortfolio')->findOneByUrl($url);
+
+		if (!$portfolio) {
+			throw $this->createNotFoundException();
+		}
+
+		$params = array(
+			'title'     => $this->strip($portfolio->getTitle()) . ' | Портфель препарата',
+			'portfolio' => $portfolio,
+		);
+
+		return $params;
+	}
+
+	/**
 	 * Категории статей для врачей
 	 *
 	 * @Route("/vracham/{url}", name="art", requirements={"url"=".+"})
@@ -197,94 +235,6 @@ class ArticleController extends Controller
 	}
 
 	/**
-	 * Отдельная категория (subdivision) со статьями
-	 *
-	 * @Route("/vracham/Informatsiya-dlya-spetsialistov/{url}", name="vracham_url", requirements={"url"=".+"})
-	 * @Route("/vracham/Informatsiya-dlya-spetsialistov/{url}/", requirements={"url"=".+"})
-	 * @Secure(roles="ROLE_DOCTOR")
-	 *
-	 * @Template()
-	 */
-	public function vrachamUrlAction(Request $request, $url)
-	{
-		$em      = $this->getDoctrine()->getManager('drug');
-		$urlFull = $request->getPathInfo();
-		$params  = array(
-			'title' => 'Информация для специалистов',
-			'menu'  => 'vracham',
-		);
-
-		$urlParts = explode('/', $url);
-		$paths    = array();
-
-		foreach ($urlParts as $part) {
-			$pos  = strrpos($part, '_');
-			$pos2 = false;
-
-			if ($pos === false) {
-				$pos2 = strpos($part, '.html');
-			}
-
-			# если это путь - заносим в массив для хлебных крошек, иначе - это статья
-			if ($pos === false && $pos2 === false) {
-				if ($part != '') {
-					$path = $em->getRepository('VidalDrugBundle:Subdivision')->findOneByEngName($part);
-					if ($path) {
-						$paths[] = $path;
-					}
-				}
-			}
-			else {
-				if ($pos) {
-					# надо отсечь с конца .html
-					$posDot = strpos($part, '.');
-					if ($posDot !== false) {
-						$part = substr($part, 0, $posDot);
-					}
-					$id      = substr($part, $pos + 1);
-					$article = $em->getRepository('VidalDrugBundle:Art')->findOneById($id);
-				}
-				else {
-					$link    = substr($part, 0, $pos2);
-					$article = $em->getRepository('VidalDrugBundle:Art')->findOneByLink($link);
-				}
-
-				if (!$article) {
-					throw $this->createNotFoundException();
-				}
-
-				$index             = count($paths) - 1;
-				$params['sub']     = $paths[$index];
-				$params['article'] = $article;
-				$params['paths']   = $paths;
-
-				return $this->render('VidalMainBundle:Article:vrachamUrlArticle.html.twig', $params);
-			}
-		}
-
-		if (substr($urlFull, -1) != '/') {
-			$urlFull .= '/';
-		}
-
-		$sub = $em->getRepository('VidalDrugBundle:Subdivision')->findOneByUrl($urlFull);
-
-		if (empty($sub)) {
-			throw $this->createNotFoundException();
-		}
-
-		$params['sub']   = $sub;
-		$params['paths'] = $paths;
-
-		$params['pagination'] = $this->get('knp_paginator')->paginate(
-			$em->getRepository('VidalDrugBundle:Art')->getQueryBySubdivision($sub->getId()),
-			$request->query->get('p', 1),
-			self::ARTICLES_PER_PAGE
-		);
-
-		return $params;
-	}
-
-	/**
 	 * @Secure(roles="ROLE_DOCTOR")
 	 * @Route("/vracham/expert/Vidal-CD/", name="vracham_expert_cd")
 	 * @Template()
@@ -296,8 +246,8 @@ class ArticleController extends Controller
 
 	private function strip($string)
 	{
-		$pat = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/&amp;/');
-		$rep = array('', '', '&');
+		$pat = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/&amp;/', '/&reg;/');
+		$rep = array('', '', '&', '');
 
 		return preg_replace($pat, $rep, $string);
 	}
