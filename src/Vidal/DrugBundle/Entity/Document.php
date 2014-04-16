@@ -222,7 +222,7 @@ class Document
 	 */
 	protected $pharmArticles;
 
-	/** @ORM\OneToMany(targetEntity="PharmPortfolio", mappedBy="DocumentID") */
+	/** @ORM\OneToMany(targetEntity="PharmPortfolio", mappedBy="DocumentID", fetch="EXTRA_LAZY") */
 	protected $portfolios;
 
 	public function __construct()
