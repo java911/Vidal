@@ -42,8 +42,8 @@ class ArtCategoryAdmin extends Admin
 		$formMapper
 			->add('title', null, array('label' => 'Заголовок', 'required' => true))
 			->add('url', null, array('label' => 'Адрес страницы', 'required' => true, 'help' => 'латинские буквы и цифры, слова через тире'))
-			->add('rubrique', null, array('label' => 'Раздел', 'required' => true))
-			->add('type', null, array('label' => 'Категория', 'required' => true))
+			->add('rubrique', null, array('label' => 'Раздел', 'required' => true, 'empty_value' => 'выберите', 'attr' => array('class' => 'art-rubrique')))
+			->add('type', null, array('label' => 'Категория', 'required' => true, 'attr' => array('class' => 'art-type')))
 			->add('announce', null, array('label' => 'Анонс', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('enabled', null, array('label' => 'Активна', 'required' => false));
 	}
@@ -54,8 +54,16 @@ class ArtCategoryAdmin extends Admin
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
 			->add('url', null, array('label' => 'Адрес страницы'))
-			->add('rubrique', null, array('label' => 'Раздел'))
-			->add('type', null, array('label' => 'Категория'))
+			->add('rubrique', null, array(
+				'label'         => 'Раздел',
+				'required'      => true,
+				'attr'          => array('class' => 'art-rubrique'),
+				'query_builder' => function (EntityRepository $er) {
+						return $er->createQueryBuilder('r')
+							->orderBy('r.title', 'ASC');
+					},
+			))
+			->add('type', null, array('label' => 'Категория', 'attr' => array('class' => 'art-type')))
 			->add('enabled', null, array('label' => 'Активна'));
 	}
 
