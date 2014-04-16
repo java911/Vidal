@@ -44,15 +44,15 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, 
 }
 sup, sub {
 	padding-left:    1px;
-	font-size:       13px;
+	font-size:       12px;
 	font-family:     sans-serif;
 	line-height:     9px;
 	text-decoration: none;
 }
-sup {
+sup, sup * {
 	vertical-align: top;
 }
-sub {
+sub, sub * {
 	vertical-align: bottom;
 }
 
@@ -1331,7 +1331,6 @@ h1 span {
 .article-body a *,
 .article-item a,
 .article-item a *,
-.publication a *
 .publication a,
 .publication a * {
 	text-decoration: none !important;
