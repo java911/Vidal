@@ -82,7 +82,8 @@ body {
 	position: relative;
 }
 .main {
-	padding: 0 36px;
+	padding:        0 36px;
+	vertical-align: top;
 }
 .content {
 	position: relative;
