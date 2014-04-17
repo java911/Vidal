@@ -174,6 +174,16 @@ class ArticleController extends Controller
 	}
 
 	/**
+	 * @Secure(roles="ROLE_DOCTOR")
+	 * @Route("/vracham/expert/Vidal-CD/", name="vracham_expert_cd")
+	 * @Template()
+	 */
+	public function vrachamExpertCdAction()
+	{
+		return array();
+	}
+
+	/**
 	 * Категории статей для врачей
 	 *
 	 * @Route("/vracham/{url}", name="art", requirements={"url"=".+"})
@@ -241,16 +251,6 @@ class ArticleController extends Controller
 		}
 
 		return $params;
-	}
-
-	/**
-	 * @Secure(roles="ROLE_DOCTOR")
-	 * @Route("/vracham/expert/Vidal-CD/", name="vracham_expert_cd")
-	 * @Template()
-	 */
-	public function vrachamExpertCdAction()
-	{
-		return array();
 	}
 
 	private function strip($string)
