@@ -33,6 +33,9 @@ class ArticleRubrique
 	/** @ORM\Column(type="boolean") */
 	protected $enabled;
 
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $priority;
+
 	public function __construct()
 	{
 		$this->articles = new ArrayCollection();
@@ -115,5 +118,21 @@ class ArticleRubrique
 	public function getEnabled()
 	{
 		return $this->enabled;
+	}
+
+	/**
+	 * @param mixed $priority
+	 */
+	public function setPriority($priority)
+	{
+		$this->priority = $priority;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPriority()
+	{
+		return $this->priority;
 	}
 }

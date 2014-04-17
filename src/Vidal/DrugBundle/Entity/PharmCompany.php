@@ -17,13 +17,17 @@ class PharmCompany
 	/** @ORM\OneToMany(targetEntity="PharmArticle", mappedBy="company") */
 	protected $articles;
 
+	/** @ORM\OneToMany(targetEntity="PharmPortfolio", mappedBy="company") */
+	protected $portfolios;
+
 	/** @ORM\Column(type="boolean") */
 	protected $enabled;
 
 	public function __construct()
 	{
-		$this->articles = new ArrayCollection();
-		$this->enabled  = true;
+		$this->articles   = new ArrayCollection();
+		$this->portfolios = new ArrayCollection();
+		$this->enabled    = true;
 	}
 
 	public function __toString()
@@ -85,5 +89,21 @@ class PharmCompany
 	public function getEnabled()
 	{
 		return $this->enabled;
+	}
+
+	/**
+	 * @param mixed $portfolios
+	 */
+	public function setPortfolios($portfolios)
+	{
+		$this->portfolios = $portfolios;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPortfolios()
+	{
+		return $this->portfolios;
 	}
 }

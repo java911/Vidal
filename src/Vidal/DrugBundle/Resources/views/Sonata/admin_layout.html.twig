@@ -126,7 +126,7 @@ file that was distributed with this source code.
 					return $("<li></li>").data("item.autocomplete", item).append("<a>" + item.label + "</a>").appendTo(ul);
 				};
 
-			{% if object.documents.count %}
+			{% if object.documents and object.documents.count %}
 			var ul = $('<ul>{% for document in object.documents %}<li>{{ document|raw }}</li>{% endfor %}</ul>');
 			$('.doc').parent().append(ul);
 			{% endif %}
@@ -135,19 +135,22 @@ file that was distributed with this source code.
 	{% endif %}
 
 	{# если редактируем админку со стотьями специалистам - подключаем обработчик смены списка категорий/подкатегорий #}
-	{% if route in ['admin_vidal_drug_art_edit', 'admin_vidal_drug_art_list'] %}
+	{% if route in ['admin_vidal_drug_art_edit', 'admin_vidal_drug_art_create', 'admin_vidal_drug_art_list', 'admin_vidal_drug_artcategory_create'] %}
 	<script type="text/javascript">
 		$(document).ready(function() {
 			var $selectRubrique = $('.art-rubrique, #filter_rubrique_value');
 			var $selectType = $('.art-type, #filter_type_value');
 			var $selectCategory = $('.art-category, #filter_category_value');
 
+			$selectRubrique.select2('destroy');
+			$selectType.select2('destroy');
+			$selectCategory.select2('destroy');
+
 			$selectRubrique.change(function() {
 				if (this.value) {
 					$.getJSON(Routing.generate('types_of_rubrique', {'rubriqueId': this.value}), null, function(data) {
 						if (data.length == 0) {
-							$selectType.select2('val', '');
-							$selectType.select2('enable', false);
+							$selectType.prop('disabled', 'disabled');
 						}
 						else {
 							$selectType.find('option').remove();
@@ -155,50 +158,95 @@ file that was distributed with this source code.
 							$.each(data, function(index, option) {
 								$selectType.append($('<option></option>').val(option.id).text(option.title));
 							});
-							$selectType.select2('enable', true);
-							$selectType.select2('val', '');
-							$selectType.trigger('change');
+							$selectType.prop('disabled', false);
 						}
 					});
 				}
 				else {
-					$selectType.select2('val', '');
-					$selectType.select2('enable', false);
+					$selectType.prop('disabled', 'disabled');
 				}
 			});
 
 			$selectType.change(function() {
-
 				if (this.value) {
 					$.getJSON(Routing.generate('categories_of_type', {'typeId': this.value}), null, function(data) {
 						if (data.length == 0) {
-							$selectCategory.select2('val', '');
-							$selectCategory.select2('enable', false);
+							$selectCategory.prop('disabled', 'disabled');
 						}
 						else {
-
 							$selectCategory.find('option').remove();
 							$selectCategory.append($('<option></option>'));
 							$.each(data, function(index, option) {
 								$selectCategory.append($('<option></option>').val(option.id).text(option.title));
 							});
-							$selectCategory.select2('enable', true);
-							$selectCategory.select2('val', '');
-							$selectCategory.trigger('change');
+							$selectCategory.prop('disabled', false);
 						}
 					});
 				}
 				else {
-					$selectCategory.select2('val', '');
-					$selectCategory.select2('enable', false);
+					$selectCategory.prop('disabled', 'disabled');
 				}
 			});
 
+			{% if object is defined %}
+			{% if object.rubrique %}
+			$.getJSON(Routing.generate('types_of_rubrique', {'rubriqueId': '{{ object.rubrique.id }}'}), null, function(data) {
+				if (data.length == 0) {
+					$selectType.prop('disabled', 'disabled');
+				}
+				else {
+					$selectType.find('option').remove();
+					$selectType.append($('<option></option>'));
+					$.each(data, function(index, option) {
+						var $tag = $('<option></option>').val(option.id).text(option.title);
+						{% if object.type %}
+						if (option.id == '{{ object.type.id }}') {
+							$tag.attr('selected', 'selected')
+						}
+						{% endif %}
+						$selectType.append($tag);
+					});
+					$selectType.prop('disabled', false);
+				}
+			});
+			{% endif %}
+			{% else %}
+			$selectType.find('option').remove();
+			$selectType.append($('<option></option>'));
+			{% endif %}
+
+			{% if object is defined %}
+			{% if object.type %}
+			$.getJSON(Routing.generate('categories_of_type', {'typeId': '{{ object.type.id }}'}), null, function(data) {
+				if (data.length == 0) {
+					$selectCategory.prop('disabled', 'disabled');
+				}
+				else {
+					$selectCategory.find('option').remove();
+					$selectCategory.append($('<option></option>'));
+					$.each(data, function(index, option) {
+						var $tag = $('<option></option>').val(option.id).text(option.title);
+						{% if object.category %}
+						if (option.id == '{{ object.category.id }}') {
+							$tag.attr('selected', 'selected')
+						}
+						{% endif %}
+						$selectCategory.append($tag);
+					});
+					$selectCategory.prop('disabled', false);
+				}
+			});
+			{% endif %}
+			{% else %}
+			$selectCategory.find('option').remove();
+			$selectCategory.append($('<option></option>'));
+			{% endif %}
+
 			if ($selectType.find('option').length < 2) {
-				$selectType.select2('enable', false);
+				$selectType.prop('disabled', 'disabled');
 			}
 			if ($selectCategory.find('option').length < 2) {
-				$selectCategory.select2('enable', false);
+				$selectCategory.prop('disabled', 'disabled');
 			}
 		});
 	</script>
@@ -371,9 +419,7 @@ file that was distributed with this source code.
 					{% endif %}
 
 					{% if _content is not empty %}
-						{% if app.user.id not in [44511,44360] %}
-							<div class="sonata-ba-content">{{ _content|raw }}</div>
-						{% endif %}
+						<div class="sonata-ba-content">{{ _content|raw }}</div>
 					{% endif %}
 
 					{% if _show is not empty %}
@@ -393,6 +439,11 @@ file that was distributed with this source code.
 						<div class="sonata-ba-list">
 							{{ _list_table|raw }}
 						</div>
+					{% endif %}
+
+					{# тут кнопки под панелью управления (для администраторов) #}
+					{% if route in ['sonata_admin_dashboard', 'admin_vidal_drug_art_list'] %}
+						<a class="btn" href="{{ path('art_move') }}">Перемещение статей</a>
 					{% endif %}
 
 				{% endblock %}

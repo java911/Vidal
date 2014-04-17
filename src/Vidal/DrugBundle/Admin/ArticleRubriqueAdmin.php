@@ -31,7 +31,8 @@ class ArticleRubriqueAdmin extends Admin
 		$showMapper
 			->add('id')
 			->add('title', null, array('label' => 'Название'))
-			->add('rubrique', null, array('label' => 'Страница рубрики', 'help' => 'Принимаются латинские буквы и тире'));
+			->add('rubrique', null, array('label' => 'Страница рубрики', 'help' => 'Принимаются латинские буквы и тире'))
+			->add('priority', null, array('label' => 'Приоритет'));
 	}
 
 	protected function configureFormFields(FormMapper $formMapper)
@@ -42,13 +43,15 @@ class ArticleRubriqueAdmin extends Admin
 				'label'    => 'Страница рубрики',
 				'help'     => 'Принимаются латинские буквы и тире',
 				'required' => true
-			));
+			))
+			->add('priority', null, array('label' => 'Приоритет'));
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
-			->add('title', null, array('label' => 'Название'));
+			->add('title', null, array('label' => 'Название'))
+			->add('priority', null, array('label' => 'Приоритет'));
 	}
 
 	protected function configureListFields(ListMapper $listMapper)
@@ -56,7 +59,7 @@ class ArticleRubriqueAdmin extends Admin
 		$listMapper
 			->add('title', null, array('label' => 'Название'))
 			->add('rubrique', null, array('label' => 'Страница рубрики'))
-			->add('content', null, array('label' => 'Содержимое'))
+			->add('priority', null, array('label' => 'Приоритет'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(

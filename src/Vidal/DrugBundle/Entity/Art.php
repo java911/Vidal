@@ -87,9 +87,6 @@ class Art extends BaseEntity
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $priority;
 
-	/** @ORM\Column(type="integer") */
-	protected $subclassId;
-
 	/** @ORM\ManyToMany(targetEntity="ArtTag", inversedBy="arts") */
 	protected $tags;
 
@@ -121,6 +118,9 @@ class Art extends BaseEntity
 
 	/** @ORM\ManyToOne(targetEntity="ArtCategory", inversedBy="arts") */
 	protected $category;
+
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $sub;
 
 	public function __construct()
 	{
@@ -351,22 +351,6 @@ class Art extends BaseEntity
 	}
 
 	/**
-	 * @param mixed $subclassId
-	 */
-	public function setSubclassId($subclassId)
-	{
-		$this->subclassId = $subclassId;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getSubclassId()
-	{
-		return $this->subclassId;
-	}
-
-	/**
 	 * @param mixed $priority
 	 */
 	public function setPriority($priority)
@@ -555,4 +539,22 @@ class Art extends BaseEntity
 	{
 		return $this->category;
 	}
+
+	/**
+	 * @param mixed $sub
+	 */
+	public function setSub($sub)
+	{
+		$this->sub = $sub;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSub()
+	{
+		return $this->sub;
+	}
+
+
 }

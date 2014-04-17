@@ -146,6 +146,7 @@ class PublicationAdmin extends Admin
 		$listMapper
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
+			->add('tags', null, array('label' => 'Теги', 'template' => 'VidalDrugBundle:Sonata:tags.html.twig'))
 			->add('date', null, array(
 				'label'  => 'Дата создания',
 				'widget' => 'single_text',

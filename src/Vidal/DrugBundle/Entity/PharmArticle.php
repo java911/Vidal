@@ -71,6 +71,9 @@ class PharmArticle extends BaseEntity
 		$this->atcCodes   = new ArrayCollection();
 		$this->infoPages  = new ArrayCollection();
 		$this->tags       = new ArrayCollection();
+		$now              = new \DateTime('now');
+		$this->created    = $now;
+		$this->updated    = $now;
 	}
 
 	public function __toString()

@@ -4,15 +4,15 @@ namespace Vidal\DrugBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
-class ArtRubriqueRepository extends EntityRepository
+class PharmPortfolioRepository extends EntityRepository
 {
 	public function findActive()
 	{
 		return $this->_em->createQuery('
-			SELECT r
-			FROM VidalDrugBundle:ArtRubrique r
-			WHERE r.enabled = TRUE
-			ORDER BY r.priority DESC, r.title ASC
+			SELECT p
+			FROM VidalDrugBundle:PharmPortfolio p
+			WHERE p.enabled = 1
+			ORDER BY p.title ASC
 		')->getResult();
 	}
 }

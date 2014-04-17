@@ -114,4 +114,21 @@ class SonataController extends Controller
 
 		return new JsonResponse($results);
 	}
+
+	/**
+	 * @Route("/admin/art-move", name="art_move")
+	 */
+	public function artMoveAction($typeId)
+	{
+		$em      = $this->getDoctrine()->getManager('drug');
+		$results = $em->createQuery('
+			SELECT c.id, c.title
+			FROM VidalDrugBundle:ArtCategory c
+			WHERE c.type = :typeId
+			ORDER BY c.title ASC
+		')->setParameter('typeId', $typeId)
+			->getResult();
+
+		return new JsonResponse($results);
+	}
 }

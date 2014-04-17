@@ -31,11 +31,60 @@
 {% block content %}
 	{% if item.announce is not empty %}
 		<div class="divisions">
-			<div>{{ item.announce|raw }}</div>
+			<div class="announce">{{ item.announce|raw }}</div>
 		</div>
 	{% endif %}
 
-	<style>
+	<div class="divisions">
+		{% if types is defined %}
+			{% for type in types %}
+				<div>
+					{% if isAdmin %}
+						<a class="admin-edit fade" target="_blank"
+						   href="{{ path('admin_vidal_drug_arttype_edit', {'id':type.id}) }}">
+							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+						</a>
+					{% endif %}
+					<a class="link"
+					   href="{{ path('art', {'url':[rubrique.url, type.url]|join('/') }) }}">{{ type.title }}</a>
+
+					{% if type.announce is not empty %}
+						<div class="announce">{{ type.announce|raw }}</div>
+					{% endif %}
+				</div>
+			{% endfor %}
+		{% elseif categories is defined %}
+			{% for category in categories %}
+				<div>
+					{% if isAdmin %}
+						<a class="admin-edit fade" target="_blank"
+						   href="{{ path('admin_vidal_drug_artcategory_edit', {'id':type.id}) }}">
+							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+						</a>
+					{% endif %}
+					<a class="link"
+					   href="{{ path('art', {'url':[rubrique.url, type.url, category.url]|join('/') }) }}">{{ category.title }}</a>
+
+					{% if category.announce is not empty %}
+						<div class="announce">{{ type.announce|raw }}</div>
+					{% endif %}
+				</div>
+			{% endfor %}
+		{% elseif item.is == 'category' %}
+
+		{% endif %}
+	</div>
+
+	{# список статей с пагинацией #}
+	{% include 'VidalMainBundle:Article:render_articles.html.twig' %}
+
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/article.css') }}"/>
+	<style type="text/css">
 		.divisions > div {
 			position:      relative;
 			margin-bottom: 15px;
@@ -68,54 +117,4 @@
 			margin-bottom: 0;
 		}
 	</style>
-
-	<div class="divisions">
-		{% if item.is == 'rubrique' %}
-			{% for type in rubrique.types %}
-				<div>
-					{% if isAdmin %}
-						<a class="admin-edit fade" target="_blank"
-						   href="{{ path('admin_vidal_drug_arttype_edit', {'id':type.id}) }}">
-							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-						</a>
-					{% endif %}
-					<a class="link"
-					   href="{{ path('art', {'url':[rubrique.url, type.url]|join('/') }) }}">{{ type.title }}</a>
-
-					{% if type.announce is not empty %}
-						<div class="announce">{{ type.announce|raw }}</div>
-					{% endif %}
-				</div>
-			{% endfor %}
-		{% elseif item.is == 'type' %}
-			{% for category in type.categories %}
-				<div>
-					{% if isAdmin %}
-						<a class="admin-edit fade" target="_blank"
-						   href="{{ path('admin_vidal_drug_artcategory_edit', {'id':type.id}) }}">
-							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-						</a>
-					{% endif %}
-					<a class="link"
-					   href="{{ path('art', {'url':[rubrique.url, type.url, category.url]|join('/') }) }}">{{ category.title }}</a>
-
-					{% if category.announce is not empty %}
-						<div class="announce">{{ type.announce|raw }}</div>
-					{% endif %}
-				</div>
-			{% endfor %}
-		{% elseif item.is == 'category' %}
-
-		{% endif %}
-	</div>
-
-	{# список статей с пагинацией #}
-	{% include 'VidalMainBundle:Article:render_articles.html.twig' %}
-
-{% endblock %}
-
-
-{% block stylesheets %}
-	{{ parent() }}
-	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/article.css') }}"/>
 {% endblock %}

@@ -23,7 +23,7 @@ class Publication extends BaseEntity
 	/** @ORM\Column(length=500) */
 	protected $title;
 
-	/** @ORM\Column(type="text") */
+	/** @ORM\Column(type="text", nullable=true) */
 	protected $announce;
 
 	/** @ORM\Column(type="text") */

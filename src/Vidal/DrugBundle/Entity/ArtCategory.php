@@ -5,7 +5,7 @@ namespace Vidal\DrugBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/** @ORM\Entity @ORM\Table(name="art_category") */
+/** @ORM\Entity(repositoryClass="ArtCategoryRepository") @ORM\Table(name="art_category") */
 class ArtCategory
 {
 	/** @ORM\Column(type="integer") @ORM\Id @ORM\GeneratedValue */
@@ -31,6 +31,9 @@ class ArtCategory
 
 	/** @ORM\ManyToOne(targetEntity="ArtType", inversedBy="categories") */
 	protected $type;
+
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $priority;
 
 	public function __construct()
 	{
@@ -166,5 +169,21 @@ class ArtCategory
 	public function getEnabled()
 	{
 		return $this->enabled;
+	}
+
+	/**
+	 * @param mixed $priority
+	 */
+	public function setPriority($priority)
+	{
+		$this->priority = $priority;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPriority()
+	{
+		return $this->priority;
 	}
 }

@@ -167,6 +167,7 @@ class ArticleAdmin extends Admin
 			->add('link', null, array('label' => 'Адрес страницы', 'help' => 'латинские буквы и цифры, слова через тире'))
 			->add('rubrique', null, array('label' => 'Рубрика'))
 			->add('type', null, array('label' => 'Категория'))
+			->add('tags', null, array('label' => 'Теги', 'template' => 'VidalDrugBundle:Sonata:tags.html.twig'))
 			->add('priority', null, array('label' => 'Приоритет'))
 			->add('date', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
 			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))

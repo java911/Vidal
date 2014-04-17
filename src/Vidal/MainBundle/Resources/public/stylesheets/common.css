@@ -1,28 +1,5 @@
-/* Eric Meyer's CSS Reset */
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, sub, sup, tt, var,
-center,
-dl, dt, dd, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin:         0;
-	padding:        0;
-	border:         0;
-	font-size:      100%;
-	font:           inherit;
-	vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-	display: block;
+body, html {
+	margin: 0;
 }
 body {
 	line-height: 1;
@@ -44,15 +21,15 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, 
 }
 sup, sub {
 	padding-left:    1px;
-	font-size:       13px;
+	font-size:       12px;
 	font-family:     sans-serif;
 	line-height:     9px;
 	text-decoration: none;
 }
-sup {
+sup, sup * {
 	vertical-align: top;
 }
-sub {
+sub, sub * {
 	vertical-align: bottom;
 }
 
@@ -105,7 +82,8 @@ body {
 	position: relative;
 }
 .main {
-	padding: 0 36px;
+	padding:        0 36px;
+	vertical-align: top;
 }
 .content {
 	position: relative;
@@ -1307,44 +1285,53 @@ h1 span {
 }
 
 /* перебиваем кривые стили статей и новостей */
-#wrapper .article-wrap a,
-#wrapper .article-wrap a *,
-#wrapper .article-body a,
-#wrapper .article-body a *,
-#wrapper .publication a,
-#wrapper .publication a *
-#wrapper .article-item a,
-#wrapper .article-item a * {
-	color: #d71344;
+.article-wrap a,
+.article-wrap a *,
+.article-body a,
+.article-body a *,
+.publication a,
+.publication a *,
+.article-item a,
+.article-item a * {
+	color: #d71344 !important;
 }
 
-#wrapper .article-wrap img,
-#wrapper .article-body img,
-#wrapper .publication img,
-#wrapper .article-item img,
-{
-	max-width: 520px;
+.article-wrap img,
+.article-body img,
+.publication img,
+.article-item img {
+	max-width: 520px !important;
 }
 
-#wrapper .article-wrap a,
-#wrapper .article-wrap a *,
-#wrapper .article-body a,
-#wrapper .article-body a *,
-#wrapper .article-item a,
-#wrapper .article-item a *,
-#wrapper .publication a *
-#wrapper .publication a,
-#wrapper .publication a * {
-	text-decoration: none;
+.article-wrap a,
+.article-wrap a *,
+.article-body a,
+.article-body a *,
+.article-item a,
+.article-item a *,
+.publication a,
+.publication a * {
+	text-decoration: none !important;
 }
 
-#wrapper .article-wrap a:hover,
-#wrapper .article-wrap a *:hover,
-#wrapper .article-body a:hover,
-#wrapper .article-body a *:hover
-#wrapper .article-item a:hover,
-#wrapper .article-item a *:hover,
-#wrapper .publication a:hover,
-#wrapper .publication a *:hover {
-	text-decoration: underline;
+.article-wrap a:hover,
+.article-wrap a *:hover,
+.article-body a:hover,
+.article-body a *:hover
+.article-item a:hover,
+.article-item a *:hover,
+.publication a:hover,
+.publication a *:hover {
+	text-decoration: underline !important;
+}
+
+.article-wrap p,
+.article-wrap p *,
+.article-body p,
+.article-body p *,
+.article-item p,
+.article-item p *,
+.publication p,
+.publication p * {
+	line-height: inherit !important;
 }

@@ -32,9 +32,16 @@ class ArtRubrique
 	/** @ORM\OneToMany(targetEntity="ArtCategory", mappedBy="rubrique") */
 	protected $categories;
 
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $priority;
+
+	/** @ORM\Column(type="boolean") */
+	protected $detached;
+
 	public function __construct()
 	{
 		$this->enabled    = true;
+		$this->detached   = false;
 		$this->arts       = new ArrayCollection();
 		$this->types      = new ArrayCollection();
 		$this->categories = new ArrayCollection();
@@ -176,5 +183,37 @@ class ArtRubrique
 	public function getUrl()
 	{
 		return $this->url;
+	}
+
+	/**
+	 * @param mixed $link
+	 */
+	public function setLink($link)
+	{
+		$this->link = $link;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getLink()
+	{
+		return $this->link;
+	}
+
+	/**
+	 * @param mixed $priority
+	 */
+	public function setPriority($priority)
+	{
+		$this->priority = $priority;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPriority()
+	{
+		return $this->priority;
 	}
 }

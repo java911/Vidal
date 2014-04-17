@@ -1,0 +1,24 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block title %}
+	<h1>{{ portfolio.title|raw }}</h1>
+{% endblock %}
+
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('vracham') }}">Информация для специалистов</a>
+		<i></i>
+		<a href="{{ path('art', {'url':'podrobno-o-preparate'}) }}">Портфели препаратов</a>
+	</div>
+{% endblock %}
+
+
+{% block content %}
+	<div class="publication">
+		{{ portfolio.body|raw }}
+	</div>
+{% endblock %}

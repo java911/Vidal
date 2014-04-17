@@ -1,0 +1,59 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block title %}
+	<h1>Портфели препаратов</h1>
+{% endblock %}
+
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('vracham') }}">Информация для специалистов</a>
+	</div>
+{% endblock %}
+
+
+{% block content %}
+	<ul class="portfolios ul-style">
+		{% for portfolio in portfolios %}
+			<li>
+				<span class="portfolio">
+					<a href="{{ path('portfolio_item', {'url':portfolio.url}) }}">{{ portfolio.title|raw }}</a>
+				</span>
+				{% if portfolio.company %}
+					<a class="company" href="{{ path('pharm_articles', {'companyId':portfolio.company.id}) }}">
+						{{ portfolio.company.title }}
+					</a>
+				{% endif %}
+			</li>
+		{% endfor %}
+	</ul>
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.portfolios li {
+			margin-bottom: 8px;
+		}
+		.portfolios .portfolio {
+			display: inline-block;
+			width:   150px;
+		}
+		.portfolios .portfolio a {
+			display:     inline-block;
+			font-weight: bold;
+		}
+		.portfolios a.company {
+			font-size:       14px;
+			color:           #898989;
+			text-decoration: none;
+		}
+		.portfolios a.company:hover {
+			text-decoration: underline;
+		}
+	</style>
+{% endblock %}
