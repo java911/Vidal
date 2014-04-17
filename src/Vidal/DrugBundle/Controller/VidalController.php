@@ -96,7 +96,7 @@ class VidalController extends Controller
 		if (!empty($products)) {
 			$productIds          = $this->getProductIds($products);
 			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
+			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
 			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 		}
 
@@ -122,7 +122,7 @@ class VidalController extends Controller
 		if (!empty($products)) {
 			$productIds          = $this->getProductIds($products);
 			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
+			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
 			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 		}
 
@@ -161,7 +161,7 @@ class VidalController extends Controller
 				$productIds          = $this->getProductIds($products);
 				$params['products']  = $products;
 				$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-				$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
+				$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
 				$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 			}
 		}
@@ -336,7 +336,7 @@ class VidalController extends Controller
 			'products1' => $products1,
 			'products2' => $products2,
 			'companies' => $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds),
-			'pictures'  => $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds),
+			'pictures'  => $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y')),
 			'infoPages' => $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($productsRaw),
 			'title'     => $molecule->getTitle() . ' | Активные вещества в препаратах',
 		);
@@ -427,6 +427,7 @@ class VidalController extends Controller
 		$params['owners']       = $em->getRepository('VidalDrugBundle:Company')->findOwnersByProducts($productIds);
 		$params['distributors'] = $em->getRepository('VidalDrugBundle:Company')->findDistributorsByProducts($productIds);
 		$params['phthgroups']   = $em->getRepository('VidalDrugBundle:PhThGroups')->findByProductId($ProductID);
+		$params['pictures']     = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds, date('Y'));
 
 		if (isset($params['document'])) {
 			$params['nozologies'] = $em->getRepository('VidalDrugBundle:Nozology')->findByDocumentID($document->getDocumentID());
@@ -434,14 +435,7 @@ class VidalController extends Controller
 
 		# БАДы выводятся по-другому
 		if ($product['ProductTypeCode'] == 'BAD' || ($document && $document->getArticleID() == 6)) {
-			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds);
-
 			return $this->render("VidalDrugBundle:Vidal:bad_document.html.twig", $params);
-		}
-		else {
-			$now                = new \DateTime('now');
-			$year               = (int) $now->format('Y');
-			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds, $year);
 		}
 
 		return $params;
@@ -486,7 +480,7 @@ class VidalController extends Controller
 			$params['atcCodes']     = $em->getRepository('VidalDrugBundle:ATC')->findByProducts($productIds);
 			$params['owners']       = $em->getRepository('VidalDrugBundle:Company')->findOwnersByProducts($productIds);
 			$params['distributors'] = $em->getRepository('VidalDrugBundle:Company')->findDistributorsByProducts($productIds);
-			$params['pictures']     = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds);
+			$params['pictures']     = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds, date('Y'));
 		}
 		else {
 			$params['atcCodes'] = $em->getRepository('VidalDrugBundle:ATC')->findByDocumentID($DocumentID);

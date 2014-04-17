@@ -58,18 +58,34 @@ class PictureRepository extends EntityRepository
 		return array_unique($pictures);
 	}
 
-	public function findByProductIds($productIds)
+	public function findByProductIds($productIds, $year = null)
 	{
-		$picturesRaw = $this->_em->createQuery('
-			SELECT pict.PathForElectronicEdition path, prod.ProductID
-			FROM VidalDrugBundle:Picture pict
-			JOIN VidalDrugBundle:ProductPicture pp WITH pp.PictureID = pict.PictureID
-			JOIN VidalDrugBundle:Product prod WITH pp.ProductID = prod.ProductID
-			WHERE prod.ProductID IN (:productIds) AND
-				pp.CountryEditionCode = \'RUS\'
-			ORDER BY prod.ProductID DESC, pp.YearEdition DESC
-		')->setParameter('productIds', $productIds)
-			->getResult();
+		if ($year) {
+			$picturesRaw = $this->_em->createQuery('
+				SELECT pict.PathForElectronicEdition path, prod.ProductID
+				FROM VidalDrugBundle:Picture pict
+				JOIN VidalDrugBundle:ProductPicture pp WITH pp.PictureID = pict.PictureID
+				JOIN VidalDrugBundle:Product prod WITH pp.ProductID = prod.ProductID
+				WHERE prod.ProductID IN (:productIds)
+					AND pp.CountryEditionCode = \'RUS\'
+					AND pp.YearEdition = :year
+				ORDER BY prod.ProductID DESC, pp.YearEdition DESC
+			')->setParameter('productIds', $productIds)
+				->setParameter('year', $year)
+					->getResult();
+		}
+		else {
+			$picturesRaw = $this->_em->createQuery('
+				SELECT pict.PathForElectronicEdition path, prod.ProductID
+				FROM VidalDrugBundle:Picture pict
+				JOIN VidalDrugBundle:ProductPicture pp WITH pp.PictureID = pict.PictureID
+				JOIN VidalDrugBundle:Product prod WITH pp.ProductID = prod.ProductID
+				WHERE prod.ProductID IN (:productIds)
+					AND pp.CountryEditionCode = \'RUS\'
+				ORDER BY prod.ProductID DESC, pp.YearEdition DESC
+			')->setParameter('productIds', $productIds)
+				->getResult();
+		}
 
 		$pictures = array();
 
