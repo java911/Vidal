@@ -873,6 +873,8 @@ h1 span {
 }
 #search_form {
 	position: absolute;
+	display:  block;
+	width:    422px;
 	top:      36px;
 	right:    0;
 }
