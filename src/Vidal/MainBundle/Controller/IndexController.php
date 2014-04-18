@@ -372,4 +372,13 @@ class IndexController extends Controller
 		return new Response($html);
 	}
 
+	/**
+	 * @Route("/phpinfo")
+	 * @Secure(roles="ROLE_ADMIN")
+	 */
+	public function phpInfoAction()
+	{
+		phpinfo();
+		exit;
+	}
 }
