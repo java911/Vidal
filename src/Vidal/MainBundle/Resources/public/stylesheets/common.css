@@ -40,7 +40,7 @@ html {
 body {
 	width:       100%;
 	height:      100%;
-	font-family: 'PT Sans', Tahoma, Verdana, sans-serif;
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
 	color:       #333333;
 }
 .wrapper {
@@ -168,7 +168,6 @@ textarea {
 	resize:                vertical;
 }
 h1 {
-	font-family:   'PT Sans Caption', sans-serif;
 	font-size:     18px;
 	color:         #d71344;
 	font-weight:   bold;
@@ -185,7 +184,6 @@ h1 span {
 
 /* глобальные классы */
 .caption {
-	font-family: 'PT Sans Caption', sans-serif;
 	color:       #d71344;
 }
 .center {
@@ -261,7 +259,6 @@ h1 span {
 }
 .ui-menu .ui-menu-item a {
 	font-size:   15px;
-	font-family: 'PT Sans', sans-serif;
 }
 .border-line {
 	border: 1px solid #aaa;
@@ -482,7 +479,6 @@ h1 span {
 	outline:          none;
 	cursor:           pointer;
 	text-decoration:  none;
-	font-family:      'PT Sans Caption', sans-serif;
 	font-size:        15px;
 	text-align:       center;
 }
@@ -723,7 +719,6 @@ h1 span {
 	padding-top:    10px;
 	padding-bottom: 5px;
 	font-size:      12px;
-	font-family:    'PT Sans Caption', sans-serif;
 }
 .products-table tr.important .products-table-name {
 	font-weight: bold;
@@ -1040,7 +1035,6 @@ h1 span {
 .breadcrumbs {
 	margin:      -10px 0 20px;
 	font-size:   14px;
-	font-family: 'PT Sans Caption', sans-serif;
 	color:       #2f4053;
 	line-height: 17px;
 }
@@ -1079,7 +1073,6 @@ h1 span {
 	color:           #2e3f51;
 	font-weight:     bold;
 	font-size:       13px;
-	font-family:     'PT Sans Caption', sans-serif;
 }
 .tabs a.active {
 	color:            white;
