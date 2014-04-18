@@ -150,7 +150,7 @@ class Document
 	protected $productDocument;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Nozology", mappedBy="documents")
+	 * @ORM\ManyToMany(targetEntity="Nozology", mappedBy="documents", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="document_indicnozology",
 	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")})
