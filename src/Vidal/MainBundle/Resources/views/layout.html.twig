@@ -32,12 +32,8 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 
     {% block stylesheets %}
-		{% stylesheets '@VidalMainBundle/Resources/public/stylesheets/common.min.css' filter='yui_css' %}
-			<link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
-		{% endstylesheets %}
-		{% stylesheets '@VidalMainBundle/Resources/public/jquery-chosen/chosen.min.css' filter='yui_css' %}
-		<link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
-		{% endstylesheets %}
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/common.min.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/jquery-chosen/chosen.min.css') }}"/>
         <link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/checkbox/checkbox.css') }}"/>
         <link rel="stylesheet" type="text/css"
               href="{{ asset('bundles/vidalmain/jquery-ui/jquery-ui-1.10.4.custom.min.css') }}"/>
