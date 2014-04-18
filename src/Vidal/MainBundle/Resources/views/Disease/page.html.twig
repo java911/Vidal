@@ -15,8 +15,12 @@
                     <option value="1">Мужской</option>
                     <option value="2">Женский</option>
                 </select>
-                <img src="{{ asset('bundles/vidalmain/images/Reload.png') }}" id="refresh-body" title="Перевернуть" alt="Перевернуть">
-                <img src="{{ asset('bundles/vidalmain/images/Back.png') }}" id="back-body" title="Вернуться" alt="Вернуться">
+
+                <!--[if !IE]><!-->
+                    <img src="{{ asset('bundles/vidalmain/images/Reload.png') }}" id="refresh-body" title="Перевернуть" alt="Перевернуть">
+                    <img src="{{ asset('bundles/vidalmain/images/Back.png') }}" id="back-body" title="Вернуться" alt="Вернуться">
+                <!--<![endif]-->
+
             </td>
             <td>
                 Часть тела
@@ -49,11 +53,19 @@
             </td>
         </tr>
         <tr>
+            <!--[if IE]>
+            <td style="vertical-align: top; text-align: left" colspan="2">
+            <![endif]-->
+            <![if !IE]>
             <td id="body-render">
                 {{ render(controller('VidalMainBundle:Symptom:body')) }}
             </td>
             <td style="vertical-align: top; text-align: left">
-                <br />
+            <![endif]>
+
+
+
+            <br />
                 <div style="text-align: left">
                     <h2 id="h2-symptom">Укажите симптом:</h2>
                 </div>
