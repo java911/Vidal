@@ -1032,7 +1032,7 @@ h1 span {
 	float:             left;
 	width:             130px;
 	height:            99px;
-	background-image:  url(../images/bg/menu_small2.png);
+	background-image:  url(../images/bg/menu_small2_.png);
 	background-repeat: no-repeat;
 }
 .menu-drugs {
@@ -1060,7 +1060,7 @@ h1 span {
 	background-position: -390px -101px;
 }
 .menu-big a {
-	background-image: url(../images/bg/menu_big2.png);
+	background-image: url(../images/bg/menu_big2_.png);
 	height:           246px;
 }
 .menu-big .menu-drugs {
