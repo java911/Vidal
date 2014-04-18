@@ -59,7 +59,7 @@ class SearchController extends Controller
 					$badIds                  = $this->getProductIds($bads);
 					$params['bads']          = $bads;
 					$params['bad_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($badIds);
-					$params['bad_pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($badIds);
+					$params['bad_pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($badIds, date('Y'));
 					$params['bad_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($bads);
 				}
 			}
@@ -74,7 +74,7 @@ class SearchController extends Controller
 			if ($pagination->getTotalItemCount()) {
 				$productIds          = $this->getProductIds($pagination);
 				$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-				$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
+				$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
 				$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($pagination);
 			}
 		}
@@ -157,7 +157,7 @@ class SearchController extends Controller
 					$badIds                  = $this->getProductIds($bads);
 					$params['bads']          = $bads;
 					$params['bad_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($badIds);
-					$params['bad_pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($badIds);
+					$params['bad_pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($badIds, date('Y'));
 					$params['bad_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($bads);
 				}
 			}
@@ -172,7 +172,7 @@ class SearchController extends Controller
 			if ($pagination->getTotalItemCount()) {
 				$productIds          = $this->getProductIds($pagination);
 				$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-				$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
+				$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
 				$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($pagination);
 			}
 		}
@@ -273,7 +273,7 @@ class SearchController extends Controller
 
 					$params['productsPagination'] = $pagination;
 					$params['companies']          = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-					$params['pictures']           = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
+					$params['pictures']           = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
 				}
 			}
 		}
@@ -325,7 +325,7 @@ class SearchController extends Controller
 				$params['products']    = $products;
 				$params['indications'] = $em->getRepository('VidalDrugBundle:Document')->findIndicationsByProductIds($productIds);
 				$params['companies']   = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-				$params['pictures']    = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
+				$params['pictures']    = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
 			}
 		}
 

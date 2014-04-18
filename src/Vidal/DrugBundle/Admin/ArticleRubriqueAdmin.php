@@ -63,7 +63,7 @@ class ArticleRubriqueAdmin extends Admin
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(
-					'view'   => array(),
+					'show'   => array(),
 					'edit'   => array(),
 					'delete' => array(),
 				)

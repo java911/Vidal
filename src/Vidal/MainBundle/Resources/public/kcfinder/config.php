@@ -25,7 +25,7 @@ $_CONFIG = array(
 
 	'theme'               => "oxygen",
 
-	'uploadURL'           => "/upload/ckeditor/",
+	'uploadURL'           => "/../vidal/upload/ckeditor/",
 	'uploadDir'           => "",
 
 	'dirPerms'            => 0755,
