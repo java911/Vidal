@@ -371,5 +371,4 @@ class IndexController extends Controller
 		}
 		return new Response($html);
 	}
-
 }

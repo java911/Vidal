@@ -204,7 +204,6 @@ class AuthController extends Controller
 
 		# пользователей со старой БД проверям с помощью mysql-функций
 		if ($user->getOldUser()) {
-			$password = mysql_real_escape_string($password);
 			$pdo      = $em->getConnection();
 
 			$stmt = $pdo->prepare("SELECT PASSWORD('$password') as password");
