@@ -82,6 +82,8 @@ body {
 	position: relative;
 }
 .main {
+	width:          530px;
+	min-width:      530px;
 	padding:        0 36px;
 	vertical-align: top;
 }
