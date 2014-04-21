@@ -1,3 +1,4 @@
+app/config/config.yml
 node_modules
 web/bundles/
 web/upload

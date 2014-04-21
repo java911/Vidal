@@ -12,7 +12,11 @@ framework:
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
+<<<<<<< HEAD
+    templating:      { engines: ['twig'], assets_version: v26 }
+=======
     templating:      { engines: ['twig'], assets_version: v43 }
+>>>>>>> 26bd94859f6d50c3cdfc4748baa530fefc6e6587
     form:            ~
     csrf_protection: false
     validation:      { enable_annotations: true }
@@ -21,9 +25,7 @@ framework:
         #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
     trusted_proxies: ~
-    session:
-        cookie_lifetime: 31536000
-        save_path: "%kernel.root_dir%/../../sessions"
+    session:         ~
     fragments:       ~
 
 # Twig Configuration
@@ -57,8 +59,6 @@ doctrine:
                 charset:  UTF8
                 mapping_types:
                     enum: string
-                options:
-                    1002: "SET NAMES utf8"
             drug:
                 driver:   %database_driver%
                 host:     %database_host%
@@ -69,8 +69,6 @@ doctrine:
                 charset:  UTF8
                 mapping_types:
                     enum: string
-                options:
-                    1002: "SET NAMES utf8"
             veterinar:
                 driver:   %database_driver%
                 host:     %database_host%
@@ -81,8 +79,6 @@ doctrine:
                 charset:  UTF8
                 mapping_types:
                     enum: string
-                options:
-                    1002: "SET NAMES utf8"
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         entity_managers:
