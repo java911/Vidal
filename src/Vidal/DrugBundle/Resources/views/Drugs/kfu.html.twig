@@ -84,15 +84,22 @@
 			{% if showBaseKfu is defined %}
 			var $base = $('#{{ showBaseKfu.ClPhPointerID }}');
 			$base.find(' > div').click();
-			setTimeout(function() {
-				var $show = $('#{{ showKfu.ClPhPointerID }}');
+			setTimeout(parentCb, 500);
+			{% endif %}
+		});
+
+		function parentCb() {
+			var $show = $('#{{ showKfu.ClPhPointerID }}');
+			if ($show.length == 0) {
+				setTimeout(parentCb, 500);
+			}
+			else {
 				$show.parents('li').removeClass('expandable').addClass('collapsable')
 					.find('> div').removeClass('expandable-hitarea').addClass('collapsable-hitarea')
 					.siblings('ul').show();
 				$show.find('> i, > span').addClass('highlight');
 				$('html, body').animate({ scrollTop: $show.closest('ul').offset().top}, 1000);
-			}, 1000);
-			{% endif %}
-		});
+			}
+		}
 	</script>
 {% endblock %}
