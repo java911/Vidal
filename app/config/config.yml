@@ -55,6 +55,8 @@ doctrine:
                 charset:  UTF8
                 mapping_types:
                     enum: string
+                options:
+                    1002: "SET NAMES utf8"
             drug:
                 driver:   %database_driver%
                 host:     %database_host%
@@ -65,6 +67,8 @@ doctrine:
                 charset:  UTF8
                 mapping_types:
                     enum: string
+                options:
+                    1002: "SET NAMES utf8"
             veterinar:
                 driver:   %database_driver%
                 host:     %database_host%
@@ -75,6 +79,8 @@ doctrine:
                 charset:  UTF8
                 mapping_types:
                     enum: string
+                options:
+                    1002: "SET NAMES utf8"
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         entity_managers:
