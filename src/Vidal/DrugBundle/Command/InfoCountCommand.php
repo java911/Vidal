@@ -21,13 +21,12 @@ class InfoCountCommand extends ContainerAwareCommand
 		$output->writeln('+++ vidal:info_command started');
 
 		$em        = $this->getContainer()->get('doctrine')->getManager('drug');
-		$repo      = $em->getRepository('VidalDrugBundle:Product');
 		$infoPages = $em->getRepository('VidalDrugBundle:InfoPage')->findAll();
 
 		# ставим сколько всего у них препаратов
 		foreach ($infoPages as $infoPage) {
-			$products = $repo->findByInfoPageID($infoPage->getInfoPageID());
-			$count    = count($products);
+			$documentIds = $em->getRepository('VidalDrugBundle:Document')->findIdsByInfoPageID($infoPage->getInfoPageID());
+			$count       = $em->getRepository('VidalDrugBundle:Product')->countByDocumentIDs($documentIds);
 			$infoPage->setCountProducts($count);
 		}
 
