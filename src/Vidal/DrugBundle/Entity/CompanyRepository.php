@@ -81,7 +81,8 @@ class CompanyRepository extends EntityRepository
 			->from('VidalDrugBundle:Company', 'c')
 			->leftJoin('VidalDrugBundle:Country', 'country', 'WITH', 'country.CountryCode = c.CountryCode')
 			->orderBy('c.LocalName', 'ASC')
-			->where("c.CountryEditionCode = 'RUS'");
+			->where("c.CountryEditionCode = 'RUS'")
+			->andWhere("c.countProducts > 0");
 
 		# поиск по всем словам
 		$where = '';
@@ -110,6 +111,7 @@ class CompanyRepository extends EntityRepository
 			}
 
 			$qb->where("c.CountryEditionCode = 'RUS'")
+				->andWhere("c.countProducts > 0")
 				->andWhere($where);
 
 			return $qb->getQuery()->getResult();
