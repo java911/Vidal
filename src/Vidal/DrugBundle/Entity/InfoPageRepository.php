@@ -76,7 +76,8 @@ class InfoPageRepository extends EntityRepository
 			->select('i')
 			->from('VidalDrugBundle:InfoPage', 'i')
 			->orderBy('i.RusName', 'ASC')
-			->where("i.CountryEditionCode = 'RUS'");
+			->where("i.CountryEditionCode = 'RUS'")
+			->andWhere('i.countProducts > 0');
 
 		return $qb->getQuery();
 	}
@@ -119,6 +120,7 @@ class InfoPageRepository extends EntityRepository
 			FROM VidalDrugBundle:InfoPage i
 			LEFT JOIN VidalDrugBundle:Country c WITH i.CountryCode = c
 			WHERE i.RusName LIKE :letter
+				AND i.countProducts > 0
 			ORDER BY i.RusName ASC
 		')->setParameter('letter', $l . '%')
 			->getResult();
@@ -132,7 +134,8 @@ class InfoPageRepository extends EntityRepository
 			->select('i.InfoPageID, i.RusName, country.RusName Country')
 			->from('VidalDrugBundle:InfoPage', 'i')
 			->leftJoin('VidalDrugBundle:Country', 'country', 'WITH', 'country.CountryCode = i.CountryCode')
-			->orderBy('i.RusName', 'ASC');
+			->orderBy('i.RusName', 'ASC')
+			->where('i.countProducts > 0');
 
 		$where = '';
 		$words = explode(' ', $q);
@@ -146,7 +149,7 @@ class InfoPageRepository extends EntityRepository
 			$where .= "(i.RusName LIKE '$word%' OR i.RusName LIKE '% $word%')";
 		}
 
-		$qb->where($where);
+		$qb->andWhere($where);
 		$results = $qb->getQuery()->getResult();
 
 		# поиск по одному слову
@@ -159,7 +162,9 @@ class InfoPageRepository extends EntityRepository
 				}
 				$where .= "(i.RusName LIKE '$word%' OR i.RusName LIKE '% $word%')";
 			}
-			$qb->where($where);
+
+			$qb->where('i.countProducts > 0')
+				->andWhere($where);
 
 			return $qb->getQuery()->getResult();
 		}

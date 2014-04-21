@@ -101,6 +101,9 @@ class InfoPage
 	 */
 	protected $pharmArticles;
 
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $countProducts;
+
 	public function __construct()
 	{
 		$this->pictures          = new ArrayCollection();
@@ -451,5 +454,21 @@ class InfoPage
 	public function getPharmArticles()
 	{
 		return $this->pharmArticles;
+	}
+
+	/**
+	 * @param mixed $countProducts
+	 */
+	public function setCountProducts($countProducts)
+	{
+		$this->countProducts = $countProducts;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCountProducts()
+	{
+		return $this->countProducts;
 	}
 }

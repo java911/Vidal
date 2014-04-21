@@ -42,10 +42,13 @@ class Company
 	/** @ORM\OneToMany(targetEntity="ProductCompany", mappedBy="CompanyID") */
 	protected $productCompany;
 
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $countProducts;
+
 	public function __construct()
 	{
-		$companyGroups    = new ArrayCollection();
-		$productCompanies = new ArrayCollection();
+		$this->companyGroups    = new ArrayCollection();
+		$this->productCompanies = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -186,4 +189,19 @@ class Company
 		return $this->productCompany;
 	}
 
+	/**
+	 * @param mixed $countProducts
+	 */
+	public function setCountProducts($countProducts)
+	{
+		$this->countProducts = $countProducts;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCountProducts()
+	{
+		return $this->countProducts;
+	}
 }

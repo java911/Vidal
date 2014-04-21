@@ -588,6 +588,22 @@ class ProductRepository extends EntityRepository
 		')->getResult();
 	}
 
+	public function countByCompanyID($CompanyID)
+	{
+		return $this->_em->createQuery("
+			SELECT COUNT(DISTINCT p.ProductID)
+			FROM VidalDrugBundle:Product p
+			JOIN VidalDrugBundle:ProductCompany pc WITH pc.ProductID = p
+			JOIN VidalDrugBundle:Company c WITH pc.CompanyID = c
+			WHERE c = :CompanyID
+				AND c.CountryEditionCode = 'RUS'
+				AND (p.MarketStatusID = 1 OR p.MarketStatusID = 2)
+				AND (p.ProductTypeCode = 'DRUG' OR p.ProductTypeCode = 'GOME')
+			ORDER BY p.RusName ASC
+		")->setParameter('CompanyID', $CompanyID)
+			->getSingleScalarResult();
+	}
+
 	/**
 	 * Функция возвращает слово с заглавной первой буквой (c поддержкой кирилицы)
 	 *

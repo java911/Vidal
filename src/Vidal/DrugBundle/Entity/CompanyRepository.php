@@ -124,6 +124,7 @@ class CompanyRepository extends EntityRepository
 			SELECT c
 			FROM VidalDrugBundle:Company c
 			WHERE c.CountryEditionCode = 'RUS'
+				AND c.countProducts > 0
 			ORDER BY c.LocalName ASC
 		");
 	}
@@ -135,6 +136,7 @@ class CompanyRepository extends EntityRepository
 			FROM VidalDrugBundle:Company c
 			WHERE c.CountryEditionCode = 'RUS'
 				AND c.LocalName LIKE :l
+				AND c.countProducts > 0
 			ORDER BY c.LocalName ASC
 		")->setParameter('l', $l . '%');
 	}
@@ -147,7 +149,8 @@ class CompanyRepository extends EntityRepository
 			->select('c')
 			->from('VidalDrugBundle:Company', 'c')
 			->orderBy('c.LocalName', 'ASC')
-			->where("c.CountryEditionCode = 'RUS'");
+			->where("c.CountryEditionCode = 'RUS'")
+			->andWhere("c.countProducts > 0");
 
 		# поиск по всем словам
 		$where = '';
@@ -176,6 +179,7 @@ class CompanyRepository extends EntityRepository
 			}
 
 			$qb->where("c.CountryEditionCode = 'RUS'")
+				->andWhere("c.countProducts > 0")
 				->andWhere($where);
 
 			return $qb->getQuery()->getResult();

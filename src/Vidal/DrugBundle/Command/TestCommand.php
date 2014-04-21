@@ -9,18 +9,21 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class TestCommand extends ContainerAwareCommand
 {
-    protected function configure()
-    {
-        $this
-			->setName('vidal:test')
-            ->setDescription('Command to copy')
-            //->addArgument('user', InputArgument::OPTIONAL, '')
+	protected function configure()
+	{
+		$this
+			->setName('vidal:_')
+			->setDescription('Command to copy')
+			//->addArgument('user', InputArgument::OPTIONAL, '')
 			//->addOption('email', null, InputOption::VALUE_NONE, '')
-        ;
-    }
+		;
+	}
 
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
+	protected function execute(InputInterface $input, OutputInterface $output)
+	{
 		$em = $this->getContainer()->get('doctrine')->getManager('drug');
+		$output->writeln('+++ vidal: started');
+
+		$output->writeln('--- vidal: completed');
 	}
 }
