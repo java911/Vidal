@@ -12,11 +12,7 @@ framework:
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
-<<<<<<< HEAD
-    templating:      { engines: ['twig'], assets_version: v26 }
-=======
-    templating:      { engines: ['twig'], assets_version: v43 }
->>>>>>> 26bd94859f6d50c3cdfc4748baa530fefc6e6587
+    templating:      { engines: ['twig'], assets_version: v44 }
     form:            ~
     csrf_protection: false
     validation:      { enable_annotations: true }
