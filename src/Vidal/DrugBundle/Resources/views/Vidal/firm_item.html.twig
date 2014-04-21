@@ -2,7 +2,9 @@
 
 
 {% block title %}
-	<h1>{{ company.CompanyName|upper|raw }}</h1>
+	<h1>
+		{{ company.CompanyName|raw }}{{ company.Property is not empty ? ', ' ~ company.Property|raw|replace({'&amp;':'&'}) }}
+	</h1>
 {% endblock %}
 
 

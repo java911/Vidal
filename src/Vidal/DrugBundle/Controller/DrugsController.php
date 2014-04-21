@@ -114,6 +114,7 @@ class DrugsController extends Controller
 			'menu_drugs' => 'kfu',
 			'kfu'        => $kfu,
 			'title'      => $kfu . ' | Клинико-фармакологические указатели',
+			'parent'     => $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->findParent($kfu),
 		);
 
 		$products = $em->getRepository('VidalDrugBundle:Product')->findByKfu($kfu);
@@ -136,12 +137,25 @@ class DrugsController extends Controller
 	 * @Route("drugs/clinic-groups", name="kfu")
 	 * @Template("VidalDrugBundle:Drugs:kfu.html.twig")
 	 */
-	public function kfuAction()
+	public function kfuAction(Request $request)
 	{
 		$params = array(
 			'menu_drugs' => 'kfu',
 			'title'      => 'Клинико-фармакологические указатели',
 		);
+
+		if ($request->query->has('show')) {
+			$em      = $this->getDoctrine()->getManager('drug');
+			$show    = $request->query->get('show', null);
+			$showKfu = $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->findOneById($show);
+			if ($showKfu) {
+				$showBaseKfu = $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->findBase($showKfu);
+				if ($showBaseKfu) {
+					$params['showKfu']     = $showKfu;
+					$params['showBaseKfu'] = $showBaseKfu;
+				}
+			}
+		}
 
 		return $params;
 	}

@@ -79,6 +79,20 @@
 					$('#17217 > span').addClass('highlight');
 				}, 1000);
 			});
+
+			{# если мы пришли показать КФУ - надо подгрузить и раскрыть конкретный узел #}
+			{% if showBaseKfu is defined %}
+			var $base = $('#{{ showBaseKfu.ClPhPointerID }}');
+			$base.find(' > div').click();
+			setTimeout(function() {
+				var $show = $('#{{ showKfu.ClPhPointerID }}');
+				$show.parents('li').removeClass('expandable').addClass('collapsable')
+					.find('> div').removeClass('expandable-hitarea').addClass('collapsable-hitarea')
+					.siblings('ul').show();
+				$show.find('> i, > span').addClass('highlight');
+				$('html, body').animate({ scrollTop: $show.closest('ul').offset().top}, 1000);
+			}, 1000);
+			{% endif %}
 		});
 	</script>
 {% endblock %}
