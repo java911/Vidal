@@ -61,7 +61,7 @@ class MarketController extends Controller{
      * @Route("/add-to-basket/{code}/{count}", name="add_to_basket", defaults={"count"="1"}, options={"expose"=true})
      * @Template("VidalMainBundle:Market:list.html.twig")
      */
-    public function AddToBasket($code, $count = 1){
+    public function AddToBasketAction($code, $count = 1){
 
         $basket = new Basket();
 
@@ -93,7 +93,7 @@ class MarketController extends Controller{
      * @Route("/set-to-basket/{code}/{count}", name="set_to_basket", defaults={"count"="1"}, options={"expose"=true})
      * @Template("VidalMainBundle:Market:list.html.twig")
      */
-    public function setToBasket($code, $count = 1){
+    public function setToBasketAction($code, $count = 1){
         $basket = new Basket();
 
         $product = null;
@@ -123,7 +123,7 @@ class MarketController extends Controller{
      * @Route("/remove-to-basket/{code}", name="remove_to_basket", options={"expose"=true})
      * @Template("VidalMainBundle:Market:list.html.twig")
      */
-    public function removeToBasket($code){
+    public function removeToBasketAction($code){
         $basket = new Basket();
         $product = $basket->get($code);
         $basket->remove($product);
