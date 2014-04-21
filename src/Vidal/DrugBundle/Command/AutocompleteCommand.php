@@ -22,6 +22,7 @@ class AutocompleteCommand extends ContainerAwareCommand
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+		ini_set('memory_limit', -1);
 		$output->writeln('--- vidal:autocomplete started');
 
 		$em = $this->getContainer()->get('doctrine')->getManager('drug');

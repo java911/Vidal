@@ -23,6 +23,7 @@ class ElasticIndexCommand extends ContainerAwareCommand
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+		ini_set('memory_limit', -1);
 		$elasticaClient = new \Elastica\Client();
 		$elasticaIndex  = $elasticaClient->getIndex('website');
 
