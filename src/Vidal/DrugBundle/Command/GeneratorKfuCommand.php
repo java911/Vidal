@@ -16,6 +16,7 @@ class GeneratorKfuCommand extends ContainerAwareCommand
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+		ini_set('memory_limit', -1);
 		$output->writeln('+++ vidal:generator_kfu started');
 		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 

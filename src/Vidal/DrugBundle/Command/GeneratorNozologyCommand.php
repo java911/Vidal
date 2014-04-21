@@ -16,6 +16,7 @@ class GeneratorNozologyCommand extends ContainerAwareCommand
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+		ini_set('memory_limit', -1);
 		$output->writeln('+++ vidal:generator_nozology started');
 
 		$em         = $this->getContainer()->get('doctrine')->getManager('drug');

@@ -17,6 +17,7 @@ class InfoCountCommand extends ContainerAwareCommand
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+		ini_set('memory_limit', -1);
 		$output->writeln('+++ vidal:info_command started');
 
 		$em        = $this->getContainer()->get('doctrine')->getManager('drug');

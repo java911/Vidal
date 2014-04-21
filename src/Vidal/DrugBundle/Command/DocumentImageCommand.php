@@ -22,6 +22,7 @@ class DocumentImageCommand extends ContainerAwareCommand
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+		ini_set('memory_limit', -1);
 		$output->writeln('--- vidal:document_image started');
 
 		$em   = $this->getContainer()->get('doctrine')->getManager('drug');

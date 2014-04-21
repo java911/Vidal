@@ -17,6 +17,7 @@ class KfuTotalCommand extends ContainerAwareCommand
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+		ini_set('memory_limit', -1);
 		$output->writeln('+++ vidal:kfu_total started');
 
 		$em       = $this->getContainer()->get('doctrine')->getManager('drug');
