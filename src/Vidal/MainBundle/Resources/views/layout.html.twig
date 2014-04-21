@@ -53,8 +53,10 @@
                 src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
         <script type="text/javascript"
                 src="{{ asset('bundles/vidalmain/jquery-ui/jquery-ui-1.10.4.custom.min.js') }}"></script>
-        <meta name="svg.render.forceflash" content="true" />
-        <script src="{{ asset('bundles/vidalmain/svgweb/svg.js') }}"></script>
+
+		{# для Ослика #}
+        {#<meta name="svg.render.forceflash" content="true" />#}
+        {#<script src="{{ asset('bundles/vidalmain/svgweb/svg.js') }}"></script>#}
 
     {% endblock %}
 </head>
