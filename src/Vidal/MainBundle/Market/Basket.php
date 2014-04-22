@@ -10,7 +10,7 @@ class Basket{
     protected $drugs;
 
     public function __construct(){
-        $this->session = new Session();
+//        $this->session = new Session();
         if ( $this->session->get('basket')){
             $this->drugs = $this->session->get('basket');
         }else{
