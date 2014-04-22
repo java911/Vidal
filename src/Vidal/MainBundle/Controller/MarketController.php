@@ -58,7 +58,7 @@ class MarketController extends Controller{
     );
 
     /**
-     * @Route("/add-to-basket/{code}/{count}", name="add_to_basket", defaults={"count"="1"}, options={"expose"=true})
+     * @Route("/addbsk/{code}/{count}", name="add_to_basket", defaults={"count"="1"}, options={"expose"=true})
      * @Template("VidalMainBundle:Market:list.html.twig")
      */
     public function AddToBasketAction($code, $count = 1){
@@ -90,7 +90,7 @@ class MarketController extends Controller{
     }
 
     /**
-     * @Route("/set-to-basket/{code}/{count}", name="set_to_basket", defaults={"count"="1"}, options={"expose"=true})
+     * @Route("/setbsk/{code}/{count}", name="set_to_basket", defaults={"count"="1"}, options={"expose"=true})
      * @Template("VidalMainBundle:Market:list.html.twig")
      */
     public function setToBasketAction($code, $count = 1){
@@ -120,7 +120,7 @@ class MarketController extends Controller{
     }
 
     /**
-     * @Route("/remove-to-basket/{code}", name="remove_to_basket", options={"expose"=true})
+     * @Route("/removebsk/{code}", name="remove_to_basket", options={"expose"=true})
      * @Template("VidalMainBundle:Market:list.html.twig")
      */
     public function removeToBasketAction($code){
@@ -131,7 +131,7 @@ class MarketController extends Controller{
     }
 
     /**
-     * @Route("/drug-list/{drugId}/{isDocs}", name="drug_list", defaults={"isDocs"="false"}, options={"expose"=true})
+     * @Route("/druglist/{drugId}/{isDocs}", name="drug_list", defaults={"isDocs"="false"}, options={"expose"=true})
      * @Template("VidalMainBundle:Market:list.html.twig")
      */
     public function productListAction( $drugId, $isDocs = 'false' ){
@@ -167,7 +167,7 @@ class MarketController extends Controller{
     }
 
     /**
-     * @Route("/basket-list", name="basket_list" )
+     * @Route("/basketlist", name="basket_list" )
      * @Template("VidalMainBundle:Market:basket_list.html.twig")
      */
     public function basketListAction(){
@@ -182,7 +182,7 @@ class MarketController extends Controller{
     }
 
     /**
-     * @Route("/basket-order/{group}", name="basket_order" )
+     * @Route("/basketorder/{group}", name="basket_order" )
      * @Template("VidalMainBundle:Market:basket_order.html.twig")
      */
     public function basketOrderAction($group){
@@ -263,7 +263,7 @@ class MarketController extends Controller{
     }
 
     /**
-     * @Route("/basket-count", name="basket_count" )
+     * @Route("/basketcount", name="basket_count" )
      * @Template("VidalMainBundle:Market:basket_count.html.twig")
      */
     public function countProductAction(){
@@ -274,7 +274,7 @@ class MarketController extends Controller{
     }
 
     /**
-     * @Route("/set-to-basket-ajax/{code}/{count}", name="set_to_basket_ajax", defaults={"count"="1"}, options={"expose"=true})
+     * @Route("/setbskajax/{code}/{count}", name="set_to_basket_ajax", defaults={"count"="1"}, options={"expose"=true})
      */
     public function setToBasketAjax($code, $count = 1){
         $basket = new Basket();
@@ -423,7 +423,7 @@ class MarketController extends Controller{
 
 
     /**
-     * @Route("/drug-button/{drugId}/{isDocs}", name="drug_button", defaults={"isDocs"="false"}, options={"expose"=true})
+     * @Route("/drugbutton/{drugId}/{isDocs}", name="drug_button", defaults={"isDocs"="false"}, options={"expose"=true})
      * @Template("VidalMainBundle:Market:button.html.twig")
      */
     public function buttonAction( $drugId, $isDocs = 'false'){
