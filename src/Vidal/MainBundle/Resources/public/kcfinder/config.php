@@ -22,8 +22,8 @@ $_CONFIG = array(
 // GENERAL SETTINGS
 
     'disabled' => false,
-    'uploadURL' => "/upload/ckeditor",
-    'uploadDir' => "",
+	'uploadURL' => "/files",
+	'uploadDir' => "",
     'theme' => "default",
 
     'types' => array(
