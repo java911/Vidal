@@ -53,12 +53,14 @@
 		</div>
 	{% endif %}
 
-	{% if products is not empty %}
+	{% if products is not empty and pictures is not empty %}
 		<div class="pictures">
 			{% for picture in pictures %}
 				{% set path = '/upload/products/' ~ picture %}
 				{% if is_file(path) %}
-					<img src="{{ path }}"/>
+					<a href="{{ path }}" target="_blank">
+						<img src="{{ path }}"/>
+					</a>
 				{% endif %}
 			{% endfor %}
 		</div>
