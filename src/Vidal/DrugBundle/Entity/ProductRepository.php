@@ -37,7 +37,7 @@ class ProductRepository extends EntityRepository
 
 	public function findByDocumentIDs($documentIds)
 	{
-		$productsRaw = $this->_em->createQuery('
+		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, d.ArticleID, d.Indication, d.DocumentID
 			FROM VidalDrugBundle:Product p
@@ -51,54 +51,6 @@ class ProductRepository extends EntityRepository
 			ORDER BY p.RusName ASC
 		')->setParameter('DocumentIDs', $documentIds)
 			->getResult();
-
-		$products        = array();
-		$articlePriority = array(2, 5, 4, 3, 1);
-
-		# отсеиваем дубли препаратов
-		for ($i = 0; $i < count($productsRaw); $i++) {
-			$key = $productsRaw[$i]['ProductID'];
-			if (!isset($products[$key])) {
-				$products[$key] = $productsRaw[$i];
-			}
-			else {
-				# надо взять препарат по приоритету Document.ArticleID [2,5,4,3,1]
-				$curr = array_search($products[$key]['ArticleID'], $articlePriority);
-				$new  = array_search($productsRaw[$i]['ArticleID'], $articlePriority);
-				if ($new < $curr) {
-					$products[$key] = $productsRaw[$i];
-				}
-			}
-		}
-
-		if (empty($products)) {
-			return array();
-		}
-
-		# надо отсеять те препараты, у которых есть другие более ролевантные документы (не из $documentIds)
-		$sideProducts = $this->_em->createQuery('
-			SELECT d.DocumentID, d.ArticleID, p.ProductID
-			FROM VidalDrugBundle:Product p
-			JOIN VidalDrugBundle:ProductDocument pd WITH pd.ProductID = p
-			JOIN VidalDrugBundle:Document d WITH pd.DocumentID = d
-			WHERE p IN (:productIds) AND
-				d NOT IN (:documentIds)
-		')->setParameters(array(
-				'productIds'  => array_keys($products),
-				'documentIds' => $documentIds,
-			))->getResult();
-
-		foreach ($sideProducts as $product) {
-			$key = $product['ProductID'];
-			# надо проверить по приоритету Document.ArticleID [2,5,4,3,1], у $products он должен быть меньше
-			$main = array_search($products[$key]['ArticleID'], $articlePriority);
-			$side = array_search($product['ArticleID'], $articlePriority);
-			if ($side < $main && isset($products[$key])) {
-				unset($products[$key]);
-			}
-		}
-
-		return array_values($products);
 	}
 
 	public function findByMolecules($molecules)
@@ -602,6 +554,29 @@ class ProductRepository extends EntityRepository
 			ORDER BY p.RusName ASC
 		")->setParameter('CompanyID', $CompanyID)
 			->getSingleScalarResult();
+	}
+
+	public function countByDocumentIds($documentIds)
+	{
+		if (empty($documentIds)) {
+			return 0;
+		}
+
+		$count = $this->_em->createQuery('
+			SELECT COUNT(DISTINCT p.ProductID)
+			FROM VidalDrugBundle:Product p
+			LEFT JOIN VidalDrugBundle:ProductDocument pd WITH pd.ProductID = p
+			LEFT JOIN VidalDrugBundle:Document d WITH pd.DocumentID = d
+			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
+			WHERE d IN (:DocumentIDs) AND
+				p.CountryEditionCode = \'RUS\' AND
+				p.MarketStatusID IN (1,2) AND
+				p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+			ORDER BY p.RusName ASC
+		')->setParameter('DocumentIDs', $documentIds)
+			->getSingleScalarResult();
+
+		return $count;
 	}
 
 	/**

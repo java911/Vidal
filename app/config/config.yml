@@ -12,7 +12,7 @@ framework:
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
-    templating:      { engines: ['twig'], assets_version: v44 }
+    templating:      { engines: ['twig'], assets_version: v45 }
     form:            ~
     csrf_protection: false
     validation:      { enable_annotations: true }
@@ -21,7 +21,9 @@ framework:
         #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
     trusted_proxies: ~
-    session:         ~
+    session:
+        cookie_lifetime: 31536000
+        save_path: "%kernel.root_dir%/../../sessions"
     fragments:       ~
 
 # Twig Configuration

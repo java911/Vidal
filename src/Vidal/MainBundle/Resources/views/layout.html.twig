@@ -37,13 +37,13 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/checkbox/checkbox.css') }}"/>
         <link rel="stylesheet" type="text/css"
               href="{{ asset('bundles/vidalmain/jquery-ui/jquery-ui-1.10.4.custom.min.css') }}"/>
-        <!--[if !IE]>
+		<!--[if lt IE 9]>
         <link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/old_ie.css') }}"/>
         <![endif]-->
     {% endblock %}
 
     {% block javascripts %}
-        <script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/jquery-1.9.1.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/jquery-1.11.0.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/ready.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
         <script type="text/javascript" src="{{ asset('bundles/vidalmain/checkbox/jquery.checkbox.js') }}"></script>
@@ -53,8 +53,10 @@
                 src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
         <script type="text/javascript"
                 src="{{ asset('bundles/vidalmain/jquery-ui/jquery-ui-1.10.4.custom.min.js') }}"></script>
-        <meta name="svg.render.forceflash" content="true" />
-        <script src="{{ asset('bundles/vidalmain/svgweb/svg.js') }}"></script>
+
+		{# для Ослика #}
+        {#<meta name="svg.render.forceflash" content="true" />#}
+        {#<script src="{{ asset('bundles/vidalmain/svgweb/svg.js') }}"></script>#}
 
     {% endblock %}
 </head>

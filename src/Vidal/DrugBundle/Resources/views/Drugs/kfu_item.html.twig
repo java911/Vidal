@@ -12,7 +12,8 @@
 		<i></i>
 		<a href="{{ path('kfu') }}" title="Клинико-фармакологические указатели">КФУ</a>
 		<i></i>
-		<span>{{ kfu.Name|raw }}</span>
+		<a href="{{ path('kfu', {'show':kfu.ClPhPointerID}) }}">{{ kfu.Name|raw }}</a>
+		{#<span>{{ kfu.Name|raw }}</span>#}
 	</div>
 {% endblock %}
 
@@ -20,13 +21,20 @@
 {% block vidal %}
 	<div class="anons">Клинико-фармакологический указатель</div>
 
+	{% if parent %}
+		<div class="block">
+			<span class="block-head">Входит в группу: </span>
+			<a href="{{ path('kfu', {'show':parent.ClPhPointerID}) }}">{{ parent.Name|raw }}</a>
+		</div>
+	{% endif %}
+
 	{% if products is defined and products is not empty %}
 		<div class="block">
 			<div class="block-head">Препараты группы</div>
 			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' %}
 		</div>
 	{% else %}
-		<div class="no-results">
+		<div class="no-results block">
 			Не найдено препаратов
 		</div>
 	{% endif %}

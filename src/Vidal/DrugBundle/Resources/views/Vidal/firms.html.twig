@@ -32,8 +32,8 @@
 			{% for company in pagination %}
 				<tr>
 					<td>
-						<a class="no-underline"
-						   href="{{ path('firm_item', {'CompanyID':company.CompanyID}) }}">{{ company|raw }}</a>
+						<a class="no-underline" href="{{ path('firm_item', {'CompanyID':company.CompanyID}) }}"
+							>{{ company.LocalName|raw }}{{ company.Property is not empty ? ', ' ~ company.Property|raw|replace({'&amp;':'&'}) }}</a>
 					</td>
 					<td>{{ company.CountryCode }}</td>
 				</tr>

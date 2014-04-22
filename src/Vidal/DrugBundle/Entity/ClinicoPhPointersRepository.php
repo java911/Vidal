@@ -71,4 +71,44 @@ class ClinicoPhPointersRepository extends EntityRepository
 		')->setParameter('id', $id)
 			->getOneOrNullResult();
 	}
+
+	public function findOneByCode($Code)
+	{
+		return $this->_em->createQuery('
+			SELECT c
+			FROM VidalDrugBundle:ClinicoPhPointers c
+			WHERE c.Code = :Code
+		')->setParameter('Code', $Code)
+			->getOneOrNullResult();
+	}
+
+	public function findParent($kfu)
+	{
+		$code = $kfu->getCode();
+		$pos  = strpos($code, '.');
+
+		if ($pos === false) {
+			return null;
+		}
+
+		$codes = explode('.', $code);
+		array_pop($codes);
+		$parentCode = implode('.', $codes);
+
+		return $this->findOneByCode($parentCode);
+	}
+
+	public function findBase($kfu)
+	{
+		$code = $kfu->getCode();
+		$pos  = strpos($code, '.');
+
+		if ($pos === false) {
+			return null;
+		}
+
+		$codes = explode('.', $code);
+
+		return $this->findOneByCode($codes[0]);
+	}
 }
