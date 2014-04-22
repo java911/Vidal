@@ -4,6 +4,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8"/>
+	<link rel="shortcut icon" href="{{ asset('favicon.ico') }}?v=2" />
 
     {% block meta %}
         <title>{% spaceless %}
@@ -28,8 +29,6 @@
 				{% endif %}
 			{% endspaceless %}"/>
     {% endblock %}
-
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 
     {% block stylesheets %}
         <link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/common.min.css') }}"/>
