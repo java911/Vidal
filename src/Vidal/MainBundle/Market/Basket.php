@@ -9,8 +9,13 @@ class Basket{
 
     protected $drugs;
 
+    public $session;
+
     public function __construct(){
-//        $this->session = new Session();
+        $this->session = new Session();
+        if (!$this->session->isStarted()){
+            $this->session->start();
+        }
         if ( $this->session->get('basket')){
             $this->drugs = $this->session->get('basket');
         }else{
