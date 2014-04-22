@@ -61,9 +61,9 @@ class MarketController extends Controller{
      * @Route("/addbsk/{code}/{count}", name="add_to_basket", defaults={"count"="1"}, options={"expose"=true})
      * @Template("VidalMainBundle:Market:list.html.twig")
      */
-    public function AddToBasketAction($code, $count = 1){
+    public function AddToBasketAction(Request $request, $code, $count = 1){
 
-        $basket = new Basket();
+        $basket = new Basket($request);
 
         $product = null;
         $product = $basket->getProduct($code);
@@ -93,8 +93,8 @@ class MarketController extends Controller{
      * @Route("/setbsk/{code}/{count}", name="set_to_basket", defaults={"count"="1"}, options={"expose"=true})
      * @Template("VidalMainBundle:Market:list.html.twig")
      */
-    public function setToBasketAction($code, $count = 1){
-        $basket = new Basket();
+    public function setToBasketAction(Request $request, $code, $count = 1){
+        $basket = new Basket($request);
 
         $product = null;
         $product = $basket->getProduct($code);
@@ -123,8 +123,8 @@ class MarketController extends Controller{
      * @Route("/removebsk/{code}", name="remove_to_basket", options={"expose"=true})
      * @Template("VidalMainBundle:Market:list.html.twig")
      */
-    public function removeToBasketAction($code){
-        $basket = new Basket();
+    public function removeToBasketAction(Request $request, $code){
+        $basket = new Basket($request);
         $product = $basket->get($code);
         $basket->remove($product);
         return $this->redirect($this->get('request')->server->get('HTTP_REFERER'));
@@ -170,8 +170,8 @@ class MarketController extends Controller{
      * @Route("/basketlist", name="basket_list" )
      * @Template("VidalMainBundle:Market:basket_list.html.twig")
      */
-    public function basketListAction(){
-        $basket = new Basket();
+    public function basketListAction(Request $request){
+        $basket = new Basket($request);
 //        $basket->removeAll();
         $products = $basket->getAll();
         $amounts = $basket->getAmounts();
@@ -185,9 +185,9 @@ class MarketController extends Controller{
      * @Route("/basketorder/{group}", name="basket_order" )
      * @Template("VidalMainBundle:Market:basket_order.html.twig")
      */
-    public function basketOrderAction($group){
+    public function basketOrderAction(Request $request, $group){
 
-        $session = new Session();
+        $session = $request->getSession();
 //        if (!$session->isStarted()){
 //            $session->start();
 //        }
@@ -229,8 +229,8 @@ class MarketController extends Controller{
                 $session->set('userOrder',$order);
 
 
-                $xml = $this->generateXml($group, $order);
-                $basket = new Basket();
+                $xml = $this->generateXml($request, $group, $order);
+                $basket = new Basket($request);
                 $order->setBody($xml);
                 $succes = false;
                 if ($group == 'zdavzona'){
@@ -266,8 +266,8 @@ class MarketController extends Controller{
      * @Route("/basketcount", name="basket_count" )
      * @Template("VidalMainBundle:Market:basket_count.html.twig")
      */
-    public function countProductAction(){
-        $basket = new Basket();
+    public function countProductAction(Request $request){
+        $basket = new Basket($request);
         $count = $basket->getCount();
 
         return array('count' => $count );
@@ -276,8 +276,8 @@ class MarketController extends Controller{
     /**
      * @Route("/setbskajax/{code}/{count}", name="set_to_basket_ajax", defaults={"count"="1"}, options={"expose"=true})
      */
-    public function setToBasketAjax($code, $count = 1){
-        $basket = new Basket();
+    public function setToBasketAjax(Request $request, $code, $count = 1){
+        $basket = new Basket($request);
         $summa = 0;
         $product = null;
         $product = $basket->getProduct($code);
@@ -310,9 +310,9 @@ class MarketController extends Controller{
     }
 
 
-    public function generateXml($group, $order){
+    public function generateXml($request, $group, $order){
 
-        $basket = new Basket();
+        $basket = new Basket($request);
         $products = $basket->getAll();
         $products = $products[$group];
         $summa = $basket->getAmounts();

@@ -11,11 +11,8 @@ class Basket{
 
     public $session;
 
-    public function __construct(){
-        $this->session = new Session();
-        if (!$this->session->isStarted()){
-            $this->session->start();
-        }
+    public function __construct($request){
+        $this->session = $request->getSession();
         if ( $this->session->get('basket')){
             $this->drugs = $this->session->get('basket');
         }else{
