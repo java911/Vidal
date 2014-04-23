@@ -4,7 +4,8 @@
 <ul class="sidebar-menu ul">
 	<li>
 		<a href="{{ path('articles') }}"
-		   class="{{ menu_left is defined and menu_left == 'articles' ? 'active' : 'dotted' }}">Энциклопедия</a>
+		   class="{{ menu_left is defined and menu_left == 'articles' ? 'active' : 'dotted' }}">Медицинская
+			энциклопедия</a>
 	</li>
 	<li>
 		<a href="{{ path('news') }}"
@@ -26,11 +27,11 @@
 		<a href="{{ path('shkola') }}"
 		   class="{{ menu_left is defined and menu_left == 'shkola' ? 'active' : 'dotted' }}">Школа здоровья</a>
 	</li>
-    <li>
+	<li>
 		<a href="/reckittbenckiser/index.html?medi" class="dotted" target="_blank">Без боли</a>
 	</li>
 
-    {{ render(controller('VidalMainBundle:Market:countProduct')) }}
+	{{ render(controller('VidalMainBundle:Market:countProduct')) }}
 </ul>
 
 {# блок авторизации или личного кабинета #}
