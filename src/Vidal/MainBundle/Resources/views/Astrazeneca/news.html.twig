@@ -1,0 +1,64 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block title %}
+    <h1>НОВОСТИ</h1>
+{% endblock %}
+
+
+{% block nav %}
+    <div class="breadcrumbs">
+        <a href="{{ path('index') }}">Видаль</a>
+        <i></i>
+        <a href="{{ path('astrazeneca_index') }}">astraZeneca</a>
+        <i></i>
+        <span>Новости</span>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+    <div class="title title-news">
+        <a href="{{ path('news') }}">Новости AstraZeneca</a>
+    </div>
+    <br/>
+    <div class="news">
+        {% for publication in publications %}
+            {% set withPhoto = publication.photo and is_file(publication.photo.path) %}
+            <div class="publication{{ withPhoto ? ' with-photo' }}">
+                {# админам карандашик редактирования #}
+                {% if isAdmin %}
+                    <a class="admin-edit fade" target="_blank"
+                       href="{{ path('admin_vidal_drug_publication_edit', {'id':publication.id}) }}">
+                        <img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+                    </a>
+                {% endif %}
+
+                {% if withPhoto %}
+                    <a class="photo" href="{{ path('publication', {id:publication.id}) }}">
+                        <img src="{{ publication.photo.path }}" alt="{{ publication.title }}"/>
+                    </a>
+                {% endif %}
+                <div>
+                    <div class="publication-title">
+                        <a href="{{ path('publication', {id:publication.id}) }}">{{ publication.title|raw }}</a>
+                    </div>
+                    <div class="publication-announce">
+                        {{ publication.announce|raw }}
+                    </div>
+                    <div class="publication-footer">
+                        <div class="publication-date">
+                            {{ publication.date|date('d.m.Y') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/publication.css') }}"/>
+{% endblock %}

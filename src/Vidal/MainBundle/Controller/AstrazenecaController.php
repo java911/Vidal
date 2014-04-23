@@ -13,6 +13,7 @@ use Lsw\SecureControllerBundle\Annotation\Secure;
 
 class AstrazenecaController extends Controller
 {
+    const PUBLICATIONS_SHOW = 5;
 
     /**
      * @Route("/astrazeneca", name="astrazeneca_index")
@@ -26,7 +27,17 @@ class AstrazenecaController extends Controller
      * @Route("/astrazeneca/news", name="astrazeneca_news")
      * @Template("VidalMainBundle:Astrazeneca:news.html.twig")
      */
-    public function newsAction(){}
+    public function newsAction(Request $request){
+        $em = $this->getDoctrine()->getManager('drug');
+
+
+        $params = array(
+            'indexPage'    => true,
+            'publications' => $em->getRepository('VidalDrugBundle:Publication')->findLast(self::PUBLICATIONS_SHOW),
+        );
+
+        return $params;
+    }
 
     /**
      * @Route("/astrazeneca/new/{newId}", name="astrazeneca_new")
