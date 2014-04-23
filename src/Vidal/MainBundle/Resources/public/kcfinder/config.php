@@ -22,8 +22,8 @@ $_CONFIG = array(
 // GENERAL SETTINGS
 
     'disabled' => false,
-	'uploadURL' => "/kcfiles",
-	'uploadDir' => "/home/twigavid/public_html/kcfiles",
+	'uploadURL' => "/upload/ckeditor",
+	'uploadDir' => "/home/twigavid/vidal/upload/ckeditor",
     'theme' => "default",
 
     'types' => array(
