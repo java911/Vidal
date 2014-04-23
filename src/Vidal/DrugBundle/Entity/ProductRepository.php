@@ -8,7 +8,7 @@ class ProductRepository extends EntityRepository
 	public function findByProductID($ProductID)
 	{
 		return $this->_em->createQuery("
-			SELECT p.ZipInfo, p.RegistrationNumber, p.CheckingRegDate as RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.Composition, pt.ProductTypeCode
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
@@ -21,7 +21,7 @@ class ProductRepository extends EntityRepository
 	public function findByDocumentID($DocumentID)
 	{
 		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.RegistrationNumber, p.CheckingRegDate as RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN VidalDrugBundle:ProductDocument pd WITH pd.ProductID = p
@@ -38,7 +38,7 @@ class ProductRepository extends EntityRepository
 	public function findByDocumentIDs($documentIds)
 	{
 		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.RegistrationNumber, p.CheckingRegDate as RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, d.ArticleID, d.Indication, d.DocumentID
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN VidalDrugBundle:ProductDocument pd WITH pd.ProductID = p
@@ -61,7 +61,7 @@ class ProductRepository extends EntityRepository
 		}
 
 		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.RegistrationNumber, p.CheckingRegDate as RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.moleculeNames mn
@@ -79,7 +79,7 @@ class ProductRepository extends EntityRepository
 	public function findByATCCode($ATCCode)
 	{
 		return $this->_em->createQuery('
-			SELECT p.ProductID, p.ZipInfo, p.RegistrationNumber, p.CheckingRegDate as RegistrationDate, p.NonPrescriptionDrug,
+			SELECT p.ProductID, p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.NonPrescriptionDrug,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
 				d.Name DocumentName
@@ -99,7 +99,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
-				p.RegistrationNumber, p.CheckingRegDate as RegistrationDate,
+				p.RegistrationNumber, p.RegistrationDate,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
 				d.Name DocumentName
 			FROM VidalDrugBundle:Product p
@@ -119,7 +119,7 @@ class ProductRepository extends EntityRepository
 	{
 		$productsRaw = $this->_em->createQuery('
 			SELECT p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.ZipInfo,
-				p.RegistrationNumber, p.CheckingRegDate as RegistrationDate,
+				p.RegistrationNumber, p.RegistrationDate,
 				country.RusName CompanyCountry,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
 				d.Name DocumentName,
@@ -159,7 +159,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
-				p.RegistrationNumber, p.CheckingRegDate as RegistrationDate
+				p.RegistrationNumber, p.RegistrationDate
 			FROM VidalDrugBundle:Product p
 			JOIN VidalDrugBundle:ProductDocument pd WITH pd.ProductID = p
 			JOIN VidalDrugBundle:Document d WITH pd.DocumentID = d
@@ -210,7 +210,7 @@ class ProductRepository extends EntityRepository
 		$qb = $this->_em->createQueryBuilder();
 
 		$qb
-			->select('p.ZipInfo, p.RegistrationNumber, p.CheckingRegDate as RegistrationDate, p.ProductID,
+			->select('p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.ProductID,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, pt.ProductTypeCode,
 				d.Indication, d.ArticleID, d.DocumentID')
 			->from('VidalDrugBundle:Product', 'p')
@@ -313,7 +313,7 @@ class ProductRepository extends EntityRepository
 		}
 
 		$productsRaw = $this->_em->createQuery('
-			SELECT p.ZipInfo, p.RegistrationNumber, p.CheckingRegDate as RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, d.Indication, d.DocumentID
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN VidalDrugBundle:ProductDocument pd WITH pd.ProductID = p
@@ -358,7 +358,7 @@ class ProductRepository extends EntityRepository
 		}
 
 		$productsRaw = $this->_em->createQuery('
-			SELECT p.ZipInfo, p.RegistrationNumber, p.CheckingRegDate as RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, d.Indication, d.DocumentID
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN VidalDrugBundle:ProductDocument pd WITH pd.ProductID = p
@@ -389,7 +389,7 @@ class ProductRepository extends EntityRepository
 	public function findByClPhGroup($description)
 	{
 		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.RegistrationNumber, p.CheckingRegDate as RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
 				d.Indication, d.DocumentID, d.ClPhGrDescription
 			FROM VidalDrugBundle:Product p
@@ -408,7 +408,7 @@ class ProductRepository extends EntityRepository
 	public function findByPhThGroup($id)
 	{
 		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.RegistrationNumber, p.CheckingRegDate as RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
 				d.Indication, d.DocumentID
 			FROM VidalDrugBundle:Product p
@@ -515,7 +515,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
-				p.RegistrationNumber, p.CheckingRegDate as RegistrationDate,
+				p.RegistrationNumber, p.RegistrationDate,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
 				d.Name DocumentName
 			FROM VidalDrugBundle:Product p
