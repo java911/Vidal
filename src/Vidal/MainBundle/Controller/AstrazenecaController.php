@@ -68,4 +68,12 @@ class AstrazenecaController extends Controller
         );
     }
 
+    /**
+     * @Route("/astrazeneca/aadmin/faq", name="admin_astrazeneca_faq")
+     * @Template("VidalMainBundle:Astrazeneca:admin_faq.html.twig")
+     */
+    public function adminFaqAction(){
+        return array();
+    }
+
 }
