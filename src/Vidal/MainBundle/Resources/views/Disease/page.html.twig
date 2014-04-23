@@ -57,7 +57,7 @@
             <td style="vertical-align: top; text-align: left" colspan="2">
             <![endif]-->
             <![if !IE]>
-            <td id="body-render">
+            <td id="body-render" style="vertical-align: top">
                 {{ render(controller('VidalMainBundle:Symptom:body')) }}
             </td>
             <td style="vertical-align: top; text-align: left">
@@ -469,6 +469,9 @@
         }
         #Navigation{
             height: 350px;
+        }
+        svg{
+            width: 200px;
         }
         svg rect{
             fill-opacity: 0;
