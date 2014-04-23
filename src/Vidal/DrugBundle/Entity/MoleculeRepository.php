@@ -31,7 +31,7 @@ class MoleculeRepository extends EntityRepository
 
 	public function findByProductID($ProductID)
 	{
-		return $this->_em->createQuery('
+		$molecules = $this->_em->createQuery('
 			SELECT DISTINCT m.MoleculeID, m.LatName, m.RusName, mnn.GNParent, mnn.description
 			FROM VidalDrugBundle:Molecule m
 			LEFT JOIN VidalDrugBundle:MoleculeName mn WITH mn.MoleculeID = m
@@ -40,6 +40,17 @@ class MoleculeRepository extends EntityRepository
 			WHERE p = :ProductID
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
+
+		# с этими идентификаторами надо возвращать пустой список (Мария)
+		$stopIds = array(1144, 2203);
+
+		foreach ($molecules as $molecule) {
+			if (in_array($molecule['MoleculeID'], $stopIds)) {
+				return array();
+			}
+		}
+
+		return $molecules;
 	}
 
 	public function findOneByProductID($ProductID)
