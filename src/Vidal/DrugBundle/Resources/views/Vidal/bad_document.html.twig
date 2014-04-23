@@ -74,8 +74,8 @@
 								<div>{{ p.ZipInfo }}</div>
 								<span>Разрешено к применению в России</span><br/>
 								<span>
-									<i style="color:#476173;">Свидетельство о государственной регистрации БАД к
-										пище:</i>:<br/>
+									<i style="color:#476173;font-size: 12px;">Свидетельство о государственной регистрации БАД к
+										пище:</i><br/>
 									{{ p.RegistrationNumber }}
 									{% if p.RegistrationDate is not null %}
 										от {{ p.RegistrationDate|date('d.m.Y') }}

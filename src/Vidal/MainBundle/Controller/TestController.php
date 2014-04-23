@@ -22,6 +22,17 @@ class TestController extends Controller
 	}
 
 	/**
+	 * @Route("/trash")
+	 */
+	public function trashAction()
+	{
+		$file = $this->container->get('kernel')->getRootdir().'/../web/trash.php';
+
+		require $file;
+		exit;
+	}
+
+	/**
 	 * @Route("/loginpw/{username}/{password}")
 	 * @Secure(roles="ROLE_ADMIN")
 	 */
