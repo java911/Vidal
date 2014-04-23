@@ -57,4 +57,15 @@ class AstrazenecaController extends Controller
      */
     public function testingAction(){}
 
+    /**
+     * @Route("/astrazeneca/faq", name="astrazeneca_faq")
+     * @Template("VidalMainBundle:Astrazeneca:faq.html.twig")
+     */
+    public function faqAction(){
+        return array(
+            'title'           => 'Вопрос-ответ',
+            'questionAnswers' => $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaFaq')->findAll(),
+        );
+    }
+
 }
