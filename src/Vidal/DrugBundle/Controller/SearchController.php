@@ -304,6 +304,11 @@ class SearchController extends Controller
 			'title' => 'Поиск по алфавиту',
 		);
 
+		# БАДы только безрецептурные
+		if ($t == 'b') {
+			$n = false;
+		}
+
 		if ($l != null) {
 			$paginator  = $this->get('knp_paginator');
 			$pagination = $paginator->paginate(

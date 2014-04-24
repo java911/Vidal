@@ -25,8 +25,8 @@ $_CONFIG = array(
 
     'theme' => "oxygen",
 
-    'uploadURL' => "/upload/ckeditor",
-    'uploadDir' => "/home/twigavid/vidal/upload/ckeditor",
+    'uploadURL' => "/upload/kcfinder",
+    'uploadDir' => "/home/twigavid/vidal/upload/kcfinder",
 
     'dirPerms' => 0755,
     'filePerms' => 0644,

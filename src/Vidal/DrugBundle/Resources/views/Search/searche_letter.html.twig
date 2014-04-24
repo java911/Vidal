@@ -17,11 +17,13 @@
 					<option value="b"{{ t == 'b' ? ' selected="selected"' }}>БАДы</option>
 					<option value="o"{{ t == 'o' ? ' selected="selected"' }}>Препараты и БАДы</option>
 				</select>
-				<span class="letters-controls-check no-selection">
-					<input id="letters_nonpres" type="checkbox" name="n"{{ n ? ' checked="checked"' }}
-						   class="checkbox"/>
-					<span class="small no-selection">только безрецептурные</span>
-				</span>
+				{% if t != 'b' %}
+					<span class="letters-controls-check no-selection">
+						<input id="letters_nonpres" type="checkbox" name="n"{{ n ? ' checked="checked"' }}
+							   class="checkbox"/>
+						<span class="small no-selection">только безрецептурные</span>
+					</span>
+				{% endif %}
 			</div>
 
 			<div class="letters-russian">
