@@ -171,13 +171,8 @@ class AuthController extends Controller
 	private function resetToken($user)
 	{
 		$secret = $this->container->getParameter('secret');
-		$token  = new RememberMeToken($user, 'local_database', $secret);
+		$token  = new RememberMeToken($user, 'everything', $secret);
 		$this->get('security.context')->setToken($token);
-
-		# dispatch the login event
-		$request = $this->get('request');
-		$event   = new InteractiveLoginEvent($request, $token);
-		$this->get('event_dispatcher')->dispatch('security.interactive_login', $event);
 	}
 
 	private function generatePassword()

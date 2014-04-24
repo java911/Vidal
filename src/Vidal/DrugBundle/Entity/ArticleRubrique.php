@@ -36,6 +36,9 @@ class ArticleRubrique
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $priority;
 
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $redirect;
+
 	public function __construct()
 	{
 		$this->articles = new ArrayCollection();
@@ -134,5 +137,21 @@ class ArticleRubrique
 	public function getPriority()
 	{
 		return $this->priority;
+	}
+
+	/**
+	 * @param mixed $redirect
+	 */
+	public function setRedirect($redirect)
+	{
+		$this->redirect = $redirect;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getRedirect()
+	{
+		return $this->redirect;
 	}
 }

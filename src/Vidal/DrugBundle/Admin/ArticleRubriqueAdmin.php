@@ -32,7 +32,9 @@ class ArticleRubriqueAdmin extends Admin
 			->add('id')
 			->add('title', null, array('label' => 'Название'))
 			->add('rubrique', null, array('label' => 'Страница рубрики', 'help' => 'Принимаются латинские буквы и тире'))
-			->add('priority', null, array('label' => 'Приоритет'));
+			->add('priority', null, array('label' => 'Приоритет'))
+			->add('redirect', null, array('label' => 'Переход сюда'))
+			->add('enabled', null, array('label' => 'Активна'));
 	}
 
 	protected function configureFormFields(FormMapper $formMapper)
@@ -44,14 +46,17 @@ class ArticleRubriqueAdmin extends Admin
 				'help'     => 'Принимаются латинские буквы и тире',
 				'required' => true
 			))
-			->add('priority', null, array('label' => 'Приоритет'));
+			->add('priority', null, array('label' => 'Приоритет'))
+			->add('redirect', null, array('label' => 'Переход сюда', 'required' => false, 'help' => 'Оставьте пустым, чтоб оставить поведение по умолчанию'))
+			->add('enabled', null, array('label' => 'Активна', 'required' => false));
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
 			->add('title', null, array('label' => 'Название'))
-			->add('priority', null, array('label' => 'Приоритет'));
+			->add('priority', null, array('label' => 'Приоритет'))
+			->add('enabled', null, array('label' => 'Активна'));
 	}
 
 	protected function configureListFields(ListMapper $listMapper)
@@ -60,6 +65,8 @@ class ArticleRubriqueAdmin extends Admin
 			->add('title', null, array('label' => 'Название'))
 			->add('rubrique', null, array('label' => 'Страница рубрики'))
 			->add('priority', null, array('label' => 'Приоритет'))
+			->add('redirect', null, array('label' => 'Переход сюда'))
+			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(
