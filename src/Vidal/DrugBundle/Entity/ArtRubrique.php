@@ -38,6 +38,9 @@ class ArtRubrique
 	/** @ORM\Column(type="boolean") */
 	protected $detached;
 
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $redirect;
+
 	public function __construct()
 	{
 		$this->enabled    = true;
@@ -186,22 +189,6 @@ class ArtRubrique
 	}
 
 	/**
-	 * @param mixed $link
-	 */
-	public function setLink($link)
-	{
-		$this->link = $link;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getLink()
-	{
-		return $this->link;
-	}
-
-	/**
 	 * @param mixed $priority
 	 */
 	public function setPriority($priority)
@@ -215,5 +202,37 @@ class ArtRubrique
 	public function getPriority()
 	{
 		return $this->priority;
+	}
+
+	/**
+	 * @param mixed $detached
+	 */
+	public function setDetached($detached)
+	{
+		$this->detached = $detached;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDetached()
+	{
+		return $this->detached;
+	}
+
+	/**
+	 * @param mixed $redirect
+	 */
+	public function setRedirect($redirect)
+	{
+		$this->redirect = $redirect;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getRedirect()
+	{
+		return $this->redirect;
 	}
 }

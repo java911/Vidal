@@ -33,6 +33,7 @@ class ArtRubriqueAdmin extends Admin
 			->add('title', null, array('label' => 'Заголовок'))
 			->add('url', null, array('label' => 'Адрес страницы', 'help' => 'латинские буквы и цифры, слова через тире'))
 			->add('priority', null, array('label' => 'Приоритет'))
+			->add('redirect', null, array('label' => 'Переход сюда'))
 			->add('enabled', null, array('label' => 'Активен'));
 	}
 
@@ -43,6 +44,7 @@ class ArtRubriqueAdmin extends Admin
 			->add('url', null, array('label' => 'Адрес страницы', 'required' => true, 'help' => 'латинские буквы и цифры, слова через тире'))
 			->add('announce', null, array('label' => 'Анонс', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('priority', null, array('label' => 'Приоритет'))
+			->add('redirect', null, array('label' => 'Переход сюда', 'required' => false))
 			->add('enabled', null, array('label' => 'Активен', 'required' => false));
 	}
 
@@ -63,6 +65,7 @@ class ArtRubriqueAdmin extends Admin
 			->add('title', null, array('label' => 'Заголовок'))
 			->add('url', null, array('label' => 'Адрес страницы'))
 			->add('priority', null, array('label' => 'Приоритет'))
+			->add('redirect', null, array('label' => 'Переход сюда'))
 			->add('enabled', null, array('label' => 'Активен', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
