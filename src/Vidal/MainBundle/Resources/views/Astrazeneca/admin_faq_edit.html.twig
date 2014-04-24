@@ -1,0 +1,25 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block title %}
+    <h1>Список вопросов</h1>
+{% endblock %}
+
+{% block nav %}
+    <div class="breadcrumbs">
+        <a href="{{ path('index') }}">Видаль</a>
+        <i></i>
+        <a href="{{ path('astrazeneca_index') }}">AstraZeneca</a>
+        <i></i>
+        <a href="{{ path('admin_astrazeneca_faq') }}">Админ панель</a>
+        <i></i>
+        <span>Добавить / изменить</span>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+<form id="register_form" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+</form>
+{% endblock %}

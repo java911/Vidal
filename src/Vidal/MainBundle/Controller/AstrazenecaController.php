@@ -114,10 +114,14 @@ class AstrazenecaController extends Controller
                 $em->flush();
             }
         }
+
+        return array(
+            'form' => $form->createView(),
+        );
     }
 
     /**
-     * @Route("/astrazeneca/admin/faq/{pageId}", name="admin_astrazeneca_faq_edit")
+     * @Route("/astrazeneca/admin/faq/{faqId}", name="admin_astrazeneca_faq_edit")
      * @Template("VidalMainBundle:Astrazeneca:admin_faq_edit.html.twig")
      */
     public function adminFaqEditAction(Request $request, $faqId){
@@ -131,8 +135,8 @@ class AstrazenecaController extends Controller
 
         $builder = $this->createFormBuilder($faq);
         $builder
-            ->add('question', null, array('label' => 'Вопрос', 'attr' => array('class' => 'ckeditor')))
-            ->add('answer', null, array('label' => 'Ответ', 'attr' => array('class' => 'ckeditor')))
+            ->add('question', null, array('label' => 'Вопрос'))
+            ->add('answer', null, array('label' => 'Ответ'))
 
             ->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn')));
 
@@ -145,6 +149,29 @@ class AstrazenecaController extends Controller
                 $em->flush($faq);
             }
         }
+        return array(
+            'form' => $form->createView(),
+        );
+    }
+
+    /**
+     * @Route("/astrazeneca/admin/faq/delete/{faqId}", name="admin_astrazeneca_faq_delete")
+     * @Template("VidalMainBundle:Astrazeneca:admin_faq_edit.html.twig")
+     */
+    public function adminFaqDeleteAction(Request $request, $faqId){
+
+//        if ($this->getUser()->isGranted('ROLE_ZENECA') == false){
+//            $this->redirect($this->generateUrl('index'));
+//        }
+
+        $em = $this->getDoctrine()->getManager();
+        $faq = $em->getRepository('VidalMainBundle:AstrazenecaFaq')->findOneById($faqId);
+
+        $em->remove($faq);
+        $em->flush();
+
+
+        return $this->redirect($this->generateUrl('astrazeneca_faq'));
     }
 
 }

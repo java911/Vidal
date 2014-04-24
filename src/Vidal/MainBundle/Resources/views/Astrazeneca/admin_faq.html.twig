@@ -30,8 +30,8 @@
                     {{ faq.question }}
                 </td>
                 <td style="text-align: right">
-                    <a href="#"><img src="{{ asset('bundles/vidalmain/images/edit.png') }}" style="width: 20px; padding-right: 10px;"></a>
-                    <a href="#"><img src="{{ asset('bundles/vidalmain/images/close.png') }}" style="width: 24px; padding-right: 10px;"></a>
+                    <a href="{{ path('admin_astrazeneca_faq_edit',{'faqId' : faq.id }) }}"><img src="{{ asset('bundles/vidalmain/images/edit.png') }}" style="width: 20px; padding-right: 10px;"></a>
+                    <a href="{{ path('admin_astrazeneca_faq_delete',{'faqId' : faq.id }) }}"><img src="{{ asset('bundles/vidalmain/images/close.png') }}" style="width: 24px; padding-right: 10px;"></a>
                 </td>
             </tr>
         {% endfor %}
