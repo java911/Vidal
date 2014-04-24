@@ -56,14 +56,28 @@ class AstrazenecaController extends Controller
      * @Route("/astrazeneca/testing", name="astrazeneca_testing")
      * @Template("VidalMainBundle:Astrazeneca:test.html.twig")
      */
-    public function testingAction(){
-        $questions = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaTest')->findAll();
+    public function testingAction(Request $request){
 
-        $question = array_rand($questions);
+        $question = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaTest')->findOneById(1);
 
         return array(
             'question' => $question,
         );
+    }
+
+    /**
+     * @Route("/astrazeneca/testing-ajax/{step}", name="astrazeneca_testing_ajax", options={"expose"=true})
+     */
+    public function testingAjaxAction(Request $request, $step){
+
+        $question = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaTest')->findAll();
+        if (isset($question[$step-1])){
+            $question = $question[$step-1];
+        }else{
+            $question = null;
+        }
+
+        return new Response($question->getTitle());
     }
 
     /**
