@@ -54,9 +54,17 @@ class AstrazenecaController extends Controller
 
     /**
      * @Route("/astrazeneca/testing", name="astrazeneca_testing")
-     * @Template("VidalMainBundle:Astrazeneca:testing.html.twig")
+     * @Template("VidalMainBundle:Astrazeneca:test.html.twig")
      */
-    public function testingAction(){}
+    public function testingAction(){
+        $questions = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaTest')->findAll();
+
+        $question = array_rand($questions);
+
+        return array(
+            'question' => $question,
+        );
+    }
 
     /**
      * @Route("/astrazeneca/faq", name="astrazeneca_faq")
@@ -83,6 +91,7 @@ class AstrazenecaController extends Controller
         $faqs = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaFaq')->findAll();
         return array('faqs' => $faqs);
     }
+
 
 
     /**

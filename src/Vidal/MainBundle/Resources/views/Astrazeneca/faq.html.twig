@@ -5,6 +5,15 @@
     <h1>ОТВЕТЫ СПЕЦИАЛИСТОВ</h1>
 {% endblock %}
 
+{% block nav %}
+    <div class="breadcrumbs">
+        <a href="{{ path('index') }}">Видаль</a>
+        <i></i>
+        <a href="{{ path('astrazeneca_index') }}">astraZeneca</a>
+        <i></i>
+        <span>Ответы специалистов</span>
+    </div>
+{% endblock %}
 
 {% block content %}
     {% if questionAnswers|length %}
