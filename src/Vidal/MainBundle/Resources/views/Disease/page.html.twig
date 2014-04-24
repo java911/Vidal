@@ -16,10 +16,10 @@
                     <option value="2">Женский</option>
                 </select>
 
-                <!--[if !IE]><!-->
+
                     <img src="{{ asset('bundles/vidalmain/images/Reload.png') }}" id="refresh-body" title="Перевернуть" alt="Перевернуть">
                     <img src="{{ asset('bundles/vidalmain/images/Back.png') }}" id="back-body" title="Вернуться" alt="Вернуться">
-                <!--<![endif]-->
+
 
             </td>
             <td>
@@ -53,15 +53,13 @@
             </td>
         </tr>
         <tr>
-            <!--[if IE]>
-            <td style="vertical-align: top; text-align: left" colspan="2">
-            <![endif]-->
-            <![if !IE]>
-            <td id="body-render">
+
+
+            <td id="body-render" style="vertical-align: top;">
                 {{ render(controller('VidalMainBundle:Symptom:body')) }}
             </td>
             <td style="vertical-align: top; text-align: left">
-            <![endif]>
+
 
 
 
@@ -182,6 +180,24 @@
             }
             return false;
         });
+
+        $('#body-render').on('click','area', function(){
+            if ($(this).attr('intro') == 'head' ){
+                party = 'head';
+                $('#refresh-body').css('display','none');
+                $('#back-body').css('display','block');
+                renderBody();
+            }else{
+//                $('#refresh-body').css('display','block');
+//                $('#back-body').css('display','none');
+                subParty = $(this).attr('data-key');
+                $('#select-party').children('optgroup').children('option').filter(function(){ return $(this).val() == subParty }).attr('selected' , 'selected');
+                $('#select-party').trigger("chosen:updated");
+                renderSymptom();
+            }
+            return false;
+        });
+
 
         $('#select-state').on('click','li', function(){
             $('#select-state').children('li').css('background','#FFFFFF');
@@ -479,6 +495,8 @@
             fill: #CC0000;
             cursor: pointer;
         }
-
+        .patry-box img{
+            border: none;
+        }
     </style>
 {% endblock %}
