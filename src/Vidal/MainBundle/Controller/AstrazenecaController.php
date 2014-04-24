@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Vidal\MainBundle\Entity\AstrazenecaFaq;
 use Vidal\MainBundle\Entity\MapRegion;
 use Vidal\MainBundle\Entity\MapCoord;
 use Lsw\SecureControllerBundle\Annotation\Secure;
@@ -68,12 +69,72 @@ class AstrazenecaController extends Controller
         );
     }
 
+
+
+
     /**
      * @Route("/astrazeneca/aadmin/faq", name="admin_astrazeneca_faq")
+     * @Template("VidalMainBundle:Astrazeneca:admin_faq_edit.html.twig")
+     */
+    public function adminFaqListAction(){
+        $faqs = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaFaq')->findAll();
+        return array('faqs' => $faqs);
+    }
+
+
+    /**
+     * @Route("/astrazeneca/aadmin/faq/add", name="admin_astrazeneca_faq_add")
      * @Template("VidalMainBundle:Astrazeneca:admin_faq.html.twig")
      */
-    public function adminFaqAction(){
-        return array();
+    public function adminFaqAddAction(Request $request){
+
+        $em = $this->getDoctrine()->getManager();
+        $faq = new AstrazenecaFaq();
+
+        $builder = $this->createFormBuilder($faq);
+        $builder
+            ->add('question', null, array('label' => 'Вопрос', 'attr' => array('class' => 'ckeditor')))
+            ->add('answer', null, array('label' => 'Ответ', 'attr' => array('class' => 'ckeditor')))
+
+            ->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn')));
+
+        $form    = $builder->getForm();
+        $form->handleRequest($request);
+
+        if ($request->isMethod('POST')) {
+            if ($form->isValid()) {
+                $faq = $form->getData();
+                $em->persist($faq);
+                $em->flush();
+            }
+        }
+    }
+
+    /**
+     * @Route("/astrazeneca/aadmin/faq/{pageId}", name="admin_astrazeneca_faq_edit")
+     * @Template("VidalMainBundle:Astrazeneca:admin_faq_edit.html.twig")
+     */
+    public function adminFaqEditAction(Request $request, $faqId){
+
+        $em = $this->getDoctrine()->getManager();
+        $faq = $em->getRepository('VidalMainBundle:AstrazenecaFaq')->findOneById($faqId);
+
+        $builder = $this->createFormBuilder($faq);
+        $builder
+            ->add('question', null, array('label' => 'Вопрос', 'attr' => array('class' => 'ckeditor')))
+            ->add('answer', null, array('label' => 'Ответ', 'attr' => array('class' => 'ckeditor')))
+
+            ->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn')));
+
+        $form    = $builder->getForm();
+        $form->handleRequest($request);
+
+        if ($request->isMethod('POST')) {
+            if ($form->isValid()) {
+                $faq = $form->getData();
+                $em->flush($faq);
+            }
+        }
     }
 
 }
