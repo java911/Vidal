@@ -73,20 +73,27 @@ class AstrazenecaController extends Controller
 
 
     /**
-     * @Route("/astrazeneca/aadmin/faq", name="admin_astrazeneca_faq")
-     * @Template("VidalMainBundle:Astrazeneca:admin_faq_edit.html.twig")
+     * @Route("/astrazeneca/admin/faq", name="admin_astrazeneca_faq")
+     * @Template("VidalMainBundle:Astrazeneca:admin_faq.html.twig")
      */
     public function adminFaqListAction(){
+//        if ($this->getUser()->isGranted('ROLE_ZENECA') == false){
+//            $this->redirect($this->generateUrl('index'));
+//        }
         $faqs = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaFaq')->findAll();
         return array('faqs' => $faqs);
     }
 
 
     /**
-     * @Route("/astrazeneca/aadmin/faq/add", name="admin_astrazeneca_faq_add")
-     * @Template("VidalMainBundle:Astrazeneca:admin_faq.html.twig")
+     * @Route("/astrazeneca/admin/faq/add", name="admin_astrazeneca_faq_add")
+     * @Template("VidalMainBundle:Astrazeneca:admin_faq_edit.html.twig")
      */
     public function adminFaqAddAction(Request $request){
+
+//        if ($this->getUser()->isGranted('ROLE_ZENECA') == false){
+//            $this->redirect($this->generateUrl('index'));
+//        }
 
         $em = $this->getDoctrine()->getManager();
         $faq = new AstrazenecaFaq();
@@ -95,7 +102,6 @@ class AstrazenecaController extends Controller
         $builder
             ->add('question', null, array('label' => 'Вопрос', 'attr' => array('class' => 'ckeditor')))
             ->add('answer', null, array('label' => 'Ответ', 'attr' => array('class' => 'ckeditor')))
-
             ->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn')));
 
         $form    = $builder->getForm();
@@ -111,10 +117,14 @@ class AstrazenecaController extends Controller
     }
 
     /**
-     * @Route("/astrazeneca/aadmin/faq/{pageId}", name="admin_astrazeneca_faq_edit")
+     * @Route("/astrazeneca/admin/faq/{pageId}", name="admin_astrazeneca_faq_edit")
      * @Template("VidalMainBundle:Astrazeneca:admin_faq_edit.html.twig")
      */
     public function adminFaqEditAction(Request $request, $faqId){
+
+//        if ($this->getUser()->isGranted('ROLE_ZENECA') == false){
+//            $this->redirect($this->generateUrl('index'));
+//        }
 
         $em = $this->getDoctrine()->getManager();
         $faq = $em->getRepository('VidalMainBundle:AstrazenecaFaq')->findOneById($faqId);
