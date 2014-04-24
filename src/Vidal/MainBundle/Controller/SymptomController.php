@@ -70,13 +70,20 @@ class SymptomController extends Controller{
 
     /**
      * @Route("/symptom-body/{sex}/{party}", name="symptom_body", defaults = { "sex"="1" , "party"="all" }, options={"expose"=true})
-     * @Template("VidalMainBundle:Disease:body.html.twig")
+     * @Template("VidalMainBundle:Disease:body_svg.html.twig")
      */
     public function bodyAction($sex = 1, $party = 'all'){
-        return array(
-            'sex'   => $sex,
-            'party'   => $party,
-        );
+        if ( strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') ){
+            return $this->render("VidalMainBundle:Disease:body.html.twig", array(
+                'sex'   => $sex,
+                'party'   => $party,
+            ));
+        }else{
+            return array(
+                'sex'   => $sex,
+                'party'   => $party,
+            );
+        }
     }
 
     /**
