@@ -1,0 +1,71 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block title %}
+	<h1>Новости Фармацевтических компаний</h1>
+{% endblock %}
+
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('vracham') }}">Информация для специалистов</a>
+	</div>
+{% endblock %}
+
+
+{% block content %}
+	<div class="pharm-articles">
+		{% for article in pagination %}
+			<div class="article">
+				{% if isAdmin %}
+					<a class="admin-edit fade" target="_blank"
+					   href="{{ path('admin_vidal_drug_pharmarticle_edit', {'id':article.id}) }}">
+						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+					</a>
+				{% endif %}
+
+				{{ article.text|raw }}
+
+				<div class="article-footer">
+					{{ article.created|date('d.m.Y') }}
+				</div>
+			</div>
+			<hr/>
+		{% endfor %}
+	</div>
+
+	<div class="navigation">
+		{{ knp_pagination_render(pagination) }}
+	</div>
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.pharm-articles {
+			max-width: 530px;
+		}
+		.pharm-articles img {
+			margin-right: 15px;
+		}
+		.pharm-articles > div {
+			position: relative;
+		}
+		.pharm-articles .article {
+			font-size: 14px;
+			overflow:  hidden;
+		}
+		.pharm-articles .article p:last-child {
+			margin-bottom: 0;
+		}
+		.pharm-articles .article-footer {
+			font-size:     14px;
+			text-align:    right;
+			margin-bottom: 15px;
+			color:         #777;
+		}
+	</style>
+{% endblock %}

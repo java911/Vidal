@@ -16,7 +16,7 @@
 	{% elseif status_code == 403 %}
 
 	{% else %}
-		<h1>К сожалению, возникли трудности:</h1><br/><br/>
+		<h1>К сожалению, возникли трудности:</h1>
 		<h3>Ваш запрос сейчас не может быть обработан. Мы в курсе этой ошибки и работаем над её устранением.
 			Попробуйте заглянуть чуть позже</h3>
 	{% endif %}
@@ -42,12 +42,15 @@
 			position:    absolute;
 			left:        234px;
 			top:         12px;
-			font-size:   15px;
+			font-size:   13px;
 			font-weight: bold;
-			font-style:  italic;
 		}
 		.not-found li {
 			margin-bottom: 13px;
+		}
+		h3 {
+			font-size: 15px;
+			padding:   0 60px;
 		}
 	</style>
 {% endblock %}

@@ -29,7 +29,7 @@
 
 
 {% block content %}
-	<div class="article-wrap">
+	<div class="article-wrap text">
 		{# админам карандашик редактирования #}
 		{% if isAdmin %}
 			<a class="admin-edit fade" target="_blank"
@@ -38,7 +38,7 @@
 			</a>
 		{% endif %}
 
-		<div class="article-body">
+		<div class="article-body text">
 			{{ article.body|raw }}
 		</div>
 		<div class="article-footer">

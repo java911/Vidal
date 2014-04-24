@@ -555,6 +555,4 @@ class Art extends BaseEntity
 	{
 		return $this->sub;
 	}
-
-
 }

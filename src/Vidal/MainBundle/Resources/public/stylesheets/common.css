@@ -19,18 +19,8 @@ table {
 article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {
 	display: block;
 }
-sup, sub {
-	padding-left:    1px;
-	font-size:       12px;
-	font-family:     sans-serif;
-	line-height:     9px;
-	text-decoration: none;
-}
 sup, sup * {
 	vertical-align: top;
-}
-sub, sub * {
-	vertical-align: bottom;
 }
 
 /* стили контейнеров */
@@ -40,7 +30,7 @@ html {
 body {
 	width:       100%;
 	height:      100%;
-	font-family: "Trebuchet MS", Helvetica, sans-serif;
+	font-family: Tahoma, Geneva, sans-serif;
 	color:       #333333;
 }
 .wrapper {
@@ -168,7 +158,7 @@ textarea {
 	resize:                vertical;
 }
 h1 {
-	font-size:     18px;
+	font-size:     16px;
 	color:         #d71344;
 	font-weight:   bold;
 	margin-bottom: 20px;
@@ -184,7 +174,7 @@ h1 span {
 
 /* глобальные классы */
 .caption {
-	color:       #d71344;
+	color: #d71344;
 }
 .center {
 	text-align: center;
@@ -258,7 +248,7 @@ h1 span {
 	color:       #444;
 }
 .ui-menu .ui-menu-item a {
-	font-size:   15px;
+	font-size: 15px;
 }
 .border-line {
 	border: 1px solid #aaa;
@@ -309,7 +299,7 @@ h1 span {
 .title {
 	background-color: #F5F5F5;
 	font-weight:      bold;
-	font-size:        18px;
+	font-size:        16px;
 }
 .title a {
 	display:         block;
@@ -330,8 +320,9 @@ h1 span {
 }
 .sidebar-menu li a {
 	font-weight:     bold;
-	font-size:       17px;
+	font-size:       16px;
 	text-decoration: none;
+	padding-bottom:  2px;
 }
 
 /* блок авторизации */
@@ -384,8 +375,9 @@ h1 span {
 }
 .auth-controls li a {
 	font-weight:     bold;
-	font-size:       17px;
+	font-size:       16px;
 	text-decoration: none;
+	padding-bottom:  2px;
 }
 .go-registration {
 	margin-bottom: 20px;
@@ -1068,7 +1060,7 @@ h1 span {
 .tabs a {
 	display:         inline-block;
 	float:           left;
-	padding:         6px 8px 7px;
+	padding:         6px 7px 7px;
 	text-decoration: none;
 	color:           #2e3f51;
 	font-weight:     bold;
@@ -1226,53 +1218,19 @@ h1 span {
 }
 
 /* перебиваем кривые стили статей и новостей */
-.article-wrap a,
-.article-wrap a *,
-.article-body a,
-.article-body a *,
-.publication a,
-.publication a *,
-.article-item a,
-.article-item a * {
-	color: #d71344 !important;
-}
-
-.article-wrap img,
-.article-body img,
-.publication img,
-.article-item img {
-	max-width: 520px !important;
-}
-
-.article-wrap a,
-.article-wrap a *,
-.article-body a,
-.article-body a *,
-.article-item a,
-.article-item a *,
-.publication a,
-.publication a * {
+.text a,
+.text a * {
+	color:           #d71344 !important;
 	text-decoration: none !important;
 }
-
-.article-wrap a:hover,
-.article-wrap a *:hover,
-.article-body a:hover,
-.article-body a *:hover
-.article-item a:hover,
-.article-item a *:hover,
-.publication a:hover,
-.publication a *:hover {
+.text a:hover,
+.text a *:hover {
 	text-decoration: underline !important;
 }
-
-.article-wrap p,
-.article-wrap p *,
-.article-body p,
-.article-body p *,
-.article-item p,
-.article-item p *,
-.publication p,
-.publication p * {
+.text img {
+	max-width: 520px !important;
+}
+.text p,
+.text p * {
 	line-height: inherit !important;
 }

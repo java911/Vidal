@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class ArticleController extends Controller
 {
 	const ARTICLES_PER_PAGE = 14;
+	const PHARM_PER_PAGE    = 5;
 
 	/**
 	 * Конкретная статья рубрики
@@ -113,6 +114,57 @@ class ArticleController extends Controller
 			'menu_left' => 'articles',
 			'rubriques' => $em->getRepository('VidalDrugBundle:ArticleRubrique')->findEnabled()
 		);
+	}
+
+	/**
+	 * @Route("/vracham/pharma-news/{articleId}", name="pharma_news_item")
+	 *
+	 * @Template
+	 */
+	public function pharmaNewsItemAction($articleId)
+	{
+		$em      = $this->getDoctrine()->getManager('drug');
+		$article = $em->getRepository('VidalDrugBundle:PharmArticle')->findOneById($articleId);
+
+		if (!$article) {
+			throw $this->createNotFoundException();
+		}
+
+		$company = $article->getCompany();
+
+		$params = array(
+			'title'     => $company . ' | Новости Фармацевтических компаний',
+			'company'   => $company,
+			'article'   => $article,
+			'menu_left' => 'vracham'
+		);
+
+		return $params;
+	}
+
+	/**
+	 * Новости фарм. компаний
+	 *
+	 * @Route("/vracham/pharma-news", name="pharma_news")
+	 * @Secure(roles="ROLE_DOCTOR")
+	 *
+	 * @Template
+	 */
+	public function pharmaNewsAction(Request $request)
+	{
+		$em     = $this->getDoctrine()->getManager('drug');
+		$params = array(
+			'title'     => 'Новости Фармацевтических компаний',
+			'menu_left' => 'vracham'
+		);
+
+		$params['pagination'] = $this->get('knp_paginator')->paginate(
+			$em->getRepository('VidalDrugBundle:PharmArticle')->getQuery(),
+			$request->query->get('p', 1),
+			self::PHARM_PER_PAGE
+		);
+
+		return $params;
 	}
 
 	/**
