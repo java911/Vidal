@@ -194,7 +194,7 @@ class AuthController extends Controller
 		$username = $request->request->get('username');
 		$password = $request->request->get('password');
 		$em       = $this->getDoctrine()->getManager();
-		$user     = $em->getRepository('VidalMainBundle:User')->findOneByUsername($username);
+		$user     = $em->getRepository('VidalMainBundle:User')->findOneByLogin($username);
 
 		if (!$user) {
 			return new JsonResponse(array('success' => 'no'));
