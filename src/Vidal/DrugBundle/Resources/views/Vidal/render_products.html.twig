@@ -60,8 +60,8 @@
 				<td class="products-table-zip">
 					<div>{{ product.ZipInfo }}</div>
 				<span>рег. №: {{ product.RegistrationNumber }}
-					{% if product.RegistrationDate is not null %}
-						от {{ product.RegistrationDate|date('d.m.Y') }}
+					{% if product.RegistrationDate is not empty %}
+						от {{ product.RegistrationDate }}
 					{% endif %}
 				</span>
 				</td>

@@ -92,64 +92,18 @@ class IndexController extends Controller
 	}
 
 	/**
-	 * @Route("/o-nas/Novosti-pharmatsevticheskih-kompanii/{companyId}", name="pharm_articles")
-	 *
-	 * @Template
-	 */
-	public function pharmArticlesAction($companyId)
-	{
-		$em      = $this->getDoctrine()->getManager('drug');
-		$company = $em->getRepository('VidalDrugBundle:PharmCompany')->findOneById($companyId);
-
-		if (!$company) {
-			throw $this->createNotFoundException();
-		}
-
-		$articles = $em->getRepository('VidalDrugBundle:PharmArticle')->findByCompanyId($companyId);
-
-		$params = array(
-			'title'     => $company . ' | Новости Фармацевтических компаний',
-			'company'   => $company,
-			'articles'  => $articles,
-			'menu_left' => 'about'
-		);
-
-		return $params;
-	}
-
-	/**
-	 * @Route("/o-nas/Novosti-pharmatsevticheskih-kompanii", name="pharm_news")
-	 *
-	 * @Template
-	 */
-	public function pharmNewsAction()
-	{
-		$em        = $this->getDoctrine()->getManager('drug');
-		$companies = $em->getRepository('VidalDrugBundle:PharmCompany')->findWithArticles();
-
-		$params = array(
-			'title'     => 'Новости Фармацевтических компаний',
-			'companies' => $companies,
-			'menu_left' => 'about'
-		);
-
-		return $params;
-	}
-
-	/**
 	 * О компании
-	 * @Route("/o-nas", name="onas")
+	 * @Route("/services", name="services")
 	 * @Route("/Vidal/vidal-russia/", name="vidal_russia")
 	 *
 	 * @Template
 	 */
-	public function onasAction()
+	public function servicesAction()
 	{
 		$params = array(
-			'title'       => 'О компании',
-			'menu_left'   => 'about',
-			'itemsTop'    => $this->getDoctrine()->getRepository('VidalMainBundle:About')->findTop(),
-			'itemsBottom' => $this->getDoctrine()->getRepository('VidalMainBundle:About')->findBottom(),
+			'title'     => 'Наши услуги',
+			'menu_left' => 'services',
+			'items'     => $this->getDoctrine()->getRepository('VidalMainBundle:About')->findServices(),
 		);
 
 		return $params;
@@ -157,11 +111,11 @@ class IndexController extends Controller
 
 	/**
 	 * О компании
-	 * @Route("/o-nas/{url}", name="about")
+	 * @Route("/services/{url}", name="services_item")
 	 *
 	 * @Template()
 	 */
-	public function aboutAction($url)
+	public function servicesItemAction($url)
 	{
 		$about = $this->getDoctrine()->getRepository('VidalMainBundle:About')->findOneByUrl($url);
 
@@ -170,9 +124,51 @@ class IndexController extends Controller
 		}
 
 		$params = array(
-			'title'     => 'О компании',
+			'title'     => $about . ' | Наши услуги',
+			'menu_left' => 'services',
+			'about'     => $about,
+		);
+
+		return $params;
+	}
+
+	/**
+	 * О компании
+	 * @Route("/about/{url}", name="about_item")
+	 *
+	 * @Template()
+	 */
+	public function aboutItemAction($url)
+	{
+		$about = $this->getDoctrine()->getRepository('VidalMainBundle:About')->findOneByUrl($url);
+
+		if (empty($about)) {
+			throw $this->createNotFoundException();
+		}
+
+		$params = array(
+			'title'     => $about . ' | О компании',
 			'menu_left' => 'about',
 			'about'     => $about,
+		);
+
+		return $params;
+	}
+
+	/**
+	 * О компании
+	 * @Route("/about", name="about")
+	 *
+	 * @Template()
+	 */
+	public function aboutAction()
+	{
+		$em = $this->getDoctrine()->getManager();
+
+		$params = array(
+			'title'     => 'О компании',
+			'menu_left' => 'about',
+			'items'     => $this->getDoctrine()->getRepository('VidalMainBundle:About')->findAbout()
 		);
 
 		return $params;

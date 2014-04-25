@@ -12,7 +12,7 @@ framework:
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
-    templating:      { engines: ['twig'], assets_version: v47 }
+    templating:      { engines: ['twig'], assets_version: v51 }
     form:            ~
     csrf_protection: false
     validation:      { enable_annotations: true }
@@ -23,7 +23,7 @@ framework:
     trusted_proxies: ~
     session:
         cookie_lifetime: 31536000
-        save_path: "/home/twigavid/vidal/sessions"
+        save_path: '/home/twigavid/vidal/sessions'
     fragments:       ~
 
 # Twig Configuration
@@ -63,7 +63,7 @@ doctrine:
                 driver:   %database_driver%
                 host:     %database_host%
                 port:     %database_port%
-                dbname:   twigavid_drug
+                dbname:   twigavid_drug2
                 user:     %database_user%
                 password: %database_password%
                 charset:  UTF8

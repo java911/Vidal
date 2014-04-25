@@ -154,7 +154,7 @@ class Art extends BaseEntity
 	 */
 	public function getAnnounce()
 	{
-		return str_replace(array('&reg;', '®'), array('<sup>&reg;</sup>', '<sup>®</sup>'), $this->announce);
+		return $this->announce;
 	}
 
 	/**
@@ -170,7 +170,7 @@ class Art extends BaseEntity
 	 */
 	public function getBody()
 	{
-		return str_replace(array('&reg;', '®'), array('<sup>&reg;</sup>', '<sup>®</sup>'), $this->body);
+		return $this->body;
 	}
 
 	/**
@@ -241,7 +241,7 @@ class Art extends BaseEntity
 	 */
 	public function getTitle()
 	{
-		return str_replace(array('&reg;', '®'), array('<sup>&reg;</sup>', '<sup>®</sup>'), $this->title);
+		return $this->title;
 	}
 
 	/**
@@ -555,6 +555,4 @@ class Art extends BaseEntity
 	{
 		return $this->sub;
 	}
-
-
 }

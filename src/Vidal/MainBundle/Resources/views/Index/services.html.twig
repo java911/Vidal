@@ -2,16 +2,17 @@
 
 
 {% block title %}
-	<h1>О КОМПАНИИ</h1>
+	<h1>НАШИ УСЛУГИ</h1>
 {% endblock %}
 
 
 {% block content %}
 	<div class="rubriques">
 		{% if items|length %}
-			{% set perColumn = 2 %}
+			{% set perColumn = items|length // 2 %}
 
 			{% for about in items %}
+
 				{% if loop.index % perColumn == 1 %}
 					<div>
 					<ul class="ul">

@@ -12,6 +12,10 @@
 		   class="{{ menu_left is defined and menu_left == 'news' ? 'active' : 'dotted' }}">Новости</a>
 	</li>
 	<li>
+		<a href="{{ path('services') }}"
+		   class="{{ menu_left is defined and menu_left == 'services' ? 'active' : 'dotted' }}">Наши услуги</a>
+	</li>
+	<li>
 		<a href="{{ path('veterinar') }}"
 		   class="{{ menu_left is defined and menu_left == 'veterinar' ? 'active' : 'dotted' }}">Видаль-Ветеринар</a>
 	</li>
@@ -19,16 +23,16 @@
 		<a href="{{ path('qa') }}"
 		   class="{{ menu_left is defined and menu_left == 'qa' ? 'active' : 'dotted' }}">Ответы специалистов</a>
 	</li>
-	<li>
-		<a href="{{ path('onas') }}"
-		   class="{{ menu_left is defined and menu_left == 'about' ? 'active' : 'dotted' }}">О компании</a>
-	</li>
 	<li style="display:none">
 		<a href="{{ path('shkola') }}"
 		   class="{{ menu_left is defined and menu_left == 'shkola' ? 'active' : 'dotted' }}">Школа здоровья</a>
 	</li>
 	<li>
 		<a href="/reckittbenckiser/index.html?medi" class="dotted" target="_blank">Без боли</a>
+	</li>
+	<li>
+		<a href="{{ path('about') }}"
+		   class="{{ menu_left is defined and menu_left == 'about' ? 'active' : 'dotted' }}">О компании</a>
 	</li>
 
 	{{ render(controller('VidalMainBundle:Market:countProduct')) }}

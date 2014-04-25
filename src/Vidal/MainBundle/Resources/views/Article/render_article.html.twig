@@ -1,6 +1,6 @@
 {% set video = article.video and article.video.path is defined ? article.video.path : null %}
 
-<div class="article-wrap">
+<div class="article-wrap text">
 	{% if article.video and article.video.path is defined %}
 		{% set width = article.videoWidth > 480 ? 480 : module.videoWidth %}
 		{% set height = article.videoWidth > 480
@@ -24,7 +24,7 @@
 		</script>
 	{% endif %}
 
-	<div class="article-body">
+	<div class="article-body text">
 		{{ article.body|raw }}
 	</div>
 	<div class="article-footer">
