@@ -162,8 +162,11 @@ class MarketController extends Controller{
             $lists = array();
         }
 
-
-        return array('lists' => $lists);
+        if ( $list == array() ){
+            return new Response('');
+        } else{
+            return array('lists' => $lists);
+        }
     }
 
     /**
