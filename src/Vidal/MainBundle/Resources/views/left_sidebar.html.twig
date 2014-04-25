@@ -12,6 +12,10 @@
 		   class="{{ menu_left is defined and menu_left == 'news' ? 'active' : 'dotted' }}">Новости</a>
 	</li>
 	<li>
+		<a href="{{ path('services') }}"
+		   class="{{ menu_left is defined and menu_left == 'services' ? 'active' : 'dotted' }}">Наши услуги</a>
+	</li>
+	<li>
 		<a href="{{ path('veterinar') }}"
 		   class="{{ menu_left is defined and menu_left == 'veterinar' ? 'active' : 'dotted' }}">Видаль-Ветеринар</a>
 	</li>
@@ -29,10 +33,6 @@
 	<li>
 		<a href="{{ path('about') }}"
 		   class="{{ menu_left is defined and menu_left == 'about' ? 'active' : 'dotted' }}">О компании</a>
-	</li>
-	<li>
-		<a href="{{ path('services') }}"
-		   class="{{ menu_left is defined and menu_left == 'services' ? 'active' : 'dotted' }}">Наши услуги</a>
 	</li>
 
 	{{ render(controller('VidalMainBundle:Market:countProduct')) }}
