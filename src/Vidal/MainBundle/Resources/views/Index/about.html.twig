@@ -34,7 +34,12 @@
 
 			{% endfor %}
 		{% endif %}
+		</div>
 	</div>
+
+	<div style="clear:both"></div>
+	{{ render(controller('VidalMainBundle:Index:Module', {'moduleId':2})) }}
+
 {% endblock %}
 
 

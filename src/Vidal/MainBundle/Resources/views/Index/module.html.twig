@@ -1,16 +1,15 @@
 {% if module %}
 	{% set isAdmin = app.user and is_granted('ROLE_ADMIN') %}
 
-	{% if isAdmin %}
-		<a class="admin-edit fade" target="_blank"
-		   href="{{ path('admin_vidal_main_module_edit', {'id':module.id}) }}">
-			<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-		</a>
-	{% endif %}
+	<div class="module module-{{ module.id }}">
+		{% if isAdmin %}
+			<a class="admin-edit fade" target="_blank"
+			   href="{{ path('admin_vidal_main_module_edit', {'id':module.id}) }}">
+				<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+			</a>
+		{% endif %}
 
-	{% if module.enabled %}
-		<div class="module">
-
+		{% if module is enabled %}
 			{% if module.title is not empty %}
 				<div class="module-title">
 					{{ module.title|raw }}
@@ -21,6 +20,7 @@
 					{{ module.body|raw }}
 				</div>
 			{% endif %}
-		</div>
-	{% endif %}
+		{% endif %}
+	</div>
+
 {% endif %}
