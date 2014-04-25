@@ -30,10 +30,10 @@ class Product
 	 */
 	protected $CountryEditionCode;
 
-	/** @ORM\Column(type="datetime", nullable=true) */
+	/** @ORM\Column(length=50, nullable=true) */
 	protected $RegistrationDate;
 
-	/** @ORM\Column(type="datetime", nullable=true) */
+	/** @ORM\Column(length=50, nullable=true) */
 	protected $DateOfCloseRegistration;
 
 	/** @ORM\Column(length=50, nullable=true) */
