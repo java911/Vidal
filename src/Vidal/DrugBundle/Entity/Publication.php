@@ -136,7 +136,7 @@ class Publication extends BaseEntity
 	 */
 	public function getAnnounce()
 	{
-		return str_replace(array('&reg;', '®'), array('<sup>&reg;</sup>', '<sup>®</sup>'), $this->announce);
+		return $this->announce;
 	}
 
 	/**
@@ -152,7 +152,7 @@ class Publication extends BaseEntity
 	 */
 	public function getBody()
 	{
-		return str_replace(array('&reg;', '®'), array('<sup>&reg;</sup>', '<sup>®</sup>'), $this->body);
+		return $this->body;
 	}
 
 	/**
@@ -184,7 +184,7 @@ class Publication extends BaseEntity
 	 */
 	public function getTitle()
 	{
-		return str_replace(array('&reg;', '®'), array('<sup>&reg;</sup>', '<sup>®</sup>'), $this->title);
+		return $this->title;
 	}
 
 	/**
