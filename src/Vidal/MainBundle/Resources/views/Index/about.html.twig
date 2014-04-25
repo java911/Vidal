@@ -8,32 +8,32 @@
 
 {% block content %}
 	<div class="rubriques">
-		<div>
-			<ul class="ul">
+		{% if items|length %}
+			{% set perColumn = 2 %}
+
+			{% for about in items %}
+				{% if loop.index % perColumn == 1 %}
+					<div>
+					<ul class="ul">
+				{% endif %}
+
 				<li>
-					<a href="{{ path('about_item', {'url':about1.url}) }}">{{ about1.title }}</a>
+					<a href="{{ path('services_item', {'url':about.url}) }}">{{ about.title }}</a>
 					{% if isAdmin %}
 						<a class="admin-edit fade" target="_blank"
-						   href="{{ path('admin_vidal_main_about_edit', {'id':about1.id}) }}">
+						   href="{{ path('admin_vidal_main_about_edit', {'id':about.id}) }}">
 							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
 						</a>
 					{% endif %}
 				</li>
-			</ul>
-		</div>
-		<div>
-			<ul class="ul">
-				<li>
-					<a href="{{ path('about_item', {'url':about2.url}) }}">{{ about2.title }}</a>
-					{% if isAdmin %}
-						<a class="admin-edit fade" target="_blank"
-						   href="{{ path('admin_vidal_main_about_edit', {'id':about2.id}) }}">
-							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-						</a>
-					{% endif %}
-				</li>
-			</ul>
-		</div>
+
+				{% if loop.index % perColumn == 0 %}
+					</ul>
+					</div>
+				{% endif %}
+
+			{% endfor %}
+		{% endif %}
 	</div>
 {% endblock %}
 

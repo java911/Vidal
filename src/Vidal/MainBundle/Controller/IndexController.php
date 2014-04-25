@@ -103,7 +103,7 @@ class IndexController extends Controller
 		$params = array(
 			'title'     => 'Наши услуги',
 			'menu_left' => 'services',
-			'items'     => $this->getDoctrine()->getRepository('VidalMainBundle:About')->findBottom(),
+			'items'     => $this->getDoctrine()->getRepository('VidalMainBundle:About')->findServices(),
 		);
 
 		return $params;
@@ -168,8 +168,7 @@ class IndexController extends Controller
 		$params = array(
 			'title'     => 'О компании',
 			'menu_left' => 'about',
-			'about1'    => $em->getRepository('VidalMainBundle:About')->findOneById(8),
-			'about2'    => $em->getRepository('VidalMainBundle:About')->findOneById(9),
+			'items'     => $this->getDoctrine()->getRepository('VidalMainBundle:About')->findAbout()
 		);
 
 		return $params;

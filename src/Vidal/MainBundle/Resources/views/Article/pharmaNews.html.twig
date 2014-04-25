@@ -18,7 +18,7 @@
 {% block content %}
 	<div class="pharm-articles">
 		{% for article in pagination %}
-			<div class="article">
+			<div class="article text">
 				{% if isAdmin %}
 					<a class="admin-edit fade" target="_blank"
 					   href="{{ path('admin_vidal_drug_pharmarticle_edit', {'id':article.id}) }}">
