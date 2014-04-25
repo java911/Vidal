@@ -23,9 +23,7 @@
 					<a href="{{ path('portfolio_item', {'url':portfolio.url}) }}">{{ portfolio.title|raw }}</a>
 				</span>
 				{% if portfolio.company %}
-					<a class="company" href="{{ path('pharm_articles', {'companyId':portfolio.company.id}) }}">
-						{{ portfolio.company.title }}
-					</a>
+					{{ portfolio.company.title }}
 				{% endif %}
 			</li>
 		{% endfor %}
@@ -36,12 +34,15 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<style type="text/css">
+		.portfolios {
+			font-size: 14px;
+		}
 		.portfolios li {
 			margin-bottom: 8px;
 		}
 		.portfolios .portfolio {
 			display: inline-block;
-			width:   150px;
+			width:   160px;
 		}
 		.portfolios .portfolio a {
 			display:     inline-block;
