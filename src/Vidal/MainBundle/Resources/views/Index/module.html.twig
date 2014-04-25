@@ -9,7 +9,7 @@
 			</a>
 		{% endif %}
 
-		{% if module is enabled %}
+		{% if module.enabled %}
 			{% if module.title is not empty %}
 				<div class="module-title">
 					{{ module.title|raw }}
