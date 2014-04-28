@@ -114,7 +114,7 @@ class AstrazenecaController extends Controller
         if ($request->isMethod('POST')) {
             if ($form->isValid()){
                 $faq = $form->getData();
-                $faq->setEnabled(1);
+                $faq->setEnabled(0);
                 $em->persist($faq);
                 $em->flush();
                 $em->refresh($faq);
