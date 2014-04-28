@@ -44,7 +44,20 @@ class AstrazenecaController extends Controller
      * @Route("/astrazeneca/new/{newId}", name="astrazeneca_new")
      * @Template("VidalMainBundle:Astrazeneca:new.html.twig")
      */
-    public function shoNewAction(){}
+    public function showNewAction($newId){
+        $em = $this->getDoctrine()->getManager('drug');
+        $publication = $em->getRepository('VidalDrugBundle:Publication')->findOneById($newId);
+
+        if (!$publication) {
+            throw $this->createNotFoundException();
+        }
+
+        return array(
+            'publication' => $publication,
+            'menu_left'   => 'news',
+            'title'       => $this->strip($publication->getTitle()) . ' | Новости',
+        );
+    }
 
     /**
      * @Route("/astrazeneca/map", name="astrazeneca_map")
@@ -195,6 +208,14 @@ class AstrazenecaController extends Controller
 
 
         return $this->redirect($this->generateUrl('astrazeneca_faq'));
+    }
+
+    private function strip($string)
+    {
+        $pat = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/&amp;/');
+        $rep = array('', '', '&');
+
+        return preg_replace($pat, $rep, $string);
     }
 
 }
