@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Iphp\FileStoreBundle\Mapping\Annotation as FileStore;
 
-/** @ORM\Entity(repositoryClass="ArticleRepository") @ORM\Table(name="article") @FileStore\Uploadable */
+/** @ORM\Entity(repositoryClass="IArticleRepository") @ORM\Table(name="i_article") @FileStore\Uploadable */
 class Article extends BaseEntity
 {
 	/** @ORM\Column(length=255) */
@@ -102,7 +102,9 @@ class Article extends BaseEntity
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $subclassId;
 
-	/** @ORM\ManyToMany(targetEntity="ArticleTag", inversedBy="articles") */
+	/**
+	 * @ORM\ManyToMany(targetEntity="Tag", mappedBy="articles")
+	 */
 	protected $tags;
 
 	/**
@@ -498,7 +500,7 @@ class Article extends BaseEntity
 		return $this->tags;
 	}
 
-	public function addTag(ArticleTag $tag)
+	public function addTag(Tag $tag)
 	{
 		if (!$this->tags->contains($tag)) {
 			$this->tags[] = $tag;
