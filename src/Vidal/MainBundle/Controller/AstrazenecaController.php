@@ -71,10 +71,10 @@ class AstrazenecaController extends Controller
      */
     public function testingAction(Request $request){
 
-        $question = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaTest')->findOneById(1);
+        $tests = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaTest')->findAll();
 
         return array(
-            'question' => $question,
+            'tests' => $tests,
         );
     }
 
@@ -128,9 +128,6 @@ class AstrazenecaController extends Controller
         );
     }
 
-
-
-
     /**
      * @Route("/astrazeneca/admin/faq", name="admin_astrazeneca_faq")
      * @Template("VidalMainBundle:Astrazeneca:admin_faq.html.twig")
@@ -142,8 +139,6 @@ class AstrazenecaController extends Controller
         $faqs = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaFaq')->findAll();
         return array('faqs' => $faqs);
     }
-
-
 
     /**
      * @Route("/astrazeneca/admin/faq/add", name="admin_astrazeneca_faq_add")

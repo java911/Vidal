@@ -16,5 +16,83 @@
 {% endblock %}
 
 {% block content %}
-    фыва
+    <div class="tests">
+        {% for test in tests %}
+            <div id="{{ test.id }}" class="test">
+                {{ test.title }}
+                <br/>
+                <br/>
+                <table style="width: 100%">
+                    <tr>
+                        <td style="width: 50%; text-align: right;">
+                            <a class="btn-red yes" id="y{{ test.id }}" href="#" {% if loop.first %} data-type="last" {% endif %}>Да</a>
+                        </td>
+                        <td style="width: 50%; text-align: left;">
+                            <a class="btn-red no" id="n{{ test.id }}" href="#" {% if loop.first %} data-type="last" {% endif %}>Нет</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        {% endfor %}
+        <div class="test" style="display: none;" id="test-success">
+            Круто
+        </div>
+        <div class="test" style="display: none;" id="test-fail">
+            Ты ваще герой
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .tests{
+            border: 1px solid #d71344;
+            padding: 10px;
+            text-align: center;
+            position: relative;
+            width: 530px;
+            height: 73px;
+        }
+        .test{
+            position: absolute;
+            width: 530px;
+            height: 83px;
+            background: #FFFFFF;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        var t = 0;
+        $(document).ready(function(){
+            $('.yes').click(function(){
+                t++;
+                $(this).parent().parent().parent().parent().parent().css('display','none');
+                console.log($(this).attr('data-type'));
+                if ( $(this).attr('data-type') == 'last' ){
+                    showResult()
+                }
+                return false;
+            });
+            $('.no').click(function(){
+                $(this).parent().parent().parent().parent().parent().css('display','none');
+                console.log($(this).attr('data-type'));
+                if ( $(this).attr('data-type') == 'last' ){
+                    showResult()
+                }
+                return false;
+            })
+
+            function showResult(){
+                if ( t > 3 ){
+                    $('#test-success').show();
+                }else{
+                    $('#test-fail').show();
+                }
+            }
+        })
+    </script>
 {% endblock %}
