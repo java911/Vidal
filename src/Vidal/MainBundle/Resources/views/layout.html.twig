@@ -42,7 +42,7 @@
     {% endblock %}
 
     {% block javascripts %}
-		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/s_code.js') }}"></script>
+		{#<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/s_code.js') }}"></script>#}
         <script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/jquery-1.11.0.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/ready.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
@@ -62,7 +62,7 @@
 </head>
 
 <body>
-{% include 'VidalMainBundle::omniture.html.twig' %}
+{#{% include 'VidalMainBundle::omniture.html.twig' %}#}
 
 <div id="wrapper" class="wrapper">
     {{ render(controller('VidalMainBundle:Banner:render', {'groupId':2})) }}

@@ -16,6 +16,14 @@
 {% endblock %}
 
 {% block content %}
+    <div class="qa-ask">
+        <b><a href="#" id="ask">Спросить у специалистов:</a></b>
+        <br/>
+        <br/>
+        <form method="POST">
+            {{ form_widget(form) }}
+        </form>
+    </div>
     {% if questionAnswers|length %}
         <div class="qa-wrap">
             {% if isAdmin %}
@@ -81,6 +89,13 @@
             font-size: 15px;
             display:   none;
         }
+        #form{
+            display: none;
+        }
+        .qa-ask{
+            border-bottom: 3px solid #eee;
+            margin-bottom: 10px;
+        }
     </style>
 {% endblock %}
 
@@ -94,6 +109,15 @@
                 $this.hide();
                 $this.closest('.qa').addClass('expanded').find('.qa-answer').slideDown('fast');
             });
+
+            $('#ask').click(function(){
+                if ( $('#form').css('display') == 'none' ){
+                    $('#form').fadeIn();
+                }else{
+                    $('#form').fadeOut();
+                }
+                return false;
+            })
         });
     </script>
 {% endblock %}

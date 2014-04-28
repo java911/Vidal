@@ -97,10 +97,34 @@ class AstrazenecaController extends Controller
      * @Route("/astrazeneca/faq", name="astrazeneca_faq")
      * @Template("VidalMainBundle:Astrazeneca:faq.html.twig")
      */
-    public function faqAction(){
+    public function faqAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $faq = new AstrazenecaFaq();
+
+        $builder = $this->createFormBuilder($faq);
+        $builder
+            ->add('authorFirstName', null, array('label' => 'Ваше имя'))
+            ->add('authorEmail', null, array('label' => 'Ваш e-mail'))
+            ->add('question', null, array('label' => 'Вопрос', 'attr' => array('class' => 'ckeditor')))
+            ->add('submit', 'submit', array('label' => 'Задать вопрос', 'attr' => array('class' => 'btn')));
+
+        $form    = $builder->getForm();
+        $form->handleRequest($request);
+
+        if ($request->isMethod('POST')) {
+            if ($form->isValid()){
+                $faq = $form->getData();
+                $faq->setEnabled(1);
+                $em->persist($faq);
+                $em->flush();
+                $em->refresh($faq);
+            }
+        }
+
         return array(
             'title'           => 'Вопрос-ответ',
-            'questionAnswers' => $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaFaq')->findAll(),
+            'questionAnswers' => $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaFaq')->findByEnabled(1),
+            'form'  => $form->createView()
         );
     }
 

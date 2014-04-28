@@ -10,6 +10,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class AstrazenecaFaq extends BaseEntity
 {
+
+    /**
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Пожалуйста, укажите Имя")
+     */
+    protected $authorFirstName;
+
+    /**
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Пожалуйста, укажите E-mail")
+     */
+    protected $authorEmail;
+
 	/**
 	 * @ORM\Column(type="text")
 	 * @Assert\NotBlank(message="Пожалуйста, укажите вопрос")
@@ -17,8 +30,7 @@ class AstrazenecaFaq extends BaseEntity
 	protected $question;
 
 	/**
-	 * @ORM\Column(type="text")
-	 * @Assert\NotBlank(message="Пожалуйста, укажите ответ")
+	 * @ORM\Column(type="text", nullable=true)
 	 */
 	protected $answer;
 
@@ -65,4 +77,38 @@ class AstrazenecaFaq extends BaseEntity
 	{
 		return $this->question;
 	}
+
+    /**
+     * @param mixed $authorEmail
+     */
+    public function setAuthorEmail($authorEmail)
+    {
+        $this->authorEmail = $authorEmail;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAuthorEmail()
+    {
+        return $this->authorEmail;
+    }
+
+    /**
+     * @param mixed $authorFirstName
+     */
+    public function setAuthorFirstName($authorFirstName)
+    {
+        $this->authorFirstName = $authorFirstName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAuthorFirstName()
+    {
+        return $this->authorFirstName;
+    }
+
+
 }
