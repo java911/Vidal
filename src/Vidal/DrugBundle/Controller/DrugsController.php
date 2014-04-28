@@ -17,7 +17,7 @@ class DrugsController extends Controller
 	/**
 	 * Препараты по коду АТХ
 	 *
-	 * @Route("drugs/atc/{ATCCode}", name="atc_item", options={"expose":true})
+	 * @Route("/drugs/atc/{ATCCode}", name="atc_item", options={"expose":true})
 	 * @Route("poisk_preparatov/lat_{ATCCode}.{ext}", name="atc_item_old", defaults={"ext"="htm"})
 	 * @Template("VidalDrugBundle:Drugs:atc_item.html.twig")
 	 */
@@ -47,7 +47,8 @@ class DrugsController extends Controller
 	/**
 	 * Дерево АТХ
 	 *
-	 * @Route("drugs/atc", name="atc")
+	 * @Route("/drugs", name="drugs")
+	 * @Route("/drugs/atc", name="atc")
 	 * @Template("VidalDrugBundle:Drugs:atc.html.twig")
 	 */
 	public function atcAction()
@@ -63,7 +64,7 @@ class DrugsController extends Controller
 	/**
 	 * [AJAX] Подгрузка дерева ATC
 	 *
-	 * @Route("drugs/atc-ajax", name="atc_ajax", options={"expose":true})
+	 * @Route("/drugs/atc-ajax", name="atc_ajax", options={"expose":true})
 	 */
 	public function atcAjaxAction(Request $request)
 	{
@@ -82,7 +83,7 @@ class DrugsController extends Controller
 	/**
 	 * Функция генерации дерева с кодами ATC
 	 *
-	 * @Route("drugs/atc-generator", name="atc_generator")
+	 * @Route("/drugs/atc-generator", name="atc_generator")
 	 * @Template("VidalDrugBundle:Drugs:atc_generator.html.twig")
 	 * @Secure(roles="ROLE_ADMIN")
 	 */
@@ -98,7 +99,7 @@ class DrugsController extends Controller
 	/**
 	 * Препараты по КФУ
 	 *
-	 * @Route("drugs/clinic-group/{id}", name="kfu_item", options={"expose":true})
+	 * @Route("/drugs/clinic-group/{id}", name="kfu_item", options={"expose":true})
 	 * @Template("VidalDrugBundle:Drugs:kfu_item.html.twig")
 	 */
 	public function kfuItemAction($id)
@@ -133,8 +134,7 @@ class DrugsController extends Controller
 	/**
 	 * Дерево КФУ
 	 *
-	 * @Route("drugs", name="drugs")
-	 * @Route("drugs/clinic-groups", name="kfu")
+	 * @Route("/drugs/clinic-groups", name="kfu")
 	 * @Template("VidalDrugBundle:Drugs:kfu.html.twig")
 	 */
 	public function kfuAction(Request $request)
@@ -163,7 +163,7 @@ class DrugsController extends Controller
 	/**
 	 * [AJAX] Подгрузка дерева КФУ
 	 *
-	 * @Route("drugs/kfu-ajax", name="kfu_ajax", options={"expose":true})
+	 * @Route("/drugs/kfu-ajax", name="kfu_ajax", options={"expose":true})
 	 */
 	public function kfuAjaxAction(Request $request)
 	{
@@ -182,7 +182,7 @@ class DrugsController extends Controller
 	/**
 	 * Функция генерации дерева с кодами КФУ
 	 *
-	 * @Route("drugs/kfu-generator", name="kfu_generator")
+	 * @Route("/drugs/kfu-generator", name="kfu_generator")
 	 * @Template("VidalDrugBundle:Drugs:kfu_generator.html.twig")
 	 * @Secure(roles="ROLE_ADMIN")
 	 */
@@ -198,7 +198,7 @@ class DrugsController extends Controller
 	/**
 	 * Список компаний
 	 *
-	 * @Route("drugs/pharm-groups", name="pharm")
+	 * @Route("/drugs/pharm-groups", name="pharm")
 	 * @Template("VidalDrugBundle:Drugs:pharm.html.twig")
 	 */
 	public function pharmAction(Request $request)
@@ -243,7 +243,7 @@ class DrugsController extends Controller
 	/**
 	 * Список препаратов по фармако-терапевтической группе
 	 *
-	 * @Route("drugs/pharm-group/{id}", name="pharm_item", defaults={"id":"\d+"})
+	 * @Route("/drugs/pharm-group/{id}", name="pharm_item", defaults={"id":"\d+"})
 	 * @Template("VidalDrugBundle:Drugs:pharm_item.html.twig")
 	 */
 	public function pharmItemAction($id)
@@ -276,8 +276,8 @@ class DrugsController extends Controller
 	/**
 	 * Список препаратов и активных веществ по показанию (Nozology)
 	 *
-	 * @Route("drugs/nosology/{Code}", name="nosology_item", options={"expose":true})
-	 * @Route("poisk_preparatov/lno_{Code}", name="nosology_item_old")
+	 * @Route("/drugs/nosology/{Code}", name="nosology_item", options={"expose":true})
+	 * @Route("/poisk_preparatov/lno_{Code}", name="nosology_item_old")
 	 * @Template("VidalDrugBundle:Drugs:nosology_item.html.twig")
 	 */
 	public function nosologyItemAction(Request $request, $Code)
@@ -335,7 +335,7 @@ class DrugsController extends Controller
 	/**
 	 * Список нозологических указателей
 	 *
-	 * @Route("drugs/nosology", name="nosology")
+	 * @Route("/drugs/nosology", name="nosology")
 	 * @Template("VidalDrugBundle:Drugs:nosology.html.twig")
 	 */
 	public function nosologyAction()
@@ -346,7 +346,7 @@ class DrugsController extends Controller
 	/**
 	 * [AJAX] Подгрузка дерева Нозологических указателей
 	 *
-	 * @Route("drugs/nosology-ajax", name="nosology_ajax", options={"expose":true})
+	 * @Route("/drugs/nosology-ajax", name="nosology_ajax", options={"expose":true})
 	 */
 	public function nosologyAjaxAction(Request $request)
 	{
@@ -365,7 +365,7 @@ class DrugsController extends Controller
 	/**
 	 * Функция генерации дерева нозологических указателей
 	 *
-	 * @Route("drugs/nosology-generator", name="nosology_generator")
+	 * @Route("/drugs/nosology-generator", name="nosology_generator")
 	 * @Template("VidalDrugBundle:Drugs:nosology_generator.html.twig")
 	 * @Secure(roles="ROLE_ADMIN")
 	 */

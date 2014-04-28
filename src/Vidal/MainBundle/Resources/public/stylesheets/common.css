@@ -1180,6 +1180,9 @@ h1 span {
 .module {
 	position: relative;
 }
+.module.hidden {
+	border: none;
+}
 .module-1 {
 	position:      relative;
 	border:        3px solid #eee;

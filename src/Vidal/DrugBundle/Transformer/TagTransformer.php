@@ -6,9 +6,13 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Collections\ArrayCollection;
-use Vidal\DrugBundle\Entity\ArtTag;
+use Vidal\DrugBundle\Entity\Tag;
+use Vidal\DrugBundle\Entity\Article;
+use Vidal\DrugBundle\Entity\Art;
+use Vidal\DrugBundle\Entity\Publication;
+use Vidal\DrugBundle\Entity\PharmArticle;
 
-class ArtTagTransformer implements DataTransformerInterface
+class TagTransformer implements DataTransformerInterface
 {
 	private $om;
 
@@ -28,22 +32,26 @@ class ArtTagTransformer implements DataTransformerInterface
 	public function reverseTransform($text)
 	{
 		$text = trim($text);
+		$text = trim($text, ';');
 
 		if (empty($text)) {
 			return null;
 		}
 
-		$tag  = $this->om->getRepository('VidalDrugBundle:ArtTag')->findOneByText($text);
+		$tags = explode(';', $text);
 
-		if (empty($tag)) {
-			$tag = new ArtTag();
-			$tag->setText($text);
-			$this->om->persist($tag);
-			$this->om->flush($tag);
-			$this->om->refresh($tag);
+		foreach ($tags as $tagText) {
+			$tag = $this->om->getRepository('VidalDrugBundle:Tag')->findOneByText($tagText);
+
+			if (empty($tag)) {
+				$tag = new Tag();
+				$tag->setText($tagText);
+				$this->om->persist($tag);
+			}
+
+			$this->subject->addTag($tag);
+			$this->om->flush();
 		}
-
-		$this->subject->addTag($tag);
 
 		return null;
 	}

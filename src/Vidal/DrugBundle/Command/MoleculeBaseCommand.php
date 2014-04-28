@@ -7,26 +7,26 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CompanyCountryCommand extends ContainerAwareCommand
+class MoleculeBaseCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:company_country');
+		$this->setName('vidal:molecule_base');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		ini_set('memory_limit', -1);
-		$output->writeln('+++ vidal:company_country started');
+		$output->writeln('+++ vidal:molecule_base started');
 
 		$em        = $this->getContainer()->get('doctrine')->getManager('drug');
 
 		$em->createQuery("
-			UPDATE VidalDrugBundle:Company c
-			SET c.CountryCode = NULL
-			WHERE c.CountryCode = ''
+			UPDATE VidalDrugBundle:Molecule m
+			SET m.MarketStatusID = NULL
+			WHERE m.MarketStatusID = 0
 		")->execute();
 
-		$output->writeln('--- vidal:company_country completed');
+		$output->writeln('--- vidal:molecule_base completed');
 	}
 }

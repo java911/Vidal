@@ -7,27 +7,26 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class InfoCountryCommand extends ContainerAwareCommand
+class CompanyCountryCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:info_country')
-			->setDescription('InfoPage.countProducts generator');
+		$this->setName('vidal:company_country');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		ini_set('memory_limit', -1);
-		$output->writeln('+++ vidal:info_country started');
+		$output->writeln('+++ vidal:company_country started');
 
 		$em        = $this->getContainer()->get('doctrine')->getManager('drug');
 
 		$em->createQuery("
-			UPDATE VidalDrugBundle:InfoPage i
-			SET i.CountryCode = NULL
-			WHERE i.CountryCode = ''
+			UPDATE VidalDrugBundle:Company c
+			SET c.CountryCode = NULL
+			WHERE c.CountryCode = ''
 		")->execute();
 
-		$output->writeln('--- vidal:info_country completed');
+		$output->writeln('--- vidal:company_country completed');
 	}
 }
