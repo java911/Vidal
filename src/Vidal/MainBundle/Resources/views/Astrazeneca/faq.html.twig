@@ -1,0 +1,123 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block title %}
+    <h1>ОТВЕТЫ СПЕЦИАЛИСТОВ</h1>
+{% endblock %}
+
+{% block nav %}
+    <div class="breadcrumbs">
+        <a href="{{ path('index') }}">Видаль</a>
+        <i></i>
+        <a href="{{ path('astrazeneca_index') }}">astraZeneca</a>
+        <i></i>
+        <span>Ответы специалистов</span>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="qa-ask">
+        <b><a href="#" id="ask">Спросить у специалистов:</a></b>
+        <br/>
+        <br/>
+        <form method="POST">
+            {{ form_widget(form) }}
+        </form>
+    </div>
+    {% if questionAnswers|length %}
+        <div class="qa-wrap">
+            {% if isAdmin %}
+                {% for qa in questionAnswers %}
+                    <div class="qa">
+                        {# админам карандашик редактирования #}
+                        <a class="admin-edit fade" target="_blank"
+                           href="{{ path('admin_vidal_main_questionanswer_edit', {'id':qa.id}) }}">
+                            <img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+                        </a>
+
+                        <div class="qa-question">{{ qa.question|raw }}</div>
+                        <div class="qa-expand">ответ</div>
+                        <div class="qa-answer">{{ qa.answer|raw }}</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                {% for qa in questionAnswers %}
+                    <div class="qa">
+                        <div class="qa-question">{{ qa.question|raw }}</div>
+                        <div class="qa-expand">ответ</div>
+                        <div class="qa-answer">{{ qa.answer|raw }}</div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+        .qa {
+            position:      relative;
+            border:        3px solid #eee;
+            margin-bottom: 10px;
+            padding:       11px 12px 10px;
+        }
+        .qa-expand {
+            display:       inline-block;
+            border-bottom: 2px dotted #aaa;
+            color:         #d71344;
+            cursor:        pointer;
+        }
+        .qa-question p, .qa-answer p {
+            margin: 8px 0;
+        }
+        .qa-question p:first-child, .qa-answer p:first-child {
+            margin-top: 0;
+        }
+        .qa-question {
+            font-family: 'PT Sans Caption', sans-serif;
+            font-size:   15px;
+            color:       #2f4053;
+        }
+        .expanded .qa-question {
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 8px;
+        }
+        .qa-answer {
+            font-size: 15px;
+            display:   none;
+        }
+        #form{
+            display: none;
+        }
+        .qa-ask{
+            border-bottom: 3px solid #eee;
+            margin-bottom: 10px;
+        }
+    </style>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.qa-expand').click(function() {
+                var $this = $(this);
+                $this.hide();
+                $this.closest('.qa').addClass('expanded').find('.qa-answer').slideDown('fast');
+            });
+
+            $('#ask').click(function(){
+                if ( $('#form').css('display') == 'none' ){
+                    $('#form').fadeIn();
+                }else{
+                    $('#form').fadeOut();
+                }
+                return false;
+            })
+        });
+    </script>
+{% endblock %}
