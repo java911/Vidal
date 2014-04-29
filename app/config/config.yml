@@ -1,4 +1,3 @@
-
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
@@ -12,7 +11,7 @@ framework:
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
-    templating:      { engines: ['twig'], assets_version: v57 }
+    templating:      { engines: ['twig'], assets_version: v58 }
     form:            ~
     csrf_protection: false
     validation:      { enable_annotations: true }
