@@ -1,7 +1,8 @@
 {% if module %}
 	{% set isAdmin = app.user and is_granted('ROLE_ADMIN') %}
+	{% set show = module.enabled and (module.title is not empty and module.body is not empty) %}
 
-	<div class="module module-{{ module.id }}">
+	<div class="module module-{{ module.id }}{{ not show ? ' hidden' }}">
 		{% if isAdmin %}
 			<a class="admin-edit fade" target="_blank"
 			   href="{{ path('admin_vidal_main_module_edit', {'id':module.id}) }}">
@@ -9,7 +10,7 @@
 			</a>
 		{% endif %}
 
-		{% if module.enabled %}
+		{% if show %}
 			{% if module.title is not empty %}
 				<div class="module-title">
 					{{ module.title|raw }}

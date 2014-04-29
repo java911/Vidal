@@ -127,12 +127,6 @@ class Product
 	/** @ORM\OneToMany(targetEntity="ProductCompany", mappedBy="ProductID") */
 	protected $productCompany;
 
-	/** @ORM\OneToMany(targetEntity="ProductPackage", mappedBy="ProductID") */
-	protected $productPackages;
-
-	/** @ORM\OneToMany(targetEntity="ProductItem", mappedBy="ProductID") */
-	protected $productItems;
-
 	/**
 	 * @ORM\ManyToMany(targetEntity="MoleculeName", mappedBy="products")
 	 * @ORM\JoinTable(name="product_moleculename",
@@ -140,9 +134,6 @@ class Product
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="MoleculeNameID", referencedColumnName="MoleculeNameID")})
 	 */
 	protected $moleculeNames;
-
-	/** @ORM\OneToMany(targetEntity="ProductItemRoute", mappedBy="ProductID") */
-	protected $productItemRoutes;
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="PhThGroups", mappedBy="products", fetch="EXTRA_LAZY")
@@ -166,10 +157,7 @@ class Product
 		$this->productDocument   = new ArrayCollection();
 		$this->clphGroups        = new ArrayCollection();
 		$this->productCompany    = new ArrayCollection();
-		$this->productPackages   = new ArrayCollection();
-		$this->productItems      = new ArrayCollection();
 		$this->moleculeNames     = new ArrayCollection();
-		$this->productItemRoutes = new ArrayCollection();
 		$this->phthgroups        = new ArrayCollection();
 		$this->articles          = new ArrayCollection();
 	}
@@ -697,38 +685,6 @@ class Product
 	}
 
 	/**
-	 * @param mixed $productPackages
-	 */
-	public function setProductPackages(ArrayCollection $productPackages)
-	{
-		$this->productPackages = $productPackages;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getProductPackages()
-	{
-		return $this->productPackages;
-	}
-
-	/**
-	 * @param mixed $productItems
-	 */
-	public function setProductItems(ArrayCollection $productItems)
-	{
-		$this->productItems = $productItems;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getProductItems()
-	{
-		return $this->productItems;
-	}
-
-	/**
 	 * @param mixed $moleculeNames
 	 */
 	public function setMoleculeNames(ArrayCollection $moleculeNames)
@@ -742,22 +698,6 @@ class Product
 	public function getMoleculeNames()
 	{
 		return $this->moleculeNames;
-	}
-
-	/**
-	 * @param mixed $productItemRoutes
-	 */
-	public function setProductItemRoutes(ArrayCollection $productItemRoutes)
-	{
-		$this->productItemRoutes = $productItemRoutes;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getProductItemRoutes()
-	{
-		return $this->productItemRoutes;
 	}
 
 	/**

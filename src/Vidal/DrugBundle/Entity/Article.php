@@ -102,7 +102,7 @@ class Article extends BaseEntity
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $subclassId;
 
-	/** @ORM\ManyToMany(targetEntity="ArticleTag", inversedBy="articles") */
+	/** @ORM\ManyToMany(targetEntity="Tag", inversedBy="articles") */
 	protected $tags;
 
 	/**
@@ -498,7 +498,7 @@ class Article extends BaseEntity
 		return $this->tags;
 	}
 
-	public function addTag(ArticleTag $tag)
+	public function addTag(Tag $tag)
 	{
 		if (!$this->tags->contains($tag)) {
 			$this->tags[] = $tag;

@@ -4,14 +4,20 @@ namespace Vidal\DrugBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/** @ORM\Entity @ORM\Table(name="publication_tag") */
-class PublicationTag
+/** @ORM\Entity @ORM\Table(name="tag") */
+class Tag
 {
 	/** @ORM\Column(type="integer") @ORM\Id @ORM\GeneratedValue */
 	protected $id;
 
 	/** @ORM\Column(length=30) */
 	protected $text;
+
+	/** @ORM\ManyToMany(targetEntity="Article", mappedBy="tags") */
+	protected $articles;
+
+	/** @ORM\ManyToMany(targetEntity="Art", mappedBy="tags") */
+	protected $arts;
 
 	/** @ORM\ManyToMany(targetEntity="Publication", mappedBy="tags") */
 	protected $publications;
@@ -21,6 +27,8 @@ class PublicationTag
 
 	public function __construct()
 	{
+		$this->articles      = new ArrayCollection();
+		$this->arts          = new ArrayCollection();
 		$this->publications  = new ArrayCollection();
 		$this->pharmArticles = new ArrayCollection();
 	}
@@ -63,19 +71,35 @@ class PublicationTag
 	}
 
 	/**
-	 * @param mixed $publications
+	 * @param mixed $articles
 	 */
-	public function setPublications($publications)
+	public function setArticles($articles)
 	{
-		$this->publications = $publications;
+		$this->articles = $articles;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getPublications()
+	public function getArticles()
 	{
-		return $this->publications;
+		return $this->articles;
+	}
+
+	/**
+	 * @param mixed $arts
+	 */
+	public function setArts($arts)
+	{
+		$this->arts = $arts;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getArts()
+	{
+		return $this->arts;
 	}
 
 	/**
@@ -92,5 +116,21 @@ class PublicationTag
 	public function getPharmArticles()
 	{
 		return $this->pharmArticles;
+	}
+
+	/**
+	 * @param mixed $publications
+	 */
+	public function setPublications($publications)
+	{
+		$this->publications = $publications;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPublications()
+	{
+		return $this->publications;
 	}
 }

@@ -60,7 +60,7 @@ class PharmArticle extends BaseEntity
 	 */
 	protected $infoPages;
 
-	/** @ORM\ManyToMany(targetEntity="PublicationTag", inversedBy="pharmArticles") */
+	/** @ORM\ManyToMany(targetEntity="Tag", inversedBy="pharmArticles") */
 	protected $tags;
 
 	public function __construct()
@@ -241,7 +241,7 @@ class PharmArticle extends BaseEntity
 		return $this->tags;
 	}
 
-	public function addTag(PublicationTag $tag)
+	public function addTag(Tag $tag)
 	{
 		if (!$this->tags->contains($tag)) {
 			$this->tags[] = $tag;

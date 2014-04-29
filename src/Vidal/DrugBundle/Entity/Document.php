@@ -171,7 +171,7 @@ class Document
 	 * joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
 	 * inverseJoinColumns={@ORM\JoinColumn(name="ContraIndicCode", referencedColumnName="ContraIndicCode")})
 	 */
-	protected $contraindications;
+	//protected $contraindications;
 
 	/** @ORM\OneToMany(targetEntity="DocumentInfoPage", mappedBy="DocumentID") */
 	protected $documentInfoPages;

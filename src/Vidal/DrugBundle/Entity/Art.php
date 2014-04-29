@@ -87,7 +87,7 @@ class Art extends BaseEntity
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $priority;
 
-	/** @ORM\ManyToMany(targetEntity="ArtTag", inversedBy="arts") */
+	/** @ORM\ManyToMany(targetEntity="Tag", inversedBy="arts") */
 	protected $tags;
 
 	/**
@@ -430,7 +430,7 @@ class Art extends BaseEntity
 		return $this->tags;
 	}
 
-	public function addTag(ArtTag $tag)
+	public function addTag(Tag $tag)
 	{
 		if (!$this->tags->contains($tag)) {
 			$this->tags[] = $tag;
