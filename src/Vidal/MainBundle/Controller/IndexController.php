@@ -103,7 +103,7 @@ class IndexController extends Controller
 		$params = array(
 			'title'     => 'Наши услуги',
 			'menu_left' => 'services',
-			'items'     => $this->getDoctrine()->getRepository('VidalMainBundle:About')->findServices(),
+			'items'     => $this->getDoctrine()->getRepository('VidalMainBundle:Service')->findServices(),
 		);
 
 		return $params;
@@ -117,7 +117,7 @@ class IndexController extends Controller
 	 */
 	public function servicesItemAction($url)
 	{
-		$about = $this->getDoctrine()->getRepository('VidalMainBundle:About')->findOneByUrl($url);
+		$about = $this->getDoctrine()->getRepository('VidalMainBundle:Service')->findOneByUrl($url);
 
 		if (empty($about)) {
 			throw $this->createNotFoundException();

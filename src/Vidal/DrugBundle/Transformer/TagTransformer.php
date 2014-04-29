@@ -33,15 +33,15 @@ class TagTransformer implements DataTransformerInterface
 	{
 		$text = trim($text);
 		$text = trim($text, ';');
+		$tags = explode(';', $text);
 
-		if (empty($text)) {
+		if (empty($tags)) {
 			return null;
 		}
 
-		$tags = explode(';', $text);
-
 		foreach ($tags as $tagText) {
-			$tag = $this->om->getRepository('VidalDrugBundle:Tag')->findOneByText($tagText);
+			$tagText = trim($tagText);
+			$tag     = $this->om->getRepository('VidalDrugBundle:Tag')->findOneByText($tagText);
 
 			if (empty($tag)) {
 				$tag = new Tag();

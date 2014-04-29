@@ -145,3 +145,6 @@ ul.tags {
 	margin:     0;
 	list-style: none;
 }
+input[type="text"], textarea {
+	width: 80% !important;
+}
