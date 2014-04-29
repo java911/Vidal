@@ -51,7 +51,7 @@ doctrine:
                 driver:   %database_driver%
                 host:     %database_host%
                 port:     %database_port%
-                dbname:   twigavid_vidal
+                dbname:   %database_vidal%
                 user:     %database_user%
                 password: %database_password%
                 charset:  UTF8
@@ -63,7 +63,7 @@ doctrine:
                 driver:   %database_driver%
                 host:     %database_host%
                 port:     %database_port%
-                dbname:   twigavid_drug2
+                dbname:   %database_drug%
                 user:     %database_user%
                 password: %database_password%
                 charset:  UTF8
@@ -75,7 +75,7 @@ doctrine:
                 driver:   %database_driver%
                 host:     %database_host%
                 port:     %database_port%
-                dbname:   twigavid_veterinar
+                dbname:   %database_veterinar%
                 user:     %database_user%
                 password: %database_password%
                 charset:  UTF8
