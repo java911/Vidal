@@ -1,8 +1,5 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
-{% block title %}
-    <h1>ASTRAZENECA</h1>
-{% endblock %}
 
 {% block nav %}
     <div class="breadcrumbs">
@@ -15,6 +12,16 @@
 {% endblock %}
 
 {% block content %}
+    <div class="menu-drugs">
+        <div class="tabs">
+            <a href="{{ path('astrazeneca_index') }}" class="active">Видеолекции</a>
+            <a href="{{ path('astrazeneca_news') }}">Новости</a>
+            <a href="{{ path('astrazeneca_faq') }}">Вопрос-ответ</a>
+            <a href="{{ path('astrazeneca_testing') }}" >Тестирование</a>
+            <a href="{{ path('astrazeneca_map') }}" >Карта</a>
+        </div>
+    </div>
+    <h1>ASTRAZENECA</h1>
     <iframe width="560" height="315" src="//www.youtube.com/embed/hHTuXe1rZrQ" frameborder="0" allowfullscreen></iframe>
     <br />
     <br />

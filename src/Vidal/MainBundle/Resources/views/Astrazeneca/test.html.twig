@@ -1,10 +1,6 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
-{% block title %}
-    <h1>ТЕСТИРОВАНИЯ</h1>
-{% endblock %}
-
 {% block nav %}
     <div class="breadcrumbs">
         <a href="{{ path('index') }}">Видаль</a>
@@ -16,6 +12,18 @@
 {% endblock %}
 
 {% block content %}
+    <div class="menu-drugs">
+        <div class="tabs">
+            <a href="{{ path('astrazeneca_index') }}">Видеолекции</a>
+            <a href="{{ path('astrazeneca_news') }}">Новости</a>
+            <a href="{{ path('astrazeneca_faq') }}">Вопрос-ответ</a>
+            <a href="{{ path('astrazeneca_testing') }}"  class="active">Тестирование</a>
+            <a href="{{ path('astrazeneca_map') }}" >Карта</a>
+        </div>
+    </div>
+    <h1>
+       Тестирование
+    </h1>
     <div class="tests">
         {% for test in tests %}
             <div id="{{ test.id }}" class="test">

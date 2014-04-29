@@ -2,21 +2,6 @@
 
 {% set withPhoto = publication.photo and is_file(publication.photo.path) %}
 
-
-{% block title %}
-	<h1>
-		{{ publication|raw }}
-		{# админу карандашик на правку #}
-		{% if isAdmin %}
-			<a class="admin-edit fade" target="_blank"
-			   href="{{ path('admin_vidal_drug_publication_edit', {'id':publication.id}) }}">
-				<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-			</a>
-		{% endif %}
-	</h1>
-{% endblock %}
-
-
 {% block nav %}
 	<div class="breadcrumbs">
 		<a href="{{ path('index') }}">Видаль</a>
@@ -27,6 +12,26 @@
 
 
 {% block content %}
+    <div class="menu-drugs">
+        <div class="tabs">
+            <a href="{{ path('astrazeneca_index') }}">Видеолекции</a>
+            <a href="{{ path('astrazeneca_news') }}" class="active">Новости</a>
+            <a href="{{ path('astrazeneca_faq') }}">Вопрос-ответ</a>
+            <a href="{{ path('astrazeneca_testing') }}" >Тестирование</a>
+            <a href="{{ path('astrazeneca_map') }}" >Карта</a>
+        </div>
+    </div>
+    <h1>
+        {{ publication|raw }}
+        {# админу карандашик на правку #}
+        {% if isAdmin %}
+            <a class="admin-edit fade" target="_blank"
+               href="{{ path('admin_vidal_drug_publication_edit', {'id':publication.id}) }}">
+                <img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+            </a>
+        {% endif %}
+    </h1>
+
 	<div class="publication">
 		{% if withPhoto %}
 			<div class="publication-header with-photo">
