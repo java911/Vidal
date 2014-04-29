@@ -433,6 +433,27 @@
 				<target>Удаление тега</target>
 			</trans-unit>
 
+			<trans-unit id="sonata-25">
+				<source>About Service List</source>
+				<target>Наши услуги</target>
+			</trans-unit>
+			<trans-unit id="sonata-25-1">
+				<source>About Service Show</source>
+				<target>Наша услуга</target>
+			</trans-unit>
+			<trans-unit id="sonata-25-2">
+				<source>About Service Edit</source>
+				<target>Редактирование нашей услуги</target>
+			</trans-unit>
+			<trans-unit id="sonata-25-3">
+				<source>About Service Create</source>
+				<target>Создание нашей услуги</target>
+			</trans-unit>
+			<trans-unit id="sonata-25-4">
+				<source>About Service Delete</source>
+				<target>Удаление нашей услуги</target>
+			</trans-unit>
+
         </body>
     </file>
 </xliff>
