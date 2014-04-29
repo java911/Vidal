@@ -3,15 +3,15 @@ namespace Vidal\MainBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
-class ServiceRepository extends EntityRepository
+class AboutServiceRepository extends EntityRepository
 {
 	public function findServices()
 	{
 		return $this->_em->createQuery('
 		 	SELECT s
-		 	FROM VidalMainBundle:Service s
+		 	FROM VidalMainBundle:AboutService s
 		 	WHERE s.enabled = TRUE
-		 	ORDER BY a.priority DESC, a.title DESC
+		 	ORDER BY s.priority DESC, s.title DESC
 		')->getResult();
 	}
 }

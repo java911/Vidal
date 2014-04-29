@@ -92,7 +92,7 @@ class IndexController extends Controller
 	}
 
 	/**
-	 * О компании
+	 * Наши услуги
 	 * @Route("/services", name="services")
 	 * @Route("/Vidal/vidal-russia/", name="vidal_russia")
 	 *
@@ -103,21 +103,21 @@ class IndexController extends Controller
 		$params = array(
 			'title'     => 'Наши услуги',
 			'menu_left' => 'services',
-			'items'     => $this->getDoctrine()->getRepository('VidalMainBundle:Service')->findServices(),
+			'items'     => $this->getDoctrine()->getRepository('VidalMainBundle:AboutService')->findServices(),
 		);
 
 		return $params;
 	}
 
 	/**
-	 * О компании
+	 * Наши услуги
 	 * @Route("/services/{url}", name="services_item")
 	 *
 	 * @Template()
 	 */
 	public function servicesItemAction($url)
 	{
-		$about = $this->getDoctrine()->getRepository('VidalMainBundle:Service')->findOneByUrl($url);
+		$about = $this->getDoctrine()->getRepository('VidalMainBundle:AboutService')->findOneByUrl($url);
 
 		if (empty($about)) {
 			throw $this->createNotFoundException();

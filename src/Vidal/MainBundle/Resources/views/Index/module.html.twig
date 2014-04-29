@@ -1,6 +1,6 @@
 {% if module %}
 	{% set isAdmin = app.user and is_granted('ROLE_ADMIN') %}
-	{% set show = module.enabled and (module.title is not empty and module.body is not empty) %}
+	{% set show = module.enabled and module.body is not empty %}
 
 	<div class="module module-{{ module.id }}{{ not show ? ' hidden' }}">
 		{% if isAdmin %}
@@ -11,16 +11,9 @@
 		{% endif %}
 
 		{% if show %}
-			{% if module.title is not empty %}
-				<div class="module-title">
-					{{ module.title|raw }}
-				</div>
-			{% endif %}
-			{% if module.body is not empty %}
-				<div class="module-body">
-					{{ module.body|raw }}
-				</div>
-			{% endif %}
+			<div class="module-body">
+				{{ module.body|raw }}
+			</div>
 		{% endif %}
 	</div>
 
