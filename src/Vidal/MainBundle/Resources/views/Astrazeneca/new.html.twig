@@ -13,12 +13,26 @@
 
 {% block content %}
     <div class="menu-drugs">
-        <div class="tabs">
-            <a href="{{ path('astrazeneca_index') }}">Видеолекции</a>
-            <a href="{{ path('astrazeneca_news') }}" class="active">Новости</a>
-            <a href="{{ path('astrazeneca_faq') }}">Вопрос-ответ</a>
-            <a href="{{ path('astrazeneca_testing') }}" >Тестирование</a>
-            <a href="{{ path('astrazeneca_map') }}" >Карта</a>
+        <div class="tabs" style="width: 520px">
+            <table style="width: 100%" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td style="width: 20%; text-align: center;">
+                        <a href="{{ path('astrazeneca_index') }}">Видеолекции</a>
+                    </td>
+                    <td style="width: 20%; text-align: center;">
+                        <a href="{{ path('astrazeneca_news') }}" class="active">Новости</a>
+                    </td>
+                    <td style="width: 20%; text-align: center;">
+                        <a href="{{ path('astrazeneca_faq') }}">Вопрос-ответ</a>
+                    </td>
+                    <td style="width: 20%; text-align: center;">
+                        <a href="{{ path('astrazeneca_testing') }}" >Тестирование</a>
+                    </td>
+                    <td style="width: 20%; text-align: center;">
+                        <a href="{{ path('astrazeneca_map') }}" >Карта</a>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
     <h1>
@@ -112,5 +126,11 @@
 			font-style: italic;
 			color:      gray;
 		}
+        .tabs a{
+            width: 100%;
+            display: block;
+            text-align: center;
+            padding: 7px 0;
+        }
 	</style>
 {% endblock %}
