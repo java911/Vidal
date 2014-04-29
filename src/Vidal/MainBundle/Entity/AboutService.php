@@ -5,8 +5,8 @@ namespace Vidal\MainBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/** @ORM\Entity(repositoryClass="ServiceRepository") @ORM\Table(name="service") */
-class Service
+/** @ORM\Entity(repositoryClass="AboutServiceRepository") @ORM\Table(name="about_service") */
+class AboutService
 {
 	/** @ORM\Column(type="integer") @ORM\Id @ORM\GeneratedValue */
 	protected $id;

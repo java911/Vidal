@@ -30,14 +30,12 @@ class ModuleAdmin extends Admin
 	{
 		$showMapper
 			->add('id')
-			->add('title', null, array('label' => 'Название'))
 			->add('enabled', null, array('label' => 'Активен'));
 	}
 
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('title', null, array('label' => 'Заголовок', 'required' => false, 'help' => 'Пустой отображаться не будет', 'attr' => array('class' => 'ckeditorfull')))
 			->add('body', null, array('label' => 'Содержимое', 'required' => false, 'help' => 'Пустое отображаться не будет', 'attr' => array('class' => 'ckeditorfull')))
 			->add('help', null, array('label' => 'Пояснение', 'required' => false))
 			->add('enabled', null, array('label' => 'Активен', 'required' => false));

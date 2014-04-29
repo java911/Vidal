@@ -11,9 +11,6 @@ class Module
 	protected $id;
 
 	/** @ORM\Column(type="text", nullable=true) */
-	protected $title;
-
-	/** @ORM\Column(type="text", nullable=true) */
 	protected $body;
 
 	/** @ORM\Column(type="boolean") */
@@ -24,7 +21,7 @@ class Module
 
 	public function __toString()
 	{
-		return $this->title;
+		return '';
 	}
 
 	/**
@@ -49,22 +46,6 @@ class Module
 	public function getId()
 	{
 		return $this->id;
-	}
-
-	/**
-	 * @param mixed $title
-	 */
-	public function setTitle($title)
-	{
-		$this->title = $title;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getTitle()
-	{
-		return $this->title;
 	}
 
 	/**
