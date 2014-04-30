@@ -32,9 +32,6 @@ class Publication extends BaseEntity
 	/** @ORM\Column(length=255, nullable=true) */
 	protected $keyword;
 
-	/** @ORM\ManyToOne(targetEntity="Subdivision", inversedBy="publications") */
-	protected $subdivision;
-
 	/** @ORM\Column(type="datetime", nullable=true) */
 	protected $date;
 
@@ -78,7 +75,7 @@ class Publication extends BaseEntity
 	 */
 	protected $infoPages;
 
-	/** @ORM\ManyToMany(targetEntity="PublicationTag", inversedBy="publications") */
+	/** @ORM\ManyToMany(targetEntity="Tag", inversedBy="publications") */
 	protected $tags;
 
 	/**
@@ -136,7 +133,7 @@ class Publication extends BaseEntity
 	 */
 	public function getAnnounce()
 	{
-		return str_replace(array('&reg;', '®'), array('<sup>&reg;</sup>', '<sup>®</sup>'), $this->announce);
+		return $this->announce;
 	}
 
 	/**
@@ -152,7 +149,7 @@ class Publication extends BaseEntity
 	 */
 	public function getBody()
 	{
-		return str_replace(array('&reg;', '®'), array('<sup>&reg;</sup>', '<sup>®</sup>'), $this->body);
+		return $this->body;
 	}
 
 	/**
@@ -184,23 +181,7 @@ class Publication extends BaseEntity
 	 */
 	public function getTitle()
 	{
-		return str_replace(array('&reg;', '®'), array('<sup>&reg;</sup>', '<sup>®</sup>'), $this->title);
-	}
-
-	/**
-	 * @param mixed $subdivision
-	 */
-	public function setSubdivision($subdivision)
-	{
-		$this->subdivision = $subdivision;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getSubdivision()
-	{
-		return $this->subdivision;
+		return $this->title;
 	}
 
 	/**
@@ -341,7 +322,7 @@ class Publication extends BaseEntity
 		return $this->tags;
 	}
 
-	public function addTag(PublicationTag $tag)
+	public function addTag(Tag $tag)
 	{
 		if (!$this->tags->contains($tag)) {
 			$this->tags[] = $tag;

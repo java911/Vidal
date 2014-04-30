@@ -6,7 +6,7 @@ $(document).ready(function() {
 			minLength: 2,
 			source:    function(request, response) {
 				$.ajax({
-					url:      "http://vidal.evrika.ru:9200/website/autocompleteext/_search",
+					url:      "http://twiga.vidal.ru:9200/website/autocompleteext/_search",
 					type:     "POST",
 					dataType: "JSON",
 					data:     '{ "query":{"query_string":{"query":"' + request.term + '*"}}, "fields":["name"], "size":15, "highlight":{"fields":{"name":{}}} }',
@@ -33,7 +33,7 @@ $(document).ready(function() {
 			minLength: 2,
 			source:    function(request, response) {
 				$.ajax({
-					url:      "http://vidal.evrika.ru:9200/website/autocomplete_nozology/_search",
+					url:      "http://twiga.vidal.ru:9200/website/autocomplete_nozology/_search",
 					type:     "POST",
 					dataType: "JSON",
 					data:     '{ "query":{"query_string":{"query":"' + request.term + '*"}}, "fields":["name","code"], "size":15, "highlight":{"fields":{"name":{}}} }',
@@ -65,7 +65,7 @@ $(document).ready(function() {
 			minLength: 2,
 			source:    function(request, response) {
 				$.ajax({
-					url:      "http://vidal.evrika.ru:9200/website/autocomplete_contraindication/_search",
+					url:      "http://twiga.vidal.ru:9200/website/autocomplete_contraindication/_search",
 					type:     "POST",
 					dataType: "JSON",
 					data:     '{ "query":{"query_string":{"query":"' + request.term + '*"}}, "fields":["name","code"], "size":15, "highlight":{"fields":{"name":{}}} }',

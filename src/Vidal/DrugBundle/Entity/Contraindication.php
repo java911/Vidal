@@ -22,7 +22,7 @@ class Contraindication
 	 *        joinColumns={@ORM\JoinColumn(name="ContraIndicCode", referencedColumnName="ContraIndicCode")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})
 	 */
-	protected $documents;
+	//protected $documents;
 
 	public function __construct()
 	{

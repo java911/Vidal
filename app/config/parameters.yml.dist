@@ -1,19 +1,1 @@
 parameters:
-    database_driver:   pdo_mysql
-    database_host:     127.0.0.1
-    database_port:     3306
-    database_name:     vidal
-    database_vidal:    vidal2
-    database_user:     root
-    database_password:
-
-    mailer_transport:  gmail
-    mailer_host:
-    mailer_user:       binacy@gmail.com
-    mailer_password:   2q32q3q2
-    manager_emails:    [7binary@bk.ru]
-
-    locale:            ru
-    secret:            e2043fd07b10100ff9ba99ca857acdec48
-    portal:            «Vidal.ru»
-    upload_dir:        %kernel.root_dir%/../web/upload

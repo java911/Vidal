@@ -102,7 +102,7 @@ class Article extends BaseEntity
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $subclassId;
 
-	/** @ORM\ManyToMany(targetEntity="ArticleTag", inversedBy="articles") */
+	/** @ORM\ManyToMany(targetEntity="Tag", inversedBy="articles") */
 	protected $tags;
 
 	/**
@@ -158,7 +158,7 @@ class Article extends BaseEntity
 	 */
 	public function getAnnounce()
 	{
-		return str_replace(array('&reg;', '®'), array('<sup>&reg;</sup>', '<sup>®</sup>'), $this->announce);
+		return $this->announce;
 	}
 
 	/**
@@ -174,7 +174,7 @@ class Article extends BaseEntity
 	 */
 	public function getBody()
 	{
-		return str_replace(array('&reg;', '®'), array('<sup>&reg;</sup>', '<sup>®</sup>'), $this->body);
+		return $this->body;
 	}
 
 	/**
@@ -245,7 +245,7 @@ class Article extends BaseEntity
 	 */
 	public function getTitle()
 	{
-		return str_replace(array('&reg;', '®'), array('<sup>&reg;</sup>', '<sup>®</sup>'), $this->title);
+		return $this->title;
 	}
 
 	/**
@@ -498,7 +498,7 @@ class Article extends BaseEntity
 		return $this->tags;
 	}
 
-	public function addTag(ArticleTag $tag)
+	public function addTag(Tag $tag)
 	{
 		if (!$this->tags->contains($tag)) {
 			$this->tags[] = $tag;

@@ -25,9 +25,6 @@ class MoleculeName
 	/** @ORM\Column(type="integer", name="GDDB_MoleculeID") */
 	protected $gddbMoleculeID;
 
-	/** @ORM\OneToMany(targetEntity="ItemActiveIng", mappedBy="ItemID") */
-	protected $itemActiveIngs;
-
 	/**
 	 * @ORM\ManyToMany(targetEntity="Product", inversedBy="moleculeNames")
 	 * @ORM\JoinTable(name="product_moleculename",
@@ -38,7 +35,6 @@ class MoleculeName
 
 	public function __construct()
 	{
-		$this->itemActiveIngs = new ArrayCollection();
 		$this->products       = new ArrayCollection();
 	}
 
@@ -125,22 +121,6 @@ class MoleculeName
 	public function getGddbMoleculeID()
 	{
 		return $this->gddbMoleculeID;
-	}
-
-	/**
-	 * @param mixed $itemActiveIngs
-	 */
-	public function setItemActiveIngs(ArrayCollection $itemActiveIngs)
-	{
-		$this->itemActiveIngs = $itemActiveIngs;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getItemActiveIngs()
-	{
-		return $this->itemActiveIngs;
 	}
 
 	/**

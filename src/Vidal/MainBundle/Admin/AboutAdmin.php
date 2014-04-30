@@ -32,6 +32,7 @@ class AboutAdmin extends Admin
 			->add('title', null, array('label' => 'Заголовок раздела'))
 			->add('url', null, array('label' => 'Путь'))
 			->add('body', null, array('label' => 'Содержимое раздела'))
+			->add('priority', null, array('label' => 'Приоритет'))
 			->add('enabled', null, array('label' => 'Активен'));
 	}
 
@@ -41,6 +42,7 @@ class AboutAdmin extends Admin
 			->add('title', null, array('label' => 'Заголовок раздела'))
 			->add('url', null, array('label' => 'Путь'))
 			->add('body', null, array('label' => 'Содержимое раздела', 'attr' => array('class'=>'ckeditorfull')))
+			->add('priority', null, array('label' => 'Приоритет', 'required' => false))
 			->add('enabled', null, array('label' => 'Активен', 'required' => false));
 	}
 
@@ -59,12 +61,14 @@ class AboutAdmin extends Admin
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок раздела'))
 			->add('url', null, array('label' => 'Путь'))
+			->add('priority', null, array('label' => 'Приоритет'))
 			->add('enabled', null, array('label' => 'Активен', 'template' => 'VidalDrugBundle:Sonata:swap_enabled_main.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(
 					'show' => array(),
 					'edit' => array(),
+					'delete' => array(),
 				)
 			));
 	}

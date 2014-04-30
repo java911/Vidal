@@ -9,7 +9,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Doctrine\ORM\EntityRepository;
 use Vidal\DrugBundle\Transformer\DocumentTransformer;
-use Vidal\DrugBundle\Transformer\PublicationTagTransformer;
+use Vidal\DrugBundle\Transformer\TagTransformer;
 
 class PublicationAdmin extends Admin
 {
@@ -51,22 +51,22 @@ class PublicationAdmin extends Admin
 
 	protected function configureFormFields(FormMapper $formMapper)
 	{
-		$em                        = $this->getModelManager()->getEntityManager($this->getSubject());
-		$documentTransformer       = new DocumentTransformer($em, $this->getSubject());
-		$publicationTagTransformer = new PublicationTagTransformer($em, $this->getSubject());
+		$em                  = $this->getModelManager()->getEntityManager($this->getSubject());
+		$documentTransformer = new DocumentTransformer($em, $this->getSubject());
+		$tagTransformer      = new TagTransformer($em, $this->getSubject());
 
 		$formMapper
 			->add('photo', 'iphp_file', array('label' => 'Фотография', 'required' => false))
 			->add('title', null, array('label' => 'Заголовок', 'required' => true))
-			->add('priority', null, array('label' => 'Приоритет', 'required' => false,  'help' => 'Закреплено на главной по приоритету. Оставьте пустым, чтоб снять приоритет'))
+			->add('priority', null, array('label' => 'Приоритет', 'required' => false, 'help' => 'Закреплено на главной по приоритету. Оставьте пустым, чтоб снять приоритет'))
 			->add('announce', null, array('label' => 'Анонс', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('body', null, array('label' => 'Основное содержимое', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('tags', null, array('label' => 'Теги', 'required' => false, 'help' => 'Выберите существующие теги или добавьте новый ниже'))
 			->add($formMapper->create('hidden', 'text', array(
-					'label'        => 'Создать тег',
+					'label'        => 'Создать теги через ;',
 					'required'     => false,
 					'by_reference' => false,
-				))->addModelTransformer($publicationTagTransformer)
+				))->addModelTransformer($tagTransformer)
 			)
 			->add('atcCodes', 'entity', array(
 				'label'         => 'Коды АТХ',

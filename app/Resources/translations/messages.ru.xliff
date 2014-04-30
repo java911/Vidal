@@ -412,6 +412,48 @@
 				<target>Удаление подкатегории специалистам</target>
 			</trans-unit>
 
+			<trans-unit id="sonata-24">
+				<source>Tag List</source>
+				<target>Теги</target>
+			</trans-unit>
+			<trans-unit id="sonata-24-1">
+				<source>Tag Show</source>
+				<target>Тег</target>
+			</trans-unit>
+			<trans-unit id="sonata-24-2">
+				<source>Tag Edit</source>
+				<target>Редактирование тега</target>
+			</trans-unit>
+			<trans-unit id="sonata-24-3">
+				<source>Tag Create</source>
+				<target>Создание тега</target>
+			</trans-unit>
+			<trans-unit id="sonata-24-4">
+				<source>Tag Delete</source>
+				<target>Удаление тега</target>
+			</trans-unit>
+
+			<trans-unit id="sonata-25">
+				<source>About Service List</source>
+				<target>Наши услуги</target>
+			</trans-unit>
+			<trans-unit id="sonata-25-1">
+				<source>About Service Show</source>
+				<target>Наша услуга</target>
+			</trans-unit>
+			<trans-unit id="sonata-25-2">
+				<source>About Service Edit</source>
+				<target>Редактирование нашей услуги</target>
+			</trans-unit>
+			<trans-unit id="sonata-25-3">
+				<source>About Service Create</source>
+				<target>Создание нашей услуги</target>
+			</trans-unit>
+			<trans-unit id="sonata-25-4">
+				<source>About Service Delete</source>
+				<target>Удаление нашей услуги</target>
+			</trans-unit>
+
         </body>
     </file>
 </xliff>

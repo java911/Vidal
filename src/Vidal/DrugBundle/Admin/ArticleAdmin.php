@@ -9,7 +9,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Doctrine\ORM\EntityRepository;
 use Vidal\DrugBundle\Transformer\DocumentTransformer;
-use Vidal\DrugBundle\Transformer\ArticleTagTransformer;
+use Vidal\DrugBundle\Transformer\TagTransformer;
 
 class ArticleAdmin extends Admin
 {
@@ -45,18 +45,17 @@ class ArticleAdmin extends Admin
 
 	protected function configureFormFields(FormMapper $formMapper)
 	{
-		$em                    = $this->getModelManager()->getEntityManager($this->getSubject());
-		$documentTransformer   = new DocumentTransformer($em, $this->getSubject());
-		$articleTagTransformer = new ArticleTagTransformer($em, $this->getSubject());
+		$em                  = $this->getModelManager()->getEntityManager($this->getSubject());
+		$documentTransformer = new DocumentTransformer($em, $this->getSubject());
+		$tagTransformer      = new TagTransformer($em, $this->getSubject());
 
 		$formMapper
 			->add('title', null, array('label' => 'Заголовок', 'required' => true))
-			->add('link', null, array('label' => 'Адрес страницы', 'required' => true, 'help' => 'латинские буквы и цифры, слова через тире'))
+			->add('link', null, array('label' => 'Адрес страницы', 'required' => false, 'help' => 'латинские буквы и цифры, слова через тире. Оставьте пустым для автогенерации'))
 			->add('rubrique', null, array(
 				'label'         => 'Рубрика',
 				'required'      => true,
 				'empty_value'   => 'выберите',
-				'help'          => 'Указывается только для публичих статей Энциклопедии',
 				'query_builder' => function (EntityRepository $er) {
 						return $er->createQueryBuilder('r')
 							->orderBy('r.title', 'ASC');
@@ -68,10 +67,10 @@ class ArticleAdmin extends Admin
 			->add('body', null, array('label' => 'Основное содержимое', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('tags', null, array('label' => 'Теги', 'required' => false, 'help' => 'Выберите существующие теги или добавьте новый ниже'))
 			->add($formMapper->create('hidden', 'text', array(
-					'label'        => 'Создать тег',
+					'label'        => 'Создать теги через ;',
 					'required'     => false,
 					'by_reference' => false,
-				))->addModelTransformer($articleTagTransformer)
+				))->addModelTransformer($tagTransformer)
 			)
 			->add('atcCodes', 'entity', array(
 				'label'         => 'Коды АТХ',

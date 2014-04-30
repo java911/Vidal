@@ -37,8 +37,8 @@ class ProductRepository extends EntityRepository
 
 	public function findByDocumentIDs($documentIds)
 	{
-		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+		$raw = $this->_em->createQuery('
+			SELECT p.ProductID, p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, d.ArticleID, d.Indication, d.DocumentID
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN VidalDrugBundle:ProductDocument pd WITH pd.ProductID = p
@@ -51,6 +51,17 @@ class ProductRepository extends EntityRepository
 			ORDER BY p.RusName ASC
 		')->setParameter('DocumentIDs', $documentIds)
 			->getResult();
+
+		$products = array();
+
+		foreach ($raw as $product) {
+			$key = $product['ProductID'];
+			if (!isset($products[$key])) {
+				$products[$key] = $product;
+			}
+		}
+
+		return array_values($products);
 	}
 
 	public function findByMolecules($molecules)

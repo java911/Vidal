@@ -13,6 +13,14 @@
 			<argument />
 		</service>
 
+		<service id="sonata.admin.aboutservice" class="Vidal\MainBundle\Admin\AboutServiceAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Содержимое" label="Наши услуги"/>
+			<argument />
+			<argument>Vidal\MainBundle\Entity\AboutService</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
 		<service id="sonata.admin.about" class="Vidal\MainBundle\Admin\AboutAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="Содержимое" label="О компании"/>
 			<argument />
@@ -33,6 +41,14 @@
 			<tag name="sonata.admin" manager_type="orm" group="Содержимое" label="Модули"/>
 			<argument />
 			<argument>Vidal\MainBundle\Entity\Module</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.tag" class="Vidal\DrugBundle\Admin\TagAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Содержимое" label="Теги"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\Tag</argument>
 			<argument>SonataAdminBundle:CRUD</argument>
 			<argument />
 		</service>
@@ -94,14 +110,6 @@
 			<argument>SonataAdminBundle:CRUD</argument>
 			<argument />
 		</service>
-
-		<!--<service id="sonata.admin.subdivision" class="Vidal\DrugBundle\Admin\SubdivisionAdmin">-->
-			<!--<tag name="sonata.admin" manager_type="orm" group="Информация специалистам" label="Старые разделы"/>-->
-			<!--<argument />-->
-			<!--<argument>Vidal\DrugBundle\Entity\Subdivision</argument>-->
-			<!--<argument>SonataAdminBundle:CRUD</argument>-->
-			<!--<argument />-->
-		<!--</service>-->
 
 		<!-- Фарм-компании -->
 		<service id="sonata.admin.pharmArticle" class="Vidal\DrugBundle\Admin\PharmArticleAdmin">

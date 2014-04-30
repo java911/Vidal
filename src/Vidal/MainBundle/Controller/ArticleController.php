@@ -81,12 +81,38 @@ class ArticleController extends Controller
 		return $this->redirect($this->generateUrl('rubrique', array('rubrique' => $rubrique), 301));
 	}
 
-	/** @Route("/patsientam/entsiklopediya/{rubrique}/{link}.{ext}", defaults={"ext":"html"}) */
-	public function r3($rubrique, $link)
+	/** @Route("/patsientam/entsiklopediya/{url}", requirements={"url"=".+"}) */
+	public function r3($url)
 	{
+		$em = $this->getDoctrine()->getManager('drug');
+
+		if ($pos = strpos($url, '.')) {
+			$url = substr($url, 0, $pos);
+		}
+
+		if ($pos = strpos($url, '_')) {
+			$id      = substr($url, $pos + 1);
+			$article = $em->getRepository('VidalDrugBundle:Article')->findOneById($id);
+		}
+		else {
+			$parts = explode('/', $url);
+			if (count($parts) > 1) {
+				$lastIndex = count($parts) - 1;
+				$link      = $parts[$lastIndex];
+				$article   = $em->getRepository('VidalDrugBundle:Article')->findOneByLink($link);
+			}
+			else {
+				$article = null;
+			}
+		}
+
+		if (!$article) {
+			throw $this->createNotFoundException();
+		}
+
 		return $this->redirect($this->generateUrl('article', array(
-			'rubrique' => $rubrique,
-			'link'     => $link,
+			'rubrique' => $article->getRubrique()->getRubrique(),
+			'link'     => $article->getLink(),
 		), 301));
 	}
 

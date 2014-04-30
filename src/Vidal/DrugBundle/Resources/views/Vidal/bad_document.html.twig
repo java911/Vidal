@@ -77,8 +77,8 @@
 									<i style="color:#476173;font-size: 12px;">Свидетельство о государственной регистрации БАД к
 										пище:</i><br/>
 									{{ p.RegistrationNumber }}
-									{% if p.RegistrationDate is not null %}
-										от {{ p.RegistrationDate|date('d.m.Y') }}
+									{% if p.RegistrationDate is not empty %}
+										от {{ p.RegistrationDate }}
 									{% endif %}
 								</span>
 							</td>

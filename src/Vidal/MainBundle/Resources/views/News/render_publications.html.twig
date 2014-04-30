@@ -11,11 +11,11 @@
 				<div class="publication-title">
 					<a href="{{ path('publication', {id:publication.id}) }}">{{ publication.title|raw }}</a>
 				</div>
-				<div class="publication-announce">
+				<div class="publication-announce text">
 					{{ publication.announce|raw }}
 				</div>
 				<div class="publication-date">
-					{{ publication.updated|date('d.m.Y') }}
+					{{ publication.date|date('d.m.Y') }}
 				</div>
 			</div>
 		</div>

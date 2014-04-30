@@ -62,14 +62,6 @@ class InfoPage
 	protected $documentInfoPages;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="RepresAndDistribs", mappedBy="infoPages")
-	 * @ORM\JoinTable(name="infopage_represanddistribs",
-	 *        joinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")},
-	 *        inverseJoinColumns={@ORM\JoinColumn(name="RepresAndDistribID", referencedColumnName="RepresAndDistribID")})
-	 */
-	protected $represAndDistribs;
-
-	/**
 	 * @ORM\ManyToMany(targetEntity="Article", mappedBy="infoPages")
 	 * @ORM\JoinTable(name="article_infopage",
 	 *        joinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")},
@@ -374,22 +366,6 @@ class InfoPage
 	public function getArticles()
 	{
 		return $this->articles;
-	}
-
-	/**
-	 * @param mixed $represAndDistribs
-	 */
-	public function setRepresAndDistribs($represAndDistribs)
-	{
-		$this->represAndDistribs = $represAndDistribs;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getRepresAndDistribs()
-	{
-		return $this->represAndDistribs;
 	}
 
 	/**

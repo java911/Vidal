@@ -9,7 +9,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Doctrine\ORM\EntityRepository;
 use Vidal\DrugBundle\Transformer\DocumentTransformer;
-use Vidal\DrugBundle\Transformer\ArtTagTransformer;
+use Vidal\DrugBundle\Transformer\TagTransformer;
 
 class ArtAdmin extends Admin
 {
@@ -49,11 +49,11 @@ class ArtAdmin extends Admin
 		$rubrique            = $subject->getRubrique();
 		$em                  = $this->getModelManager()->getEntityManager($subject);
 		$documentTransformer = new DocumentTransformer($em, $subject);
-		$artTagTransformer   = new ArtTagTransformer($em, $subject);
+		$tagTransformer      = new TagTransformer($em, $subject);
 
 		$formMapper
 			->add('title', null, array('label' => 'Заголовок', 'required' => true))
-			->add('link', null, array('label' => 'Адрес страницы', 'required' => true, 'help' => 'латинские буквы и цифры, слова через тире'))
+			->add('link', null, array('label' => 'Адрес страницы', 'required' => false, 'help' => 'латинские буквы и цифры, слова через тире. Оставьте пустым для автогенерации'))
 			->add('rubrique', null, array(
 				'label'         => 'Раздел',
 				'required'      => true,
@@ -70,10 +70,10 @@ class ArtAdmin extends Admin
 			->add('body', null, array('label' => 'Основное содержимое', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('tags', null, array('label' => 'Теги', 'required' => false, 'help' => 'Выберите существующие теги или добавьте новый ниже'))
 			->add($formMapper->create('hidden', 'text', array(
-					'label'        => 'Создать тег',
+					'label'        => 'Создать теги через ;',
 					'required'     => false,
 					'by_reference' => false,
-				))->addModelTransformer($artTagTransformer)
+				))->addModelTransformer($tagTransformer)
 			)
 			->add('atcCodes', 'entity', array(
 				'label'         => 'Коды АТХ',

@@ -31,7 +31,7 @@ class CountryEdition
 
 	public function __toString()
 	{
-		return $this->RusName;
+		return empty($this->RusName) ? '' : $this->RusName;
 	}
 
 	/**

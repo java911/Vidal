@@ -7,38 +7,27 @@
 
 
 {% block content %}
-	<div class="rubriques">
-		<div>
-			<ul class="ul">
-				<li>
-					<a href="{{ path('about_item', {'url':about1.url}) }}">{{ about1.title }}</a>
-					{% if isAdmin %}
-						<a class="admin-edit fade" target="_blank"
-						   href="{{ path('admin_vidal_main_about_edit', {'id':about1.id}) }}">
-							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-						</a>
-					{% endif %}
-				</li>
-			</ul>
-		</div>
-		<div>
-			<ul class="ul">
-				<li>
-					<a href="{{ path('about_item', {'url':about2.url}) }}">{{ about2.title }}</a>
-					{% if isAdmin %}
-						<a class="admin-edit fade" target="_blank"
-						   href="{{ path('admin_vidal_main_about_edit', {'id':about2.id}) }}">
-							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-						</a>
-					{% endif %}
-				</li>
-			</ul>
-		</div>
+	<div class="divisions">
+		{% for about in items %}
+			<div class="division">
+				<a href="{{ path('about_item', {'url':about.url}) }}" class="division-link">
+					{{ about.title }}
+				</a>
+				{% if isAdmin %}
+					<a class="admin-edit fade" target="_blank"
+					   href="{{ path('admin_vidal_main_about_edit', {'id':about.id}) }}">
+						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+					</a>
+				{% endif %}
+			</div>
+		{% endfor %}
 	</div>
+
+	{{ render(controller('VidalMainBundle:Index:Module', {'moduleId':2})) }}
 {% endblock %}
 
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/article.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/divisions.css') }}"/>
 {% endblock %}
