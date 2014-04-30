@@ -27,6 +27,7 @@ class DoctrineEventSubscriber implements EventSubscriber
 		return array(
 			'prePersist',
 			'preUpdate',
+			'postUpdate',
 		);
 	}
 
@@ -34,18 +35,13 @@ class DoctrineEventSubscriber implements EventSubscriber
 	{
 		$entity = $args->getEntity();
 
-		# проставляем мета к видео, если его загрузили
-		if ($entity instanceof Article || $entity instanceof Art || $entity instanceof Publication) {
-			$this->setVideoMeta($entity);
-		}
-
 		# проставляем ссылку, если пустая
 		if ($entity instanceof Article || $entity instanceof Art) {
 			$this->setLink($entity);
 		}
 	}
 
-	public function preUpdate(LifecycleEventArgs $args)
+	public function postPersist(LifecycleEventArgs $args)
 	{
 		$entity = $args->getEntity();
 
@@ -53,10 +49,25 @@ class DoctrineEventSubscriber implements EventSubscriber
 		if ($entity instanceof Article || $entity instanceof Art || $entity instanceof Publication) {
 			$this->setVideoMeta($entity);
 		}
+	}
+
+	public function preUpdate(LifecycleEventArgs $args)
+	{
+		$entity = $args->getEntity();
 
 		# проставляем ссылку, если пустая
 		if ($entity instanceof Article || $entity instanceof Art) {
 			$this->setLink($entity);
+		}
+	}
+
+	public function postUpdate(LifecycleEventArgs $args)
+	{
+		$entity = $args->getEntity();
+
+		# проставляем мета к видео, если его загрузили
+		if ($entity instanceof Article || $entity instanceof Art || $entity instanceof Publication) {
+			$this->setVideoMeta($entity);
 		}
 	}
 
