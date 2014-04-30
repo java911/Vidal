@@ -10,7 +10,7 @@
 	<div class="divisions">
 		{% for about in items %}
 			<div class="division">
-				<a href="{{ path('services_item', {'url':about.url}) }}" class="division-link">
+				<a href="{{ path('about_item', {'url':about.url}) }}" class="division-link">
 					{{ about.title }}
 				</a>
 				{% if isAdmin %}
