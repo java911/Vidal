@@ -53,7 +53,7 @@ class ArtAdmin extends Admin
 
 		$formMapper
 			->add('title', null, array('label' => 'Заголовок', 'required' => true))
-			->add('link', null, array('label' => 'Адрес страницы', 'required' => true, 'help' => 'латинские буквы и цифры, слова через тире'))
+			->add('link', null, array('label' => 'Адрес страницы', 'required' => false, 'help' => 'латинские буквы и цифры, слова через тире. Оставьте пустым для автогенерации'))
 			->add('rubrique', null, array(
 				'label'         => 'Раздел',
 				'required'      => true,

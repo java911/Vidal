@@ -25,26 +25,38 @@ class DoctrineEventSubscriber implements EventSubscriber
 	public function getSubscribedEvents()
 	{
 		return array(
-			'postPersist',
-			'postUpdate',
+			'prePersist',
+			'preUpdate',
 		);
 	}
 
-	public function postPersist(LifecycleEventArgs $args)
+	public function prePersist(LifecycleEventArgs $args)
 	{
 		$entity = $args->getEntity();
 
+		# проставляем мета к видео, если его загрузили
 		if ($entity instanceof Article || $entity instanceof Art || $entity instanceof Publication) {
 			$this->setVideoMeta($entity);
 		}
+
+		# проставляем ссылку, если пустая
+		if ($entity instanceof Article || $entity instanceof Art) {
+			$this->setLink($entity);
+		}
 	}
 
-	public function postUpdate(LifecycleEventArgs $args)
+	public function preUpdate(LifecycleEventArgs $args)
 	{
 		$entity = $args->getEntity();
 
+		# проставляем мета к видео, если его загрузили
 		if ($entity instanceof Article || $entity instanceof Art || $entity instanceof Publication) {
 			$this->setVideoMeta($entity);
+		}
+
+		# проставляем ссылку, если пустая
+		if ($entity instanceof Article || $entity instanceof Art) {
+			$this->setLink($entity);
 		}
 	}
 
@@ -64,5 +76,47 @@ class DoctrineEventSubscriber implements EventSubscriber
 			$entity->setVideoHeight($file['video']['resolution_y']);
 			$this->container->get('doctrine')->getManager('drug')->flush($entity);
 		}
+	}
+
+	private function setLink($entity)
+	{
+		$link = $entity->getLink();
+
+		if (empty($link)) {
+			$link = $this->translit($entity->getTitle());
+			$entity->setLink($link);
+		}
+	}
+
+	private function translit($text)
+	{
+		$pat  = array('/&[a-z]+;/', '/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i');
+		$rep  = array('', '$1', '$1');
+		$text = preg_replace($pat, $rep, $text);
+		$text = mb_strtolower($text, 'utf-8');
+
+		// Русский алфавит
+		$rus_alphabet = array(
+			'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й',
+			'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф',
+			'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я',
+			'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й',
+			'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф',
+			'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я',
+			' ', '.', '(', ')', ',', '/', '?'
+		);
+
+		// Английская транслитерация
+		$rus_alphabet_translit = array(
+			'A', 'B', 'V', 'G', 'D', 'E', 'IO', 'ZH', 'Z', 'I', 'Y',
+			'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F',
+			'H', 'TS', 'CH', 'SH', 'SCH', '', 'Y', '', 'E', 'YU', 'IA',
+			'a', 'b', 'v', 'g', 'd', 'e', 'io', 'zh', 'z', 'i', 'y',
+			'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f',
+			'h', 'ts', 'ch', 'sh', 'sch', '', 'y', '', 'e', 'yu', 'ia',
+			'-', '-', '-', '-', '-', '-', '-'
+		);
+
+		return str_replace($rus_alphabet, $rus_alphabet_translit, $text);
 	}
 }
