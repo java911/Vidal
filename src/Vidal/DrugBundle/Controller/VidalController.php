@@ -370,15 +370,19 @@ class VidalController extends Controller
 
 		$product = $em->getRepository('VidalDrugBundle:Product')->findByProductID($ProductID);
 
-		if (!$product || $product['Name'] != $EngName) {
+		if (!$product || $product->getName() != $EngName) {
 			throw $this->createNotFoundException();
 		}
 
 		$params = array(
-			'title' => $this->strip($product['RusName']) . ' | Препараты',
+			'title' => $this->strip($product->getRusName()) . ' | Препараты',
 		);
 
-		$document  = $em->getRepository('VidalDrugBundle:Document')->findByProduct($product);
+		$document = $product->getDocument();
+		# условите от Марии, что бады должны иметь Document.ArticleID = 6
+		if ($product->getProductTypeCode() == 'BAD' && $document && $document->getArticleID() != 6) {
+			$document = null;
+		}
 		$molecules = $em->getRepository('VidalDrugBundle:Molecule')->findByProductID($ProductID);
 
 		if ($document) {
@@ -419,7 +423,7 @@ class VidalController extends Controller
 			}
 		}
 
-		$productIds             = array($product['ProductID']);
+		$productIds             = array($product->getProductID());
 		$params['product']      = $product;
 		$params['products']     = array($product);
 		$params['molecules']    = $molecules;
@@ -434,7 +438,7 @@ class VidalController extends Controller
 		}
 
 		# БАДы выводятся по-другому
-		if ($product['ProductTypeCode'] == 'BAD' || ($document && $document->getArticleID() == 6)) {
+		if ($product->getProductTypeCode() == 'BAD' || ($document && $document->getArticleID() == 6)) {
 			return $this->render("VidalDrugBundle:Vidal:bad_document.html.twig", $params);
 		}
 
