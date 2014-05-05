@@ -7,15 +7,26 @@
 
 
 {% block title %}
-	{% if product is defined %}
-		<h1>{{ product.RusName|raw }} <span>({{ product.EngName|raw }})</span></h1>
-	{% else %}
-		<h1>{{ document.RusName|raw }} <span>({{ document.EngName|raw }})</span>
-			{% if document.elaboration is not empty %}
-				<span class="elaboration">{{ document.elaboration }}</span>
-			{% endif %}
-		</h1>
-	{% endif %}
+	<div class="relative">
+		{% if product is defined %}
+			<h1>{{ product.RusName|raw }} <span>({{ product.EngName|raw }})</span></h1>
+		{% else %}
+			<h1>{{ document.RusName|raw }} <span>({{ document.EngName|raw }})</span>
+				{% if document.elaboration is not empty %}
+					<span class="elaboration">{{ document.elaboration }}</span>
+				{% endif %}
+			</h1>
+		{% endif %}
+
+		{# ссылка админу на редактирование #}
+		{% if isAdmin %}
+			<a class="admin-edit fade" target="_blank" href="{{ product is defined
+			? path('admin_vidal_drug_product_edit', {'id':product.ProductID})
+			: path('admin_vidal_drug_document_edit', {'id':document.DocumentID}) }}">
+				<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+			</a>
+		{% endif %}
+	</div>
 {% endblock %}
 
 
@@ -33,17 +44,6 @@
 
 
 {% block vidal %}
-	{# ссылка админу на редактирование #}
-	{% if isAdmin %}
-		<a class="admin-edit fade" target="_blank"
-		   title="DocumentID: {{ document.DocumentID }}"
-		   href="{{ product is defined
-		   ? path('admin_vidal_drug_product_edit', {'id':product.ProductID})
-		   : path('admin_vidal_drug_document_edit', {'id':document.DocumentID}) }}">
-			<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-		</a>
-	{% endif %}
-
 	{# Иконки использования при состояниях #}
 	{% if document is defined %}
 		{% include 'VidalDrugBundle:Vidal:document_conditions.html.twig' %}
@@ -69,7 +69,7 @@
 	{% if document is defined %}
 		{# Объявление, описание чего пойдет ниже #}
 		{% if articleId is defined %}
-			<div class="anons">
+			<div class="anons relative">
 				{% if articleId == 1 or articleId == 4 %}
 					<div class="anons-head">
 						<span>Описание активных компонентов препарата</span>
@@ -241,8 +241,8 @@
 									{% if p.RegistrationDate is not empty %}
 										от {{ p.RegistrationDate }}
 									{% endif %}
-									{% if p.MarketStatus %}
-										<i>- {{ p.MarketStatus }}</i>
+									{% if p.MarketStatusID %}
+										<i>- {{ p.MarketStatusID }}</i>
 									{% endif %}
 								</span>
 							</td>
@@ -308,6 +308,9 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<style type="text/css">
+		.relative {
+			position: relative;
+		}
 		#dosage p img {
 			max-width:  600px;
 			max-height: 400px;

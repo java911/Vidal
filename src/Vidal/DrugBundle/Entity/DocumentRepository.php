@@ -89,45 +89,6 @@ class DocumentRepository extends EntityRepository
 		return $document;
 	}
 
-	public function findByProduct($product)
-	{
-		if ($product['ProductTypeCode'] == 'BAD') {
-			return $this->_em->createQuery('
-				SELECT d
-				FROM VidalDrugBundle:Document d
-				LEFT JOIN VidalDrugBundle:ProductDocument pd WITH pd.DocumentID = d
-				WHERE pd.ProductID = :ProductID AND d.ArticleID = 6
-				ORDER BY d.ArticleID DESC
-			')->setParameter('ProductID', $product['ProductID'])
-				->setMaxResults(1)
-				->getOneOrNullResult();
-		}
-
-		$document = $this->_em->createQuery('
-			SELECT d
-			FROM VidalDrugBundle:Document d
-			LEFT JOIN VidalDrugBundle:ProductDocument pd WITH pd.DocumentID = d
-			WHERE pd.ProductID = :ProductID AND d.ArticleID IN (2,5)
-			ORDER BY d.ArticleID ASC
-		')->setParameter('ProductID', $product['ProductID'])
-			->setMaxResults(1)
-			->getOneOrNullResult();
-
-		if (!$document) {
-			$document = $this->_em->createQuery('
-				SELECT d
-				FROM VidalDrugBundle:Document d
-				LEFT JOIN VidalDrugBundle:ProductDocument pd WITH pd.DocumentID = d
-				WHERE pd.ProductID = :ProductID AND d.ArticleID IN (4,3,1)
-				ORDER BY d.ArticleID DESC
-			')->setParameter('ProductID', $product['ProductID'])
-				->setMaxResults(1)
-				->getOneOrNullResult();
-		}
-
-		return $document;
-	}
-
 	public function findByMoleculeID($MoleculeID)
 	{
 		return $this->_em->createQuery('
@@ -237,8 +198,7 @@ class DocumentRepository extends EntityRepository
 		$raw = $this->_em->createQuery('
 			SELECT p.ProductID, d.Indication
 			FROM VidalDrugBundle:Product p
-			LEFT JOIN VidalDrugBundle:ProductDocument pd WITH pd.ProductID = p
-			LEFT JOIN VidalDrugBundle:Document d WITH pd.DocumentID = d
+			LEFT JOIN p.document d
 			WHERE p.ProductID IN (:productIds)
 		')->setParameter('productIds', $productIds)
 			->getResult();

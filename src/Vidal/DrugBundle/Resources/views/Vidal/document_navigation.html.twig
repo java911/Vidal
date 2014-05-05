@@ -56,6 +56,14 @@
 			<div><a href="#storage">Условия и сроки хранения</a></div>
 		{% endif %}
 	</div>
+
+	{# ссылка админу на редактирование #}
+	{% if isAdmin and document is defined and document is not null %}
+		<a class="admin-edit fade" target="_blank"
+		   href="{{ path('admin_vidal_drug_document_edit', {'id':document.DocumentID}) }}">
+			<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+		</a>
+	{% endif %}
 </div>
 
 <script type="text/javascript">
