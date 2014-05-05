@@ -173,3 +173,10 @@ sonata_admin:
         blocks:
             # display a dashboard block
             - { position: center, type: sonata.admin.block.admin_list }
+
+gregwar_captcha:
+    width:   325
+    height:  50
+    length:  8
+    background_color: [237,49,96]
+    invalid_message: "Код с картинки введен не правильно"

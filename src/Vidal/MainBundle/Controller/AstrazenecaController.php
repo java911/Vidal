@@ -106,6 +106,7 @@ class AstrazenecaController extends Controller
             ->add('authorFirstName', null, array('label' => 'Ваше имя'))
             ->add('authorEmail', null, array('label' => 'Ваш e-mail'))
             ->add('question', null, array('label' => 'Вопрос', 'attr' => array('class' => 'ckeditor')))
+            ->add('captcha', 'captcha', array('label' => 'Введите код с картинки'))
             ->add('submit', 'submit', array('label' => 'Задать вопрос', 'attr' => array('class' => 'btn')));
 
         $form    = $builder->getForm();

@@ -84,8 +84,8 @@ class DocumentAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('ArticleID')
-            ->add('RusName')
-            ->add('EngName')
+            ->add('RusName', null, array('label' => 'Название на русском'))
+            ->add('EngName', null, array('label' => 'Название на англиском'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(
