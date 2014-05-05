@@ -79,10 +79,10 @@ class Product
 	protected $m;
 
 	/** @ORM\Column(type="boolean", nullable=true) */
-	protected $GNVLS;
+	protected $GNVLS = false;
 
 	/** @ORM\Column(type="boolean", nullable=true) */
-	protected $DLO;
+	protected $DLO = false;
 
 	/** @ORM\Column(length=10, nullable=true) */
 	protected $List_AB;
@@ -91,10 +91,10 @@ class Product
 	protected $List_PKKN;
 
 	/** @ORM\Column(type="boolean", nullable=true) */
-	protected $StrongMeans;
+	protected $StrongMeans = false;
 
 	/** @ORM\Column(type="boolean", nullable=true) */
-	protected $Poison;
+	protected $Poison = false;
 
 	/** @ORM\Column(type="boolean", nullable=true) */
 	protected $MinAs;
@@ -150,6 +150,12 @@ class Product
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
 	 */
 	protected $articles;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="Document", inversedBy="products")
+	 * @ORM\JoinColumn(name="document_id", referencedColumnName="DocumentID")
+	 */
+	protected $document;
 
 	public function __construct()
 	{
@@ -746,5 +752,21 @@ class Product
 	public function getArticles()
 	{
 		return $this->articles;
+	}
+
+	/**
+	 * @param mixed $document
+	 */
+	public function setDocument($document)
+	{
+		$this->document = $document;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDocument()
+	{
+		return $this->document;
 	}
 }

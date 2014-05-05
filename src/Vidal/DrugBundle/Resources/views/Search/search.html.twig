@@ -145,7 +145,7 @@
 				</div>
 			</div>
 			{% include 'VidalDrugBundle:Vidal:render_articles.html.twig' %}
-		{% else %}
+		{% elseif t == 'disease' %}
 			<div class="no-results">
 				Не найдено результатов по заболеванию <span>{{ q }}</span>
 			</div>
