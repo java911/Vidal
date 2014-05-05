@@ -47,21 +47,29 @@ class ProductAdmin extends Admin
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
-			->add('RusName')
-			->add('EngName');
+			->add('ProductID', null, array('label' => 'ID'))
+			->add('RusName', null, array('label' => 'Название'))
+			->add('EngName', null, array('label' => 'Латинское'))
+			->add('ProductTypeCode', null, array('label' => 'Тип препарата'))
+			->add('MarketStatusID', null, array('label' => 'Статус'))
+			->add('ZipInfo', null, array('label' => 'Форма выпуска'))
+			->add('RegistrationDate', null, array('label' => 'Дата регистр.'));
 	}
 
 	// Fields to be shown on lists
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-			->addIdentifier('ProductID')
-			->add('RusName')
-			->add('EngName')
+			->addIdentifier('ProductID', null, array('label' => 'ID'))
+			->add('RusName', null, array('label' => 'Название', 'template' => 'VidalDrugBundle:Sonata:RusName.html.twig'))
+			->add('EngName', null, array('label' => 'Латинское', 'template' => 'VidalDrugBundle:Sonata:EngName.html.twig'))
+			->add('ProductTypeCode', null, array('label' => 'Тип препарата'))
+			->add('MarketStatusID', null, array('label' => 'Статус'))
+			->add('ZipInfo', null, array('label' => 'Форма выпуска'))
+			->add('RegistrationDate', null, array('label' => 'Дата регистр.'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(
-					'show'   => array(),
 					'edit'   => array(),
 					'delete' => array(),
 				)
