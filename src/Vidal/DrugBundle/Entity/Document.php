@@ -139,7 +139,7 @@ class Document
 	protected $ed;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="ATC", mappedBy="documents")
+	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="documents")
 	 * @ORM\JoinTable(name="documentoc_atc",
 	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ATCCode", referencedColumnName="ATCCode")})
@@ -150,15 +150,15 @@ class Document
 	protected $productDocument;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Nozology", mappedBy="documents", fetch="EXTRA_LAZY")
+	 * @ORM\ManyToMany(targetEntity="Nozology", inversedBy="documents", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="document_indicnozology",
-	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
+	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")})
 	 */
 	protected $nozologies;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="ClinicoPhPointers", mappedBy="documents")
+	 * @ORM\ManyToMany(targetEntity="ClinicoPhPointers", inversedBy="documents")
 	 * @ORM\JoinTable(name="document_clphpointers",
 	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ClPhPointerID", referencedColumnName="ClPhPointerID")})

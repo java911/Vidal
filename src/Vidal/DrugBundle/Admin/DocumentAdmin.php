@@ -22,6 +22,12 @@ class DocumentAdmin extends Admin
 			'6' => 'Описания БАДов',
 		);
 
+		$usingChoices = array(
+			'Can'  => 'Возможно применение',
+			'Care' => 'C осторожностью применяется',
+			'Not'  => 'Противопоказан',
+		);
+
 		$formMapper
 			->add('RusName', 'text', array('label' => 'Название', 'required' => true))
 			->add('EngName', 'text', array('label' => 'Латинское', 'required' => true))
@@ -41,35 +47,22 @@ class DocumentAdmin extends Admin
 			->add('StorageCondition', null, array('label' => 'Условия и сроки хранения', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('Indication', null, array('label' => 'Показания', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('ContraIndication', null, array('label' => 'Противопоказания', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
+			->add('PharmDelivery', null, array('label' => 'Условия отпуска из аптек', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('SpecialInstruction', null, array('label' => 'Особые указания', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
-			->add('PregnancyUsing', null, array('label' => 'Использование при беременности'))
-			->add('NursingUsing', null, array('label' => 'инструкция пользования'))
-			->add('RenalInsuf', null, array('label' => 'Почечная недостаточность'))
-			->add('RenalInsufUsing', null, array('label' => 'Использование при почечной недостаточности'))
-			->add('HepatoInsuf', null, array('label' => 'Печеночная недостаточность'))
-			->add('HepatoInsufUsing', null, array('label' => 'Использование при печеночной недостаточности'))
-			->add('PharmDelivery', null, array('label' => 'Условия отпуска из аптек'))
-			->add('WithoutRenalInsuf', null, array('label' => 'Без почечной недостаточности'))
-			->add('WithoutHepatoInsuf', null, array('label' => 'Без печеночной недостаточности'))
-			->add('ElderlyInsuf', null, array('label' => 'Использование престарелыми'))
-			->add('ElderlyInsufUsing', null, array('label' => 'Использование престарелыми'))
-			->add('ChildInsuf', null, array('label' => 'Возрастное ограничение'))
-			->add('ChildInsufUsing', null, array('label' => 'Возрастное ограничение 2'))
-			->add('ed', null, array('label' => 'издание'))
-			->add('DateOfIncludingText', null, array('label' => 'Дата создания'))
-			->add('DateTextModified', null, array('label' => 'дата модификации'))
+			->add('PregnancyUsing', 'choice', array('label' => 'При беременности', 'required' => false, 'choices' => $usingChoices, 'empty_value' => 'выберите'))
+			->add('NursingUsing', 'choice', array('label' => 'При кормлении грудью', 'required' => false, 'choices' => $usingChoices, 'empty_value' => 'выберите'))
+			->add('RenalInsufUsing', 'choice', array('label' => 'При нарушениях функции почек', 'required' => false, 'choices' => $usingChoices, 'empty_value' => 'выберите'))
+			->add('RenalInsuf', null, array('label' => 'Нарушения функции почек', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
+			->add('HepatoInsufUsing', 'choice', array('label' => 'При нарушениях функции печени', 'required' => false, 'choices' => $usingChoices, 'empty_value' => 'выберите'))
+			->add('HepatoInsuf', null, array('label' => 'Нарушение функции печени', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
+			->add('ElderlyInsufUsing', 'choice', array('label' => 'Примение пожилыми пациентами', 'required' => false, 'choices' => $usingChoices, 'empty_value' => 'выберите'))
+			->add('ElderlyInsuf', null, array('label' => 'Использование пожилыми пациентами', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
+			->add('ChildInsufUsing', 'choice', array('label' => 'Применение детьми', 'required' => false, 'choices' => $usingChoices, 'empty_value' => 'выберите'))
+			->add('ChildInsuf', null, array('label' => 'Использование детьми', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
+			->add('atcCodes', null, array('label' => 'Коды АТХ', 'required' => false))
+			->add('nozologies', null, array('label' => 'Нозологические указатели', 'required' => false))
+			->add('clphPointers', null, array('label' => 'Клинико-фармакологические указатели', 'required' => false))
 
-			//            ->add('atcCodes')
-			//            ->add('productDocument')
-			//            ->add('nozologies')
-			//            ->add('clphPointers')
-			//            ->add('documentEditions')
-
-			//            ->add('atcCodes', 'entity', array('class' => 'Vidal\DrugBundle\Entity\documentoc_atc'))
-			//            ->add('productDocument', 'entity', array('class' => 'Vidal\DrugBundle\Entity\ProductDocument'))
-			//            ->add('nozologies', 'entity', array('class' => 'Vidal\DrugBundle\Entity\document_indicnozology'))
-			//            ->add('clphPointers', 'entity', array('class' => 'Vidal\DrugBundle\Entity\NozologyCode'))
-			//            ->add('documentEditions', 'entity', array('class' => 'Vidal\DrugBundle\Entity\DocumentEdition'))
 			//            ->add('moleculeDocuments', 'entity', array('class' => 'Vidal\DrugBundle\Entity\MoleculeDocument'))
 		;
 	}

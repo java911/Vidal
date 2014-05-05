@@ -31,7 +31,7 @@ class ATC
 	protected $products;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Document", inversedBy="atcCodes")
+	 * @ORM\ManyToMany(targetEntity="Document", mappedBy="atcCodes")
 	 * @ORM\JoinTable(name="documentoc_atc",
 	 *      joinColumns={@ORM\JoinColumn(name="ATCCode", referencedColumnName="ATCCode")},
 	 *      inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})

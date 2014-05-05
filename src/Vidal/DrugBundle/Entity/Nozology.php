@@ -21,7 +21,7 @@ class Nozology
 	protected $Level;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Document", inversedBy="nozologies")
+	 * @ORM\ManyToMany(targetEntity="Document", mappedBy="nozologies")
 	 * @ORM\JoinTable(name="document_indicnozology",
 	 *        joinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})
