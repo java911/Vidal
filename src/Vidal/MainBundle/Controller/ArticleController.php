@@ -216,7 +216,7 @@ class ArticleController extends Controller
 	/**
 	 * @Route("/vracham/podrobno-o-preparate", name="portfolio")
 	 *
-	 * @Template
+	 * @Template("VidalMainBundle:Article:portfolio.html.twig")
 	 */
 	public function portfolioAction()
 	{

@@ -20,10 +20,12 @@
 		{% for portfolio in portfolios %}
 			<li>
 				<span class="portfolio">
-					<a href="{{ path('portfolio_item', {'url':portfolio.url}) }}">{{ portfolio.title|raw }}</a>
+					<a href="{{ path('portfolio_item', {'url':portfolio.url}) }}">
+						{{ portfolio.title|raw }}
+					</a>
 				</span>
 				{% if portfolio.company %}
-					{{ portfolio.company.title }}
+					{{ portfolio.company.title|raw }}
 				{% endif %}
 			</li>
 		{% endfor %}
