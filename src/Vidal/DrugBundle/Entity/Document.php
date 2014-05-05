@@ -88,7 +88,7 @@ class Document
 	protected $NewForCurrentEdition = false;
 
 	/** @ORM\Column(length=10) */
-	protected $CountryEditionCode;
+	protected $CountryEditionCode = 'RUS';
 
 	/** @ORM\Column(type="boolean") */
 	protected $IsApproved = false;

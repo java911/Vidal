@@ -24,11 +24,8 @@ class Product
 	/** @ORM\Column(type="boolean") */
 	protected $NonPrescriptionDrug = false;
 
-	/**
-	 * @ORM\ManyToOne(targetEntity="CountryEdition", inversedBy="products")
-	 * @ORM\JoinColumn(name="CountryEditionCode", referencedColumnName="CountryEditionCode")
-	 */
-	protected $CountryEditionCode;
+	/** @ORM\Column(length=10) */
+	protected $CountryEditionCode = 'RUS';
 
 	/** @ORM\Column(length=50, nullable=true) */
 	protected $RegistrationDate;

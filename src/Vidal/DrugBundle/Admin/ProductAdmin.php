@@ -16,8 +16,9 @@ class ProductAdmin extends Admin
 		$transformer = new DocumentToStringTransformer($em, $subject);
 
 		$formMapper
-			->add('RusName', 'text', array('label' => 'Название'))
-			->add('EngName', 'text', array('label' => 'Латинское'))
+			->add('RusName', 'text', array('label' => 'Название', 'required' => true))
+			->add('EngName', 'text', array('label' => 'Латинское', 'required' => true))
+			->add('Name', 'text', array('label' => 'URL адрес', 'required' => true))
 			->add($formMapper->create('document', 'text', array(
 				'label'        => 'ID документа',
 				'required'     => true,
@@ -25,7 +26,6 @@ class ProductAdmin extends Admin
 			))->addModelTransformer($transformer))
 			->add('ProductTypeCode', null, array('label' => 'Тип препарата', 'required' => true))
 			->add('MarketStatusID', null, array('label' => 'Статус', 'required' => true))
-			->add('CountryEditionCode', null, array('label' => 'Издание', 'required' => true))
 			->add('ZipInfo', null, array('label' => 'Форма выпуска', 'required' => true))
 			->add('Composition', null, array('label' => 'Описание', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('RegistrationDate', null, array('label' => 'Дата регистрации'))
