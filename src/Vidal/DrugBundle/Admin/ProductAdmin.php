@@ -39,8 +39,8 @@ class ProductAdmin extends Admin
 			//->add('StrCond', null, array('label' => 'Условия хранения', 'required' => false))
 			->add('atcCodes', null, array('label' => 'Коды АТХ', 'required' => false))
 			->add('moleculeNames', null, array('label' => 'Активные вещества', 'required' => false))
-			->add('clphGroups', null, array('label' => 'Группы КФГ', 'required' => false))
-			->add('phthgroups', null, array('label' => 'Группы ФТГ', 'required' => false));
+			->add('clphGroups', null, array('label' => 'Клинико-фармакологические группы', 'required' => false, 'help' => 'ClPhGroups'))
+			->add('phthgroups', null, array('label' => 'Фармако-терапевтические группы', 'required' => false, 'help' => 'PhThGroups'));
 	}
 
 	// Fields to be shown on filter forms

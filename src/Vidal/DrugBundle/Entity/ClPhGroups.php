@@ -34,5 +34,67 @@ class ClPhGroups
 		return $this->Name;
 	}
 
+	/**
+	 * @param mixed $ClPhGroupsID
+	 */
+	public function setClPhGroupsID($ClPhGroupsID)
+	{
+		$this->ClPhGroupsID = $ClPhGroupsID;
+	}
 
+	/**
+	 * @return mixed
+	 */
+	public function getClPhGroupsID()
+	{
+		return $this->ClPhGroupsID;
+	}
+
+	/**
+	 * @param mixed $Code
+	 */
+	public function setCode($Code)
+	{
+		$this->Code = $Code;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCode()
+	{
+		return $this->Code;
+	}
+
+	/**
+	 * @param mixed $Name
+	 */
+	public function setName($Name)
+	{
+		$this->Name = $Name;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getName()
+	{
+		return $this->Name;
+	}
+
+	/**
+	 * @param mixed $products
+	 */
+	public function setProducts($products)
+	{
+		$this->products = $products;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getProducts()
+	{
+		return $this->products;
+	}
 }

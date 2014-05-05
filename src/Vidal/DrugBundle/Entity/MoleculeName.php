@@ -26,7 +26,7 @@ class MoleculeName
 	protected $gddbMoleculeID;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Product", inversedBy="moleculeNames")
+	 * @ORM\ManyToMany(targetEntity="Product", mappedBy="moleculeNames")
 	 * @ORM\JoinTable(name="product_moleculename",
 	 *        joinColumns={@ORM\JoinColumn(name="MoleculeNameID", referencedColumnName="MoleculeNameID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")})

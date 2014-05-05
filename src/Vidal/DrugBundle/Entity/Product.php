@@ -103,7 +103,7 @@ class Product
 	protected $StrCond;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="products")
+	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="products", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="product_atc",
 	 *      joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *      inverseJoinColumns={@ORM\JoinColumn(name="ATCcode", referencedColumnName="ATCCode")})
@@ -114,7 +114,7 @@ class Product
 	protected $productDocument;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="ClPhGroups", inversedBy="products")
+	 * @ORM\ManyToMany(targetEntity="ClPhGroups", inversedBy="products", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="product_clphgroups",
 	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ClPhGroupsID", referencedColumnName="ClPhGroupsID")})
@@ -125,7 +125,7 @@ class Product
 	protected $productCompany;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="MoleculeName", mappedBy="products")
+	 * @ORM\ManyToMany(targetEntity="MoleculeName", inversedBy="products")
 	 * @ORM\JoinTable(name="product_moleculename",
 	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="MoleculeNameID", referencedColumnName="MoleculeNameID")})
@@ -133,7 +133,7 @@ class Product
 	protected $moleculeNames;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="PhThGroups", mappedBy="products", fetch="EXTRA_LAZY")
+	 * @ORM\ManyToMany(targetEntity="PhThGroups", inversedBy="products", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="product_phthgrp",
 	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="PhThGroupsID", referencedColumnName="id")})
