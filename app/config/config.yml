@@ -22,8 +22,7 @@ framework:
     trusted_proxies: ~
     session:
         cookie_lifetime: 31536000
-        save_path: ~
-        #save_path: '/home/twigavid/vidal/sessions'
+        save_path: '/home/twigavid/vidal/sessions'
     fragments:       ~
 
 # Twig Configuration
