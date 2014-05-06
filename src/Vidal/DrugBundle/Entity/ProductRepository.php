@@ -25,7 +25,8 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d = :DocumentID AND
 				p.CountryEditionCode = \'RUS\' AND
-				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
+				p.MarketStatusID IN (1,2) AND
+				p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 			ORDER BY p.RusName ASC
 		')->setParameter('DocumentID', $DocumentID)
 			->getResult();

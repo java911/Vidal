@@ -25,15 +25,37 @@
 		{% if document.ClPhGrDescription is not empty %}
 			<div><a href="#group">Клинико-фармакологическая группа</a></div>
 		{% endif %}
-		{% if phthgroups is defined and phthgroups is not empty %}
-			{% if phthgroups|length == 1 %}
-				<div><a href="#phthgroup" title="Фармако-терапевтическая группа ГосРеестра МинЗдрава РФ"
-						>Фармако-терапевтическая группа</a></div>
-			{% else %}
-				<div><a href="#phthgroup" title="Фармако-терапевтические группы ГосРеестра МинЗдрава РФ"
-						>Фармако-терапевтические группы</a></div>
-			{% endif %}
+
+		{% if document.clphPointers.count %}
+			<div>
+				{% if document.clphPointers|length == 1 %}
+					<a href="#clphpointer">Клинико-фармакологический указатель</a>
+				{% else %}
+					<a href="#clphpointer">Клинико-фармакологические указатели</a>
+				{% endif %}
+			</div>
 		{% endif %}
+
+		{% if product is defined and product.clphGroups.count %}
+			<div>
+				{% if product.clphGroups|length == 1 %}
+					<a href="#clphgroup">Клинико-фармакологическая группа</a>
+				{% else %}
+					<a href="#clphgroup">Клинико-фармакологические группы</a>
+				{% endif %}
+			</div>
+		{% endif %}
+
+		{% if product is defined and product.phthgroups.count %}
+			<div>
+				{% if product.clphGroups|length == 1 %}
+					<a href="#phthgroup">Фармако-терапевтическая группа:</a>
+				{% else %}
+					<a href="#phthgroup">Фармако-терапевтические группы</a>
+				{% endif %}
+			</div>
+		{% endif %}
+
 		{% if document.PhKinetics is not empty %}
 			<div><a href="#kinetics">Фармакокинетика</a></div>
 		{% endif %}

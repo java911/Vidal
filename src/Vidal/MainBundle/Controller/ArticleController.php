@@ -19,7 +19,7 @@ class ArticleController extends Controller
 	 * Конкретная статья рубрики
 	 * @Route("/encyclopedia/{rubrique}/{link}", name="article")
 	 *
-	 * @Template()
+	 * @Template("VidalMainBundle:Article:article.html.twig")
 	 */
 	public function articleAction($rubrique, $link)
 	{
@@ -35,7 +35,8 @@ class ArticleController extends Controller
 			'title'     => $this->strip($article . '') . ' | ' . $rubrique,
 			'menu_left' => 'articles',
 			'rubrique'  => $rubrique,
-			'article'   => $article
+			'article'   => $article,
+			'products'  => $em->getRepository('VidalDrugBundle:Article')->findByArticle($article),
 		);
 	}
 

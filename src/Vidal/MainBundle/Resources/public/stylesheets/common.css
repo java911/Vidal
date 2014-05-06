@@ -197,6 +197,10 @@ h1 span {
 	text-decoration: none;
 	border-bottom:   1px dashed #268366;
 }
+.dot {
+	border-top: 1px dotted #d1d1d1;
+	margin-top: 2px;
+}
 .clear {
 	clear: both;
 }
@@ -1211,7 +1215,7 @@ h1 span {
 	line-height: inherit !important;
 }
 
-/* ul padding */
+/* ck editor */
 .u1 li {
 	margin: 1px 0 !important;
 }
@@ -1271,6 +1275,9 @@ h1 span {
 }
 .u20 li {
 	margin: 20px 0 !important;
+}
+.text td p {
+	margin: 0 !important;
 }
 
 /* overlay */

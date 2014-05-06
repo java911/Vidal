@@ -13,7 +13,6 @@
 		<a href="{{ path('kfu') }}" title="Клинико-фармакологические указатели">КФУ</a>
 		<i></i>
 		<a href="{{ path('kfu', {'show':kfu.ClPhPointerID}) }}">{{ kfu.Name|raw }}</a>
-		{#<span>{{ kfu.Name|raw }}</span>#}
 	</div>
 {% endblock %}
 
@@ -24,7 +23,9 @@
 	{% if parent %}
 		<div class="block">
 			<span class="block-head">Входит в группу: </span>
-			<a href="{{ path('kfu', {'show':parent.ClPhPointerID}) }}">{{ parent.Name|raw }}</a>
+			<a href="{{ path('kfu', {'show':parent.ClPhPointerID}) }}" class="no-underline">
+				{{ parent.Name|raw }}
+			</a>
 		</div>
 	{% endif %}
 

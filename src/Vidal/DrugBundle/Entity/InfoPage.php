@@ -58,9 +58,6 @@ class InfoPage
 	/** @ORM\ManyToMany(targetEntity="Picture", mappedBy="infoPages") */
 	protected $pictures;
 
-	/** @ORM\OneToMany(targetEntity="DocumentInfoPage", mappedBy="InfoPageID") */
-	protected $documentInfoPages;
-
 	/**
 	 * @ORM\ManyToMany(targetEntity="Article", mappedBy="infoPages")
 	 * @ORM\JoinTable(name="article_infopage",
@@ -96,14 +93,22 @@ class InfoPage
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $countProducts;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="Document", mappedBy="infoPages")
+	 * @ORM\JoinTable(name="document_info_page",
+	 *        joinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})
+	 */
+	protected $documents;
+
 	public function __construct()
 	{
-		$this->pictures          = new ArrayCollection();
-		$this->documentInfoPages = new ArrayCollection();
-		$this->articles          = new ArrayCollection();
-		$this->arts              = new ArrayCollection();
-		$this->publications      = new ArrayCollection();
-		$this->pharmArticles     = new ArrayCollection();
+		$this->pictures      = new ArrayCollection();
+		$this->articles      = new ArrayCollection();
+		$this->arts          = new ArrayCollection();
+		$this->publications  = new ArrayCollection();
+		$this->pharmArticles = new ArrayCollection();
+		$this->documents     = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -321,22 +326,6 @@ class InfoPage
 	}
 
 	/**
-	 * @param mixed $documentInfoPages
-	 */
-	public function setDocumentInfoPages(ArrayCollection $documentInfoPages)
-	{
-		$this->documentInfoPages = $documentInfoPages;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getDocumentInfoPages()
-	{
-		return $this->documentInfoPages;
-	}
-
-	/**
 	 * @param mixed $CountryCode
 	 */
 	public function setCountryCode($CountryCode)
@@ -446,5 +435,21 @@ class InfoPage
 	public function getCountProducts()
 	{
 		return $this->countProducts;
+	}
+
+	/**
+	 * @param mixed $documents
+	 */
+	public function setDocuments($documents)
+	{
+		$this->documents = $documents;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDocuments()
+	{
+		return $this->documents;
 	}
 }

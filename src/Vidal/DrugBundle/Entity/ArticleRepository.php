@@ -118,4 +118,22 @@ class ArticleRepository extends EntityRepository
 		')->setParameter('id', $id)
 			->getResult();
 	}
+
+	public function findByArticle($article)
+	{
+		return $this->_em->createQuery('
+			SELECT p
+			FROM VidalDrugBundle:Product p
+			JOIN p.document d
+			JOIN d.nozologies n
+			JOIN n.articles a
+			WHERE a = :articleId
+				AND p.NonPrescriptionDrug = TRUE
+				AND p.CountryEditionCode = \'RUS\'
+				AND p.MarketStatusID IN (1,2)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+			ORDER BY p.RusName
+		')->setParameter('articleId', $article->getId())
+			->getResult();
+	}
 }

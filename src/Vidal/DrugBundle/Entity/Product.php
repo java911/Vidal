@@ -121,7 +121,7 @@ class Product
 	 */
 	protected $clphGroups;
 
-	/** @ORM\OneToMany(targetEntity="ProductCompany", mappedBy="ProductID") */
+	/** @ORM\OneToMany(targetEntity="ProductCompany", mappedBy="ProductID", cascade={"persist"}) */
 	protected $productCompany;
 
 	/**
@@ -156,13 +156,13 @@ class Product
 
 	public function __construct()
 	{
-		$this->atcCodes          = new ArrayCollection();
-		$this->productDocument   = new ArrayCollection();
-		$this->clphGroups        = new ArrayCollection();
-		$this->productCompany    = new ArrayCollection();
-		$this->moleculeNames     = new ArrayCollection();
-		$this->phthgroups        = new ArrayCollection();
-		$this->articles          = new ArrayCollection();
+		$this->atcCodes        = new ArrayCollection();
+		$this->productDocument = new ArrayCollection();
+		$this->clphGroups      = new ArrayCollection();
+		$this->productCompany  = new ArrayCollection();
+		$this->moleculeNames   = new ArrayCollection();
+		$this->phthgroups      = new ArrayCollection();
+		$this->articles        = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -765,5 +765,16 @@ class Product
 	public function getDocument()
 	{
 		return $this->document;
+	}
+
+	public function addProductCompany(ProductCompany $pc)
+	{
+		$pc->setProductID($this);
+		$this->productCompany[] = $pc;
+	}
+
+	public function removeProductCompany(ProductCompany $pc)
+	{
+		$this->productCompany->removeElement($pc);
 	}
 }

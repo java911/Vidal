@@ -1,14 +1,40 @@
+{# Клинико-фармакологический указатель #}
+{% if document.clphPointers.count %}
+	<div class="block" id="clphpointer">
+		{% if document.clphPointers|length == 1 %}
+			{% set clphPointer = document.clphPointers[0] %}
+			<div class="block-head">Клинико-фармакологический указатель</div>
+			<div class="block-content">
+				<a href="{{ path('kfu_item', {'id':clphPointer.ClPhPointerID}) }}" class="no-underline">
+					{{ clphPointer.Name|raw }}
+				</a>
+			</div>
+		{% else %}
+			<div class="block-head">Клинико-фармакологические указатели</div>
+			<div class="block-content">
+				<ul class="ul-style">
+					{% for clphPointer in document.clphPointers %}
+						<li>
+							<a href="{{ path('kfu_item', {'id':clphPointer.ClPhPointerID}) }}" class="no-underline">
+								{{ clphPointer.Name|raw }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endif %}
+	</div>
+{% endif %}
+
 {# Клинико-фармакологическая группа #}
 {% if product is defined and product.clphGroups.count %}
-	{% if product.clphGroups|length == 1 %}
-		<div class="block" id="phthgroup">
+	<div class="block" id="clphgroup">
+		{% if product.clphGroups|length == 1 %}
 			<span class="block-head">Клинико-фармакологическая группа:</span>
 			<span class="block-content">
 				{{ product.clphGroups[0].Name|raw }}
 			</span>
-		</div>
-	{% else %}
-		<div class="block">
+		{% else %}
 			<div class="block-head">Клинико-фармакологические группы</div>
 			<div class="block-content">
 				<ul class="ul-style">
@@ -19,22 +45,20 @@
 					{% endfor %}
 				</ul>
 			</div>
-		</div>
-	{% endif %}
+		{% endif %}
+	</div>
 {% endif %}
 
 {# Фармако-терапевтическая группа ГосРеестра МинЗдрава РФ #}
 {% if product is defined and product.phthgroups.count %}
-	{% if product.phthgroups|length == 1 %}
-		<div class="block" id="phthgroup">
+	<div class="block" id="phthgroup">
+		{% if product.phthgroups|length == 1 %}
 			<span class="block-head">Фармако-терапевтическая группа:</span>
 			<span class="block-content">
 				<a href="{{ path('pharm_item', {'id':product.phthgroups[0].id}) }}"
 				   class="no-underline">{{ product.phthgroups[0].Name|raw }}</a>
 			</span>
-		</div>
-	{% else %}
-		<div class="block">
+		{% else %}
 			<div class="block-head">Фармако-терапевтические группы</div>
 			<div class="block-content">
 				<ul class="ul-style">
@@ -47,8 +71,8 @@
 					{% endfor %}
 				</ul>
 			</div>
-		</div>
-	{% endif %}
+		{% endif %}
+	</div>
 {% endif %}
 
 {# Фармакологическое действие #}
@@ -90,7 +114,7 @@
 {% endif %}
 
 {# Коды МКБ-10 #}
-{% if nozologies is defined and nozologies is not empty %}
+{% if document.nozologies is not empty %}
 	<div class="mkb">
 		<a href="#" class="mkb-show">Коды МКБ-10</a>
 		<table class="products-table">
@@ -98,7 +122,7 @@
 				<td style="width:78px">Код МКБ-10</td>
 				<td>Показание</td>
 			</tr>
-			{% for nozology in nozologies %}
+			{% for nozology in document.nozologies %}
 				<tr>
 					<td>{{ nozology.Code }}</td>
 					<td><a href="{{ path('nosology_item', {'Code':nozology.Code}) }}"

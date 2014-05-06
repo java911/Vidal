@@ -114,7 +114,7 @@ class DrugsController extends Controller
 		$params = array(
 			'menu_drugs' => 'kfu',
 			'kfu'        => $kfu,
-			'title'      => $kfu . ' | Клинико-фармакологические указатели',
+			'title'      => $this->strip($kfu) . ' | Клинико-фармакологические указатели',
 			'parent'     => $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->findParent($kfu),
 		);
 

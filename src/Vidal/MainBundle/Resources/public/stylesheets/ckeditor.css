@@ -58,3 +58,6 @@
 .u20 li {
 	margin: 20px 0 !important;
 }
+.text td p {
+	margin: 0 !important;
+}

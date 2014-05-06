@@ -37,9 +37,6 @@ class Molecule
 	/** @ORM\Column(type="integer", nullable=true, name="GDDB_MoleculeID") */
 	protected $gddbMoleculeID;
 
-	/** @ORM\OneToMany(targetEntity="MoleculeDocument", mappedBy="MoleculeID") */
-	protected $moleculeDocuments;
-
 	/** @ORM\OneToMany(targetEntity="MoleculeName", mappedBy="MoleculeID") */
 	protected $moleculeNames;
 
@@ -75,14 +72,22 @@ class Molecule
 	 */
 	protected $pharmArticles;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="Document", mappedBy="molecules")
+	 * @ORM\JoinTable(name="document_molecule",
+	 *        joinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})
+	 */
+	protected $documents;
+
 	public function __construct()
 	{
-		$this->moleculeDocuments = new ArrayCollection();
-		$this->moleculeNames     = new ArrayCollection();
-		$this->articles          = new ArrayCollection();
-		$this->arts              = new ArrayCollection();
-		$this->publications      = new ArrayCollection();
-		$this->pharmArticles     = new ArrayCollection();
+		$this->documents     = new ArrayCollection();
+		$this->moleculeNames = new ArrayCollection();
+		$this->articles      = new ArrayCollection();
+		$this->arts          = new ArrayCollection();
+		$this->publications  = new ArrayCollection();
+		$this->pharmArticles = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -229,22 +234,6 @@ class Molecule
 	}
 
 	/**
-	 * @param mixed $moleculeDocuments
-	 */
-	public function setMoleculeDocuments(ArrayCollection $moleculeDocuments)
-	{
-		$this->moleculeDocuments = $moleculeDocuments;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getMoleculeDocuments()
-	{
-		return $this->moleculeDocuments;
-	}
-
-	/**
 	 * @param mixed $moleculeNames
 	 */
 	public function setMoleculeNames(ArrayCollection $moleculeNames)
@@ -322,5 +311,21 @@ class Molecule
 	public function getPharmArticles()
 	{
 		return $this->pharmArticles;
+	}
+
+	/**
+	 * @param mixed $documents
+	 */
+	public function setDocuments($documents)
+	{
+		$this->documents = $documents;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDocuments()
+	{
+		return $this->documents;
 	}
 }

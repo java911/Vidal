@@ -60,10 +60,10 @@ class DocumentAdmin extends Admin
 			->add('ChildInsufUsing', 'choice', array('label' => 'Применение детьми', 'required' => false, 'choices' => $usingChoices, 'empty_value' => 'выберите'))
 			->add('ChildInsuf', null, array('label' => 'Использование детьми', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('atcCodes', null, array('label' => 'Коды АТХ', 'required' => false))
-			->add('nozologies', null, array('label' => 'Нозологические указатели', 'required' => false))
+			->add('nozologies', null, array('label' => 'Нозологические указатели', 'required' => false, 'help' => 'МКБ-10 (Nozology)'))
 			->add('clphPointers', null, array('label' => 'Клинико-фармакологические указатели', 'required' => false))
-
-			//            ->add('moleculeDocuments', 'entity', array('class' => 'Vidal\DrugBundle\Entity\MoleculeDocument'))
+			->add('infoPages', null, array('label' => 'Представительства'))
+			->add('molecules', null, array('label' => 'Активные вещества'))
 		;
 	}
 

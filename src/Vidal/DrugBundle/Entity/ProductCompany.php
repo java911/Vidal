@@ -2,20 +2,20 @@
 namespace Vidal\DrugBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /** @ORM\Entity @ORM\Table(name="product_company") */
 class ProductCompany
 {
+	/** @ORM\Column(type="integer") @ORM\Id @ORM\GeneratedValue */
+	protected $id;
+
 	/**
-	 * @ORM\Id
 	 * @ORM\ManyToOne(targetEntity="Product", inversedBy="productCompany")
 	 * @ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")
 	 */
 	protected $ProductID;
 
 	/**
-	 * @ORM\Id
 	 * @ORM\ManyToOne(targetEntity="Company", inversedBy="productCompany")
 	 * @ORM\JoinColumn(name="CompanyID", referencedColumnName="CompanyID")
 	 */
@@ -151,5 +151,21 @@ class ProductCompany
 	public function getShowInList()
 	{
 		return $this->ShowInList;
+	}
+
+	/**
+	 * @param mixed $id
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getId()
+	{
+		return $this->id;
 	}
 }

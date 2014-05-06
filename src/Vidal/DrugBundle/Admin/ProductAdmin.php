@@ -37,10 +37,22 @@ class ProductAdmin extends Admin
 			->add('DLO', null, array('label' => 'ДЛО', 'required' => false))
 			->add('ValidPeriod', null, array('label' => 'Срок действия', 'required' => false))
 			//->add('StrCond', null, array('label' => 'Условия хранения', 'required' => false))
-			->add('atcCodes', null, array('label' => 'Коды АТХ', 'required' => false))
-			->add('moleculeNames', null, array('label' => 'Активные вещества', 'required' => false))
+			//->add('atcCodes', null, array('label' => 'Коды АТХ', 'required' => false))
+			//->add('moleculeNames', null, array('label' => 'Активные вещества', 'required' => false))
 			->add('clphGroups', null, array('label' => 'Клинико-фармакологические группы', 'required' => false, 'help' => 'ClPhGroups'))
-			->add('phthgroups', null, array('label' => 'Фармако-терапевтические группы', 'required' => false, 'help' => 'PhThGroups'));
+			->add('phthgroups', null, array('label' => 'Фармако-терапевтические группы', 'required' => false, 'help' => 'PhThGroups'))
+			->add('productCompany', 'sonata_type_collection',
+				array(
+					'label'              => 'Компании',
+					'by_reference'       => false,
+					'cascade_validation' => true
+				),
+				array(
+					'edit'         => 'inline',
+					'inline'       => 'table',
+					'allow_delete' => true
+				)
+			);
 	}
 
 	// Fields to be shown on filter forms
