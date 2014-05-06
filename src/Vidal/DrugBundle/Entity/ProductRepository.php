@@ -18,7 +18,7 @@ class ProductRepository extends EntityRepository
 	public function findByDocumentID($DocumentID)
 	{
 		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatusID, p.ProductID,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
@@ -68,7 +68,7 @@ class ProductRepository extends EntityRepository
 		}
 
 		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatusID, p.ProductID,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.moleculeNames mn

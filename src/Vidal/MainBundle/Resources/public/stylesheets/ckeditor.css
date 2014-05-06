@@ -1,3 +1,9 @@
+* {
+	font-family: sans-serif !important;
+}
+td p {
+	margin: 0 !important;
+}
 .u1 li {
 	margin: 1px 0 !important;
 }
@@ -58,6 +64,64 @@
 .u20 li {
 	margin: 20px 0 !important;
 }
-.text td p {
-	margin: 0 !important;
+
+.p1 * {
+	line-height: 1px !important;
+}
+.p2 * {
+	line-height: 2px !important;
+}
+.p3 * {
+	line-height: 3px !important;
+}
+.p4 * {
+	line-height: 4px !important;
+}
+.p5 * {
+	line-height: 5px !important;
+}
+.p6 * {
+	line-height: 6px !important;
+}
+.p7 * {
+	line-height: 7px !important;
+}
+.p8 * {
+	line-height: 8px !important;
+}
+.p9 * {
+	line-height: 9px !important;
+}
+.p10 * {
+	line-height: 10px !important;
+}
+.p11 * {
+	line-height: 11px !important;
+}
+.p12 * {
+	line-height: 12px !important;
+}
+.p13 * {
+	line-height: 13px !important;
+}
+.p14 * {
+	line-height: 14px !important;
+}
+.p15 * {
+	line-height: 15px !important;
+}
+.p16 * {
+	line-height: 16px !important;
+}
+.p17 * {
+	line-height: 17px !important;
+}
+.p18 * {
+	line-height: 18px !important;
+}
+.p19 * {
+	line-height: 19px !important;
+}
+.p20 * {
+	line-height: 20px !important;
 }

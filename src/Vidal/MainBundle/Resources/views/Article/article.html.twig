@@ -29,17 +29,18 @@
 {% block content %}
 	{% include 'VidalMainBundle:Article:render_article.html.twig' %}
 
-	<div class="products">
-		<div class="products-header anons">
+	{% if documents is not empty %}
+	<div class="documents">
+		<div class="anons">
 			<span>{{ article.title|raw }}</span>: Применяемые препараты безрецептурного отпуска
 		</div>
 
 		<ul class="ul-style">
-			{% for product in products %}
+			{% for document in documents %}
 				<li>
-					<a href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"
+					<a href="{{ path('document', {'EngName':document.Name, 'DocumentID':document.DocumentID}) }}"
 					   class="no-underline">
-						{{ product.RusName|raw }}
+						{{ document.RusName|raw }}
 					</a>
 				</li>
 			{% endfor %}
@@ -50,6 +51,7 @@
 			и ознакомьтесь с инструкцией по применению.
 		</div>
 	</div>
+	{% endif %}
 {% endblock %}
 
 
