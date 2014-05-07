@@ -45,7 +45,8 @@ class ProductAdmin extends Admin
 				array(
 					'label'              => 'Компании',
 					'by_reference'       => false,
-					'cascade_validation' => true
+					'cascade_validation' => true,
+					'required'           => false,
 				),
 				array(
 					'edit'         => 'inline',

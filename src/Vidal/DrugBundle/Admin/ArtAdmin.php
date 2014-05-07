@@ -140,6 +140,10 @@ class ArtAdmin extends Admin
 			->add('metaDescription', null, array('label' => 'Мета описание', 'required' => false))
 			->add('metaKeywords', null, array('label' => 'Мета ключевые слова', 'required' => false))
 			->add('video', 'iphp_file', array('label' => 'Видео', 'required' => false, 'help' => 'Загрузить флеш-видео в формате .flv'))
+			->add('atIndex', null, array('label' => 'Отображать на главной', 'required' => false))
+			->add('atAnons1', null, array('label' => 'Отображать на анонс-1', 'required' => false))
+			->add('atAnons2', null, array('label' => 'Отображать на анонс-2', 'required' => false))
+			->add('atAnons3', null, array('label' => 'Отображать на анонс-3', 'required' => false))
 			->add('enabled', null, array('label' => 'Активна', 'required' => false));
 	}
 
@@ -161,6 +165,10 @@ class ArtAdmin extends Admin
 			->add('type', null, array('label' => 'Категория', 'attr' => array('class' => 'art-type')))
 			->add('category', null, array('label' => 'Подкатегория', 'attr' => array('class' => 'art-category')))
 			->add('priority', null, array('label' => 'Приоритет'))
+			->add('atIndex', null, array('label' => 'Отображать на главной'))
+			->add('atAnons1', null, array('label' => 'Отображать на анонс-1'))
+			->add('atAnons2', null, array('label' => 'Отображать на анонс-2'))
+			->add('atAnons3', null, array('label' => 'Отображать на анонс-3'))
 			->add('enabled', null, array('label' => 'Активна'));
 	}
 

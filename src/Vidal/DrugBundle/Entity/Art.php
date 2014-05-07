@@ -122,8 +122,17 @@ class Art extends BaseEntity
 	/** @ORM\ManyToOne(targetEntity="ArtCategory", inversedBy="arts") */
 	protected $category;
 
-	/** @ORM\Column(type="integer", nullable=true) */
-	protected $sub;
+	/** @ORM\Column(type="boolean") */
+	protected $atIndex = false;
+
+	/** @ORM\Column(type="boolean") */
+	protected $atAnons1 = false;
+
+	/** @ORM\Column(type="boolean") */
+	protected $atAnons2 = false;
+
+	/** @ORM\Column(type="boolean") */
+	protected $atAnons3 = false;
 
 	public function __construct()
 	{
@@ -548,22 +557,6 @@ class Art extends BaseEntity
 	}
 
 	/**
-	 * @param mixed $sub
-	 */
-	public function setSub($sub)
-	{
-		$this->sub = $sub;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getSub()
-	{
-		return $this->sub;
-	}
-
-	/**
 	 * @param mixed $hidden2
 	 */
 	public function setHidden2($hidden2)
@@ -577,5 +570,69 @@ class Art extends BaseEntity
 	public function getHidden2()
 	{
 		return $this->hidden2;
+	}
+
+	/**
+	 * @param mixed $atAnons1
+	 */
+	public function setAtAnons1($atAnons1)
+	{
+		$this->atAnons1 = $atAnons1;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getAtAnons1()
+	{
+		return $this->atAnons1;
+	}
+
+	/**
+	 * @param mixed $atAnons2
+	 */
+	public function setAtAnons2($atAnons2)
+	{
+		$this->atAnons2 = $atAnons2;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getAtAnons2()
+	{
+		return $this->atAnons2;
+	}
+
+	/**
+	 * @param mixed $atAnons3
+	 */
+	public function setAtAnons3($atAnons3)
+	{
+		$this->atAnons3 = $atAnons3;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getAtAnons3()
+	{
+		return $this->atAnons3;
+	}
+
+	/**
+	 * @param mixed $atIndex
+	 */
+	public function setAtIndex($atIndex)
+	{
+		$this->atIndex = $atIndex;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getAtIndex()
+	{
+		return $this->atIndex;
 	}
 }

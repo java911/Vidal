@@ -85,6 +85,34 @@
 				</div>
 			</div>
 		{% endfor %}
+
+		{# отдельная статья специалистам #}
+		{% if art %}
+			<div class="article">
+				{# админам карандашик редактирования #}
+				{% if isAdmin %}
+					<a class="admin-edit fade" target="_blank"
+					   href="{{ path('admin_vidal_drug_art_edit', {'id':art.id}) }}">
+						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+					</a>
+				{% endif %}
+
+				<a class="article-title"
+				   href="{{ path('art', {'url':art.rubrique.url ~ '/' ~ (art.type ? art.type.url ~ '/') ~ (art.category ? art.category.url ~ '/') ~ art.link ~ '~' ~ art.id }) }}">
+					{{ art.title|raw }}
+				</a>
+
+				<div class="article-announce text">
+					{{ art.announce|raw }}
+				</div>
+				<div class="article-footer">
+					<span>Рубрика:</span>
+					<a href="{{ path('vracham') }}">Статьи специалистам</a>
+
+					<div class="article-date">{{ art.date|date('d.m.Y') }}</div>
+				</div>
+			</div>
+		{% endif %}
 	</div>
 	<a href="{{ path('articles') }}" id="more_articles">все</a>
 

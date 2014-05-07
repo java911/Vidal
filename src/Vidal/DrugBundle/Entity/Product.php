@@ -37,7 +37,7 @@ class Product
 	protected $RegistrationNumber;
 
 	/** @ORM\Column(type="boolean") */
-	protected $PPR;
+	protected $PPR = false;
 
 	/** @ORM\Column(length=255) */
 	protected $ZipInfo;
