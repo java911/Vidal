@@ -131,4 +131,23 @@ class SonataController extends Controller
 
 		return new JsonResponse($results);
 	}
+
+	/**
+	 * @Route("/admin/document-remove/{type}/{id}/{DocumentID}", name="document_remove")
+	 */
+	public function documentRemoveAction ($type, $id, $DocumentID)
+	{
+		$em = $this->getDoctrine()->getManager('drug');
+		$entity = $em->getRepository("VidalDrugBundle:$type")->findOneById($id);
+		$document = $em->getRepository('VidalDrugBundle:Document')->findById($DocumentID);
+
+		if (!$entity || !$document) {
+			return new JsonResponse('FAIL');
+		}
+
+		$entity->removeDocument($document);
+		$em->flush();
+
+		return new JsonResponse('OK');
+	}
 }

@@ -98,6 +98,9 @@ class Publication extends BaseEntity
 	/** @ORM\Column(length=10, nullable=true) */
 	protected $hidden;
 
+	/** @ORM\Column(length=10, nullable=true) */
+	protected $hidden2;
+
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $priority;
 
@@ -298,12 +301,16 @@ class Publication extends BaseEntity
 
 	public function addDocument(Document $document)
 	{
-		$this->documents[] = $document;
+		if (!$this->documents->contains($document)) {
+			$this->documents[] = $document;
+		}
+
+		return $this;
 	}
 
 	public function removeDocument(Document $document)
 	{
-		return $this;
+		$this->documents->removeElement($document);
 	}
 
 	/**
@@ -414,5 +421,21 @@ class Publication extends BaseEntity
 	public function getPriority()
 	{
 		return $this->priority;
+	}
+
+	/**
+	 * @param mixed $hidden2
+	 */
+	public function setHidden2($hidden2)
+	{
+		$this->hidden2 = $hidden2;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getHidden2()
+	{
+		return $this->hidden2;
 	}
 }

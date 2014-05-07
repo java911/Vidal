@@ -229,8 +229,9 @@ h1 span {
 	list-style: none;
 }
 .ul-style li {
-	padding-left: 13px;
-	background:   url('../images/bullets.gif') no-repeat -13px -13px;
+	padding-left:  13px;
+	background:    url('../images/bullets.gif') no-repeat -13px -13px;
+	margin-bottom: 2px;
 }
 .ui-menu-item em {
 	font-style:  normal;

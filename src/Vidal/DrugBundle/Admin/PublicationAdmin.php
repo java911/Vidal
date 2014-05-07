@@ -120,7 +120,7 @@ class PublicationAdmin extends Admin
 				'multiple'      => true,
 				'attr'          => array('placeholder' => 'Начните вводить название или код'),
 			))
-			->add($formMapper->create('documents', 'text', array(
+			->add($formMapper->create('hidden2', 'text', array(
 					'label'        => 'Описания препаратов',
 					'required'     => false,
 					'by_reference' => false,

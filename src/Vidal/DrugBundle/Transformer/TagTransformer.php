@@ -33,6 +33,11 @@ class TagTransformer implements DataTransformerInterface
 	{
 		$text = trim($text);
 		$text = trim($text, ';');
+
+		if (empty($text)) {
+			return null;
+		}
+
 		$tags = explode(';', $text);
 
 		if (empty($tags)) {

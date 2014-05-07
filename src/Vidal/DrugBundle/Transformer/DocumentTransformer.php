@@ -36,18 +36,13 @@ class DocumentTransformer implements DataTransformerInterface
 		$document = $this->em->getRepository('VidalDrugBundle:Document')->findOneByText($text);
 
 		if ($document) {
-			if ($this->object->getDocuments()->contains($document)) {
-				throw new TransformationFailedException('Такое описание препарата уже было добавлено');
-			}
-			else {
-				$this->object->addDocument($document);
-				$this->em->flush();
-			}
+			$this->object->addDocument($document);
+			$this->em->flush();
 		}
 		else {
 			throw new TransformationFailedException('Описание препарата не найдено');
 		}
 
-		return $this->object->getDocuments();
+		return null;
 	}
 }

@@ -125,12 +125,14 @@ class Article extends BaseEntity
 	/** @ORM\Column(length=10, nullable=true) */
 	protected $hidden;
 
+	/** @ORM\Column(length=10, nullable=true) */
+	protected $hidden2;
+
 	public function __construct()
 	{
 		$this->nozologies = new ArrayCollection();
 		$this->molecules  = new ArrayCollection();
 		$this->documents  = new ArrayCollection();
-		$this->atcCodes   = new ArrayCollection();
 		$this->atcCodes   = new ArrayCollection();
 		$this->tags       = new ArrayCollection();
 		$this->public     = true;
@@ -266,7 +268,11 @@ class Article extends BaseEntity
 
 	public function addDocument(Document $document)
 	{
-		$this->documents[] = $document;
+		if (!$this->documents->contains($document)) {
+			$this->documents[] = $document;
+		}
+
+		return $this;
 	}
 
 	public function removeDocument(Document $document)
@@ -574,5 +580,21 @@ class Article extends BaseEntity
 	public function getHidden()
 	{
 		return $this->hidden;
+	}
+
+	/**
+	 * @param mixed $hidden2
+	 */
+	public function setHidden2($hidden2)
+	{
+		$this->hidden2 = $hidden2;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getHidden2()
+	{
+		return $this->hidden2;
 	}
 }

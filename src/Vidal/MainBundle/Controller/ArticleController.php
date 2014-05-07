@@ -31,28 +31,12 @@ class ArticleController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		$documents = $em->createQuery('
-			SELECT d
-			FROM VidalDrugBundle:Document d
-			JOIN d.nozologies n
-			JOIN n.articles a
-			JOIN d.products p
-			WHERE a = :articleId
-				AND p.NonPrescriptionDrug = TRUE
-				AND p.CountryEditionCode = \'RUS\'
-				AND p.MarketStatusID IN (1,2)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
-			GROUP BY d.RusName
-			ORDER BY d.RusName ASC
-		')->setParameter('articleId', $article->getId())
-			->getResult();
-
 		return array(
 			'title'     => $this->strip($article . '') . ' | ' . $rubrique,
 			'menu_left' => 'articles',
 			'rubrique'  => $rubrique,
 			'article'   => $article,
-			'documents' => $documents,
+			'documents' => $em->getRepository('VidalDrugBundle:Document')->findByArticle($article),
 		);
 	}
 

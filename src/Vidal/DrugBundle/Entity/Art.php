@@ -110,6 +110,9 @@ class Art extends BaseEntity
 	/** @ORM\Column(length=10, nullable=true) */
 	protected $hidden;
 
+	/** @ORM\Column(length=10, nullable=true) */
+	protected $hidden2;
+
 	/** @ORM\ManyToOne(targetEntity="ArtRubrique", inversedBy="arts") */
 	protected $rubrique;
 
@@ -262,7 +265,11 @@ class Art extends BaseEntity
 
 	public function addDocument(Document $document)
 	{
-		$this->documents[] = $document;
+		if (!$this->documents->contains($document)) {
+			$this->documents[] = $document;
+		}
+
+		return $this;
 	}
 
 	public function removeDocument(Document $document)
@@ -554,5 +561,21 @@ class Art extends BaseEntity
 	public function getSub()
 	{
 		return $this->sub;
+	}
+
+	/**
+	 * @param mixed $hidden2
+	 */
+	public function setHidden2($hidden2)
+	{
+		$this->hidden2 = $hidden2;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getHidden2()
+	{
+		return $this->hidden2;
 	}
 }
