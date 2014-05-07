@@ -195,7 +195,7 @@
             }
             xhr = $.post('{{ path('pharmacies_map_ajax',{ cityId : thisCity.id }) }}', tiles, function(stores) {
                 stores = JSON.parse(stores);
-                console.log(stores);
+//                console.log(stores);
                 $.each(stores, function(index, store) {
                     if (addedStores['store_id_' + store.id] === 1) return;
                     addedStores['store_id_' + store.id] = 1;
