@@ -8,7 +8,7 @@
 {% endif %}
 
 {# Коды МКБ-10 #}
-{% if nozologies is defined and nozologies is not empty %}
+{% if document.nozologies is not empty %}
 	<div class="mkb">
 		<a href="#" class="mkb-show">Коды МКБ-10</a>
 		<table class="products-table">
@@ -16,7 +16,7 @@
 				<td style="width:78px">Код МКБ-10</td>
 				<td>Показание</td>
 			</tr>
-			{% for nozology in nozologies %}
+			{% for nozology in document.nozologies %}
 				<tr>
 					<td>{{ nozology.Code }}</td>
 					<td><a href="{{ path('nosology_item', {'Code':nozology.Code}) }}"
@@ -81,41 +81,81 @@
 	</div>
 {% endif %}
 
-{# Клинико-фармакологическая группа #}
-{% if document.ClPhGrDescription is not empty %}
-	<div class="block" id="group">
-		<span class="block-head">Клинико-фармакологическая группа: </span>
-		<span class="block-content">
-			<a href="{{ path('clphgroup', {'description':document.ClPhGrName}) }}"
-			   class="no-underline">{{ document.ClPhGrDescription|raw }}</a>
-		</span>
-	</div>
-{% endif %}
-
-{# Фармако-терапевтическая группа ГосРеестра МинЗдрава РФ #}
-{% if phthgroups is defined and phthgroups is not empty %}
-	{% if phthgroups|length == 1 %}
-		<div class="block" id="phthgroup">
-			<span class="block-head">Фармако-терапевтическая группа:</span>
-			<span class="block-content">
-				<a href="{{ path('pharm_item', {'id':phthgroups[0].id}) }}"
-				   class="no-underline">{{ phthgroups[0].Name|capitalize }}</a>
-			</span>
-		</div>
-	{% else %}
-		<div class="block">
-			<div class="block-head">Фармако-терапевтические группы</div>
+{# Клинико-фармакологический указатель #}
+{% if document.clphPointers.count %}
+	<div class="block" id="clphpointer">
+		{% if document.clphPointers|length == 1 %}
+			{% set clphPointer = document.clphPointers[0] %}
+			<div class="block-head">Клинико-фармакологический указатель</div>
+			<div class="block-content">
+				<a href="{{ path('kfu_item', {'id':clphPointer.ClPhPointerID}) }}" class="no-underline">
+					{{ clphPointer.Name|raw }}
+				</a>
+			</div>
+		{% else %}
+			<div class="block-head">Клинико-фармакологические указатели</div>
 			<div class="block-content">
 				<ul class="ul-style">
-					{% for g in phthgroups %}
-						<li>{{ loop.index > 1 ? ', ' }}<a href="{{ path('pharm_item', {'id':g.id}) }}"
-														  class="no-underline">{{ g.Name|capitalize }}</a>
+					{% for clphPointer in document.clphPointers %}
+						<li>
+							<a href="{{ path('kfu_item', {'id':clphPointer.ClPhPointerID}) }}" class="no-underline">
+								{{ clphPointer.Name|raw }}
+							</a>
 						</li>
 					{% endfor %}
 				</ul>
 			</div>
-		</div>
-	{% endif %}
+		{% endif %}
+	</div>
+{% endif %}
+
+{# Клинико-фармакологическая группа #}
+{% if product is defined and product.clphGroups.count %}
+	<div class="block" id="clphgroup">
+		{% if product.clphGroups|length == 1 %}
+			<span class="block-head">Клинико-фармакологическая группа:</span>
+			<span class="block-content">
+				{{ product.clphGroups[0].Name|raw }}
+			</span>
+		{% else %}
+			<div class="block-head">Клинико-фармакологические группы</div>
+			<div class="block-content">
+				<ul class="ul-style">
+					{% for clphGroup in product.clphGroups %}
+						<li>
+							{{ clphGroup.Name|raw }}
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endif %}
+	</div>
+{% endif %}
+
+{# Фармако-терапевтическая группа ГосРеестра МинЗдрава РФ #}
+{% if product is defined and product.phthgroups.count %}
+	<div class="block" id="phthgroup">
+		{% if product.phthgroups|length == 1 %}
+			<span class="block-head">Фармако-терапевтическая группа:</span>
+			<span class="block-content">
+				<a href="{{ path('pharm_item', {'id':product.phthgroups[0].id}) }}"
+				   class="no-underline">{{ product.phthgroups[0].Name|raw }}</a>
+			</span>
+		{% else %}
+			<div class="block-head">Фармако-терапевтические группы</div>
+			<div class="block-content">
+				<ul class="ul-style">
+					{% for phthgroup in product.phthgroups %}
+						<li>
+							<a href="{{ path('pharm_item', {'id':phthgroup.id}) }}" class="no-underline">
+								{{ phthgroup.Name|raw }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endif %}
+	</div>
 {% endif %}
 
 {# Фармакокинетика #}

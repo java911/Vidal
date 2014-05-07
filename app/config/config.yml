@@ -11,7 +11,7 @@ framework:
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
-    templating:      { engines: ['twig'], assets_version: v59 }
+    templating:      { engines: ['twig'], assets_version: v64 }
     form:            ~
     csrf_protection: false
     validation:      { enable_annotations: true }
@@ -22,8 +22,7 @@ framework:
     trusted_proxies: ~
     session:
         cookie_lifetime: 31536000
-        save_path: ~
-        #save_path: '/home/twigavid/vidal/sessions'
+        save_path: '/home/twigavid/vidal/sessions'
     fragments:       ~
 
 # Twig Configuration
@@ -158,7 +157,7 @@ sonata_block:
 #Sonata admin configuration
 sonata_admin:
     title:      Vidal.ru
-    #title_logo: /bundles/evrikamain/images/icon.jpg
+    title_logo: /favicon.ico
     templates:
         # default global templates
         layout:  VidalDrugBundle:Sonata:admin_layout.html.twig

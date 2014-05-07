@@ -13,7 +13,7 @@ class VidalController extends Controller
 	const PRODUCTS_PER_PAGE = 40;
 
 	/**
-	 * @Route("veterinar", name="veterinar")
+	 * @Route("/veterinar", name="veterinar")
 	 * @Template("VidalVeterinarBundle:Vidal:veterinar.html.twig")
 	 */
 	public function veterinarAction(Request $request)
@@ -85,7 +85,7 @@ class VidalController extends Controller
 	/**
 	 * Клинико-фармакологический указатель ветеринарной базы
 	 *
-	 * @Route("veterinar/kfu", name = "v_kfu")
+	 * @Route("/veterinar/kfu", name = "v_kfu")
 	 * @Template("VidalVeterinarBundle:Vidal:kfu.html.twig")
 	 */
 	public function kfuAction()
@@ -101,7 +101,7 @@ class VidalController extends Controller
 	/**
 	 * Клинико-фармакологический указатель ветеринарной базы
 	 *
-	 * @Route("veterinar/kfu/{url}.{ext}", name="v_kfu_item", defaults={"ext"="htm"}, options={"expose":true})
+	 * @Route("/veterinar/kfu/{url}.{ext}", name="v_kfu_item", defaults={"ext"="htm"}, options={"expose":true})
 	 * @Template("VidalVeterinarBundle:Vidal:kfu_item.html.twig")
 	 */
 	public function kfuItemAction($url)
@@ -134,7 +134,7 @@ class VidalController extends Controller
 	/**
 	 * Список препаратов по компании
 	 *
-	 * @Route("veterinar/proizvoditeli", name="proizvoditeli")
+	 * @Route("/veterinar/proizvoditeli", name="proizvoditeli")
 	 * @Template("VidalVeterinarBundle:Vidal:proizvoditeli.html.twig")
 	 */
 	public function proizvoditeliAction()
@@ -151,7 +151,7 @@ class VidalController extends Controller
 
 	/**
 	 * Список препаратов по компании
-	 * @Route("veterinar/proizvoditeli/{Name}.{ext}", name="v_company", defaults={"ext"="htm"})
+	 * @Route("/veterinar/proizvoditeli/{Name}.{ext}", name="v_company", defaults={"ext"="htm"})
 	 *
 	 * @Template("VidalVeterinarBundle:Vidal:company.html.twig")
 	 */
@@ -185,7 +185,7 @@ class VidalController extends Controller
 	/**
 	 * Страничка представительства и список препаратов
 	 *
-	 * @Route("veterinar/predstavitelstvo", name="predstavitelstvo")
+	 * @Route("/veterinar/predstavitelstvo", name="predstavitelstvo")
 	 * @Template("VidalVeterinarBundle:Vidal:predstavitelstvo.html.twig")
 	 */
 	public function predstavitelstvaAction()
@@ -203,7 +203,7 @@ class VidalController extends Controller
 	/**
 	 * Страничка представительства и список препаратов
 	 *
-	 * @Route("veterinar/predstavitelstvo/{Name}.{ext}", name="v_inf", defaults={"ext"="htm"})
+	 * @Route("/veterinar/predstavitelstvo/{Name}.{ext}", name="v_inf", defaults={"ext"="htm"})
 	 * @Template("VidalVeterinarBundle:Vidal:inf.html.twig")
 	 */
 	public function infAction($Name)
@@ -242,7 +242,7 @@ class VidalController extends Controller
 
 	/**
 	 * Описание по документу и отображение информации по препаратам или веществу
-	 * @Route("veterinar/opisanie/{name}.{ext}", name="v_document", requirements={"DocumentID":"\d+"}, defaults={"ext"="htm"})
+	 * @Route("/veterinar/opisanie/{name}.{ext}", name="v_document", requirements={"DocumentID":"\d+"}, defaults={"ext"="htm"})
 	 *
 	 * @Template("VidalVeterinarBundle:Vidal:document.html.twig")
 	 */
@@ -284,7 +284,7 @@ class VidalController extends Controller
 
 	/**
 	 * Описание препарата
-	 * @Route("veterinar/{EngName}~{ProductID}.{ext}", name="v_product", requirements={"ProductID":"\d+"}, defaults={"ext"="htm"})
+	 * @Route("/veterinar/{EngName}~{ProductID}.{ext}", name="v_product", requirements={"ProductID":"\d+"}, defaults={"ext"="htm"})
 	 *
 	 * @Template("VidalVeterinarBundle:Vidal:document.html.twig")
 	 */

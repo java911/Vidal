@@ -34,6 +34,8 @@ class TwigExtension extends \Twig_Extension
 			new \Twig_SimpleFilter('shortcut', array($this, 'shortcut')),
 			new \Twig_SimpleFilter('dateCreated', array($this, 'dateCreated')),
 			new \Twig_SimpleFilter('upperFirst', array($this, 'upperFirst')),
+			new \Twig_SimpleFilter('ucwords', array($this, 'ucwords')),
+			new \Twig_SimpleFilter('type', array($this, 'type')),
 		);
 	}
 
@@ -147,5 +149,17 @@ class TwigExtension extends \Twig_Extension
 	public function upperFirst($str)
 	{
 		return mb_strtoupper(mb_substr($str, 0, 1, 'utf-8'), 'utf-8') . mb_substr($str, 1, null, 'utf-8');
+	}
+
+	public function ucwords($str)
+	{
+		return mb_convert_case($str, MB_CASE_TITLE, 'utf-8');
+	}
+
+	public function type($object)
+	{
+		$reflect = new \ReflectionClass($object);
+
+		return $reflect->getShortName();
 	}
 }

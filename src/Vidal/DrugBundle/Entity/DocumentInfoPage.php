@@ -7,21 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 /** @ORM\Entity @ORM\Table(name="document_infopage") */
 class DocumentInfoPage
 {
-	/**
-	 * @ORM\Id
-	 * @ORM\ManyToOne(targetEntity="Document", inversedBy="documentInfoPages")
-	 * @ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")
-	 */
+	/** @ORM\Column(type="integer") @ORM\Id */
 	protected $DocumentID;
 
-	/**
-	 * @ORM\Id
-	 * @ORM\ManyToOne(targetEntity="InfoPage", inversedBy="documentInfoPages")
-	 * @ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")
-	 */
+	/** @ORM\Column(type="integer") @ORM\Id */
 	protected $InfoPageID;
 
-	/** @ORM\Column(type="integer", nullable=true) */
+	/** @ORM\Column(type="integer") */
 	protected $Ranking;
 
 	/**

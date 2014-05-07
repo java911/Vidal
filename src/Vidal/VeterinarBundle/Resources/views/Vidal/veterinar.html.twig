@@ -109,7 +109,8 @@
 			{% endif %}
 
 		{% else %}
-			{% include 'VidalVeterinarBundle:Vidal:about.html.twig' %}
+			<hr/>
+			{{ render(controller('VidalMainBundle:Index:Module', {'moduleId':3})) }}
 		{% endif %}
 	</div>
 

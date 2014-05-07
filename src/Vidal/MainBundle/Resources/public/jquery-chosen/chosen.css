@@ -444,3 +444,6 @@
 #wrapper .chosen-container .chosen-results li.highlighted {
 	background: #d71344;
 }
+#overlay {
+	text-align: right
+}

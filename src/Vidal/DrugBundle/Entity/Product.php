@@ -24,11 +24,8 @@ class Product
 	/** @ORM\Column(type="boolean") */
 	protected $NonPrescriptionDrug = false;
 
-	/**
-	 * @ORM\ManyToOne(targetEntity="CountryEdition", inversedBy="products")
-	 * @ORM\JoinColumn(name="CountryEditionCode", referencedColumnName="CountryEditionCode")
-	 */
-	protected $CountryEditionCode;
+	/** @ORM\Column(length=10) */
+	protected $CountryEditionCode = 'RUS';
 
 	/** @ORM\Column(length=50, nullable=true) */
 	protected $RegistrationDate;
@@ -40,7 +37,7 @@ class Product
 	protected $RegistrationNumber;
 
 	/** @ORM\Column(type="boolean") */
-	protected $PPR;
+	protected $PPR = false;
 
 	/** @ORM\Column(length=255) */
 	protected $ZipInfo;
@@ -106,7 +103,7 @@ class Product
 	protected $StrCond;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="products")
+	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="products", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="product_atc",
 	 *      joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *      inverseJoinColumns={@ORM\JoinColumn(name="ATCcode", referencedColumnName="ATCCode")})
@@ -117,18 +114,18 @@ class Product
 	protected $productDocument;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="ClPhGroups", inversedBy="products")
+	 * @ORM\ManyToMany(targetEntity="ClPhGroups", inversedBy="products", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="product_clphgroups",
 	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ClPhGroupsID", referencedColumnName="ClPhGroupsID")})
 	 */
 	protected $clphGroups;
 
-	/** @ORM\OneToMany(targetEntity="ProductCompany", mappedBy="ProductID") */
+	/** @ORM\OneToMany(targetEntity="ProductCompany", mappedBy="ProductID", cascade={"persist"}) */
 	protected $productCompany;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="MoleculeName", mappedBy="products")
+	 * @ORM\ManyToMany(targetEntity="MoleculeName", inversedBy="products")
 	 * @ORM\JoinTable(name="product_moleculename",
 	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="MoleculeNameID", referencedColumnName="MoleculeNameID")})
@@ -136,7 +133,7 @@ class Product
 	protected $moleculeNames;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="PhThGroups", mappedBy="products", fetch="EXTRA_LAZY")
+	 * @ORM\ManyToMany(targetEntity="PhThGroups", inversedBy="products", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="product_phthgrp",
 	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="PhThGroupsID", referencedColumnName="id")})
@@ -159,13 +156,13 @@ class Product
 
 	public function __construct()
 	{
-		$this->atcCodes          = new ArrayCollection();
-		$this->productDocument   = new ArrayCollection();
-		$this->clphGroups        = new ArrayCollection();
-		$this->productCompany    = new ArrayCollection();
-		$this->moleculeNames     = new ArrayCollection();
-		$this->phthgroups        = new ArrayCollection();
-		$this->articles          = new ArrayCollection();
+		$this->atcCodes        = new ArrayCollection();
+		$this->productDocument = new ArrayCollection();
+		$this->clphGroups      = new ArrayCollection();
+		$this->productCompany  = new ArrayCollection();
+		$this->moleculeNames   = new ArrayCollection();
+		$this->phthgroups      = new ArrayCollection();
+		$this->articles        = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -768,5 +765,16 @@ class Product
 	public function getDocument()
 	{
 		return $this->document;
+	}
+
+	public function addProductCompany(ProductCompany $pc)
+	{
+		$pc->setProductID($this);
+		$this->productCompany[] = $pc;
+	}
+
+	public function removeProductCompany(ProductCompany $pc)
+	{
+		$this->productCompany->removeElement($pc);
 	}
 }

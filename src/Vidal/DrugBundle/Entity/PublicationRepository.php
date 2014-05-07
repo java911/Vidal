@@ -35,7 +35,7 @@ class PublicationRepository extends EntityRepository
 			SELECT p
 			FROM VidalDrugBundle:Publication p
 			WHERE p.enabled = TRUE
-			ORDER BY p.date DESC
+			ORDER BY p.priority DESC, p.date DESC
 		');
 	}
 }

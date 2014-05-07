@@ -26,7 +26,7 @@ class ClinicoPhPointers
 	protected $UsedInSp = false;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Document", inversedBy="clphPointers")
+	 * @ORM\ManyToMany(targetEntity="Document", mappedBy="clphPointers")
 	 * @ORM\JoinTable(name="document_clphpointers",
 	 *        joinColumns={@ORM\JoinColumn(name="ClPhPointerID", referencedColumnName="ClPhPointerID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})

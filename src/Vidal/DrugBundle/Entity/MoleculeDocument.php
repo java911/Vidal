@@ -7,18 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 /** @ORM\Entity @ORM\Table(name="molecule_document") */
 class MoleculeDocument
 {
-	/**
-	 * @ORM\Id
-	 * @ORM\ManyToOne(targetEntity="Molecule", inversedBy="moleculeDocuments")
-	 * @ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")
-	 */
+	/** @ORM\Column(type="integer") @ORM\Id */
 	protected $MoleculeID;
 
-	/**
-	 * @ORM\Id
-	 * @ORM\ManyToOne(targetEntity="Document", inversedBy="moleculeDocuments")
-	 * @ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")
-	 */
+	/** @ORM\Column(type="integer") @ORM\Id */
 	protected $DocumentID;
 
 	/** @ORM\Column(type="smallint", nullable=true) */

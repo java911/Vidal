@@ -20,16 +20,13 @@ class Company
 	protected $Property;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Country", inversedBy="countries")
+	 * @ORM\ManyToOne(targetEntity="Country", inversedBy="companies")
 	 * @ORM\JoinColumn(name="CountryCode", referencedColumnName="CountryCode")
 	 */
 	protected $CountryCode;
 
-	/**
-	 * @ORM\ManyToOne(targetEntity="CountryEdition", inversedBy="companies")
-	 * @ORM\JoinColumn(name="CountryEditionCode", referencedColumnName="CountryEditionCode")
-	 */
-	protected $CountryEditionCode;
+	/** @ORM\Column(length=10, nullable=true) */
+	protected $CountryEditionCode = 'RUS';
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="CompanyGroup", mappedBy="companies")
@@ -203,5 +200,21 @@ class Company
 	public function getCountProducts()
 	{
 		return $this->countProducts;
+	}
+
+	/**
+	 * @param \Doctrine\Common\Collections\ArrayCollection $productCompanies
+	 */
+	public function setProductCompanies($productCompanies)
+	{
+		$this->productCompanies = $productCompanies;
+	}
+
+	/**
+	 * @return \Doctrine\Common\Collections\ArrayCollection
+	 */
+	public function getProductCompanies()
+	{
+		return $this->productCompanies;
 	}
 }

@@ -68,7 +68,7 @@
 				<td class="products-table-company">
 					{# компании регистраторы/производители препарата #}
 					{% for company in companies[id] %}
-						<div>
+						<div{% if loop.index > 1 %} class="dot"{% endif %}>
 							{% if company.ItsMainCompany %}
 								<a class="no-underline"
 								   href="{{ path('firm_item', {'CompanyID':company.CompanyID}) }}">
@@ -101,7 +101,7 @@
 					{# представительство #}
 					{% if infoPages is defined and infoPages[product.DocumentID] is defined %}
 						{% set inf = infoPages[product.DocumentID] %}
-						<div>
+						<div class="dot">
 							<span class="tip">представительство:</span>
 							<a class="no-underline" href="{{ path('inf_item', {'InfoPageID':inf.InfoPageID}) }}">
 								{{ inf.RusName|raw }}

@@ -8,8 +8,9 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Doctrine\ORM\EntityRepository;
+use Vidal\DrugBundle\Transformer\DocumentsTransformer;
 use Vidal\DrugBundle\Transformer\DocumentTransformer;
-use Vidal\DrugBundle\Transformer\PublicationTagTransformer;
+use Vidal\DrugBundle\Transformer\TagTransformer;
 
 class PharmArticleAdmin extends Admin
 {
@@ -41,9 +42,10 @@ class PharmArticleAdmin extends Admin
 
 	protected function configureFormFields(FormMapper $formMapper)
 	{
-		$em                        = $this->getModelManager()->getEntityManager($this->getSubject());
-		$documentTransformer       = new DocumentTransformer($em, $this->getSubject());
-		$publicationTagTransformer = new PublicationTagTransformer($em, $this->getSubject());
+		$subject              = $this->getSubject();
+		$em                   = $this->getModelManager()->getEntityManager($subject);
+		$documentTransformer  = new DocumentTransformer($em, $subject);
+		$tagTransformer       = new TagTransformer($em, $subject);
 
 		$formMapper
 			->add('company', null, array(
@@ -61,7 +63,7 @@ class PharmArticleAdmin extends Admin
 					'label'        => 'Создать тег',
 					'required'     => false,
 					'by_reference' => false,
-				))->addModelTransformer($publicationTagTransformer)
+				))->addModelTransformer($tagTransformer)
 			)
 			->add('atcCodes', 'entity', array(
 				'label'         => 'Коды АТХ',
@@ -115,7 +117,7 @@ class PharmArticleAdmin extends Admin
 				'multiple'      => true,
 				'attr'          => array('placeholder' => 'Начните вводить название или код'),
 			))
-			->add($formMapper->create('documents', 'text', array(
+			->add($formMapper->create('hidden2', 'text', array(
 					'label'        => 'Описания препаратов',
 					'required'     => false,
 					'by_reference' => false,

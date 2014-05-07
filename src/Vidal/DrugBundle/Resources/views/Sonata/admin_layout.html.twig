@@ -70,7 +70,7 @@ file that was distributed with this source code.
 			CONFIRM_EXIT: '{{ 'confirm_exit'|trans({}, 'SonataAdminBundle')|escape('js') }}'
 		};
 	</script>
-	<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/jquery-1.9.1.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/jquery-1.11.0.min.js') }}"></script>
 	<script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap.min.js') }}"></script>
 
 	<script src="{{ asset('bundles/sonataadmin/x-editable/js/bootstrap-editable.min.js') }}"></script>
@@ -98,7 +98,7 @@ file that was distributed with this source code.
 			src="{{ asset('bundles/vidalmain/jquery-ui/jquery-ui-1.10.4.custom.min.js') }}"></script>
 
 	{# если редактируем админку с документами - подключаем к ним автодополнение #}
-	{% if route in ['admin_vidal_drug_art_edit','admin_vidal_drug_article_edit','admin_vidal_drug_publication_edit','admin_vidal_drug_pharmarticle_edit'] %}
+	{% if route in ['admin_vidal_drug_art_edit','admin_vidal_drug_art_create','admin_vidal_drug_article_edit','admin_vidal_drug_article_create','admin_vidal_drug_publication_edit','admin_vidal_drug_publication_create','admin_vidal_drug_pharmarticle_edit','admin_vidal_drug_pharmarticle_create'] %}
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('.doc').attr('placeholder', 'Начните вводить препарат или ID документа')
@@ -127,9 +127,19 @@ file that was distributed with this source code.
 				};
 
 			{% if object.documents and object.documents.count %}
-			var ul = $('<ul>{% for document in object.documents %}<li>{{ document|raw }}</li>{% endfor %}</ul>');
+			var ul = $('<ul class="ul-remove">{% for document in object.documents %}<li><b><a href="{{ path('document_remove', {'type':object|type, 'id':object.id, 'DocumentID':document.DocumentID}) }}">X</a></b>{{ document|raw }}</li>{% endfor %}</ul>');
 			$('.doc').parent().append(ul);
 			{% endif %}
+
+			$(document).on('click', '.ul-remove b a', function(e) {
+				e.preventDefault();
+				var $link = $(this);
+				$.getJSON(this.href, null, function(data) {
+					if (data == 'OK') {
+						$link.closest('li').remove();
+					}
+				});
+			});
 		});
 	</script>
 	{% endif %}

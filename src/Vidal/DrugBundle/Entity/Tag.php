@@ -10,7 +10,7 @@ class Tag
 	/** @ORM\Column(type="integer") @ORM\Id @ORM\GeneratedValue */
 	protected $id;
 
-	/** @ORM\Column(length=30) */
+	/** @ORM\Column(length=255) */
 	protected $text;
 
 	/** @ORM\ManyToMany(targetEntity="Article", mappedBy="tags") */

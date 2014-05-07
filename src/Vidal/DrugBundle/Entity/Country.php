@@ -24,8 +24,8 @@ class Country
 
 	public function __construct()
 	{
-		$this->companies         = new ArrayCollection();
-		$this->infoPages         = new ArrayCollection();
+		$this->companies = new ArrayCollection();
+		$this->infoPages = new ArrayCollection();
 	}
 
 	public function __toString()

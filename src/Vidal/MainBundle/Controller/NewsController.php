@@ -48,7 +48,7 @@ class NewsController extends Controller
 
 		$params['publicationsPagination'] = $this->get('knp_paginator')->paginate(
 			$em->getRepository('VidalDrugBundle:Publication')->getQueryEnabled(),
-			$request->query->get('p'),
+			$request->query->get('p', 1),
 			self::PUBLICATIONS_PER_PAGE
 		);
 

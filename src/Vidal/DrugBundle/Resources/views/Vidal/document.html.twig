@@ -163,52 +163,75 @@
 	{% endif %}
 
 	{# Блок кода АТХ #}
-	{% if atcCodes is defined and atcCodes is not empty %}
-		<div class="block">
-			<span class="block-head">Код ATX: </span>
-			<span class="atc-content">
-				{% for atc in atcCodes %}
-					<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}" class="no-underline">{{ atc.ATCCode }}</a>
+	{% if document.atcCodes is not empty %}
+		{% if document.atcCodes|length == 1 %}
+			{% set atc = document.atcCodes[0] %}
+			<div class="block" id="phthgroup">
+				<span class="block-head">Код ATX:</span>
+				<span class="block-content">
+					<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}" class="no-underline">
+						{{ atc.ATCCode }}
+					</a>
 					<span class="atc-name small">({{ atc.RusName }})</span>
-				{% endfor %}
-			</span>
-		</div>
+				</span>
+			</div>
+		{% else %}
+			<div class="block">
+				<div class="block-head">Коды АТХ</div>
+				<div class="block-content">
+					<ul class="ul-style">
+						{% for atc in document.atcCodes %}
+							<li>
+								<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}" class="no-underline">
+									{{ atc.ATCCode }}
+								</a>
+								<span class="atc-name small">({{ atc.RusName }})</span>
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		{% endif %}
 	{% endif %}
 
 	{# Блок активных веществ #}
-	{% if molecules is defined
-	and molecules is not empty
-	and (document is not defined or not document.ShowGenericsOnlyInGNList)
-	and molecules|length < 5 %}
+	{% if document.molecules is not empty and document.molecules|length < 5 and not document.ShowGenericsOnlyInGNList %}
 		<div class="block">
-			{% if molecules|length == 1 %}
-				{% set molecule = molecules[0] %}
-				<span class="block-head">Активное вещество:</span>
-				<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
-				   class="no-underline">{{ molecule.LatName }}</a>
-				{% if molecule.RusName %}
-					<span class="small">({{ molecule.RusName }})</span>
-				{% endif %}
-				{% if molecule.GNParent is not empty %}
-					<a title="Международное непатентованное наименование (МНН)" href="{{ path('gnp') }}"
-					   class="no-underline mnn">{{ molecule.GNParent }}
-					</a>
-					<span class="small italic">{{ molecule.description }}</span>
+			{% if document.molecules|length == 1 %}
+				{% set molecule = document.molecules[0] %}
+				{% set gn = molecule.GNParent %}
+
+				{% if document.molecules[0].MoleculeID != 1144 %}
+					<span class="block-head">Активное вещество:</span>
+					<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
+					   class="no-underline">{{ molecule.RusName }}</a>
+					{% if molecule.RusName %}
+						<span class="small">({{ molecule.LatName }})</span>
+					{% endif %}
+					{% if gn is not empty %}
+						<div style="padding-left:146px">
+							<a title="Международное непатентованное наименование (МНН)" href="{{ path('gnp') }}"
+							   class="no-underline mnn">{{ gn.GNParent }}
+							</a>
+							<span class="small italic">{{ gn.description }}</span>
+						</div>
+					{% endif %}
 				{% endif %}
 			{% else %}
 				<div class="block-head">Активные вещества</div>
 				<ul class="ul-style">
-					{% for molecule in molecules %}
+					{% for molecule in document.molecules %}
+						{% set gn = molecule.GNParent %}
 						<li>
 							<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
-							   class="no-underline">{{ molecule.LatName }}</a>
+							   class="no-underline">{{ molecule.RusName }}</a>
 							{% if molecule.RusName %}
-								<span class="small">({{ molecule.RusName }})</span>
+								<span class="small">({{ molecule.LatName }})</span>
 							{% endif %}
-							{% if molecule.GNParent is not empty %}
+							{% if gn is not empty %}
 								<a title="Международное непатентованное наименование (МНН)"
-								   href="{{ path('gnp') }}" class="no-underline mnn">{{ molecule.GNParent }}</a>
-								<span class="small italic">{{ molecule.description }}</span>
+								   href="{{ path('gnp') }}" class="no-underline mnn">{{ gn.GNParent }}</a>
+								<span class="small italic">{{ gn.description }}</span>
 							{% endif %}
 						</li>
 					{% endfor %}
@@ -280,17 +303,11 @@
 			{% spaceless %}
 				<textarea cols="92" rows="2">
 					{% if product is defined %}
-						<a href="{{ url('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"
-						   target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике
-							Видаль.</a>
+						<a href="{{ url('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}" target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
 					{% elseif documentId is defined %}
-						<a href="{{ url('document', {'EngName':document.Name, 'DocumentID':document.DocumentID}) }}"
-						   target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике
-							Видаль.</a>
+						<a href="{{ url('document', {'EngName':document.Name, 'DocumentID':document.DocumentID}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
 					{% else %}
-						<a href="{{ url('document', {'EngName':document.Name}) }}"
-						   target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике
-							Видаль.</a>
+						<a href="{{ url('document', {'EngName':document.Name}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
 					{% endif %}
 				</textarea>
 			{% endspaceless %}

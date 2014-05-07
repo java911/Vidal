@@ -1,7 +1,16 @@
 AddDefaultCharset utf-8
 
+# снимаем ограничение используемой памяти - иначе админке не хватает
 php_value memory_limit -1
+# очистка сессий не раньше, чем через месяц
+php_value session.gc_maxlifetime 2592000
+# закачка больших видео-файлов в админке
+php_value upload_max_filesize 250M
+php_value post_max_size 250M
+php_value max_execution_time 1200
+# прочие радости настроек сервера
 php_flag magic_quotes_gpc Off
+
 
 # Use the front controller as index file. It serves as fallback solution when
 # every other rewrite/redirect fails (e.g. in an aliased environment without

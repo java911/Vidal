@@ -164,39 +164,40 @@
 	{% endif %}
 
 	{# Блок активных веществ #}
-	{% if molecules is defined
-	and molecules is not empty
-	and (document is not defined or not document.ShowGenericsOnlyInGNList)
-	and molecules|length < 5 %}
+	{% if document.molecules is not empty and document.molecules|length < 5 and not document.ShowGenericsOnlyInGNList %}
 		<div class="block">
-			{% if molecules|length == 1 %}
-				{% set molecule = molecules[0] %}
+			{% if document.molecules|length == 1 %}
+				{% set molecule = document.molecules[0] %}
+				{% set gn = molecule.GNParent %}
 				<span class="block-head">Активное вещество:</span>
 				<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
-				   class="no-underline">{{ molecule.LatName }}</a>
+				   class="no-underline">{{ molecule.RusName }}</a>
 				{% if molecule.RusName %}
-					<span class="small">({{ molecule.RusName }})</span>
+					<span class="small">({{ molecule.LatName }})</span>
 				{% endif %}
-				{% if molecule.GNParent is not empty %}
-					<a title="Международное непатентованное наименование (МНН)" href="{{ path('gnp') }}"
-					   class="no-underline mnn">{{ molecule.GNParent }}
-					</a>
-					<span class="small italic">{{ molecule.description }}</span>
+				{% if gn is not empty %}
+					<div style="padding-left:146px">
+						<a title="Международное непатентованное наименование (МНН)" href="{{ path('gnp') }}"
+						   class="no-underline mnn">{{ gn.GNParent }}
+						</a>
+						<span class="small italic">{{ gn.description }}</span>
+					</div>
 				{% endif %}
 			{% else %}
 				<div class="block-head">Активные вещества</div>
 				<ul class="ul-style">
-					{% for molecule in molecules %}
+					{% for molecule in document.molecules %}
+						{% set gn = molecule.GNParent %}
 						<li>
 							<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
-							   class="no-underline">{{ molecule.LatName }}</a>
+							   class="no-underline">{{ molecule.RusName }}</a>
 							{% if molecule.RusName %}
-								<span class="small">({{ molecule.RusName }})</span>
+								<span class="small">({{ molecule.LatName }})</span>
 							{% endif %}
-							{% if molecule.GNParent is not empty %}
+							{% if gn is not empty %}
 								<a title="Международное непатентованное наименование (МНН)"
-								   href="{{ path('gnp') }}" class="no-underline mnn">{{ molecule.GNParent }}</a>
-								<span class="small italic">{{ molecule.description }}</span>
+								   href="{{ path('gnp') }}" class="no-underline mnn">{{ gn.GNParent }}</a>
+								<span class="small italic">{{ gn.description }}</span>
 							{% endif %}
 						</li>
 					{% endfor %}

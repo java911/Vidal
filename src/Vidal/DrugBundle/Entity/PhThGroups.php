@@ -14,7 +14,7 @@ class PhThGroups
 	protected $Name;
 
 	/** 
-	 * @ORM\ManyToMany(targetEntity="Product", inversedBy="phthgroups") 
+	 * @ORM\ManyToMany(targetEntity="Product", mappedBy="phthgroups")
 	 * @ORM\JoinTable(name="product_phthgrp",
 	 * 		joinColumns={@ORM\JoinColumn(name="PhThGroupsId", referencedColumnName="id")},
 	 * 		inverseJoinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")})

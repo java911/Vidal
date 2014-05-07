@@ -88,7 +88,7 @@ class Document
 	protected $NewForCurrentEdition = false;
 
 	/** @ORM\Column(length=10) */
-	protected $CountryEditionCode;
+	protected $CountryEditionCode = 'RUS';
 
 	/** @ORM\Column(type="boolean") */
 	protected $IsApproved = false;
@@ -139,7 +139,7 @@ class Document
 	protected $ed;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="ATC", mappedBy="documents")
+	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="documents")
 	 * @ORM\JoinTable(name="documentoc_atc",
 	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ATCCode", referencedColumnName="ATCCode")})
@@ -150,15 +150,15 @@ class Document
 	protected $productDocument;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Nozology", mappedBy="documents", fetch="EXTRA_LAZY")
+	 * @ORM\ManyToMany(targetEntity="Nozology", inversedBy="documents", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="document_indicnozology",
-	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
+	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")})
 	 */
 	protected $nozologies;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="ClinicoPhPointers", mappedBy="documents")
+	 * @ORM\ManyToMany(targetEntity="ClinicoPhPointers", inversedBy="documents", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="document_clphpointers",
 	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ClPhPointerID", referencedColumnName="ClPhPointerID")})
@@ -173,8 +173,13 @@ class Document
 	 */
 	//protected $contraindications;
 
-	/** @ORM\OneToMany(targetEntity="DocumentInfoPage", mappedBy="DocumentID") */
-	protected $documentInfoPages;
+	/**
+	 * @ORM\ManyToMany(targetEntity="InfoPage", inversedBy="documents")
+	 * @ORM\JoinTable(name="document_info_page",
+	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")})
+	 */
+	protected $infoPages;
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Edition", mappedBy="documents")
@@ -187,8 +192,13 @@ class Document
 	/** @ORM\OneToMany(targetEntity="DocumentEdition", mappedBy="DocumentID") */
 	protected $documentEditions;
 
-	/** @ORM\OneToMany(targetEntity="MoleculeDocument", mappedBy="DocumentID") */
-	protected $moleculeDocuments;
+	/**
+	 * @ORM\ManyToMany(targetEntity="Molecule", inversedBy="documents")
+	 * @ORM\JoinTable(name="document_molecule",
+	 * 		joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
+	 * 		inverseJoinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")})
+	 */
+	protected $molecules;
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Article", mappedBy="documents")
@@ -235,15 +245,14 @@ class Document
 		$this->nozologies        = new ArrayCollection();
 		$this->clphPointers      = new ArrayCollection();
 		$this->contraindications = new ArrayCollection();
-		$this->documentInfoPages = new ArrayCollection();
 		$this->documentEditions  = new ArrayCollection();
-		$this->moleculeDocuments = new ArrayCollection();
 		$this->articles          = new ArrayCollection();
 		$this->arts              = new ArrayCollection();
 		$this->publications      = new ArrayCollection();
 		$this->pharmArticles     = new ArrayCollection();
 		$this->portfolios        = new ArrayCollection();
 		$this->products          = new ArrayCollection();
+		$this->infoPages         = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -972,22 +981,6 @@ class Document
 	}
 
 	/**
-	 * @param mixed $documentInfoPages
-	 */
-	public function setDocumentInfoPages(ArrayCollection $documentInfoPages)
-	{
-		$this->documentInfoPages = $documentInfoPages;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getDocumentInfoPages()
-	{
-		return $this->documentInfoPages;
-	}
-
-	/**
 	 * @param mixed $documentEditions
 	 */
 	public function setDocumentEditions(ArrayCollection $documentEditions)
@@ -1017,22 +1010,6 @@ class Document
 	public function getEditions()
 	{
 		return $this->editions;
-	}
-
-	/**
-	 * @param mixed $moleculeDocuments
-	 */
-	public function setMoleculeDocuments(ArrayCollection $moleculeDocuments)
-	{
-		$this->moleculeDocuments = $moleculeDocuments;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getMoleculeDocuments()
-	{
-		return $this->moleculeDocuments;
 	}
 
 	/**
@@ -1177,5 +1154,37 @@ class Document
 	public function getProducts()
 	{
 		return $this->products;
+	}
+
+	/**
+	 * @param mixed $infoPages
+	 */
+	public function setInfoPages($infoPages)
+	{
+		$this->infoPages = $infoPages;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getInfoPages()
+	{
+		return $this->infoPages;
+	}
+
+	/**
+	 * @param mixed $molecules
+	 */
+	public function setMolecules($molecules)
+	{
+		$this->molecules = $molecules;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getMolecules()
+	{
+		return $this->molecules;
 	}
 }

@@ -16,8 +16,9 @@ class ProductAdmin extends Admin
 		$transformer = new DocumentToStringTransformer($em, $subject);
 
 		$formMapper
-			->add('RusName', 'text', array('label' => 'Название'))
-			->add('EngName', 'text', array('label' => 'Латинское'))
+			->add('RusName', 'text', array('label' => 'Название', 'required' => true))
+			->add('EngName', 'text', array('label' => 'Латинское', 'required' => true))
+			->add('Name', 'text', array('label' => 'URL адрес', 'required' => true))
 			->add($formMapper->create('document', 'text', array(
 				'label'        => 'ID документа',
 				'required'     => true,
@@ -25,7 +26,6 @@ class ProductAdmin extends Admin
 			))->addModelTransformer($transformer))
 			->add('ProductTypeCode', null, array('label' => 'Тип препарата', 'required' => true))
 			->add('MarketStatusID', null, array('label' => 'Статус', 'required' => true))
-			->add('CountryEditionCode', null, array('label' => 'Издание', 'required' => true))
 			->add('ZipInfo', null, array('label' => 'Форма выпуска', 'required' => true))
 			->add('Composition', null, array('label' => 'Описание', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('RegistrationDate', null, array('label' => 'Дата регистрации'))
@@ -37,31 +37,52 @@ class ProductAdmin extends Admin
 			->add('DLO', null, array('label' => 'ДЛО', 'required' => false))
 			->add('ValidPeriod', null, array('label' => 'Срок действия', 'required' => false))
 			//->add('StrCond', null, array('label' => 'Условия хранения', 'required' => false))
-			->add('atcCodes', null, array('label' => 'Коды АТХ', 'required' => false))
-			->add('moleculeNames', null, array('label' => 'Активные вещества', 'required' => false))
-			->add('clphGroups', null, array('label' => 'Группы КФГ', 'required' => false))
-			->add('phthgroups', null, array('label' => 'Группы ФТГ', 'required' => false));
+			//->add('atcCodes', null, array('label' => 'Коды АТХ', 'required' => false))
+			//->add('moleculeNames', null, array('label' => 'Активные вещества', 'required' => false))
+			->add('clphGroups', null, array('label' => 'Клинико-фармакологические группы', 'required' => false, 'help' => 'ClPhGroups'))
+			->add('phthgroups', null, array('label' => 'Фармако-терапевтические группы', 'required' => false, 'help' => 'PhThGroups'))
+			->add('productCompany', 'sonata_type_collection',
+				array(
+					'label'              => 'Компании',
+					'by_reference'       => false,
+					'cascade_validation' => true,
+					'required'           => false,
+				),
+				array(
+					'edit'         => 'inline',
+					'inline'       => 'table',
+					'allow_delete' => true
+				)
+			);
 	}
 
 	// Fields to be shown on filter forms
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
-			->add('RusName')
-			->add('EngName');
+			->add('ProductID', null, array('label' => 'ID'))
+			->add('RusName', null, array('label' => 'Название'))
+			->add('EngName', null, array('label' => 'Латинское'))
+			->add('ProductTypeCode', null, array('label' => 'Тип препарата'))
+			->add('MarketStatusID', null, array('label' => 'Статус'))
+			->add('ZipInfo', null, array('label' => 'Форма выпуска'))
+			->add('RegistrationDate', null, array('label' => 'Дата регистр.'));
 	}
 
 	// Fields to be shown on lists
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-			->addIdentifier('ProductID')
-			->add('RusName')
-			->add('EngName')
+			->addIdentifier('ProductID', null, array('label' => 'ID'))
+			->add('RusName', null, array('label' => 'Название', 'template' => 'VidalDrugBundle:Sonata:RusName.html.twig'))
+			->add('EngName', null, array('label' => 'Латинское', 'template' => 'VidalDrugBundle:Sonata:EngName.html.twig'))
+			->add('ProductTypeCode', null, array('label' => 'Тип препарата'))
+			->add('MarketStatusID', null, array('label' => 'Статус'))
+			->add('ZipInfo', null, array('label' => 'Форма выпуска'))
+			->add('RegistrationDate', null, array('label' => 'Дата регистр.'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(
-					'show'   => array(),
 					'edit'   => array(),
 					'delete' => array(),
 				)
