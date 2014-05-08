@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Vidal\MainBundle\Entity\MapRegion;
 use Vidal\MainBundle\Entity\MapCoord;
+use Vidal\MainBundle\Entity\QuestionAnswer;
 use Lsw\SecureControllerBundle\Annotation\Secure;
 
 class IndexController extends Controller
@@ -39,12 +40,41 @@ class IndexController extends Controller
 	 * @Route("/otvety_specialistov", name="qa")
 	 * @Template()
 	 */
-	public function qaAction()
+	public function qaAction(Request $request)
 	{
+        $em = $this->getDoctrine()->getManager();
+        $faq = new QuestionAnswer();
+
+        $builder = $this->createFormBuilder($faq);
+        $builder
+            ->add('authorFirstName', null, array('label' => 'Ваше имя'))
+            ->add('authorEmail', null, array('label' => 'Ваш e-mail'))
+            ->add('question', null, array('label' => 'Вопрос'))
+            ->add('captcha', 'captcha', array('label' => 'Введите код с картинки'))
+            ->add('submit', 'submit', array('label' => 'Задать вопрос', 'attr' => array('class' => 'btn')));
+
+        $form    = $builder->getForm();
+        $form->handleRequest($request);
+        $t = 0;
+        if ($request->isMethod('POST')) {
+            $t = 1;
+            if ($form->isValid()){
+                $t = 2;
+                $faq = $form->getData();
+                $faq->setEnabled(0);
+                $em->persist($faq);
+                $em->flush();
+                $em->refresh($faq);
+            }
+        }
+
+
 		return array(
 			'title'           => 'Вопрос-ответ',
 			'menu_left'       => 'qa',
-			'questionAnswers' => $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findAll(),
+			'questionAnswers' => $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByEnabled(1),
+            'form'  => $form->createView(),
+            't' => $t,
 		);
 	}
 

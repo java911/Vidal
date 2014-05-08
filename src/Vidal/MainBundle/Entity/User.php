@@ -153,8 +153,14 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	/** @ORM\Column(type="boolean") */
 	protected $oldUser;
 
+    /**
+     * @ORM\OneToMany(targetEntity="QuestionAnswer", mappedBy="answerUser")
+     */
+    protected $answers;
+
 	public function __construct()
 	{
+        $this->answers = new ArrayCollection();
 		$this->emailConfirmed = false;
 		$this->hideBirthdate  = false;
 		$this->hidePhone      = false;
@@ -840,4 +846,22 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	{
 		return $this->oldUser;
 	}
+
+    /**
+     * @param mixed $answers
+     */
+    public function setAnswers($answers)
+    {
+        $this->answers = $answers;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAnswers()
+    {
+        return $this->answers;
+    }
+
+
 }
