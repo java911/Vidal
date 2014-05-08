@@ -7,6 +7,19 @@
 
 
 {% block content %}
+    <div class="qa-ask">
+        <b><a href="#" id="ask">Спросить у специалистов:</a></b>
+        <br/>
+        <br/>
+        {% if t == 2 %}
+            <div class="green">
+                Ваш запрос отправлен. Ответ вы получите на E-mail
+            </div>
+        {% endif %}
+        <form method="POST">
+            {{ form_widget(form) }}
+        </form>
+    </div>
 	{% if questionAnswers|length %}
 		<div class="qa-wrap">
 			{% if isAdmin %}
@@ -41,37 +54,58 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<style type="text/css">
-		.qa {
-			position:      relative;
-			border:        3px solid #eee;
-			margin-bottom: 10px;
-			padding:       11px 12px 10px;
-		}
-		.qa-expand {
-			display:       inline-block;
-			border-bottom: 2px dotted #aaa;
-			color:         #d71344;
-			cursor:        pointer;
-		}
-		.qa-question p, .qa-answer p {
-			margin: 8px 0;
-		}
-		.qa-question p:first-child, .qa-answer p:first-child {
-			margin-top: 0;
-		}
-		.qa-question {
-			font-family: 'PT Sans Caption', sans-serif;
-			font-size:   15px;
-			color:       #2f4053;
-		}
-		.expanded .qa-question {
-			border-bottom: 1px solid #ddd;
-			margin-bottom: 8px;
-		}
-		.qa-answer {
-			font-size: 15px;
-			display:   none;
-		}
+        .qa {
+            position:      relative;
+            border:        3px solid #eee;
+            margin-bottom: 10px;
+            padding:       11px 12px 10px;
+        }
+        .qa-expand {
+            display:       inline-block;
+            border-bottom: 2px dotted #aaa;
+            color:         #d71344;
+            cursor:        pointer;
+        }
+        .qa-question p, .qa-answer p {
+            margin: 8px 0;
+        }
+        .qa-question p:first-child, .qa-answer p:first-child {
+            margin-top: 0;
+        }
+        .qa-question {
+            font-family: 'PT Sans Caption', sans-serif;
+            font-size:   15px;
+            color:       #2f4053;
+        }
+        .expanded .qa-question {
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 8px;
+        }
+        .qa-answer {
+            font-size: 15px;
+            display:   none;
+        }
+        #form{
+        {{  t != 2 ? 'display: none;' }}
+        }
+        .qa-ask{
+            border-bottom: 3px solid #eee;
+            margin-bottom: 10px;
+        }
+        .tabs a{
+            width: 100%;
+            display: block;
+            text-align: center;
+            padding: 7px 0;
+        }
+        .green{
+            padding: 5px;
+            text-align: center;
+            border: 1px solid #62AC75;
+            background: #a4ffbc;
+            color: #263e2e;
+            margin-bottom: 14px;
+        }
 	</style>
 {% endblock %}
 
@@ -86,5 +120,21 @@
 				$this.closest('.qa').addClass('expanded').find('.qa-answer').slideDown('fast');
 			});
 		});
+        $(document).ready(function() {
+            $('.qa-expand').click(function() {
+                var $this = $(this);
+                $this.hide();
+                $this.closest('.qa').addClass('expanded').find('.qa-answer').slideDown('fast');
+            });
+
+            $('#ask').click(function(){
+                if ( $('#form').css('display') == 'none' ){
+                    $('#form').fadeIn();
+                }else{
+                    $('#form').fadeOut();
+                }
+                return false;
+            })
+        });
 	</script>
 {% endblock %}
