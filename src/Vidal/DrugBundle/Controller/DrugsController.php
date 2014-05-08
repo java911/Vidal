@@ -31,17 +31,21 @@ class DrugsController extends Controller
 		}
 
 		# все продукты по ATC-коду и отсеиваем дубли
-		$products   = $em->getRepository('VidalDrugBundle:Product')->findByATCCode($ATCCode);
-		$productIds = $this->getProductIds($products);
-
-		return array(
-			'atc'       => $atc,
-			'products'  => $products,
-			'companies' => $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds),
-			'pictures'  => $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y')),
-			'infoPages' => $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products),
-			'title'     => $atc->getRusName() . ' - ' . $atc . ' | АТХ',
+		$products = $em->getRepository('VidalDrugBundle:Product')->findByATCCode($ATCCode);
+		$params   = array(
+			'atc'      => $atc,
+			'products' => $products,
+			'title'    => $atc->getRusName() . ' - ' . $atc . ' | АТХ',
 		);
+
+		if (!empty($products)) {
+			$productIds          = $this->getProductIds($products);
+			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
+			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
+		}
+
+		return $params;
 	}
 
 	/**
