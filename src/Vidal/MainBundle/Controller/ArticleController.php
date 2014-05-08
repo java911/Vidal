@@ -200,7 +200,7 @@ class ArticleController extends Controller
 	 * @Route("/vracham", name="vracham")
 	 * @Secure(roles="ROLE_DOCTOR")
 	 *
-	 * @Template()
+	 * @Template("VidalMainBundle:Article:vracham.html.twig")
 	 */
 	public function vrachamAction()
 	{
@@ -210,7 +210,7 @@ class ArticleController extends Controller
 			'title'     => 'Информация для специалистов',
 			'menu'      => 'vracham',
 			'rubriques' => $em->getRepository('VidalDrugBundle:ArtRubrique')->findActive(),
-			'arts'      => $em->getRepository('VidalDrugBudnle:Art')->findForAnons(),
+			'arts'      => $em->getRepository('VidalDrugBundle:Art')->findForAnons(),
 		);
 	}
 
@@ -268,7 +268,7 @@ class ArticleController extends Controller
 	 * @Route("/vracham/{url}", name="art", requirements={"url"=".+"})
 	 * @Secure(roles="ROLE_DOCTOR")
 	 *
-	 * @Template()
+	 * @Template("VidalMainBundle:Article:art.html.twig")
 	 */
 	public function artAction(Request $request, $url)
 	{

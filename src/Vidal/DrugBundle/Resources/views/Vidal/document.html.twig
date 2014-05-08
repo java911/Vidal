@@ -162,8 +162,37 @@
 		</div>
 	{% endif %}
 
-	{# Блок кода АТХ #}
-	{% if document.atcCodes is not empty %}
+	{# Блок АТХ кодов #}
+	{% if product is defined and product.atcCodes is not empty %}
+		{% if product.atcCodes|length == 1 %}
+			{% set atc = product.atcCodes[0] %}
+			<div class="block" id="phthgroup">
+				<span class="block-head">Код ATX:</span>
+				<span class="block-content">
+					<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}" class="no-underline">
+						{{ atc.ATCCode }}
+					</a>
+					<span class="atc-name small">({{ atc.RusName }})</span>
+				</span>
+			</div>
+		{% else %}
+			<div class="block">
+				<div class="block-head">Коды АТХ</div>
+				<div class="block-content">
+					<ul class="ul-style">
+						{% for atc in product.atcCodes %}
+							<li>
+								<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}" class="no-underline">
+									{{ atc.ATCCode }}
+								</a>
+								<span class="atc-name small">({{ atc.RusName }})</span>
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		{% endif %}
+	{% elseif document.atcCodes is not empty %}
 		{% if document.atcCodes|length == 1 %}
 			{% set atc = document.atcCodes[0] %}
 			<div class="block" id="phthgroup">
