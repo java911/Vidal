@@ -41,5 +41,3 @@ $(document).ready(function() {
 
 	$('#search_form .search-type').chosen({disable_search:true});
 });
-
-var load1 = true;

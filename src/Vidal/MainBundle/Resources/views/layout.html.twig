@@ -96,13 +96,5 @@
 {% include 'VidalMainBundle::google_analytics.html.twig' %}
 {#{% include 'VidalMainBundle::omniture.html.twig' %}#}
 
-{# проверка загрузки ресурсов #}
-<script type="text/javascript">
-	$(document).ready(function() {
-		var $o = $('#overlay');
-		if ($o.css('position') != 'fixed' || $o.css('text-align') != 'right' || typeof load0 === 'undefined' || typeof load1 === 'undefined') location.reload();
-	});
-</script>
-
 </body>
 </html>

@@ -49,4 +49,15 @@ class ArtRepository extends EntityRepository
 		')->setMaxResults(1)
 			->getOneOrNullResult();
 	}
+
+	public function findForAnons()
+	{
+		return $this->_em->createQuery('
+			SELECT a
+			FROM VidalDrugBundle:Art a
+			WHERE a.anons = TRUE
+				AND a.enabled = TRUE
+			ORDER BY a.anonsPriority DESC, a.date DESC
+		')->getResult();
+	}
 }

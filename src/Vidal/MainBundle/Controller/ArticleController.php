@@ -204,13 +204,13 @@ class ArticleController extends Controller
 	 */
 	public function vrachamAction()
 	{
-		$em        = $this->getDoctrine()->getManager('drug');
-		$rubriques = $em->getRepository('VidalDrugBundle:ArtRubrique')->findActive();
+		$em = $this->getDoctrine()->getManager('drug');
 
 		return array(
 			'title'     => 'Информация для специалистов',
 			'menu'      => 'vracham',
-			'rubriques' => $rubriques,
+			'rubriques' => $em->getRepository('VidalDrugBundle:ArtRubrique')->findActive(),
+			'arts'      => $em->getRepository('VidalDrugBudnle:Art')->findForAnons(),
 		);
 	}
 

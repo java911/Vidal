@@ -126,13 +126,10 @@ class Art extends BaseEntity
 	protected $atIndex = false;
 
 	/** @ORM\Column(type="boolean") */
-	protected $atAnons1 = false;
+	protected $anons = false;
 
-	/** @ORM\Column(type="boolean") */
-	protected $atAnons2 = false;
-
-	/** @ORM\Column(type="boolean") */
-	protected $atAnons3 = false;
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $anonsPriority;
 
 	public function __construct()
 	{
@@ -573,54 +570,6 @@ class Art extends BaseEntity
 	}
 
 	/**
-	 * @param mixed $atAnons1
-	 */
-	public function setAtAnons1($atAnons1)
-	{
-		$this->atAnons1 = $atAnons1;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getAtAnons1()
-	{
-		return $this->atAnons1;
-	}
-
-	/**
-	 * @param mixed $atAnons2
-	 */
-	public function setAtAnons2($atAnons2)
-	{
-		$this->atAnons2 = $atAnons2;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getAtAnons2()
-	{
-		return $this->atAnons2;
-	}
-
-	/**
-	 * @param mixed $atAnons3
-	 */
-	public function setAtAnons3($atAnons3)
-	{
-		$this->atAnons3 = $atAnons3;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getAtAnons3()
-	{
-		return $this->atAnons3;
-	}
-
-	/**
 	 * @param mixed $atIndex
 	 */
 	public function setAtIndex($atIndex)
@@ -634,5 +583,37 @@ class Art extends BaseEntity
 	public function getAtIndex()
 	{
 		return $this->atIndex;
+	}
+
+	/**
+	 * @param mixed $anonsPriority
+	 */
+	public function setAnonsPriority($anonsPriority)
+	{
+		$this->anonsPriority = $anonsPriority;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getAnonsPriority()
+	{
+		return $this->anonsPriority;
+	}
+
+	/**
+	 * @param mixed $anons
+	 */
+	public function setAnons($anons)
+	{
+		$this->anons = $anons;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getAnons()
+	{
+		return $this->anons;
 	}
 }

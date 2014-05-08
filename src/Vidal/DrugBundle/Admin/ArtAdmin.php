@@ -141,9 +141,8 @@ class ArtAdmin extends Admin
 			->add('metaKeywords', null, array('label' => 'Мета ключевые слова', 'required' => false))
 			->add('video', 'iphp_file', array('label' => 'Видео', 'required' => false, 'help' => 'Загрузить флеш-видео в формате .flv'))
 			->add('atIndex', null, array('label' => 'Отображать на главной', 'required' => false))
-			->add('atAnons1', null, array('label' => 'Отображать на анонс-1', 'required' => false))
-			->add('atAnons2', null, array('label' => 'Отображать на анонс-2', 'required' => false))
-			->add('atAnons3', null, array('label' => 'Отображать на анонс-3', 'required' => false))
+			->add('anons', null, array('label' => 'Отображать в анонсе', 'required' => false))
+			->add('anonsPriority', null, array('label' => 'Приоритет в анонсе'))
 			->add('enabled', null, array('label' => 'Активна', 'required' => false));
 	}
 
@@ -166,9 +165,8 @@ class ArtAdmin extends Admin
 			->add('category', null, array('label' => 'Подкатегория', 'attr' => array('class' => 'art-category')))
 			->add('priority', null, array('label' => 'Приоритет'))
 			->add('atIndex', null, array('label' => 'Отображать на главной'))
-			->add('atAnons1', null, array('label' => 'Отображать на анонс-1'))
-			->add('atAnons2', null, array('label' => 'Отображать на анонс-2'))
-			->add('atAnons3', null, array('label' => 'Отображать на анонс-3'))
+			->add('anons', null, array('label' => 'Отображать в анонсе', 'help' => 'В разделе специалистам'))
+			->add('anonsPriority', null, array('label' => 'Приоритет в анонсе'))
 			->add('enabled', null, array('label' => 'Активна'));
 	}
 
@@ -182,6 +180,8 @@ class ArtAdmin extends Admin
 			->add('category', null, array('label' => 'Подкатегория'))
 			->add('tags', null, array('label' => 'Теги', 'template' => 'VidalDrugBundle:Sonata:tags.html.twig'))
 			->add('priority', null, array('label' => 'Приоритет'))
+			->add('atIndex', null, array('label' => 'на главной'))
+			->add('anons', null, array('label' => 'в анонсе'))
 			->add('date', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
 			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
 			->add('_action', 'actions', array(
