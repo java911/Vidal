@@ -233,7 +233,7 @@ class ArticleController extends Controller
 	/**
 	 * @Route("/vracham/podrobno-o-preparate/{url}", name="portfolio_item")
 	 *
-	 * @Template
+	 * @Template("VidalMainBundle:Article:portfolioItem.html.twig")
 	 */
 	public function portfolioItemAction($url)
 	{
@@ -283,11 +283,11 @@ class ArticleController extends Controller
 		# находим, если указана статья по старому
 		$pos = strpos($url, '.');
 		if ($pos !== false) {
-			$index             = count($parts) - 1;
-			$link              = $parts[$index];
-			$pos               = strpos($link, '.');
-			$link              = substr($link, 0, $pos);
-			$pos = strpos($link, '_');
+			$index = count($parts) - 1;
+			$link  = $parts[$index];
+			$pos   = strpos($link, '.');
+			$link  = substr($link, 0, $pos);
+			$pos   = strpos($link, '_');
 			if ($pos !== false) {
 				$id                = substr($link, $pos + 1);
 				$params['article'] = $em->getRepository('VidalDrugBundle:Art')->findOneById($id);
@@ -344,6 +344,21 @@ class ArticleController extends Controller
 			);
 		}
 
+		# формируем заголовок страницы
+		$titles = array();
+		if (isset($params['article'])) {
+			$titles[] = $this->strip($params['article']->getTitle());
+		}
+		if (isset($params['category'])) {
+			$titles[] = $params['category'];
+		}
+		if (isset($params['type'])) {
+			$titles[] = $params['type'];
+		}
+		$titles[]        = $params['rubrique'];
+		$params['title'] = implode(' | ', $titles);
+
+		# отображение отдельной статьи своим шаблоном
 		if (isset($params['article'])) {
 			return $this->render('VidalMainBundle:Article:art_item.html.twig', $params);
 		}
