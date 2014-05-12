@@ -30,16 +30,16 @@ class Document
 	/** @ORM\Column(length=4) */
 	protected $YearEdition;
 
-	/** @ORM\Column(type="datetime") @Gedmo\Timestampable(on="update") */
+	/** @ORM\Column(type="datetime", nullable=true) */
 	protected $DateOfIncludingText;
 
-	/** @ORM\Column(type="datetime") */
+	/** @ORM\Column(type="datetime", nullable=true) */
 	protected $DateTextModified;
 
-	/** @ORM\Column(length=255) */
+	/** @ORM\Column(length=255, nullable=true) */
 	protected $Elaboration;
 
-	/** @ORM\Column(type="text") */
+	/** @ORM\Column(type="text", nullable=true) */
 	protected $CompaniesDescription;
 
 	/** @ORM\Column(type="text", nullable=true) */
@@ -139,7 +139,7 @@ class Document
 	protected $ed;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="documents")
+	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="documents", )
 	 * @ORM\JoinTable(name="documentoc_atc",
 	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ATCCode", referencedColumnName="ATCCode")})
@@ -195,8 +195,8 @@ class Document
 	/**
 	 * @ORM\ManyToMany(targetEntity="Molecule", inversedBy="documents")
 	 * @ORM\JoinTable(name="document_molecule",
-	 * 		joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
-	 * 		inverseJoinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")})
+	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")})
 	 */
 	protected $molecules;
 
@@ -253,6 +253,7 @@ class Document
 		$this->portfolios        = new ArrayCollection();
 		$this->products          = new ArrayCollection();
 		$this->infoPages         = new ArrayCollection();
+		$this->YearEdition       = date('Y') . '';
 	}
 
 	public function __toString()
