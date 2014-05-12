@@ -92,9 +92,30 @@ class IndexController extends Controller
      * @Secure(roles="ROLE_DOCTOR")
      * @Template()
      */
-    public function doctorAnswerEditAction(Request $request){
-        $questions = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByAnswer(null);
-        return array('questions' => $questions);
+    public function doctorAnswerEditAction(Request $request, $faqId){
+        $em = $this->getDoctrine()->getManager();
+        $faq = $em->getRepository('VidalMainBundle:QuestionAnswer')->findOneById($faqId);
+
+        $builder = $this->createFormBuilder($faq);
+        $builder
+            ->add('question', null, array('label' => 'Вопрос', 'attr' => array('class' => 'ckeditor')))
+            ->add('answer', null, array('label' => 'Ответ', 'attr' => array('class' => 'ckeditor')))
+            ->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn')));
+
+        $form    = $builder->getForm();
+        $form->handleRequest($request);
+
+        if ($request->isMethod('POST')) {
+            if ($form->isValid()) {
+                $faq = $form->getData();
+                $faq->setEnabled(1);
+                if ($faq->getAnswer()!=null){
+                    $em->flush($faq);
+                    return $this->redirect($this->generateUrl('qa_admin'));
+                }
+            }
+        }
+        return array('form' => $form->createView());
     }
 
 	/** @Route("/Vidal/vidal-russia/Novosti-pharmatsevticheskih-kompanii/") */
