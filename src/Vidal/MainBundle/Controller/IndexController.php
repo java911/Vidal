@@ -95,14 +95,17 @@ class IndexController extends Controller
     public function doctorAnswerEditAction(Request $request, $faqId){
         $em = $this->getDoctrine()->getManager();
         $faq = $em->getRepository('VidalMainBundle:QuestionAnswer')->findOneById($faqId);
+        if ( $faq->getAnswer() == null ){
+            $builder = $this->createFormBuilder($faq);
+            $builder
+                ->add('question', null, array('label' => 'Вопрос', 'attr' => array('class' => 'ckeditor')))
+                ->add('answer', null, array('label' => 'Ответ', 'attr' => array('class' => 'ckeditor')))
+                ->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn')));
 
-        $builder = $this->createFormBuilder($faq);
-        $builder
-            ->add('question', null, array('label' => 'Вопрос', 'attr' => array('class' => 'ckeditor')))
-            ->add('answer', null, array('label' => 'Ответ', 'attr' => array('class' => 'ckeditor')))
-            ->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn')));
-
-        $form    = $builder->getForm();
+            $form    = $builder->getForm();
+        }else{
+            return $this->redirect($this->generateUrl('qa_admin'));
+        }
         $form->handleRequest($request);
 
         if ($request->isMethod('POST')) {
