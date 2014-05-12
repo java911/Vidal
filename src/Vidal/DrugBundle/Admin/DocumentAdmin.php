@@ -61,8 +61,8 @@ class DocumentAdmin extends Admin
 			->add('atcCodes', null, array('label' => 'Коды АТХ', 'required' => false))
 			->add('nozologies', null, array('label' => 'Нозологические указатели', 'required' => false, 'help' => 'МКБ-10 (Nozology)'))
 			->add('clphPointers', null, array('label' => 'Клинико-фармакологические указатели', 'required' => false))
-			->add('infoPages', null, array('label' => 'Представительства'))
-			->add('molecules', null, array('label' => 'Активные вещества'))
+			->add('infoPages', null, array('label' => 'Представительства', 'required' => false))
+			->add('molecules', null, array('label' => 'Активные вещества', 'required' => false))
 		;
 	}
 
