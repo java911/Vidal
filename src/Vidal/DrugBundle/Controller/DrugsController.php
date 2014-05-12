@@ -298,14 +298,17 @@ class DrugsController extends Controller
 			}
 		}
 
-		$nozology = $em->getRepository('VidalDrugBundle:Nozology')->findByCode($Code);
+		$nozology = $em->getRepository('VidalDrugBundle:Nozology')->findOneByNozologyCode($Code);
 
 		if ($nozology === null) {
 			throw $this->createNotFoundException();
 		}
 
 		$documents = $em->getRepository('VidalDrugBundle:Document')->findByNozologyCode($Code);
-		$params    = array('nozology' => $nozology);
+		$params    = array(
+			'nozology' => $nozology,
+			'title'    => $nozology->getName() . ' | ' . $nozology->getNozologyCode(),
+		);
 
 		if (!empty($documents)) {
 			$params['molecules'] = $em->getRepository('VidalDrugBundle:Molecule')->findByDocuments1($documents);
