@@ -78,9 +78,9 @@ class DocumentAdmin extends Admin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-			->addIdentifier('ArticleID')
-			->add('RusName', null, array('label' => 'Название на русском'))
-			->add('EngName', null, array('label' => 'Название на англиском'))
+			->addIdentifier('DocumentID', null, array('label' => 'ID'))
+			->add('RusName', null, array('label' => 'Название на русском', 'template' => 'VidalDrugBunde:Sonata:RusName.html.twig'))
+			->add('EngName', null, array('label' => 'Название на англиском', 'template' => 'VidalDrugBunde:Sonata:EngName.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(
@@ -88,6 +88,6 @@ class DocumentAdmin extends Admin
 					'edit'   => array(),
 					'delete' => array(),
 				)
-			));;
+			));
 	}
 }

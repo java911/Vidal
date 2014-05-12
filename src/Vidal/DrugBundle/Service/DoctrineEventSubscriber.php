@@ -9,6 +9,8 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Vidal\DrugBundle\Entity\Article;
 use Vidal\DrugBundle\Entity\Art;
 use Vidal\DrugBundle\Entity\Publication;
+use Vidal\DrugBundle\Entity\Product;
+use Vidal\DrugBundle\Entity\Document;
 
 class DoctrineEventSubscriber implements EventSubscriber
 {
@@ -28,6 +30,7 @@ class DoctrineEventSubscriber implements EventSubscriber
 			'prePersist',
 			'preUpdate',
 			'postUpdate',
+			'preRemove',
 		);
 	}
 
@@ -68,6 +71,28 @@ class DoctrineEventSubscriber implements EventSubscriber
 		# проставляем мета к видео, если его загрузили
 		if ($entity instanceof Article || $entity instanceof Art || $entity instanceof Publication) {
 			$this->setVideoMeta($entity);
+		}
+	}
+
+	public function preRemove(LifecycleEventArgs $args)
+	{
+		$entity = $args->getEntity();
+
+		if ($entity instanceof Product) {
+			$em   = $args->getEntityManager();
+			$pdo  = $em->getConnection();
+			$stmt = $pdo->prepare('SET FOREIGN_KEY_CHECKS=0');
+			$stmt->execute();
+			$stmt = $pdo->prepare('DELETE FROM product WHERE ProductID = ' . $entity->getProductID());
+			$stmt->execute();
+		}
+		elseif ($entity instanceof Document) {
+			$em   = $args->getEntityManager();
+			$pdo  = $em->getConnection();
+			$stmt = $pdo->prepare('SET FOREIGN_KEY_CHECKS=0');
+			$stmt->execute();
+			$stmt = $pdo->prepare('DELETE FROM document WHERE DocumentID = ' . $entity->getDocumentID());
+			$stmt->execute();
 		}
 	}
 
