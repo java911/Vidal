@@ -185,7 +185,7 @@ h1 span {
 	font-style:  normal;
 	font-weight: normal;
 	font-size:   13px;
-	color:       #999;
+	color:       #999 !important;
 }
 .tip {
 	color:     #476173;

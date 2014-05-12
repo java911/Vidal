@@ -152,6 +152,7 @@ class VidalController extends Controller
 			'infoPage' => $infoPage,
 			'picture'  => $picture,
 			'title'    => $this->strip($infoPage['RusName']) . ' | Представительства фирм',
+			'portfolios' => $em->getRepository('VidalDrugBundle:InfoPage')->findPortfolios($InfoPageID),
 		);
 
 		if (!empty($documentIds)) {

@@ -152,11 +152,15 @@
 			{% if isDoctor %}
 				<span class="block-head">Портфель препарата:</span>
 				{% set portfolio = document.portfolios[0] %}
-				<a href="{{ path('portfolio_item', {'url':portfolio.url}) }}" class="no-underline">
+				<a href="{{ path('portfolio_item', {'url':portfolio.url}) }}" class="no-underline bold">
 					{{ portfolio.title|raw }}
 				</a>
+				<span class="small">(информация для специалистов)</span>
 			{% else %}
-				<div class="block-head">Портфель препарата</div>
+				<div class="block-head">
+					Портфель препарата:
+					<span class="small">(информация для специалистов)</span>
+				</div>
 				{% include 'VidalMainBundle:Auth:closed_info.html.twig' %}
 			{% endif %}
 		</div>

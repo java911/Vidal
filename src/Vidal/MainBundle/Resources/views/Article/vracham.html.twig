@@ -14,26 +14,28 @@
 		<a href="http://vidal.cloudapp.net/mobile/" target="_blank">Поиск аналогов по МНН</a>
 	</div>
 
-	<div class="arts-title anons">
-		<span>Рекомендуем к прочтению</span>
-	</div>
-	<ul class="arts-items ul-style">
-		{% for art in arts %}
-			<li>
-				{# админам карандашик редактирования #}
-				{% if isAdmin %}
-					<a class="admin-edit fade" target="_blank"
-					   href="{{ path('admin_vidal_drug_art_edit', {'id':art.id}) }}">
-						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-					</a>
-				{% endif %}
-				<div class="article-title">
-					<a class="no-underline"
-					   href="{{ path('art', {'url':art.rubrique.url ~ '/' ~ (art.type ? art.type.url ~ '/') ~ (art.category ? art.category.url ~ '/') ~ art.link ~ '~' ~ art.id }) }}">{{ art.title|raw }}</a>
-				</div>
-			</li>
-		{% endfor %}
-	</ul>
+	{% if arts is not empty %}
+		<div class="arts-title anons">
+			<span>Рекомендуем к прочтению</span>
+		</div>
+		<ul class="arts-items ul-style">
+			{% for art in arts %}
+				<li>
+					{# админам карандашик редактирования #}
+					{% if isAdmin %}
+						<a class="admin-edit fade" target="_blank"
+						   href="{{ path('admin_vidal_drug_art_edit', {'id':art.id}) }}">
+							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+						</a>
+					{% endif %}
+					<div class="article-title">
+						<a class="no-underline"
+						   href="{{ path('art', {'url':art.rubrique.url ~ '/' ~ (art.type ? art.type.url ~ '/') ~ (art.category ? art.category.url ~ '/') ~ art.link ~ '~' ~ art.id }) }}">{{ art.title|raw }}</a>
+					</div>
+				</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
 
 	<div class="rubriques">
 		{% set perColumn = rubriques|length // 2 %}
