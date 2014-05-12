@@ -139,7 +139,7 @@ class Document
 	protected $ed;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="documents", )
+	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="documents")
 	 * @ORM\JoinTable(name="documentoc_atc",
 	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ATCCode", referencedColumnName="ATCCode")})
