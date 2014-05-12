@@ -1,6 +1,10 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
+{% set document = portfolio.DocumentID %}
+{% set infoPage = document.infoPages[0] is defined ? document.infoPages[0] : null %}
+
+
 {% block title %}
 	<h1>{{ portfolio.title|raw }}</h1>
 {% endblock %}
@@ -18,7 +22,46 @@
 
 
 {% block content %}
-	<div class="publication text">
+	{# Публикация #}
+	<div class="publication text relative">
 		{{ portfolio.body|raw }}
+
+		{% if isAdmin %}
+			<a class="admin-edit fade" target="_blank"
+			   href="{{ path('admin_vidal_drug_pharmportfolio_edit', {'id':portfolio.id}) }}">
+				<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+			</a>
+		{% endif %}
 	</div>
+
+	{# Препарат #}
+	<div class="block product">
+		<span class="block-head">Препарат:</span>
+		<a href="{{ path('document', {'EngName':document.name, 'DocumentID':document.DocumentID}) }}"
+		   class="no-underline bold">
+			{{ document.RusName|raw }}
+		</a>
+	</div>
+
+	{# Представительство #}
+	{% if infoPage %}
+		<div class="block">
+			<span class="block-head">Представительство:</span>
+			<a href="{{ path('inf_item', {'InfoPageID':infoPage.InfoPageID}) }}"
+			   class="no-underline bold">
+				{{ infoPage.RusName|raw }}
+			</a>
+		</div>
+	{% endif %}
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.product {
+			border-top:  1px solid #ccc;
+			padding-top: 16px;
+		}
+	</style>
 {% endblock %}
