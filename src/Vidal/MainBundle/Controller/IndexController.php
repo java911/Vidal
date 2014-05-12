@@ -68,7 +68,6 @@ class IndexController extends Controller
             }
         }
 
-
 		return array(
 			'title'           => 'Вопрос-ответ',
 			'menu_left'       => 'qa',
@@ -77,6 +76,26 @@ class IndexController extends Controller
             't' => $t,
 		);
 	}
+
+    /**
+     * @Route("/otvety_specialistov_doctor", name="qa_admin")
+     * @Secure(roles="ROLE_DOCTOR")
+     * @Template()
+     */
+    public function doctorAnswerListAction(Request $request){
+        $questions = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByAnswer(null);
+        return array('questions' => $questions);
+    }
+
+    /**
+     * @Route("/otvety_specialistov_doctor/{faqId}", name="qa_admin_edit")
+     * @Secure(roles="ROLE_DOCTOR")
+     * @Template()
+     */
+    public function doctorAnswerEditAction(Request $request){
+        $questions = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByAnswer(null);
+        return array('questions' => $questions);
+    }
 
 	/** @Route("/Vidal/vidal-russia/Novosti-pharmatsevticheskih-kompanii/") */
 	public function r10()
