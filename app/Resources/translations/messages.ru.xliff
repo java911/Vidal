@@ -454,6 +454,27 @@
 				<target>Удаление нашей услуги</target>
 			</trans-unit>
 
+			<trans-unit id="sonata-26">
+				<source>Pharm Portfolio List</source>
+				<target>Портфели препаратов</target>
+			</trans-unit>
+			<trans-unit id="sonata-26-1">
+				<source>Pharm Portfolio Show</source>
+				<target>Портфель препарата</target>
+			</trans-unit>
+			<trans-unit id="sonata-26-2">
+				<source>Pharm Portfolio Edit</source>
+				<target>Редактирование портфеля препарата</target>
+			</trans-unit>
+			<trans-unit id="sonata-26-3">
+				<source>Pharm Portfolio Create</source>
+				<target>Создание портфеля препарата</target>
+			</trans-unit>
+			<trans-unit id="sonata-26-4">
+				<source>Pharm Portfolio Delete</source>
+				<target>Удаление портфеля препарата</target>
+			</trans-unit>
+
         </body>
     </file>
 </xliff>

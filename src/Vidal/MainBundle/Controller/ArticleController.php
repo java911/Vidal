@@ -280,12 +280,31 @@ class ArticleController extends Controller
 			'rubrique' => $rubrique,
 		);
 
+		# находим, если указана статья по старому
+		$pos = strpos($url, '.');
+		if ($pos !== false) {
+			$index             = count($parts) - 1;
+			$link              = $parts[$index];
+			$pos               = strpos($link, '.');
+			$link              = substr($link, 0, $pos);
+			$pos = strpos($link, '_');
+			if ($pos !== false) {
+				$id                = substr($link, $pos + 1);
+				$params['article'] = $em->getRepository('VidalDrugBundle:Art')->findOneById($id);
+			}
+			else {
+				$params['article'] = $em->getRepository('VidalDrugBundle:Art')->findOneByLink($link);
+			}
+			array_pop($parts);
+		}
+
 		$pos = strpos($url, '~');
 		if ($pos !== false) {
 			$id                = substr($url, $pos + 1);
 			$params['article'] = $em->getRepository('VidalDrugBundle:Art')->findOneById($id);
 			array_pop($parts);
 		}
+
 		$count = count($parts);
 
 		if ($count == 1) {

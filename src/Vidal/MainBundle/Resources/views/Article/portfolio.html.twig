@@ -24,8 +24,18 @@
 						{{ portfolio.title|raw }}
 					</a>
 				</span>
-				{% if portfolio.company %}
-					{{ portfolio.company.title|raw }}
+				{% if portfolio.DocumentID.infoPages[0] is defined %}
+					{% set infoPage = portfolio.DocumentID.infoPages[0] %}
+					<br/>
+					<a href="{{ path('inf_item', {'InfoPageID':infoPage.InfoPageID}) }}" class="no-underline infoPage">
+						{{ infoPage.RusName|raw }}
+					</a>
+				{% endif %}
+				{% if isAdmin %}
+					<a class="admin-edit fade" target="_blank"
+					   href="{{ path('admin_vidal_drug_pharmportfolio_edit', {'id':portfolio.id}) }}">
+						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+					</a>
 				{% endif %}
 			</li>
 		{% endfor %}
@@ -41,6 +51,7 @@
 		}
 		.portfolios li {
 			margin-bottom: 8px;
+			position:      relative;
 		}
 		.portfolios .portfolio {
 			display: inline-block;
@@ -57,6 +68,9 @@
 		}
 		.portfolios a.company:hover {
 			text-decoration: underline;
+		}
+		.portfolios .infoPage {
+			color: #2f4053;
 		}
 	</style>
 {% endblock %}

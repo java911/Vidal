@@ -322,15 +322,18 @@ class DrugsController extends Controller
 					$products[] = $product;
 				}
 			}
-			usort($products, function ($a, $b) {
-				return strcmp($a['RusName'], $b['RusName']);
-			});
 
-			$productIds          = $this->getProductIds($products);
-			$params['products']  = $products;
-			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
-			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
+			if (!empty($products)) {
+				usort($products, function ($a, $b) {
+					return strcmp($a['RusName'], $b['RusName']);
+				});
+
+				$productIds          = $this->getProductIds($products);
+				$params['products']  = $products;
+				$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
+				$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+				$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
+			}
 		}
 
 		return $params;

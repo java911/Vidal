@@ -171,4 +171,16 @@ class InfoPageRepository extends EntityRepository
 
 		return $results;
 	}
+
+	public function findPortfolios($InfoPageID)
+	{
+		return $this->_em->createQuery('
+			SELECT DISTINCT p
+			FROM VidalDrugBundle:PharmPortfolio p
+			JOIN p.DocumentID d
+			JOIN d.infoPages i
+			WHERE i.InfoPageID = :InfoPageID
+		')->setParameter('InfoPageID', $InfoPageID)
+			->getResult();
+	}
 }
