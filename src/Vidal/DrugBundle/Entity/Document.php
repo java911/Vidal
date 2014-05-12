@@ -141,7 +141,7 @@ class Document
 	/**
 	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="documents")
 	 * @ORM\JoinTable(name="documentoc_atc",
-	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
+	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID", onDelete="CASCADE")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ATCCode", referencedColumnName="ATCCode")})
 	 */
 	protected $atcCodes;
@@ -152,7 +152,7 @@ class Document
 	/**
 	 * @ORM\ManyToMany(targetEntity="Nozology", inversedBy="documents", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="document_indicnozology",
-	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
+	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID", onDelete="CASCADE")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")})
 	 */
 	protected $nozologies;
@@ -160,7 +160,7 @@ class Document
 	/**
 	 * @ORM\ManyToMany(targetEntity="ClinicoPhPointers", inversedBy="documents", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="document_clphpointers",
-	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
+	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID", onDelete="CASCADE")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ClPhPointerID", referencedColumnName="ClPhPointerID")})
 	 */
 	protected $clphPointers;
@@ -176,7 +176,7 @@ class Document
 	/**
 	 * @ORM\ManyToMany(targetEntity="InfoPage", inversedBy="documents")
 	 * @ORM\JoinTable(name="document_info_page",
-	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
+	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID", onDelete="CASCADE")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")})
 	 */
 	protected $infoPages;
@@ -195,7 +195,7 @@ class Document
 	/**
 	 * @ORM\ManyToMany(targetEntity="Molecule", inversedBy="documents")
 	 * @ORM\JoinTable(name="document_molecule",
-	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
+	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID", onDelete="CASCADE")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")})
 	 */
 	protected $molecules;
@@ -232,10 +232,10 @@ class Document
 	 */
 	protected $pharmArticles;
 
-	/** @ORM\OneToMany(targetEntity="PharmPortfolio", mappedBy="DocumentID", fetch="EXTRA_LAZY") */
+	/** @ORM\OneToMany(targetEntity="PharmPortfolio", mappedBy="DocumentID", fetch="EXTRA_LAZY", orphanRemoval=true) */
 	protected $portfolios;
 
-	/** @ORM\OneToMany(targetEntity="Product", mappedBy="document") */
+	/** @ORM\OneToMany(targetEntity="Product", mappedBy="document", orphanRemoval=true) */
 	protected $products;
 
 	public function __construct()

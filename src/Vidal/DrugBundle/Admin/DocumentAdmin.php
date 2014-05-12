@@ -61,8 +61,8 @@ class DocumentAdmin extends Admin
 			->add('atcCodes', null, array('label' => 'Коды АТХ', 'required' => false))
 			->add('nozologies', null, array('label' => 'Нозологические указатели', 'required' => false, 'help' => 'МКБ-10 (Nozology)'))
 			->add('clphPointers', null, array('label' => 'Клинико-фармакологические указатели', 'required' => false))
-			->add('infoPages', null, array('label' => 'Представительства'))
-			->add('molecules', null, array('label' => 'Активные вещества'))
+			->add('infoPages', null, array('label' => 'Представительства', 'required' => false))
+			->add('molecules', null, array('label' => 'Активные вещества', 'required' => false))
 		;
 	}
 
@@ -78,9 +78,9 @@ class DocumentAdmin extends Admin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-			->addIdentifier('ArticleID')
-			->add('RusName', null, array('label' => 'Название на русском'))
-			->add('EngName', null, array('label' => 'Название на англиском'))
+			->addIdentifier('DocumentID', null, array('label' => 'ID'))
+			->add('RusName', null, array('label' => 'Название на русском', 'template' => 'VidalDrugBunde:Sonata:RusName.html.twig'))
+			->add('EngName', null, array('label' => 'Название на англиском', 'template' => 'VidalDrugBunde:Sonata:EngName.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(
@@ -88,6 +88,6 @@ class DocumentAdmin extends Admin
 					'edit'   => array(),
 					'delete' => array(),
 				)
-			));;
+			));
 	}
 }

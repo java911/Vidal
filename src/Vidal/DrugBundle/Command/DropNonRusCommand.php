@@ -26,6 +26,10 @@ class DropNonRusCommand extends ContainerAwareCommand
 		$stmt = $pdo->prepare('SET FOREIGN_KEY_CHECKS=0');
 		$stmt->execute();
 
+		$output->writeln("... DELETE FROM infopage WHERE CountryEditionCode != 'RUS'");
+		$stmt = $pdo->prepare("DELETE FROM infopage WHERE CountryEditionCode != 'RUS'");
+		$stmt->execute();
+
 		$output->writeln("... DELETE FROM product WHERE CountryEditionCode != 'RUS'");
 		$stmt = $pdo->prepare("DELETE FROM product WHERE CountryEditionCode != 'RUS'");
 		$stmt->execute();

@@ -105,7 +105,7 @@ class Product
 	/**
 	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="products", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="product_atc",
-	 *      joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
+	 *      joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID", onDelete="CASCADE")},
 	 *      inverseJoinColumns={@ORM\JoinColumn(name="ATCcode", referencedColumnName="ATCCode")})
 	 */
 	protected $atcCodes;
@@ -116,7 +116,7 @@ class Product
 	/**
 	 * @ORM\ManyToMany(targetEntity="ClPhGroups", inversedBy="products", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="product_clphgroups",
-	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
+	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID", onDelete="CASCADE")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ClPhGroupsID", referencedColumnName="ClPhGroupsID")})
 	 */
 	protected $clphGroups;
@@ -127,7 +127,7 @@ class Product
 	/**
 	 * @ORM\ManyToMany(targetEntity="MoleculeName", inversedBy="products")
 	 * @ORM\JoinTable(name="product_moleculename",
-	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
+	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID", onDelete="CASCADE")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="MoleculeNameID", referencedColumnName="MoleculeNameID")})
 	 */
 	protected $moleculeNames;
@@ -135,18 +135,10 @@ class Product
 	/**
 	 * @ORM\ManyToMany(targetEntity="PhThGroups", inversedBy="products", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="product_phthgrp",
-	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
+	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID", onDelete="CASCADE")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="PhThGroupsID", referencedColumnName="id")})
 	 */
 	protected $phthgroups;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Article", mappedBy="products")
-	 * @ORM\JoinTable(name="article_product",
-	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
-	 *        inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
-	 */
-	protected $articles;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Document", inversedBy="products")
@@ -162,7 +154,6 @@ class Product
 		$this->productCompany  = new ArrayCollection();
 		$this->moleculeNames   = new ArrayCollection();
 		$this->phthgroups      = new ArrayCollection();
-		$this->articles        = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -733,22 +724,6 @@ class Product
 	public function getPhthgroups()
 	{
 		return $this->phthgroups;
-	}
-
-	/**
-	 * @param mixed $articles
-	 */
-	public function setArticles($articles)
-	{
-		$this->articles = $articles;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getArticles()
-	{
-		return $this->articles;
 	}
 
 	/**
