@@ -28,23 +28,20 @@ class AutocompleteDocumentCommand extends ContainerAwareCommand
 		$em    = $this->getContainer()->get('doctrine')->getManager('drug');
 		$names = array();
 
-		$documents = $em->createQuery('
+		$documents = $em->createQuery("
 			SELECT d.DocumentID, d.RusName
 			FROM VidalDrugBundle:Document d
+			WHERE d.CountryEditionCode = 'RUS'
 			ORDER BY d.RusName ASC
-		')->getResult();
-
-		$output->writeln('... got documents');
+		")->getResult();
 
 		foreach ($documents as $document) {
 			$names[] = $document['DocumentID'] . ' - ' . $this->strip($document['RusName']);
 		}
 
-		$output->writeln('... got names');
-
 		$elasticaClient = new \Elastica\Client();
 		$elasticaIndex  = $elasticaClient->getIndex('website');
-		$elasticaType   = $elasticaIndex->getType('autocomplete_document');
+		$elasticaType   = $elasticaIndex->getType('autocomplete_document2');
 
 		# delete if exists
 		if ($elasticaType->exists()) {
