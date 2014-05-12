@@ -106,7 +106,7 @@ file that was distributed with this source code.
 					minLength: 1,
 					source:    function(request, response) {
 						$.ajax({
-							url:      "http://twiga.evrika.ru:9200/website/autocomplete_document2/_search",
+							url:      "http://twiga.vidal.ru:9200/website/autocomplete_document2/_search",
 							type:     "POST",
 							dataType: "JSON",
 							data:     '{ "query":{"query_string":{"query":"*' + request.term + '*"}}, "fields":["name"], "size":15, "highlight":{"fields":{"name":{}}} }',
