@@ -37,9 +37,6 @@ class Molecule
 	/** @ORM\Column(type="integer", nullable=true, name="GDDB_MoleculeID") */
 	protected $gddbMoleculeID;
 
-	/** @ORM\OneToMany(targetEntity="MoleculeName", mappedBy="MoleculeID") */
-	protected $moleculeNames;
-
 	/**
 	 * @ORM\ManyToMany(targetEntity="Article", mappedBy="molecules")
 	 * @ORM\JoinTable(name="article_molecule",
@@ -80,10 +77,12 @@ class Molecule
 	 */
 	protected $documents;
 
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $GNVLS;
+
 	public function __construct()
 	{
 		$this->documents     = new ArrayCollection();
-		$this->moleculeNames = new ArrayCollection();
 		$this->articles      = new ArrayCollection();
 		$this->arts          = new ArrayCollection();
 		$this->publications  = new ArrayCollection();
@@ -234,22 +233,6 @@ class Molecule
 	}
 
 	/**
-	 * @param mixed $moleculeNames
-	 */
-	public function setMoleculeNames(ArrayCollection $moleculeNames)
-	{
-		$this->moleculeNames = $moleculeNames;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getMoleculeNames()
-	{
-		return $this->moleculeNames;
-	}
-
-	/**
 	 * @param mixed $articles
 	 */
 	public function setArticles($articles)
@@ -327,5 +310,21 @@ class Molecule
 	public function getDocuments()
 	{
 		return $this->documents;
+	}
+
+	/**
+	 * @param mixed $GNVLS
+	 */
+	public function setGNVLS($GNVLS)
+	{
+		$this->GNVLS = $GNVLS;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getGNVLS()
+	{
+		return $this->GNVLS;
 	}
 }

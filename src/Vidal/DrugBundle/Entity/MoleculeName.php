@@ -11,8 +11,7 @@ class MoleculeName
 	protected $MoleculeNameID;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Molecule", inversedBy="moleculeNames")
-	 * @ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")
+	 * @ORM\Column(type="integer", nullable=true)
 	 */
 	protected $MoleculeID;
 
@@ -22,7 +21,7 @@ class MoleculeName
 	/** @ORM\Column(type="text", nullable=true) */
 	protected $EngName;
 
-	/** @ORM\Column(type="integer", name="GDDB_MoleculeID") */
+	/** @ORM\Column(type="integer", name="GDDB_MoleculeID", nullable=true) */
 	protected $gddbMoleculeID;
 
 	/**

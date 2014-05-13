@@ -56,8 +56,8 @@ class AutocompleteNozologyCommand extends ContainerAwareCommand
 
 		for ($i = 0; $i < count($nozologies); $i++) {
 			$documents[] = new \Elastica\Document($i + 1, array(
-				'code' => $nozologies[$i]['NozologyCode'],
-				'name' => $nozologies[$i]['Name'],
+				'code' => $nozologies[$i]->getNozologyCode(),
+				'name' => $nozologies[$i]->getName(),
 			));
 
 			if ($i && $i % 500 == 0) {

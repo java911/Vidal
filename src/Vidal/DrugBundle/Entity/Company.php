@@ -28,14 +28,6 @@ class Company
 	/** @ORM\Column(length=10, nullable=true) */
 	protected $CountryEditionCode = 'RUS';
 
-	/**
-	 * @ORM\ManyToMany(targetEntity="CompanyGroup", mappedBy="companies")
-	 * @ORM\JoinTable(name="company_companygroup",
-	 *        joinColumns={@ORM\JoinColumn(name="CompanyID", referencedColumnName="CompanyID")},
-	 *        inverseJoinColumns={@ORM\JoinColumn(name="CompanyGroupID", referencedColumnName="CompanyGroupID")})
-	 */
-	protected $companyGroups;
-
 	/** @ORM\OneToMany(targetEntity="ProductCompany", mappedBy="CompanyID") */
 	protected $productCompany;
 
@@ -44,7 +36,6 @@ class Company
 
 	public function __construct()
 	{
-		$this->companyGroups    = new ArrayCollection();
 		$this->productCompanies = new ArrayCollection();
 	}
 
@@ -152,22 +143,6 @@ class Company
 	public function getProperty()
 	{
 		return $this->Property;
-	}
-
-	/**
-	 * @param mixed $companyGroups
-	 */
-	public function setCompanyGroups(ArrayCollection $companyGroups)
-	{
-		$this->companyGroups = $companyGroups;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getCompanyGroups()
-	{
-		return $this->companyGroups;
 	}
 
 	/**
