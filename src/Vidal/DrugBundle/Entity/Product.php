@@ -105,7 +105,7 @@ class Product
 	/**
 	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="products", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="product_atc",
-	 *      joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID", onDelete="CASCADE")},
+	 *      joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *      inverseJoinColumns={@ORM\JoinColumn(name="ATCcode", referencedColumnName="ATCCode")})
 	 */
 	protected $atcCodes;
@@ -116,7 +116,7 @@ class Product
 	/**
 	 * @ORM\ManyToMany(targetEntity="ClPhGroups", inversedBy="products", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="product_clphgroups",
-	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID", onDelete="CASCADE")},
+	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ClPhGroupsID", referencedColumnName="ClPhGroupsID")})
 	 */
 	protected $clphGroups;
@@ -127,7 +127,7 @@ class Product
 	/**
 	 * @ORM\ManyToMany(targetEntity="MoleculeName", inversedBy="products")
 	 * @ORM\JoinTable(name="product_moleculename",
-	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID", onDelete="CASCADE")},
+	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="MoleculeNameID", referencedColumnName="MoleculeNameID")})
 	 */
 	protected $moleculeNames;
@@ -135,7 +135,7 @@ class Product
 	/**
 	 * @ORM\ManyToMany(targetEntity="PhThGroups", inversedBy="products", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="product_phthgrp",
-	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID", onDelete="CASCADE")},
+	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="PhThGroupsID", referencedColumnName="id")})
 	 */
 	protected $phthgroups;

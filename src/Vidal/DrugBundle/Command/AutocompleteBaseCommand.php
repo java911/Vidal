@@ -13,11 +13,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @package Vidal\DrugBundle\Command
  */
-class ElasticIndexCommand extends ContainerAwareCommand
+class AutocompleteBaseCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:elastic_index')
+		$this->setName('vidal:autocomplete_base')
 			->setDescription('Creates website index in Elastica');
 	}
 

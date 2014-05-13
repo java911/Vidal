@@ -14,12 +14,12 @@ class DocumentAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$articleChoices = array(
-			'2' => 'Полные описания под торговыми наименованиями',
+			'5' => 'Инструкция по применению лекарственного препарата',
 			'3' => 'Короткие описания под торговыми наименованиями',
 			'1' => 'Описания активных веществ',
-			'5' => 'Инструкция по применению лекарственного препарата',
-			'4' => 'Официальная типовая клинико-фармакологическая статья',
 			'6' => 'Описания БАДов',
+			'4' => 'Официальная типовая клинико-фармакологическая статья',
+			'2' => 'Полные описания под торговыми наименованиями',
 		);
 
 		$usingChoices = array(
@@ -29,11 +29,13 @@ class DocumentAdmin extends Admin
 		);
 
 		$formMapper
+			->add('DocumentID', null, array('label' => 'ID'))
 			->add('RusName', 'text', array('label' => 'Название', 'required' => true))
 			->add('EngName', 'text', array('label' => 'Латинское', 'required' => true))
 			->add('Name', 'text', array('label' => 'URL адрес', 'required' => true))
-			->add('ArticleID', 'choice', array('label' => 'Тип документа', 'help' => 'ArticleID', 'required' => true, 'choices' => $articleChoices))			->add('CompiledComposition', null, array('label' => 'Описание', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
-			->add('YearEdition', null, array('label' => 'Год выпуска'))
+			->add('ArticleID', 'choice', array('label' => 'Тип документа', 'help' => 'ArticleID', 'required' => true, 'choices' => $articleChoices))
+			->add('YearEdition', null, array('label' => 'Год выпуска', 'required' => true))
+			->add('CompiledComposition', null, array('label' => 'Описание', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('CompaniesDescription', null, array('label' => 'Описание компаний', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('ClPhGrDescription', null, array('label' => 'Клинико-фарм. группа', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('PhInfluence', null, array('label' => 'Фарм. действие', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))

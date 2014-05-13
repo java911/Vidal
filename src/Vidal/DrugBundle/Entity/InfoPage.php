@@ -47,13 +47,13 @@ class InfoPage
 	/** @ORM\Column(type="boolean") */
 	protected $WithoutPage = false;
 
-	/** @ORM\Column(type="datetime") @Gedmo\Timestampable(on="update") */
+	/** @ORM\Column(type="datetime", nullable=true) */
 	protected $DateTextModified;
 
 	/**
 	 * @ORM\Column(length=10)
 	 */
-	protected $CountryEditionCode;
+	protected $CountryEditionCode = 'RUS';
 
 	/** @ORM\ManyToMany(targetEntity="Picture", mappedBy="infoPages") */
 	protected $pictures;

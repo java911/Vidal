@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /** @ORM\Entity(repositoryClass="DocumentRepository") @ORM\Table(name="document") */
 class Document
 {
-	/** @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue */
+	/** @ORM\Id @ORM\Column(type="integer") */
 	protected $DocumentID;
 
 	/** @ORM\Column(length=500) */
@@ -141,7 +141,7 @@ class Document
 	/**
 	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="documents")
 	 * @ORM\JoinTable(name="documentoc_atc",
-	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID", onDelete="CASCADE")},
+	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ATCCode", referencedColumnName="ATCCode")})
 	 */
 	protected $atcCodes;
@@ -152,7 +152,7 @@ class Document
 	/**
 	 * @ORM\ManyToMany(targetEntity="Nozology", inversedBy="documents", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="document_indicnozology",
-	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID", onDelete="CASCADE")},
+	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")})
 	 */
 	protected $nozologies;
@@ -160,42 +160,23 @@ class Document
 	/**
 	 * @ORM\ManyToMany(targetEntity="ClinicoPhPointers", inversedBy="documents", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="document_clphpointers",
-	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID", onDelete="CASCADE")},
+	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ClPhPointerID", referencedColumnName="ClPhPointerID")})
 	 */
 	protected $clphPointers;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Contraindication", mappedBy="documents")
-	 * @ORM\JoinTable(name="document_contraindication",
-	 * joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
-	 * inverseJoinColumns={@ORM\JoinColumn(name="ContraIndicCode", referencedColumnName="ContraIndicCode")})
-	 */
-	//protected $contraindications;
-
-	/**
 	 * @ORM\ManyToMany(targetEntity="InfoPage", inversedBy="documents")
-	 * @ORM\JoinTable(name="document_info_page",
-	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID", onDelete="CASCADE")},
+	 * @ORM\JoinTable(name="document_infopage",
+	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")})
 	 */
 	protected $infoPages;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Edition", mappedBy="documents")
-	 * @ORM\JoinTable(name="documentoc_edition",
-	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
-	 *        inverseJoinColumns={@ORM\JoinColumn(name="EditionCode", referencedColumnName="EditionCode")})
-	 */
-	protected $editions;
-
-	/** @ORM\OneToMany(targetEntity="DocumentEdition", mappedBy="DocumentID") */
-	protected $documentEditions;
-
-	/**
 	 * @ORM\ManyToMany(targetEntity="Molecule", inversedBy="documents")
-	 * @ORM\JoinTable(name="document_molecule",
-	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID", onDelete="CASCADE")},
+	 * @ORM\JoinTable(name="molecule_document",
+	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")})
 	 */
 	protected $molecules;
@@ -232,10 +213,10 @@ class Document
 	 */
 	protected $pharmArticles;
 
-	/** @ORM\OneToMany(targetEntity="PharmPortfolio", mappedBy="DocumentID", fetch="EXTRA_LAZY", orphanRemoval=true) */
+	/** @ORM\OneToMany(targetEntity="PharmPortfolio", mappedBy="DocumentID", fetch="EXTRA_LAZY") */
 	protected $portfolios;
 
-	/** @ORM\OneToMany(targetEntity="Product", mappedBy="document", orphanRemoval=true) */
+	/** @ORM\OneToMany(targetEntity="Product", mappedBy="document") */
 	protected $products;
 
 	public function __construct()
@@ -244,7 +225,6 @@ class Document
 		$this->productDocument   = new ArrayCollection();
 		$this->nozologies        = new ArrayCollection();
 		$this->clphPointers      = new ArrayCollection();
-		$this->contraindications = new ArrayCollection();
 		$this->documentEditions  = new ArrayCollection();
 		$this->articles          = new ArrayCollection();
 		$this->arts              = new ArrayCollection();
@@ -963,54 +943,6 @@ class Document
 	public function getClphPointers()
 	{
 		return $this->clphPointers;
-	}
-
-	/**
-	 * @param mixed $contraindications
-	 */
-	public function setContraindications(ArrayCollection $contraindications)
-	{
-		$this->contraindications = $contraindications;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getContraindications()
-	{
-		return $this->contraindications;
-	}
-
-	/**
-	 * @param mixed $documentEditions
-	 */
-	public function setDocumentEditions(ArrayCollection $documentEditions)
-	{
-		$this->documentEditions = $documentEditions;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getDocumentEditions()
-	{
-		return $this->documentEditions;
-	}
-
-	/**
-	 * @param mixed $editions
-	 */
-	public function setEditions(ArrayCollection $editions)
-	{
-		$this->editions = $editions;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getEditions()
-	{
-		return $this->editions;
 	}
 
 	/**

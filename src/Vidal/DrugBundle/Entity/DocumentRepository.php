@@ -178,11 +178,6 @@ class DocumentRepository extends EntityRepository
 				->setParameter('nozologyCodes', $nozologyCodes);
 		}
 
-		if (!empty($contraCodes)) {
-			$qb->join('d.contraindications', 'c', 'WITH', 'c.ContraIndicCode NOT IN (:contraCodes)')
-				->setParameter('contraCodes', $contraCodes);
-		}
-
 		$documents = $qb->getQuery()->getResult();
 		$documentIds = array();
 
