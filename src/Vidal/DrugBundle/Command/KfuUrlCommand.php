@@ -18,7 +18,7 @@ class KfuUrlCommand extends ContainerAwareCommand
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		ini_set('memory_limit', -1);
-		$output->writeln('+++ vidal:kfu_url started');
+		$output->writeln('--- vidal:kfu_url started');
 
 		$em        = $this->getContainer()->get('doctrine')->getManager('drug');
 		$companies = $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->findAll();
@@ -30,7 +30,7 @@ class KfuUrlCommand extends ContainerAwareCommand
 
 		$em->flush();
 
-		$output->writeln('--- vidal:kfu_url completed');
+		$output->writeln('+++ vidal:kfu_url completed');
 	}
 
 	private function translit($text)

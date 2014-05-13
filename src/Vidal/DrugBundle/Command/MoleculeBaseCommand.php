@@ -17,7 +17,7 @@ class MoleculeBaseCommand extends ContainerAwareCommand
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		ini_set('memory_limit', -1);
-		$output->writeln('+++ vidal:molecule_base started');
+		$output->writeln('--- vidal:molecule_base started');
 
 		$em        = $this->getContainer()->get('doctrine')->getManager('drug');
 
@@ -27,6 +27,6 @@ class MoleculeBaseCommand extends ContainerAwareCommand
 			WHERE m.MarketStatusID = 0
 		")->execute();
 
-		$output->writeln('--- vidal:molecule_base completed');
+		$output->writeln('+++ vidal:molecule_base completed');
 	}
 }

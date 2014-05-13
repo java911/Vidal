@@ -17,7 +17,7 @@ class GeneratorKfuCommand extends ContainerAwareCommand
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		ini_set('memory_limit', -1);
-		$output->writeln('+++ vidal:generator_kfu started');
+		$output->writeln('--- vidal:generator_kfu started');
 		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
 		$repo  = $em->getRepository('VidalDrugBundle:ClinicoPhPointers');
@@ -52,6 +52,6 @@ class GeneratorKfuCommand extends ContainerAwareCommand
 		//		$json = json_decode(file_get_contents($file), true);
 		//		$data = $json['16463']['children'];
 
-		$output->writeln('--- vidal:generator_kfu completed');
+		$output->writeln('+++ vidal:generator_kfu completed');
 	}
 }

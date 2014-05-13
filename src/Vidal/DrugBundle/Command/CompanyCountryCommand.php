@@ -17,7 +17,7 @@ class CompanyCountryCommand extends ContainerAwareCommand
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		ini_set('memory_limit', -1);
-		$output->writeln('+++ vidal:company_country started');
+		$output->writeln('--- vidal:company_country started');
 
 		$em        = $this->getContainer()->get('doctrine')->getManager('drug');
 
@@ -27,6 +27,6 @@ class CompanyCountryCommand extends ContainerAwareCommand
 			WHERE c.CountryCode = ''
 		")->execute();
 
-		$output->writeln('--- vidal:company_country completed');
+		$output->writeln('+++ vidal:company_country completed');
 	}
 }

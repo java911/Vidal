@@ -19,7 +19,7 @@ class CompanyCountCommand extends ContainerAwareCommand
 		ini_set('memory_limit', -1);
 		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
-		$output->writeln('+++ vidal:company_count started');
+		$output->writeln('--- vidal:company_count started');
 
 		$repo      = $em->getRepository('VidalDrugBundle:Product');
 		$companies = $em->getRepository('VidalDrugBundle:Company')->findAll();
@@ -36,6 +36,6 @@ class CompanyCountCommand extends ContainerAwareCommand
 
 		$em->flush();
 
-		$output->writeln('--- vidal:company_count completed');
+		$output->writeln('+++ vidal:company_count completed');
 	}
 }

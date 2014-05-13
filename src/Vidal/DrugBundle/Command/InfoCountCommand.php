@@ -18,7 +18,7 @@ class InfoCountCommand extends ContainerAwareCommand
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		ini_set('memory_limit', -1);
-		$output->writeln('+++ vidal:info_command started');
+		$output->writeln('--- vidal:info_command started');
 
 		$em        = $this->getContainer()->get('doctrine')->getManager('drug');
 		$infoPages = $em->getRepository('VidalDrugBundle:InfoPage')->findAll();
@@ -32,6 +32,6 @@ class InfoCountCommand extends ContainerAwareCommand
 
 		$em->flush();
 
-		$output->writeln('--- vidal:info_count completed');
+		$output->writeln('+++ vidal:info_count completed');
 	}
 }
