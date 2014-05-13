@@ -44,7 +44,10 @@ class IndexController extends Controller
 	{
         $em = $this->getDoctrine()->getManager();
         $faq = new QuestionAnswer();
-
+        if ($this->getUser()){
+            $faq->setAuthorFirstName($this->getUser()->getFirstname());
+            $faq->setAuthorEmail($this->getUser()->getUsername());
+        }
         $builder = $this->createFormBuilder($faq);
         $builder
             ->add('authorFirstName', null, array('label' => 'Ваше имя'))

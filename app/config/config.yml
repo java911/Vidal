@@ -176,6 +176,7 @@ sonata_admin:
 gregwar_captcha:
     width:   325
     height:  50
-    length:  8
+    length:  6
+    charset: 123456789
     background_color: [237,49,96]
     invalid_message: "Код с картинки введен не правильно"
