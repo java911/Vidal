@@ -43,6 +43,7 @@
 {% endblock %}
 
 
+
 {% block vidal %}
 	{# Иконки использования при состояниях #}
 	{% if document is defined %}
@@ -52,6 +53,23 @@
 			{{ render(controller('VidalMainBundle:Market:button', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}
 		</div>
 	{% endif %}
+
+    {% if document is defined and document.portfolios.count %}
+        <div class="block">
+            {% if isDoctor %}
+                {% set portfolio = document.portfolios[0] %}
+                <a href="{{ path('portfolio_item', {'url':portfolio.url}) }}" class="no-underline bold division-link" >
+                    Подробнее о препарате <img src="{{ asset('bundles/vidalmain/images/redbutton.jpg') }}" style="margin-bottom: -9px;">
+                </a>
+            {% else %}
+                <div class="block-head">
+                    Портфель препарата:
+                    <span class="small">(информация для специалистов)</span>
+                </div>
+                {% include 'VidalMainBundle:Auth:closed_info.html.twig' %}
+            {% endif %}
+        </div>
+    {% endif %}
 
 	{% if products is not empty and pictures is not empty %}
 		<div class="pictures">
@@ -102,6 +120,8 @@
 		{% include 'VidalDrugBundle:Vidal:document_navigation.html.twig' %}
 	{% endif %}
 
+
+
 	{# Блок регистратора/владельца/представительства #}
 	{% if owners is defined or distributors is defined or infoPages is defined %}
 		<div class="block firms">
@@ -147,24 +167,7 @@
 		</div>
 	{% endif %}
 
-	{% if document is defined and document.portfolios.count %}
-		<div class="block">
-			{% if isDoctor %}
-				<span class="block-head">Портфель препарата:</span>
-				{% set portfolio = document.portfolios[0] %}
-				<a href="{{ path('portfolio_item', {'url':portfolio.url}) }}" class="no-underline bold">
-					{{ portfolio.title|raw }}
-				</a>
-				<span class="small">(информация для специалистов)</span>
-			{% else %}
-				<div class="block-head">
-					Портфель препарата:
-					<span class="small">(информация для специалистов)</span>
-				</div>
-				{% include 'VidalMainBundle:Auth:closed_info.html.twig' %}
-			{% endif %}
-		</div>
-	{% endif %}
+
 
 	{# Блок АТХ кодов #}
 	{% if product is defined and product.atcCodes is not empty %}
@@ -397,6 +400,19 @@
 		.mkb .products-table {
 			display: none;
 		}
+        .division-link{
+            display: table-cell;
+            vertical-align: middle;
+            height: 34px;
+            padding: 0 24px 0 12px;
+            border: 3px solid #eee;
+            background: #eee !important;
+            text-decoration: none;
+            font-weight: bold;
+            font-family: 'PT Sans Caption', sans-serif;
+            font-size: 14px;
+            background: url(../images/down.png) no-repeat 98% 50%;
+        }
 	</style>
 {% endblock %}
 
