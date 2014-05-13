@@ -175,7 +175,7 @@ class Document
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Molecule", inversedBy="documents")
-	 * @ORM\JoinTable(name="document_molecule",
+	 * @ORM\JoinTable(name="molecule_document",
 	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")})
 	 */

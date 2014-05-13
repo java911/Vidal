@@ -11,12 +11,7 @@ class CompanyCountCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this
-			->setName('vidal:company_count')
-			->setDescription('Command to fill Company.countProducts')
-			//->addArgument('user', InputArgument::OPTIONAL, '')
-			//->addOption('email', null, InputOption::VALUE_NONE, '')
-		;
+		$this->setName('vidal:company_count');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)

@@ -71,7 +71,7 @@ class Molecule
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Document", mappedBy="molecules")
-	 * @ORM\JoinTable(name="document_molecule",
+	 * @ORM\JoinTable(name="molecule_document",
 	 *        joinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})
 	 */
