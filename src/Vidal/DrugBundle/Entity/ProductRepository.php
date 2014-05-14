@@ -134,8 +134,7 @@ class ProductRepository extends EntityRepository
 			JOIN VidalDrugBundle:Company c WITH pc.CompanyID = c
 			LEFT JOIN VidalDrugBundle:Country country WITH c.CountryCode = country
 			LEFT JOIN p.document d
-			LEFT JOIN VidalDrugBundle:DocumentInfoPage di WITH di.DocumentID = d
-			LEFT JOIN VidalDrugBundle:InfoPage i WITH di.InfoPageID = i
+			LEFT JOIN d.infoPages i
 			LEFT JOIN VidalDrugBundle:Country co WITH i.CountryCode = co
 			WHERE c = :CompanyID AND
 				p.CountryEditionCode = \'RUS\' AND
@@ -166,8 +165,9 @@ class ProductRepository extends EntityRepository
 				p.RegistrationNumber, p.RegistrationDate
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
-			JOIN VidalDrugBundle:DocumentInfoPage di WITH di.DocumentID = d AND di.InfoPageID = :InfoPageID
-			WHERE p.CountryEditionCode = \'RUS\' AND
+			JOIN d.infoPages i
+			WHERE i.InfoPageID = :InfoPageID
+				p.CountryEditionCode = \'RUS\' AND
 				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
 				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
 			ORDER BY p.RusName ASC

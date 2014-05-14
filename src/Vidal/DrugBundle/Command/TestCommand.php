@@ -24,8 +24,8 @@ class TestCommand extends ContainerAwareCommand
 		ini_set('memory_limit', -1);
 		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
-		$output->writeln('+++ vidal: started');
+		$output->writeln('--- vidal: started');
 
-		$output->writeln('--- vidal: completed');
+		$output->writeln('+++ vidal: completed');
 	}
 }

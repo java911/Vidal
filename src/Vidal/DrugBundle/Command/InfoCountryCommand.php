@@ -18,7 +18,7 @@ class InfoCountryCommand extends ContainerAwareCommand
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		ini_set('memory_limit', -1);
-		$output->writeln('+++ vidal:info_country started');
+		$output->writeln('--- vidal:info_country started');
 
 		$em        = $this->getContainer()->get('doctrine')->getManager('drug');
 
@@ -28,6 +28,6 @@ class InfoCountryCommand extends ContainerAwareCommand
 			WHERE i.CountryCode = ''
 		")->execute();
 
-		$output->writeln('--- vidal:info_country completed');
+		$output->writeln('+++ vidal:info_country completed');
 	}
 }

@@ -17,7 +17,7 @@ class GeneratorNozologyCommand extends ContainerAwareCommand
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		ini_set('memory_limit', -1);
-		$output->writeln('+++ vidal:generator_nozology started');
+		$output->writeln('--- vidal:generator_nozology started');
 
 		$em         = $this->getContainer()->get('doctrine')->getManager('drug');
 		$nozologies = $em->getRepository('VidalDrugBundle:Nozology')->jsonForTree();
@@ -71,6 +71,6 @@ class GeneratorNozologyCommand extends ContainerAwareCommand
 		//		$json = json_decode(file_get_contents($file), true);
 		//		$data = $json['16463']['children'];
 
-		$output->writeln('--- vidal:generator_nozology completed');
+		$output->writeln('+++ vidal:generator_nozology completed');
 	}
 }

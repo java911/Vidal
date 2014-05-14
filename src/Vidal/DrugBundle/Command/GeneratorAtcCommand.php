@@ -17,7 +17,7 @@ class GeneratorAtcCommand extends ContainerAwareCommand
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		ini_set('memory_limit', -1);
-		$output->writeln('+++ vidal:generator_atc started');
+		$output->writeln('--- vidal:generator_atc started');
 		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
 		$atcCodes   = $em->getRepository('VidalDrugBundle:ATC')->jsonForTree();
@@ -49,6 +49,6 @@ class GeneratorAtcCommand extends ContainerAwareCommand
 		//		$json = json_decode(file_get_contents($file), true);
 		//		$data = $json['16463']['children'];
 
-		$output->writeln('--- vidal:generator_atc completed');
+		$output->writeln('+++ vidal:generator_atc completed');
 	}
 }

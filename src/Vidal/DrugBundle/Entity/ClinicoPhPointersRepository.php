@@ -9,7 +9,7 @@ class ClinicoPhPointersRepository extends EntityRepository
 	public function findForTree()
 	{
 		return $this->_em->createQuery('
-		 	SELECT c.Name as text, c.ClPhPointerID as id
+		 	SELECT c.Name as text, c.ClPhPointerID as id, c.total
 		 	FROM VidalDrugBundle:ClinicoPhPointers c
 		 	WHERE c.Level = 0
 		 	ORDER BY c.Name

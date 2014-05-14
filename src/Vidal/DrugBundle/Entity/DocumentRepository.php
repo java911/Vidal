@@ -94,8 +94,9 @@ class DocumentRepository extends EntityRepository
 		return $this->_em->createQuery('
 			SELECT d
 			FROM VidalDrugBundle:Document d
-			LEFT JOIN VidalDrugBundle:MoleculeDocument md WITH md.DocumentID = d
-			WHERE md.MoleculeID = :MoleculeID AND d.ArticleID = 1
+			LEFT JOIN d.molecules m
+			WHERE m.MoleculeID = :MoleculeID
+				AND d.ArticleID = 1
 			ORDER BY d.YearEdition DESC
 		')->setParameter('MoleculeID', $MoleculeID)
 			->setMaxResults(1)
@@ -149,8 +150,8 @@ class DocumentRepository extends EntityRepository
 		$documentsRaw = $this->_em->createQuery('
 			SELECT DISTINCT d.DocumentID
 			FROM VidalDrugBundle:Document d
-			JOIN VidalDrugBundle:DocumentInfoPage di WITH di.DocumentID = d
-			WHERE di.InfoPageID = :InfoPageID AND
+			JOIN d.infoPages i
+			WHERE i.InfoPageID = :InfoPageID AND
 				d.CountryEditionCode = \'RUS\' AND
 				d.ArticleID IN (2,5,4,3)
 			ORDER BY d.DocumentID

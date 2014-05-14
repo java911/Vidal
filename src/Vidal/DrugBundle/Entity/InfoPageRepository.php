@@ -33,12 +33,10 @@ class InfoPageRepository extends EntityRepository
 		$infoPages = $this->_em->createQuery("
 			SELECT DISTINCT i.InfoPageID, i.RusName, c.RusName Country, d.DocumentID
 			FROM VidalDrugBundle:InfoPage i
-			LEFT JOIN VidalDrugBundle:DocumentInfoPage di WITH di.InfoPageID = i
 			LEFT JOIN VidalDrugBundle:Country c WITH i.CountryCode = c
-			LEFT JOIN VidalDrugBundle:Document d WITH di.DocumentID = d.DocumentID
+			LEFT JOIN i.documents d
 			WHERE i.CountryEditionCode = 'RUS'
-				AND di.DocumentID IN (:documentIds)
-			ORDER BY di.Ranking DESC
+				AND d.DocumentID IN (:documentIds)
 		")->setParameter('documentIds', $documentIds)
 			->getResult();
 
@@ -59,11 +57,10 @@ class InfoPageRepository extends EntityRepository
 		return $this->_em->createQuery("
 			SELECT i.InfoPageID, i.RusName, c.RusName Country
 			FROM VidalDrugBundle:InfoPage i
-			LEFT JOIN VidalDrugBundle:DocumentInfoPage di WITH di.InfoPageID = i
+			LEFT JOIN i.documents d
 			LEFT JOIN VidalDrugBundle:Country c WITH i.CountryCode = c
 			WHERE i.CountryEditionCode = 'RUS'
-				AND di.DocumentID = :DocumentID
-			ORDER BY di.Ranking DESC
+				AND d.DocumentID = :DocumentID
 		")->setParameter('DocumentID', $DocumentID)
 			->getResult();
 	}

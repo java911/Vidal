@@ -24,6 +24,10 @@ class KfuTotalCommand extends ContainerAwareCommand
 		$repo     = $em->getRepository('VidalDrugBundle:ClinicoPhPointers');
 		$kfuItems = $repo->findAll();
 
+		if (empty($kfuItems)) {
+			return;
+		}
+
 		# ставим у финальных разделов, сколько всего у них препаратов
 		foreach ($kfuItems as $kfu) {
 			$isFinal = $repo->isFinal($kfu);

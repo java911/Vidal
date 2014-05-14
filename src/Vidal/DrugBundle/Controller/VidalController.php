@@ -149,9 +149,9 @@ class VidalController extends Controller
 		$picture     = $em->getRepository('VidalDrugBundle:Picture')->findByInfoPageID($InfoPageID);
 		$documentIds = $em->getRepository('VidalDrugBundle:Document')->findIdsByInfoPageID($InfoPageID);
 		$params      = array(
-			'infoPage' => $infoPage,
-			'picture'  => $picture,
-			'title'    => $this->strip($infoPage['RusName']) . ' | Представительства фирм',
+			'infoPage'   => $infoPage,
+			'picture'    => $picture,
+			'title'      => $this->strip($infoPage['RusName']) . ' | Представительства фирм',
 			'portfolios' => $em->getRepository('VidalDrugBundle:InfoPage')->findPortfolios($InfoPageID),
 		);
 
@@ -386,34 +386,19 @@ class VidalController extends Controller
 			$document = null;
 		}
 
-		if (!$document) {
-			# если связи ProductDocument не найдено, то это описание конкретного вещества (Molecule)
-			$molecule = $em->getRepository('VidalDrugBundle:Molecule')->findOneByProductID($ProductID);
-
-			if (!$molecule) {
-				throw $this->createNotFoundException();
-			}
-
-			$document = $em->getRepository('VidalDrugBundle:Document')->findByMoleculeID($molecule['MoleculeID']);
-
-			if (!$document) {
-				throw $this->createNotFoundException();
-			}
-
-			$params['molecule'] = $molecule;
+		if ($document) {
+			$documentId           = $document->getDocumentID();
+			$params['document']   = $document;
+			$params['infoPages']  = $em->getRepository('VidalDrugBundle:InfoPage')->findByDocumentID($documentId);
+			$params['nozologies'] = $em->getRepository('VidalDrugBundle:Nozology')->findByDocumentID($documentId);
 		}
 
 		$productIds             = array($product->getProductID());
-		$documentId             = $document->getDocumentID();
-		$params['document']     = $document;
-		$params['articleId']    = $document->getArticleID();
-		$params['infoPages']    = $em->getRepository('VidalDrugBundle:InfoPage')->findByDocumentID($documentId);
 		$params['product']      = $product;
 		$params['products']     = array($product);
 		$params['owners']       = $em->getRepository('VidalDrugBundle:Company')->findOwnersByProducts($productIds);
 		$params['distributors'] = $em->getRepository('VidalDrugBundle:Company')->findDistributorsByProducts($productIds);
 		$params['pictures']     = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds, date('Y'));
-		$params['nozologies']   = $em->getRepository('VidalDrugBundle:Nozology')->findByDocumentID($documentId);
 
 		# БАДы выводятся по-другому
 		if ($product->getProductTypeCode() == 'BAD' || ($document && $document->getArticleID() == 6)) {

@@ -20,8 +20,7 @@ class MoleculeRepository extends EntityRepository
 		return $this->_em->createQuery('
 			SELECT m.MoleculeID, m.LatName, m.RusName, mnn.GNParent, mnn.description
 			FROM VidalDrugBundle:Molecule m
-			LEFT JOIN VidalDrugBundle:MoleculeDocument md WITH md.MoleculeID = m
-			LEFT JOIN VidalDrugBundle:Document d WITH md.DocumentID = d
+			LEFT JOIN m.documents d
 			LEFT JOIN VidalDrugBundle:MoleculeBase mnn WITH mnn.GNParent = m.GNParent
 			WHERE d.DocumentID = :DocumentID
 			ORDER BY md.Ranking DESC

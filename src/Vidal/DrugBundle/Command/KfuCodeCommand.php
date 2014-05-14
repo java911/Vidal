@@ -18,7 +18,7 @@ class KfuCodeCommand extends ContainerAwareCommand
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		ini_set('memory_limit', -1);
-		$output->writeln('+++ vidal:kfu_code started');
+		$output->writeln('--- vidal:kfu_code started');
 
 		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
@@ -64,7 +64,7 @@ class KfuCodeCommand extends ContainerAwareCommand
 				FROM VidalDrugBundle:ClinicoPhPointers c
 				WHERE c.Code = :from
 			')->setParameter('from', $from)
-				->getSingleResult();
+				->getOneOrNullResult();
 
 			if ($fromItem) {
 				$em->remove($fromItem);
@@ -73,6 +73,6 @@ class KfuCodeCommand extends ContainerAwareCommand
 
 		$em->flush();
 
-		$output->writeln('--- vidal:kfu_code completed');
+		$output->writeln('+++ vidal:kfu_code completed');
 	}
 }

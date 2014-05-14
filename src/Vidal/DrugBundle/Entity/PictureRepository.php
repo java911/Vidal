@@ -10,8 +10,8 @@ class PictureRepository extends EntityRepository
 		return $this->_em->createQuery('
 			SELECT p.PathForElectronicEdition path
 			FROM VidalDrugBundle:Picture p
-			JOIN p.infoPages ip
-			JOIN VidalDrugBundle:DocumentInfoPage dip WITH dip.InfoPageID = ip
+			JOIN p.infoPages i
+			JOIN i.documents d
 			WHERE dip.DocumentID = :DocumentID AND
 				ip.CountryCode = \'RUS\'
 			ORDER BY dip.Ranking DESC
