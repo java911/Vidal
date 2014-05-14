@@ -11,7 +11,8 @@ class MoleculeName
 	protected $MoleculeNameID;
 
 	/**
-	 * @ORM\Column(type="integer", nullable=true)
+	 * @ORM\ManyToOne(targetEntity="Molecule", inversedBy="moleculeNames")
+	 * @ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")
 	 */
 	protected $MoleculeID;
 

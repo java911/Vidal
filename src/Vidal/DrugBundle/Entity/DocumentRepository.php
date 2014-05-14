@@ -29,7 +29,6 @@ class DocumentRepository extends EntityRepository
 		$qb = $this->createQueryBuilder('d')
 			->select('d')
 			->andWhere('d.ArticleID IN (2,5)')
-			->andWhere("d.CountryEditionCode = 'RUS'")
 			->orderBy('d.ArticleID', 'ASC')
 			->addOrderBy('d.YearEdition', 'DESC')
 			->setMaxResults(1);
@@ -60,7 +59,6 @@ class DocumentRepository extends EntityRepository
 			$qb = $this->createQueryBuilder('d')
 				->select('d')
 				->andWhere('d.ArticleID IN (4,3,1)')
-				->andWhere("d.CountryEditionCode = 'RUS'")
 				->orderBy('d.ArticleID', 'DESC')
 				->addOrderBy('d.YearEdition', 'DESC')
 				->setMaxResults(1);
@@ -119,7 +117,6 @@ class DocumentRepository extends EntityRepository
 
 		$qb->select('DISTINCT d.ClPhGrName name, d.ClPhGrDescription description')
 			->from('VidalDrugBundle:Document', 'd')
-			->where("d.CountryEditionCode = 'RUS'")
 			->orderBy('d.ClPhGrName', 'ASC');
 
 		# поиск по словам
@@ -151,9 +148,8 @@ class DocumentRepository extends EntityRepository
 			SELECT DISTINCT d.DocumentID
 			FROM VidalDrugBundle:Document d
 			JOIN d.infoPages i
-			WHERE i.InfoPageID = :InfoPageID AND
-				d.CountryEditionCode = \'RUS\' AND
-				d.ArticleID IN (2,5,4,3)
+			WHERE i.InfoPageID = :InfoPageID
+				AND d.ArticleID IN (2,5,4,3)
 			ORDER BY d.DocumentID
 		')->setParameter('InfoPageID', $InfoPageID)
 			->getResult();
@@ -232,7 +228,6 @@ class DocumentRepository extends EntityRepository
 			JOIN d.products p
 			WHERE a = :articleId
 				AND p.NonPrescriptionDrug = TRUE
-				AND p.CountryEditionCode = \'RUS\'
 				AND p.MarketStatusID IN (1,2)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 				AND d.ArticleID != 4

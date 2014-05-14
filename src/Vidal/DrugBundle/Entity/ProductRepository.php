@@ -10,7 +10,7 @@ class ProductRepository extends EntityRepository
 		return $this->_em->createQuery("
 			SELECT p
 			FROM VidalDrugBundle:Product p
-			WHERE p = :ProductID AND p.CountryEditionCode = 'RUS'
+			WHERE p = :ProductID
 		")->setParameter('ProductID', $ProductID)
 			->getOneOrNullresult();
 	}
@@ -23,10 +23,9 @@ class ProductRepository extends EntityRepository
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
-			WHERE d = :DocumentID AND
-				p.CountryEditionCode = \'RUS\' AND
-				p.MarketStatusID IN (1,2) AND
-				p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+			WHERE d = :DocumentID
+				AND p.MarketStatusID IN (1,2)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 			ORDER BY p.RusName ASC
 		')->setParameter('DocumentID', $DocumentID)
 			->getResult();
@@ -40,10 +39,9 @@ class ProductRepository extends EntityRepository
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
-			WHERE d IN (:DocumentIDs) AND
-				p.CountryEditionCode = \'RUS\' AND
-				p.MarketStatusID IN (1,2) AND
-				p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+			WHERE d IN (:DocumentIDs)
+				AND p.MarketStatusID IN (1,2)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 			ORDER BY p.RusName ASC
 		')->setParameter('DocumentIDs', $documentIds)
 			->getResult();
@@ -74,10 +72,9 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN p.moleculeNames mn
 			LEFT JOIN VidalDrugBundle:Molecule m WITH m = mn.MoleculeID
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
-			WHERE m IN (:moleculeIds) AND
-				p.CountryEditionCode = \'RUS\' AND
-				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
-				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
+			WHERE m IN (:moleculeIds)
+				AND p.MarketStatusID IN (1,2)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 			ORDER BY p.RusName ASC
 		')->setParameter('moleculeIds', $moleculeIds)
 			->getResult();
@@ -93,9 +90,8 @@ class ProductRepository extends EntityRepository
 			FROM VidalDrugBundle:Product p
 			JOIN p.atcCodes a WITH a = :ATCCode
 			LEFT JOIN p.document d
-			WHERE p.CountryEditionCode = \'RUS\' AND
-				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
-				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
+			WHERE p.MarketStatusID IN (1,2)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 			ORDER BY p.RusName ASC
 		')->setParameter('ATCCode', $ATCCode)
 			->getResult();
@@ -111,10 +107,9 @@ class ProductRepository extends EntityRepository
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.moleculeNames mn
 			LEFT JOIN p.document d
-			WHERE mn.MoleculeID = :MoleculeID AND
-				p.CountryEditionCode = \'RUS\' AND
-				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
-				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
+			WHERE mn.MoleculeID = :MoleculeID
+				AND p.MarketStatusID IN (1,2)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 			ORDER BY d.ArticleID ASC
 		')->setParameter('MoleculeID', $MoleculeID)
 			->getResult();
@@ -136,10 +131,9 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN p.document d
 			LEFT JOIN d.infoPages i
 			LEFT JOIN VidalDrugBundle:Country co WITH i.CountryCode = co
-			WHERE c = :CompanyID AND
-				p.CountryEditionCode = \'RUS\' AND
-				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
-				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
+			WHERE c = :CompanyID
+				AND p.MarketStatusID IN (1,2)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 			ORDER BY p.RusName ASC
 		')->setParameter('CompanyID', $CompanyID)
 			->getResult();
@@ -167,9 +161,8 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN p.document d
 			JOIN d.infoPages i
 			WHERE i.InfoPageID = :InfoPageID
-				p.CountryEditionCode = \'RUS\' AND
-				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
-				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
+				AND p.MarketStatusID IN (1,2)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 			ORDER BY p.RusName ASC
 		')->setParameter('InfoPageID', $InfoPageID)
 			->getResult();
@@ -180,9 +173,8 @@ class ProductRepository extends EntityRepository
 		$products = $this->_em->createQuery('
 			SELECT DISTINCT p.RusName, p.EngName
 			FROM VidalDrugBundle:Product p
-			WHERE p.CountryEditionCode = \'RUS\' AND
-				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
-				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
+			WHERE p.MarketStatusID IN (1,2)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 			ORDER BY p.RusName ASC
 		')->getResult();
 
@@ -220,7 +212,6 @@ class ProductRepository extends EntityRepository
 			->leftJoin('p.document', 'd')
 			->leftJoin('VidalDrugBundle:ProductType', 'pt', 'WITH', 'p.ProductTypeCode = pt.ProductTypeCode')
 			->orderBy('p.RusName', 'ASC')
-			->andWhere("p.CountryEditionCode = 'RUS'")
 			->andWhere('p.MarketStatusID IN (1,2)');
 
 		# включать ли бады
@@ -269,7 +260,6 @@ class ProductRepository extends EntityRepository
 			}
 
 			$productsRaw = $qb
-				->andWhere("p.CountryEditionCode = 'RUS'")
 				->andWhere('p.MarketStatusID IN (1,2)')
 				->andWhere($where)
 				->getQuery()->getResult();
@@ -320,10 +310,9 @@ class ProductRepository extends EntityRepository
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
-			WHERE d IN (:documentIds) AND
-				p.CountryEditionCode = \'RUS\' AND
-				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
-				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
+			WHERE d IN (:documentIds)
+				AND p.MarketStatusID IN (1,2)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 			ORDER BY p.RusName ASC
 		')->setParameter('documentIds', $documentIds)
 			->getResult();
@@ -365,9 +354,8 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN p.document d
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d IN (:documentIds) AND
-				p.CountryEditionCode = \'RUS\' AND
-				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
-				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
+				AND p.MarketStatusID IN (1,2)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 			ORDER BY p.RusName ASC
 		')->setParameter('documentIds', $documentIds)
 			->getResult();
@@ -395,10 +383,9 @@ class ProductRepository extends EntityRepository
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
-			WHERE d.ClPhGrName = :description AND
-				p.CountryEditionCode = \'RUS\' AND
-				p.MarketStatusID IN (1,2) AND
-				p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+			WHERE d.ClPhGrName = :description
+				AND p.MarketStatusID IN (1,2)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 			ORDER BY p.RusName ASC
 		')->setParameter('description', $description)
 			->getResult();
@@ -414,9 +401,8 @@ class ProductRepository extends EntityRepository
 			JOIN p.phthgroups g WITH g.id = :id
 			LEFT JOIN p.document d
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
-			WHERE p.CountryEditionCode = \'RUS\' AND
-				p.MarketStatusID IN (1,2) AND
-				p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+			WHERE p.MarketStatusID IN (1,2)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 			ORDER BY p.RusName ASC
 		')->setParameter('id', $id)
 			->getResult();
@@ -429,9 +415,7 @@ class ProductRepository extends EntityRepository
 		$qb->select('DISTINCT g.Name, g.id')
 			->from('VidalDrugBundle:Product', 'p')
 			->join('p.phthgroups', 'g')
-			->where("p.CountryEditionCode = 'RUS' AND
-				p.MarketStatusID IN (1,2) AND
-				p.ProductTypeCode IN ('DRUG','GOME')")
+			->where("p.MarketStatusID IN (1,2) AND p.ProductTypeCode IN ('DRUG','GOME')")
 			->orderBy('g.Name', 'ASC');
 
 		# поиск по словам
@@ -464,7 +448,6 @@ class ProductRepository extends EntityRepository
 
 		$qb->select('DISTINCT p')
 			->from('VidalDrugBundle:Product', 'p')
-			->where('p.CountryEditionCode = \'RUS\'')
 			->andWhere('p.MarketStatusID IN (1,2)')
 			->orderBy('p.RusName', 'ASC');
 
@@ -520,7 +503,6 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN p.document d
 			JOIN d.clphPointers pointer
 			WHERE pointer = :id
-				AND p.CountryEditionCode = \'RUS\'
 				AND p.MarketStatusID IN (1,2)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 			ORDER BY p.RusName ASC
@@ -545,9 +527,8 @@ class ProductRepository extends EntityRepository
 			JOIN VidalDrugBundle:ProductCompany pc WITH pc.ProductID = p
 			JOIN VidalDrugBundle:Company c WITH pc.CompanyID = c
 			WHERE c = :CompanyID
-				AND c.CountryEditionCode = 'RUS'
-				AND (p.MarketStatusID = 1 OR p.MarketStatusID = 2)
-				AND (p.ProductTypeCode = 'DRUG' OR p.ProductTypeCode = 'GOME')
+				AND p.MarketStatusID IN (1,2)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 			ORDER BY p.RusName ASC
 		")->setParameter('CompanyID', $CompanyID)
 			->getSingleScalarResult();
@@ -564,10 +545,9 @@ class ProductRepository extends EntityRepository
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
-			WHERE d IN (:DocumentIDs) AND
-				p.CountryEditionCode = \'RUS\' AND
-				p.MarketStatusID IN (1,2) AND
-				p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+			WHERE d IN (:DocumentIDs)
+				AND p.MarketStatusID IN (1,2)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 			ORDER BY p.RusName ASC
 		')->setParameter('DocumentIDs', $documentIds)
 			->getSingleScalarResult();

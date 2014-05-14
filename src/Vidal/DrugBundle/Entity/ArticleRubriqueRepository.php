@@ -6,6 +6,17 @@ use Doctrine\ORM\EntityRepository;
 
 class ArticleRubriqueRepository extends EntityRepository
 {
+	public function findEnabledByRubrique($rubrique)
+	{
+		return $this->_em->createQuery('
+			SELECT r
+			FROM VidalDrugBundle:ArticleRubrique r
+			WHERE r.rubrique = :rubrique
+				AND r.enabled = TRUE
+		')->setParameter('rubrique', $rubrique)
+			->getOneOrNullResult();
+	}
+
 	public function getByTitle($title, $category)
 	{
 		$rubrique = $this->_em->createQuery('

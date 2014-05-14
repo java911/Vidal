@@ -80,6 +80,9 @@ class Molecule
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $GNVLS;
 
+	/** @ORM\OneToMany(targetEntity="MoleculeName", mappedBy="MoleculeID") */
+	protected $moleculeNames;
+
 	public function __construct()
 	{
 		$this->documents     = new ArrayCollection();
@@ -87,6 +90,7 @@ class Molecule
 		$this->arts          = new ArrayCollection();
 		$this->publications  = new ArrayCollection();
 		$this->pharmArticles = new ArrayCollection();
+		$this->moleculeNames = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -326,5 +330,21 @@ class Molecule
 	public function getGNVLS()
 	{
 		return $this->GNVLS;
+	}
+
+	/**
+	 * @param mixed $moleculeNames
+	 */
+	public function setMoleculeNames($moleculeNames)
+	{
+		$this->moleculeNames = $moleculeNames;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getMoleculeNames()
+	{
+		return $this->moleculeNames;
 	}
 }

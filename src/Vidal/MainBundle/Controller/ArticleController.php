@@ -49,7 +49,7 @@ class ArticleController extends Controller
 	public function rubriqueAction($rubrique)
 	{
 		$em       = $this->getDoctrine()->getManager('drug');
-		$rubrique = $em->getRepository('VidalDrugBundle:ArticleRubrique')->findOneByRubrique($rubrique);
+		$rubrique = $em->getRepository('VidalDrugBundle:ArticleRubrique')->findEnabledByRubrique($rubrique);
 
 		if (!$rubrique) {
 			throw $this->createNotFoundException();
