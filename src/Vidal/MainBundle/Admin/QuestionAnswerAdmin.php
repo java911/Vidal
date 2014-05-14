@@ -26,30 +26,33 @@ class QuestionAnswerAdmin extends Admin
 		}
 	}
 
-	protected function configureShowField(ShowMapper $showMapper)
-	{
-		$showMapper
-			->add('id')
-			->add('question', null, array('label' => 'Вопрос'))
-			->add('answer', null, array('label' => 'Ответ'))
-			->add('enabled', null, array('label' => 'Активен'))
-			->add('created', null, array(
-				'label'  => 'Дата создания',
-				'widget' => 'single_text',
-				'format' => 'd.m.Y в H:i'
-			))
-			->add('updated', null, array(
-				'label'  => 'Дата последнего обновления',
-				'widget' => 'single_text',
-				'format' => 'd.m.Y в H:i'
-			));
-	}
+//	protected function configureShowField(ShowMapper $showMapper)
+//	{
+//		$showMapper
+//			->add('id')
+//			->add('question', null, array('label' => 'Вопрос'))
+//			->add('answer', null, array('label' => 'Ответ'))
+//			->add('enabled', null, array('label' => 'Активен'))
+//			->add('created', null, array(
+//				'label'  => 'Дата создания',
+//				'widget' => 'single_text',
+//				'format' => 'd.m.Y в H:i'
+//			))
+//			->add('updated', null, array(
+//				'label'  => 'Дата последнего обновления',
+//				'widget' => 'single_text',
+//				'format' => 'd.m.Y в H:i'
+//			));
+//	}
 
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
+            ->add('authorFirstName', null, array('label' => 'Автор вопроса', 'required' => true))
+            ->add('authorEmail', null, array('label' => 'Email автора', 'required' => true))
 			->add('question', null, array('label' => 'Вопрос', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('answer', null, array('label' => 'Ответ', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
+
 			->add('enabled', null, array('label' => 'Активен', 'required' => false))
 			->add('created', null, array(
 				'label'    => 'Дата создания',
@@ -81,7 +84,7 @@ class QuestionAnswerAdmin extends Admin
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(
-					'show'   => array(),
+//					'show'   => array(),
 					'edit'   => array(),
 					'delete' => array(),
 				)
