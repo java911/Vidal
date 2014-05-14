@@ -23,7 +23,6 @@ class MoleculeRepository extends EntityRepository
 			LEFT JOIN m.documents d
 			LEFT JOIN VidalDrugBundle:MoleculeBase mnn WITH mnn.GNParent = m.GNParent
 			WHERE d.DocumentID = :DocumentID
-			ORDER BY md.Ranking DESC
 		')->setParameter('DocumentID', $DocumentID)
 			->getResult();
 	}
