@@ -353,7 +353,7 @@ class ProductRepository extends EntityRepository
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
-			WHERE d IN (:documentIds) AND
+			WHERE d IN (:documentIds)
 				AND p.MarketStatusID IN (1,2)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 			ORDER BY p.RusName ASC
