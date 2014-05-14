@@ -70,6 +70,8 @@ class ArticleRepository extends EntityRepository
 			->from('VidalDrugBundle:Article', 'a')
 			->leftJoin('a.rubrique', 'r')
 			->where('a.enabled = TRUE')
+			->andWhere('r.enabled = TRUE')
+			->andWhere('r.id != 19')
 			->orderBy('a.title', 'ASC');
 
 		# поиск по словам
@@ -100,8 +102,9 @@ class ArticleRepository extends EntityRepository
 				$where .= "(a.title LIKE '$word%' OR a.title LIKE '% $word%' OR a.synonym LIKE '$word%' OR a.synonym LIKE '% $word%')";
 			}
 
-			$qb->where('a.enabled = TRUE');
-			$qb->andWhere($where);
+			$qb->where($where)
+				->andWhere('r.enabled = TRUE')
+				->andWhere('r.id != 19');
 			$articles = $qb->getQuery()->getResult();
 		}
 
