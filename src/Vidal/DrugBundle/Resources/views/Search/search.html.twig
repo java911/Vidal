@@ -23,7 +23,7 @@
 					{% for code, atc in atcCodes %}
 						<tr>
 							<td>
-								<a href="{{ path('atc', {'ATCCode':atc.ATCCode}) }}"
+								<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}"
 								   class="no-underline">{{ atc.ATCCode }}</a>
 							</td>
 							<td>{{ atc.RusName }}</td>
