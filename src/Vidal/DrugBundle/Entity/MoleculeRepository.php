@@ -159,8 +159,7 @@ class MoleculeRepository extends EntityRepository
 		return $this->_em->createQuery('
 			SELECT DISTINCT m.MoleculeID, m.LatName, m.RusName, mnn.GNParent, mnn.description, d.DocumentID
 			FROM VidalDrugBundle:Molecule m
-			JOIN VidalDrugBundle:MoleculeDocument md WITH md.MoleculeID = m
-			JOIN VidalDrugBundle:Document d WITH md.DocumentID = d
+			JOIN m.documents d
 			LEFT JOIN m.GNParent mnn
 			WHERE d IN (:documentIds)
 			ORDER BY m.RusName ASC
