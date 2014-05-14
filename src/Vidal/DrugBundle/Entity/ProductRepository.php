@@ -165,8 +165,9 @@ class ProductRepository extends EntityRepository
 				p.RegistrationNumber, p.RegistrationDate
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
-			JOIN VidalDrugBundle:DocumentInfoPage di WITH di.DocumentID = d AND di.InfoPageID = :InfoPageID
-			WHERE p.CountryEditionCode = \'RUS\' AND
+			JOIN d.infoPages i
+			WHERE i.InfoPageID = :InfoPageID
+				p.CountryEditionCode = \'RUS\' AND
 				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
 				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
 			ORDER BY p.RusName ASC
