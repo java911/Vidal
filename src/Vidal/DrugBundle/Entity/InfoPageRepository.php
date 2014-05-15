@@ -113,9 +113,8 @@ class InfoPageRepository extends EntityRepository
 	public function findByLetter($l)
 	{
 		return $this->_em->createQuery('
-			SELECT i.InfoPageID, i.RusName, c.RusName Country
+			SELECT i
 			FROM VidalDrugBundle:InfoPage i
-			LEFT JOIN VidalDrugBundle:Country c WITH i.CountryCode = c
 			WHERE i.RusName LIKE :letter
 				AND i.countProducts > 0
 			ORDER BY i.RusName ASC
@@ -128,9 +127,8 @@ class InfoPageRepository extends EntityRepository
 		$qb = $this->_em->createQueryBuilder();
 
 		$qb
-			->select('i.InfoPageID, i.RusName, country.RusName Country')
+			->select('i')
 			->from('VidalDrugBundle:InfoPage', 'i')
-			->leftJoin('VidalDrugBundle:Country', 'country', 'WITH', 'country.CountryCode = i.CountryCode')
 			->orderBy('i.RusName', 'ASC')
 			->where('i.countProducts > 0');
 

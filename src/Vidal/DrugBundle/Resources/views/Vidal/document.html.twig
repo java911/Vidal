@@ -178,7 +178,7 @@
 	{% if product is defined and product.atcCodes is not empty %}
 		{% if product.atcCodes|length == 1 %}
 			{% set atc = product.atcCodes[0] %}
-			<div class="block" id="phthgroup">
+			<div class="block" id="atc_codes">
 				<span class="block-head">Код ATX:</span>
 				<span class="block-content">
 					<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}" class="no-underline">
@@ -207,7 +207,7 @@
 	{% elseif document.atcCodes is not empty %}
 		{% if document.atcCodes|length == 1 %}
 			{% set atc = document.atcCodes[0] %}
-			<div class="block" id="phthgroup">
+			<div class="block" id="atc_codes">
 				<span class="block-head">Код ATX:</span>
 				<span class="block-content">
 					<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}" class="no-underline">
