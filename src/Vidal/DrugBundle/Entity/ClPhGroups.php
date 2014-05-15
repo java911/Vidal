@@ -31,7 +31,7 @@ class ClPhGroups
 
 	public function __toString()
 	{
-		return $this->Name;
+		return $this->ClPhGroupsID . ' - ' . $this->Name;
 	}
 
 	/**

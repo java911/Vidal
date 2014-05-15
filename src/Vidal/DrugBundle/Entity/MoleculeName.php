@@ -40,7 +40,7 @@ class MoleculeName
 
 	public function __toString()
 	{
-		return $this->RusName;
+		return $this->MoleculeNameID . ' - ' . $this->RusName;
 	}
 
 	/**

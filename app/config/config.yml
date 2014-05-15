@@ -125,6 +125,12 @@ iphp_file_store:
             overwrite_duplicates: false
             namer:
                  translit: ~
+        product_photo:
+            upload_dir: %upload_dir%/product_photo
+            upload_path: /upload/product_photo
+            overwrite_duplicates: false
+            namer:
+                 translit: ~
 
 # Swiftmailer Configuration
 swiftmailer:

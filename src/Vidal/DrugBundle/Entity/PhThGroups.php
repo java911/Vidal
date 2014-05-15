@@ -28,7 +28,7 @@ class PhThGroups
 
 	public function __toString()
 	{
-		return $this->Name;
+		return $this->id . ' - ' . $this->Name;
 	}
 
 	/**

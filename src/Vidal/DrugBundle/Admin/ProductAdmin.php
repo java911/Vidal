@@ -27,6 +27,7 @@ class ProductAdmin extends Admin
 			->add('ProductTypeCode', null, array('label' => 'Тип препарата', 'required' => true))
 			->add('MarketStatusID', null, array('label' => 'Статус', 'required' => true))
 			->add('ZipInfo', null, array('label' => 'Форма выпуска', 'required' => true))
+			->add('photo', 'iphp_file', array('label' => 'Фотография временная', 'required' => false))
 			->add('Composition', null, array('label' => 'Описание', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('RegistrationDate', null, array('label' => 'Дата регистрации'))
 			->add('RegistrationNumber', null, array('label' => 'Номер регистрации'))
