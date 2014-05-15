@@ -144,16 +144,18 @@
 			{% endif %}
 
 			{# Произведено #}
-			{% for distributor in distributors %}
-				<div class="distributor">
-					<span class="block-head">{{ distributor.CompanyRusNote|capitalize }}:</span>
-					<a href="{{ path('firm_item', {'CompanyID':distributor.CompanyID}) }}" class="no-underline">
-						{{ distributor.LocalName|raw }}{{ distributor.Property is not empty ? ', ' ~ distributor.Property|raw|replace({'&amp;':'&'}) }}</a>
-					{% if distributor.Country is not empty and distributor.Country != 'Unknown' %}
-						<span class="small">({{ distributor.Country }})</span>
-					{% endif %}
-				</div>
-			{% endfor %}
+			{% if distributors is defined and distributors is not empty %}
+				{% for distributor in distributors %}
+					<div class="distributor">
+						<span class="block-head">{{ distributor.CompanyRusNote|capitalize }}:</span>
+						<a href="{{ path('firm_item', {'CompanyID':distributor.CompanyID}) }}" class="no-underline">
+							{{ distributor.LocalName|raw }}{{ distributor.Property is not empty ? ', ' ~ distributor.Property|raw|replace({'&amp;':'&'}) }}</a>
+						{% if distributor.Country is not empty and distributor.Country != 'Unknown' %}
+							<span class="small">({{ distributor.Country }})</span>
+						{% endif %}
+					</div>
+				{% endfor %}
+			{% endif %}
 
 			{# Представительство #}
 			{% if infoPages is defined and infoPages is not empty %}
@@ -347,11 +349,17 @@
 			{% spaceless %}
 				<textarea cols="92" rows="2">
 					{% if product is defined %}
-						<a href="{{ url('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}" target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+						<a href="{{ url('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"
+						   target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике
+							Видаль.</a>
 					{% elseif documentId is defined %}
-						<a href="{{ url('document', {'EngName':document.Name, 'DocumentID':document.DocumentID}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+						<a href="{{ url('document', {'EngName':document.Name, 'DocumentID':document.DocumentID}) }}"
+						   target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике
+							Видаль.</a>
 					{% else %}
-						<a href="{{ url('document', {'EngName':document.Name}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+						<a href="{{ url('document', {'EngName':document.Name}) }}"
+						   target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике
+							Видаль.</a>
 					{% endif %}
 				</textarea>
 			{% endspaceless %}
