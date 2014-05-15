@@ -184,6 +184,16 @@ class IndexController extends Controller
 	}
 
 	/**
+	 * @Route("/kontakty-aptek", name="kontakty_aptek")
+	 *
+	 * @Template("VidalMainBundle:Index:kontaktyAptek.html.twig")
+	 */
+	public function kontaktyAptekAction()
+	{
+		return array('title' => 'Контакты аптек');
+	}
+
+	/**
 	 * О компании
 	 * @Route("/about/{url}", name="about_item")
 	 *

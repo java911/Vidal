@@ -52,6 +52,16 @@ class DoctrineEventSubscriber implements EventSubscriber
 		if ($entity instanceof Article || $entity instanceof Art || $entity instanceof Publication) {
 			$this->setVideoMeta($entity);
 		}
+
+		# добавили препарат - генерируем автодополнение ElasticSearch
+		if ($entity instanceof Product) {
+			$this->autocompleteProduct($entity);
+		}
+
+		# добавили документ - генерируем автодополнение ElasticSearch
+		if ($entity instanceof Document) {
+			$this->autocompleteDocument($entity);
+		}
 	}
 
 	public function preUpdate(LifecycleEventArgs $args)
@@ -154,5 +164,15 @@ class DoctrineEventSubscriber implements EventSubscriber
 		);
 
 		return str_replace($rus_alphabet, $rus_alphabet_translit, $text);
+	}
+
+	private function autocompleteProduct($product)
+	{
+
+	}
+
+	private function autocompleteDocument($document)
+	{
+
 	}
 }
