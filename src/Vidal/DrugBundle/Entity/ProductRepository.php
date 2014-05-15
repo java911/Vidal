@@ -528,7 +528,7 @@ class ProductRepository extends EntityRepository
 			JOIN VidalDrugBundle:Company c WITH pc.CompanyID = c
 			WHERE c = :CompanyID
 				AND p.MarketStatusID IN (1,2)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.ProductTypeCode IN ('DRUG','GOME')
 			ORDER BY p.RusName ASC
 		")->setParameter('CompanyID', $CompanyID)
 			->getSingleScalarResult();
