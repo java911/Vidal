@@ -12,15 +12,15 @@
 			<div><a href="#composition">Форма выпуска, состав и упаковка</a></div>
 		{% endif %}
 
-		{% if document.clphPointers.count %}
-			<div>
-			{% if document.clphPointers|length == 1 %}
-				<a href="#clphpointer">Клинико-фармакологический указатель</a>
-			{% else %}
-				<a href="#clphpointer">Клинико-фармакологические указатели</a>
-			{% endif %}
-			</div>
-		{% endif %}
+		{#{% if document.clphPointers.count %}#}
+			{#<div>#}
+			{#{% if document.clphPointers|length == 1 %}#}
+				{#<a href="#clphpointer">Клинико-фармакологический указатель</a>#}
+			{#{% else %}#}
+				{#<a href="#clphpointer">Клинико-фармакологические указатели</a>#}
+			{#{% endif %}#}
+			{#</div>#}
+		{#{% endif %}#}
 
 		{% if product is defined and product.clphGroups.count %}
 			<div>
