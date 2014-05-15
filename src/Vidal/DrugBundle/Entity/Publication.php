@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Iphp\FileStoreBundle\Mapping\Annotation as FileStore;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/** @ORM\Entity(repositoryClass="PublicationRepository") @ORM\Table(name="publications") @FileStore\Uploadable */
+/** @ORM\Entity(repositoryClass="PublicationRepository") @ORM\Table(name="publication") @FileStore\Uploadable */
 class Publication extends BaseEntity
 {
 	/**
