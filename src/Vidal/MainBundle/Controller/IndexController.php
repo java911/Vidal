@@ -70,11 +70,13 @@ class IndexController extends Controller
                 $em->refresh($faq);
             }
         }
+        $qus = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByEnabled(1);
+        krsort($qus);
 
 		return array(
 			'title'           => 'Вопрос-ответ',
 			'menu_left'       => 'qa',
-			'questionAnswers' => $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByEnabled(1),
+			'questionAnswers' => $qus,
             'form'  => $form->createView(),
             't' => $t,
 		);
