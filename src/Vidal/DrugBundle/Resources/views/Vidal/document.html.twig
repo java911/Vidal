@@ -58,9 +58,9 @@
 		<div class="block">
 			{% if isDoctor %}
 				{% set portfolio = document.portfolios[0] %}
-				<a href="{{ path('portfolio_item', {'url':portfolio.url}) }}" class="no-underline bold division-link">
-					Подробнее о препарате <img src="{{ asset('bundles/vidalmain/images/redbutton.jpg') }}"
-											   style="margin-bottom: -9px;">
+				<a href="{{ path('portfolio_item', {'url':portfolio.url}) }}"
+				   class="portfolio-link no-underline">
+					<span>Подробнее о препарате</span><img src="{{ asset('bundles/vidalmain/images/redbutton.jpg') }}"/>
 				</a>
 			{% else %}
 				<div class="block-head">
@@ -422,6 +422,22 @@
 			font-family:     'PT Sans Caption', sans-serif;
 			font-size:       14px;
 			background:      url(../images/down.png) no-repeat 98% 50%;
+		}
+		.portfolio-link {
+			display:       inline-block;
+			background:    #eee;
+			font-weight:   bold;
+			margin-bottom: 14px;
+			padding:       1px 1px 0 10px;
+			border:        2px solid #eee;
+		}
+		.portfolio-link > span {
+			display:        inline-block;
+			vertical-align: top;
+			margin:         7px 5px 0 0;
+		}
+		.portfolio-link:hover {
+			border: 2px solid #bbb;
 		}
 	</style>
 {% endblock %}
