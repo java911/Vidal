@@ -40,4 +40,17 @@ $(document).ready(function() {
 	});
 
 	$('#search_form .search-type').chosen({disable_search:true});
+
+	$(window).scroll(function(){
+		if ($(this).scrollTop() > 100) {
+			$('#top-link').fadeIn();
+		} else {
+			$('#top-link').fadeOut();
+		}
+	});
+
+	$('#top-link').click(function(){
+		$("html, body").animate({ scrollTop: 0 }, 600);
+		return false;
+	});
 });

@@ -1382,3 +1382,18 @@ h1 span {
 	opacity:        0.3;
 	z-index:        1000;
 }
+
+/* кнопка прокрутки наверх */
+#top-link {
+	display:     none;
+	z-index:     999;
+	opacity:     0.7;
+	position:    fixed;
+	top:         100%;
+	left:        100%;
+	margin-top:  -80px;
+	margin-left: -80px;
+}
+#top-link:hover {
+	opacity: 1;
+}

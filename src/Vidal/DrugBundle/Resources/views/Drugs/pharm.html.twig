@@ -31,7 +31,7 @@
 		<ul class="pharm ul-style">
 			{% for pharm in pagination %}
 				<li>
-					<a href="{{ path('pharm_item', {'id': pharm.id}) }}">{{ pharm }}</a>
+					<a href="{{ path('pharm_item', {'id': pharm.id}) }}">{{ pharm.Name|raw }}</a>
 				</li>
 			{% endfor %}
 		</ul>
