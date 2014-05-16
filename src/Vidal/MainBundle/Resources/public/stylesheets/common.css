@@ -12,9 +12,9 @@ body {
 	color:       #333333;
 }
 .wrapper {
-	width:      966px;
+	width:      1006px;
 	margin:     0 auto;
-	padding:    0 15px;
+	padding:    0;
 	min-height: 100%;
 	height:     auto !important;
 	height:     100%;
@@ -64,7 +64,7 @@ body {
 	vertical-align: top;
 }
 .right-sidebar {
-	width:          200px;
+	width:          240px;
 	position:       relative;
 	vertical-align: top;
 }
