@@ -28,6 +28,7 @@ class DoctrineEventSubscriber implements EventSubscriber
 	{
 		return array(
 			'prePersist',
+			'postPersist',
 			'preUpdate',
 			'postUpdate',
 			'preRemove',
@@ -168,11 +169,58 @@ class DoctrineEventSubscriber implements EventSubscriber
 
 	private function autocompleteProduct($product)
 	{
+		$patterns     = array('/<SUP>.*<\/SUP>/', '/<SUB>.*<\/SUB>/');
+		$replacements = array('', '');
+		$RusName      = preg_replace($patterns, $replacements, $product->getRusName());
+		$RusName      = mb_strtolower($RusName, 'UTF-8');
+		$EngName      = preg_replace($patterns, $replacements, $product->getEngName());
+		$EngName      = mb_strtolower($EngName, 'UTF-8');
 
+		if (!empty($RusName)) {
+			$this->createAutocomplete('autocomplete', $product->getProductID(), $RusName);
+			$this->createAutocomplete('autocompleteext', $product->getProductID(), $RusName);
+		}
+
+		if (!empty($EngName)) {
+			$this->createAutocomplete('autocomplete', $product->getProductID() + 1, $EngName);
+			$this->createAutocomplete('autocompleteext', $product->getProductID() + 1, $EngName);
+		}
 	}
 
 	private function autocompleteDocument($document)
 	{
+		# autocomplete_document2
+		$elasticaClient = new \Elastica\Client();
+		$elasticaIndex  = $elasticaClient->getIndex('website');
+		$elasticaType   = $elasticaIndex->getType('autocomplete_document2');
+		$id             = $document->getDocumentID();
 
+		$document = new \Elastica\Document(
+			$id + 100000,
+			array('name' => $id . ' - ' . $this->strip($document->getName()))
+		);
+
+		$elasticaType->addDocument($document);
+		$elasticaType->getIndex()->refresh();
+	}
+
+	private function createAutocomplete($indexName, $id, $name)
+	{
+		$elasticaClient = new \Elastica\Client();
+		$elasticaIndex  = $elasticaClient->getIndex('website');
+		$elasticaType   = $elasticaIndex->getType($indexName);
+
+		$document = new \Elastica\Document($id + 100000, array('name' => $name));
+
+		$elasticaType->addDocument($document);
+		$elasticaType->getIndex()->refresh();
+	}
+
+	private function strip($string)
+	{
+		$pat = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/&amp;/');
+		$rep = array('', '', '&');
+
+		return preg_replace($pat, $rep, $string);
 	}
 }

@@ -29,20 +29,6 @@ class ArtAdmin extends Admin
 		}
 	}
 
-	protected function configureShowField(ShowMapper $showMapper)
-	{
-		$showMapper
-			->add('id')
-			->add('title', null, array('label' => 'Заголовок'))
-			->add('link', null, array('label' => 'Адрес страницы', 'help' => 'латинские буквы и цифры, слова через тире'))
-			->add('rubrique', null, array('label' => 'Раздел'))
-			->add('type', null, array('label' => 'Категория'))
-			->add('announce', null, array('label' => 'Анонс'))
-			->add('body', null, array('label' => 'Основное содержимое'))
-			->add('enabled', null, array('label' => 'Активна'))
-			->add('date', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'));
-	}
-
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$subject             = $this->getSubject();
@@ -187,7 +173,6 @@ class ArtAdmin extends Admin
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(
-					'show'   => array(),
 					'edit'   => array(),
 					'delete' => array(),
 				)

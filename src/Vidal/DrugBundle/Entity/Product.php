@@ -43,7 +43,7 @@ class Product
 	/** @ORM\Column(length=255) */
 	protected $ZipInfo;
 
-	/** @ORM\Column(type="text") */
+	/** @ORM\Column(type="text", nullable=true) */
 	protected $Composition;
 
 	/** @ORM\Column(type="datetime") @Gedmo\Timestampable(on="update") */

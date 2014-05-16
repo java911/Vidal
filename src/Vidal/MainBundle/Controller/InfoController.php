@@ -17,11 +17,14 @@ class InfoController extends Controller
 		return array();
 	}
 
-    /**
-     * @Route("calculate", name="calculate")
-     * @Template("VidalMainBundle:Info:calculate.html.twig")
-     */
-    public function calculateAction(){
-        return array();
-    }
+	/**
+	 * @Route("/shkola-zdorovya/calculator.html", name="calculate")
+	 * @Template("VidalMainBundle:Info:calculate.html.twig")
+	 */
+	public function calculateAction()
+	{
+		return array(
+			'title' => 'Калькулятор подбора полезной воды'
+		);
+	}
 }
