@@ -792,14 +792,32 @@ h1 span {
 }
 
 /* search */
+#search_form table {
+	width: 100%;
+}
 #search_form .search-type {
 	vertical-align: top;
 	background:     transparent;
 	border:         none;
 	font-style:     italic;
+	width:          180px;
+	font-size:      15px;
 }
 #search_form .search-inputs {
 	width: 257px;
+}
+#search_form .search-query,
+#search_form .search-submit {
+	float: right;
+}
+#search_form .sf {
+	width: 261px;
+}
+#search_form .st {
+	padding-top: 4px;
+}
+.search td {
+	padding: 0;
 }
 .search-inputs {
 	overflow: hidden;
@@ -809,7 +827,6 @@ h1 span {
 }
 .search .search-query {
 	display:        inline-block;
-	float:          left;
 	width:          196px;
 	margin:         0 0 0 2px;
 	padding:        0 6px;

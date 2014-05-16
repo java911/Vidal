@@ -42,19 +42,19 @@
 				</select>
 			</span>
 			</td>
-			<td>
+			<td class="sf">
+				<input type="submit" value="" class="search-submit"/>
 				<input class="search-query" type="text" name="q" placeholder="Введите слово для поиска..."
 					   autocomplete="off"
 					   value="{{ app.request.attributes.get('_route') == 'search' ? app.request.get('q') }}"/>
-				<input type="submit" value="" class="search-submit"/>
 			</td>
 		</tr>
 		<tr>
-			<td>
+			<td class="st">
 				<input type="checkbox" id="bad" name="bad" class="checkbox" checked="checked"/>
 				<label for="bad">включая БАДы</label>
 			</td>
-			<td class="right">
+			<td class="right st">
 				<a id="searche_link" href="{{ path('searche') }}">расширенный поиск</a>
 			</td>
 		</tr>

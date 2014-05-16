@@ -40,7 +40,7 @@ class BannerGroup
 	/** @ORM\Column(type="integer") */
 	protected $height;
 
-	/** @ORM\Column(length=50) */
+	/** @ORM\Column(length=50, nullable=true) */
 	protected $name;
 
 	public function __construct()

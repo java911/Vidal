@@ -71,6 +71,8 @@
 {% endif %}
 
 {# баннеры #}
+{{ render(controller('VidalMainBundle:Banner:render', {'groupId':10})) }}
+
 {% if indexPage is defined %}
 	{{ render(controller('VidalMainBundle:Banner:render', {'groupId':7})) }}
 {% else %}
