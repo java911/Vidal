@@ -403,7 +403,7 @@ class VidalController extends Controller
 		$params['pictures']     = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds, date('Y'));
 
 		# БАДы выводятся по-другому
-		if ($product->getProductTypeCode() == 'BAD' || ($document && $document->getArticleID() == 6)) {
+		if ($product->isBAD() || ($document && $document->isBAD())) {
 			return $this->render("VidalDrugBundle:Vidal:bad_document.html.twig", $params);
 		}
 

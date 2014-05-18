@@ -1120,4 +1120,9 @@ class Document
 	{
 		return $this->molecules;
 	}
+
+	public function isBAD()
+	{
+		return $this->ArticleID == 6;
+	}
 }

@@ -775,4 +775,11 @@ class Product
 	{
 		return $this->photo;
 	}
+
+	public function isBAD()
+	{
+		$productType = $this->getProductTypeCode();
+
+		return $productType ? $productType->getProductTypeCode() == 'BAD' : null;
+	}
 }

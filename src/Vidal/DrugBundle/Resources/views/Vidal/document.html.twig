@@ -72,14 +72,15 @@
 		</div>
 	{% endif %}
 
+	{# Изображения препарата #}
 	{% if product is defined and product.photo %}
-		<div class="pictures">
+		<div class="pictures block">
 			<a href="{{ product.photo.path }}" target="_blank">
 				<img src="{{ product.photo.path }}"/>
 			</a>
 		</div>
 	{% elseif pictures is not empty %}
-		<div class="pictures">
+		<div class="pictures block">
 			{% for picture in pictures %}
 				{% set path = '/upload/products/' ~ picture %}
 				{% if is_file(path) %}
@@ -177,34 +178,36 @@
 
 
 	{# Блок АТХ кодов #}
-	{% if product is defined and product.atcCodes is not empty %}
-		{% if product.atcCodes|length == 1 %}
-			{% set atc = product.atcCodes[0] %}
-			<div class="block" id="atc_codes">
-				<span class="block-head">Код ATX:</span>
-				<span class="block-content">
-					<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}" class="no-underline">
-						{{ atc.ATCCode }}
-					</a>
-					<span class="atc-name small">({{ atc.RusName }})</span>
-				</span>
-			</div>
-		{% else %}
-			<div class="block">
-				<div class="block-head">Коды АТХ</div>
-				<div class="block-content">
-					<ul class="ul-style">
-						{% for atc in product.atcCodes %}
-							<li>
-								<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}" class="no-underline">
-									{{ atc.ATCCode }}
-								</a>
-								<span class="atc-name small">({{ atc.RusName }})</span>
-							</li>
-						{% endfor %}
-					</ul>
+	{% if product is defined %}
+		{% if product.atcCodes is not empty %}
+			{% if product.atcCodes|length == 1 %}
+				{% set atc = product.atcCodes[0] %}
+				<div class="block" id="atc_codes">
+					<span class="block-head">Код ATX:</span>
+					<span class="block-content">
+						<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}" class="no-underline">
+							{{ atc.ATCCode }}
+						</a>
+						<span class="atc-name small">({{ atc.RusName }})</span>
+					</span>
 				</div>
-			</div>
+			{% else %}
+				<div class="block">
+					<div class="block-head">Коды АТХ</div>
+					<div class="block-content">
+						<ul class="ul-style">
+							{% for atc in product.atcCodes %}
+								<li>
+									<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}" class="no-underline">
+										{{ atc.ATCCode }}
+									</a>
+									<span class="atc-name small">({{ atc.RusName }})</span>
+								</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			{% endif %}
 		{% endif %}
 	{% elseif document.atcCodes is not empty %}
 		{% if document.atcCodes|length == 1 %}
@@ -427,9 +430,8 @@
 			display:       inline-block;
 			background:    #eee;
 			font-weight:   bold;
-			margin-bottom: 14px;
 			padding:       1px 1px 0 10px;
-			border:        2px solid #eee;
+			border:        2px solid #ddd;
 		}
 		.portfolio-link > span {
 			display:        inline-block;
