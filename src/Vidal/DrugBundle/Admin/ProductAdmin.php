@@ -21,8 +21,8 @@ class ProductAdmin extends Admin
 			->add('Name', 'text', array('label' => 'URL адрес', 'required' => true))
 			->add($formMapper->create('document', 'text', array(
 				'label'        => 'ID документа',
-				'required'     => true,
-				'by_reference' => false,
+				'required'     => false,
+				'by_reference' => true,
 			))->addModelTransformer($transformer))
 			->add('ProductTypeCode', null, array('label' => 'Тип препарата', 'required' => true))
 			->add('MarketStatusID', null, array('label' => 'Статус', 'required' => true))
@@ -37,7 +37,7 @@ class ProductAdmin extends Admin
 			->add('GNVLS', null, array('label' => 'ЖНВЛП', 'required' => false))
 			->add('DLO', null, array('label' => 'ДЛО', 'required' => false))
 			->add('ValidPeriod', null, array('label' => 'Срок действия', 'required' => false))
-			//->add('StrCond', null, array('label' => 'Условия хранения', 'required' => false))
+			->add('StrCond', null, array('label' => 'Условия хранения', 'required' => false))
 			->add('atcCodes', null, array('label' => 'Коды АТХ', 'required' => false))
 			->add('moleculeNames', null, array('label' => 'Активные вещества', 'required' => false))
 			->add('clphGroups', null, array('label' => 'Клинико-фармакологические группы', 'required' => false, 'help' => 'ClPhGroups'))
