@@ -55,6 +55,7 @@ class ProductAdmin extends Admin
 					'allow_delete' => true
 				)
 			)
+			->add('inactive', null, array('label' => 'Отключить', 'required' => false, 'help' => 'Исключить препарат из списков выдачи'))
 		;
 	}
 
@@ -68,7 +69,9 @@ class ProductAdmin extends Admin
 			->add('ProductTypeCode', null, array('label' => 'Тип препарата'))
 			->add('MarketStatusID', null, array('label' => 'Статус'))
 			->add('ZipInfo', null, array('label' => 'Форма выпуска'))
-			->add('RegistrationDate', null, array('label' => 'Дата регистр.'));
+			->add('RegistrationDate', null, array('label' => 'Дата регистр.'))
+			->add('inactive', null, array('label' => 'Отключен'))
+		;
 	}
 
 	// Fields to be shown on lists

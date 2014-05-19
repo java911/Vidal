@@ -11,6 +11,7 @@ class ProductRepository extends EntityRepository
 			SELECT p
 			FROM VidalDrugBundle:Product p
 			WHERE p = :ProductID
+				AND p.inactive = FALSE
 		")->setParameter('ProductID', $ProductID)
 			->getOneOrNullresult();
 	}
@@ -26,6 +27,7 @@ class ProductRepository extends EntityRepository
 			WHERE d = :DocumentID
 				AND p.MarketStatusID IN (1,2)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('DocumentID', $DocumentID)
 			->getResult();
@@ -42,6 +44,7 @@ class ProductRepository extends EntityRepository
 			WHERE d IN (:DocumentIDs)
 				AND p.MarketStatusID IN (1,2)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('DocumentIDs', $documentIds)
 			->getResult();
@@ -75,6 +78,7 @@ class ProductRepository extends EntityRepository
 			WHERE m IN (:moleculeIds)
 				AND p.MarketStatusID IN (1,2)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('moleculeIds', $moleculeIds)
 			->getResult();
@@ -92,6 +96,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN p.document d
 			WHERE p.MarketStatusID IN (1,2)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('ATCCode', $ATCCode)
 			->getResult();
@@ -110,6 +115,7 @@ class ProductRepository extends EntityRepository
 			WHERE mn.MoleculeID = :MoleculeID
 				AND p.MarketStatusID IN (1,2)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.inactive = FALSE
 			ORDER BY d.ArticleID ASC
 		')->setParameter('MoleculeID', $MoleculeID)
 			->getResult();
@@ -134,6 +140,7 @@ class ProductRepository extends EntityRepository
 			WHERE c = :CompanyID
 				AND p.MarketStatusID IN (1,2)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('CompanyID', $CompanyID)
 			->getResult();
@@ -163,6 +170,7 @@ class ProductRepository extends EntityRepository
 			WHERE i.InfoPageID = :InfoPageID
 				AND p.MarketStatusID IN (1,2)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('InfoPageID', $InfoPageID)
 			->getResult();
@@ -175,6 +183,7 @@ class ProductRepository extends EntityRepository
 			FROM VidalDrugBundle:Product p
 			WHERE p.MarketStatusID IN (1,2)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->getResult();
 
@@ -212,7 +221,8 @@ class ProductRepository extends EntityRepository
 			->leftJoin('p.document', 'd')
 			->leftJoin('VidalDrugBundle:ProductType', 'pt', 'WITH', 'p.ProductTypeCode = pt.ProductTypeCode')
 			->orderBy('p.RusName', 'ASC')
-			->andWhere('p.MarketStatusID IN (1,2)');
+			->andWhere('p.MarketStatusID IN (1,2)')
+			->andWhere('p.inactive = FALSE');
 
 		# включать ли бады
 		if ($badIncluded) {
@@ -261,6 +271,7 @@ class ProductRepository extends EntityRepository
 
 			$productsRaw = $qb
 				->andWhere('p.MarketStatusID IN (1,2)')
+				->andWhere('p.inactive = FALSE')
 				->andWhere($where)
 				->getQuery()->getResult();
 		}
@@ -313,6 +324,7 @@ class ProductRepository extends EntityRepository
 			WHERE d IN (:documentIds)
 				AND p.MarketStatusID IN (1,2)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('documentIds', $documentIds)
 			->getResult();
@@ -356,6 +368,7 @@ class ProductRepository extends EntityRepository
 			WHERE d IN (:documentIds)
 				AND p.MarketStatusID IN (1,2)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('documentIds', $documentIds)
 			->getResult();
@@ -386,6 +399,7 @@ class ProductRepository extends EntityRepository
 			WHERE d.ClPhGrName = :description
 				AND p.MarketStatusID IN (1,2)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('description', $description)
 			->getResult();
@@ -403,6 +417,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE p.MarketStatusID IN (1,2)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('id', $id)
 			->getResult();
@@ -415,7 +430,7 @@ class ProductRepository extends EntityRepository
 		$qb->select('DISTINCT g.Name, g.id')
 			->from('VidalDrugBundle:Product', 'p')
 			->join('p.phthgroups', 'g')
-			->where("p.MarketStatusID IN (1,2) AND p.ProductTypeCode IN ('DRUG','GOME')")
+			->where("p.MarketStatusID IN (1,2) AND p.ProductTypeCode IN ('DRUG','GOME') AND p.inactive = FALSE")
 			->orderBy('g.Name', 'ASC');
 
 		# поиск по словам
@@ -449,6 +464,7 @@ class ProductRepository extends EntityRepository
 		$qb->select('DISTINCT p')
 			->from('VidalDrugBundle:Product', 'p')
 			->andWhere('p.MarketStatusID IN (1,2)')
+			->andWhere('p.inactive = FALSE')
 			->orderBy('p.RusName', 'ASC');
 
 		if ($letter) {
@@ -479,6 +495,7 @@ class ProductRepository extends EntityRepository
 			FROM VidalDrugBundle:Product p
 			JOIN p.MarketStatusID ms
 			WHERE p.ProductID IN (:productIds)
+				AND p.inactive = FALSE
 		')->setParameter('productIds', $productIds)
 			->getResult();
 
@@ -505,6 +522,7 @@ class ProductRepository extends EntityRepository
 			WHERE pointer = :id
 				AND p.MarketStatusID IN (1,2)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('id', $kfu->getClPhPointerID())
 			->getResult();
@@ -529,6 +547,7 @@ class ProductRepository extends EntityRepository
 			WHERE c = :CompanyID
 				AND p.MarketStatusID IN (1,2)
 				AND p.ProductTypeCode IN ('DRUG','GOME')
+				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		")->setParameter('CompanyID', $CompanyID)
 			->getSingleScalarResult();
@@ -548,6 +567,7 @@ class ProductRepository extends EntityRepository
 			WHERE d IN (:DocumentIDs)
 				AND p.MarketStatusID IN (1,2)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('DocumentIDs', $documentIds)
 			->getSingleScalarResult();

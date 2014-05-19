@@ -153,6 +153,9 @@ class Product
 	 */
 	protected $photo;
 
+	/** @ORM\Column(type="boolean") */
+	protected $inactive = false;
+
 	public function __construct()
 	{
 		$this->atcCodes        = new ArrayCollection();
@@ -781,5 +784,21 @@ class Product
 		$productType = $this->getProductTypeCode();
 
 		return $productType ? $productType->getProductTypeCode() == 'BAD' : null;
+	}
+
+	/**
+	 * @param mixed $inactive
+	 */
+	public function setInactive($inactive)
+	{
+		$this->inactive = $inactive;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getInactive()
+	{
+		return $this->inactive;
 	}
 }

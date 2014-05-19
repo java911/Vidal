@@ -340,19 +340,6 @@ class IndexController extends Controller
 	}
 
 	/**
-	 * @Route("/vracham/expert/", name="vracham_expert")
-	 * @Secure(roles="ROLE_DOCTOR")
-	 * @Template
-	 */
-	public function vrachamExpertAction()
-	{
-		return array(
-			'title' => 'Видаль-Эксперт',
-			'menu'  => 'vracham',
-		);
-	}
-
-	/**
 	 * @Route("/module/{moduleId}", name="module")
 	 *
 	 * @Template("VidalMainBundle:Index:module.html.twig")

@@ -253,13 +253,26 @@ class ArticleController extends Controller
 	}
 
 	/**
+	 * @Route("/vracham/expert/", name="vracham_expert")
 	 * @Secure(roles="ROLE_DOCTOR")
+	 * @Template
+	 */
+	public function vrachamExpertAction()
+	{
+		return array(
+			'title' => 'Видаль-Эксперт',
+			'menu'  => 'vracham',
+		);
+	}
+
+	/**
 	 * @Route("/vracham/expert/Vidal-CD/", name="vracham_expert_cd")
-	 * @Template()
+	 * @Secure(roles="ROLE_DOCTOR")
+	 * @Template
 	 */
 	public function vrachamExpertCdAction()
 	{
-		return array();
+		return array('menu' => 'vracham');
 	}
 
 	/**
