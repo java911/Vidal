@@ -40,8 +40,9 @@ class PharmPortfolioAdmin extends Admin
 				'required'     => true,
 				'by_reference' => false,
 			))->addModelTransformer($transformer))
-			->add('title', 'textarea', array('label' => 'Название', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('url', null, array('label' => 'Короткий адрес', 'required' => true))
+			->add('title', 'textarea', array('label' => 'Название', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
+			->add('body', 'textarea', array('label' => 'Содержимое', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('priority', null, array('label' => 'Приоритет', 'required' => false))
 			->add('created', null, array('label' => 'Дата создания', 'required' => false))
 			->add('enabled', null, array('label' => 'Активен', 'required' => false));

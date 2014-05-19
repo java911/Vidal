@@ -54,7 +54,8 @@ class ProductAdmin extends Admin
 					'inline'       => 'table',
 					'allow_delete' => true
 				)
-			);
+			)
+		;
 	}
 
 	// Fields to be shown on filter forms
