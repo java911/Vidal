@@ -146,9 +146,12 @@ class TwigExtension extends \Twig_Extension
 		return $reflect->getShortName();
 	}
 
-	public function upperFirst($str)
+	public function upperFirst($string, $encoding = 'utf-8')
 	{
-		return mb_strtoupper(mb_substr($str, 0, 1, 'utf-8'), 'utf-8') . mb_substr($str, 1, null, 'utf-8');
+		$strlen    = mb_strlen($string, $encoding);
+		$firstChar = mb_substr($string, 0, 1, $encoding);
+		$then      = mb_substr($string, 1, $strlen - 1, $encoding);
+		return mb_strtoupper($firstChar, $encoding) . $then;
 	}
 
 	public function ucwords($str)
