@@ -97,14 +97,6 @@ class DoctrineEventSubscriber implements EventSubscriber
 			$stmt = $pdo->prepare('DELETE FROM product WHERE ProductID = ' . $entity->getProductID());
 			$stmt->execute();
 		}
-		elseif ($entity instanceof Document) {
-			$em   = $args->getEntityManager();
-			$pdo  = $em->getConnection();
-			$stmt = $pdo->prepare('SET FOREIGN_KEY_CHECKS=0');
-			$stmt->execute();
-			$stmt = $pdo->prepare('DELETE FROM document WHERE DocumentID = ' . $entity->getDocumentID());
-			$stmt->execute();
-		}
 	}
 
 	private function setVideoMeta($entity)

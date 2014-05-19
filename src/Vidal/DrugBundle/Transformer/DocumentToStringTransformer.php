@@ -23,17 +23,7 @@ class DocumentToStringTransformer implements DataTransformerInterface
 
 	public function transform($document)
 	{
-		$ProductID = $this->object->getProductID();
-		$pdo       = $this->em->getConnection();
-		$stmt      = $pdo->prepare('SELECT document_id FROM product WHERE ProductID = ' . $ProductID);
-		$stmt->execute();
-		$document_id = $stmt->fetchColumn();
-		$document    = $this->em->createQuery('
-			SELECT d FROM VidalDrugBundle:Document d WHERE d.DocumentID = :DocumentID
-		')->setParameter('DocumentID', $document_id)
-			->getOneOrNullResult();
-
-		return $document ? $document_id : '';
+		return $document ? $document->getDocumentID() . '' : '';
 	}
 
 	public function reverseTransform($text)
