@@ -51,6 +51,12 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<style type="text/css">
+		.mkb {
+			margin-top: 6px;
+		}
+		.mkb .products-table {
+			display: none;
+		}
 		#vidal .mnn.anons {
 			margin-left: 0;
 			font-size: 15px;
@@ -59,5 +65,23 @@
 			font-weight: bold;
 		}
 	</style>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.copy textarea')
+				.focus(function() { $(this).css('opacity', '1'); })
+				.blur(function() { $(this).css('opacity', '0.5'); });
+
+			$('.mkb-show').click(function() {
+				$('.mkb .products-table').show();
+				$(this).hide();
+				return false;
+			});
+		});
+	</script>
 {% endblock %}
 
