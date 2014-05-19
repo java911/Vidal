@@ -24,16 +24,27 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-45285788-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+
+      ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
 </script>
 <!-- HUBRUS RTB Segments Pixel V2.3 -->
 <script type="text/javascript" async="async" src="http://track.hubrus.com/pixel?id=24193&type=js"></script>
 	<div class="wrapper">
 		<div class="header">
 			<a href="http://www.rb.com/ru" class="logo" target="_blank"><img src="i-data/logo.jpg" /></a>
-			<div class="agreement">
-				<p class="info-text">Информация для медицинских работников!</p>
-				<p><a href="agreement.html">Соглашение об использовании</a></p>
-			</div>
+			<!--<div class="agreement">-->
+				<!--<p class="info-text">Информация для медицинских работников!</p>-->
+				<!--<p><a href="agreement.html">Соглашение об использовании</a></p>-->
+			<!--</div>-->
 		</div>
 		<div class="menu">
 			<ul>
@@ -51,31 +62,47 @@
 					<div class="h-left"></div>
 					<div class="h-center"><h1>Стрепсилс<sup>®</sup></h1></div>
 					<div class="h-right"></div>
-				</div>	
-				<div class="h-wrapper sub-header">
-					<div class="h-left"></div>
-					<div class="h-center"><a href="strepsils_security-profile.html">Профиль эффективности<br/>и безопасности</a></div>
-					<div class="h-right"></div>
 				</div>
+                <div class="h-wrapper sub-header">
+                    <div class="h-left"></div>
+                    <div class="h-center"><a href="strepsils_details.html">Подробнее об особенностях<br/> и преимуществах</a></div>
+                    <div class="h-right"></div>
+                </div>
+                <div class="h-wrapper sub-header">
+                    <div class="h-left"></div>
+                    <div class="h-center"><a href="strepsils_security-profile.html">Профиль эффективности<br/>и безопасности</a></div>
+                    <div class="h-right"></div>
+                </div>
+                <div class="h-wrapper sub-header">
+                    <div class="h-left"></div>
+                    <div class="h-center"><a href="strepsils_npvp.html">Воспалительный процесс<br/>и НПВП</a></div>
+                    <div class="h-right"></div>
+                </div>
 				<div class="drug-header-content-1 strepsils">
-					 Симптоматическое лечение боли в ротовой полости, горле, гортани<br/> при инфекционно-воспалительных заболеваниях:
+                    Стрепсилс Интенсив®- НПВС локального действия.<br>
+                    Обладает быстрым обезболивающим действием<br>
+                    при боли в горле и высоким профилем безопасности*,**.
 				</div>				                       
-				<div class="drug-header-content-1 strepsils">
-						<ul>
-							<li>тонзиллит</li>
-							<li>фарингит</li>
-							<li>ларингит</li>
-							<li>охриплость</li>
-							<li>воспаление слизистой оболочки полости рта и десен</li> 
-						</ul>
-				</div>
+				<!--<div class="drug-header-content-1 strepsils">-->
+						<!--<ul>-->
+							<!--<li>тонзиллит</li>-->
+							<!--<li>фарингит</li>-->
+							<!--<li>ларингит</li>-->
+							<!--<li>охриплость</li>-->
+							<!--<li>воспаление слизистой оболочки полости рта и десен</li> -->
+						<!--</ul>-->
+				<!--</div>-->
 			</div>
-			<div class="drug-header-part-2">
-				<a href="strepsils_details.html" class="details-button strepsils">Подробнее об особенностях<br/> и преимуществах</a>
-				<a href="strepsils_npvp.html" class="details-button strepsils">Воспалительный процесс<br/>и НПВП</a>
-			</div>
+			<!--<div class="drug-header-part-2">-->
+				<!--<a href="strepsils_details.html" class="details-button strepsils">Подробнее об особенностях<br/> и преимуществах</a>-->
+				<!--<a href="strepsils_npvp.html" class="details-button strepsils">Воспалительный процесс<br/>и НПВП</a>-->
+			<!--</div>-->
 		</div>
 		<div id="strepsils_shelf1" class="shelf">
+            <div class="intensepain_children">
+                <p class="intensepain"><span>При сильной боли</span></p>
+                <p class="children"><span>Для детей</span></p>
+            </div>
 			<div class="packages-block">
 				<ul>
 					<li><a href="strepsils_strepsils.html" style="width:140px; height:100px; margin:0 37px 0 44px;"></a></li>
@@ -87,15 +114,33 @@
 			</div>
 			<div class="captions-block strepsils">
 				<ul>
-					<li style="margin:0 115px 0 20px; padding-top:15px;"><a href="strepsils_strepsils.html"><span>Стрепсилс</span><sup>®</sup></a></li>
-					<li style="margin:0 35px 0 0" ><a href="strepsils_strepsils-honey-lemon.html"><span>Стрепсилс</span><sup>®</sup><br/>Смягчающее действие<br/> с медом и лимоном</a></li>
-					<li style="margin:0 45px 0 0" ><a href="strepsils_strepsils-menthol.html"><span>Стрепсилс</span><sup>®</sup><br/>От боли в горле и заложенности носа<br/>с ментолом и эвкалиптом</a></li>
-					<li style="margin:0 85px 0 0" ><a href="strepsils_strepsils-orange.html"><span>Стрепсилс</span><sup>®</sup><br/>Стрепсилс с Витамином С<br/>со вкусом апельсина</a></li>
-					<li class="last" style="padding-top:10px;"><a href="strepsils_strepsils-no-sugar.html"><span>Стрепсилс</span><sup>®</sup><br/>без сахара</a></li>					
+					<li>
+                        <span class="strepsils_name lineheight100">Интенсив</span>
+                        <a href="strepsils_strepsils.html" class="instruction">инструкция</a>
+                    </li>
+					<li>
+                        <span class="strepsils_name lineheight100">Плюс таблетки</span>
+                        <a href="strepsils_strepsils-honey-lemon.html" class="instruction">инструкция</a>
+                    </li>
+					<li>
+                        <span class="strepsils_name lineheight100">Плюс спрей</span>
+                        <a href="strepsils_strepsils-menthol.html" class="instruction">инструкция</a>
+                    </li>
+					<li>
+                        <span class="strepsils_name">Для детей с 6 лет без сахара<br>со вкусом лимона </span>
+                        <a href="strepsils_strepsils-orange.html" class="instruction">инструкция</a>
+                    </li>
+					<li class="last">
+                        <span class="strepsils_name">Для детей с 6 лет без сахара<br>со вкусом клубники</span>
+                        <a href="strepsils_strepsils-no-sugar.html" class="instruction">инструкция</a>
+                    </li>
 				</ul>
 			</div>
 		</div>
 		<div id="strepsils_shelf2" class="shelf">
+            <div class="adult">
+                <p class="intensepain"><span>При первых симптомах</span></p>
+            </div>
 			<div class="packages-block">
 				<ul>
 					<li><a href="strepsils_strepsils-warm-effect.html" style="width:140px; height:100px; margin:20px 65px 0 44px;"></a></li>
@@ -106,12 +151,27 @@
 				</ul>
 			</div>
 			<div class="captions-block strepsils">
-				<ul>
-					<li style="margin:0 55px 0 0;"><a href="strepsils_strepsils-warm-effect.html"><span>Стрепсилс</span><sup>®</sup><br/>с Согревающим Эффектом</a></li>
-					<li style="margin:0 70px 0 0" ><a href="strepsils_strepsils-children.html"><span>Стрепсилс</span><sup>®</sup><br/>Для детей с 5 лет без сахара</a></li>
-					<li style="margin:0 135px 0 0" ><a href="strepsils_strepsils-plus-spray.html"><span>Стрепсилс</span><sup>®</sup><br/>Плюс спрей</a></li>
-					<li style="margin:0 135px 0 0" ><a href="strepsils_strepsils-plus-tablets.html"><span>Стрепсилс</span><sup>®</sup><br/>Плюс таблетки</a></li>
-					<li class="last"><a href="strepsils_strepsils-intensive.html"><span>Стрепсилс</span><sup>®</sup><br/>Интенсив</a></li>					
+				<ul class="margin10">
+					<li style="width: 18.5%">
+                        <span class="strepsils_name">Смягчающее действие<br>с медом и лимоном</span>
+                        <a href="strepsils_strepsils-warm-effect.html" class="instruction">инструкция</a>
+                    </li>
+					<li style="width: 21%">
+                        <span class="strepsils_name">От боли в горле и заложенности носа<br>с ментолом и эвкалиптом</span>
+                        <a href="strepsils_strepsils-children.html" class="instruction">инструкция</a>
+                    </li>
+					<li style="width: 22%">
+                        <span class="strepsils_name">Стрепсилс с Витамином С<br>со вкусом апельсина</span>
+                        <a href="strepsils_strepsils-plus-spray.html" class="instruction">инструкция</a>
+                    </li>
+					<li style="width: 21%">
+                        <span class="strepsils_name lineheight100">Без сахара</span>
+                        <a href="strepsils_strepsils-plus-tablets.html" class="instruction">инструкция</a>
+                    </li>
+					<li class="last" style="width: 16.5%; padding-left: 1%;">
+                        <span class="strepsils_name lineheight100">С Согревающим Эффектом</span>
+                        <a href="strepsils_strepsils-intensive.html" class="instruction">инструкция</a>
+                    </li>
 				</ul>
 			</div>
 			<div class="endnote-block">
@@ -128,14 +188,14 @@
 			</div>
 		</div>
 		<div class="expandable-info-block strepsils">
-			<div class="bullet-block">
+			<!--<div class="bullet-block">
 				<a href=# class="bullet-section collapsed">
 					<div class="bullet-expanded"></div>
 					<div class="bullet-collapsed"></div>
 					<div class="bullet-disk"></div>
 				</a>
 				<div class="bullet-caption">Дополнительная информация</div>
-			</div>
+			</div>-->
 			<div class="expandable-block">
 				<div class="expandable-inner-block">
 					<div class="expandable-block-top-shade"></div>
@@ -226,6 +286,16 @@ voltage-gated neuronal sodium channels in a local anaesthetic-like manner. Nauny
 				</div>
 			</div>
 		</div>
+    <div class="footnote">
+        <p>
+            *Benrimoj SI, Langford JH, Christian J et al. Efficacy and tolerability of the anti-inflammatoty throadt lozenge Flurbiprofen 8.75 mg in the
+            treatment of sore throat. Clin Drug Invest 2001; 21 (3): 183-93
+        </p>
+        <p>
+            **Chistian J, Largey PM, Shaw H et al. Local and general tolerability of flurbiprofen lozenges in healty volunteers. Poster presented at XXIX
+            National Congress of the Italian Society of Pharmacology, Florence. Italy, 20-23 June 1999
+        </p>
+    </div>
 	</div>
 	<div class="footer-spacer"></div>
 	<div class="footer"></div>

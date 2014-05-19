@@ -24,6 +24,17 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-45285788-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+
+      ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
 </script>
 <!-- HUBRUS RTB Segments Pixel V2.3 -->
 <script type="text/javascript" async="async" src="http://track.hubrus.com/pixel?id=24196type=js"></script>
