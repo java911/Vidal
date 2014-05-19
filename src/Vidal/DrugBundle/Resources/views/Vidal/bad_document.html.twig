@@ -135,7 +135,7 @@
 			{% if distributors is defined and distributors is not empty %}
 				{% for distributor in distributors %}
 					<div class="distributor">
-						<span class="block-head">{{ distributor.CompanyRusNote|capitalize }}:</span>
+						<span class="block-head">{{ distributor.CompanyRusNote|upperFirst  }}:</span>
 						<a href="{{ path('firm_item', {'CompanyID':distributor.CompanyID}) }}" class="no-underline">
 							{{ distributor.LocalName|raw }}{{ distributor.Property is not empty ? ', ' ~ distributor.Property|raw|replace({'&amp;':'&'}) }}</a>
 						{% if distributor.Country is not empty and distributor.Country != 'Unknown' %}
