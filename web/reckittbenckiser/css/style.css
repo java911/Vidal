@@ -198,7 +198,7 @@ td, th
 #strepsils-header-bg {
 	width:552px;	
 	padding:14px 270px 0 683px;
-	background:url(../i/strepsils_header_bg.jpg) top no-repeat;
+	background:url(../i/strepsils_header_back.jpg) top no-repeat;
 	min-height:328px;
 }
 
@@ -552,17 +552,18 @@ ul.grey-list li {
 }
 
 #strepsils_shelf1 {
+    position: relative;
 	width:960px;
 	height:213px;
 	padding:82px 54px 0;
-	background:url(../i/strepsils_shelf_1.jpg) no-repeat;
+	background:url(../i/strepsils_shelf_one.jpg) no-repeat;
 }
 
 #strepsils_shelf2 {
 	width:960px;
 	height:330px;
 	padding:42px 54px 0;
-	background:url(../i/strepsils_shelf_2.jpg) no-repeat;
+	background:url(../i/strepsils_shelf_two.jpg) no-repeat;
 }
 
 #shelf1 {
@@ -711,7 +712,7 @@ ul.grey-list li {
 
 .captions-block li span {
 	color:#9c3339;
-	text-decoration:underline;
+	border-bottom: 1px solid #007780;
 }
 
 .captions-block.strepsils li span {
@@ -1006,4 +1007,175 @@ a.drugstore {
 	width:100%;
 	background:url(../i/footer_line.jpg) repeat-x;
 }
-	
+
+
+.footnote{
+    width: 875px;
+    margin: 30px 0;
+}
+
+.footnote p{
+    font: 14px/19px "Arial";
+    text-decoration: underline;
+    color: #5a5a5a;
+}
+
+#strepsils_shelf2 .endnote-block{
+    padding: 40px 0 0 0;
+    clear: both;
+}
+
+.captions-block.strepsils ul{
+    width: 940;
+    margin: 0 10px;
+}
+
+.captions-block.strepsils ul li{
+    width: 20%;
+    margin: 0;
+}
+
+.instruction{
+    display: block;
+    width: 76px;
+    height: 14px;
+    line-height: 14px;
+    border-radius: 2px;
+    border: 1px solid #c8c8c9;
+    background: #e7e8ea;
+    font: 12px "Arial";
+    color: #292e30;
+    margin: 0 auto;
+    box-shadow: 0 3px 6px #ffffff inset;
+}
+
+.instruction:hover{
+    box-shadow: 0 -3px 6px #ffffff inset;
+}
+
+.captions-block li span.strepsils_name{
+    display: block;
+    height: 28px;
+    border: none;
+    font: 11px/12px "Arial";
+    color: #585655;
+    margin-top: 2px;
+}
+
+.margin10{
+    margin-top: -12px !important;
+}
+
+#strepsils_shelf2.shelf{
+    position: relative;
+    /*overflow: hidden;*/
+}
+
+.captions-block li span.strepsils_name.lineheight100{
+    line-height: 28px;
+}
+
+#strepsils-header-bg {
+    width: 100%;
+    padding: 0 405px;
+    margin: 0 0 0 -405px;
+    background: url(../i/strepsils_header_back.jpg) top no-repeat;
+    min-height: 280px;
+}
+
+
+#strepsils-header-bg .drug-header-part-1{
+    width: auto;
+    height: 183px;
+    padding: 20px 0 0 310px;
+}
+
+#strepsils-header-bg .h-wrapper .h-center{
+    padding: 11px 2px 0;
+}
+
+#strepsils-header-bg .h-wrapper .h-center h1{
+    font-size: 27px;
+}
+
+#strepsils-header-bg .h-wrapper.sub-header .h-center{
+    padding: 11px 2px 0;
+}
+
+#strepsils-header-bg .h-wrapper.sub-header .h-center a{
+    font-size: 11px;
+}
+
+.intensepain_children{
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.intensepain_children p{
+    float: left;
+    width: 49.9%;
+    font: 20px "Arial";
+    color: #ffffff;
+}
+
+.intensepain_children p span{
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.intensepain span{
+    background: #ea342e;
+    width: 185px;
+}
+
+.children span{
+    background: #a6c63c;
+    width: 115px;
+}
+
+.adult{
+    position: absolute;
+    overflow: hidden;
+    top: -20px;
+    left: 0;
+    width: 100%;
+}
+
+.adult p{
+    float: left;
+    width: 100%;
+    font: 20px "Arial";
+    color: #ffffff;
+}
+
+.adult p span{
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    width: 235px;
+    background: #e19016;
+}
+
+.intensepain span{
+    background: #ea342e;
+    width: 185px;
+}
+
+.children span{
+    background: #a6c63c;
+    width: 115px;
+}
+
+.bullet-block {
+    margin: 40px 0 9px 52px;
+}
+
+.drug-header-content-1.strepsils {
+    font: normal 16px/20px Arial, sans-serif;
+    color: #ffffff;
+    margin-top: 10px;
+}
