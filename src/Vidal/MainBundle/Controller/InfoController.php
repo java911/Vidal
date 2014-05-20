@@ -39,7 +39,7 @@ class InfoController extends Controller
 			return $this->redirect($this->generateUrl('no_download', array('filename' => $filename)));
 		}
 
-		$path    = $this->get('kernel')->getRootDir() . "/../web/download/";
+		$path = $this->get('kernel')->getRootDir() . "/../web/download/";
 		$file = $path . $filename;
 
 		$response = new Response();
@@ -48,7 +48,7 @@ class InfoController extends Controller
 		$response->headers->set('Content-Type', 'application/zip');
 		$response->headers->set('Content-Disposition', 'attachment;filename="' . $filename . '"');
 		$response->headers->set('Content-Length', filesize($file));
-		readfile($file);
+		$response->setContent(readfile($file));
 
 		return $response;
 	}
