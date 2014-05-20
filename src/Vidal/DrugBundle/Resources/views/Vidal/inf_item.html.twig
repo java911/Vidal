@@ -22,7 +22,11 @@
 	{# логотип компании и инфо #}
 	<table class="infopage">
 		<tr>
-			{% if picture %}
+			{% if infoPage.photo %}
+				<td class="infopage-logo">
+					<img src="{{ infoPage.photo.path }}"/>
+				</td>
+			{% elseif picture %}
 				{% set path = '/upload/companies/' ~ picture.path %}
 				{% if is_file(path) %}
 					<td class="infopage-logo">

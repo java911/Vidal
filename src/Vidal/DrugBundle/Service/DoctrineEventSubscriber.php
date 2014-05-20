@@ -161,39 +161,47 @@ class DoctrineEventSubscriber implements EventSubscriber
 
 	private function autocompleteProduct($product)
 	{
-		$patterns     = array('/<SUP>.*<\/SUP>/', '/<SUB>.*<\/SUB>/');
-		$replacements = array('', '');
-		$RusName      = preg_replace($patterns, $replacements, $product->getRusName());
-		$RusName      = mb_strtolower($RusName, 'UTF-8');
-		$EngName      = preg_replace($patterns, $replacements, $product->getEngName());
-		$EngName      = mb_strtolower($EngName, 'UTF-8');
+		try {
+			$patterns     = array('/<SUP>.*<\/SUP>/', '/<SUB>.*<\/SUB>/');
+			$replacements = array('', '');
+			$RusName      = preg_replace($patterns, $replacements, $product->getRusName());
+			$RusName      = mb_strtolower($RusName, 'UTF-8');
+			$EngName      = preg_replace($patterns, $replacements, $product->getEngName());
+			$EngName      = mb_strtolower($EngName, 'UTF-8');
 
-		if (!empty($RusName)) {
-			$this->createAutocomplete('autocomplete', $product->getProductID(), $RusName);
-			$this->createAutocomplete('autocompleteext', $product->getProductID(), $RusName);
+			if (!empty($RusName)) {
+				$this->createAutocomplete('autocomplete', $product->getProductID(), $RusName);
+				$this->createAutocomplete('autocompleteext', $product->getProductID(), $RusName);
+			}
+
+			if (!empty($EngName)) {
+				$this->createAutocomplete('autocomplete', $product->getProductID() + 1, $EngName);
+				$this->createAutocomplete('autocompleteext', $product->getProductID() + 1, $EngName);
+			}
 		}
-
-		if (!empty($EngName)) {
-			$this->createAutocomplete('autocomplete', $product->getProductID() + 1, $EngName);
-			$this->createAutocomplete('autocompleteext', $product->getProductID() + 1, $EngName);
+		catch (\Exception $e) {
 		}
 	}
 
 	private function autocompleteDocument($document)
 	{
-		# autocomplete_document2
-		$elasticaClient = new \Elastica\Client();
-		$elasticaIndex  = $elasticaClient->getIndex('website');
-		$elasticaType   = $elasticaIndex->getType('autocomplete_document2');
-		$id             = $document->getDocumentID();
+		try {
+			# autocomplete_document2
+			$elasticaClient = new \Elastica\Client();
+			$elasticaIndex  = $elasticaClient->getIndex('website');
+			$elasticaType   = $elasticaIndex->getType('autocomplete_document2');
+			$id             = $document->getDocumentID();
 
-		$document = new \Elastica\Document(
-			$id + 100000,
-			array('name' => $id . ' - ' . $this->strip($document->getName()))
-		);
+			$document = new \Elastica\Document(
+				$id + 100000,
+				array('name' => $id . ' - ' . $this->strip($document->getName()))
+			);
 
-		$elasticaType->addDocument($document);
-		$elasticaType->getIndex()->refresh();
+			$elasticaType->addDocument($document);
+			$elasticaType->getIndex()->refresh();
+		}
+		catch (\Exception $e) {
+		}
 	}
 
 	private function createAutocomplete($indexName, $id, $name)
