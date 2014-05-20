@@ -4,8 +4,9 @@ namespace Vidal\DrugBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Iphp\FileStoreBundle\Mapping\Annotation as FileStore;
 
-/** @ORM\Entity(repositoryClass="InfoPageRepository") @ORM\Table(name="infopage") */
+/** @ORM\Entity(repositoryClass="InfoPageRepository") @ORM\Table(name="infopage") @FileStore\Uploadable */
 class InfoPage
 {
 	/** @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue */
@@ -91,7 +92,7 @@ class InfoPage
 	protected $pharmArticles;
 
 	/** @ORM\Column(type="integer", nullable=true) */
-	protected $countProducts;
+	protected $countProducts = 1;
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Document", mappedBy="infoPages")
@@ -100,6 +101,12 @@ class InfoPage
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})
 	 */
 	protected $documents;
+
+	/**
+	 * @ORM\Column(type="array", nullable=true)
+	 * @FileStore\UploadableField(mapping="infopage_photo")
+	 */
+	protected $photo;
 
 	public function __construct()
 	{
@@ -451,5 +458,21 @@ class InfoPage
 	public function getDocuments()
 	{
 		return $this->documents;
+	}
+
+	/**
+	 * @param mixed $photo
+	 */
+	public function setPhoto($photo)
+	{
+		$this->photo = $photo;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPhoto()
+	{
+		return $this->photo;
 	}
 }

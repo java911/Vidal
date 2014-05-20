@@ -142,8 +142,6 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	/** @ORM\Column(type="text", nullable=true) */
 	protected $jobPublications;
 
-	# поля со старой базы данных на всякий случай
-
 	/** @ORM\Column(length=255, nullable=true) */
 	protected $oldCompany;
 
@@ -157,6 +155,9 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
      * @ORM\OneToMany(targetEntity="QuestionAnswer", mappedBy="answerUser")
      */
     protected $answers;
+
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $school;
 
 	public function __construct()
 	{
@@ -863,5 +864,19 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
         return $this->answers;
     }
 
+	/**
+	 * @param mixed $school
+	 */
+	public function setSchool($school)
+	{
+		$this->school = $school;
+	}
 
+	/**
+	 * @return mixed
+	 */
+	public function getSchool()
+	{
+		return $this->school;
+	}
 }

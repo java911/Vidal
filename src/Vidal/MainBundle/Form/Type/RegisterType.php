@@ -30,7 +30,7 @@ class RegisterType extends AbstractType
 		$yearToNumberTransformer = new YearToNumberTransformer($this->em);
 
 		$years = array();
-		for ($i = date('Y'); $i > date('Y') - 70; $i--) {
+		for ($i = date('Y') + 6; $i > date('Y') - 70; $i--) {
 			$years[$i] = $i;
 		}
 
@@ -70,17 +70,10 @@ class RegisterType extends AbstractType
 			->add(
 				$builder->create('city', 'text', array('label' => 'Город'))->addModelTransformer($cityToStringTransformer)
 			)
-			->add('university', null, array('label' => 'ВУЗ', 'required' => true, 'empty_value' => 'выберите'))
-			->add($builder->create('graduateYear', 'choice', array(
-					'label'       => 'Год окончания',
-					'required'    => true,
-					'choices'     => $years,
-					'empty_value' => 'выберите',
-					'attr'        => array('data-placeholder' => 'выберите')
-				))->addModelTransformer($yearToNumberTransformer)
-			)
+			->add('university', null, array('label' => 'Выберите учебное заведение из списка', 'required' => false, 'empty_value' => 'выберите'))
+			->add('school', null, array('label' => 'Или укажите другое'))
 			->add(
-				$builder->create('graduateYear', 'choice', array('label' => 'Год окончания ВУЗа', 'choices' => $years, 'empty_value' => 'выберите'))->addModelTransformer($yearToNumberTransformer)
+				$builder->create('graduateYear', 'choice', array('label' => 'Год окончания учебного заведения', 'choices' => $years, 'empty_value' => 'выберите'))->addModelTransformer($yearToNumberTransformer)
 			)
 			->add('primarySpecialty', null, array(
 				'label'       => 'Основная специальность',

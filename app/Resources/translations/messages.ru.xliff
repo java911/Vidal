@@ -475,6 +475,27 @@
 				<target>Удаление портфеля препарата</target>
 			</trans-unit>
 
+			<trans-unit id="sonata-27">
+				<source>Info Page List</source>
+				<target>Представительства</target>
+			</trans-unit>
+			<trans-unit id="sonata-27-1">
+				<source>Info Page Show</source>
+				<target>Представительтво</target>
+			</trans-unit>
+			<trans-unit id="sonata-27-2">
+				<source>Info Page Edit</source>
+				<target>Редактирование представительства</target>
+			</trans-unit>
+			<trans-unit id="sonata-27-3">
+				<source>Info Page Create</source>
+				<target>Создание представительства</target>
+			</trans-unit>
+			<trans-unit id="sonata-27-4">
+				<source>Info Page Delete</source>
+				<target>Удаление представительства</target>
+			</trans-unit>
+
         </body>
     </file>
 </xliff>

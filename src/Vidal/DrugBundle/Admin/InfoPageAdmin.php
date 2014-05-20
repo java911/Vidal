@@ -12,10 +12,14 @@ class InfoPageAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
+			->add('InfoPageID', null, array('label' => 'ID', 'required' => true))
 			->add('RusName', null, array('label' => 'Название', 'required' => true))
 			->add('EngName', null, array('label' => 'Латинское', 'required' => false))
 			->add('RusAddress', null, array('label' => 'Информация', 'help' => 'RusAddress', 'attr' => array('class' => 'ckeditorfull')))
-			->add('CountryCode', null, array('label' => 'Страна'));
+			->add('CountryCode', null, array('label' => 'Страна'))
+			->add('photo', 'iphp_file', array('label' => 'Логотип временный', 'required' => false))
+			->add('countProducts', null, array('label' => 'Продуктов у представительства', 'required' => false))
+		;
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)

@@ -8,7 +8,7 @@ class InfoPageRepository extends EntityRepository
 	public function findByInfoPageID($InfoPageID)
 	{
 		return $this->_em->createQuery("
-			SELECT i.InfoPageID, i.RusName, i.RusAddress, c.RusName Country
+			SELECT i.InfoPageID, i.RusName, i.RusAddress, c.RusName Country, i.photo
 			FROM VidalDrugBundle:InfoPage i
 			LEFT JOIN VidalDrugBundle:Country c WITH i.CountryCode = c
 			WHERE i.CountryEditionCode = 'RUS'
