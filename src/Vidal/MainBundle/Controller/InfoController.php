@@ -47,7 +47,7 @@ class InfoController extends Controller
 		$response->headers->set('Cache-Control', 'private');
 		$response->headers->set('Content-Type', 'application/zip');
 		$response->headers->set('Content-Disposition', 'attachment;filename="' . basename($file) . '"');
-//		$response->headers->set('Content-Length', filesize($file));
+		$response->headers->set('Content-Length', filesize($file));
 
 		readfile($file);
 		$response->send();
