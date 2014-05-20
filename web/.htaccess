@@ -10,6 +10,7 @@ php_value post_max_size 250M
 php_value max_execution_time 1200
 # прочие радости настроек сервера
 php_flag magic_quotes_gpc Off
+php_value allow_url_fopen 1
 
 
 # Use the front controller as index file. It serves as fallback solution when

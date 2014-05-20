@@ -186,3 +186,7 @@ gregwar_captcha:
     charset: 123456789
     background_color: [237,49,96]
     invalid_message: "Код с картинки введен не правильно"
+
+ornicar_apc:
+    host: http://www.vidal.ru
+    web_dir: %kernel.root_dir%/../web

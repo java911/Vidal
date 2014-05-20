@@ -30,6 +30,7 @@ class AppKernel extends Kernel
 			new Iphp\FileStoreBundle\IphpFileStoreBundle(),
             new Vidal\VeterinarBundle\VidalVeterinarBundle(),
             new Gregwar\CaptchaBundle\GregwarCaptchaBundle(),
+			new Ornicar\ApcBundle\OrnicarApcBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

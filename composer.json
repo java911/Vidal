@@ -38,7 +38,8 @@
 		"olamedia/nokogiri": "dev-master",
 		"leaseweb/secure-controller-bundle": "*",
 		"iphp/filestore-bundle": "dev-master",
-		"gregwar/captcha-bundle": "dev-master"
+		"gregwar/captcha-bundle": "dev-master",
+		"ornicar/apc-bundle": "1.0.*"
 	},
 
 	"scripts": {
