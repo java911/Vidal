@@ -48,7 +48,10 @@ class InfoController extends Controller
 		$response->headers->set('Content-Type', 'application/zip');
 		$response->headers->set('Content-Disposition', 'attachment;filename="' . $filename . '"');
 		$response->headers->set('Content-Length', filesize($file));
-		$response->setContent(readfile($file));
+
+		ob_start();
+		readfile($file);
+		ob_end_flush();
 
 		return $response;
 	}
