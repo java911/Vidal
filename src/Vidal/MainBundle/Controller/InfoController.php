@@ -40,14 +40,15 @@ class InfoController extends Controller
 		}
 
 		$path    = $this->get('kernel')->getRootDir() . "/../web/download/";
-		$content = file_get_contents($path . $filename);
+		$file = $path . $filename;
 
 		$response = new Response();
 
 		# устанавливаем заголовки
-		$response->headers->set('Content-Type', 'mime/type');
+		$response->headers->set('Content-Type', 'application/zip');
 		$response->headers->set('Content-Disposition', 'attachment;filename="' . $filename . '"');
-		$response->setContent($content);
+		$response->headers->set('Content-Length', filesize($file));
+		readfile($file);
 
 		return $response;
 	}
