@@ -11,10 +11,16 @@ class Specialty
 	/** @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue */
 	protected $id;
 
-	/** @ORM\OneToMany(targetEntity="User", mappedBy="primarySpecialty") */
+	/**
+	 * @ORM\OneToMany(targetEntity="User", mappedBy="primarySpecialty")
+	 * @ORM\OrderBy({"title"="ASC"})
+	 */
 	protected $primaryDoctors;
 
-	/** @ORM\OneToMany(targetEntity="User", mappedBy="secondarySpecialty") */
+	/**
+	 * @ORM\OneToMany(targetEntity="User", mappedBy="secondarySpecialty")
+	 * @ORM\OrderBy({"title"="ASC"})
+	 */
 	protected $secondaryDoctors;
 
 	/**
