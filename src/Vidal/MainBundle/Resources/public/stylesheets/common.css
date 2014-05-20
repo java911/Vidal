@@ -795,6 +795,12 @@ h1 span {
 }
 
 /* search */
+#search_form {
+	position: absolute;
+	top:      36px;
+	right:    0;
+	width:    440px;
+}
 #search_form table {
 	width: 100%;
 }
