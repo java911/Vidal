@@ -63,8 +63,10 @@ class Basket{
     }
 
     public function remove($product){
-        unset($this->drugs[$product->getCode()]);
-        $this->save();
+        if (isset($this->drugs[$product->getCode()])){
+            unset($this->drugs[$product->getCode()]);
+            $this->save();
+        }
     }
 
     public function removeAll(){
