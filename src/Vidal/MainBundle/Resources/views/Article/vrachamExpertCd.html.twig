@@ -1,15 +1,18 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
+{% set moduleId = 6 %}
+
+
 {% block title %}
     <h1>
         Электронный справочник Видаль
-        {#{% if is_granted('ROLE_ADMIN') %}#}
-            {#<a class="admin-edit fade" target="_blank"#}
-               {#href="{{ path('admin_vidal_drug_article_edit', {'id':article.id}) }}">#}
-                {#<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>#}
-            {#</a>#}
-        {#{% endif %}#}
+        {% if isAdmin %}
+            <a class="admin-edit fade" target="_blank"
+               href="{{ path('admin_vidal_main_module_edit', {'id':moduleId}) }}">
+                <img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+            </a>
+        {% endif %}
     </h1>
 {% endblock %}
 
@@ -27,28 +30,7 @@
 {% endblock %}
 
 {% block content %}
-    <table>
-        <tr>
-            <td>
-                <img src='{{ asset('bundles/vidalmain/images/CD2014.jpg') }}' />
-            </td>
-            <td style="vertical-align: top; text-align: justify">
-                <a href="{{ path('download', {'filename':'html_disk_2014.zip'}) }}">
-					Скачать справочник Видаль «Лекарственные препараты в России» 2014 года</a><br />
-                Для запуска справочника необходимо разархивировать все файлы и кликнуть на файл index.htm.
-				Для просмотра рекомендуется браузер Microsoft Internet Explorer 9.0 и более старших версий.
-				Если у Вас отсутствует требуемая версия браузера, то можете скачать ee через Интернет с
-				сервера www.microsoft.com/rus. Данное программное обеспечение является свободно распространяемым
-				и не требует лицензирования!
-            </td>
-        </tr>
-    </table>
-    <div style="text-align: justify">
-        <b>
-            Возможно, Вы хотите получить более полный электронный справочник с БД ВИДАЛЬ «Лекарственные препараты в России» или заинтересованы в использовании электронного справочника на мобильных устройствах?
-        </b>
-        Заходите на наш сайт <a href="http://www.webvidal.ru" target="_blank">www.webvidal.ru</a> в раздел ЭЛЕКТРОННЫЕ СПРАВОЧНИКИ, и Вы сможете найти подходящее решение.
-    </div>
+	{{ render(controller('VidalMainBundle:Index:Module', {'moduleId':moduleId})) }}
 {% endblock %}
 
 

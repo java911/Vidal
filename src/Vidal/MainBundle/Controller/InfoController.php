@@ -31,9 +31,9 @@ class InfoController extends Controller
 	}
 
 	/**
-	 * @Route("/do/{filename}", name="do")
+	 * @Route("/download/{filename}", name="download")
 	 */
-	public function doAction($filename)
+	public function downloadAction($filename)
 	{
 		if (!$this->get('security.context')->isGranted('ROLE_DOCTOR')) {
 			return $this->redirect($this->generateUrl('no_download', array('filename' => $filename)));
@@ -47,31 +47,6 @@ class InfoController extends Controller
 		$response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"', $filename));
 		$response->headers->set('Content-Type', 'application/octet-stream');
 		$response->setStatusCode(200);
-
-		return $response;
-	}
-
-	/**
-	 * @Route("/download/{filename}", name="download")
-	 */
-	public function downloadAction($filename)
-	{
-		if (!$this->get('security.context')->isGranted('ROLE_DOCTOR')) {
-			return $this->redirect($this->generateUrl('no_download', array('filename' => $filename)));
-		}
-
-		$path = $this->get('kernel')->getRootDir() . "/../web/download/";
-		$file = $path . $filename;
-
-		$response = new Response();
-
-		$response->headers->set('Cache-Control', 'private');
-		$response->headers->set('Content-Type', 'application/zip');
-		$response->headers->set('Content-Disposition', 'attachment;filename="' . basename($file) . '"');
-		$response->headers->set('Content-Length', filesize($file));
-
-		readfile($file);
-		$response->send();
 
 		return $response;
 	}
