@@ -31,12 +31,12 @@ class InfoController extends Controller
 	}
 
 	/**
-	 * @Route("/do/{filename}", name="do")
+	 * @Route("/downloads/{filename}", name="downloads")
 	 */
-	public function doAction($filename)
+	public function downloadsAction($filename)
 	{
 		if (!$this->get('security.context')->isGranted('ROLE_DOCTOR')) {
-			return $this->redirect($this->generateUrl('no_download', array('filename' => $filename)));
+			return $this->redirect($this->generateUrl('no_downloads', array('filename' => $filename)));
 		}
 
 		$filename = str_replace('/', '', $filename);
@@ -52,35 +52,10 @@ class InfoController extends Controller
 	}
 
 	/**
-	 * @Route("/download/{filename}", name="download")
-	 */
-	public function downloadAction($filename)
-	{
-		if (!$this->get('security.context')->isGranted('ROLE_DOCTOR')) {
-			return $this->redirect($this->generateUrl('no_download', array('filename' => $filename)));
-		}
-
-		$path = $this->get('kernel')->getRootDir() . "/../web/download/";
-		$file = $path . $filename;
-
-		$response = new Response();
-
-		$response->headers->set('Cache-Control', 'private');
-		$response->headers->set('Content-Type', 'application/zip');
-		$response->headers->set('Content-Disposition', 'attachment;filename="' . basename($file) . '"');
-		$response->headers->set('Content-Length', filesize($file));
-
-		readfile($file);
-		$response->send();
-
-		return $response;
-	}
-
-	/**
-	 * @Route("/no-download/{filename}", name="no_download")
+	 * @Route("/no-downloads/{filename}", name="no_downloads")
 	 * @Template("VidalMainBundle:Info:no_download.html.twig")
 	 */
-	public function noDownloadAction($filename)
+	public function noDownloadsAction($filename)
 	{
 		return array('filename' => $filename);
 	}
