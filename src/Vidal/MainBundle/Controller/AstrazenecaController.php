@@ -249,4 +249,26 @@ class AstrazenecaController extends Controller
         return preg_replace($pat, $rep, $string);
     }
 
+    /**
+     * @Route("/zgetMapHintContent/{id}", name="zgetMapHintContent", options={"expose"=true})
+     */
+    public function getMapHintContentaction($id)
+    {
+        $em    = $this->getDoctrine()->getManager();
+        $coord = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaMap')->findOneById($id);
+            $html = $coord->getTitle();
+        return new Response($html);
+    }
+
+    /**
+     * @Route("/zgetMapBalloonContent/{id}", name="zgetMapBalloonContent", options={"expose"=true})
+     */
+    public function getMapBalloonContent($id)
+    {
+        $coord = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaMap')->findOneById($id);
+        $html = $coord->getAdr();
+
+        return new Response($html);
+    }
+
 }
