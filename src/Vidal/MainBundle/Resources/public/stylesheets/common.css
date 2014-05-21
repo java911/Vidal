@@ -470,6 +470,9 @@ h1 span {
 	font-size:    11px;
 	padding-left: 1px;
 }
+.form_errors {
+	color: #d00;
+}
 
 /* drug */
 #vidal {

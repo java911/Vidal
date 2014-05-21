@@ -16,6 +16,7 @@ use Vidal\MainBundle\Entity\User;
 use Vidal\MainBundle\Form\Type\RegisterType;
 use Vidal\MainBundle\Form\Type\ProfileType;
 use Lsw\SecureControllerBundle\Annotation\Secure;
+use Symfony\Component\Form\FormError;
 
 class AuthController extends Controller
 {
@@ -199,7 +200,7 @@ class AuthController extends Controller
 
 		# пользователей со старой БД проверям с помощью mysql-функций
 		if ($user->getOldUser()) {
-			$pdo      = $em->getConnection();
+			$pdo = $em->getConnection();
 
 			$stmt = $pdo->prepare("SELECT PASSWORD('$password') as password");
 			$stmt->execute();
@@ -257,5 +258,87 @@ class AuthController extends Controller
 		}
 
 		return new JsonResponse($citiesArray);
+	}
+
+	/**
+	 * Сброс пароля
+	 * @Route("/password-reset", name="password_reset")
+	 * @Template("VidalMainBundle:Auth:password_reset.html.twig")
+	 */
+	public function passwordResetAction(Request $request)
+	{
+		if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+			return $this->redirect($this->generateUrl('index'));
+		}
+
+		$params = array('title' => 'Восстановление пароля');
+		$form   = $this->createFormBuilder()
+			->add('email', 'email', array('label' => 'Введите ваш e-mail адрес', 'required' => true))
+			->getForm();
+
+		$form->handleRequest($request);
+
+		if ($form->isValid()) {
+			$em       = $this->getDoctrine()->getManager();
+			$formData = $form->getData();
+			$email    = $formData['email'];
+			$user     = $em->getRepository('VidalMainBundle:User')->findOneByUsername($email);
+
+			if ($user) {
+				$user->refreshHash();
+				$em->flush();
+				$this->get('email.service')->send(
+					$user->getUsername(),
+					array('VidalMainBundle:Email:password_reset.html.twig', array('user' => $user)),
+					'Сброс пароля'
+				);
+				$params['sent'] = true;
+			}
+			else {
+				$form->addError(new FormError('Такой e-mail адрес не зарегистрирован в системе'));
+			}
+		}
+
+		$params['form'] = $form->createView();
+
+		return $params;
+	}
+
+	/**
+	 * Cброс забытого пароля
+	 * @Route("/confirm-password-reset/{userId}/{hash}", name = "confirm_password_reset")
+	 * @Template("VidalMainBundle:Auth:password_reseted.html.twig")
+	 */
+	public function confirmPasswordResetAction($userId, $hash)
+	{
+		if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+			return $this->redirect($this->generateUrl('index'));
+		}
+
+		$em   = $this->getDoctrine()->getManager();
+		$user = $em->getRepository('EvrikaMainBundle:User')->findOneById($userId);
+
+		if (empty($user) || $user->getHash() != $hash) {
+			throw $this->createNotFoundException();
+		}
+
+		$params = array(
+			'title' => 'Пароль успешно сброшен',
+			'user'  => $user,
+		);
+
+		$user->refreshPassword();
+		$user->refreshHash();
+		$em->flush();
+
+		$this->get('email.service')->send(
+			$user->getUsername(),
+			array('VidalMainBundle:Email:confirm_password_reset.html.twig', array('user' => $user)),
+			'Новый пароль'
+		);
+
+		$this->resetToken($user);
+
+		return $params;
 	}
 }
