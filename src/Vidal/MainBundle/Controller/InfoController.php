@@ -42,13 +42,10 @@ class InfoController extends Controller
 		$filename = str_replace('/', '', $filename);
 		$path     = $this->get('kernel')->getRootDir() . "/../web/download/" . $filename;
 
-		$response = new Response();
-		$response->headers->set('X-Sendfile', $path);
-		$response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"', $filename));
-		$response->headers->set('Content-Type', 'application/octet-stream');
-		$response->setStatusCode(200);
-
-		return $response;
+		header('X-Sendfile: ' . $path);
+		header('Content-Disposition: attachment; filename="' . basename($path) . '"');
+		header('Content-Type: application/octet-stream');
+		exit;
 	}
 
 	/**

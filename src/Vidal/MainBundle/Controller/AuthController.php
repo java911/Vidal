@@ -316,7 +316,7 @@ class AuthController extends Controller
 		}
 
 		$em   = $this->getDoctrine()->getManager();
-		$user = $em->getRepository('EvrikaMainBundle:User')->findOneById($userId);
+		$user = $em->getRepository('VidalMainBundle:User')->findOneById($userId);
 
 		if (empty($user) || $user->getHash() != $hash) {
 			throw $this->createNotFoundException();
