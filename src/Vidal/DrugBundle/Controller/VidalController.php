@@ -13,6 +13,12 @@ class VidalController extends Controller
 	const COMPANIES_PER_PAGE = 50;
 	const MOLECULES_PER_PAGE = 50;
 
+	/** @Route("/poisk_preparatov/", name="r1") */
+	public function r1()
+	{
+		return $this->redirect($this->generateUrl('searche'), 301);
+	}
+
 	/**
 	 * Список компаний
 	 *
@@ -149,9 +155,9 @@ class VidalController extends Controller
 		$picture     = $em->getRepository('VidalDrugBundle:Picture')->findByInfoPageID($InfoPageID);
 		$documentIds = $em->getRepository('VidalDrugBundle:Document')->findIdsByInfoPageID($InfoPageID);
 		$params      = array(
-			'infoPage' => $infoPage,
-			'picture'  => $picture,
-			'title'    => $this->strip($infoPage['RusName']) . ' | Представительства фирм',
+			'infoPage'   => $infoPage,
+			'picture'    => $picture,
+			'title'      => $this->strip($infoPage['RusName']) . ' | Представительства фирм',
 			'portfolios' => $em->getRepository('VidalDrugBundle:InfoPage')->findPortfolios($InfoPageID),
 		);
 
@@ -370,8 +376,6 @@ class VidalController extends Controller
 		$em = $this->getDoctrine()->getManager('drug');
 
 		$product = $em->getRepository('VidalDrugBundle:Product')->findByProductID($ProductID);
-
-
 
 		if (!$product || $product->getName() != $EngName) {
 			throw $this->createNotFoundException();

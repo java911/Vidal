@@ -115,6 +115,7 @@ class InfoPageRepository extends EntityRepository
 		return $this->_em->createQuery('
 			SELECT i
 			FROM VidalDrugBundle:InfoPage i
+			JOIN i.documents d
 			WHERE i.RusName LIKE :letter
 				AND i.countProducts > 0
 			ORDER BY i.RusName ASC
