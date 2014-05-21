@@ -8,8 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Vidal\MainBundle\Entity\AstrazenecaFaq;
-use Vidal\MainBundle\Entity\MapRegion;
-use Vidal\MainBundle\Entity\MapCoord;
+use Vidal\MainBundle\Entity\AstrazenecaRegion;
+use Vidal\MainBundle\Entity\AstrazenecaMap;
 use Lsw\SecureControllerBundle\Annotation\Secure;
 
 class AstrazenecaController extends Controller
@@ -63,7 +63,18 @@ class AstrazenecaController extends Controller
      * @Route("/astrazeneca/map", name="astrazeneca_map")
      * @Template("VidalMainBundle:Astrazeneca:map.html.twig")
      */
-    public function mapAction(){}
+    public function mapAction(){
+        return array();
+    }
+
+    /**
+     * @Route("/astrazeneca/map-ajax", name="astrazeneca_map_xml", options={"expose"=true})
+     * @Template("VidalMainBundle:Astrazeneca:map_xml.html.twig")
+     */
+    public function mapXmlAction(){
+        $coords = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaMap')->findAll();
+        return array('coords' => $coords);
+    }
 
     /**
      * @Route("/astrazeneca/testing", name="astrazeneca_testing")

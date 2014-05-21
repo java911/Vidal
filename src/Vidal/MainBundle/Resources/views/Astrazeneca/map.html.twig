@@ -1,0 +1,59 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block title %}
+    <h1>КАРТА ЛПУ</h1>
+{% endblock %}
+
+
+{% block content %}
+    {#<div class="iption">#}
+    {#<select class="select">#}
+    {#{% for city in cities %}#}
+    {#<option value="{{ city.id }}" {{ thisCity.id ==  city.id ? 'selected="selected"' : ''}}>{{ city.title }}</option>#}
+    {#{% endfor %}#}
+    {#</select>#}
+    {#</div>#}
+    <br/>
+    <br/>
+    <div class="map" id="map"></div>
+{% endblock %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+        #map{
+            width: 520px;
+            height: 400px
+        }
+    </style>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="http://api-maps.yandex.ru/2.0-stable/?load=package.full&lang=ru-RU" type="text/javascript"></script>
+    <!-- Класс множественного геокодирования -->
+    {#<script src="http://dimik.github.io/ymaps/examples/multi-geocoder/multi-geocoder.js" type="text/javascript"></script>#}
+    {#<script src="http://dimik.github.io/ymaps/examples/multi-geocoder/list-collection.js" type="text/javascript"></script>#}
+
+    <script type="text/javascript">
+
+
+        ymaps.ready(init);
+        var myMap;
+
+        function init(){
+
+            myMap = new ymaps.Map("map", {
+                center: [55.76, 37.64],
+                zoom: 7
+            });
+            {#ymaps.geoXml.load('{{ path('astrazeneca_map_xml') }}').then(function (res) {#}
+            ymaps.geoXml.load('http://api.yandex.ru/maps/ymapsml/examples/xml/intro.xml').then(function (res) {
+                myMap.geoObjects.add(res.geoObjects);
+            });
+        }
+    </script>
+{% endblock %}
