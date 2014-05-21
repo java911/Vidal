@@ -39,13 +39,13 @@ class InfoController extends Controller
 			return $this->redirect($this->generateUrl('no_download', array('filename' => $filename)));
 		}
 
-		$path = $this->get('kernel')->getRootDir() . "/../web/download/";
-		$file = $path . $filename;
+		$filename = str_replace('/', '', $filename);
+		$path     = $this->get('kernel')->getRootDir() . "/../web/download/" . $filename;
 
 		$response = new Response();
-		$response->headers->set('X-Sendfile', $file);
+		$response->headers->set('X-Sendfile', $path);
 		$response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"', $filename));
-		$response->headers->set('Content-Type', 'application/zip');
+		$response->headers->set('Content-Type', 'application/octet-stream');
 		$response->setStatusCode(200);
 
 		return $response;
