@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ymaps:ymaps xmlns:ymaps="http://maps.yandex.ru/ymaps/1.x" xmlns:repr="http://maps.yandex.ru/representation/1.x" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maps.yandex.ru/schemas/ymaps/1.x/ymaps.xsd">
+    <ymaps:GeoObjectCollection>
+        <gml:name>Карта ЛПУ</gml:name>
+        <gml:featureMembers>
+            {% for c in coords %}
+            <ymaps:GeoObject>
+                <gml:name>{{ c.title }}</gml:name>
+                <gml:description>{{ c.hospitalType }}<br />{{ c.adr }}</gml:description>
+                <gml:Point>
+                    <gml:pos>{{ c.latitude }} {{ c.longitude }}</gml:pos>
+                </gml:Point>
+            </ymaps:GeoObject>
+            {% endfor %}
+        </gml:featureMembers>
+    </ymaps:GeoObjectCollection>
+</ymaps:ymaps>
+{#{% endspaceless %}#}
