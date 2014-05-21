@@ -12,6 +12,10 @@ php_value max_execution_time 1200
 php_flag output_buffering On
 php_flag magic_quotes_gpc Off
 php_value allow_url_fopen 1
+# Enable mod_xsendfile
+XSendFile On
+# Allow sending files from above the requested uri
+XSendFilePath /home/twigavid/vidal/download
 
 
 # Use the front controller as index file. It serves as fallback solution when

@@ -31,6 +31,27 @@ class InfoController extends Controller
 	}
 
 	/**
+	 * @Route("/do/{filename}", name="do")
+	 */
+	public function doAction($filename)
+	{
+		if (!$this->get('security.context')->isGranted('ROLE_DOCTOR')) {
+			return $this->redirect($this->generateUrl('no_download', array('filename' => $filename)));
+		}
+
+		$path = $this->get('kernel')->getRootDir() . "/../web/download/";
+		$file = $path . $filename;
+
+		$response = new Response();
+		$response->headers->set('X-Sendfile', $file);
+		$response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"', $filename));
+		$response->headers->set('Content-Type', 'application/zip');
+		$response->setStatusCode(200);
+
+		return $response;
+	}
+
+	/**
 	 * @Route("/download/{filename}", name="download")
 	 */
 	public function downloadAction($filename)
