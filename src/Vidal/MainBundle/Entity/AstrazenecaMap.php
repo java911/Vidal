@@ -24,6 +24,16 @@ class AstrazenecaMap
     protected $title;
 
     /**
+     * @ORM\Column(type = "string")
+     */
+    protected $hospitalType;
+
+    /**
+     * @ORM\Column(type = "string")
+     */
+    protected $adr;
+
+    /**
      * @ORM\Column(type = "text")
      */
     protected $text = '';
@@ -158,6 +168,38 @@ class AstrazenecaMap
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * @param mixed $adr
+     */
+    public function setAdr($adr)
+    {
+        $this->adr = $adr;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAdr()
+    {
+        return $this->adr;
+    }
+
+    /**
+     * @param mixed $hospitalType
+     */
+    public function setHospitalType($hospitalType)
+    {
+        $this->hospitalType = $hospitalType;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHospitalType()
+    {
+        return $this->hospitalType;
     }
 
 
