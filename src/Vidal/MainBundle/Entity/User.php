@@ -241,6 +241,11 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 		return $this;
 	}
 
+	public function resetPassword()
+	{
+		return substr(chr(rand(103, 122)) . chr(rand(103, 122)) . chr(rand(103, 122)) . md5(time() + rand(100, 999) . chr(rand(97, 122)) . chr(rand(97, 122)) . chr(rand(97, 122))), 0, 8);
+	}
+
 	/**
 	 * @inheritDoc
 	 */
@@ -340,6 +345,11 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	public function getHash()
 	{
 		return $this->hash;
+	}
+
+	public function refreshHash()
+	{
+		$this->hash = md5(time() . $this->getUsername() . $this->getPassword());
 	}
 
 	public function getFirstName()
