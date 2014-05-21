@@ -31,12 +31,12 @@ class InfoController extends Controller
 	}
 
 	/**
-	 * @Route("/downloads/{filename}", name="downloads")
+	 * @Route("/download/{filename}", name="download")
 	 */
-	public function downloadsAction($filename)
+	public function downloadAction($filename)
 	{
 		if (!$this->get('security.context')->isGranted('ROLE_DOCTOR')) {
-			return $this->redirect($this->generateUrl('no_downloads', array('filename' => $filename)));
+			return $this->redirect($this->generateUrl('no_download', array('filename' => $filename)));
 		}
 
 		$filename = str_replace('/', '', $filename);
@@ -52,10 +52,10 @@ class InfoController extends Controller
 	}
 
 	/**
-	 * @Route("/no-downloads/{filename}", name="no_downloads")
+	 * @Route("/no-download/{filename}", name="no_download")
 	 * @Template("VidalMainBundle:Info:no_download.html.twig")
 	 */
-	public function noDownloadsAction($filename)
+	public function noDownloadAction($filename)
 	{
 		return array('filename' => $filename);
 	}

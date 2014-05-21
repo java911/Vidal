@@ -1,8 +1,19 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
+{% set moduleId = 6 %}
+
+
 {% block title %}
-    <h1>Электронный справочник Видаль</h1>
+    <h1>
+        Электронный справочник Видаль
+        {% if isAdmin %}
+            <a class="admin-edit fade" target="_blank"
+               href="{{ path('admin_vidal_main_module_edit', {'id':moduleId}) }}">
+                <img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+            </a>
+        {% endif %}
+    </h1>
 {% endblock %}
 
 
@@ -19,7 +30,7 @@
 {% endblock %}
 
 {% block content %}
-	{{ render(controller('VidalMainBundle:Index:Module', {'moduleId':6})) }}
+	{{ render(controller('VidalMainBundle:Index:Module', {'moduleId':moduleId})) }}
 {% endblock %}
 
 
