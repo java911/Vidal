@@ -76,7 +76,13 @@ class AstrazenecaController extends Controller
         $coords[1] = $this->getRequest()->query->get('y1');
         $coords[2] = $this->getRequest()->query->get('x2');
         $coords[3] = $this->getRequest()->query->get('y2');
-        $coords = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaMap')->findCoords($coords);
+        $zoom = $this->getRequest()->query->get('z');
+
+        if ($zoom <= 5){
+            $coords = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaRegion')->findAll();
+        }else{
+            $coords = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaMap')->findCoords($coords);
+        }
         return array('coords' => $coords);
     }
 

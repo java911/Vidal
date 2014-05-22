@@ -40,7 +40,7 @@
 
     <script type="text/javascript">
 
-
+    var eee;
         ymaps.ready(init);
         var myMap;
 
@@ -92,11 +92,8 @@
 
             var layer = new ymaps.Layer('', {zIndex: 0});
             myMap.layers.add(layer);
-
             var projection = myMap.options.get('projection');
-
             var xhr = null;
-
             var cachedTiles = {};
             var addedStores = {};
 
@@ -104,17 +101,10 @@
 
                 var zoom = myMap.getZoom();
 
-                var globalPixelPoint = projection.toGlobalPixels(myMap.getBounds()[0], zoom);
-                var clientPixelPoint = layer.toClientPixels(globalPixelPoint);
-                var leftTopTile = layer.clientPixelsToNumber(clientPixelPoint, zoom);
-
-                // console.log(clientPixelPoint);
-                // console.log(layer.fromClientPixels(layer.numberToClientBounds(leftTopTile, zoom)[0], zoom));
-                // console.log(projection.fromGlobalPixels((globalPixelPoint), zoom));
-
                 var globalPixelPoint = projection.toGlobalPixels(myMap.getBounds()[1], zoom);
                 var clientPixelPoint = layer.toClientPixels(globalPixelPoint);
                 var rightBottomTile = layer.clientPixelsToNumber(clientPixelPoint, zoom);
+                var leftTopTile = layer.clientPixelsToNumber(clientPixelPoint, zoom);
                 // console.log(rightBottomTile);
 
                 var countTiles = 0;
@@ -152,15 +142,9 @@
                 if (countTiles <= 0) return;
 
 
-//                ymaps.geoXml.load('http://vidal.ru/astrazeneca/map-ajax').then(function (res) {
-////                    myMap.geoObjects.add(res.geoObjects);
-//                    placemarks = res.geoObjects;
-//                });
-
                 var Bounds = myMap.getBounds();
-                var urlb = 'y1='+ Bounds[0][0]+'&x1='+ Bounds[0][1]+'&y2='+Bounds[1][0]+'&x2='+Bounds[1][1];
-                xhr = $.get('http://vidal.loc/web/app_dev.php/astrazeneca/map-ajax?'+urlb, tiles, function(stores) {
-//                xhr = $.get('http://vidal.ru/astrazeneca/map-ajax', tiles, function(stores) {
+                var urlb = 'y1='+ Bounds[0][0]+'&x1='+ Bounds[0][1]+'&y2='+Bounds[1][0]+'&x2='+Bounds[1][1]+'&z='+myMap.getZoom();
+                xhr = $.post('http://vidal.loc/web/app_dev.php/astrazeneca/map-ajax?'+urlb, tiles, function(stores) {
                     stores = JSON.parse(stores);
                     $.each(stores, function(index, store) {
                         if (addedStores['store_id_' + store.id] === 1) return;
@@ -181,27 +165,48 @@
             });
 
             myMap.events.add('balloonopen', function (e) {
-                var geoObjectProperties = e.get('balloon').getData().geoObject.properties;
-                if (geoObjectProperties.get('balloonContentLoaded')) return;
-                var drugStoreId = geoObjectProperties.get('drugStoreId');
+                eee = e.get('balloon').getData();
+                if ( e.get('balloon').getData().geoObject != null ){
+                    var geoObjectProperties = e.get('balloon').getData().geoObject.properties;
+                    if (geoObjectProperties.get('balloonContentLoaded')) return;
+                    var drugStoreId = geoObjectProperties.get('drugStoreId');
 
-                $.post(Routing.generate('zgetMapBalloonContent',{ 'id' : drugStoreId }), function(balloon) {
-                    geoObjectProperties.set('balloonContent', balloon);
-                    geoObjectProperties.set('balloonContentLoaded', true);
-                });
+                    $.post(Routing.generate('zgetMapBalloonContent',{ 'id' : drugStoreId }), function(balloon) {
+                        geoObjectProperties.set('balloonContent', balloon);
+                        geoObjectProperties.set('balloonContentLoaded', true);
+                    });
+                }else{
+                    var geoObjectProperties = e.get('balloon').getData().properties.getAll().geoObjects[0].properties;
+                    if (geoObjectProperties.get('balloonContentLoaded')) return;
+                    var drugStoreId = geoObjectProperties.get('drugStoreId');
 
-
+                    $.post(Routing.generate('zgetMapBalloonContent',{ 'id' : drugStoreId }), function(balloon) {
+                        geoObjectProperties.set('balloonContent', balloon);
+                        geoObjectProperties.set('balloonContentLoaded', true);
+                    });
+                }
             });
 
             myMap.events.add('hintshow', function (e) {
-                var geoObjectProperties = e.get('hint').getData().geoObject.properties;
-                if (geoObjectProperties.get('hintContentLoaded')) return;
-                var drugStoreId = geoObjectProperties.get('drugStoreId');
+                if ( e.get('hint').getData().geoObject != null ){
+                    var geoObjectProperties = e.get('hint').getData().geoObject.properties;
+                    if (geoObjectProperties.get('hintContentLoaded')) return;
+                    var drugStoreId = geoObjectProperties.get('drugStoreId');
 
-                $.post(Routing.generate('zgetMapHintContent',{ 'id' : drugStoreId }), function(balloon) {
-                    geoObjectProperties.set('hintContent', balloon);
-                    geoObjectProperties.set('hintContentLoaded', true);
-                });
+                    $.post(Routing.generate('zgetMapHintContent',{ 'id' : drugStoreId }), function(balloon) {
+                        geoObjectProperties.set('hintContent', balloon);
+                        geoObjectProperties.set('hintContentLoaded', true);
+                    });
+                }else{
+                    var geoObjectProperties = e.get('hint').getData().properties.getAll().geoObjects[0].properties;
+                    if (geoObjectProperties.get('hintContentLoaded')) return;
+                    var drugStoreId = geoObjectProperties.get('drugStoreId');
+
+                    $.post(Routing.generate('zgetMapHintContent',{ 'id' : drugStoreId }), function(balloon) {
+                        geoObjectProperties.set('hintContent', balloon);
+                        geoObjectProperties.set('hintContentLoaded', true);
+                    });
+                }
             });
 
             function enableScrollZoom() {
@@ -213,7 +218,7 @@
 
             loadDrugStores();
 
-            clusterer.add(geoObjects);
+//            clusterer.add(geoObjects);
 
             myMap.geoObjects.add(clusterer);
             // myMap.geoObjects.add(clusterer);
@@ -221,7 +226,7 @@
             myMap.controls.add(new ymaps.control.ZoomControl());
 
 // добавляем панель на карту в нужную позицию
-            myMap.controls.add(searchControl, { left: '40px', top: '10px' });
+//            myMap.controls.add(searchControl, { left: '40px', top: '10px' });
 
             jQuery(function($) {
                 $(".region-drug-stores,.item-related_points").on("click", "a.change_coordinates", function(e){
