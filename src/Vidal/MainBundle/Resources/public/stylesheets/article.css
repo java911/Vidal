@@ -42,7 +42,9 @@
 .rubriques div {
 	float:        left;
 	width:        250px;
-	margin-right: 15px;
+}
+.rubriques div:first-child {
+	margin-right: 20px;
 }
 .rubriques li {
 	position:      relative;

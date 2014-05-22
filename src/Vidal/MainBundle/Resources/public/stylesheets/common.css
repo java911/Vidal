@@ -1197,12 +1197,12 @@ h1 span {
 .description > span {
 	display:       block;
 	background:    #f5f5f5;
-	padding:       4px 12px 7px;
+	padding:       4px 7px 7px;
 	color:         #476173;
 	border-bottom: 1px solid #eee;
 }
 .description > div {
-	padding: 6px 12px 8px;
+	padding: 6px 7px 8px;
 }
 
 /* module */
@@ -1233,7 +1233,15 @@ h1 span {
 	padding: 5px 10px 7px;
 }
 
-/* перебиваем кривые стили статей и новостей */
+/* text */
+.text {
+	-ms-word-break:  break-all;
+	word-break:      break-all;
+	word-break:      break-word;
+	-webkit-hyphens: auto;
+	-moz-hyphens:    auto;
+	hyphens:         auto;
+}
 .text a,
 .text a * {
 	color:           #d71344 !important;

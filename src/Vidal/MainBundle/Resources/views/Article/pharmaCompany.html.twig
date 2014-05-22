@@ -10,7 +10,7 @@
 			</a>
 		{% endif %}
 
-		{{ company|raw }}
+		{{ company.title|raw }}
 	</h1>
 {% endblock %}
 
@@ -19,17 +19,17 @@
 	<div class="breadcrumbs">
 		<a href="{{ path('index') }}">Видаль</a>
 		<i></i>
-		<a href="{{ path('onas') }}">О компании</a>
+		<a href="{{ path('vracham') }}">Информация для специалистов</a>
 		<i></i>
-		<a href="{{ path('pharm_news') }}">Новости Фармацевтических компаний</a>
+		<a href="{{ path('pharma_news') }}">Новости фармацевтических компаний</a>
 	</div>
 {% endblock %}
 
 
 {% block content %}
 	<div class="pharm-articles">
-		{% for article in articles %}
-			<div>
+		{% for article in pagination %}
+			<div class="article text">
 				{% if isAdmin %}
 					<a class="admin-edit fade" target="_blank"
 					   href="{{ path('admin_vidal_drug_pharmarticle_edit', {'id':article.id}) }}">
@@ -37,10 +37,20 @@
 					</a>
 				{% endif %}
 
-				{{ article.text|raw }}
+				<div class="article-text">
+					{{ article.text|raw }}
+				</div>
+
+				<div class="article-footer">
+					{{ article.created|date('d.m.Y') }}
+				</div>
 			</div>
 			<hr/>
 		{% endfor %}
+	</div>
+
+	<div class="navigation">
+		{{ knp_pagination_render(pagination) }}
 	</div>
 {% endblock %}
 

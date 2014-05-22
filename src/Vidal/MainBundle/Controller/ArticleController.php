@@ -144,38 +144,39 @@ class ArticleController extends Controller
 	}
 
 	/**
-	 * @Route("/vracham/pharma-news/{articleId}", name="pharma_news_item")
+	 * @Route("/pharma-company/{id}", name="pharma_company")
 	 *
-	 * @Template
+	 * @Template("VidalMainBundle:Article:pharmaCompany.html.twig")
 	 */
-	public function pharmaNewsItemAction($articleId)
+	public function pharmaCompanyAction(Request $request, $id)
 	{
-		$em      = $this->getDoctrine()->getManager('drug');
-		$article = $em->getRepository('VidalDrugBundle:PharmArticle')->findOneById($articleId);
+		$em = $this->getDoctrine()->getManager('drug');
+		$company = $em->getRepository('VidalDrugBundle:PharmCompany')->findOneById($id);
 
-		if (!$article) {
+		if (!$company) {
 			throw $this->createNotFoundException();
 		}
-
-		$company = $article->getCompany();
 
 		$params = array(
 			'title'     => $company . ' | Новости Фармацевтических компаний',
 			'company'   => $company,
-			'article'   => $article,
 			'menu_left' => 'vracham'
+		);
+
+		$params['pagination'] = $this->get('knp_paginator')->paginate(
+			$em->getRepository('VidalDrugBundle:PharmArticle')->getQueryOfCompany($id),
+			$request->query->get('p', 1),
+			self::PHARM_PER_PAGE
 		);
 
 		return $params;
 	}
 
 	/**
-	 * Новости фарм. компаний
-	 *
 	 * @Route("/vracham/pharma-news", name="pharma_news")
 	 * @Secure(roles="ROLE_DOCTOR")
 	 *
-	 * @Template
+	 * @Template("VidalMainBundle:Article:pharmaNews.html.twig")
 	 */
 	public function pharmaNewsAction(Request $request)
 	{
@@ -188,7 +189,7 @@ class ArticleController extends Controller
 		$params['pagination'] = $this->get('knp_paginator')->paginate(
 			$em->getRepository('VidalDrugBundle:PharmArticle')->getQuery(),
 			$request->query->get('p', 1),
-			self::PHARM_PER_PAGE
+			2
 		);
 
 		return $params;
@@ -273,6 +274,14 @@ class ArticleController extends Controller
 	public function vrachamExpertCdAction()
 	{
 		return array('menu' => 'vracham');
+	}
+
+	/**
+	 * @Route("/vracham/Informatsiya-dlya-spetsialistov/{url}", requirements={"url"=".+"})
+	 */
+	public function r5($url)
+	{
+		return $this->redirect($this->generateUrl('art', array('url' => $url)), 301);
 	}
 
 	/**
