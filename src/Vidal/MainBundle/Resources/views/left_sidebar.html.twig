@@ -83,12 +83,12 @@
 
 {% if app.environment == 'prod' %}
 	<!-- Яндекс.Директ -->
-	<div id="yandex_ad"></div>
+	<div id="yad_left" class="yad"></div>
 	<script type="text/javascript">
 		(function(w, d, n, s, t) {
 			w[n] = w[n] || [];
 			w[n].push(function() {
-				Ya.Direct.insertInto(49912, "yandex_ad", {
+				Ya.Direct.insertInto(49912, "yad_left", {
 					ad_format:       "direct",
 					font_size:       1,
 					type:            "vertical",
@@ -97,7 +97,7 @@
 					title_font_size: 3,
 					site_bg_color:   "FFFFFF",
 					bg_color:        "FFFFFF",
-					border_color:    "000000",
+					border_color:    "EEEEEE",
 					title_color:     "000000",
 					url_color:       "D71344",
 					text_color:      "333333",
