@@ -15,6 +15,13 @@
 	<p class="reg-info">Для регистрации заполните форму.
 		<span class="raspberry asterisk">*</span> - поля обязательные для заполнения</p>
 
+	{% if error is defined %}
+		<div class="error anons">
+			Извините, такой e-mail адрес уже занят. Если он принадлежит Вам, то вы можете воспользоваться функцией
+			<a href="{{ path('password_reset') }}">восстановления пароля</a>
+		</div>
+	{% endif %}
+
 	<form id="register_form" action="{{ path('registration') }}" method="post" {{ form_enctype(form) }}>
 		{% form_theme form 'VidalMainBundle:Form:registration_form.html.twig' %}
 		{{ form_widget(form) }}
@@ -66,6 +73,15 @@
 		.oldreg {
 			border:  1px solid #9DABB4;
 			padding: 5px 10px;
+		}
+		.error {
+			margin-bottom: 15px;
+			font-size:     13px;
+			color:         #d00;
+		}
+		.error a {
+			color:       #d00;
+			font-weight: bold;
 		}
 	</style>
 {% endblock %}

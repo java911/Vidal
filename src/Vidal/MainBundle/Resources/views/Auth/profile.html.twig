@@ -13,6 +13,10 @@
 		</div>
 	{% endif %}
 
+	<div class="links right">
+		<a href="{{ path('password_change') }}">Сменить пароль</a>
+	</div>
+
 	{# извещения #}
 	{% if app.session.flashBag.get('confirmed')|length %}
 		<div class="thanks">Благодарим за регистрацию на нашем портале!</div>
@@ -76,6 +80,10 @@
 		#profile_birthdate select {
 			width:        92px;
 			margin-right: 6px;
+		}
+		.links {
+			padding-right: 12px;
+			font-weight:   bold;
 		}
 	</style>
 {% endblock %}

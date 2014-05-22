@@ -12,9 +12,9 @@ body {
 	color:       #333333;
 }
 .wrapper {
-	width:      1006px;
+	width:      995px;
 	margin:     0 auto;
-	padding:    0 20px;
+	padding:    0 7px;
 	min-height: 100%;
 	height:     auto !important;
 	height:     100%;
@@ -40,7 +40,7 @@ body {
 .header-search {
 	position:   absolute;
 	top:        53px;
-	left:       492px;
+	left:       487px;
 	width:      63px;
 	height:     16px;
 	background: url(../images/header-search.jpg) no-repeat top left;
@@ -50,10 +50,9 @@ body {
 	position: relative;
 }
 .main {
-	width:          530px;
-	min-width:      530px;
-	padding:        0 36px;
+	padding:        0 35px;
 	vertical-align: top;
+	min-width:      520px;
 }
 .content {
 	position: relative;
@@ -369,11 +368,20 @@ h1 span {
 	font-size:       16px;
 	text-decoration: none;
 }
+
+/* guest links */
 .go-registration {
 	margin-bottom: 20px;
 	font-size:     14px;
 	text-align:    center;
 	font-weight:   bold;
+}
+.go-reset {
+	margin-top: 14px;
+}
+.go-reset a {
+	color:     #919191;
+	font-size: 12px;
 }
 
 /* auth-popup */
@@ -1066,7 +1074,7 @@ h1 span {
 .tabs a {
 	display:         inline-block;
 	float:           left;
-	padding:         6px 7px 7px;
+	padding:         6px 11px 7px;
 	text-decoration: none;
 	color:           #2e3f51;
 	font-weight:     bold;
@@ -1141,9 +1149,6 @@ h1 span {
 /* banners */
 .banner {
 	position: relative;
-}
-.banner .admin-edit {
-	right: -20px;
 }
 #banner_top {
 	position:      relative;

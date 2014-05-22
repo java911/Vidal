@@ -13,7 +13,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="UserRepository")
  * @ORM\Table(name="user")
  * @FileStore\Uploadable
- * @UniqueEntity(fields="username", message="Извините, такой e-mail адрес уже занят. Если он принадлежит Вам, то вы можете воспользоваться функцией восстановления пароля")
  */
 class User extends BaseEntity implements UserInterface, EquatableInterface, \Serializable
 {
@@ -241,9 +240,12 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 		return $this;
 	}
 
-	public function resetPassword()
+	public function refreshPassword()
 	{
-		return substr(chr(rand(103, 122)) . chr(rand(103, 122)) . chr(rand(103, 122)) . md5(time() + rand(100, 999) . chr(rand(97, 122)) . chr(rand(97, 122)) . chr(rand(97, 122))), 0, 8);
+		$password = substr(chr(rand(103, 122)) . chr(rand(103, 122)) . chr(rand(103, 122)) . md5(time() + rand(100, 999) . chr(rand(97, 122)) . chr(rand(97, 122)) . chr(rand(97, 122))), 0, 8);
+		$this->setPassword($password);
+
+		return $password;
 	}
 
 	/**
