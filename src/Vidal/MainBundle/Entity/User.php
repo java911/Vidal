@@ -241,9 +241,12 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 		return $this;
 	}
 
-	public function resetPassword()
+	public function refreshPassword()
 	{
-		return substr(chr(rand(103, 122)) . chr(rand(103, 122)) . chr(rand(103, 122)) . md5(time() + rand(100, 999) . chr(rand(97, 122)) . chr(rand(97, 122)) . chr(rand(97, 122))), 0, 8);
+		$password = substr(chr(rand(103, 122)) . chr(rand(103, 122)) . chr(rand(103, 122)) . md5(time() + rand(100, 999) . chr(rand(97, 122)) . chr(rand(97, 122)) . chr(rand(97, 122))), 0, 8);
+		$this->setPassword($password);
+
+		return $password;
 	}
 
 	/**

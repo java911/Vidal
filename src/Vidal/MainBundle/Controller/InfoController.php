@@ -45,7 +45,6 @@ class InfoController extends Controller
 		header('X-Sendfile: ' . $path);
 		header('Content-Disposition: attachment; filename="' . basename($path) . '"');
 		header('Content-Type: application/octet-stream');
-		exit;
 	}
 
 	/**
