@@ -236,7 +236,7 @@ class MarketController extends Controller{
                 $basket = new Basket($request);
                 $order->setBody($xml);
                 $succes = false;
-                if ($group == 'zdavzona'){
+                if ($group == 'zdravzona'){
                     $succes = $this->mailSend($group, $order, $basket);
                 }else{
                     $succes = $this->emacsSend($group, $order, $basket);
@@ -253,7 +253,7 @@ class MarketController extends Controller{
                         return $this->render("VidalMainBundle:Market:order_success_2.html.twig");
                     }
                 }else{
-                    return array();
+                    return array('form' => $form->createView());
                 }
 
             }else{
@@ -361,6 +361,8 @@ class MarketController extends Controller{
         $summa = $summa[$group];
         $basket = $basket->getAll();
         $basket = $basket[$group];
+
+
         # уведомление магазина о покупке
         $this->get('email.service')->send(
 //            "tulupov.m@gmail.com",
@@ -376,6 +378,7 @@ class MarketController extends Controller{
             array('VidalMainBundle:Email:market_notice_user.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa, 'ship' => $this->shippingTitle[$order->getShipping()] )),
             'Заказ с сайта Vidal.ru'
         );
+        return true;
     }
 
     public function emacsSend($group, $order,Basket $basket){

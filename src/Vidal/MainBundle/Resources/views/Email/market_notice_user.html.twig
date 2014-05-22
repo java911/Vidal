@@ -10,7 +10,7 @@
     <table>
         <tr>
             <td>Код заказа:</td>
-            <td>{{ order.getCode }}</td>
+            <td>{{ order.id }}</td>
         </tr>
         <tr>
             <td>Фамилия:</td>
@@ -66,7 +66,7 @@
 
         {% for product in basket %}
             <tr>
-                <td>{{ product.id }}</td>
+                <td>{{ product.code }}</td>
                 <td>{{ product.title }}</td>
                 <td>{{ product.price }}&nbsp;р.</td>
                 <td align="center">{{ product.count }} шт.</td>
