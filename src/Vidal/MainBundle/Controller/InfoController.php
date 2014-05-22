@@ -40,11 +40,19 @@ class InfoController extends Controller
 		}
 
 		$filename = str_replace('/', '', $filename);
-		$path     = $this->get('kernel')->getRootDir() . "/../web/download/" . $filename;
+		$path     = '/home/twigavid/vidal/download/' . $filename;
 
 		header('X-Sendfile: ' . $path);
-		header('Content-Disposition: attachment; filename="' . basename($path) . '"');
-		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment; filename="' . $filename . '"');
+		header('Content-Type ');
+		exit;
+
+//		$response = new Response();
+//		$response->headers->set('X-Sendfile', $path);
+//		$response->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '"');
+//		$response->headers->set('Content-Type', 'application/octet-stream');
+//
+//		return $response;
 	}
 
 	/**
