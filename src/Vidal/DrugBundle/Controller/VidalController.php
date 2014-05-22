@@ -404,11 +404,15 @@ class VidalController extends Controller
 		$params['products']     = array($product);
 		$params['owners']       = $em->getRepository('VidalDrugBundle:Company')->findOwnersByProducts($productIds);
 		$params['distributors'] = $em->getRepository('VidalDrugBundle:Company')->findDistributorsByProducts($productIds);
-		$params['pictures']     = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds, date('Y'));
 
 		# БАДы выводятся по-другому
 		if ($product->isBAD() || ($document && $document->isBAD())) {
+			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds);
+
 			return $this->render("VidalDrugBundle:Vidal:bad_document.html.twig", $params);
+		}
+		else {
+			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds, date('Y'));
 		}
 
 		return $params;
