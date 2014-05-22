@@ -67,6 +67,10 @@
 {% if not isLogged %}
 	<div class="go-registration">
 		<a href="{{ path('registration') }}">Регистрация</a>
+
+		<div class="go-reset ">
+			<a href="{{ path('password_reset') }}" class="no-underline">Забыли пароль?</a>
+		</div>
 	</div>
 {% endif %}
 

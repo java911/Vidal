@@ -17,6 +17,7 @@ use Vidal\MainBundle\Form\Type\RegisterType;
 use Vidal\MainBundle\Form\Type\ProfileType;
 use Lsw\SecureControllerBundle\Annotation\Secure;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class AuthController extends Controller
 {
@@ -273,7 +274,11 @@ class AuthController extends Controller
 
 		$params = array('title' => 'Восстановление пароля');
 		$form   = $this->createFormBuilder()
-			->add('email', 'email', array('label' => 'Введите ваш e-mail адрес', 'required' => true))
+			->add('email', 'email', array(
+				'label'       => 'Введите ваш e-mail адрес',
+				'required'    => true,
+				'constraints' => new NotBlank(array('message' => 'Укажите e-mail'))
+			))
 			->getForm();
 
 		$form->handleRequest($request);
@@ -292,7 +297,9 @@ class AuthController extends Controller
 					array('VidalMainBundle:Email:password_reset.html.twig', array('user' => $user)),
 					'Сброс пароля'
 				);
-				$params['sent'] = true;
+				$this->get('session')->getFlashBag()->add('notice', '');
+
+				return $this->redirect($this->generateUrl('password_reset'));
 			}
 			else {
 				$form->addError(new FormError('Такой e-mail адрес не зарегистрирован в системе'));
@@ -340,5 +347,57 @@ class AuthController extends Controller
 		$this->resetToken($user);
 
 		return $params;
+	}
+
+	/**
+	 * Cмены пароля
+	 *
+	 * @Route("/password-change", name="password_change")
+	 * @Secure(roles="IS_AUTHENTICATED_REMEMBERED")
+	 * @Template("VidalMainBundle:Auth:password_change.html.twig")
+	 */
+	public function passwordChangeAction(Request $request)
+	{
+		$user = $this->getUser();
+
+		$form = $this->createFormBuilder()
+			->add('password', null, array(
+				'label'       => 'Текущий пароль',
+				'required'    => true,
+				'constraints' => new NotBlank(array('message' => 'Укажите текущий пароль'))
+			))
+			->add('new', 'repeated', array(
+				'type'            => 'password',
+				'invalid_message' => 'Пароли должны совпадать',
+				'options'         => array('attr' => array('class' => 'password-field')),
+				'required'        => true,
+				'first_options'   => array('label' => 'Укажите новый пароль'),
+				'second_options'  => array('label' => 'Повторите пароль'),
+			))
+			->getForm();
+
+		$form->handleRequest($request);
+
+		if ($form->isValid()) {
+			$formData = $form->getData();
+
+			if ($user->getPassword() === $formData['password']) {
+				$user->setPassword($formData['new']);
+				$em = $this->getDoctrine()->getManager();
+				$em->flush();
+				$this->get('session')->getFlashBag()->add('notice', '');
+
+				return $this->redirect($this->generateUrl('password_change'));
+			}
+			else {
+				$form->addError(new FormError('Неверно указан текущий пароль'));
+			}
+		}
+
+		return array(
+			'title' => 'Смена пароля',
+			'form'  => $form->createView(),
+			'user'  => $user
+		);
 	}
 }
