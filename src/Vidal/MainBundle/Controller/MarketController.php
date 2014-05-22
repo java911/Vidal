@@ -253,7 +253,7 @@ class MarketController extends Controller{
                         return $this->render("VidalMainBundle:Market:order_success_2.html.twig");
                     }
                 }else{
-                    return array();
+                    return array('form' => $form->createView());
                 }
 
             }else{
@@ -361,6 +361,9 @@ class MarketController extends Controller{
         $summa = $summa[$group];
         $basket = $basket->getAll();
         $basket = $basket[$group];
+
+        var_dump($basket);
+        exit;
         # уведомление магазина о покупке
         $this->get('email.service')->send(
 //            "tulupov.m@gmail.com",

@@ -42,8 +42,10 @@ class Basket{
 
     public function getAll(){
         $arr = array();
-        foreach($this->drugs as $drug){
+        foreach($this->drugs as $key => $drug ){
+            $drug->setCode($key);
             $arr[$drug->getGroupApt()][]  = $drug;
+//            $arr[$drug->getGroupApt()]['id'] = $key;
         }
         return $arr;
     }
