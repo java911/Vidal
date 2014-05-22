@@ -301,6 +301,9 @@ h1 span {
 .title a:hover {
 	text-decoration: underline;
 }
+.yad {
+	margin-top: 25px;
+}
 
 /* боковое меню */
 .sidebar-menu .active {
@@ -1060,10 +1063,10 @@ h1 span {
 
 /* tabs */
 .tabs {
-	margin-bottom:         22px;
-	background:            none repeat scroll 0 0 #E8F2F4;
-	border:                1px solid #D6DADD;
-	overflow:              hidden;
+	margin-bottom: 22px;
+	background:    none repeat scroll 0 0 #E8F2F4;
+	border:        1px solid #D6DADD;
+	overflow:      hidden;
 }
 .menu-drugs .tabs {
 	margin-bottom: 20px;
