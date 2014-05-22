@@ -1063,9 +1063,6 @@ h1 span {
 	margin-bottom:         22px;
 	background:            none repeat scroll 0 0 #E8F2F4;
 	border:                1px solid #D6DADD;
-	border-radius:         4px;
-	-moz-border-radius:    4px;
-	-webkit-border-radius: 4px;
 	overflow:              hidden;
 }
 .menu-drugs .tabs {
@@ -1074,7 +1071,7 @@ h1 span {
 .tabs a {
 	display:         inline-block;
 	float:           left;
-	padding:         6px 11px 7px;
+	padding:         5px 11px 6px;
 	text-decoration: none;
 	color:           #2e3f51;
 	font-weight:     bold;
