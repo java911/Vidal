@@ -13,7 +13,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="UserRepository")
  * @ORM\Table(name="user")
  * @FileStore\Uploadable
- * @UniqueEntity(fields="username", message="Извините, такой e-mail адрес уже занят. Если он принадлежит Вам, то вы можете воспользоваться функцией восстановления пароля")
  */
 class User extends BaseEntity implements UserInterface, EquatableInterface, \Serializable
 {

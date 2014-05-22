@@ -51,37 +51,47 @@ class AuthController extends Controller
 		$em   = $this->getDoctrine()->getManager();
 		$user = new User();
 		$form = $this->createForm(new RegisterType($em), $user);
+		$params = array('title' => 'Регистрация');
 
 		$form->handleRequest($request);
 
 		if ($form->isValid()) {
-			$user->setHash($this->calculateHash($user));
-			$user->setLastLogin(new \DateTime('now'));
+			$oldUser = $em->getRepository('VidalMainBundle:User')->findByUsername($user->getUsername());
 
-			$em->persist($user);
-			$em->flush();
-			$em->refresh($user);
+			if (empty($oldUser)) {
+				$user->setHash($this->calculateHash($user));
+				$user->setLastLogin(new \DateTime('now'));
 
-			$this->resetToken($user);
+				$em->persist($user);
+				$em->flush();
+				$em->refresh($user);
 
-			# уведомление пользователя о регистрации
-			$this->get('email.service')->send(
-				$user->getUsername(),
-				array('VidalMainBundle:Email:registration.html.twig', array('user' => $user)),
-				'Благодарим за регистрацию на нашем портале!'
-			);
+				$this->resetToken($user);
 
-			# уведомление администраторов о регистрации
-			$this->get('email.service')->send(
-				$this->container->getParameter('manager_emails'),
-				array('VidalMainBundle:Email:registration_notice.html.twig', array('user' => $user)),
-				'Зарегистрировался новый пользователь'
-			);
+				# уведомление пользователя о регистрации
+				$this->get('email.service')->send(
+					$user->getUsername(),
+					array('VidalMainBundle:Email:registration.html.twig', array('user' => $user)),
+					'Благодарим за регистрацию на нашем портале!'
+				);
 
-			return $this->redirect($this->generateUrl('profile'));
+				# уведомление администраторов о регистрации
+				$this->get('email.service')->send(
+					$this->container->getParameter('manager_emails'),
+					array('VidalMainBundle:Email:registration_notice.html.twig', array('user' => $user)),
+					'Зарегистрировался новый пользователь'
+				);
+
+				return $this->redirect($this->generateUrl('profile'));
+			}
+			else {
+				$params['error'] = true;
+			}
 		}
 
-		return array('form' => $form->createView(), 'title' => 'Регистрация');
+		$params['form'] = $form->createView();
+
+		return $params;
 	}
 
 	/**
