@@ -158,7 +158,7 @@
 //                });
 
                 var Bounds = myMap.getBounds();
-                var urlb = 'y1='+ Bounds[0][0]+'x1='+ Bounds[0][1]+'&y2='+Bounds[1][0]+'&x2='+Bounds[1][1];
+                var urlb = 'y1='+ Bounds[0][0]+'&x1='+ Bounds[0][1]+'&y2='+Bounds[1][0]+'&x2='+Bounds[1][1];
                 xhr = $.get('http://vidal.loc/web/app_dev.php/astrazeneca/map-ajax?'+urlb, tiles, function(stores) {
 //                xhr = $.get('http://vidal.ru/astrazeneca/map-ajax', tiles, function(stores) {
                     stores = JSON.parse(stores);

@@ -72,7 +72,11 @@ class AstrazenecaController extends Controller
      * @Template("VidalMainBundle:Astrazeneca:map_xml.html.twig")
      */
     public function mapXmlAction(){
-        $coords = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaMap')->findAll();
+        $coords[0] = $this->getRequest()->query->get('x1');
+        $coords[1] = $this->getRequest()->query->get('y1');
+        $coords[2] = $this->getRequest()->query->get('x2');
+        $coords[3] = $this->getRequest()->query->get('y2');
+        $coords = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaMap')->findCoords($coords);
         return array('coords' => $coords);
     }
 
