@@ -195,7 +195,7 @@
 			</div>
 			<ul class="ul-style">
 				{% for group in phthgroups %}
-					<li><a href="{{ path('phthgroup', {'id':group.id}) }}"
+					<li><a href="{{ path('pharm_item', {'id':group.id}) }}"
 						   class="no-underline">{{ group.Name|raw }}</a></li>
 				{% endfor %}
 			</ul>
@@ -206,13 +206,43 @@
 		{% endif %}
 	{% endif %}
 
-	{# поиск по производителю #}
-	{% if t == 'firm' %}
-		{% if firms is not empty %}
+	{# поиск по компании #}
+	{% if t == 'company' %}
+		{% if infoPages is not empty %}
 			<div class="block">
 				<div class="block-anons">
 					<div class="block-head">
-						Найдено производителей: <span>{{ firms|length }}</span>
+						Найдено представительств: <span>{{ infoPages|length }}</span>
+					</div>
+				</div>
+			</div>
+
+			<table class="products-table">
+				<tr class="products-table-header">
+					<td>Представительство</td>
+					<td style="width:30%">Страна</td>
+				</tr>
+				{% for inf in infoPages %}
+					<tr>
+						<td>
+							<a class="no-underline"
+							   href="{{ path('inf_item', {'InfoPageID':inf.InfoPageID}) }}">{{ inf.RusName|raw }}</a>
+						</td>
+						<td>
+							{% if inf.CountryCode is not empty %}
+								{{ inf.CountryCode.RusName }}
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+			</table>
+		{% endif %}
+
+		{% if companies is not empty %}
+			<div class="block">
+				<div class="block-anons">
+					<div class="block-head">
+						Найдено производителей: <span>{{ companies|length }}</span>
 					</div>
 				</div>
 			</div>
@@ -220,9 +250,9 @@
 			<table class="products-table">
 				<tr class="products-table-header">
 					<td>Производитель</td>
-					<td>Страна</td>
+					<td style="width:30%">Страна</td>
 				</tr>
-				{% for company in firms %}
+				{% for company in companies %}
 					<tr>
 						<td>
 							<a class="no-underline" href="{{ path('firm_item', {'CompanyID':company.CompanyID}) }}"
@@ -232,9 +262,11 @@
 					</tr>
 				{% endfor %}
 			</table>
-		{% else %}
+		{% endif %}
+
+		{% if infoPages is empty and companies is empty %}
 			<div class="no-results">
-				Не найдено результатов по производителю <span>{{ q }}</span>
+				Не найдено результатов по компании <span>{{ q }}</span>
 			</div>
 		{% endif %}
 	{% endif %}

@@ -101,7 +101,7 @@
 		{% include 'VidalDrugBundle:Vidal:render_bads.html.twig' %}
 	{% endif %}
 
-	{# поиск по производителю #}
+	{# поиск по компании #}
 	{% if t == 'company' %}
 		{% if infoPages is not empty %}
 			<div class="block">
@@ -115,7 +115,7 @@
 			<table class="products-table">
 				<tr class="products-table-header">
 					<td>Представительство</td>
-					<td>Страна</td>
+					<td style="width:30%">Страна</td>
 				</tr>
 				{% for inf in infoPages %}
 					<tr>
@@ -131,7 +131,9 @@
 					</tr>
 				{% endfor %}
 			</table>
-		{% elseif companies is not empty %}
+		{% endif %}
+
+		{% if companies is not empty %}
 			<div class="block">
 				<div class="block-anons">
 					<div class="block-head">
@@ -143,7 +145,7 @@
 			<table class="products-table">
 				<tr class="products-table-header">
 					<td>Производитель</td>
-					<td>Страна</td>
+					<td style="width:30%">Страна</td>
 				</tr>
 				{% for company in companies %}
 					<tr>
@@ -155,7 +157,9 @@
 					</tr>
 				{% endfor %}
 			</table>
-		{% else %}
+		{% endif %}
+
+		{% if infoPages is empty and companies is empty %}
 			<div class="no-results">
 				Не найдено результатов по компании <span>{{ q }}</span>
 			</div>
