@@ -27,4 +27,15 @@ class PharmArticleRepository extends EntityRepository
 			ORDER BY a.created DESC, a.priority DESC
 		');
 	}
+
+	public function getQueryOfCompany($id)
+	{
+		return $this->_em->createQuery('
+			SELECT a
+			FROM VidalDrugBundle:PharmArticle a
+			WHERE a.enabled = TRUE
+				AND a.company = :id
+			ORDER BY a.created DESC, a.priority DESC
+		')->setParameter('id', $id);
+	}
 }
