@@ -123,9 +123,11 @@
 	{% endif %}
 
 	{# если общий поиск не дал результатов #}
-	{% if t == 'all' and
-	(productsPagination is not defined or productsPagination is empty) and
-	(molecules is not defined or molecules is empty) %}
+	{% if t == 'all'
+	and (productsPagination is not defined or productsPagination is empty)
+	and (molecules is not defined or molecules is empty)
+	and (search_infoPages is empty and search_companies is empty)
+	%}
 		<div class="no-results">
 			Не найдено результатов
 		</div>
