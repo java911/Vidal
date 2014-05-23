@@ -809,12 +809,6 @@ h1 span {
 }
 
 /* search */
-#search_form {
-	position: absolute;
-	top:      36px;
-	right:    0;
-	width:    440px;
-}
 #search_form table {
 	width: 100%;
 }
@@ -885,10 +879,9 @@ h1 span {
 }
 #search_form {
 	position: absolute;
-	display:  block;
-	width:    422px;
 	top:      36px;
 	right:    0;
+	width:    440px;
 }
 #search_form .chosen-container-single .chosen-single {
 	border-radius: 0;

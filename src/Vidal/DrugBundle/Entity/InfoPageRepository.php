@@ -126,46 +126,43 @@ class InfoPageRepository extends EntityRepository
 	public function findByQuery($q)
 	{
 		$qb = $this->_em->createQueryBuilder();
-
-		$qb
-			->select('i')
-			->from('VidalDrugBundle:InfoPage', 'i')
-			->orderBy('i.RusName', 'ASC')
-			->where('i.countProducts > 0');
-
-		$where = '';
+		$qb->select('i')->from('VidalDrugBundle:InfoPage', 'i')->orderBy('i.RusName', 'ASC');
 		$words = explode(' ', $q);
 
 		# поиск по всем словам вместе
-		for ($i = 0; $i < count($words); $i++) {
-			$word = $words[$i];
-			if ($i > 0) {
-				$where .= ' AND ';
-			}
-			$where .= "(i.RusName LIKE '$word%' OR i.RusName LIKE '% $word%')";
-		}
-
-		$qb->andWhere($where);
+		$qb->where('i.countProducts > 0')->andWhere($this->where($words, 'AND'));
 		$results = $qb->getQuery()->getResult();
 
-		# поиск по одному слову
-		if (empty($results)) {
-			$where = '';
-			for ($i = 0; $i < count($words); $i++) {
-				$word = $words[$i];
-				if ($i > 0) {
-					$where .= ' OR ';
-				}
-				$where .= "(i.RusName LIKE '$word%' OR i.RusName LIKE '% $word%')";
-			}
-
-			$qb->where('i.countProducts > 0')
-				->andWhere($where);
-
-			return $qb->getQuery()->getResult();
+		if (!empty($results)) {
+			return $results;
 		}
 
-		return $results;
+		# поиск по любому из слов
+		$qb->where('i.countProducts > 0')->andWhere($this->where($words, 'OR'));
+		$results = $qb->getQuery()->getResult();
+
+		if (!empty($results)) {
+			return $results;
+		}
+
+		# поиск транслита по всем словам вместе
+		$words = explode(' ', $this->translit($q));
+		$qb->where('i.countProducts > 0')->andWhere($this->where($words, 'AND'));
+		$results = $qb->getQuery()->getResult();
+
+		if (!empty($results)) {
+			return $results;
+		}
+
+		# поиск транслита по любому из слов
+		$qb->where('i.countProducts > 0')->andWhere($this->where($words, 'OR'));
+		$results = $qb->getQuery()->getResult();
+
+		if (!empty($results)) {
+			return $results;
+		}
+
+		return array();
 	}
 
 	public function findPortfolios($InfoPageID)
@@ -178,5 +175,48 @@ class InfoPageRepository extends EntityRepository
 			WHERE i.InfoPageID = :InfoPageID
 		')->setParameter('InfoPageID', $InfoPageID)
 			->getResult();
+	}
+
+	private function where($words, $s)
+	{
+		$s = ($s == 'OR') ? ' OR ' : ' AND ';
+
+		$where = '';
+		for ($i = 0; $i < count($words); $i++) {
+			$word = $words[$i];
+			if ($i > 0) {
+				$where .= $s;
+			}
+			$where .= "(i.RusName LIKE '$word%' OR i.RusName LIKE '% $word%')";
+		}
+
+		return $where;
+	}
+
+	private function translit($text)
+	{
+		$isRussian = preg_match('/^[а-яё\s]+$/iu', $text);
+
+		$rus = array(
+			'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'АЙ', 'Й',
+			'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф',
+			'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я',
+			'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'ай', 'й',
+			'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф',
+			'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я',
+		);
+
+		$eng = array(
+			'A', 'B', 'V', 'G', 'D', 'E', 'IO', 'ZH', 'Z', 'I', 'Y',
+			'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F',
+			'H', 'TS', 'CH', 'SH', 'SCH', '', 'Y', '', 'E', 'YU', 'IA',
+			'a', 'b', 'v', 'g', 'd', 'e', 'io', 'zh', 'z', 'i', 'y',
+			'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f',
+			'h', 'ts', 'ch', 'sh', 'sch', '', 'y', '', 'e', 'yu', 'ia',
+		);
+
+		return $isRussian
+			? str_replace($rus, $eng, $text)
+			: str_replace($eng, $rus, $text);
 	}
 }

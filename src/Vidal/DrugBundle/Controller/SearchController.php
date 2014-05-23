@@ -90,9 +90,10 @@ class SearchController extends Controller
 			$params['atcCodes'] = $em->getRepository('VidalDrugBundle:ATC')->findByQuery($qUpper);
 		}
 
-		# поиск по производителю
-		if ($t == 'firm') {
-			$params['firms'] = $em->getRepository('VidalDrugBundle:Company')->findByQuery($q);
+		# поиск по компании
+		if ($t == 'company') {
+			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByQuery($q);
+			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByQuery($q);
 		}
 
 		# поиск по заболеванию (это статьи и синонимы)
