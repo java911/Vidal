@@ -10,6 +10,15 @@ use Iphp\FileStoreBundle\Mapping\Annotation as FileStore;
 /** @ORM\Entity(repositoryClass="ArticleRepository") @ORM\Table(name="article") @FileStore\Uploadable */
 class Article extends BaseEntity
 {
+
+    /**
+     * @ORM\ManyToMany(targetEntity = "DiseaseState", mappedBy="articles")
+     * @ORM\JoinTable(name="diseaseStateArticle",
+     * 		joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
+     * 		inverseJoinColumns={@ORM\JoinColumn(name="state_id", referencedColumnName="id")})
+     */
+    protected $states;
+
 	/** @ORM\Column(length=255) */
 	protected $title;
 
@@ -135,6 +144,7 @@ class Article extends BaseEntity
 		$this->documents  = new ArrayCollection();
 		$this->atcCodes   = new ArrayCollection();
 		$this->tags       = new ArrayCollection();
+		$this->states       = new ArrayCollection();
 		$this->public     = true;
 		$now              = new \DateTime('now');
 		$this->created    = $now;
@@ -597,4 +607,28 @@ class Article extends BaseEntity
 	{
 		return $this->hidden2;
 	}
+
+    /**
+     * @param mixed $states
+     */
+    public function setStates($states)
+    {
+        $this->states = $states;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStates()
+    {
+        return $this->states;
+    }
+
+    public function addState($state){
+        $this->states[] = $state;
+    }
+
+    public function removeState($state){
+        $this->states->removeElement($state);
+    }
 }

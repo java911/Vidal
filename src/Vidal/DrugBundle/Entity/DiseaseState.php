@@ -34,7 +34,10 @@ class DiseaseState extends  BaseEntity
     protected $body;
 
     /**
-     * @ORM\OneToMany(targetEntity="DiseaseStateArticle", mappedBy="diseaseState")
+     * @ORM\ManyToMany(targetEntity = "Article", inversedBy="states")
+     * @ORM\JoinTable(name="diseaseStateArticle",
+     * 		joinColumns={@ORM\JoinColumn(name="state_id", referencedColumnName="id")},
+     * 		inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
      */
     protected $articles;
 
