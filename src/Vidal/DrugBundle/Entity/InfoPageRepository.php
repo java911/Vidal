@@ -125,9 +125,10 @@ class InfoPageRepository extends EntityRepository
 
 	public function findByQuery($q)
 	{
+		$words = $this->getWords($q);
+
 		$qb = $this->_em->createQueryBuilder();
 		$qb->select('i')->from('VidalDrugBundle:InfoPage', 'i')->orderBy('i.RusName', 'ASC');
-		$words = explode(' ', $q);
 
 		# поиск по всем словам вместе
 		$qb->where('i.countProducts > 0')->andWhere($this->where($words, 'AND'));
@@ -138,23 +139,6 @@ class InfoPageRepository extends EntityRepository
 		}
 
 		# поиск по любому из слов
-		$qb->where('i.countProducts > 0')->andWhere($this->where($words, 'OR'));
-		$results = $qb->getQuery()->getResult();
-
-		if (!empty($results)) {
-			return $results;
-		}
-
-		# поиск транслита по всем словам вместе
-		$words = explode(' ', $this->translit($q));
-		$qb->where('i.countProducts > 0')->andWhere($this->where($words, 'AND'));
-		$results = $qb->getQuery()->getResult();
-
-		if (!empty($results)) {
-			return $results;
-		}
-
-		# поиск транслита по любому из слов
 		$qb->where('i.countProducts > 0')->andWhere($this->where($words, 'OR'));
 		$results = $qb->getQuery()->getResult();
 
@@ -193,15 +177,25 @@ class InfoPageRepository extends EntityRepository
 		return $where;
 	}
 
-	private function translit($text)
+	private function getWords($q)
 	{
-		$isRussian = preg_match('/^[а-яё\s]+$/iu', $text);
+		$words     = explode(' ', $q);
+		$isRussian = preg_match('/^[а-яё\s]+$/iu', $q);
 
 		$rus = array(
 			'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'АЙ', 'Й',
 			'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф',
 			'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я',
 			'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'ай', 'й',
+			'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф',
+			'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я',
+		);
+
+		$rus2 = array(
+			'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й',
+			'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф',
+			'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я',
+			'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й',
 			'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф',
 			'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я',
 		);
@@ -215,8 +209,15 @@ class InfoPageRepository extends EntityRepository
 			'h', 'ts', 'ch', 'sh', 'sch', '', 'y', '', 'e', 'yu', 'ia',
 		);
 
-		return $isRussian
-			? str_replace($rus, $eng, $text)
-			: str_replace($eng, $rus, $text);
+		if ($isRussian) {
+			$words = array_merge($words, explode(' ', str_replace($rus, $eng, $q)));
+			$words = array_merge($words, explode(' ', str_replace($rus2, $eng, $q)));
+		}
+		else {
+			$words = array_merge($words, explode(' ', str_replace($eng, $rus, $q)));
+			$words = array_merge($words, explode(' ', str_replace($eng, $rus2, $q)));
+		}
+
+		return array_unique($words);
 	}
 }

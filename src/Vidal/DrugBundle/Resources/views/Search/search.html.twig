@@ -102,69 +102,7 @@
 	{% endif %}
 
 	{# поиск по компании #}
-	{% if t == 'company' %}
-		{% if infoPages is not empty %}
-			<div class="block">
-				<div class="block-anons">
-					<div class="block-head">
-						Найдено представительств: <span>{{ infoPages|length }}</span>
-					</div>
-				</div>
-			</div>
-
-			<table class="products-table">
-				<tr class="products-table-header">
-					<td>Представительство</td>
-					<td style="width:30%">Страна</td>
-				</tr>
-				{% for inf in infoPages %}
-					<tr>
-						<td>
-							<a class="no-underline"
-							   href="{{ path('inf_item', {'InfoPageID':inf.InfoPageID}) }}">{{ inf.RusName|raw }}</a>
-						</td>
-						<td>
-							{% if inf.CountryCode is not empty %}
-								{{ inf.CountryCode.RusName }}
-							{% endif %}
-						</td>
-					</tr>
-				{% endfor %}
-			</table>
-		{% endif %}
-
-		{% if companies is not empty %}
-			<div class="block">
-				<div class="block-anons">
-					<div class="block-head">
-						Найдено производителей: <span>{{ companies|length }}</span>
-					</div>
-				</div>
-			</div>
-
-			<table class="products-table">
-				<tr class="products-table-header">
-					<td>Производитель</td>
-					<td style="width:30%">Страна</td>
-				</tr>
-				{% for company in companies %}
-					<tr>
-						<td>
-							<a class="no-underline" href="{{ path('firm_item', {'CompanyID':company.CompanyID}) }}"
-								>{{ company.LocalName|raw }}{{ company.Property is not empty ? ', ' ~ company.Property|raw|replace({'&amp;':'&'}) }}</a>
-						</td>
-						<td>{{ company.Country }}</td>
-					</tr>
-				{% endfor %}
-			</table>
-		{% endif %}
-
-		{% if infoPages is empty and companies is empty %}
-			<div class="no-results">
-				Не найдено результатов по компании <span>{{ q }}</span>
-			</div>
-		{% endif %}
-	{% endif %}
+	{% include 'VidalDrugBundle:Search:search_company.html.twig' %}
 
 	{# Найдено заболеваний #}
 	{% if articles is defined %}
