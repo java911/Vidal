@@ -3,8 +3,13 @@
 namespace Vidal\DrugBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/** @ORM\Entity(repositoryClass="PharmPortfolioRepository") @ORM\Table(name="pharm_portfolio") */
+/**
+ * @ORM\Entity(repositoryClass="PharmPortfolioRepository")
+ * @ORM\Table(name="pharm_portfolio")
+ * @UniqueEntity("url")
+ */
 class PharmPortfolio extends BaseEntity
 {
 	/** @ORM\Column(type="integer", nullable=true) */
