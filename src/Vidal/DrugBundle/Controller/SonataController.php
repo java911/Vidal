@@ -151,23 +151,5 @@ class SonataController extends Controller
 		return new JsonResponse('OK');
 	}
 
-	/**
-	 * @Route("/admin/move-art", name="move_art")
-	 *
-	 * @Template("VidalDrugBundle:Sonata:move_art.html.twig")
-	 */
-	public function moveArtAction(Request $request)
-	{
-		$em        = $this->getDoctrine()->getManager('drug');
-		$arts      = $em->getRepository('VidalDrugBundle:Art')->findAll();
-		$rubriques = $em->getRepository('VidalDrugBundle:ArtRubrique')->findAll();
 
-		$params = array(
-			'title'     => 'Перемещение статей',
-			'arts'      => $arts,
-			'rubriques' => $rubriques,
-		);
-
-		return $params;
-	}
 }
