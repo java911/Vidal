@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Lsw\SecureControllerBundle\Annotation\Secure;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * Класс для выполнения ассинхронных операций из админки Сонаты
@@ -116,23 +117,6 @@ class SonataController extends Controller
 	}
 
 	/**
-	 * @Route("/admin/art-move", name="art_move")
-	 */
-	public function artMoveAction($typeId)
-	{
-		$em      = $this->getDoctrine()->getManager('drug');
-		$results = $em->createQuery('
-			SELECT c.id, c.title
-			FROM VidalDrugBundle:ArtCategory c
-			WHERE c.type = :typeId
-			ORDER BY c.title ASC
-		')->setParameter('typeId', $typeId)
-			->getResult();
-
-		return new JsonResponse($results);
-	}
-
-	/**
 	 * @Route("/admin/document-remove/{type}/{id}/{DocumentID}", name="document_remove")
 	 */
 	public function documentRemoveAction($type, $id, $DocumentID)
@@ -151,5 +135,47 @@ class SonataController extends Controller
 		return new JsonResponse('OK');
 	}
 
+	/**
+	 * @Route("/admin/move-art", name="move_art")
+	 *
+	 * @Template("VidalDrugBundle:Sonata:move_art.html.twig")
+	 */
+	public function moveArtAction(Request $request)
+	{
+		$em        = $this->getDoctrine()->getManager('drug');
+		$articles  = $em->getRepository('VidalDrugBundle:Art')->findAll();
+		$rubriques = $em->getRepository('VidalDrugBundle:ArtRubrique')->findAll();
 
+		$params = array(
+			'title'     => 'Перемещение статей',
+			'articles'  => $articles,
+			'rubriques' => $rubriques,
+		);
+
+		if ($request->getMethod() == 'POST') {
+			$articleIds = $request->request->get('articles');
+			$rubriqueId = $request->request->get('rubrique', null);
+			$typeId     = $request->request->get('type', null);
+			$categoryId = $request->request->get('category', null);
+
+			$em->createQuery('
+				UPDATE VidalDrugBundle:Art a
+				SET a.rubrique = :rubriqueId,
+					a.type = :typeId,
+					a.category = :categoryId
+				WHERE a.id IN (:articleIds)
+			')->setParameters(array(
+					'articleIds' => $articleIds,
+					'rubriqueId' => $rubriqueId,
+					'typeId'     => $typeId,
+					'categoryId' => $categoryId,
+				))->execute();
+
+			$this->get('session')->getFlashBag()->add('notice', '');
+
+			return $this->redirect($this->generateUrl('move_art'));
+		}
+
+		return $params;
+	}
 }

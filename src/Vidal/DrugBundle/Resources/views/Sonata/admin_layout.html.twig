@@ -453,7 +453,7 @@ file that was distributed with this source code.
 
 					{# тут кнопки под панелью управления (для администраторов) #}
 					{% if route in ['sonata_admin_dashboard', 'admin_vidal_drug_art_list'] %}
-						<a class="btn" href="{{ path('art_move') }}">Перемещение статей</a>
+						<a class="btn" href="{{ path('move_art') }}">Перемещение статей</a>
 					{% endif %}
 
 				{% endblock %}
