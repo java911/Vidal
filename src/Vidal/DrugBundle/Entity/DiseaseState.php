@@ -34,7 +34,7 @@ class DiseaseState extends  BaseEntity
     protected $body;
 
     /**
-     * @ORM\ManyToMany(targetEntity = "Article", inversedBy="states")
+     * @ORM\ManyToMany(targetEntity = "Article", mappedBy="states")
      * @ORM\JoinTable(name="diseaseStateArticle",
      * 		joinColumns={@ORM\JoinColumn(name="state_id", referencedColumnName="id")},
      * 		inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
@@ -46,7 +46,9 @@ class DiseaseState extends  BaseEntity
         $this->articles = new ArrayCollection();
     }
 
-
+    public function __toString(){
+        return $this->title;
+    }
 
     /**
      * @param mixed $offerId

@@ -12,7 +12,7 @@ class Article extends BaseEntity
 {
 
     /**
-     * @ORM\ManyToMany(targetEntity = "DiseaseState", mappedBy="articles")
+     * @ORM\ManyToMany(targetEntity = "DiseaseState", inversedBy="articles")
      * @ORM\JoinTable(name="diseaseStateArticle",
      * 		joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
      * 		inverseJoinColumns={@ORM\JoinColumn(name="state_id", referencedColumnName="id")})
