@@ -59,11 +59,13 @@ body {
 }
 .left-sidebar {
 	width:          160px;
+	max-width:      160px;
 	position:       relative;
 	vertical-align: top;
 }
 .right-sidebar {
-	width:          240px;
+	width:          242px;
+	max-width:      242px;
 	position:       relative;
 	vertical-align: top;
 }
