@@ -135,10 +135,10 @@ class SonataController extends Controller
 	/**
 	 * @Route("/admin/document-remove/{type}/{id}/{DocumentID}", name="document_remove")
 	 */
-	public function documentRemoveAction ($type, $id, $DocumentID)
+	public function documentRemoveAction($type, $id, $DocumentID)
 	{
-		$em = $this->getDoctrine()->getManager('drug');
-		$entity = $em->getRepository("VidalDrugBundle:$type")->findOneById($id);
+		$em       = $this->getDoctrine()->getManager('drug');
+		$entity   = $em->getRepository("VidalDrugBundle:$type")->findOneById($id);
 		$document = $em->getRepository('VidalDrugBundle:Document')->findById($DocumentID);
 
 		if (!$entity || !$document) {
@@ -149,5 +149,25 @@ class SonataController extends Controller
 		$em->flush();
 
 		return new JsonResponse('OK');
+	}
+
+	/**
+	 * @Route("/admin/move-art", name="move_art")
+	 *
+	 * @Template("VidalDrugBundle:Sonata:move_art.html.twig")
+	 */
+	public function moveArtAction(Request $request)
+	{
+		$em        = $this->getDoctrine()->getManager('drug');
+		$arts      = $em->getRepository('VidalDrugBundle:Art')->findAll();
+		$rubriques = $em->getRepository('VidalDrugBundle:ArtRubrique')->findAll();
+
+		$params = array(
+			'title'     => 'Перемещение статей',
+			'arts'      => $arts,
+			'rubriques' => $rubriques,
+		);
+
+		return $params;
 	}
 }
