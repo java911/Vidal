@@ -7,8 +7,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Tests\Extension\Core\DataTransformer\DateTimeToArrayTransformerTest;
-use Vidal\MainBundle\Entity\DiseaseParty;
-use Vidal\MainBundle\Entity\DiseaseStateArticle;
+use Vidal\DrugBundle\Entity\DiseaseParty;
+use Vidal\DrugBundle\Entity\DiseaseStateArticle;
 
 class SymptomController extends Controller
 {
@@ -32,10 +32,10 @@ class SymptomController extends Controller
 	public function symptomListAction($party = 'all')
 	{
 		if ($party == 'all') {
-			$symptoms = $this->getDoctrine()->getRepository('VidalMainBundle:DiseaseSymptom')->findAll();
+			$symptoms = $this->getDoctrine()->getManager('drug')->getRepository('VidalDrugBundle:DiseaseSymptom')->findAll();
 		}
 		else {
-			$party    = $this->getDoctrine()->getRepository('VidalMainBundle:DiseaseParty')->findOneById($party);
+			$party    = $this->getDoctrine()->getManager('drug')->getRepository('VidalDrugBundle:DiseaseParty')->findOneById($party);
 			$symptoms = $party->getSymptoms();
 		}
 		return array(
@@ -50,10 +50,10 @@ class SymptomController extends Controller
 	public function diseaseListAction($symptom = 'all')
 	{
 		if ($symptom == 'all') {
-			$diseases = $this->getDoctrine()->getRepository('VidalMainBundle:Disease')->findAll();
+			$diseases = $this->getDoctrine()->getManager('drug')->getRepository('VidalDrugBundle:Disease')->findAll();
 		}
 		else {
-			$symptom  = $this->getDoctrine()->getRepository('VidalMainBundle:DiseaseSymptom')->findOneById($symptom);
+			$symptom  = $this->getDoctrine()->getManager('drug')->getRepository('VidalDrugBundle:DiseaseSymptom')->findOneById($symptom);
 			$diseases = $symptom->getDiseases();
 		}
 		return array(
@@ -68,10 +68,10 @@ class SymptomController extends Controller
 	public function stateListAction($disease = 'all')
 	{
 		if ($disease == 'all') {
-			$states = $this->getDoctrine()->getRepository('VidalMainBundle:DiseaseState')->findAll();
+			$states = $this->getDoctrine()->getManager('drug')->getRepository('VidalDrugBundle:DiseaseState')->findAll();
 		}
 		else {
-			$disease = $this->getDoctrine()->getRepository('VidalMainBundle:Disease')->findOneById($disease);
+			$disease = $this->getDoctrine()->getManager('drug')->getRepository('VidalDrugBundle:Disease')->findOneById($disease);
 			$states  = $disease->getStates();
 		}
 		return array(
@@ -105,16 +105,16 @@ class SymptomController extends Controller
 	 */
 	public function articleListAction($stateId)
 	{
-		$state      = $this->getDoctrine()->getRepository('VidalMainBundle:DiseaseState')->findOneById($stateId);
-		$articlesId = $this->getDoctrine()->getRepository('VidalMainBundle:DiseaseStateArticle')->findByDiseaseState($state);
+		$state      = $this->getDoctrine()->getManager('drug')->getRepository('VidalDrugBundle:DiseaseState')->findOneById($stateId);
+		$articlesId = $state->getArticles();
 		$articles   = array();
 		$article1   = null;
 		foreach ($articlesId as $key => $article) {
 			if ($key == 0) {
-				$article1 = $this->getDoctrine()->getManager('drug')->getRepository('VidalDrugBundle:Article')->findOneById($article->getArticleId());
+				$article1 = $article;
 			}
 			else {
-				$articles[] = $this->getDoctrine()->getManager('drug')->getRepository('VidalDrugBundle:Article')->findOneById($article->getArticleId());
+				$articles[] = $article;
 			}
 		}
 
@@ -255,9 +255,9 @@ class SymptomController extends Controller
 		$max[183] = 215;
 		$max[331] = 213;
 
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('drug');
 		foreach ($max as $key => $val) {
-			$DiseaseState        = $em->getRepository('VidalMainBundle:DiseaseState')->findOneById($key);
+			$DiseaseState        = $em->getRepository('VidalDrugBundle:DiseaseState')->findOneById($key);
 			$DiseaseStateArticle = new DiseaseStateArticle();
 			$DiseaseStateArticle->setArticleId($val);
 			$DiseaseStateArticle->setDiseaseState($DiseaseState);

@@ -1,5 +1,5 @@
 <?php
-namespace Vidal\MainBundle\Entity;
+namespace Vidal\DrugBundle\Entity;
 
 use
     Doctrine\ORM\Mapping as ORM,
@@ -34,7 +34,10 @@ class DiseaseState extends  BaseEntity
     protected $body;
 
     /**
-     * @ORM\OneToMany(targetEntity="DiseaseStateArticle", mappedBy="diseaseState")
+     * @ORM\ManyToMany(targetEntity = "Article", mappedBy="states")
+     * @ORM\JoinTable(name="diseaseStateArticle",
+     * 		joinColumns={@ORM\JoinColumn(name="state_id", referencedColumnName="id")},
+     * 		inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
      */
     protected $articles;
 
@@ -43,7 +46,9 @@ class DiseaseState extends  BaseEntity
         $this->articles = new ArrayCollection();
     }
 
-
+    public function __toString(){
+        return $this->title;
+    }
 
     /**
      * @param mixed $offerId
