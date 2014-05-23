@@ -106,15 +106,15 @@ class SymptomController extends Controller
 	public function articleListAction($stateId)
 	{
 		$state      = $this->getDoctrine()->getManager('drug')->getRepository('VidalDrugBundle:DiseaseState')->findOneById($stateId);
-		$articlesId = $this->getDoctrine()->getManager('drug')->getRepository('VidalDrugBundle:DiseaseStateArticle')->findByDiseaseState($state);
+		$articlesId = $state->getArticles();
 		$articles   = array();
 		$article1   = null;
 		foreach ($articlesId as $key => $article) {
 			if ($key == 0) {
-				$article1 = $this->getDoctrine()->getManager('drug')->getRepository('VidalDrugBundle:Article')->findOneById($article->getArticleId());
+				$article1 = $article;
 			}
 			else {
-				$articles[] = $this->getDoctrine()->getManager('drug')->getRepository('VidalDrugBundle:Article')->findOneById($article->getArticleId());
+				$articles[] = $article;
 			}
 		}
 
