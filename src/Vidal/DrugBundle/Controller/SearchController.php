@@ -90,9 +90,10 @@ class SearchController extends Controller
 			$params['atcCodes'] = $em->getRepository('VidalDrugBundle:ATC')->findByQuery($qUpper);
 		}
 
-		# поиск по производителю
-		if ($t == 'firm') {
-			$params['firms'] = $em->getRepository('VidalDrugBundle:Company')->findByQuery($q);
+		# поиск по компании
+		if ($t == 'all' || $t == 'company') {
+			$params['search_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByQuery($q);
+			$params['search_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByQuery($q);
 		}
 
 		# поиск по заболеванию (это статьи и синонимы)
@@ -196,9 +197,10 @@ class SearchController extends Controller
 				$params['atcTree']  = true;
 			}
 
-			# поиск по производителю
-			if ($t == 'firm') {
-				$params['firms'] = $em->getRepository('VidalDrugBundle:Company')->findByQuery($q);
+			# поиск по компании
+			if ($t == 'company') {
+				$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByQuery($q);
+				$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByQuery($q);
 			}
 
 			# поиск по клиннико-фармакологической группе

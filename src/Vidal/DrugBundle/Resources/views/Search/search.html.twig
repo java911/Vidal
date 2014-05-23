@@ -101,38 +101,8 @@
 		{% include 'VidalDrugBundle:Vidal:render_bads.html.twig' %}
 	{% endif %}
 
-	{# поиск по производителю #}
-	{% if t == 'firm' %}
-		{% if firms is not empty %}
-			<div class="block">
-				<div class="block-anons">
-					<div class="block-head">
-						Найдено производителей: <span>{{ firms|length }}</span>
-					</div>
-				</div>
-			</div>
-
-			<table class="products-table">
-				<tr class="products-table-header">
-					<td>Производитель</td>
-					<td>Страна</td>
-				</tr>
-				{% for company in firms %}
-					<tr>
-						<td>
-							<a class="no-underline" href="{{ path('firm_item', {'CompanyID':company.CompanyID}) }}"
-								>{{ company.LocalName|raw }}{{ company.Property is not empty ? ', ' ~ company.Property|raw|replace({'&amp;':'&'}) }}</a>
-						</td>
-						<td>{{ company.Country }}</td>
-					</tr>
-				{% endfor %}
-			</table>
-		{% else %}
-			<div class="no-results">
-				Не найдено результатов по производителю <span>{{ q }}</span>
-			</div>
-		{% endif %}
-	{% endif %}
+	{# поиск по компании #}
+	{% include 'VidalDrugBundle:Search:search_company.html.twig' %}
 
 	{# Найдено заболеваний #}
 	{% if articles is defined %}
@@ -153,9 +123,11 @@
 	{% endif %}
 
 	{# если общий поиск не дал результатов #}
-	{% if t == 'all' and
-	(productsPagination is not defined or productsPagination is empty) and
-	(molecules is not defined or molecules is empty) %}
+	{% if t == 'all'
+	and (productsPagination is not defined or productsPagination is empty)
+	and (molecules is not defined or molecules is empty)
+	and (search_infoPages is empty and search_companies is empty)
+	%}
 		<div class="no-results">
 			Не найдено результатов
 		</div>

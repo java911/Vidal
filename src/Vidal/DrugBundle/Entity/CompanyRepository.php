@@ -72,54 +72,6 @@ class CompanyRepository extends EntityRepository
 		return $productCompanies;
 	}
 
-	public function findByQuery($q)
-	{
-		$qb = $this->_em->createQueryBuilder();
-
-		$qb
-			->select('c.CompanyID, c.LocalName, c.Property, country.RusName Country')
-			->from('VidalDrugBundle:Company', 'c')
-			->leftJoin('VidalDrugBundle:Country', 'country', 'WITH', 'country.CountryCode = c.CountryCode')
-			->orderBy('c.LocalName', 'ASC')
-			->where("c.CountryEditionCode = 'RUS'")
-			->andWhere("c.countProducts > 0");
-
-		# поиск по всем словам
-		$where = '';
-		$words = explode(' ', $q);
-
-		for ($i = 0; $i < count($words); $i++) {
-			$word = $words[$i];
-			if ($i > 0) {
-				$where .= ' AND ';
-			}
-			$where .= "(c.LocalName LIKE '$word%' OR c.LocalName LIKE '% $word%')";
-		}
-
-		$qb->andWhere($where);
-		$results = $qb->getQuery()->getResult();
-
-		# поиск по одному слову
-		if (empty($results)) {
-			$where = '';
-			for ($i = 0; $i < count($words); $i++) {
-				$word = $words[$i];
-				if ($i > 0) {
-					$where .= ' OR ';
-				}
-				$where .= "(c.LocalName LIKE '$word%' OR c.LocalName LIKE '% $word%')";
-			}
-
-			$qb->where("c.CountryEditionCode = 'RUS'")
-				->andWhere("c.countProducts > 0")
-				->andWhere($where);
-
-			return $qb->getQuery()->getResult();
-		}
-
-		return $results;
-	}
-
 	public function getQuery()
 	{
 		return $this->_em->createQuery("
@@ -219,5 +171,94 @@ class CompanyRepository extends EntityRepository
 		}
 
 		return array_keys($uniques);
+	}
+
+	public function findByQuery($q)
+	{
+		$words = $this->getWords($q);
+
+		$qb = $this->_em->createQueryBuilder();
+		$qb->select('c.CompanyID, c.LocalName, c.Property, country.RusName Country')
+			->from('VidalDrugBundle:Company', 'c')
+			->leftJoin('VidalDrugBundle:Country', 'country', 'WITH', 'country.CountryCode = c.CountryCode')
+			->orderBy('c.LocalName', 'ASC');
+
+		# поиск по всем словам
+		$qb->where("c.countProducts > 0")->andWhere($this->where($words, 'AND'));
+		$results = $qb->getQuery()->getResult();
+
+		if (!empty($results)) {
+			return $results;
+		}
+
+		# поиск по любому слову
+		$qb->where("c.countProducts > 0")->andWhere($this->where($words, 'OR'));
+		$results = $qb->getQuery()->getResult();
+
+		if (!empty($results)) {
+			return $results;
+		}
+
+		return array();
+	}
+
+	private function where($words, $s)
+	{
+		$s = ($s == 'OR') ? ' OR ' : ' AND ';
+
+		$where = '';
+		for ($i = 0; $i < count($words); $i++) {
+			$word = $words[$i];
+			if ($i > 0) {
+				$where .= $s;
+			}
+			$where .= "(c.LocalName LIKE '$word%' OR c.LocalName LIKE '% $word%')";
+		}
+
+		return $where;
+	}
+
+	private function getWords($q)
+	{
+		$words     = explode(' ', $q);
+		$isRussian = preg_match('/^[а-яё\s]+$/iu', $q);
+
+		$rus = array(
+			'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'АЙ', 'Й',
+			'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф',
+			'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я',
+			'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'ай', 'й',
+			'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф',
+			'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я',
+		);
+
+		$rus2 = array(
+			'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й',
+			'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф',
+			'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я',
+			'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й',
+			'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф',
+			'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я',
+		);
+
+		$eng = array(
+			'A', 'B', 'V', 'G', 'D', 'E', 'IO', 'ZH', 'Z', 'I', 'Y',
+			'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F',
+			'H', 'TS', 'CH', 'SH', 'SCH', '', 'Y', '', 'E', 'YU', 'IA',
+			'a', 'b', 'v', 'g', 'd', 'e', 'io', 'zh', 'z', 'i', 'y',
+			'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f',
+			'h', 'ts', 'ch', 'sh', 'sch', '', 'y', '', 'e', 'yu', 'ia',
+		);
+
+		if ($isRussian) {
+			$words = array_merge($words, explode(' ', str_replace($rus, $eng, $q)));
+			$words = array_merge($words, explode(' ', str_replace($rus2, $eng, $q)));
+		}
+		else {
+			$words = array_merge($words, explode(' ', str_replace($eng, $rus, $q)));
+			$words = array_merge($words, explode(' ', str_replace($eng, $rus2, $q)));
+		}
+
+		return array_unique($words);
 	}
 }

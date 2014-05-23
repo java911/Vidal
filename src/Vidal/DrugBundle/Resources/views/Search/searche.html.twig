@@ -195,7 +195,7 @@
 			</div>
 			<ul class="ul-style">
 				{% for group in phthgroups %}
-					<li><a href="{{ path('phthgroup', {'id':group.id}) }}"
+					<li><a href="{{ path('pharm_item', {'id':group.id}) }}"
 						   class="no-underline">{{ group.Name|raw }}</a></li>
 				{% endfor %}
 			</ul>
@@ -206,38 +206,8 @@
 		{% endif %}
 	{% endif %}
 
-	{# поиск по производителю #}
-	{% if t == 'firm' %}
-		{% if firms is not empty %}
-			<div class="block">
-				<div class="block-anons">
-					<div class="block-head">
-						Найдено производителей: <span>{{ firms|length }}</span>
-					</div>
-				</div>
-			</div>
-
-			<table class="products-table">
-				<tr class="products-table-header">
-					<td>Производитель</td>
-					<td>Страна</td>
-				</tr>
-				{% for company in firms %}
-					<tr>
-						<td>
-							<a class="no-underline" href="{{ path('firm_item', {'CompanyID':company.CompanyID}) }}"
-								>{{ company.LocalName|raw }}{{ company.Property is not empty ? ', ' ~ company.Property|raw|replace({'&amp;':'&'}) }}</a>
-						</td>
-						<td>{{ company.Country }}</td>
-					</tr>
-				{% endfor %}
-			</table>
-		{% else %}
-			<div class="no-results">
-				Не найдено результатов по производителю <span>{{ q }}</span>
-			</div>
-		{% endif %}
-	{% endif %}
+	{# поиск по компании #}
+	{% include 'VidalDrugBundle:Search:search_company.html.twig' %}
 
 	{# Найдено заболеваний #}
 	{% if articles is defined %}

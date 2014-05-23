@@ -59,11 +59,13 @@ body {
 }
 .left-sidebar {
 	width:          160px;
+	max-width:      160px;
 	position:       relative;
 	vertical-align: top;
 }
 .right-sidebar {
-	width:          240px;
+	width:          242px;
+	max-width:      242px;
 	position:       relative;
 	vertical-align: top;
 }
@@ -809,12 +811,6 @@ h1 span {
 }
 
 /* search */
-#search_form {
-	position: absolute;
-	top:      36px;
-	right:    0;
-	width:    440px;
-}
 #search_form table {
 	width: 100%;
 }
@@ -885,10 +881,9 @@ h1 span {
 }
 #search_form {
 	position: absolute;
-	display:  block;
-	width:    422px;
 	top:      36px;
 	right:    0;
+	width:    440px;
 }
 #search_form .chosen-container-single .chosen-single {
 	border-radius: 0;

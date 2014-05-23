@@ -51,19 +51,18 @@
 				src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 		<script type="text/javascript"
 				src="{{ asset('bundles/vidalmain/jquery-ui/jquery-ui-1.10.4.custom.min.js') }}"></script>
-        <script>
-            $(document).ready(function(){
-                $('a[href^="http"], a[href^="ftp"]').not('a[href^="http://vidal"]').click(function(){
-                    window.open(this.href, "");
-                    return false;
-                });
-            });
-        </script>
+		<script>
+			$(document).ready(function() {
+				$('a[href^="http"], a[href^="ftp"]').not('a[href^="http://vidal"]').click(function() {
+					window.open(this.href, "");
+					return false;
+				});
+			});
+		</script>
 	{% endblock %}
 </head>
 
 <body>
-<a href="http://mail.ru">asdasd</a>
 <div id="wrapper" class="wrapper">
 	{{ render(controller('VidalMainBundle:Banner:render', {'groupId':2})) }}
 
