@@ -119,7 +119,7 @@ class AuthController extends Controller
 		return array(
 			'form'  => $form->createView(),
 			'user'  => $user,
-			'title' => 'Редактирование профиля',
+			'title' => 'Профиль',
 		);
 	}
 
