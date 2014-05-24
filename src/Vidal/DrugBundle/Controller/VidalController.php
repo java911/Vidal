@@ -381,10 +381,7 @@ class VidalController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		$params = array(
-			'title' => $this->strip($product->getRusName()) . ' | Препараты',
-		);
-
+		$params   = array();
 		$document = $product->getDocument();
 
 		# условите от Марии, что бады должны иметь Document.ArticleID = 6
@@ -408,11 +405,13 @@ class VidalController extends Controller
 		# БАДы выводятся по-другому
 		if ($product->isBAD() || ($document && $document->isBAD())) {
 			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds);
+			$params['title']    = $this->strip($product->getRusName()) . ' | БАДы';
 
 			return $this->render("VidalDrugBundle:Vidal:bad_document.html.twig", $params);
 		}
 		else {
 			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds, date('Y'));
+			$params['title']    = $this->strip($product->getRusName()) . ' | Препараты';
 		}
 
 		return $params;
