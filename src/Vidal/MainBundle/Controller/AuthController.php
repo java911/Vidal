@@ -289,6 +289,7 @@ class AuthController extends Controller
 				'required'    => true,
 				'constraints' => new NotBlank(array('message' => 'Укажите e-mail'))
 			))
+			->add('submit', 'submit', array('label' => 'Сбросить пароль'))
 			->getForm();
 
 		$form->handleRequest($request);
@@ -384,6 +385,7 @@ class AuthController extends Controller
 				'first_options'   => array('label' => 'Укажите новый пароль'),
 				'second_options'  => array('label' => 'Повторите пароль'),
 			))
+			->add('submit', 'submit', array('label' => 'Сменить пароль'))
 			->getForm();
 
 		$form->handleRequest($request);
