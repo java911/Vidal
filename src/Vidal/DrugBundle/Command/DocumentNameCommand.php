@@ -25,7 +25,7 @@ class DocumentNameCommand extends ContainerAwareCommand
 		ini_set('memory_limit', -1);
 		$output->writeln('--- vidal:document_name started');
 
-		$em = $this->getContainer()->get('doctrine')->getManager('drug');
+		$em  = $this->getContainer()->get('doctrine')->getManager('drug');
 		$pdo = $em->getConnection();
 
 		$pdo->prepare("UPDATE document SET Name = REPLACE(EngName,'<SUP>','')")->execute();
@@ -40,6 +40,11 @@ class DocumentNameCommand extends ContainerAwareCommand
 		$pdo->prepare("UPDATE document SET Name = REPLACE(Name,'&alpha;','')")->execute();
 		$pdo->prepare("UPDATE document SET Name = REPLACE(Name,'&beta;','')")->execute();
 		$pdo->prepare("UPDATE document SET Name = REPLACE(Name,'&plusmn;','')")->execute();
+		$pdo->prepare("UPDATE document SET Name = REPLACE(Name,' - ','_')")->execute();
+		$pdo->prepare("UPDATE document SET Name = REPLACE(Name,'-','_')")->execute();
+		$pdo->prepare("UPDATE document SET Name = REPLACE(Name,' ','_')")->execute();
+		$pdo->prepare("UPDATE document SET Name = REPLACE(Name,'~','_')")->execute();
+		$pdo->prepare("UPDATE document SET Name = REPLACE(Name,'__','_')")->execute();
 		$pdo->prepare("UPDATE document SET Name = LOWER(Name)")->execute();
 
 		$output->writeln('+++ vidal:document_name completed!');

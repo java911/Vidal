@@ -40,6 +40,10 @@ class ProductNameCommand extends ContainerAwareCommand
 		$pdo->prepare("UPDATE product SET Name = REPLACE(Name,'&alpha;','')")->execute();
 		$pdo->prepare("UPDATE product SET Name = REPLACE(Name,'&beta;','')")->execute();
 		$pdo->prepare("UPDATE product SET Name = REPLACE(Name,'&plusmn;','')")->execute();
+		$pdo->prepare("UPDATE product SET Name = REPLACE(Name,' - ','_')")->execute();
+		$pdo->prepare("UPDATE product SET Name = REPLACE(Name,'-','_')")->execute();
+		$pdo->prepare("UPDATE product SET Name = REPLACE(Name,' ','_')")->execute();
+		$pdo->prepare("UPDATE product SET Name = REPLACE(Name,'__','_')")->execute();
 		$pdo->prepare("UPDATE product SET Name = LOWER(Name)")->execute();
 
 		$output->writeln("+++ vidal:product_name completed!");
