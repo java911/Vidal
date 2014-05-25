@@ -4,7 +4,7 @@ namespace Vidal\DrugBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/** @ORM\Entity @ORM\Table(name="clphgroups") */
+/** @ORM\Entity(repositoryClass="ClPhGroupsRepository") @ORM\Table(name="clphgroups") */
 class ClPhGroups
 {
 	/** @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue */

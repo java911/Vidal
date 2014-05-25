@@ -102,6 +102,25 @@ class ProductRepository extends EntityRepository
 			->getResult();
 	}
 
+	public function findByClPhGroupID($ClPhGroupsID)
+	{
+		return $this->_em->createQuery('
+			SELECT p.ProductID, p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.NonPrescriptionDrug,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo,
+				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
+				d.Name DocumentName
+			FROM VidalDrugBundle:Product p
+			JOIN p.clphGroups g
+			LEFT JOIN p.document d
+			WHERE g = :ClPhGroupsID
+				AND p.MarketStatusID IN (1,2)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.inactive = FALSE
+			ORDER BY p.RusName ASC
+		')->setParameter('ClPhGroupsID', $ClPhGroupsID)
+			->getResult();
+	}
+
 	public function findByMoleculeID($MoleculeID)
 	{
 		return $this->_em->createQuery('

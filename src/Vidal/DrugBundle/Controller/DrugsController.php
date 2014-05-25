@@ -103,7 +103,7 @@ class DrugsController extends Controller
 	/**
 	 * Препараты по КФУ
 	 *
-	 * @Route("/drugs/clinic-group/{id}", name="kfu_item", options={"expose":true})
+	 * @Route("/drugs/clinic-pointer/{id}", name="kfu_item", options={"expose":true})
 	 * @Template("VidalDrugBundle:Drugs:kfu_item.html.twig")
 	 */
 	public function kfuItemAction($id)
@@ -138,7 +138,7 @@ class DrugsController extends Controller
 	/**
 	 * Дерево КФУ
 	 *
-	 * @Route("/drugs/clinic-groups", name="kfu")
+	 * @Route("/drugs/clinic-pointers", name="kfu")
 	 * @Template("VidalDrugBundle:Drugs:kfu.html.twig")
 	 */
 	public function kfuAction(Request $request)
@@ -385,6 +385,54 @@ class DrugsController extends Controller
 		$nozologies = $em->getRepository('VidalDrugBundle:Nozology')->findForTree();
 
 		return array('codes' => $nozologies);
+	}
+
+	/**
+	 * @Route("/drugs/clinic-groups", name="clinic_groups")
+	 * @Template("VidalDrugBundle:Drugs:clinic_groups.html.twig")
+	 */
+	public function clinicGroupsAction()
+	{
+		$em         = $this->getDoctrine()->getManager('drug');
+		$clphGroups = $em->getRepository('VidalDrugBundle:ClPhGroups')->findWithProducts();
+
+		$params = array(
+			'title'      => 'Клинико-фармакологические группы',
+			'clPhGroups' => $clphGroups,
+		);
+
+		return $params;
+	}
+
+	/**
+	 * @Route("/drugs/clinic-group/{id}", name="clinic_group")
+	 * @Template("VidalDrugBundle:Drugs:clinic_group.html.twig")
+	 */
+	public function clinicGroupAction($id)
+	{
+		$em        = $this->getDoctrine()->getManager('drug');
+		$clphGroup = $em->getRepository('VidalDrugBundle:ClPhGroups')->findOneById($id);
+
+		if (!$clphGroup) {
+			return $this->createNotFoundException();
+		}
+
+		$params = array(
+			'title'     => $this->strip($clphGroup->getName()) . ' | Клинико-фармакологические группы',
+			'clphGroup' => $clphGroup,
+		);
+
+		$products = $em->getRepository('VidalDrugBundle:Product')->findByClPhGroupID($id);
+
+		if (!empty($products)) {
+			$productIds          = $this->getProductIds($products);
+			$params['products']  = $products;
+			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
+			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
+		}
+
+		return $params;
 	}
 
 	/** Получить массив идентификаторов продуктов */

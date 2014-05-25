@@ -115,7 +115,9 @@
 		{% if product.clphGroups|length == 1 %}
 			<span class="block-head">Клинико-фармакологическая группа:</span>
 			<span class="block-content">
-				{{ product.clphGroups[0].Name|raw }}
+				<a href="{{ path('clinic_group', {'id':product.clphGroups[0].ClPhGroupsID}) }}" class="no-underline">
+					{{ product.clphGroups[0].Name|raw }}
+				</a>
 			</span>
 		{% else %}
 			<div class="block-head">Клинико-фармакологические группы</div>
@@ -123,7 +125,9 @@
 				<ul class="ul-style">
 					{% for clphGroup in product.clphGroups %}
 						<li>
-							{{ clphGroup.Name|raw }}
+							<a href="{{ path('clinic_group', {'id':clphGroup.ClPhGroupsID}) }}" class="no-underline">
+								{{ clphGroup.Name|raw }}
+							</a>
 						</li>
 					{% endfor %}
 				</ul>

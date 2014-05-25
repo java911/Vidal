@@ -37,8 +37,6 @@
 		<a href="{{ path('searche_letter') }}">
 			{{ app.request.get('from') == 'bad' ? 'Препараты и БАДы' : 'Препараты' }}
 		</a>
-		<i></i>
-		<span>{{ product is defined ? product.RusName|raw : document.RusName|raw }}</span>
 	</div>
 {% endblock %}
 
