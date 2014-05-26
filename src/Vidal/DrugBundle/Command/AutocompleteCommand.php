@@ -27,8 +27,16 @@ class AutocompleteCommand extends ContainerAwareCommand
 
 		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
-		$productNames  = $em->getRepository('VidalDrugBundle:Product')->findProductNames();
-		$moleculeNames = $em->getRepository('VidalDrugBundle:Molecule')->findMoleculeNames();
+		$productNames  = $em->getRepository('VidalDrugBundle:Product')->findAutocomplete();
+		$moleculeNames = $em->getRepository('VidalDrugBundle:Molecule')->findAutocomplete();
+		$companyNames  = $em->getRepository('VidalDrugBundle:Company')->findAutocomplete();
+		$atcNames      = $em->getRepository('VidalDrugBundle:ATC')->findAutocomplete();
+
+		$output->writeln('count product : ' . count($productNames));
+		$output->writeln('count molecule : ' . count($moleculeNames));
+		$output->writeln('count company : ' . count($companyNames));
+		$output->writeln('count atc : ' . count($atcNames));
+		exit;
 
 		$names = array_unique(array_merge($productNames, $moleculeNames));
 		sort($names);
@@ -49,6 +57,7 @@ class AutocompleteCommand extends ContainerAwareCommand
 		$mapping->setProperties(array(
 			'id'   => array('type' => 'integer', 'include_in_all' => FALSE),
 			'name' => array('type' => 'string', 'include_in_all' => TRUE),
+			'type' => array('type' => 'string', 'include_in_all' => FALSE),
 		));
 
 		// Send mapping to type

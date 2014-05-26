@@ -299,7 +299,7 @@ class DrugsController extends Controller
 			}
 		}
 
-		$nozology = $em->getRepository('VidalDrugBundle:Nozology')->findOneByNozologyCode($Code);
+		$nozology = $em->getRepository('VidalDrugBundle:Nozology')->findOneByCode($Code);
 
 		if ($nozology === null) {
 			throw $this->createNotFoundException();

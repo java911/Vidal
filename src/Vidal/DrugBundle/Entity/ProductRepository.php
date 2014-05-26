@@ -195,26 +195,26 @@ class ProductRepository extends EntityRepository
 			->getResult();
 	}
 
-	public function findProductNames()
+	public function findAutocomplete()
 	{
-		$products = $this->_em->createQuery('
+		$products = $this->_em->createQuery("
 			SELECT DISTINCT p.RusName, p.EngName
 			FROM VidalDrugBundle:Product p
 			WHERE p.MarketStatusID IN (1,2,7)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.ProductTypeCode IN ('DRUG','GOME','BAD')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
-		')->getResult();
+		")->getResult();
 
 		$productNames = array();
 
 		for ($i = 0; $i < count($products); $i++) {
-			$patterns     = array('/<SUP>.*<\/SUP>/', '/<SUB>.*<\/SUB>/');
-			$replacements = array('', '');
+			$patterns     = array('/<SUP>.*<\/SUP>/', '/<SUB>.*<\/SUB>/', '/&alpha;/', '/&plusmn;/', '/&reg;/', '/&shy;/');
+			$replacements = array('', '', ' ', ' ', ' ', ' ');
 			$RusName      = preg_replace($patterns, $replacements, $products[$i]['RusName']);
-			$RusName      = mb_strtolower($RusName, 'UTF-8');
+			$RusName      = mb_strtolower(str_replace('  ', ' ', $RusName), 'UTF-8');
 			$EngName      = preg_replace($patterns, $replacements, $products[$i]['EngName']);
-			$EngName      = mb_strtolower($EngName, 'UTF-8');
+			$EngName      = mb_strtolower(str_replace('  ', ' ', $EngName), 'UTF-8');
 
 			if (!empty($RusName)) {
 				$productNames[] = $RusName;

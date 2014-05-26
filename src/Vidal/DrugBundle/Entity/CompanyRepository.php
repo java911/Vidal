@@ -173,6 +173,40 @@ class CompanyRepository extends EntityRepository
 		return array_keys($uniques);
 	}
 
+	public function findAutocomplete()
+	{
+		$companyNames  = array();
+		$infoPageNames = array();
+
+		# находим компании
+		$companies = $this->_em->createQuery('
+			SELECT DISTINCT c.LocalName
+			FROM VidalDrugBundle:Company c
+			WHERE c.countProducts > 0
+		')->getResult();
+
+		foreach ($companies as $company) {
+			$name           = preg_replace('/ &.+; /', ' ', $company['LocalName']);
+			$name           = preg_replace('/&.+;/', ' ', $name);
+			$companyNames[] = $name;
+		}
+
+		# находим представительства
+		$infoPages = $this->_em->createQuery('
+			SELECT i.RusName
+			FROM VidalDrugBundle:InfoPage i
+			WHERE i.countProducts > 0
+		')->getResult();
+
+		foreach ($infoPages as $infoPage) {
+			$name            = preg_replace('/ &.+; /', ' ', $infoPage['RusName']);
+			$name            = preg_replace('/&.+;/', ' ', $name);
+			$infoPageNames[] = $name;
+		}
+
+		return array_merge($companyNames, $infoPageNames);
+	}
+
 	public function findByQuery($q)
 	{
 		$words = $this->getWords($q);

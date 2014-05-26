@@ -64,7 +64,7 @@ class MoleculeRepository extends EntityRepository
 			->getOneOrNullResult();
 	}
 
-	public function findMoleculeNames()
+	public function findAutocomplete()
 	{
 		$molecules = $this->_em->createQuery('
 			SELECT DISTINCT m.RusName, m.LatName
@@ -103,21 +103,42 @@ class MoleculeRepository extends EntityRepository
 			->leftJoin('m.GNParent', 'mnn')
 			->orderBy('m.LatName', 'ASC');
 
-		# поиск по словам
-		$where = '';
 		$words = explode(' ', $q);
+
+		# поиск по всем словам вместе
+		$qb->where($this->where($words, 'AND'));
+		$results = $qb->getQuery()->getResult();
+
+		if (!empty($results)) {
+			return $results;
+		}
+
+		# поиск по любому из слов
+		$qb->where($this->where($words, 'OR'));
+		$results = $qb->getQuery()->getResult();
+
+		if (!empty($results)) {
+			return $results;
+		}
+
+		return array();
+	}
+
+	private function where($words, $s)
+	{
+		$s = ($s == 'OR') ? ' OR ' : ' AND ';
+
+		$where = '';
 
 		for ($i = 0; $i < count($words); $i++) {
 			$word = $words[$i];
 			if ($i > 0) {
-				$where .= ' OR ';
+				$where .= $s;
 			}
 			$where .= "(m.RusName LIKE '$word%' OR m.LatName LIKE '$word%' OR m.RusName LIKE '% $word%' OR m.LatName LIKE '% $word%')";
 		}
 
-		$qb->where($where);
-
-		return $qb->getQuery()->getResult();
+		return $where;
 	}
 
 	public function countComponents($productIds)

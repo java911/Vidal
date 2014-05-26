@@ -16,14 +16,14 @@ class NozologyRepository extends EntityRepository
 			->getOneOrNullResult();
 	}
 
-	public function findOneByNozologyCode($code)
+	public function findOneByCode($code)
 	{
 		$code = trim($code, ' ');
 
 		$result = $this->_em->createQuery('
 			SELECT n
 			FROM VidalDrugBundle:Nozology n
-			WHERE n.NozologyCode = :code
+			WHERE n.Code = :code
 		')->setParameter('code', $code)
 			->getOneOrNullResult();
 
@@ -31,9 +31,9 @@ class NozologyRepository extends EntityRepository
 			$result = $this->_em->createQuery('
 				SELECT n
 				FROM VidalDrugBundle:Nozology n
-				WHERE n.Code = :code
+				WHERE n.NozologyCode = :code
 			')->setParameter('code', $code)
-					->getOneOrNullResult();
+				->getOneOrNullResult();
 		}
 
 		return $result;
