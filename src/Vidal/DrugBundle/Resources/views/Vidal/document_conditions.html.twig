@@ -28,29 +28,29 @@
 	{% endif %}
 
 	{% if document.HepatoInsufUsing == 'Can' %}
-		<a href="#hepato" title="Возможно применение при нарушениях функции почек">
+		<a href="#renal" title="Возможно применение при нарушениях функции почек">
 			<img src="{{ asset('bundles/vidalmain/images/can_n.gif') }}"/>
 		</a>
 	{% elseif document.HepatoInsufUsing == 'Care' %}
-		<a href="#hepato" title="C осторожностью применяется при нарушениях функции почек">
+		<a href="#renal" title="C осторожностью применяется при нарушениях функции почек">
 			<img src="{{ asset('bundles/vidalmain/images/care_n.gif') }}"/>
 		</a>
 	{% elseif document.HepatoInsufUsing == 'Not' %}
-		<a href="#hepato" title="Противопоказан при нарушениях функции почек">
+		<a href="#renal" title="Противопоказан при нарушениях функции почек">
 			<img src="{{ asset('bundles/vidalmain/images/not_n.gif') }}"/>
 		</a>
 	{% endif %}
 
 	{% if document.RenalInsufUsing == 'Can' %}
-		<a href="#renal" title="Возможно применение при нарушениях функции печени">
+		<a href="#hepato" title="Возможно применение при нарушениях функции печени">
 			<img src="{{ asset('bundles/vidalmain/images/can_r.gif') }}"/>
 		</a>
 	{% elseif document.RenalInsufUsing == 'Care' %}
-		<a href="#renal" title="C осторожностью применяется при нарушениях функции печени">
+		<a href="#hepato" title="C осторожностью применяется при нарушениях функции печени">
 			<img src="{{ asset('bundles/vidalmain/images/care_r.gif') }}"/>
 		</a>
 	{% elseif document.RenalInsufUsing == 'Not' %}
-		<a href="#renal" title="Противопоказан при нарушениях функции печени">
+		<a href="#hepato" title="Противопоказан при нарушениях функции печени">
 			<img src="{{ asset('bundles/vidalmain/images/not_r.gif') }}"/>
 		</a>
 	{% endif %}
