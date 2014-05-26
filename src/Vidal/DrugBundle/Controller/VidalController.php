@@ -367,7 +367,7 @@ class VidalController extends Controller
 	 * Описание препарата
 	 *
 	 * @Route("/drugs/{EngName}__{ProductID}.{ext}", name="product", requirements={"ProductID":"\d+", "EngName"=".+"}, defaults={"ext"="htm"})
-	 * @Route("/poisk_preparatov/{EngName}__{ProductID}.{ext}", name="product_old", requirements={"ProductID":"\d+"}, defaults={"ext"="htm"})
+	 * @Route("/poisk_preparatov/{EngName}__{ProductID}.{ext}", name="product_old", requirements={"ProductID":"\d+", "EngName"=".+"}, defaults={"ext"="htm"})
 	 *
 	 * @Template("VidalDrugBundle:Vidal:document.html.twig")
 	 */
