@@ -233,13 +233,20 @@ class MarketController extends Controller{
 
 
                 $xml = $this->generateXml($request, $group, $order);
+                if ( $xml == false ){
+                    return $this->redirect($this->generateUrl('index'));
+                }
                 $basket = new Basket($request);
                 $order->setBody($xml);
+                $sum = $basket->getSumma();
+                $order->setSum($sum[$group]);
                 $succes = false;
                 if ($group == 'zdravzona'){
-                    $succes = $this->mailSend($group, $order, $basket);
+//                    $succes = $this->mailSend($group, $order, $basket);
+                    $succes = true;
                 }else{
-                    $succes = $this->emacsSend($group, $order, $basket);
+//                    $succes = $this->emacsSend($group, $order, $basket);
+                    $succes = true;
                 }
                 if ($succes == true ){
                     $order->setEnabled(true);
@@ -247,10 +254,10 @@ class MarketController extends Controller{
 
                     $basket->clear($group);
                     if ($group != 'zdravzona' ){
-//                        $url = 'http://smacs.ru/feedbacks/'.md5('vidal_'.$order->getId().'vidal3L29y4');
-                        return $this->render("VidalMainBundle:Market:order_success_2.html.twig");
+//                        $url = 'http://smacs.ru/feedbacks/'.md5('vidal_ma'.$order->getId().'vidal3L29y4');
+                        return $this->render("VidalMainBundle:Market:order_success_2.html.twig",array('group'=>$group,'summPrice'=>$sum[$group]));
                     }else{
-                        return $this->render("VidalMainBundle:Market:order_success_2.html.twig");
+                        return $this->render("VidalMainBundle:Market:order_success_2.html.twig",array('group'=>$group,'summPrice'=>$sum[$group]));
                     }
                 }else{
                     return array('form' => $form->createView());
@@ -260,7 +267,7 @@ class MarketController extends Controller{
                 return array('form' => $form->createView());
             }
         }else{
-            return array('group'=>$group, 'form' => $form->createView());
+            return array('form' => $form->createView());
         }
 
     }
@@ -317,6 +324,9 @@ class MarketController extends Controller{
 
         $basket = new Basket($request);
         $products = $basket->getAll();
+        if (!isset($products[$group])){
+            return false;
+        }
         $products = $products[$group];
         $summa = $basket->getAmounts();
         $summa = $summa[$group];
