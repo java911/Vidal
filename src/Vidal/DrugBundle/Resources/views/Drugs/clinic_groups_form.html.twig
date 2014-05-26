@@ -1,0 +1,42 @@
+<form id="form" method="GET" action="{{ path('clinic_groups') }}">
+
+	<div id="form_controls">
+		<input id="form_submit" type="submit" value="Найти" class="btn-red">
+		<input id="form_input" type="text" name="q" placeholder="Введите слово для поиска..."
+			   value="{{ q is defined and q is not empty and not l ? q }}"/>
+	</div>
+
+	<div class="letters">
+		<div class="ru">
+			<input type="submit" value="А" name="l" {{ l == 'А' ? ' class="active"' }}/>
+			<input type="submit" value="Б" name="l" {{ l == 'Б' ? ' class="active"' }}/>
+			<input type="submit" value="В" name="l" {{ l == 'В' ? ' class="active"' }}/>
+			<input type="submit" value="Г" name="l" {{ l == 'Г' ? ' class="active"' }}/>
+			<input type="submit" value="Д" name="l" {{ l == 'Д' ? ' class="active"' }}/>
+			<input type="submit" value="Ж" name="l" {{ l == 'Ж' ? ' class="active"' }}/>
+			<input type="submit" value="З" name="l" {{ l == 'З' ? ' class="active"' }}/>
+			<input type="submit" value="И" name="l" {{ l == 'И' ? ' class="active"' }}/>
+			<input type="submit" value="К" name="l" {{ l == 'К' ? ' class="active"' }}/>
+			<input type="submit" value="М" name="l" {{ l == 'М' ? ' class="active"' }}/>
+			<input type="submit" value="Н" name="l" {{ l == 'Н' ? ' class="active"' }}/>
+			<input type="submit" value="О" name="l" {{ l == 'О' ? ' class="active"' }}/>
+			<input type="submit" value="П" name="l" {{ l == 'П' ? ' class="active"' }}/>
+			<input type="submit" value="Р" name="l" {{ l == 'Р' ? ' class="active"' }}/>
+			<input type="submit" value="С" name="l" {{ l == 'С' ? ' class="active"' }}/>
+			<input type="submit" value="Т" name="l" {{ l == 'Т' ? ' class="active"' }}/>
+			<input type="submit" value="Ф" name="l" {{ l == 'Ф' ? ' class="active"' }}/>
+			<input type="submit" value="Ц" name="l" {{ l == 'Ц' ? ' class="active"' }}/>
+			<input type="submit" value="Ч" name="l" {{ l == 'Ч' ? ' class="active"' }}/>
+			<input type="submit" value="Э" name="l" {{ l == 'Э' ? ' class="active"' }}/>
+			<input type="submit" value="C" name="l" class="en{{ l == 'C' ? ' active' }}"/>
+		</div>
+	</div>
+</form>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('.letters input').click(function() {
+			$('#form_input').attr('disabled', 'disabled');
+		});
+	});
+</script>
