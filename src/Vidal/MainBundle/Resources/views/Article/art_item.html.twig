@@ -21,7 +21,7 @@
 
 		{% if category is defined and category %}
 			<i></i>
-			<a href="{{ path('art', {'url':[rubrique.url, type.url, category.url]|join('/') }) }}">{{ categorygit.title }}</a>
+			<a href="{{ path('art', {'url':[rubrique.url, type.url, category.url]|join('/') }) }}">{{ category.title }}</a>
 		{% endif %}
 
 	</div>
