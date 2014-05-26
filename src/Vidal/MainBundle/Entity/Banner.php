@@ -37,7 +37,7 @@ class Banner extends BaseEntity
 	protected $ends;
 
 	/**
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="bigint")
 	 */
 	protected $displayed;
 
