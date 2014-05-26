@@ -378,7 +378,7 @@ class VidalController extends Controller
 		$product = $em->getRepository('VidalDrugBundle:Product')->findByProductID($ProductID);
 
 		if (!$product
-			|| $product->getName() != $EngName
+			|| $product->getName() != str_replace(' ', '_', $EngName)
 			|| !in_array($product->getMarketStatusID()->getMarketStatusID(), array(2, 5))
 		) {
 			throw $this->createNotFoundException();
