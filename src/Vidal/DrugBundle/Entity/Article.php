@@ -631,4 +631,9 @@ class Article extends BaseEntity
     public function removeState($state){
         $this->states->removeElement($state);
     }
+
+	public function isArticle()
+	{
+		return true;
+	}
 }

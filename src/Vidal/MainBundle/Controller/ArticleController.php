@@ -150,7 +150,7 @@ class ArticleController extends Controller
 	 */
 	public function pharmaCompanyAction(Request $request, $id)
 	{
-		$em = $this->getDoctrine()->getManager('drug');
+		$em      = $this->getDoctrine()->getManager('drug');
 		$company = $em->getRepository('VidalDrugBundle:PharmCompany')->findOneById($id);
 
 		if (!$company) {
@@ -273,7 +273,10 @@ class ArticleController extends Controller
 	 */
 	public function vrachamExpertCdAction()
 	{
-		return array('menu' => 'vracham');
+		return array(
+			'menu'  => 'vracham',
+			'title' => 'Электронный справочник Видаль',
+		);
 	}
 
 	/**
