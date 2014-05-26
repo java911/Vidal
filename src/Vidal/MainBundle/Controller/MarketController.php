@@ -260,7 +260,7 @@ class MarketController extends Controller{
                 return array('form' => $form->createView());
             }
         }else{
-            return array('form' => $form->createView());
+            return array('group'=>$group, 'form' => $form->createView());
         }
 
     }

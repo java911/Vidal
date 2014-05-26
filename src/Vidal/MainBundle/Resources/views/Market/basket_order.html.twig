@@ -16,8 +16,13 @@
             $(".delivery-select").chosen({
                 disable_search_threshold: 10,
                 no_results_text: "Поиск не нашел ничего",
-                disable_search: true,
+                disable_search: true
             });
+            {% if group is defined %}
+                $('#form_submit').click(function(){
+                    _gaq.push(['_trackEvent', 'Payment', '{{ group }}' ]);
+                });
+            {% endif %}
         })
     </script>
 {% endblock %}
