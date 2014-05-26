@@ -260,7 +260,7 @@ class MarketController extends Controller{
                 return array('form' => $form->createView());
             }
         }else{
-            return array('form' => $form->createView());
+            return array('group'=>$group, 'form' => $form->createView());
         }
 
     }
@@ -366,7 +366,7 @@ class MarketController extends Controller{
         # уведомление магазина о покупке
         $this->get('email.service')->send(
 //            "tulupov.m@gmail.com",
-            array('tulupov.m@gmail.com','zakaz@zdravzona.ru'),
+            array('zakaz@zdravzona.ru'),
             array('VidalMainBundle:Email:market_notice.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa, 'ship' => $this->shippingTitle[$order->getShipping()] )),
             'Заказ с сайта Vidal.ru'
         );
@@ -374,7 +374,7 @@ class MarketController extends Controller{
         $this->get('email.service')->send(
 //            "zakaz@zdravzona.ru",
 //            "tulupov.m@gmail.com",
-            array('tulupov.m@gmail.com',$order->getEmail()),
+            array($order->getEmail()),
             array('VidalMainBundle:Email:market_notice_user.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa, 'ship' => $this->shippingTitle[$order->getShipping()] )),
             'Заказ с сайта Vidal.ru'
         );
@@ -417,7 +417,7 @@ class MarketController extends Controller{
         if ($xml->error->error_code){
             $this->get('email.service')->send(
 //            "tulupov.m@gmail.com",
-                array('tulupov.m@gmail.com',$order->getEmail()),
+                array($order->getEmail()),
                 array('VidalMainBundle:Email:market_notice_user.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa, 'ship' => $this->shippingTitle[$order->getShipping()] )),
                 'Заказ с сайта Vidal.ru'
             );

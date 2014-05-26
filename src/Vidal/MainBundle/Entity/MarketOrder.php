@@ -89,6 +89,12 @@ class MarketOrder
      * @ORM\Column(type="string")
      */
     protected $shippingPrice;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $sum;
+
     /**
      * @ORM\Column(type="text")
      */
@@ -317,6 +323,23 @@ class MarketOrder
     {
         return $this->shippingPrice;
     }
+
+    /**
+     * @param mixed $sum
+     */
+    public function setSum($sum)
+    {
+        $this->sum = $sum;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSum()
+    {
+        return $this->sum;
+    }
+
 
 
 

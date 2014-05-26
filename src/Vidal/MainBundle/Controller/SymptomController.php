@@ -118,7 +118,6 @@ class SymptomController extends Controller
 			}
 		}
 
-		$articles = $articles;
 		return array(
 			'article1' => $article1,
 			'articles' => $articles,
