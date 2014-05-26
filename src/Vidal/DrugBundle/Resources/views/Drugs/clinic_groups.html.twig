@@ -3,7 +3,7 @@
 
 {% block vidal %}
 	{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' %}
-	{% include 'VidalDrugBundle:Vidal:clinic_groups_form.html.twig' %}
+	{% include 'VidalDrugBundle:Drugs:clinic_groups_form.html.twig' %}
 
 	<div class="info-line">
 		{% if l %}
@@ -26,7 +26,7 @@
 		<ul class="ul-style">
 			{% for clphGroup in pagination %}
 				<li>
-					<a href="{{ path('clinic_group', {'id':clphGroup.ClPhGroupsID}) }}">
+					<a href="{{ path('clinic_group', {'id':clphGroup.ClPhGroupsID}) }}" class="no-underline">
 						{{ clphGroup.Name|raw }}
 					</a>
 				</li>

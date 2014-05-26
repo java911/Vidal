@@ -8,6 +8,8 @@
 			>Нозологический указатель</a>
 		<a href="{{ path('pharm') }}" {{ menu_drugs == 'pharm' ? 'class="active"' }}
 		   title="Фармако-терапевтические группы ГосРеестра МинЗдрава РФ">ФТГ</a>
+		<a href="{{ path('clinic_groups') }}" {{ menu_drugs == 'clinic_groups' ? 'class="active"' }}
+		   title="Клинико-фармакологические группы">КФГ</a>
 		<a href="{{ path('firms') }}" {{ menu_drugs == 'firms' ? 'class="active"' }}
 		   title="Фирмы-производители">Фирмы</a>
 		<a href="{{ path('inf') }}" {{ menu_drugs == 'inf' ? 'class="active"' }}

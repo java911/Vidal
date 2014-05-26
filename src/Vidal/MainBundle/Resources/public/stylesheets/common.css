@@ -1069,7 +1069,7 @@ h1 span {
 .tabs a {
 	display:         inline-block;
 	float:           left;
-	padding:         5px 11px 6px;
+	padding:         5px 7px 6px 6px;
 	text-decoration: none;
 	color:           #2e3f51;
 	font-weight:     bold;

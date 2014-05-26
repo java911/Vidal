@@ -13,6 +13,7 @@ use Lsw\SecureControllerBundle\Annotation\Secure;
 class DrugsController extends Controller
 {
 	const PHARM_PER_PAGE = 50;
+	const KFG_PER_PAGE   = 50;
 
 	/**
 	 * Препараты по коду АТХ
@@ -391,14 +392,41 @@ class DrugsController extends Controller
 	 * @Route("/drugs/clinic-groups", name="clinic_groups")
 	 * @Template("VidalDrugBundle:Drugs:clinic_groups.html.twig")
 	 */
-	public function clinicGroupsAction()
+	public function clinicGroupsAction(Request $request)
 	{
-		$em         = $this->getDoctrine()->getManager('drug');
-		$clphGroups = $em->getRepository('VidalDrugBundle:ClPhGroups')->findWithProducts();
+		$em = $this->getDoctrine()->getManager('drug');
+		$q  = $request->query->get('q', null);
+		$l  = $request->query->get('l', null);
+		$p  = $request->query->get('p', 1);
+
+		//		$companies = $em->getRepository('VidalDrugBundle:ClPhGroups')->findWithProducts();
+		//		$letters   = array();
+		//		foreach ($companies as $company) {
+		//			$letter = mb_strtoupper(mb_substr($company->getName(), 0, 1, 'utf-8'), 'utf-8');
+		//			if (!isset($letters[$letter])) {
+		//				$letters[$letter] = '';
+		//			}
+		//		}
+		//		ksort($letters);
+		//		var_dump($letters);
+		//		exit;
+
+		if ($l) {
+			$query = $em->getRepository('VidalDrugBundle:ClPhGroups')->findByLetter($l);
+		}
+		elseif ($q) {
+			$query = $em->getRepository('VidalDrugBundle:ClPhGroups')->findByQuery($q);
+		}
+		else {
+			$query = $em->getRepository('VidalDrugBundle:ClPhGroups')->getQuery();
+		}
 
 		$params = array(
+			'menu_drugs' => 'clinic_groups',
 			'title'      => 'Клинико-фармакологические группы',
-			'clPhGroups' => $clphGroups,
+			'q'          => $q,
+			'l'          => $l,
+			'pagination' => $this->get('knp_paginator')->paginate($query, $p, self::KFG_PER_PAGE),
 		);
 
 		return $params;
