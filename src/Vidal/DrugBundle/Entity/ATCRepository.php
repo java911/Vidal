@@ -92,10 +92,39 @@ class ATCRepository extends EntityRepository
 		$atc = array();
 
 		for ($i = 0; $i < count($atcRaw); $i++) {
-			$key               = $atcRaw[$i]['id'];
-			$atc[$key]         = $atcRaw[$i];
+			$key       = $atcRaw[$i]['id'];
+			$atc[$key] = $atcRaw[$i];
 		}
 
 		return $atc;
+	}
+
+	public function findAutocomplete()
+	{
+		$atcCodes = $this->_em->createQuery('
+			SELECT a.ATCCode, a.RusName, a.EngName
+			FROM VidalDrugBundle:ATC a
+		')->getResult();
+
+		$atcNames = array();
+
+		for ($i = 0; $i < count($atcCodes); $i++) {
+			$patterns     = array('/<SUP>.*<\/SUP>/', '/<SUB>.*<\/SUB>/', '/&alpha;/', '/&amp;/');
+			$replacements = array('', '', ' ', ' ');
+			$RusName      = preg_replace($patterns, $replacements, $atcCodes[$i]['RusName']);
+			$RusName      = str_replace('  ', ' ', $RusName);
+			$EngName      = preg_replace($patterns, $replacements, $atcCodes[$i]['EngName']);
+			$EngName      = str_replace('  ', ' ', $EngName);
+
+			if (!empty($RusName)) {
+				$atcNames[] = $atcCodes[$i]['ATCCode'] . ' - ' . $RusName;
+			}
+
+			if (!empty($EngName)) {
+				$atcNames[] = $atcCodes[$i]['ATCCode'] . ' - ' . $EngName;
+			}
+		}
+
+		return $atcNames;
 	}
 }

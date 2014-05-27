@@ -616,4 +616,9 @@ class Art extends BaseEntity
 	{
 		return $this->anons;
 	}
+
+	public function isArticle()
+	{
+		return false;
+	}
 }

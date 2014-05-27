@@ -21,16 +21,34 @@ class IndexController extends Controller
 	 * @Route("/", name="index")
 	 * @Template("VidalMainBundle:Index:index.html.twig")
 	 */
-	public function indexAction(Request $request)
+	public function indexAction()
 	{
-		$em = $this->getDoctrine()->getManager('drug');
+		$em       = $this->getDoctrine()->getManager('drug');
+		$articles = $em->getRepository('VidalDrugBundle:Article')->findLast(self::ARTICLES_SHOW);
+
+		if ($art = $em->getRepository('VidalDrugBundle:Art')->atIndex()) {
+			$articles[] = $art;
+			usort($articles, function ($a, $b) {
+				$dateA = $a->getDate();
+				$dateB = $b->getDate();
+
+				if ($dateA < $dateB) {
+					return 1;
+				}
+				elseif ($dateA > $dateB) {
+					return -1;
+				}
+				else {
+					return 0;
+				}
+			});
+		}
 
 		$params = array(
 			'indexPage'    => true,
 			'seotitle'     => 'Справочник лекарственных препаратов Видаль. Описание лекарственных средств',
 			'publications' => $em->getRepository('VidalDrugBundle:Publication')->findLast(self::PUBLICATIONS_SHOW),
-			'articles'     => $em->getRepository('VidalDrugBundle:Article')->findLast(self::ARTICLES_SHOW),
-			'art'      => $em->getRepository('VidalDrugBundle:Art')->atIndex(),
+			'articles'     => $articles,
 		);
 
 		return $params;
@@ -38,93 +56,96 @@ class IndexController extends Controller
 
 	/**
 	 * @Route("/otvety_specialistov", name="qa")
-	 * @Template()
+	 * @Template("VidalMainBundle:Index:qa.html.twig")
 	 */
 	public function qaAction(Request $request)
 	{
-        $em = $this->getDoctrine()->getManager();
-        $faq = new QuestionAnswer();
-        if ($this->getUser()){
-            $faq->setAuthorFirstName($this->getUser()->getFirstname());
-            $faq->setAuthorEmail($this->getUser()->getUsername());
-        }
-        $builder = $this->createFormBuilder($faq);
-        $builder
-            ->add('authorFirstName', null, array('label' => 'Ваше имя'))
-            ->add('authorEmail', null, array('label' => 'Ваш e-mail'))
-            ->add('question', null, array('label' => 'Вопрос'))
-            ->add('captcha', 'captcha', array('label' => 'Введите код с картинки'))
-            ->add('submit', 'submit', array('label' => 'Задать вопрос', 'attr' => array('class' => 'btn')));
+		$em  = $this->getDoctrine()->getManager();
+		$faq = new QuestionAnswer();
+		if ($this->getUser()) {
+			$faq->setAuthorFirstName($this->getUser()->getFirstname());
+			$faq->setAuthorEmail($this->getUser()->getUsername());
+		}
+		$builder = $this->createFormBuilder($faq);
+		$builder
+			->add('authorFirstName', null, array('label' => 'Ваше имя'))
+			->add('authorEmail', null, array('label' => 'Ваш e-mail'))
+			->add('question', null, array('label' => 'Вопрос'))
+			->add('captcha', 'captcha', array('label' => 'Введите код с картинки'))
+			->add('submit', 'submit', array('label' => 'Задать вопрос', 'attr' => array('class' => 'btn')));
 
-        $form    = $builder->getForm();
-        $form->handleRequest($request);
-        $t = 0;
-        if ($request->isMethod('POST')) {
-            $t = 1;
-            if ($form->isValid()){
-                $t = 2;
-                $faq = $form->getData();
-                $faq->setEnabled(0);
-                $em->persist($faq);
-                $em->flush();
-                $em->refresh($faq);
-            }
-        }
-        $qus = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByEnabled(1);
-        krsort($qus);
+		$form = $builder->getForm();
+		$form->handleRequest($request);
+		$t = 0;
+		if ($request->isMethod('POST')) {
+			$t = 1;
+			if ($form->isValid()) {
+				$t   = 2;
+				$faq = $form->getData();
+				$faq->setEnabled(0);
+				$em->persist($faq);
+				$em->flush();
+				$em->refresh($faq);
+			}
+		}
+		$qus = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByEnabled(1);
+		krsort($qus);
 
 		return array(
-			'title'           => 'Вопрос-ответ',
+			'title'           => 'Ответы специалистов',
 			'menu_left'       => 'qa',
 			'questionAnswers' => $qus,
-            'form'  => $form->createView(),
-            't' => $t,
+			'form'            => $form->createView(),
+			't'               => $t,
 		);
 	}
 
-    /**
-     * @Route("/otvety_specialistov_doctor", name="qa_admin")
-     * @Secure(roles="ROLE_DOCTOR")
-     * @Template()
-     */
-    public function doctorAnswerListAction(Request $request){
-        $questions = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByAnswer(null);
-        return array('questions' => $questions);
-    }
+	/**
+	 * @Route("/otvety_specialistov_doctor", name="qa_admin")
+	 * @Secure(roles="ROLE_DOCTOR")
+	 * @Template()
+	 */
+	public function doctorAnswerListAction(Request $request)
+	{
+		$questions = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByAnswer(null);
+		return array('questions' => $questions);
+	}
 
-    /**
-     * @Route("/otvety_specialistov_doctor/{faqId}", name="qa_admin_edit")
-     * @Secure(roles="ROLE_DOCTOR")
-     * @Template()
-     */
-    public function doctorAnswerEditAction(Request $request, $faqId){
-        $em = $this->getDoctrine()->getManager();
-        $faq = $em->getRepository('VidalMainBundle:QuestionAnswer')->findOneById($faqId);
-        if ( $faq->getAnswer() == null ){
-            $builder = $this->createFormBuilder($faq);
-            $builder
-                ->add('question', null, array('label' => 'Вопрос', 'attr' => array('class' => 'ckeditor')))
-                ->add('answer', null, array('label' => 'Ответ', 'attr' => array('class' => 'ckeditor')))
-                ->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn')));
+	/**
+	 * @Route("/otvety_specialistov_doctor/{faqId}", name="qa_admin_edit")
+	 * @Secure(roles="ROLE_DOCTOR")
+	 * @Template()
+	 */
+	public function doctorAnswerEditAction(Request $request, $faqId)
+	{
+		$em  = $this->getDoctrine()->getManager();
+		$faq = $em->getRepository('VidalMainBundle:QuestionAnswer')->findOneById($faqId);
+		if ($faq->getAnswer() == null) {
+			$builder = $this->createFormBuilder($faq);
+			$builder
+				->add('question', null, array('label' => 'Вопрос', 'attr' => array('class' => 'ckeditor')))
+				->add('answer', null, array('label' => 'Ответ', 'attr' => array('class' => 'ckeditor')))
+				->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn')));
 
-            $form    = $builder->getForm();
-        }else{
-            return $this->redirect($this->generateUrl('qa_admin'));
-        }
-        $form->handleRequest($request);
+			$form = $builder->getForm();
+		}
+		else {
+			return $this->redirect($this->generateUrl('qa_admin'));
+		}
+		$form->handleRequest($request);
 
-        if ($request->isMethod('POST')) {
-            if ($form->isValid()) {
-                $faq = $form->getData();
-                $faq->setEnabled(1);
-                if ($faq->getAnswer()!=null){
-                    $em->flush($faq);
-                    return $this->redirect($this->generateUrl('qa_admin'));
-                }
-            }
-        }
-        return array('form' => $form->createView());
-    }
+		if ($request->isMethod('POST')) {
+			if ($form->isValid()) {
+				$faq = $form->getData();
+				$faq->setEnabled(1);
+				if ($faq->getAnswer() != null) {
+					$em->flush($faq);
+					return $this->redirect($this->generateUrl('qa_admin'));
+				}
+			}
+		}
+		return array('form' => $form->createView());
+	}
 
 	/** @Route("/Vidal/vidal-russia/Novosti-pharmatsevticheskih-kompanii/") */
 	public function r10()
@@ -361,7 +382,12 @@ class IndexController extends Controller
 		$cities     = $this->getDoctrine()->getRepository('VidalMainBundle:MapRegion')->findAll();
 		$thisCities = $this->getDoctrine()->getRepository('VidalMainBundle:MapRegion')->findOneById($id);
 
-		return array('menu' => 'pharmacies_map', 'cities' => $cities, 'thisCity' => $thisCities);
+		return array(
+			'title'    => 'Карта аптек',
+			'menu'     => 'pharmacies_map',
+			'cities'   => $cities,
+			'thisCity' => $thisCities,
+		);
 	}
 
 	/**

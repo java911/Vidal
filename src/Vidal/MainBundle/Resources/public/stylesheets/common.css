@@ -558,7 +558,7 @@ h1 span {
 	color:     #999;
 }
 .block-content {
-	font-size: 14px;
+	font-size: 13px;
 }
 .block-content table {
 	width:           100%;
@@ -571,7 +571,8 @@ h1 span {
 	border:  1px solid #ebebeb;
 }
 .block-content p {
-	margin: 0;
+	margin:    5px 0;
+	font-size: 13px;
 }
 .block-highlight {
 	box-shadow:            0 0 15px rgba(0, 0, 0, 0.7);

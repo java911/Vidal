@@ -12,6 +12,7 @@ class ArtRepository extends EntityRepository
 			SELECT a
 			FROM VidalDrugBundle:Art a
 			WHERE a.rubrique = :id
+				AND a.type IS NULL
 				AND a.enabled = TRUE
 			ORDER BY a.date DESC, a.priority DESC
 		')->setParameter('id', $rubrique->getId());
@@ -23,6 +24,7 @@ class ArtRepository extends EntityRepository
 			SELECT a
 			FROM VidalDrugBundle:Art a
 			WHERE a.type = :id
+				AND a.category IS NULL
 				AND a.enabled = TRUE
 			ORDER BY a.date DESC, a.priority DESC
 		')->setParameter('id', $type->getId());

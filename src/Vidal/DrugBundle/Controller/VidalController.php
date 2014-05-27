@@ -367,7 +367,7 @@ class VidalController extends Controller
 	 * Описание препарата
 	 *
 	 * @Route("/drugs/{EngName}__{ProductID}.{ext}", name="product", requirements={"ProductID":"\d+", "EngName"=".+"}, defaults={"ext"="htm"})
-	 * @Route("/poisk_preparatov/{EngName}__{ProductID}.{ext}", name="product_old", requirements={"ProductID":"\d+"}, defaults={"ext"="htm"})
+	 * @Route("/poisk_preparatov/{EngName}__{ProductID}.{ext}", name="product_old", requirements={"ProductID":"\d+", "EngName"=".+"}, defaults={"ext"="htm"})
 	 *
 	 * @Template("VidalDrugBundle:Vidal:document.html.twig")
 	 */
@@ -378,8 +378,8 @@ class VidalController extends Controller
 		$product = $em->getRepository('VidalDrugBundle:Product')->findByProductID($ProductID);
 
 		if (!$product
-			|| $product->getName() != $EngName
-			|| !in_array($product->getMarketStatusID()->getMarketStatusID(), array(2, 5))
+			|| $product->getName() != str_replace(' ', '_', $EngName)
+			|| !in_array($product->getMarketStatusID()->getMarketStatusID(), array(1,2,7))
 		) {
 			throw $this->createNotFoundException();
 		}

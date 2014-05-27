@@ -59,7 +59,8 @@ class AuthController extends Controller
 			$oldUser = $em->getRepository('VidalMainBundle:User')->findByUsername($user->getUsername());
 
 			if (empty($oldUser)) {
-				$user->setHash($this->calculateHash($user));
+				# e-mail свободен, сохраняем пользователя
+				$user->refreshHash();
 				$user->setLastLogin(new \DateTime('now'));
 
 				$em->persist($user);
@@ -136,7 +137,6 @@ class AuthController extends Controller
 
 		if (!empty($user) && $user->getHash() == $hash) {
 			$user->setEmailConfirmed(true);
-			$user->setHash($this->calculateHash($user));
 			$user->setRoles('ROLE_DOCTOR');
 			$user->setLastLogin(new \DateTime('now'));
 			$em->flush();
@@ -173,11 +173,6 @@ class AuthController extends Controller
 		$stmt->execute();
 
 		return $this->redirect($this->generateUrl('profile'));
-	}
-
-	private function calculateHash($user)
-	{
-		return md5(time() . $user->getUsername() . $user->getPassword());
 	}
 
 	private function resetToken($user)
@@ -301,7 +296,6 @@ class AuthController extends Controller
 			$user     = $em->getRepository('VidalMainBundle:User')->findOneByUsername($email);
 
 			if ($user) {
-				$user->refreshHash();
 				$em->flush();
 				$this->get('email.service')->send(
 					$user->getUsername(),
@@ -346,7 +340,6 @@ class AuthController extends Controller
 		);
 
 		$user->refreshPassword();
-		$user->refreshHash();
 		$em->flush();
 
 		$this->get('email.service')->send(

@@ -299,7 +299,7 @@ class DrugsController extends Controller
 			}
 		}
 
-		$nozology = $em->getRepository('VidalDrugBundle:Nozology')->findOneByNozologyCode($Code);
+		$nozology = $em->getRepository('VidalDrugBundle:Nozology')->findOneByCode($Code);
 
 		if ($nozology === null) {
 			throw $this->createNotFoundException();
@@ -308,7 +308,7 @@ class DrugsController extends Controller
 		$documents = $em->getRepository('VidalDrugBundle:Document')->findByNozologyCode($Code);
 		$params    = array(
 			'nozology' => $nozology,
-			'title'    => $nozology->getName() . ' | ' . $nozology->getNozologyCode(),
+			'title'    => $nozology->getName() . ' | ' . 'Нозологический указатель',
 		);
 
 		if (!empty($documents)) {
@@ -351,7 +351,10 @@ class DrugsController extends Controller
 	 */
 	public function nosologyAction()
 	{
-		return array('menu_drugs' => 'nosology');
+		return array(
+			'menu_drugs' => 'nosology',
+			'title'      => 'Нозологический указатель',
+		);
 	}
 
 	/**

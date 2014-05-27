@@ -41,7 +41,6 @@ class DocumentNameCommand extends ContainerAwareCommand
 		$pdo->prepare("UPDATE document SET Name = REPLACE(Name,'&beta;','')")->execute();
 		$pdo->prepare("UPDATE document SET Name = REPLACE(Name,'&plusmn;','')")->execute();
 		$pdo->prepare("UPDATE document SET Name = REPLACE(Name,' - ','_')")->execute();
-		$pdo->prepare("UPDATE document SET Name = REPLACE(Name,'-','_')")->execute();
 		$pdo->prepare("UPDATE document SET Name = REPLACE(Name,' ','_')")->execute();
 		$pdo->prepare("UPDATE document SET Name = REPLACE(Name,'~','_')")->execute();
 		$pdo->prepare("UPDATE document SET Name = REPLACE(Name,'__','_')")->execute();

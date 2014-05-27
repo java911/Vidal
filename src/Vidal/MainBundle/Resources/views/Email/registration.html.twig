@@ -8,7 +8,11 @@
 	</p>
 	<p>Для того чтобы получить полный доступ к функциям сайта осталось лишь подтвердить что
 		это ваш настоящий электронный адрес. Для этого просто перейдите по ссылке:</p>
-	<p>{{ url('confirm_email', {'userId': user.id, 'hash': user.hash}) }}</p>
+	<p>
+		<a href="{{ url('confirm_email', {'userId': user.id, 'hash': user.hash}) }}">
+			{{ url('confirm_email', {'userId': user.id, 'hash': user.hash}) }}
+		</a>
+	</p>
 
-	{%  include 'VidalMainBundle:Email:signature.html.twig' %}
+	{% include 'VidalMainBundle:Email:signature.html.twig' %}
 {% endblock %}

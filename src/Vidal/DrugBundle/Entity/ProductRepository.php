@@ -25,7 +25,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN p.document d
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d = :DocumentID
-				AND p.MarketStatusID IN (1,2)
+				AND p.MarketStatusID IN (1,2,7)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
@@ -42,7 +42,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN p.document d
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d IN (:DocumentIDs)
-				AND p.MarketStatusID IN (1,2)
+				AND p.MarketStatusID IN (1,2,7)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
@@ -76,7 +76,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN VidalDrugBundle:Molecule m WITH m = mn.MoleculeID
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE m IN (:moleculeIds)
-				AND p.MarketStatusID IN (1,2)
+				AND p.MarketStatusID IN (1,2,7)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
@@ -113,7 +113,7 @@ class ProductRepository extends EntityRepository
 			JOIN p.clphGroups g
 			LEFT JOIN p.document d
 			WHERE g = :ClPhGroupsID
-				AND p.MarketStatusID IN (1,2)
+				AND p.MarketStatusID IN (1,2,7)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
@@ -132,7 +132,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN p.moleculeNames mn
 			LEFT JOIN p.document d
 			WHERE mn.MoleculeID = :MoleculeID
-				AND p.MarketStatusID IN (1,2)
+				AND p.MarketStatusID IN (1,2,7)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 				AND p.inactive = FALSE
 			ORDER BY d.ArticleID ASC
@@ -157,7 +157,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN d.infoPages i
 			LEFT JOIN VidalDrugBundle:Country co WITH i.CountryCode = co
 			WHERE c = :CompanyID
-				AND p.MarketStatusID IN (1,2)
+				AND p.MarketStatusID IN (1,2,7)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
@@ -187,7 +187,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN p.document d
 			JOIN d.infoPages i
 			WHERE i.InfoPageID = :InfoPageID
-				AND p.MarketStatusID IN (1,2)
+				AND p.MarketStatusID IN (1,2,7)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
@@ -195,26 +195,26 @@ class ProductRepository extends EntityRepository
 			->getResult();
 	}
 
-	public function findProductNames()
+	public function findAutocomplete()
 	{
-		$products = $this->_em->createQuery('
+		$products = $this->_em->createQuery("
 			SELECT DISTINCT p.RusName, p.EngName
 			FROM VidalDrugBundle:Product p
-			WHERE p.MarketStatusID IN (1,2)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+			WHERE p.MarketStatusID IN (1,2,7)
+				AND p.ProductTypeCode IN ('DRUG','GOME','BAD')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
-		')->getResult();
+		")->getResult();
 
 		$productNames = array();
 
 		for ($i = 0; $i < count($products); $i++) {
-			$patterns     = array('/<SUP>.*<\/SUP>/', '/<SUB>.*<\/SUB>/');
-			$replacements = array('', '');
+			$patterns     = array('/<SUP>.*<\/SUP>/', '/<SUB>.*<\/SUB>/', '/&alpha;/', '/&plusmn;/', '/&reg;/', '/&shy;/');
+			$replacements = array('', '', ' ', ' ', ' ', ' ');
 			$RusName      = preg_replace($patterns, $replacements, $products[$i]['RusName']);
-			$RusName      = mb_strtolower($RusName, 'UTF-8');
+			$RusName      = mb_strtolower(str_replace('  ', ' ', $RusName), 'UTF-8');
 			$EngName      = preg_replace($patterns, $replacements, $products[$i]['EngName']);
-			$EngName      = mb_strtolower($EngName, 'UTF-8');
+			$EngName      = mb_strtolower(str_replace('  ', ' ', $EngName), 'UTF-8');
 
 			if (!empty($RusName)) {
 				$productNames[] = $RusName;
@@ -240,7 +240,7 @@ class ProductRepository extends EntityRepository
 			->leftJoin('p.document', 'd')
 			->leftJoin('VidalDrugBundle:ProductType', 'pt', 'WITH', 'p.ProductTypeCode = pt.ProductTypeCode')
 			->orderBy('p.RusName', 'ASC')
-			->andWhere('p.MarketStatusID IN (1,2)')
+			->andWhere('p.MarketStatusID IN (1,2,7)')
 			->andWhere('p.inactive = FALSE');
 
 		# включать ли бады
@@ -341,7 +341,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN p.document d
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d IN (:documentIds)
-				AND p.MarketStatusID IN (1,2)
+				AND p.MarketStatusID IN (1,2,7)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
@@ -385,7 +385,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN p.document d
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d IN (:documentIds)
-				AND p.MarketStatusID IN (1,2)
+				AND p.MarketStatusID IN (1,2,7)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
@@ -416,7 +416,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN p.document d
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d.ClPhGrName = :description
-				AND p.MarketStatusID IN (1,2)
+				AND p.MarketStatusID IN (1,2,7)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
@@ -434,7 +434,7 @@ class ProductRepository extends EntityRepository
 			JOIN p.phthgroups g WITH g.id = :id
 			LEFT JOIN p.document d
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
-			WHERE p.MarketStatusID IN (1,2)
+			WHERE p.MarketStatusID IN (1,2,7)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
@@ -449,7 +449,7 @@ class ProductRepository extends EntityRepository
 		$qb->select('DISTINCT g.Name, g.id')
 			->from('VidalDrugBundle:Product', 'p')
 			->join('p.phthgroups', 'g')
-			->where("p.MarketStatusID IN (1,2) AND p.ProductTypeCode IN ('DRUG','GOME') AND p.inactive = FALSE")
+			->where("p.MarketStatusID IN (1,2,7) AND p.ProductTypeCode IN ('DRUG','GOME') AND p.inactive = FALSE")
 			->orderBy('g.Name', 'ASC');
 
 		# поиск по словам
@@ -482,7 +482,7 @@ class ProductRepository extends EntityRepository
 
 		$qb->select('DISTINCT p')
 			->from('VidalDrugBundle:Product', 'p')
-			->andWhere('p.MarketStatusID IN (1,2)')
+			->andWhere('p.MarketStatusID IN (1,2,7)')
 			->andWhere('p.inactive = FALSE')
 			->orderBy('p.RusName', 'ASC');
 
@@ -539,7 +539,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN p.document d
 			JOIN d.clphPointers pointer
 			WHERE pointer = :id
-				AND p.MarketStatusID IN (1,2)
+				AND p.MarketStatusID IN (1,2,7)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
@@ -564,7 +564,7 @@ class ProductRepository extends EntityRepository
 			JOIN VidalDrugBundle:ProductCompany pc WITH pc.ProductID = p
 			JOIN VidalDrugBundle:Company c WITH pc.CompanyID = c
 			WHERE c = :CompanyID
-				AND p.MarketStatusID IN (1,2)
+				AND p.MarketStatusID IN (1,2,7)
 				AND p.ProductTypeCode IN ('DRUG','GOME')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
@@ -584,7 +584,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN p.document d
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d IN (:DocumentIDs)
-				AND p.MarketStatusID IN (1,2)
+				AND p.MarketStatusID IN (1,2,7)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
