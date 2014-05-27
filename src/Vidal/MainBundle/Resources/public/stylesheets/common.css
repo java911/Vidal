@@ -1237,11 +1237,13 @@ h1 span {
 .text img {
 	max-width: 520px !important;
 }
+.text p {
+	margin-top:    0 !important;
+	margin-bottom: 7px !important;
+}
 .text p,
 .text p * {
 	line-height:   inherit !important;
-	margin-top:    0 !important;
-	margin-bottom: 5px !important;
 }
 .text td p {
 	margin: 0 !important;
