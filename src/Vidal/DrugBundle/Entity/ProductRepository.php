@@ -225,6 +225,8 @@ class ProductRepository extends EntityRepository
 			}
 		}
 
+		usort($productNames, 'strcasecmp');
+
 		return $productNames;
 	}
 

@@ -125,6 +125,8 @@ class ATCRepository extends EntityRepository
 			}
 		}
 
+		usort($atcNames, 'strcasecmp');
+
 		return $atcNames;
 	}
 }

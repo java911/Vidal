@@ -32,15 +32,6 @@ class AutocompleteCommand extends ContainerAwareCommand
 		$companyNames  = $em->getRepository('VidalDrugBundle:Company')->findAutocomplete();
 		$atcNames      = $em->getRepository('VidalDrugBundle:ATC')->findAutocomplete();
 
-		$output->writeln('count product : ' . count($productNames));
-		$output->writeln('count molecule : ' . count($moleculeNames));
-		$output->writeln('count company : ' . count($companyNames));
-		$output->writeln('count atc : ' . count($atcNames));
-		exit;
-
-		$names = array_unique(array_merge($productNames, $moleculeNames));
-		sort($names);
-
 		$elasticaClient = new \Elastica\Client();
 		$elasticaIndex  = $elasticaClient->getIndex('website');
 		$elasticaType   = $elasticaIndex->getType('autocomplete');
@@ -55,7 +46,6 @@ class AutocompleteCommand extends ContainerAwareCommand
 
 		// Set mapping
 		$mapping->setProperties(array(
-			'id'   => array('type' => 'integer', 'include_in_all' => FALSE),
 			'name' => array('type' => 'string', 'include_in_all' => TRUE),
 			'type' => array('type' => 'string', 'include_in_all' => FALSE),
 		));
@@ -63,11 +53,24 @@ class AutocompleteCommand extends ContainerAwareCommand
 		// Send mapping to type
 		$mapping->send();
 
-		# записываем на сервер документы автодополнения
+		# записываем в ElasticSearch документы автодополнения
+		$this->save($productNames, 'product', $output, $elasticaType);
+		$this->save($moleculeNames, 'molecule', $output, $elasticaType);
+		$this->save($companyNames, 'company', $output, $elasticaType);
+		$this->save($atcNames, 'atc', $output, $elasticaType);
+
+		$output->writeln("+++ vidal:autocomplete completed!");
+	}
+
+	private function save($items, $type, $output, $elasticaType)
+	{
 		$documents = array();
 
-		for ($i = 0; $i < count($names); $i++) {
-			$documents[] = new \Elastica\Document($i + 1, array('name' => $names[$i]));
+		for ($i = 0; $i < count($items); $i++) {
+			$documents[] = new \Elastica\Document(null, array(
+				'name' => $items[$i],
+				'type' => $type,
+			));
 
 			if ($i && $i % 500 == 0) {
 				$elasticaType->addDocuments($documents);
@@ -75,9 +78,10 @@ class AutocompleteCommand extends ContainerAwareCommand
 				$documents = array();
 			}
 		}
+
 		$elasticaType->addDocuments($documents);
 		$elasticaType->getIndex()->refresh();
 
-		$output->writeln("+++ vidal:autocomplete loaded $i documents!");
+		$output->writeln("... autocomplete loaded $i documents of type '$type'");
 	}
 }
