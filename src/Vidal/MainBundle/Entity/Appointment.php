@@ -27,6 +27,11 @@ class Appointment
     protected $OMSCode;
 
     /**
+     * @ORM\Column(type="date")
+     */
+    protected $birthdate;
+
+    /**
      * Медицинское учреждение
      * @ORM\Column(type="string", nullable=true)
      */
@@ -75,8 +80,8 @@ class Appointment
 
 
     public function __construct(){
-        $this->created = new Date();
-        $this->updated = new Date();
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
     }
 
     /**
@@ -256,6 +261,21 @@ class Appointment
         return $this->updated;
     }
 
+    /**
+     * @param mixed $birthdate
+     */
+    public function setBirthdate($birthdate)
+    {
+        $this->birthdate = $birthdate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBirthdate()
+    {
+        return $this->birthdate;
+    }
 
 
 
