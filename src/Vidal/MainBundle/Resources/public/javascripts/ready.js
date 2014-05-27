@@ -1,10 +1,5 @@
 $(document).ready(function() {
-	jQuery.ui.autocomplete.prototype._resizeMenu = function() {
-		var ul = this.menu.element;
-		ul.outerWidth(534);
-	}
-
-	var types = {'product': 'препарат', 'molecule': 'активное вещество', 'atc': 'АТХ код', 'company': 'компания'};
+	var types = {'product': 'препарат', 'molecule': 'вещество', 'atc': 'АТХ код', 'company': 'компания'};
 	var type = 'all';
 	var $selectType = $('#search_form .search-type');
 
@@ -45,9 +40,9 @@ $(document).ready(function() {
 				}
 			}
 		}).data("ui-autocomplete")._renderItem = function(ul, item) {
-		return $("<li></li>")
+		return $('<li class="aut"></li>')
 			.data("item.autocomplete", item)
-			.append("<i>" + types[item.type] + "</i>" + "<a>" + item.label + "</a>")
+			.append("<a>" + "<i>" + types[item.type] + "</i>" + item.label + "</a>")
 			.appendTo(ul);
 	};
 

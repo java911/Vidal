@@ -380,6 +380,7 @@ class VidalController extends Controller
 		if (!$product
 			|| $product->getName() != str_replace(' ', '_', $EngName)
 			|| !in_array($product->getMarketStatusID()->getMarketStatusID(), array(1,2,7))
+			|| $product->getInactive() == true
 		) {
 			throw $this->createNotFoundException();
 		}

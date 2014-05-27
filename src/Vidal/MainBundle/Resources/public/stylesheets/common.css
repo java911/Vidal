@@ -235,14 +235,6 @@ h1 span {
 	background:    url('../images/bullets.gif') no-repeat -13px -13px;
 	margin-bottom: 2px;
 }
-.ui-menu-item em {
-	font-style:  normal;
-	font-weight: bold;
-	color:       #444;
-}
-.ui-menu .ui-menu-item a {
-	font-size: 15px;
-}
 .border-line {
 	border: 1px solid #aaa;
 }
@@ -288,10 +280,6 @@ h1 span {
 	width:      32px;
 	margin:     40px auto;
 	background: url(../images/ajax-loader.gif) no-repeat top left;
-}
-.ui-autocomplete i {
-	font-size: 12px;
-	color:     #999;
 }
 .title {
 	background-color: #F5F5F5;
@@ -1235,12 +1223,7 @@ h1 span {
 
 /* text */
 .text {
-	-ms-word-break:  break-all;
-	word-break:      break-all;
-	word-break:      break-word;
-	-webkit-hyphens: auto;
-	-moz-hyphens:    auto;
-	hyphens:         auto;
+	overflow: hidden;
 }
 .text a,
 .text a * {
@@ -1256,7 +1239,9 @@ h1 span {
 }
 .text p,
 .text p * {
-	line-height: inherit !important;
+	line-height:   inherit !important;
+	margin-top:    0 !important;
+	margin-bottom: 5px !important;
 }
 .text td p {
 	margin: 0 !important;
@@ -1418,4 +1403,29 @@ h1 span {
 }
 #top-link:hover {
 	opacity: 1;
+}
+
+/* jquery-ui-autocomplete */
+.ui-menu-item em {
+	font-style:  normal;
+	font-weight: bold;
+}
+.ui-menu .ui-menu-item a {
+	font-size: 13px;
+}
+.ui-menu .aut.ui-menu-item {
+	border-bottom: 1px dotted #ccc;
+}
+.ui-menu .aut.ui-menu-item:last-child {
+	border-bottom: none;
+}
+.ui-menu .aut.ui-menu-item a {
+	line-height: 1.2;
+	font-size:   13px;
+	color:       #2e3f51;
+}
+.ui-menu .aut.ui-menu-item i {
+	margin-right: 8px;
+	font-size:    12px;
+	color:        #999;
 }
