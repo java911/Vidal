@@ -1,0 +1,24 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block title %}
+    <h1>Записаться к врачу</h1>
+{% endblock %}
+
+
+{% block content %}
+     {{ for_widget(form) }}
+{% endblock %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+
+    </style>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
