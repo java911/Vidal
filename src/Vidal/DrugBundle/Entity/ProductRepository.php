@@ -203,7 +203,6 @@ class ProductRepository extends EntityRepository
 			WHERE p.MarketStatusID IN (1,2,7)
 				AND p.ProductTypeCode IN ('DRUG','GOME','BAD')
 				AND p.inactive = FALSE
-				AND p.ProductID = 30548
 			ORDER BY p.RusName ASC
 		")->getResult();
 
