@@ -13,7 +13,7 @@ $(document).ready(function() {
 					', "fields":["name","type"]' +
 					', "size":15' +
 					', "highlight":{"fields":{"name":{}}}' +
-					', "sort":[{"type":{"order":"asc"},"name":{"order":"asc"}}]';
+					', "sort":[{"type":{"order":"desc"},"name":{"order":"asc"}}]';
 				if (type != 'all') {
 					query += ', "filter":{"term" :{"type" : "' + type + '"}}';
 				}
