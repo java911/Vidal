@@ -191,7 +191,7 @@ gregwar_captcha:
     background_color: [255,255,255]
     max_front_lines: 0
     max_behind_lines: 0
-    invalid_message: "Проверочный код не правильно"
+    invalid_message: "Проверочный код указан неверно"
 
 ornicar_apc:
     host: http://www.vidal.ru
