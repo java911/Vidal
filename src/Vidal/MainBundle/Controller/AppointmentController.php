@@ -52,14 +52,6 @@ class AppointmentController extends Controller
         if ($request->isMethod('POST')) {
             if ($form->isValid()) {
                 $appointment = $form->getData();
-//                $tmpAppointment = $this->getDoctrine()->getRepository('VidalMainBundle:Appointment')->findOneByOMSCode($appointment->getOMSCode());
-//                if ($tmpAppointment->getBirthdate() == $appointment->getBirthdate()){
-//                    $appointment = $tmpAppointment;
-//                }else{
-//                    $em->persist($appointment);
-//                    $em->flush();
-//                    $em->refresh($appointment);
-//                }
                 # Авторизовываем полльзователя
                 $session = $request->getSession();
                 $session->set('EmiasBirthdate',$appointment->getBirthdate());
@@ -80,5 +72,43 @@ class AppointmentController extends Controller
         if ( $this->isAuth() == false ){ return $this->redirect($this->generateUrl('appointment')); }
         $appointmentList = $this->getDoctrine()->getRepository('VidalMainBundle:Appointment')->findByStatus(1);
         return array('appointmentList' => $appointmentList );
+    }
+
+
+    /**
+     * Отклонение заявки
+     * @Route("/appointment-remove/{appointmentId}", name="appointment_remove")
+     * @Template()
+     */
+    public function removeAction($appointmentId){
+
+    }
+
+    /**
+     * Получаем спициальности доступных врачей с ЕМИАСа
+     */
+    protected  function getSpecialty(){}
+
+    /**
+     * Получаем докторов по выбранной специальности с ЕМИАСа
+     */
+    protected function getDoctorsInfo($specialityId){}
+
+    /**
+     * Получаем расписание выбраного врача
+     */
+    protected function getAvailableResourceScsheduleInfo($availableResourceId, $complexResourceId){}
+
+
+    /**
+     * Создание заявки
+     * @param $availableResourceId
+     * @param $complexResourceId
+     * @param $receptionDate ( Дата регистрации )
+     * @param $startTime ( Время начала приема )
+     * @param $endTime ( Время окончания приема )
+     */
+    protected function createAppointment($availableResourceId,$complexResourceId,$receptionDate,$startTime,$endTime){
+
     }
 }
