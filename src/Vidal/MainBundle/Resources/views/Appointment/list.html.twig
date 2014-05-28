@@ -6,7 +6,19 @@
 {% endblock %}
 
 {% block content %}
+    {% if appointmentList is empty %}
+        <table>
+            <tr>
+                <th>Дата / время</th>
+                <th>Специальность врача / Место</th>
+            </tr>
+            {% for appointment in appointmentList %}
 
+            {% endfor %}
+        </table>
+    {% else %}
+        Записи к врачам отсутствуют. <a href="{{ path('appointment_create') }}">Записаться</a>
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}

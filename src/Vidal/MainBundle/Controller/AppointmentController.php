@@ -74,6 +74,14 @@ class AppointmentController extends Controller
         return array('appointmentList' => $appointmentList );
     }
 
+    /**
+     * @Route("/appointment-create", name="appointment_create")
+     */
+    public function createAction(){
+        if ( $this->isAuth() == false ){ return $this->redirect($this->generateUrl('appointment')); }
+
+        return array();
+    }
 
     /**
      * Отклонение заявки
@@ -99,7 +107,6 @@ class AppointmentController extends Controller
      */
     protected function getAvailableResourceScsheduleInfo($availableResourceId, $complexResourceId){}
 
-
     /**
      * Создание заявки
      * @param $availableResourceId
@@ -110,5 +117,34 @@ class AppointmentController extends Controller
      */
     protected function createAppointment($availableResourceId,$complexResourceId,$receptionDate,$startTime,$endTime){
 
+    }
+
+    /**
+     * @Route("/soaptest", name="soaptest")
+     */
+    public function soapTestAction(){
+        $cert="/var/www/vidal/web/sert/RootMedCA.cer"; //Сертификат
+        if (!is_file($cert)){
+            echo 'sd';
+            exit;
+        }
+        $wsdl="https://mosmedzdrav.ru:10002/emias-soap-sercvice/PGUServicesInfo2?wsdl"; //Адрес wdsl сервиса
+        $loc = "https://mosmedzdrav.ru:10002/emias-soap-sercvice/PGUServicesInfo2?wsdl"; //Адрес точки доступа
+        $sp = new \SoapClient($wsdl,array(
+            'local_cert' => $cert,
+            'trace' => 1,
+            'exceptions' => 1,
+            'soap_version' => SOAP_1_1,
+//            'location' =>$loc,
+        ));
+        try{
+            $data = $sp->getSpeciality();
+            print_r($data);
+        }  catch (SoapFault $e) {
+            echo "<h2>Exception Error!</h2>";
+            echo $sp->__getLastRequest();
+            echo get_class($e);
+            echo $e->getMessage();
+        }
     }
 }
