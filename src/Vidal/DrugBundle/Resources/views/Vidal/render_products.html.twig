@@ -1,6 +1,13 @@
 {% if products is defined and products|length %}
 	{% set isAdmin = is_granted('ROLE_ADMIN') %}
 
+	<style>
+		.bads {
+			font-size: 9px;
+			color: #2f4053;
+		}
+	</style>
+
 	<table class="products-table">
 		<tr class="products-table-header">
 			<td class="products-table-loz"></td>
@@ -18,6 +25,9 @@
 					{% if product.NonPrescriptionDrug %}
 						<img src="{{ asset('bundles/vidalmain/images/g2.gif') }}" class="loz"
 							 title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>
+					{% endif %}
+					{% if product.ProductTypeCode == 'BAD' %}
+						<span class="bads">БАД</span>
 					{% endif %}
 				</td>
 				<td class="products-table-name{{ isAdmin ? ' admin' }}">

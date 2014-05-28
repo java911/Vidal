@@ -16,14 +16,6 @@ class ProductType
 	/** @ORM\Column(length=255, nullable=true) */
 	protected $EngName;
 
-	/** @ORM\OneToMany(targetEntity="Product", mappedBy="ProductTypeCode") */
-	protected $products;
-
-	public function __construct()
-	{
-		$this->products = new ArrayCollection();
-	}
-
 	public function __toString()
 	{
 		return $this->RusName;
@@ -75,21 +67,5 @@ class ProductType
 	public function getRusName()
 	{
 		return $this->RusName;
-	}
-
-	/**
-	 * @param mixed $products
-	 */
-	public function setProducts(ArrayCollection $products)
-	{
-		$this->products = $products;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getProducts()
-	{
-		return $this->products;
 	}
 }

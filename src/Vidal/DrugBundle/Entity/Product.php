@@ -50,8 +50,7 @@ class Product
 	protected $DateOfIncludingText;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="ProductType", inversedBy="products")
-	 * @ORM\JoinColumn(name="ProductTypeCode", referencedColumnName="ProductTypeCode")
+	 * @ORM\Column(length=10)
 	 */
 	protected $ProductTypeCode;
 
@@ -781,9 +780,7 @@ class Product
 
 	public function isBAD()
 	{
-		$productType = $this->getProductTypeCode();
-
-		return $productType ? $productType->getProductTypeCode() == 'BAD' : null;
+		return $this->ProductTypeCode == 'BAD';
 	}
 
 	/**
