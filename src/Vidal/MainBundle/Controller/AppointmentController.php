@@ -123,7 +123,7 @@ class AppointmentController extends Controller
      * @Route("/soaptest", name="soaptest")
      */
     public function soapTestAction(){
-        $cert="/var/www/vidal/web/sert/RootMedCA.cer"; //Сертификат
+        $cert="/var/www/vidal/web/sert/testSSLClient.p12"; //Сертификат
         if (!is_file($cert)){
             echo 'sd';
             exit;
@@ -134,8 +134,12 @@ class AppointmentController extends Controller
             'local_cert' => $cert,
             'trace' => 1,
             'exceptions' => 1,
-            'soap_version' => SOAP_1_1,
-//            'location' =>$loc,
+            'soap_version' => SOAP_1_2,
+            'location' =>$loc,
+            "authentication"=>SOAP_AUTHENTICATION_DIGEST,
+            "style"=>SOAP_DOCUMENT,
+            "use"=>SOAP_LITERAL,
+
         ));
         try{
             $data = $sp->getSpeciality();
