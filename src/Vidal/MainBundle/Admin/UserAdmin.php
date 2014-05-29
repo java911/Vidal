@@ -22,8 +22,8 @@ class UserAdmin extends Admin
 			$this->datagridValues = array(
 				'_page'       => 1,
 				'_per_page'   => 25,
-				'_sort_order' => 'ASC',
-				'_sort_by'    => 'title'
+				'_sort_order' => 'DESC',
+				'_sort_by'    => 'created'
 			);
 		}
 	}
