@@ -65,7 +65,9 @@ class UserAdmin extends Admin
 			->add('jobStage', null, array('label' => 'Стаж работы по специальности', 'required' => false))
 			->add('about', null, array('label' => 'О себе', 'required' => false))
 			->add('jobPublications', null, array('label' => 'Публикации', 'required' => false))
-			->add('oldUser', null, array('label' => 'Со старого сайта', 'required' => false));
+			->add('oldUser', null, array('label' => 'Со старого сайта', 'required' => false))
+			->add('created', null, array('label' => 'Зарегистрировался', 'required' => false))
+		;
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -107,6 +109,7 @@ class UserAdmin extends Admin
 							->orderBy('s.title', 'ASC');
 					}
 			))
+			->add('created', null, array('label' => 'Зарегистрировался'))
 			->add('emailConfirmed', null, array('label' => 'e-mail подтвержден'))
 			->add('oldUser', null, array('label' => 'Со старого сайта'));
 	}
@@ -120,9 +123,10 @@ class UserAdmin extends Admin
 			->add('lastName', null, array('label' => 'Фамилия И.О.', 'template' => 'VidalDrugBundle:Sonata:user_fio.html.twig'))
 			->add('login', null, array('label' => 'Прежний логин'))
 			->add('primarySpecialty', null, array('label' => 'Основная специальность'))
-			->add('birthdate', null, array('label' => 'Дата рождения'))
+			->add('birthdate', null, array('label' => 'Дата рождения', 'widget' => 'single_text', 'format' => 'd.m.Y'))
 			->add('city', null, array('label' => 'Город'))
 			->add('region', null, array('label' => 'Область'))
+			->add('created', null, array('label' => 'Зарегистрировался', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
 			->add('oldUser', null, array('label' => 'Со старого сайта'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
