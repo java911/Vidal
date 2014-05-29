@@ -24,9 +24,13 @@ class Region
      */
     protected $title;
 
+	/** @ORM\OneToMany(targetEntity="User", mappedBy="region") */
+	protected $doctors;
+
     public function __construct()
     {
         $this->cities = new ArrayCollection();
+		$this->doctors = new ArrayCollection();
     }
 
     public function __toString()
@@ -88,5 +92,21 @@ class Region
 	public function getTitle()
 	{
 		return $this->title;
+	}
+
+	/**
+	 * @param mixed $doctors
+	 */
+	public function setDoctors($doctors)
+	{
+		$this->doctors = $doctors;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDoctors()
+	{
+		return $this->doctors;
 	}
 }

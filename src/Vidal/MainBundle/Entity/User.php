@@ -164,6 +164,9 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	/** @ORM\Column(length=255, nullable=true) */
 	protected $school;
 
+	/** @ORM\ManyToOne(targetEntity="Region", inversedBy="doctors") */
+	protected $region;
+
 	public function __construct()
 	{
         $this->answers = new ArrayCollection();
@@ -896,5 +899,21 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	public function getSchool()
 	{
 		return $this->school;
+	}
+
+	/**
+	 * @param mixed $region
+	 */
+	public function setRegion($region)
+	{
+		$this->region = $region;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getRegion()
+	{
+		return $this->region;
 	}
 }
