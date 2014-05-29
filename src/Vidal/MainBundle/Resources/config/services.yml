@@ -1,4 +1,10 @@
 services:
+    drug.subscriber:
+        class: Vidal\MainBundle\Service\DoctrineEventSubscriber
+        arguments: [@service_container]
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+
     default.timestampable:
         class: Gedmo\Timestampable\TimestampableListener
         tags:

@@ -8,35 +8,37 @@ use Doctrine\Common\Collections\ArrayCollection;
 /** @ORM\Entity @ORM\Table(name="region") */
 class Region
 {
-    /** @ORM\Id @ORM\Column(type = "integer") @ORM\GeneratedValue */
-    protected $id;
+	/** @ORM\Id @ORM\Column(type = "integer") @ORM\GeneratedValue */
+	protected $id;
 
-    /** @ORM\OneToMany(targetEntity="City", mappedBy="region") */
-    protected $cities;
+	/** @ORM\OneToMany(targetEntity="City", mappedBy="region") */
+	protected $cities;
 
-    /** @ORM\ManyToOne(targetEntity = "Country", inversedBy="regions") */
-    protected $country;
+	/** @ORM\ManyToOne(targetEntity = "Country", inversedBy="regions") */
+	protected $country;
 
-    /**
-     * @ORM\Column(type="string", length=63)
-     * @Assert\NotBlank(message="Укажите название страны.")
-     * @Assert\Length(max=63, maxMessage="Название страны должно быть не длиннее 63 знаков.")
-     */
-    protected $title;
+	/**
+	 * @ORM\Column(type="string", length=63)
+	 * @Assert\NotBlank(message="Укажите название страны.")
+	 * @Assert\Length(max=63, maxMessage="Название страны должно быть не длиннее 63 знаков.")
+	 */
+	protected $title;
 
 	/** @ORM\OneToMany(targetEntity="User", mappedBy="region") */
 	protected $doctors;
 
-    public function __construct()
-    {
-        $this->cities = new ArrayCollection();
+	public function __construct()
+	{
+		$this->cities  = new ArrayCollection();
 		$this->doctors = new ArrayCollection();
-    }
+	}
 
-    public function __toString()
-    {
-        return $this->title;
-    }
+	public function __toString()
+	{
+		$country = $this->getCountry();
+
+		return $this->title . ', ' . $country;
+	}
 
 	/**
 	 * @param mixed $cities

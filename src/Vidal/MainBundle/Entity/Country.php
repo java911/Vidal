@@ -9,39 +9,43 @@ use Doctrine\Common\Collections\ArrayCollection;
 /** @ORM\Entity @ORM\Table(name="country") */
 class Country
 {
-    const RUSSIA_COUNTRY_ID = 1;
+	const RUSSIA_COUNTRY_ID = 1;
 
-    /** @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue */
-    protected $id;
+	/** @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue */
+	protected $id;
 
-    /** @ORM\OneToMany(targetEntity="City", mappedBy="country") */
-    protected $cities;
+	/** @ORM\OneToMany(targetEntity="City", mappedBy="country") */
+	protected $cities;
 
-    /** @ORM\OneToMany(targetEntity="Region", mappedBy="country") */
-    protected $regions;
+	/** @ORM\OneToMany(targetEntity="Region", mappedBy="country") */
+	protected $regions;
 
-    /**
-     * @ORM\Column(type="string", length=63)
-     * @Assert\NotBlank(message="Укажите название страны.")
-     * @Assert\Length(max=63, maxMessage="Название страны должно быть не длиннее 63 знаков.")
-     */
-    protected $title;
+	/**
+	 * @ORM\Column(type="string", length=63)
+	 * @Assert\NotBlank(message="Укажите название страны.")
+	 * @Assert\Length(max=63, maxMessage="Название страны должно быть не длиннее 63 знаков.")
+	 */
+	protected $title;
 
-    public function __construct()
-    {
-        $this->cities       = new ArrayCollection();
-        $this->regions      = new ArrayCollection();
-    }
+	/** @ORM\OneToMany(targetEntity="User", mappedBy="country") */
+	protected $doctors;
 
-    public function __toString()
-    {
-        return $this->title;
-    }
+	public function __construct()
+	{
+		$this->cities  = new ArrayCollection();
+		$this->regions = new ArrayCollection();
+		$this->doctors = new ArrayCollection();
+	}
 
-    public function getId()
-    {
-        return $this->id;
-    }
+	public function __toString()
+	{
+		return $this->title;
+	}
+
+	public function getId()
+	{
+		return $this->id;
+	}
 
 	public function getCities()
 	{
@@ -55,31 +59,47 @@ class Country
 		return $this;
 	}
 
-    public function getTitle()
-    {
-        return $this->title;
-    }
+	public function getTitle()
+	{
+		return $this->title;
+	}
 
-    public function setTitle($title)
-    {
-        $this->title = $title;
+	public function setTitle($title)
+	{
+		$this->title = $title;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * @param mixed $regions
-     */
-    public function setRegions($regions)
-    {
-        $this->regions = $regions;
-    }
+	/**
+	 * @param mixed $regions
+	 */
+	public function setRegions($regions)
+	{
+		$this->regions = $regions;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getRegions()
-    {
-        return $this->regions;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getRegions()
+	{
+		return $this->regions;
+	}
+
+	/**
+	 * @param mixed $doctors
+	 */
+	public function setDoctors($doctors)
+	{
+		$this->doctors = $doctors;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDoctors()
+	{
+		return $this->doctors;
+	}
 }
