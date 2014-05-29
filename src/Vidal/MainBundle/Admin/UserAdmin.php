@@ -66,52 +66,27 @@ class UserAdmin extends Admin
 			->add('about', null, array('label' => 'О себе', 'required' => false))
 			->add('jobPublications', null, array('label' => 'Публикации', 'required' => false))
 			->add('oldUser', null, array('label' => 'Со старого сайта', 'required' => false))
-			->add('created', null, array('label' => 'Зарегистрировался', 'required' => false))
-		;
+			->add('created', null, array('label' => 'Зарегистрировался', 'required' => false));
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
-		$em = $this->modelManager->getEntityManager('Vidal\MainBundle\Entity\User');
+		$em             = $this->modelManager->getEntityManager('Vidal\MainBundle\Entity\User');
+		$cityChoices    = $em->getRepository('VidalMainBundle:City')->getChoices();
+		$regionChoices  = $em->getRepository('VidalMainBundle:Region')->getChoices();
+		$countryChoices = $em->getRepository('VidalMainBundle:Country')->getChoices();
 
 		$datagridMapper
 			->add('id')
 			->add('username', null, array('label' => 'E-mail'))
 			->add('lastName', null, array('label' => 'Фамилия'))
 			->add('primarySpecialty', null, array('label' => 'Основная специальность'))
-			->add('city', null, array(
-				'label'         => 'Город',
-				'class'         => 'VidalMainBundle:City',
-				'query_builder' => function (EntityRepository $er) {
-						return $er->createQueryBuilder('c')
-							->where('c.country = 1')
-							->andWhere('SIZE(c.doctors) > 0')
-							->orderBy('s.title', 'ASC');
-					}
-			))
-			->add('region', null, array(
-				'label'         => 'Область',
-				'class'         => 'VidalMainBundle:Region',
-				'query_builder' => function (EntityRepository $er) {
-						return $er->createQueryBuilder('r')
-							->where('r.country = 1')
-							->andWhere('SIZE(r.doctors) > 0')
-							->orderBy('r.title', 'ASC');
-					}
-			))
-			->add('country', null, array(
-				'label'         => 'Страна',
-				'class'         => 'VidalMainBundle:Country',
-				'query_builder' => function (EntityRepository $er) {
-						return $er->createQueryBuilder('c')
-							->where('c.country = 1')
-							->andWhere('SIZE(c.doctors) > 0')
-							->orderBy('s.title', 'ASC');
-					}
-			))
-			->add('created', null, array('label' => 'Зарегистрировался'))
+			->add('city', 'doctrine_orm_choice', array('label' => 'Город'), 'choice', array('choices' => $cityChoices))
+			->add('region', 'doctrine_orm_choice', array('label' => 'Область'), 'choice', array('choices' => $regionChoices))
+			->add('country', 'doctrine_orm_choice', array('label' => 'Страна'), 'choice', array('choices' => $countryChoices))
 			->add('emailConfirmed', null, array('label' => 'e-mail подтвержден'))
-			->add('oldUser', null, array('label' => 'Со старого сайта'));
+			->add('oldUser', null, array('label' => 'Со старого сайта'))
+			->add('created', null, array('label' => 'Зарегистрировался'));
 	}
 
 	protected function configureListFields(ListMapper $listMapper)

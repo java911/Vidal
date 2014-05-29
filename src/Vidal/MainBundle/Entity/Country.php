@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/** @ORM\Entity @ORM\Table(name="country") */
+/** @ORM\Entity(repositoryClass="CountryRepository") @ORM\Table(name="country") */
 class Country
 {
 	const RUSSIA_COUNTRY_ID = 1;
