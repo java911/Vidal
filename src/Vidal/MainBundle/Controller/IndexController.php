@@ -86,6 +86,12 @@ class IndexController extends Controller
 				$em->persist($faq);
 				$em->flush();
 				$em->refresh($faq);
+
+                $this->get('email.service')->send(
+                    $this->container->getParameter('manager_emails'),
+                    array('VidalMainBundle:Email:qa_question.html.twig', array('faq' => $faq)),
+                    'Ответ на сайте vidal.ru'
+                );
 			}
 		}
 		$qus = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByEnabled(1);
@@ -140,6 +146,13 @@ class IndexController extends Controller
 				$faq->setEnabled(1);
 				if ($faq->getAnswer() != null) {
 					$em->flush($faq);
+
+                    $this->get('email.service')->send(
+                        $faq->getAuthorEmail(),
+                        array('VidalMainBundle:Email:qa_answer.html.twig', array('faq' => $faq)),
+                        'Ответ на сайте vidal.ru'
+                    );
+
 					return $this->redirect($this->generateUrl('qa_admin'));
 				}
 			}
