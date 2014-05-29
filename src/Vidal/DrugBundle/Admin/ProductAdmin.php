@@ -11,9 +11,19 @@ class ProductAdmin extends Admin
 {
 	protected function configureFormFields(FormMapper $formMapper)
 	{
-		$subject     = $this->getSubject();
-		$em          = $this->getModelManager()->getEntityManager($subject);
-		$transformer = new DocumentToStringTransformer($em, $subject);
+		$subject            = $this->getSubject();
+		$em                 = $this->getModelManager()->getEntityManager($subject);
+		$transformer        = new DocumentToStringTransformer($em, $subject);
+		$pt = array(
+			'ALRG' => 'Аллерген',
+			'BAD'  => 'Биологически активная добавка',
+			'GOME' => 'Гомеопатическое средство',
+			'DIAG' => 'Диагностикум',
+			'DRUG' => 'Лекарственный препарат',
+			'MI'   => 'Мед. изделие',
+			'SRED' => 'Питательная среда',
+			'SUBS' => 'Субстанция',
+		);
 
 		$formMapper
 			->add('RusName', 'text', array('label' => 'Название', 'required' => true))
@@ -24,7 +34,7 @@ class ProductAdmin extends Admin
 				'required'     => false,
 				'by_reference' => true,
 			))->addModelTransformer($transformer))
-			->add('ProductTypeCode', null, array('label' => 'Тип препарата', 'required' => true))
+			->add('ProductTypeCode', 'choice', array('label' => 'Тип препарата', 'required' => true, 'choices' => $pt))
 			->add('MarketStatusID', null, array('label' => 'Статус', 'required' => true))
 			->add('ZipInfo', null, array('label' => 'Форма выпуска', 'required' => true))
 			->add('photo', 'iphp_file', array('label' => 'Фотография временная', 'required' => false))
@@ -55,8 +65,7 @@ class ProductAdmin extends Admin
 					'allow_delete' => true
 				)
 			)
-			->add('inactive', null, array('label' => 'Отключить', 'required' => false, 'help' => 'Исключить препарат из списков выдачи'))
-		;
+			->add('inactive', null, array('label' => 'Отключить', 'required' => false, 'help' => 'Исключить препарат из списков выдачи'));
 	}
 
 	// Fields to be shown on filter forms
@@ -70,8 +79,7 @@ class ProductAdmin extends Admin
 			->add('MarketStatusID', null, array('label' => 'Статус'))
 			->add('ZipInfo', null, array('label' => 'Форма выпуска'))
 			->add('RegistrationDate', null, array('label' => 'Дата регистр.'))
-			->add('inactive', null, array('label' => 'Отключен'))
-		;
+			->add('inactive', null, array('label' => 'Отключен'));
 	}
 
 	// Fields to be shown on lists

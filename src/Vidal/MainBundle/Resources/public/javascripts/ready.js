@@ -1,37 +1,48 @@
 $(document).ready(function() {
-	jQuery.ui.autocomplete.prototype._resizeMenu = function () {
-		var ul = this.menu.element;
-		ul.outerWidth(534);
-	}
+	var types = {'product': 'препарат', 'molecule': 'вещество', 'atc': 'АТХ код', 'company': 'компания'};
+	var type = 'all';
+	var $selectType = $('#search_form .search-type');
 
 	$('#search_form .search-query')
 		.autocomplete({
 			minLength: 2,
 			source:    function(request, response) {
+				type = $selectType.val();
+				var query = '{' +
+					' "query":{"query_string":{"query":"' + request.term + '*"}}' +
+					', "fields":["name","type"]' +
+					', "size":15' +
+					', "highlight":{"fields":{"name":{}}}' +
+					', "sort":[{"type":{"order":"desc"},"name":{"order":"asc"}}]';
+				if (type != 'all') {
+					query += ', "filter":{"term" :{"type" : "' + type + '"}}';
+				}
+				query += ' }';
 				$.ajax({
 					url:      "http://twiga.vidal.ru:9200/website/autocomplete/_search",
 					type:     "POST",
 					dataType: "JSON",
-					data:     '{ "query":{"query_string":{"query":"' + request.term + '*"}}, "fields":["name"], "size":15, "highlight":{"fields":{"name":{}}} }',
+					data:     query,
 					success:  function(data) {
 						response($.map(data.hits.hits, function(item) {
 							return {
 								label: item.highlight.name,
-								value: item.fields.name
+								value: item.fields.name,
+								type:  item.fields.type
 							}
 						}));
 					}
 				});
 			},
-			select: function(event, ui) {
-				if(ui.item){
+			select:    function(event, ui) {
+				if (ui.item) {
 					$(this).val(ui.item.value);
 				}
 			}
-		}).data("ui-autocomplete")._renderItem = function (ul, item) {
-		return $("<li></li>")
+		}).data("ui-autocomplete")._renderItem = function(ul, item) {
+		return $('<li class="aut"></li>')
 			.data("item.autocomplete", item)
-			.append("<a>" + item.label + "</a>")
+			.append("<a>" + "<i>" + types[item.type] + "</i>" + item.label + "</a>")
 			.appendTo(ul);
 	};
 
@@ -39,9 +50,9 @@ $(document).ready(function() {
 		e.stopPropagation();
 	});
 
-	$('#search_form .search-type').chosen({disable_search:true});
+	$('#search_form .search-type').chosen({disable_search: true});
 
-	$(window).scroll(function(){
+	$(window).scroll(function() {
 		if ($(this).scrollTop() > 100) {
 			$('#top-link').fadeIn();
 		} else {
@@ -49,7 +60,7 @@ $(document).ready(function() {
 		}
 	});
 
-	$('#top-link').click(function(){
+	$('#top-link').click(function() {
 		$("html, body").animate({ scrollTop: 0 }, 600);
 		return false;
 	});

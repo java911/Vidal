@@ -14,6 +14,7 @@ use Doctrine\ORM\EntityManager;
 use Vidal\MainBundle\Form\DataTransformer\CityToStringTransformer;
 use Vidal\MainBundle\Form\DataTransformer\YearToNumberTransformer;
 use Vidal\MainBundle\Entity\User;
+use Doctrine\ORM\EntityRepository;
 
 class RegisterType extends AbstractType
 {
@@ -58,10 +59,10 @@ class RegisterType extends AbstractType
 			))
 			->add('surName', null, array('label' => 'Отчество', 'required' => false))
 			->add('birthdate', 'date', array(
-				'label'  => 'Дата рождения',
-				'years'  => range(date('Y') - 111, date('Y')),
-				'data'   => new \DateTime('1970-01-01'),
-				'format' => 'dd MMMM yyyy',
+				'label'       => 'Дата рождения',
+				'years'       => range(date('Y') - 111, date('Y')),
+				'data'        => new \DateTime('1970-01-01'),
+				'format'      => 'dd MMMM yyyy',
 				'constraints' => array(
 					new NotBlank(array('message' => 'Укажите дату своего рождения')),
 					new DateTime(array('message' => 'Дата рождения указана в неверно')),
@@ -75,12 +76,21 @@ class RegisterType extends AbstractType
 			->add(
 				$builder->create('graduateYear', 'choice', array('label' => 'Год окончания учебного заведения', 'choices' => $years, 'empty_value' => 'выберите'))->addModelTransformer($yearToNumberTransformer)
 			)
-			->add('primarySpecialty', null, array(
-				'label'       => 'Основная специальность',
-				'empty_value' => 'выберите',
-				'required'    => true,
+			->add('primarySpecialty', 'entity', array(
+				'label'         => 'Основная специальность',
+				'empty_value'   => 'выберите',
+				'required'      => true,
+				'class'         => 'VidalMainBundle:Specialty',
+				'query_builder' => function (EntityRepository $er) {
+						return $er->createQueryBuilder('s')->orderBy('s.title', 'ASC');
+					}
 			))
 			->add('academicDegree', 'choice', array('label' => 'Ученая степень', 'choices' => User::getAcademicDegrees(), 'empty_value' => 'выберите'))
+			->add('captcha', 'captcha', array(
+				'label'    => 'Проверочный код',
+				'mapped'   => false,
+				'required' => true,
+			))
 			->add('eula', 'checkbox', array(
 				'label'       => 'Пользовательское соглашение',
 				'mapped'      => false,

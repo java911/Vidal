@@ -19,6 +19,9 @@
 						<img src="{{ asset('bundles/vidalmain/images/g2.gif') }}" class="loz"
 							 title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>
 					{% endif %}
+					{% if product.ProductTypeCode == 'BAD' %}
+						<span class="bads">БАД</span>
+					{% endif %}
 				</td>
 				<td class="products-table-name{{ isAdmin ? ' admin' }}">
 					{# админу карандашик на редактирование #}

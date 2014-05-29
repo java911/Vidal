@@ -39,9 +39,9 @@ class SearchController extends Controller
 		}
 
 		# для некоторых типов запроса надо найти основание слова (чтоб не учитывать окончание)
-		if (in_array($t, array('all', 'molecule', 'atc'))) {
-			$q = $this->get('lingua.service')->stem_string($q);
-		}
+//		if (in_array($t, array('all', 'molecule', 'atc'))) {
+//			$q = $this->get('lingua.service')->stem_string($q);
+//		}
 
 		if ($t == 'all' || $t == 'product') {
 			$productsRaw = $em->getRepository('VidalDrugBundle:Product')->findByQuery($q, $bad);
@@ -138,9 +138,9 @@ class SearchController extends Controller
 		}
 
 		# для некоторых типов запроса надо найти основание слова (чтоб не учитывать окончание)
-		if (in_array($t, array('all', 'molecule', 'atc', 'nosology', 'clphgroup', 'phthgroup'))) {
-			$q = $this->get('lingua.service')->stem_string($q);
-		}
+//		if (in_array($t, array('all', 'molecule', 'atc', 'nosology', 'clphgroup', 'phthgroup'))) {
+//			$q = $this->get('lingua.service')->stem_string($q);
+//		}
 
 		if ($t == 'all' || $t == 'product') {
 			$productsRaw = $em->getRepository('VidalDrugBundle:Product')->findByQuery($q, $bad);

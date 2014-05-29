@@ -11,7 +11,7 @@ framework:
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
-    templating:      { engines: ['twig'], assets_version: v88 }
+    templating:      { engines: ['twig'], assets_version: v96 }
     form:            ~
     csrf_protection: false
     validation:      { enable_annotations: true }
@@ -186,12 +186,12 @@ sonata_admin:
             - { position: center, type: sonata.admin.block.admin_list }
 
 gregwar_captcha:
-    width:   325
-    height:  50
-    length:  6
+    length:  4
     charset: 123456789
-    background_color: [237,49,96]
-    invalid_message: "Код с картинки введен не правильно"
+    background_color: [255,255,255]
+    max_front_lines: 0
+    max_behind_lines: 0
+    invalid_message: "Проверочный код указан неверно"
 
 ornicar_apc:
     host: http://www.vidal.ru

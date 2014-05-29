@@ -193,7 +193,7 @@ class CompanyRepository extends EntityRepository
 
 		# находим представительства
 		$infoPages = $this->_em->createQuery('
-			SELECT i.RusName
+			SELECT DISTINCT i.RusName
 			FROM VidalDrugBundle:InfoPage i
 			WHERE i.countProducts > 0
 		')->getResult();
@@ -204,12 +204,15 @@ class CompanyRepository extends EntityRepository
 			$infoPageNames[] = $name;
 		}
 
-		return array_merge($companyNames, $infoPageNames);
+		$names = array_merge($companyNames, $infoPageNames);
+		usort($names, 'strcasecmp');
+
+		return $names;
 	}
 
 	public function findByQuery($q)
 	{
-		$words = $this->getWords($q);
+		$words = explode(' ', $q);
 
 		$qb = $this->_em->createQueryBuilder();
 		$qb->select('c.CompanyID, c.LocalName, c.Property, country.RusName Country')
@@ -226,6 +229,7 @@ class CompanyRepository extends EntityRepository
 		}
 
 		# поиск по любому слову
+		$words = $this->getWords($q);
 		$qb->where("c.countProducts > 0")->andWhere($this->where($words, 'OR'));
 		$results = $qb->getQuery()->getResult();
 

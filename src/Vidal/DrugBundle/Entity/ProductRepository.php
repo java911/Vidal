@@ -225,6 +225,8 @@ class ProductRepository extends EntityRepository
 			}
 		}
 
+		usort($productNames, 'strcasecmp');
+
 		return $productNames;
 	}
 
@@ -232,8 +234,7 @@ class ProductRepository extends EntityRepository
 	{
 		$qb = $this->_em->createQueryBuilder();
 
-		$qb
-			->select('p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.ProductID, p.photo,
+		$qb->select('p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.ProductID, p.photo,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, pt.ProductTypeCode,
 				d.Indication, d.ArticleID, d.DocumentID')
 			->from('VidalDrugBundle:Product', 'p')

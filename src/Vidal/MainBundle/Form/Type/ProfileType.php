@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManager;
 use Vidal\MainBundle\Form\DataTransformer\CityToStringTransformer;
 use Vidal\MainBundle\Form\DataTransformer\YearToNumberTransformer;
 use Vidal\MainBundle\Entity\User;
+use Doctrine\ORM\EntityRepository;
 
 class ProfileType extends AbstractType
 {
@@ -63,17 +64,22 @@ class ProfileType extends AbstractType
 			->add('hideIcq', null, array('required' => false))
 			->add('submit1', 'submit', array('label' => 'Сохранить'))
 
-			########################################################################
+			###############################################################################################
+
 			->add('university', null, array('label' => 'Выберите учебное заведение из списка', 'required' => false, 'empty_value' => 'выберите'))
 			->add('school', null, array('label' => 'Или укажите другое'))
 			->add(
 				$builder->create('graduateYear', 'choice', array('label' => 'Год окончания учебного заведения', 'choices' => $years, 'empty_value' => 'выберите'))->addModelTransformer($yearToNumberTransformer)
 			)
 			->add('educationType', 'choice', array('label' => 'Форма обучения', 'required' => false, 'choices' => User::getEducationTypes(), 'empty_value' => 'выберите'))
-			->add('primarySpecialty', null, array(
-				'label'       => 'Основная специальность',
-				'empty_value' => 'выберите',
-				'required'    => true,
+			->add('primarySpecialty', 'entity', array(
+				'label'         => 'Основная специальность',
+				'empty_value'   => 'выберите',
+				'required'      => true,
+				'class'         => 'VidalMainBundle:Specialty',
+				'query_builder' => function (EntityRepository $er) {
+						return $er->createQueryBuilder('s')->orderBy('s.title', 'ASC');
+					}
 			))
 			->add('specialization', null, array('label' => 'Специализация', 'attr' => array('data-help' => 'если есть')))
 			->add('academicDegree', 'choice', array('label' => 'Ученая степень', 'choices' => User::getAcademicDegrees(), 'empty_value' => 'выберите'))
@@ -82,6 +88,7 @@ class ProfileType extends AbstractType
 			->add('submit2', 'submit', array('label' => 'Сохранить'))
 
 			###############################################################################################
+
 			->add('jobPlace', null, array('label' => 'Место работы', 'required' => false))
 			->add('jobSite', null, array('label' => 'Сайт', 'required' => false))
 			->add('jobPosition', null, array('label' => 'Должность', 'required' => false))

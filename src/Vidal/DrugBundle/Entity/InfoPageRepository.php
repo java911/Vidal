@@ -125,7 +125,7 @@ class InfoPageRepository extends EntityRepository
 
 	public function findByQuery($q)
 	{
-		$words = $this->getWords($q);
+		$words = explode(' ', $q);
 
 		$qb = $this->_em->createQueryBuilder();
 		$qb->select('i')->from('VidalDrugBundle:InfoPage', 'i')->orderBy('i.RusName', 'ASC');
@@ -139,6 +139,7 @@ class InfoPageRepository extends EntityRepository
 		}
 
 		# поиск по любому из слов
+		$words = $this->getWords($q);
 		$qb->where('i.countProducts > 0')->andWhere($this->where($words, 'OR'));
 		$results = $qb->getQuery()->getResult();
 
