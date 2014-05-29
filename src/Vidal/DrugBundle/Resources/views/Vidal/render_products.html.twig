@@ -1,13 +1,6 @@
 {% if products is defined and products|length %}
 	{% set isAdmin = is_granted('ROLE_ADMIN') %}
 
-	<style>
-		.bads {
-			font-size: 9px;
-			color: #2f4053;
-		}
-	</style>
-
 	<table class="products-table">
 		<tr class="products-table-header">
 			<td class="products-table-loz"></td>

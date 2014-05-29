@@ -298,6 +298,10 @@ h1 span {
 .yad {
 	margin-top: 25px;
 }
+.bads {
+	font-size: 9px;
+	color:     #2f4053;
+}
 
 /* боковое меню */
 .sidebar-menu .active {
