@@ -1243,7 +1243,7 @@ h1 span {
 }
 .text p {
 	margin-top:    0 !important;
-	margin-bottom: 7px !important;
+	margin-bottom: 9px !important;
 }
 .text p,
 .text p * {
@@ -1255,6 +1255,13 @@ h1 span {
 .text * {
 	font-family: sans-serif !important;
 	font-size:   13px;
+}
+.text sup,
+.text sup * {
+	vertical-align: top;
+	font-size:      11px !important;
+	line-height:    9px !important;
+	font-weight:    bold;
 }
 
 /* ck editor */
