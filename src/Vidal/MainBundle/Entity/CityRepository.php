@@ -9,8 +9,10 @@ class CityRepository extends EntityRepository
 	public function getChoices()
 	{
 		$raw = $this->_em->createQuery('
-			SELECT c.id, c.title, SIZE(c.doctors) as total
+			SELECT c.id, c.title, SIZE(c.doctors) as total, r.title as region, co.title as country
 			FROM VidalMainBundle:City c
+			JOIN c.region r
+			JOIN c.country co
 			WHERE c.doctors IS NOT EMPTY
 			ORDER BY c.title ASC
 		')->getResult();
@@ -19,7 +21,7 @@ class CityRepository extends EntityRepository
 
 		foreach ($raw as $r) {
 			$key          = $r['id'];
-			$cities[$key] = $r['title'] . ' - ' . $r['total'];
+			$cities[$key] = '[' . $r['total'] . '] ' . $r['title'] . ' -> ' . $r['region'] . ' -> ' . $r['country'];
 		}
 
 		return $cities;

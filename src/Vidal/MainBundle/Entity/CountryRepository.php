@@ -19,7 +19,7 @@ class CountryRepository extends EntityRepository
 
 		foreach ($raw as $r) {
 			$key          = $r['id'];
-			$cities[$key] = $r['title'] . ' - ' . $r['total'];
+			$cities[$key] = '[' . $r['total'] . '] ' . $r['title'];
 		}
 
 		return $cities;
