@@ -26,25 +26,6 @@ class QuestionAnswerAdmin extends Admin
 		}
 	}
 
-//	protected function configureShowField(ShowMapper $showMapper)
-//	{
-//		$showMapper
-//			->add('id')
-//			->add('question', null, array('label' => 'Вопрос'))
-//			->add('answer', null, array('label' => 'Ответ'))
-//			->add('enabled', null, array('label' => 'Активен'))
-//			->add('created', null, array(
-//				'label'  => 'Дата создания',
-//				'widget' => 'single_text',
-//				'format' => 'd.m.Y в H:i'
-//			))
-//			->add('updated', null, array(
-//				'label'  => 'Дата последнего обновления',
-//				'widget' => 'single_text',
-//				'format' => 'd.m.Y в H:i'
-//			));
-//	}
-
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
@@ -80,11 +61,10 @@ class QuestionAnswerAdmin extends Admin
 				'widget' => 'single_text',
 				'format' => 'd.m.Y в H:i'
 			))
-			->add('enabled', null, array('label' => 'Активен', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
+			->add('enabled', null, array('label' => 'Активен', 'template' => 'VidalDrugBundle:Sonata:swap_enabled_main.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(
-//					'show'   => array(),
 					'edit'   => array(),
 					'delete' => array(),
 				)

@@ -116,7 +116,7 @@ class UserAdmin extends Admin
 		$listMapper
 			->add('id')
 			->add('username', null, array('label' => 'E-mail'))
-			->add('emailConfirmed', null, array('label' => 'Подтвердил'))
+			->add('emailConfirmed', null, array('label' => 'Подтвердил', 'template' => 'VidalDrugBundle:Sonata:swap_emailConfirmed.html.twig'))
 			->add('lastName', null, array('label' => 'Фамилия И.О.', 'template' => 'VidalDrugBundle:Sonata:user_fio.html.twig'))
 			->add('login', null, array('label' => 'Прежний логин'))
 			->add('primarySpecialty', null, array('label' => 'Основная специальность'))
