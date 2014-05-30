@@ -3,10 +3,10 @@
 {% block body %}
     <p>{{ faq.authorFirstName }},<p>
     <p>Вам пришел ответ на вопрос с сайта Vidal.ru:<br/>
-        <b>Вопрос:</b> <i>{{ faq.question }}</i>
+        <b>Вопрос:</b> <i>{{ faq.question|raw }}</i>
     </p>
     <p>
-        <b>Ответ:</b> {{ faq.answer }}
+        <b>Ответ:</b> {{ faq.answer|raw }}
     </p>
     {% include 'VidalMainBundle:Email:signature.html.twig' %}
 {% endblock %}

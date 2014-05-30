@@ -62,6 +62,7 @@ class QuestionAnswerAdmin extends Admin
 				'format' => 'd.m.Y в H:i'
 			))
 			->add('enabled', null, array('label' => 'Активен', 'template' => 'VidalDrugBundle:Sonata:swap_enabled_main.html.twig'))
+			->add('emailSent', null, array('label' => 'Письмо отправлено', 'template' => 'VidalDrugBundle:Sonata:swap_emailSent.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(

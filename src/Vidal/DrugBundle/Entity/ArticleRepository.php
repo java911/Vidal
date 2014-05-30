@@ -23,6 +23,7 @@ class ArticleRepository extends EntityRepository
 			SELECT a
 			FROM VidalDrugBundle:Article a
 			WHERE a.enabled = TRUE
+				AND a.date < CURRENT_TIMESTAMP()
 			ORDER BY a.priority DESC, a.date DESC
 		')->setMaxResults($top)
 			->getResult();
@@ -34,6 +35,7 @@ class ArticleRepository extends EntityRepository
 			SELECT a
 			FROM VidalDrugBundle:Article a
 			WHERE a.enabled = TRUE
+				AND a.date < CURRENT_TIMESTAMP()
 			ORDER BY a.priority DESC, a.date DESC
 		')->setFirstResult($from)
 			->setMaxResults($max)
@@ -47,6 +49,7 @@ class ArticleRepository extends EntityRepository
 			FROM VidalDrugBundle:Article a
 			LEFT JOIN a.rubrique r
 			WHERE a.enabled = TRUE
+				AND a.date < CURRENT_TIMESTAMP()
 				AND (a.title LIKE :l1 OR a.title LIKE :l2 OR a.synonym LIKE :l3 OR a.synonym LIKE :l4)
 				AND a.title NOT LIKE :l5
 				AND a.synonym NOT LIKE :l6
@@ -71,6 +74,7 @@ class ArticleRepository extends EntityRepository
 			->leftJoin('a.rubrique', 'r')
 			->where('a.enabled = TRUE')
 			->andWhere('r.enabled = TRUE')
+			->andWhere('a.date < CURRENT_TIMESTAMP()')
 			->andWhere('r.id != 19')
 			->orderBy('a.title', 'ASC');
 
@@ -103,7 +107,9 @@ class ArticleRepository extends EntityRepository
 			}
 
 			$qb->where($where)
+				->andWhere('a.enabled = TRUE')
 				->andWhere('r.enabled = TRUE')
+				->andWhere('a.date < CURRENT_TIMESTAMP()')
 				->andWhere('r.id != 19');
 			$articles = $qb->getQuery()->getResult();
 		}
@@ -116,7 +122,9 @@ class ArticleRepository extends EntityRepository
 		return $this->_em->createQuery('
 			SELECT a
 			FROM VidalDrugBundle:Article a
-			WHERE a.enabled = 1 AND a.rubrique = :id
+			WHERE a.enabled = 1
+				AND a.rubrique = :id
+				AND a.date < CURRENT_TIMESTAMP()
 			ORDER BY a.title ASC
 		')->setParameter('id', $id)
 			->getResult();

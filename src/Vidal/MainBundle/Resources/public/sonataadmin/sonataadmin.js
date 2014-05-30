@@ -11,6 +11,16 @@ $(document).ready(function() {
 		});
 	});
 
+	$('.btn-email').click(function(e) {
+		e.preventDefault();
+		var $link = $(this);
+		$.getJSON(this.href, null, function(data) {
+			if (data) {
+				$link.replaceWith('<span>отправлено</span>');
+			}
+		});
+	});
+
 	// клик разворачивания фильтров
 	$('legend.filter_legend').click(function(e) {
 		e.stopPropagation();

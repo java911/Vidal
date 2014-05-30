@@ -55,7 +55,7 @@ class UserAdmin extends Admin
 			))->addModelTransformer($yearToNumberTransformer))
 			->add('educationType', null, array('label' => 'Форма обучения', 'required' => false))
 			->add('academicDegree', null, array('label' => 'Ученая степень', 'required' => false))
-			->add('birthdate', null, array('label' => 'Дата рождения', 'required' => false))
+			->add('birthdate', null, array('label' => 'Дата рождения', 'required' => false, 'widget' => 'single_text'))
 			->add('icq', null, array('label' => 'ICQ', 'required' => false))
 			->add('dissertation', null, array('label' => 'Тема диссертации', 'required' => false))
 			->add('professionalInterests', null, array('label' => 'Профессиональные интересы', 'required' => false))
@@ -85,8 +85,8 @@ class UserAdmin extends Admin
 			->add('region', 'doctrine_orm_choice', array('label' => 'Область'), 'choice', array('choices' => $regionChoices))
 			->add('country', 'doctrine_orm_choice', array('label' => 'Страна'), 'choice', array('choices' => $countryChoices))
 			->add('emailConfirmed', null, array('label' => 'e-mail подтвержден'))
-			->add('oldUser', null, array('label' => 'Со старого сайта'))
-			->add('created', null, array('label' => 'Зарегистрировался'));
+			->add('oldUser', null, array('label' => 'Со старого сайта'));
+		;
 	}
 
 	protected function configureListFields(ListMapper $listMapper)
@@ -96,7 +96,6 @@ class UserAdmin extends Admin
 			->add('username', null, array('label' => 'E-mail'))
 			->add('emailConfirmed', null, array('label' => 'Подтвердил', 'template' => 'VidalDrugBundle:Sonata:swap_emailConfirmed.html.twig'))
 			->add('lastName', null, array('label' => 'Фамилия И.О.', 'template' => 'VidalDrugBundle:Sonata:user_fio.html.twig'))
-			->add('login', null, array('label' => 'Прежний логин'))
 			->add('primarySpecialty', null, array('label' => 'Основная специальность'))
 			->add('birthdate', null, array('label' => 'Дата рождения', 'widget' => 'single_text', 'format' => 'd.m.Y'))
 			->add('city', null, array('label' => 'Город'))

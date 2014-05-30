@@ -13,6 +13,7 @@ class PharmArticleRepository extends EntityRepository
 		 	FROM VidalDrugBundle:PharmArticle a
 		 	WHERE a.enabled = TRUE
 		 		AND a.company = :companyId
+		 		AND a.created < CURRENT_TIMESTAMP()
 		 	ORDER BY a.created DESC
 		')->setParameter('companyId', $companyId)
 			->getResult();
@@ -24,6 +25,7 @@ class PharmArticleRepository extends EntityRepository
 			SELECT a
 			FROM VidalDrugBundle:PharmArticle a
 			WHERE a.enabled = TRUE
+				AND a.created < CURRENT_TIMESTAMP()
 			ORDER BY a.created DESC, a.priority DESC
 		');
 	}
@@ -35,6 +37,7 @@ class PharmArticleRepository extends EntityRepository
 			FROM VidalDrugBundle:PharmArticle a
 			WHERE a.enabled = TRUE
 				AND a.company = :id
+				AND a.created < CURRENT_TIMESTAMP()
 			ORDER BY a.created DESC, a.priority DESC
 		')->setParameter('id', $id);
 	}

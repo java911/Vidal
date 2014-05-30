@@ -153,7 +153,7 @@ class PublicationAdmin extends Admin
 				'format' => 'd.m.Y в H:i'
 			))
 			->add('priority', null, array('label' => 'Приоритет'))
-			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled_main.html.twig'))
+			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(
