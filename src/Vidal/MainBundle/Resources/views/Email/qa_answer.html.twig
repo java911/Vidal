@@ -1,8 +1,10 @@
 {% extends layout | default('VidalMainBundle::minimal_layout.html.twig') %}
 
 {% block body %}
-    <p>{{ faq.authorFirstName }},<p>
-    <p>Вам пришел ответ на вопрос с сайта Vidal.ru:<br/>
+    <p>{{ faq.authorFirstName }},<br/>
+		Вам пришел ответ на вопрос с сайта Vidal.ru:
+	<p>
+    <p>
         <b>Вопрос:</b> <i>{{ faq.question|raw }}</i>
     </p>
     <p>

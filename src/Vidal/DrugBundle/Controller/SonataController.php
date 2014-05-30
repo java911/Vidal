@@ -213,10 +213,6 @@ class SonataController extends Controller
 		$em = $this->getDoctrine()->getManager();
 		$qa = $em->getRepository('VidalMainBundle:QuestionAnswer')->findOneById($id);
 
-//		if (!$qa || $qa->getEmailSent() == true) {
-//			return new JsonResponse(false);
-//		}
-
 		$email = $qa->getAuthorEmail();
 
 		$this->get('email.service')->send(
