@@ -8,7 +8,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /** @ORM\Entity(repositoryClass="QuestionAnswerRepository") @ORM\Table(name="question_answer") */
 class QuestionAnswer extends BaseEntity
 {
-
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Пожалуйста, укажите Имя")
@@ -36,6 +35,9 @@ class QuestionAnswer extends BaseEntity
 	 * @ORM\Column(type="text", nullable = true)
 	 */
 	protected $answer;
+
+	/** @ORM\Column(type="boolean") */
+	protected $emailSent = false;
 
 	public function __construct()
 	{
@@ -129,6 +131,19 @@ class QuestionAnswer extends BaseEntity
         return $this->answerUser;
     }
 
+	/**
+	 * @param mixed $emailSent
+	 */
+	public function setEmailSent($emailSent)
+	{
+		$this->emailSent = $emailSent;
+	}
 
-
+	/**
+	 * @return mixed
+	 */
+	public function getEmailSent()
+	{
+		return $this->emailSent;
+	}
 }

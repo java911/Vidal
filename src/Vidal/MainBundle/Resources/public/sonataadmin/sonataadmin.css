@@ -99,7 +99,7 @@ ul.items {
 	text-align:     center !important;
 	vertical-align: middle !important;
 }
-.swap .btn-swap {
+.swap > a {
 	height: 20px;
 	width:  12px;
 }

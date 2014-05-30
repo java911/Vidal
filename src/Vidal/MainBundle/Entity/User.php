@@ -167,6 +167,9 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	/** @ORM\ManyToOne(targetEntity="Region", inversedBy="doctors") */
 	protected $region;
 
+	/** @ORM\ManyToOne(targetEntity="Country", inversedBy="doctors") */
+	protected $country;
+
 	public function __construct()
 	{
         $this->answers = new ArrayCollection();
@@ -915,5 +918,21 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	public function getRegion()
 	{
 		return $this->region;
+	}
+
+	/**
+	 * @param mixed $country
+	 */
+	public function setCountry($country)
+	{
+		$this->country = $country;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCountry()
+	{
+		return $this->country;
 	}
 }

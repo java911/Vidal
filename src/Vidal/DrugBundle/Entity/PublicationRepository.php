@@ -12,6 +12,7 @@ class PublicationRepository extends EntityRepository
 			SELECT p
 			FROM VidalDrugBundle:Publication p
 			WHERE p.enabled = TRUE
+				AND p.date < CURRENT_TIMESTAMP()
 			ORDER BY p.priority DESC, p.date DESC
 		')->setMaxResults($top)
 			->getResult();
@@ -23,6 +24,7 @@ class PublicationRepository extends EntityRepository
 			SELECT p
 			FROM VidalDrugBundle:Publication p
 			WHERE p.enabled = TRUE
+				AND p.date < CURRENT_TIMESTAMP()
 			ORDER BY p.priority DESC, p.date DESC
 		')->setFirstResult($from)
 			->setMaxResults($max)
@@ -35,6 +37,7 @@ class PublicationRepository extends EntityRepository
 			SELECT p
 			FROM VidalDrugBundle:Publication p
 			WHERE p.enabled = TRUE
+				AND p.date < CURRENT_TIMESTAMP()
 			ORDER BY p.priority DESC, p.date DESC
 		');
 	}

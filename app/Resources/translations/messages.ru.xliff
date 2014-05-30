@@ -496,6 +496,27 @@
 				<target>Удаление представительства</target>
 			</trans-unit>
 
+			<trans-unit id="sonata-28">
+				<source>User List</source>
+				<target>Пользователи</target>
+			</trans-unit>
+			<trans-unit id="sonata-28-1">
+				<source>User Show</source>
+				<target>Пользователь</target>
+			</trans-unit>
+			<trans-unit id="sonata-28-2">
+				<source>User Edit</source>
+				<target>Редактирование пользователя</target>
+			</trans-unit>
+			<trans-unit id="sonata-28-3">
+				<source>User Create</source>
+				<target>Создание пользователя</target>
+			</trans-unit>
+			<trans-unit id="sonata-28-4">
+				<source>User Delete</source>
+				<target>Удаление пользователя</target>
+			</trans-unit>
+
         </body>
     </file>
 </xliff>

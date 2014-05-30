@@ -32,6 +32,9 @@ class UserRegionCommand extends ContainerAwareCommand
 			if ($region = $city->getRegion()) {
 				$user->setRegion($region);
 			}
+			if ($country = $city->getCountry()) {
+				$user->setCountry($country);
+			}
 		}
 
 		$em->flush();

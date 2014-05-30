@@ -178,4 +178,52 @@ class SonataController extends Controller
 
 		return $params;
 	}
+
+	/**
+	 * @Route("/admin/qa-email/{id}", name="qa_email")
+	 */
+	public function qaEmailAction($id)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$qa = $em->getRepository('VidalMainBundle:QuestionAnswer')->findOneById($id);
+
+		if (!$qa || $qa->getEmailSent() == true) {
+			return new JsonResponse(false);
+		}
+
+		$email = $qa->getAuthorEmail();
+
+		$this->get('email.service')->send(
+			$email,
+			array('VidalMainBundle:Email:qa_answer.html.twig', array('faq' => $qa)),
+			'Ответ на сайте vidal.ru'
+		);
+
+		$qa->setEmailSent(true);
+		$em->flush();
+
+		return new JsonResponse(true);
+	}
+
+	/**
+	 * @Route("/admin/qa-email-test/{id}", name="qa_email_test")
+	 */
+	public function qaEmailTestAction($id)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$qa = $em->getRepository('VidalMainBundle:QuestionAnswer')->findOneById($id);
+
+		$email = $qa->getAuthorEmail();
+
+		$this->get('email.service')->send(
+			$email,
+			array('VidalMainBundle:Email:qa_answer.html.twig', array('faq' => $qa)),
+			'Ответ на сайте vidal.ru'
+		);
+
+		$qa->setEmailSent(true);
+		$em->flush();
+
+		exit;
+	}
 }

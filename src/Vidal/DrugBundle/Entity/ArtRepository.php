@@ -14,6 +14,7 @@ class ArtRepository extends EntityRepository
 			WHERE a.rubrique = :id
 				AND a.type IS NULL
 				AND a.enabled = TRUE
+				AND a.date < CURRENT_TIMESTAMP()
 			ORDER BY a.date DESC, a.priority DESC
 		')->setParameter('id', $rubrique->getId());
 	}
@@ -26,6 +27,7 @@ class ArtRepository extends EntityRepository
 			WHERE a.type = :id
 				AND a.category IS NULL
 				AND a.enabled = TRUE
+				AND a.date < CURRENT_TIMESTAMP()
 			ORDER BY a.date DESC, a.priority DESC
 		')->setParameter('id', $type->getId());
 	}
@@ -37,6 +39,7 @@ class ArtRepository extends EntityRepository
 			FROM VidalDrugBundle:Art a
 			WHERE a.category = :id
 				AND a.enabled = TRUE
+				AND a.date < CURRENT_TIMESTAMP()
 			ORDER BY a.date DESC, a.priority DESC
 		')->setParameter('id', $category->getId());
 	}
@@ -47,7 +50,8 @@ class ArtRepository extends EntityRepository
 		 	SELECT a
 		 	FROM VidalDrugBundle:Art a
 		 	WHERE a.atIndex = TRUE
-		 	ORDER BY a.updated DESC
+		 		AND a.date < CURRENT_TIMESTAMP()
+		 	ORDER BY a.date DESC
 		')->setMaxResults(1)
 			->getOneOrNullResult();
 	}
@@ -59,6 +63,7 @@ class ArtRepository extends EntityRepository
 			FROM VidalDrugBundle:Art a
 			WHERE a.anons = TRUE
 				AND a.enabled = TRUE
+				AND a.date < CURRENT_TIMESTAMP()
 			ORDER BY a.anonsPriority DESC, a.date DESC
 		')->getResult();
 	}

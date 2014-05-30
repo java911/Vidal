@@ -8,7 +8,7 @@
         <b>Email:</b> {{ faq.authorEmail }}
     <p>
     <p>Новый вопрос на сайте Vidal.ru:<br/>
-        <b>Вопрос:</b><i>{{ faq.question }}</i>
+        <b>Вопрос:</b><i>{{ faq.question|raw }}</i>
     </p>
     {% include 'VidalMainBundle:Email:signature.html.twig' %}
 {% endblock %}
