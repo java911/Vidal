@@ -97,12 +97,23 @@ class IndexController extends Controller
 		$qus = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByEnabled(1);
 		krsort($qus);
 
+            $p = ceil(count($qus)/3);
+
+
+        $qaPagination = $this->get('knp_paginator')->paginate(
+            $qus,
+            $request->query->get('p', $p),
+            3
+        );
+//        $qaPagination->setTemplate('VidalMainBundle:Index:sliding2.html.twig ');
+
 		return array(
 			'title'           => 'Ответы специалистов',
 			'menu_left'       => 'qa',
 			'questionAnswers' => $qus,
 			'form'            => $form->createView(),
 			't'               => $t,
+            'qaPagination'    => $qaPagination
 		);
 	}
 

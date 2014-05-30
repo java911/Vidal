@@ -23,7 +23,7 @@
 	{% if questionAnswers|length %}
 		<div class="qa-wrap">
 			{% if isAdmin %}
-				{% for qa in questionAnswers %}
+				{% for qa in qaPagination.items %}
 					<div class="qa" id="qa{{ qa.id }}">
 
 						{# админам карандашик редактирования #}
@@ -38,12 +38,12 @@
                             <b>Ответ: </b>
                             {{ qa.answer|raw }}
                             <br />
-                            <div class="link"><b>Ссылка:</b> <i>vidal.ru{{ path('qa') }}?#qa{{ qa.id }}</i></div>
+                            <div class="link"><b>Ссылка:</b> <i>vidal.ru{{ path('qa') }}?p={{ app.request.get('p') }}#qa{{ qa.id }}</i></div>
                         </div>
 					</div>
 				{% endfor %}
 			{% else %}
-				{% for qa in questionAnswers %}
+				{% for qa in qaPagination.items %}
 					<div class="qa" id="qa{{ qa.id }}">
 						<div class="qa-question">{{ qa.question|raw }}</div>
 						<div class="qa-expand">ответ</div>
@@ -51,14 +51,16 @@
                             <b>Ответ: </b>
                             {{ qa.answer|raw }}
                             <br />
-                            <div class="link"><b>Ссылка:</b> <i>vidal.ru{{ path('qa') }}?#{{ qa.id }}</i></div>
+                            <div class="link"><b>Ссылка:</b> <i>vidal.ru{{ path('qa') }}?p={{ app.request.get('p') }}#qa{{ qa.id }}</i></div>
                         </div>
 					</div>
 				{% endfor %}
 			{% endif %}
 		</div>
 	{% endif %}
-
+    <div class="navigation">
+        {{ knp_pagination_render(qaPagination,'VidalMainBundle:Index:sliding2.html.twig') }}
+    </div>
 {% endblock %}
 
 
