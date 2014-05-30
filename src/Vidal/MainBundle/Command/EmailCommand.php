@@ -19,26 +19,11 @@ class EmailCommand extends ContainerAwareCommand
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$mail = new \PHPMailer();
+		ini_set('memory_limit', -1);
+		$output->writeln('--- vidal:email started');
 
-		$mail->isSMTP();
-		$mail->isHTML(true);
-		$mail->CharSet   = 'UTF-8';
-		$mail->FromName  = 'Портал';
-		$mail->Subject   = 'Письмецо';
-		$mail->SMTPDebug = 2;
 
-		$mail->Host       = 'smtp.mail.ru';
-		$mail->From       = '7binary@list.ru';
-		$mail->SMTPSecure = 'ssl';
-		$mail->Port       = 465;
-		$mail->SMTPAuth   = true;
-		$mail->Username   = '7binary@list.ru';
-		$mail->Password   = 'ooo000)O';
 
-		$mail->Body = 'Это текст письма';
-		$mail->addAddress('7binary@bk.ru');
-
-		$mail->send();
+		$output->writeln('+++ vidal:email created!');
 	}
 }
