@@ -24,7 +24,8 @@
 		<div class="qa-wrap">
 			{% if isAdmin %}
 				{% for qa in questionAnswers %}
-					<div class="qa">
+					<div class="qa" id="qa{{ qa.id }}">
+
 						{# админам карандашик редактирования #}
 						<a class="admin-edit fade" target="_blank"
 						   href="{{ path('admin_vidal_main_questionanswer_edit', {'id':qa.id}) }}">
@@ -33,15 +34,25 @@
 
 						<div class="qa-question">{{ qa.question|raw }}</div>
 						<div class="qa-expand">ответ</div>
-						<div class="qa-answer">{{ qa.answer|raw }}</div>
+						<div class="qa-answer">
+                            <b>Ответ: </b>
+                            {{ qa.answer|raw }}
+                            <br />
+                            <div class="link"><b>Ссылка:</b> <i>vidal.ru{{ path('qa') }}?#qa{{ qa.id }}</i></div>
+                        </div>
 					</div>
 				{% endfor %}
 			{% else %}
 				{% for qa in questionAnswers %}
-					<div class="qa">
+					<div class="qa" id="qa{{ qa.id }}">
 						<div class="qa-question">{{ qa.question|raw }}</div>
 						<div class="qa-expand">ответ</div>
-						<div class="qa-answer">{{ qa.answer|raw }}</div>
+						<div class="qa-answer">
+                            <b>Ответ: </b>
+                            {{ qa.answer|raw }}
+                            <br />
+                            <div class="link"><b>Ссылка:</b> <i>vidal.ru{{ path('qa') }}?#{{ qa.id }}</i></div>
+                        </div>
 					</div>
 				{% endfor %}
 			{% endif %}
@@ -54,6 +65,10 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<style type="text/css">
+        .link{
+            color: #555555;
+            font-size: 10px;
+        }
         .qa {
             position:      relative;
             border:        3px solid #eee;
@@ -68,6 +83,8 @@
         }
         .qa-question p, .qa-answer p {
             margin: 8px 0;
+            font-size: 13px;
+            text-align: justify;
         }
         .qa-question p:first-child, .qa-answer p:first-child {
             margin-top: 0;
@@ -108,6 +125,9 @@
             color: #263e2e;
             margin-bottom: 14px;
         }
+        .sekectqa{
+            border-color: #d71344;
+        }
 	</style>
 {% endblock %}
 
@@ -121,6 +141,14 @@
 				$this.hide();
 				$this.closest('.qa').addClass('expanded').find('.qa-answer').slideDown('fast');
 			});
+
+            var anc = window.location.hash.replace("#","");
+            if (anc != ""){
+                var $this = $('#'+anc);
+                $this.addClass('sekectqa');
+                $this.children('.qa-expand').hide();
+                $this.addClass('expanded').find('.qa-answer').slideDown('fast');
+            }
 		});
         $(document).ready(function() {
             $('.qa-expand').click(function() {
