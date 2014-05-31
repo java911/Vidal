@@ -5,8 +5,8 @@ php_value memory_limit -1
 # очистка сессий не раньше, чем через месяц
 php_value session.gc_maxlifetime 2592000
 # закачка больших видео-файлов в админке
-php_value upload_max_filesize 250M
-php_value post_max_size 250M
+php_value upload_max_filesize 20M
+php_value post_max_size 20M
 php_value max_execution_time 1200
 # прочие радости настроек сервера
 php_flag output_buffering On
