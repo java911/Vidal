@@ -48,9 +48,9 @@ class AuthController extends Controller
 			return $this->redirect($this->generateUrl('index'));
 		}
 
-		$em   = $this->getDoctrine()->getManager();
-		$user = new User();
-		$form = $this->createForm(new RegisterType($em), $user);
+		$em     = $this->getDoctrine()->getManager();
+		$user   = new User();
+		$form   = $this->createForm(new RegisterType($em), $user);
 		$params = array('title' => 'Регистрация');
 
 		$form->handleRequest($request);
@@ -203,6 +203,7 @@ class AuthController extends Controller
 		}
 
 		$pwReal = $user->getPassword();
+		$auth   = false;
 
 		# пользователей со старой БД проверям с помощью mysql-функций
 		if ($user->getOldUser()) {
@@ -218,11 +219,16 @@ class AuthController extends Controller
 			$pw2 = $stmt->fetch();
 			$pw2 = $pw2['password'];
 
-			if ($pw1 !== $pwReal && $pw2 !== $pwReal) {
-				return new JsonResponse(array('success' => 'no'));
+			if ($pw1 === $pwReal || $pw2 === $pwReal) {
+				$auth = true;
 			}
 		}
-		elseif ($pwReal !== $password) {
+
+		if (!$auth && $pwReal === $password) {
+			$auth = true;
+		}
+
+		if (!$auth) {
 			return new JsonResponse(array('success' => 'no'));
 		}
 
