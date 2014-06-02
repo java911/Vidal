@@ -121,7 +121,7 @@ class SearchController extends Controller
 		$q   = trim($q);
 		$t   = $request->query->get('t', 'all'); # тип запроса из селект-бокса
 		$p   = $request->query->get('p', 1); # номер страницы
-		$bad = $request->query->has('b'); # включать ли бады
+		$bad = $request->query->has('bad'); # включать ли бады
 
 		$params = array(
 			'q'     => $q,

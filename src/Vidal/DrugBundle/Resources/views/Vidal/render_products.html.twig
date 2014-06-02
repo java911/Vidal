@@ -65,7 +65,7 @@
 					{% endif %}
 				</td>
 				<td class="products-table-zip">
-					<div>{{ product.ZipInfo }}</div>
+					<div>{{ product.ZipInfo|raw }}</div>
 				<span>рег. №: {{ product.RegistrationNumber }}
 					{% if product.RegistrationDate is not empty %}
 						от {{ product.RegistrationDate }}
