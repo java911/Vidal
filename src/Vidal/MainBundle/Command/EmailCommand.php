@@ -46,7 +46,17 @@ class EmailCommand extends ContainerAwareCommand
 		$html    = $templating->render('VidalMainBundle:Email:email.html.twig');
 
 		#testing
-		$emails = array('7binary@bk.ru');
+		$emails = array(
+			'si-bu@yandex.ru',
+			'feijfrdug@mail.ru',
+			'ovshum@rambler.ru',
+			'm.yudintseva@vidal.ru',
+			'alfa__omega@mail.ru',
+			'meola243@gmail.com',
+			'tan-zh@yandex.ru',
+			'7binary@bk.ru',
+			'7binary@gmail.com',
+		);
 
 		# рассылка по 100 пользователям за цикл
 		for ($i = 0, $c = count($emails); $i < $c; $i++) {
