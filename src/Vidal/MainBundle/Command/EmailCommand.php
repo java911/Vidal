@@ -47,13 +47,13 @@ class EmailCommand extends ContainerAwareCommand
 
 		#testing
 		$emails = array(
-			'si-bu@yandex.ru',
-			'feijfrdug@mail.ru',
-			'ovshum@rambler.ru',
-			'm.yudintseva@vidal.ru',
-			'alfa__omega@mail.ru',
-			'meola243@gmail.com',
-			'tan-zh@yandex.ru',
+			//'si-bu@yandex.ru',
+			//'feijfrdug@mail.ru',
+			//'ovshum@rambler.ru',
+			//'m.yudintseva@vidal.ru',
+			//'alfa__omega@mail.ru',
+			//'meola243@gmail.com',
+			//'tan-zh@yandex.ru',
 			'7binary@bk.ru',
 			'7binary@gmail.com',
 		);
@@ -81,6 +81,7 @@ class EmailCommand extends ContainerAwareCommand
 		$mail->Subject  = $subject;
 		$mail->Body     = $html;
 		$mail->addAddress($email);
+		$mail->SMTPDebug  = 2;
 
 		# prod - оптравка через Exim, dev/test - отправка через Gmail
 		if ($this->container->getParameter('kernel.environment') == 'prod') {
