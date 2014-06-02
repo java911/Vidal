@@ -272,7 +272,8 @@ class SonataController extends Controller
 			}
 		}
 
-		$output->writeln('+++ vidal:email completed!');
+		echo 'OK';
+		exit;
 	}
 
 	public function send($email, $html, $subject)
