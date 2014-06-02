@@ -81,7 +81,6 @@ class EmailCommand extends ContainerAwareCommand
 		$mail->Subject  = $subject;
 		$mail->Body     = $html;
 		$mail->addAddress($email);
-		$mail->SMTPDebug  = 2;
 
 		# prod - оптравка через Exim, dev/test - отправка через Gmail
 		if ($this->container->getParameter('kernel.environment') == 'prod') {
