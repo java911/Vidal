@@ -299,45 +299,45 @@ class SearchController extends Controller
 
 		$letters = explode(' ', 'А Б В Г Д Е Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Э Ю Я');
 
-		$pdo  = $em->getConnection();
-		$sql  = "
-			SELECT DISTINCT LEFT(RusName, 2) as r
-			FROM product
-			WHERE MarketStatusID IN (1,2,7) AND (
-				RusName LIKE 'А%'
-				OR RusName LIKE 'Б%'
-				OR RusName LIKE 'В%'
-				OR RusName LIKE 'Г%'
-				OR RusName LIKE 'Д%'
-				OR RusName LIKE 'Е%'
-				OR RusName LIKE 'Ж%'
-				OR RusName LIKE 'З%'
-				OR RusName LIKE 'И%'
-				OR RusName LIKE 'Й%'
-				OR RusName LIKE 'К%'
-				OR RusName LIKE 'Л%'
-				OR RusName LIKE 'М%'
-				OR RusName LIKE 'Н%'
-				OR RusName LIKE 'О%'
-				OR RusName LIKE 'П%'
-				OR RusName LIKE 'Р%'
-				OR RusName LIKE 'С%'
-				OR RusName LIKE 'Т%'
-				OR RusName LIKE 'У%'
-				OR RusName LIKE 'Ф%'
-				OR RusName LIKE 'Х%'
-				OR RusName LIKE 'Ц%'
-				OR RusName LIKE 'Ч%'
-				OR RusName LIKE 'Ш%'
-				OR RusName LIKE 'Э%'
-				OR RusName LIKE 'Ю%'
-				OR RusName LIKE 'Я%'
-			)
-			ORDER BY r ASC
-		";
-		$stmt = $pdo->prepare($sql);
-		$stmt->execute();
-		$subs = $stmt->fetchAll(\PDO::FETCH_COLUMN, 0);
+//		$pdo  = $em->getConnection();
+//		$sql  = "
+//			SELECT DISTINCT LEFT(RusName, 2) as r
+//			FROM product
+//			WHERE MarketStatusID IN (1,2,7) AND (
+//				RusName LIKE 'А%'
+//				OR RusName LIKE 'Б%'
+//				OR RusName LIKE 'В%'
+//				OR RusName LIKE 'Г%'
+//				OR RusName LIKE 'Д%'
+//				OR RusName LIKE 'Е%'
+//				OR RusName LIKE 'Ж%'
+//				OR RusName LIKE 'З%'
+//				OR RusName LIKE 'И%'
+//				OR RusName LIKE 'Й%'
+//				OR RusName LIKE 'К%'
+//				OR RusName LIKE 'Л%'
+//				OR RusName LIKE 'М%'
+//				OR RusName LIKE 'Н%'
+//				OR RusName LIKE 'О%'
+//				OR RusName LIKE 'П%'
+//				OR RusName LIKE 'Р%'
+//				OR RusName LIKE 'С%'
+//				OR RusName LIKE 'Т%'
+//				OR RusName LIKE 'У%'
+//				OR RusName LIKE 'Ф%'
+//				OR RusName LIKE 'Х%'
+//				OR RusName LIKE 'Ц%'
+//				OR RusName LIKE 'Ч%'
+//				OR RusName LIKE 'Ш%'
+//				OR RusName LIKE 'Э%'
+//				OR RusName LIKE 'Ю%'
+//				OR RusName LIKE 'Я%'
+//			)
+//			ORDER BY r ASC
+//		";
+//		$stmt = $pdo->prepare($sql);
+//		$stmt->execute();
+//		$subs = $stmt->fetchAll(\PDO::FETCH_COLUMN, 0);
 
 		$params = array(
 			't'       => $t,
@@ -347,7 +347,7 @@ class SearchController extends Controller
 			'menu'    => 'drugs',
 			'title'   => 'Поиск по алфавиту',
 			'letters' => $letters,
-			'subs'    => $subs,
+			//'subs'    => $subs,
 		);
 
 		# БАДы только безрецептурные
