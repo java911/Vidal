@@ -1,6 +1,9 @@
 {% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
 
 
+{% set showTable = l == null %}
+
+
 {% if t =='o' %}
 	{% set from = 'bad' %}
 {% endif %}
@@ -26,40 +29,24 @@
 				{% endif %}
 			</div>
 
+			<input type="hidden" name="p" id="letters_page" value="{{ p }}"/>
+
+			{# буквы #}
 			<div class="letters-russian">
-				<input type="hidden" name="p" id="letters_page" value="{{ p }}"/>
-				<input type="submit" value="А" name="l" class="letter{{ l == 'А' ? ' active' }}"/>
-				<input type="submit" value="Б" name="l" class="letter{{ l == 'Б' ? ' active' }}"/>
-				<input type="submit" value="В" name="l" class="letter{{ l == 'В' ? ' active' }}"/>
-				<input type="submit" value="Г" name="l" class="letter{{ l == 'Г' ? ' active' }}"/>
-				<input type="submit" value="Д" name="l" class="letter{{ l == 'Д' ? ' active' }}"/>
-				<input type="submit" value="Е" name="l" class="letter{{ l == 'Е' ? ' active' }}"/>
-				<input type="submit" value="Ж" name="l" class="letter{{ l == 'Ж' ? ' active' }}"/>
-				<input type="submit" value="З" name="l" class="letter{{ l == 'З' ? ' active' }}"/>
-				<input type="submit" value="И" name="l" class="letter{{ l == 'И' ? ' active' }}"/>
-				<input type="submit" value="Й" name="l" class="letter{{ l == 'Й' ? ' active' }}"/>
-				<input type="submit" value="К" name="l" class="letter{{ l == 'К' ? ' active' }}"/>
-				<input type="submit" value="Л" name="l" class="letter{{ l == 'Л' ? ' active' }}"/>
-				<input type="submit" value="М" name="l" class="letter{{ l == 'М' ? ' active' }}"/>
-				<input type="submit" value="Н" name="l" class="letter{{ l == 'Н' ? ' active' }}"/>
-				<input type="submit" value="О" name="l" class="letter{{ l == 'О' ? ' active' }}"/>
-				<input type="submit" value="П" name="l" class="letter{{ l == 'П' ? ' active' }}"/>
-				<input type="submit" value="Р" name="l" class="letter{{ l == 'Р' ? ' active' }}"/>
-				<input type="submit" value="С" name="l" class="letter{{ l == 'С' ? ' active' }}"/>
-				<input type="submit" value="Т" name="l" class="letter{{ l == 'Т' ? ' active' }}"/>
-				<input type="submit" value="У" name="l" class="letter{{ l == 'У' ? ' active' }}"/>
-				<input type="submit" value="Ф" name="l" class="letter{{ l == 'Ф' ? ' active' }}"/>
-				<input type="submit" value="Х" name="l" class="letter{{ l == 'Х' ? ' active' }}"/>
-				<input type="submit" value="Ц" name="l" class="letter{{ l == 'Ц' ? ' active' }}"/>
-				<input type="submit" value="Ч" name="l" class="letter{{ l == 'Ч' ? ' active' }}"/>
-				<input type="submit" value="Ш" name="l" class="letter{{ l == 'Ш' ? ' active' }}"/>
-				<input type="submit" value="Щ" name="l" class="letter{{ l == 'Щ' ? ' active' }}"/>
-				<input type="submit" value="Э" name="l" class="letter{{ l == 'Э' ? ' active' }}"/>
-				<input type="submit" value="Ю" name="l" class="letter{{ l == 'Ю' ? ' active' }}"/>
-				<input type="submit" value="Я" name="l" class="letter{{ l == 'Я' ? ' active' }}"/>
+				{% for letter in letters %}
+					<input type="submit" value="{{ letter }}" name="l" class="letter{{ l == letter ? ' active' }}"/>
+				{% endfor %}
 			</div>
+
+			<div class="clear"></div>
+
+			{# под-буквы #}
+			{% include 'VidalDrugBundle:Search:letters_sub.html.twig' %}
 		</form>
-		<div class="clear"></div>
+
+		{% if showTable %}
+			{% include 'VidalDrugBundle:Search:letters_table.html.twig' %}
+		{% endif %}
 	</div>
 
 	{% if products is defined and products is not empty %}
@@ -101,6 +88,58 @@
 		.letters-controls-check input, .letters-controls-check span {
 			vertical-align: top;
 		}
+
+		.letters-russian {
+			height: 24px;
+		}
+		.letters-sub > div {
+			height:  24px;
+			clear:   both;
+			display: none;
+		}
+		.letters-sub input {
+			width: 22px;
+		}
+		.letters-sub input, .letters .beige {
+			background-color: rgb(241, 241, 119);
+		}
+		{% if showTable %}
+		#letters_form {
+			height: 95px;
+		}
+		.letters-table {
+			width:                 100%;
+			border-collapse:       collapse;
+			border:                1px solid #d3d3d3;
+			border-radius:         2px;
+			-moz-border-radius:    2px;
+			-webkit-border-radius: 2px;
+		}
+		.letters-table td {
+			border-right: 1px solid #d3d3d3;
+			text-align:   center;
+		}
+		.letters-table .head td {
+			background-color: rgb(241, 241, 119);
+		}
+		.letters-table a {
+			display:               block;
+			height:                16px;
+			color:                 #2f4053;
+			text-decoration:       none;
+			font-size:             12px;
+			border-radius:         2px;
+			-moz-border-radius:    2px;
+			-webkit-border-radius: 2px;
+		}
+		.letters-table a:hover {
+			background-color: #d71344;
+			color:            white;
+		}
+		.letters-table .odd {
+			background-color: #f5f5f5;
+		}
+		{% endif %}
 	</style>
 {% endblock %}
 
@@ -120,6 +159,17 @@
 
 			$('#letters_type').chosen({
 				disable_search: true
+			});
+
+			$('.letters-russian input[value="{{ l|first }}"]').addClass('beige');
+
+			$('.letters-sub input[value="{{ l }}"]').addClass('active').closest('div').show();
+
+			$('.letters-russian input').hover(function() {
+				$('.letters-russian input').removeClass('beige');
+				$(this).addClass('beige');
+				$('.letters-sub > div').hide();
+				$('.letters-sub > div[data="' + $(this).val() + '"]').show();
 			});
 		});
 	</script>

@@ -288,7 +288,6 @@ class SonataController extends Controller
 		$mail->Body     = $html;
 		$mail->addAddress($email);
 
-		# prod - оптравка через Exim, dev/test - отправка через Gmail
 		if ($this->container->getParameter('kernel.environment') == 'prod') {
 			$mail->Host = '127.0.0.1';
 			$mail->From = 'maillist@vidal.ru';
