@@ -1,0 +1,49 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block title %}
+	<h1>{{ rubrique }}</h1>
+{% endblock %}
+
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('articles') }}">Разделы энциклопедии</a>
+	</div>
+{% endblock %}
+
+
+{% block content %}
+	{% if articles|length %}
+		<div class="articles">
+			{% for article in articles %}
+				<div class="article">
+					{# админам карандашик редактирования #}
+					{% if isAdmin %}
+						<a class="admin-edit fade" target="_blank"
+						   href="{{ path('admin_vidal_drug_article_edit', {'id':article.id}) }}">
+							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+						</a>
+					{% endif %}
+					<div class="article-title">
+						<a href="{{ path('article', {'rubrique':rubrique.rubrique, 'link':article.link}) }}">{{ article.title|raw }}</a>
+					</div>
+					<div class="article-announse text">
+						{{ article.announce|raw }}
+					</div>
+					<div class="article-footer">
+						<span class="article-date">{{ article.date|date('d.m.Y') }}</span>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	{% endif %}
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/article.css') }}"/>
+{% endblock %}

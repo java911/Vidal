@@ -1,0 +1,31 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block title %}
+	<h1>НАШИ УСЛУГИ</h1>
+{% endblock %}
+
+
+{% block content %}
+	<div class="divisions">
+		{% for about in items %}
+			<div class="division">
+				<a href="{{ path('services_item', {'url':about.url}) }}" class="division-link">
+					{{ about.title }}
+				</a>
+				{% if isAdmin %}
+					<a class="admin-edit fade" target="_blank"
+					   href="{{ path('admin_vidal_main_aboutservice_edit', {'id':about.id}) }}">
+						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+					</a>
+				{% endif %}
+			</div>
+		{% endfor %}
+	</div>
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/divisions.css') }}"/>
+{% endblock %}

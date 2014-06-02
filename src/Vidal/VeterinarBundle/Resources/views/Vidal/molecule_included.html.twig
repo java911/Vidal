@@ -1,0 +1,51 @@
+{% extends 'VidalVeterinarBundle::vidal_layout.html.twig' %}
+
+{% set moleculeName = molecule.RusName is empty ? molecule.LatName|upper|raw : molecule.RusName|upper|raw %}
+
+{% block vidal %}
+	<h1><a href="{{ path('v_molecule', {'MoleculeID':molecule.MoleculeID}) }}">{{ molecule.LatName|upper|raw }}</a>
+		{% if molecule.RusName is not empty %}
+			<span>({{ molecule.RusName|upper|raw }})</span>
+		{% endif %}
+	</h1>
+
+	<div class="block">
+		<span class="block-head">Международное наименование INN: </span>
+		<a href="{{ path('v_gnp') }}">{{ molecule.GNParent }}</a>
+	</div>
+
+	{% if products1 is defined and products2 is defined %}
+		{# одномкопонентные #}
+		{% if products1 is not empty %}
+			<div class="block">
+				<div class="block-anons">
+					<div class="block-head">Однокомпонентные препараты</div>
+					<div class="block-tip">торговые наименования препаратов, содержащих только активное вещество
+						<span>{{ moleculeName }}</span>
+					</div>
+				</div>
+				{% include 'VidalVeterinarBundle:Vidal:render_products.html.twig' with {'products':products1} %}
+			</div>
+		{% endif %}
+
+		{# многомкопонентные #}
+		{% if products2 is not empty %}
+			<div class="block">
+				<div class="block-anons">
+					<div class="block-head">Многокомпонентые препараты</div>
+					<div class="block-tip">торговые наименования многокомпонентых препаратов, в состав которых входит
+						активное вещество <span>{{ moleculeName }}</span>
+					</div>
+				</div>
+				{% include 'VidalVeterinarBundle:Vidal:render_products.html.twig' with {'products':products2} %}
+			</div>
+		{% endif %}
+	{% else %}
+		<div class="block">
+			<div class="no-results">
+				Не найдено препаратов, содержащих активное вещество <span>{{ moleculeName }}</span>
+			</div>
+		</div>
+	{% endif %}
+
+{% endblock %}

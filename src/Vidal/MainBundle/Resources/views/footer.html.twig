@@ -1,0 +1,19 @@
+{{ render(controller('VidalMainBundle:Banner:render', {'groupId':1})) }}
+
+<div class="footer-info">
+	Информация о препаратах, отпускаемых по рецепту, размещенная на сайте, предназначена только для специалистов.
+	Информация, содержащаяся на сайте, не должна использоваться пациентами для принятия самостоятельного
+	решения о применении представленных лекарственных препаратов и не может служить заменой очной
+	консультации врача.
+</div>
+
+<div class="footer-copyright caption">
+	Copyright <span>&copy;</span> Справочник Видаль &laquo;Лекарственные препараты в России&raquo;
+</div>
+
+<img class="footer-logo" src="{{ asset('bundles/vidalmain/images/vidal-group.jpg') }}"/>
+
+<div class="footer-contacts">
+	<a href="{{ path('about_item', {'url':'kontakty'}) }}">Контакты</a>
+	<a href="{{ path('kontakty_aptek') }}">Контакты аптек</a>
+</div>

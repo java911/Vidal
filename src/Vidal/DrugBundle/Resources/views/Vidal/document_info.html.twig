@@ -1,0 +1,272 @@
+{# Клинико-фармакологический указатель #}
+{#{% if document.clphPointers.count %}#}
+	{#<div class="block" id="clphpointer">#}
+		{#{% if document.clphPointers|length == 1 %}#}
+			{#{% set clphPointer = document.clphPointers[0] %}#}
+			{#<div class="block-head">Клинико-фармакологический указатель</div>#}
+			{#<div class="block-content">#}
+				{#<a href="{{ path('kfu_item', {'id':clphPointer.ClPhPointerID}) }}" class="no-underline">#}
+					{#{{ clphPointer.Name|raw }}#}
+				{#</a>#}
+			{#</div>#}
+		{#{% else %}#}
+			{#<div class="block-head">Клинико-фармакологические указатели</div>#}
+			{#<div class="block-content">#}
+				{#<ul class="ul-style">#}
+					{#{% for clphPointer in document.clphPointers %}#}
+						{#<li>#}
+							{#<a href="{{ path('kfu_item', {'id':clphPointer.ClPhPointerID}) }}" class="no-underline">#}
+								{#{{ clphPointer.Name|raw }}#}
+							{#</a>#}
+						{#</li>#}
+					{#{% endfor %}#}
+				{#</ul>#}
+			{#</div>#}
+		{#{% endif %}#}
+	{#</div>#}
+{#{% endif %}#}
+
+{# Клинико-фармакологическая группа #}
+{% if product is defined and product.clphGroups.count %}
+	<div class="block" id="clphgroup">
+		{% if product.clphGroups|length == 1 %}
+			<span class="block-head">Клинико-фармакологическая группа:</span>
+			<span class="block-content">
+				<a href="{{ path('clinic_group', {'id':product.clphGroups[0].ClPhGroupsID}) }}" class="no-underline">
+					{{ product.clphGroups[0].Name|raw }}
+				</a>
+			</span>
+		{% else %}
+			<div class="block-head">Клинико-фармакологические группы</div>
+			<div class="block-content">
+				<ul class="ul-style">
+					{% for clphGroup in product.clphGroups %}
+						<li>
+							<a href="{{ path('clinic_group', {'id':clphGroup.ClPhGroupsID}) }}" class="no-underline">
+								{{ clphGroup.Name|raw }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endif %}
+	</div>
+{% endif %}
+
+{# Фармако-терапевтическая группа ГосРеестра МинЗдрава РФ #}
+{% if product is defined and product.phthgroups.count %}
+	<div class="block" id="phthgroup">
+		{% if product.phthgroups|length == 1 %}
+			<span class="block-head">Фармако-терапевтическая группа:</span>
+			<span class="block-content">
+				<a href="{{ path('pharm_item', {'id':product.phthgroups[0].id}) }}"
+				   class="no-underline">{{ product.phthgroups[0].Name|raw }}</a>
+			</span>
+		{% else %}
+			<div class="block-head">Фармако-терапевтические группы</div>
+			<div class="block-content">
+				<ul class="ul-style">
+					{% for phthgroup in product.phthgroups %}
+						<li>
+							<a href="{{ path('pharm_item', {'id':phthgroup.id}) }}" class="no-underline">
+								{{ phthgroup.Name|raw }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endif %}
+	</div>
+{% endif %}
+
+{# Фармакологическое действие #}
+{% if document.PhInfluence is not empty %}
+	<div class="block" id="influence">
+		<div class="block-head">Фармакологическое действие</div>
+		<div class="block-content">
+			{% if isDoctor %}
+				{{ document.PhInfluence|raw }}
+			{% else %}
+				{% include 'VidalMainBundle:Auth:closed_info.html.twig' %}
+			{% endif %}
+		</div>
+	</div>
+{% endif %}
+
+{# Фармакокинетика #}
+{% if document.PhKinetics is not empty %}
+	<div class="block" id="kinetics">
+		<div class="block-head">Фармакокинетика</div>
+		<div class="block-content">
+			{% if isDoctor %}
+				{{ document.PhKinetics|raw }}
+			{% else %}
+				{% include 'VidalMainBundle:Auth:closed_info.html.twig' %}
+			{% endif %}
+		</div>
+	</div>
+{% endif %}
+
+{# Показания к применению препарата #}
+{% if document.Indication is not empty %}
+	<div class="block" id="indication">
+		<div class="block-head">Показания</div>
+		<div class="block-content">
+			{{ document.Indication|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Коды МКБ-10 #}
+{% if document.nozologies is not empty %}
+	<div class="mkb">
+		<a href="#" class="mkb-show">Коды МКБ-10</a>
+		<table class="products-table">
+			<tr class="products-table-header">
+				<td style="width:78px">Код МКБ-10</td>
+				<td>Показание</td>
+			</tr>
+			{% for nozology in document.nozologies %}
+				<tr>
+					<td>{{ nozology.Code }}</td>
+					<td><a href="{{ path('nosology_item', {'Code':nozology.Code}) }}"
+						   class="no-underline">{{ nozology.Name|raw }}</a></td>
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+{% endif %}
+
+{# Режим дозирования #}
+{% if document.Dosage is not empty %}
+	<div class="block" id="dosage">
+		<div class="block-head">Режим дозирования</div>
+		<div class="block-content">
+			{{ document.Dosage|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Побочное действие #}
+{% if document.SideEffects is not empty %}
+	<div class="block" id="side_effects">
+		<div class="block-head">Побочное действие</div>
+		<div class="block-content">
+			{{ document.SideEffects|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Противопоказания к применению препарата #}
+{% if document.ContraIndication is not empty %}
+	<div class="block" id="contra">
+		<div class="block-head">Противопоказания к применению</div>
+		<div class="block-content">
+			{{ document.ContraIndication|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Применение препарата при беременности и кормлении грудью #}
+{% if document.Lactation is not empty %}
+	<div class="block" id="preg_lact">
+		<div class="block-head">Применение при беременности и кормлении грудью</div>
+		<div class="block-content">
+			{{ document.Lactation|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Применение при нарушениях функции печени #}
+{% if document.HepatoInsuf is not empty %}
+	<div class="block" id="hepato">
+		<div class="block-head">Применение при нарушениях функции печени</div>
+		<div class="block-content">
+			{{ document.HepatoInsuf|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Применение при нарушениях функции почек #}
+{% if document.RenalInsuf is not empty %}
+	<div class="block" id="renal">
+		<div class="block-head">Применение при нарушениях функции почек</div>
+		<div class="block-content">
+			{{ document.RenalInsuf|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Применение у детей #}
+{% if document.ChildInsuf is not empty %}
+	<div class="block" id="child">
+		<div class="block-head">Применение у детей</div>
+		<div class="block-content">
+			{{ document.ChildInsuf|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Применение у пожилых пациентов #}
+{% if document.ElderlyInsuf is not empty %}
+	<div class="block" id="old">
+		<div class=" block-head">Применение у пожилых пациентов</div>
+		<div class="block-content">
+			{{ document.ElderlyInsuf|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Особые указания #}
+{% if document.SpecialInstruction is not empty %}
+	<div class="block" id="special">
+		<div class="block-head">Особые указания</div>
+		<div class="block-content">
+			{{ document.SpecialInstruction|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Передозировка #}
+{% if document.OverDosage is not empty %}
+	<div class="block" id="over_dosage">
+		<div class="block-head">Передозировка</div>
+		<div class="block-content">
+			{{ document.OverDosage|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Лекарственное взаимодействие #}
+{% if document.Interaction is not empty %}
+	<div class="block" id="interaction">
+		<div class="block-head">Лекарственное взаимодействие</div>
+		<div class="block-content">
+			{% if isDoctor %}
+				{{ document.Interaction|raw }}
+			{% else %}
+				{% include 'VidalMainBundle:Auth:closed_info.html.twig' %}
+			{% endif %}
+		</div>
+	</div>
+{% endif %}
+
+{# Условия отпуска из аптек #}
+{% if document.PharmDelivery is not empty %}
+	<div class="block" id="pharm">
+		<div class="block-head">Условия отпуска из аптек</div>
+		<div class="block-content">
+			{{ document.PharmDelivery|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Условия и сроки хранения #}
+{% if document.StorageCondition is not empty %}
+	<div class="block" id="storage">
+		<div class="block-head">Условия и сроки хранения</div>
+		<div class="block-content">
+			{{ document.StorageCondition|raw }}
+		</div>
+	</div>
+{% endif %}

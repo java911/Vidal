@@ -1,0 +1,84 @@
+{# Фармакологическое действие #}
+{% if document.PhInfluence is not empty %}
+	<div class="block" id="influence">
+		<div class="block-head">Фармакологические (биологические) свойства и эффекты</div>
+		<div class="block-content">
+			{{ document.PhInfluence|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Показания к применению препарата #}
+{% if document.Indication is not empty %}
+	<div class="block" id="indication">
+		<div class="block-head">Показания к применению препарата {{ RusName|raw }}</div>
+		<div class="block-content">
+			{{ document.Indication|raw }}
+		</div>
+		{% if nozologies is defined and nozologies is not empty %}
+			<table class="products-table">
+				<tr class="products-table-header">
+					<td style="width:78px">Код МКБ-10</td>
+					<td>Показание</td>
+				</tr>
+				{% for nozology in nozologies %}
+					<tr>
+						<td>{{ nozology.Code }}</td>
+						<td><a href="{{ path('v_nozology_code', {'NozologyCode':nozology.NozologyCode}) }}"
+							   class="no-underline">{{ nozology.Name|raw }}</a></td>
+					</tr>
+				{% endfor %}
+			</table>
+		{% endif %}
+	</div>
+{% endif %}
+
+{# Режим дозирования #}
+{% if document.Dosage is not empty %}
+	<div class="block" id="dosage">
+		<div class="block-head">Порядок применения</div>
+		<div class="block-content">
+			{{ document.Dosage|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Побочное действие #}
+{% if document.SideEffects is not empty %}
+	<div class="block" id="side_effects">
+		<div class="block-head">Побочные эффекты</div>
+		<div class="block-content">
+			{{ document.SideEffects|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Противопоказания #}
+{% if document.ContraIndication is not empty %}
+	<div class="block" id="contra">
+		<div class="block-head">Противопоказания к применению препарата {{ RusName|raw }}</div>
+		<div class="block-content">
+			{{ document.ContraIndication|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Особые указания #}
+{% if document.SpecialInstruction is not empty %}
+	<div class="block" id="special">
+		<div class="block-head">Особые указания и меры личной профилактики</div>
+		<div class="block-content">
+			{{ document.SpecialInstruction|raw }}
+		</div>
+	</div>
+{% endif %}
+
+{# Условия и сроки хранения #}
+{% if document.StorageCondition is not empty %}
+	<div class="block" id="storage">
+		<div class="block-head">Условия и сроки хранения</div>
+		<div class="block-content">
+			{{ document.StorageCondition|raw }}
+		</div>
+	</div>
+{% endif %}

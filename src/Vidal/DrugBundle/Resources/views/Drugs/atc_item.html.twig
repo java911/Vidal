@@ -1,0 +1,54 @@
+{% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
+
+
+{% block title %}
+	<h1>{{ atc.RusName }}</h1>
+{% endblock %}
+
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('atc') }}"
+		   title="Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)">АТX</a>
+		<i></i>
+		<span>{{ atc.ATCCode }}</span>
+	</div>
+{% endblock %}
+
+
+{% block vidal %}
+	<div class="anons">Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)</div>
+
+	<div class="block">
+		<span class="block-head">АТХ код:</span>
+		<span><b>{{ atc.ATCCode }}</b></span>
+	</div>
+
+	<div class="block">
+		<span class="block-head">Название:</span>
+		<span>{{ atc.RusName }}</span>
+	</div>
+
+	{% if atc.EngName is not empty and atc.EngName != atc.RusName %}
+		<div class="block">
+			<span class="block-head">Латинское название:</span>
+			<span>{{ atc.EngName }}</span>
+		</div>
+	{% endif %}
+
+	{% if products is not empty %}
+		<div class="block">
+			<div class="block-head">Препараты группы</div>
+		</div>
+		{% include 'VidalDrugBundle:Vidal:render_products.html.twig' %}
+	{% else %}
+		<div class="block">
+			<div class="no-results">
+				Не найдено препаратов по AТX коду <span>{{ atc.ATCCode }}</span>
+			</div>
+		</div>
+	{% endif %}
+
+{% endblock %}

@@ -1,0 +1,505 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+{% block content %}
+
+    <div class="breadcrumbs">
+        <a href="{{ path('index') }}">Видаль</a>
+        <i></i>
+        <span>Симптомы</span>
+    </div>
+    <table style="width:100%">
+        <tr>
+            <td>
+                Пол
+                <select class="symptom-select" id="select-sex" style="width: 100px">
+                    <option value="1">Мужской</option>
+                    <option value="2">Женский</option>
+                </select>
+
+
+                    <img src="{{ asset('bundles/vidalmain/images/Reload.png') }}" id="refresh-body" title="Перевернуть" alt="Перевернуть">
+                    <img src="{{ asset('bundles/vidalmain/images/Back.png') }}" id="back-body" title="Вернуться" alt="Вернуться">
+
+
+            </td>
+            <td>
+                Часть тела
+                <select class="symptom-select" id="select-party">
+                    <optgroup label="Голова">
+                        <option value="1"  intro="head" >Лоб</option>
+                        <option value="15" intro="head" >Затылок</option>
+                        <option value="2"  intro="head" >Глаза</option>
+                        <option value="3"  intro="head" >Уши</option>
+                        <option value="4"  intro="head" >Нос</option>
+                        <option value="5"  intro="head" >Губы</option>
+                    </optgroup>
+                    <optgroup label="Туловище">
+                        <option value="7"  intro="all">Шея</option>
+                        <option value="8"  intro="all">Грудь</option>
+                        <option value="16" intro="all-back">Спина</option>
+                        <option value="17" intro="all-back">Поясница</option>
+                        <option value="10" intro="all">Верхняя часть живота</option>
+                        <option value="11" intro="all">Средняя часть живота</option>
+                        <option value="31" intro="all">Нижняя часть живота</option>
+                        <option value="18" intro="all-back">Ягодицы</option>
+                        <option value="13" intro="all">Гениталии</option>
+                    </optgroup>
+                    <optgroup label="Конечности">
+                        <option value="9">Руки</option>
+                        <option value="6">Ноги</option>
+                    </optgroup>
+                    <option value="14">Общие симптомы</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+
+
+            <td id="body-render" style="vertical-align: top;">
+                {{ render(controller('VidalMainBundle:Symptom:body')) }}
+            </td>
+            <td style="vertical-align: top; text-align: left">
+
+
+
+
+            <br />
+                <div style="text-align: left">
+                    <h2 id="h2-symptom">Укажите симптом:</h2>
+                </div>
+                <ul class="list-disease" id="select-symptom"></ul>
+                <br />
+                <div id="list-box">
+                    <div>
+                        <h2 id="h2-disease">Уточните симптом:</h2>
+                        <h2 id="h2-state">Возможные заболевания:</h2>
+                        <ul class="list-disease" id="select-disease"></ul>
+                        <ul class="list-disease" id="select-state"></ul>
+                    </div>
+                    <a href="#" id="state-back">Назад</a>
+                    <br />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" id="articles-box">
+
+            </td>
+        </tr>
+    </table>
+{% endblock %}
+
+
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/vidalmain/jquery-chosen/chosen.jquery.min.js') }}"></script>
+    <script>
+    // Всякие глобальные переменные
+    var sex = 1;
+    var party = 'all';
+    var subParty = 'all';
+    var symptom  = 'all';
+    var disease  = 0;
+    var state  = 0;
+
+    var party_men
+    party_men= '<optgroup label="Голова">'+
+            '<option value="1"  intro="head">Лоб</option>'+
+            '<option value="15" intro="head">Затылок</option>'+
+            '<option value="2"  intro="head">Глаза</option>'+
+            '<option value="3"  intro="head">Уши</option>'+
+            '<option value="4"  intro="head">Нос</option>'+
+            '<option value="5"  intro="head">Губы</option>'+
+            '</optgroup>'+
+            '<optgroup label="Туловище">'+
+            '<option value="7"  intro="all">Шея</option>'+
+            '<option value="8"  intro="all">Грудь</option>'+
+            '<option value="16" intro="all-back">Спина</option>'+
+            '<option value="17" intro="all-back">Поясница</option>'+
+            '<option value="10" intro="all">Верхняя часть живота</option>'+
+            '<option value="11" intro="all">Средняя часть живота</option>'+
+            '<option value="31" intro="all">Нижняя часть живота</option>'+
+            '<option value="18" intro="all-back">Ягодицы</option>'+
+            '<option value="13" intro="all">Гениталии</option>'+
+            '</optgroup>'+
+            '<optgroup label="Конечности">'+
+            '<option value="9" intro="all">Руки</option>'+
+            '<option value="6" intro="all">Ноги</option>'+
+            '</optgroup>'+
+            '<option value="14" intro="all">Общие симптомы</option>';
+
+    var party_women
+    party_women= '<optgroup label="Голова">'+
+            '<option value="20" intro="head" >Лоб</option>'+
+            '<option value="34" intro="head" >Затылок</option>'+
+            '<option value="21" intro="head" >Глаза</option>'+
+            '<option value="22" intro="head" >Уши</option>'+
+            '<option value="23" intro="head" >Нос</option>'+
+            '<option value="24" intro="head" >Губы</option>'+
+            '</optgroup>'+
+            '<optgroup label="Туловище">'+
+            '<option value="26" intro="all">Шея</option>'+
+            '<option value="27" intro="all">Грудь</option>'+
+            '<option value="35" intro="all-back">Спина</option>'+
+            '<option value="36" intro="all-back">Поясница</option>'+
+            '<option value="29" intro="all">Верхняя часть живота</option>'+
+            '<option value="30" intro="all">Средняя часть живота</option>'+
+            '<option value="31" intro="all">Нижняя часть живота</option>'+
+            '<option value="37" intro="all-back">Ягодицы</option>'+
+            '<option value="38" intro="all">Гениталии</option>'+
+            '</optgroup>'+
+            '<optgroup label="Конечности">'+
+            '<option value="28" intro="all">Руки</option>'+
+            '<option value="25" intro="all">Ноги</option>'+
+            '</optgroup>'+
+            '<option value="33" intro="all">Общие симптомы</option>';
+
+
+
+    $(document).ready(function(){
+        $('select').chosen({
+            disable_search: true,
+            no_results_text: "не найдено"
+        });
+
+        $('#body-render').on('click','rect', function(){
+            if ($(this).attr('intro') == 'head' ){
+                party = 'head';
+                $('#refresh-body').css('display','none');
+                $('#back-body').css('display','block');
+                renderBody();
+            }else{
+//                $('#refresh-body').css('display','block');
+//                $('#back-body').css('display','none');
+                subParty = $(this).attr('data-key');
+                $('#select-party').children('optgroup').children('option').filter(function(){ return $(this).val() == subParty }).attr('selected' , 'selected');
+                $('#select-party').trigger("chosen:updated");
+                renderSymptom();
+            }
+            return false;
+        });
+
+        $('#body-render').on('click','area', function(){
+            if ($(this).attr('intro') == 'head' ){
+                party = 'head';
+                $('#refresh-body').css('display','none');
+                $('#back-body').css('display','block');
+                renderBody();
+            }else{
+//                $('#refresh-body').css('display','block');
+//                $('#back-body').css('display','none');
+                subParty = $(this).attr('data-key');
+                $('#select-party').children('optgroup').children('option').filter(function(){ return $(this).val() == subParty }).attr('selected' , 'selected');
+                $('#select-party').trigger("chosen:updated");
+                renderSymptom();
+            }
+            return false;
+        });
+
+
+        $('#select-state').on('click','li', function(){
+            $('#select-state').children('li').css('background','#FFFFFF');
+            $('#select-state').children('li').css('color','#D71344');
+            $(this).css('background','#D71344');
+            $(this).css('color','#FFFFFF');
+
+            state = $(this).attr('data-key');
+            url  = Routing.generate('render_symptom_article', { 'stateId' : state });
+            $.ajax({
+                url: url,
+                cache: false,
+                success: function(html){
+                    $('#articles-box').html(html);
+//                        $('#select-symptom li').bind('click', 'selectSymptomChange');
+                    $('#state-back').fadeIn();
+                }
+            });
+
+            return false;
+        });
+
+        $('#state-back').click(function(){
+//                $('#list-box div').animate({ marginLeft: '0px' },300, function(){$('#select-disease').fadeIn();$('#select-state').fadeOut();});
+            $('#select-disease').fadeIn();
+            $('#select-state').fadeOut();
+            $('#state-back').fadeOut();
+            $('#articles-box').html('');
+
+            $('#h2-disease').fadeIn(0);
+            $('#h2-state').fadeOut(0);
+            return false;
+        });
+
+        // При смене пола меняет картику
+        $('#select-sex').change(function(){
+            sex = $('#select-sex').val();
+            if (sex == 1){
+                $('#select-party').html(party_men)
+            }else{
+                $('#select-party').html(party_women)
+            }
+            $('#select-party').chosen({
+                disable_search: true,
+                no_results_text: "не найдено"
+            });
+
+
+            renderBody();
+        });
+
+
+
+        $('#select-party').on('change',function(){
+            p = $('#select-party').val();
+            if ( p == 1  || p == 15 || p == 2  || p == 3  || p == 4  || p == 5  || p == 20  || p == 34  || p == 21  || p == 22  || p == 23  || p == 250 ){
+                party = 'head';
+                $('#refresh-body').css('display','none');
+                $('#back-body').css('display','block');
+            }else{
+                if ( p == 7  || p == 8 || p == 10  || p == 11  || p == 31  || p == 13  || p == 9  || p == 6  || p == 14  || p == 25  || p == 28  || p == 33  || p == 26  || p == 27  || p == 29  || p == 30  || p == 38   ){
+                    party = 'all';
+                    $('#refresh-body').css('display','block');
+                    $('#back-body').css('display','none');
+                }else{
+                    if ( p == 16  || p == 17 || p == 18  || p == 35  || p == 36  || p == 37   ){
+                        party = 'all-back';
+                        $('#refresh-body').css('display','block');
+                        $('#back-body').css('display','none');
+                    }
+                }
+            }
+            renderBody();
+            selectPatryChange($(this));
+            $('#select-disease').fadeOut();
+//                $('#select-disease').fadeIn();
+            $('#select-state').fadeOut();
+            $('#state-back').fadeOut();
+            $('#h2-disease').fadeOut(0);
+            $('#h2-state').fadeOut(0);
+            $('#articles-box').html('');
+        });
+
+        $('#select-symptom').on('click','li',function(){
+            $('#select-symptom').children('li').css('background','#FFFFFF');
+            $('#select-symptom').children('li').css('color','#D71344');
+            $(this).css('background','#D71344');
+            $(this).css('color','#FFFFFF');
+            selectSymptomChange($(this));
+            $('#select-disease').fadeIn();
+            $('#select-state').fadeOut();
+            $('#state-back').fadeOut();
+            $('#h2-disease').fadeIn(0);
+            $('#h2-state').fadeOut(0);
+            $('#articles-box').html('');
+            document.location.href = '#h2-disease';
+        });
+
+        $('#select-disease').on('click','li',function(){
+            $('#select-disease').children('li').css('background','#FFFFFF');
+            $('#select-disease').children('li').css('color','#D71344');
+            $(this).css('background','#D71344');
+            $(this).css('color','#FFFFFF');
+            selectDiseaseChange($(this));
+            if ($('#select-state').children('li').length > 1){
+                $('#h2-state').html('Возможные заболевания');
+            }else{
+                $('#h2-state').html('Возможное заболевание');
+            }
+            $('#state-back').fadeIn();
+            $('#h2-disease').fadeOut(0);
+            $('#h2-state').fadeIn(0);
+            $('#articles-box').html('');
+        });
+
+
+        function selectPatryChange(obj){
+            subParty = obj.val();
+            renderSymptom();
+        }
+        function selectSymptomChange(obj){
+            symptom = obj.attr('data-key');
+            renderDisease();
+        }
+        function selectDiseaseChange(obj){
+            disease = obj.attr('data-key');
+            renderState();
+//                $('#list-box div').animate({marginLeft: -322},300, function(){$('#select-disease').fadeOut(); $('#select-state').fadeIn();});
+            $('#select-disease').fadeOut();
+            $('#select-state').fadeIn();
+        }
+
+        function renderSymptom(){
+            url  = Routing.generate('render_symptom', { 'party' : subParty });
+            $.ajax({
+                url: url,
+                cache: false,
+                success: function(html){
+                    $('#select-symptom').html(html);
+//                        $('#select-symptom li').bind('click', 'selectSymptomChange');
+                }
+            });
+        };
+        function renderBody(){
+            url  = Routing.generate('symptom_body', { 'sex' : sex , 'party' : party });
+            $.ajax({
+                url: url,
+                cache: false,
+                success: function(html){
+                    $("#body-render").html(html);
+                }
+            });
+        };
+        function renderDisease(){
+            url  = Routing.generate('render_disease', { 'symptom' : symptom });
+            $.ajax({
+                url: url,
+                cache: false,
+                success: function(html){
+                    $('#select-disease').html(html);
+                }
+            });
+        };
+        function renderState(){
+            url  = Routing.generate('render_state', { 'disease' : disease });
+            $.ajax({
+                url: url,
+                cache: false,
+                success: function(html){
+                    $('#select-state').html(html);
+                }
+            });
+        };
+
+        $('#refresh-body').click(function(){
+            if (party == 'all'){
+                party = 'all-back';
+            }else{
+                if (party == 'all-back' ){
+                    party = 'all';
+                }
+            }
+            renderBody();
+        });
+
+        $('#back-body').click(function(){
+            $('#refresh-body').css('display','block');
+            $('#back-body').css('display','none');
+            party = 'all';
+            renderBody();
+        });
+
+        renderSymptom();
+    });
+
+
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        #list-box{
+            width: 332px;
+            overflow: hidden;
+            text-align: left;
+        }
+        #list-box div{
+            width: 664px;
+        }
+        .symptom-select{
+            width: 240px;
+            text-align: left;
+        }
+        .list-disease{
+            border: 2px solid #EEE;
+            border-radius: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-left: 0;
+            width: 318px;
+            display: inline-block;
+        }
+        .list-disease li{
+            list-style: none;
+            padding: 5px;
+            margin-left: 0;
+            text-align: left;
+            color: #D71344;
+        }
+        .list-disease li:hover{
+            background: #D71344;
+            color: #FFF;
+            cursor: pointer;
+        }
+        .article-title{
+            font-weight: bold;
+            font-size: 17px;
+            text-decoration: none;
+        }
+        .article-announce{
+            text-align: justify;
+        }
+        area{
+            /*outline: none;*/
+            outline: 1px solid #FF0000;
+        }
+        area:focus{
+            /*outline: none;*/
+        }
+        #state-back{
+            display: none;
+        }
+        #select-disease{
+            display: none;
+        }
+        #select-state{
+            display: none;
+        }
+        #h2-disease{
+            display: none;
+        }
+        #h2-state{
+            display: none;
+        }
+        #refresh-body{
+            width: 32px;
+            position: absolute;
+            top: 95px;
+            left: 30px;
+            z-index: 999;
+            cursor: pointer;
+        }
+        #back-body{
+            width: 32px;
+            position: absolute;
+            top: 95px;
+            left: 30px;
+            z-index: 999;
+            cursor: pointer;
+            display: none;
+        }
+        #body-render{
+            width: 200px !important;
+        }
+        #Navigation{
+            height: 350px;
+        }
+        svg{
+            width: 200px;
+        }
+        svg rect{
+            fill-opacity: 0;
+            fill: #CC0000;
+        }
+        svg rect:hover{
+            fill-opacity: 0.5;
+            fill: #CC0000;
+            cursor: pointer;
+        }
+        .patry-box img{
+            border: none;
+        }
+    </style>
+{% endblock %}

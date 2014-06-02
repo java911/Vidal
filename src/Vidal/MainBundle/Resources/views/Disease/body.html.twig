@@ -1,0 +1,111 @@
+{# Тут будет генерация тела из кусочков с лейблами #}
+<style>
+    .patry-box{
+        position: relative;
+    }
+</style>
+{% if sex == 1 and party == 'all' %}
+    <div class="patry-box">
+        <img src="{{ asset('bundles/vidalmain/images/disease/1.png') }}" usemap="#Navigation">
+        <p>
+        <map id="Navigation" name="Navigation">
+            <area shape="poly" intro="head" coords="80,5, 120,5, 120,55, 80,55" href="#" title="Голова">
+            <area shape="poly" intro="null" data-key="7" coords="80,55, 120,55, 120,70, 80,70" href="#" title="Шея">
+            <area shape="poly" intro="null" data-key="8" coords="80,70, 120,70, 120,100, 80,100" href="#" title="Грудь">
+            <area shape="poly" intro="null" data-key="10" coords="80,100, 120,100, 120,120, 80,120" href="#" title="Врехняя часть живота">
+            <area shape="poly" intro="null" data-key="11" coords="80,120, 120,120, 120,140, 80,140" href="#" title="Средняя часть живота">
+            <area shape="poly" intro="null" data-key="31" coords="80,140, 120,140, 120,160, 80,160" href="#" title="Нижняя часть живота">
+            <area shape="poly" intro="null" data-key="13" coords="80,160, 120,160, 120,200, 80,200" href="#" title="Гениталии">
+
+            <area shape="poly" intro="null" data-key="9" coords="55,100, 80,100, 80,210, 55,210" href="#" title="Руки">
+            <area shape="poly" intro="null" data-key="9" coords="125,100, 150,100, 150,210, 125,210" href="#" title="Руки">
+
+            <area shape="poly" intro="null" data-key="6"  coords="70,200, 130,200, 130,320, 70,320" href="#" title="Ноги">
+
+        </map>
+        </p>
+    </div>
+{% elseif sex == 2 and party == 'all' %}
+    <div class="patry-box">
+        <img src="{{ asset('bundles/vidalmain/images/disease/4.png') }}" usemap="#Navigation">
+        <p>
+            <map id="Navigation" name="Navigation">
+            <area shape="poly" intro="head"                   coords="85,5,    125,5,   125,55,  85,55" href="#" title="Голова">
+                <area shape="poly" intro="null" data-key="26"  coords="85,55,   125,55,  125,70,  85,70" href="#" title="Шея">
+                <area shape="poly" intro="null" data-key="27"  coords="85,70,   125,70,  125,100, 85,100" href="#" title="Грудь">
+                <area shape="poly" intro="null" data-key="29" coords="85,100,  125,100, 125,120, 85,120" href="#" title="Врехняя часть живота">
+                <area shape="poly" intro="null" data-key="30" coords="85,120,  125,120, 125,140, 85,140" href="#" title="Средняя часть живота">
+                <area shape="poly" intro="null" data-key="31" coords="85,140,  125,140, 125,160, 85,160" href="#" title="Нижняя часть живота">
+                <area shape="poly" intro="null" data-key="38" coords="85,160,  125,160, 125,200, 85,200" href="#" title="Гениталии">
+                <area shape="poly" intro="null" data-key="25"  coords="80,200, 135,200, 135,320, 80,320" href="#" title="Ноги">
+
+                <area shape="poly" intro="null" data-key="28"  coords="55,80,   80,80,   80,210, 55,210" href="#" title="Руки">
+                <area shape="poly" intro="null" data-key="28"  coords="125,80, 150,80, 150,210, 125,210" href="#" title="Руки">
+            </map>
+        </p>
+    </div>
+{% elseif sex == 1 and party == 'all-back' %}
+    <div class="patry-box">
+        <img src="{{ asset('bundles/vidalmain/images/disease/2.png') }}" usemap="#Navigation">
+        <p>
+            <map id="Navigation" name="Navigation">
+                <area shape="poly" intro="head"               coords="80,5,    120,5,   120,55,  80,55"   href="#" title="Голова">
+                <area shape="poly" intro="null" data-key="7"  coords="70,55,   130,55,  130,75,  70,75"  href="#" title="Шея">
+                <area shape="poly" intro="null" data-key="16" coords="70,75,  130,75,  130,150, 70,150" href="#" title="Спина">
+                <area shape="poly" intro="null" data-key="17" coords="70,150, 130,150, 130,165, 70,165" href="#" title="Поясница">
+                <area shape="poly" intro="null" data-key="18" coords="70,165, 130,165, 130,200, 70,200" href="#" title="Ягодицы">
+                <area shape="poly" intro="null" data-key="6"  coords="70,200, 130,200, 130,320, 70,320" href="#" title="Ноги">
+
+                <area shape="poly" intro="null" data-key="9"  coords="55,75,   70,75,  70,200, 55,200"  href="#" title="Руки">
+                <area shape="poly" intro="null" data-key="9"  coords="130,75,  145,75,  145,200, 130,200" href="#" title="Руки">
+            </map>
+        </p>
+    </div>
+{% elseif sex == 2 and party == 'all-back' %}
+    <div class="patry-box">
+        <img src="{{ asset('bundles/vidalmain/images/disease/5.png') }}" usemap="#Navigation">
+        <p>
+            <map id="Navigation" name="Navigation">
+                <area shape="poly" intro="head"               coords="90,5,   125,5,   125,55,  90,55"   href="#" title="Голова">
+                <area shape="poly" intro="null" data-key="26"  coords="80,55,  135,55,  135,75,  80,75"  href="#" title="Шея">
+                <area shape="poly" intro="null" data-key="35" coords="80,75,  135,75,  135,150, 80,150" href="#" title="Спина">
+                <area shape="poly" intro="null" data-key="36" coords="80,150, 135,150, 135,165, 80,165" href="#" title="Поясница">
+                <area shape="poly" intro="null" data-key="37" coords="80,165, 135,165, 135,200, 80,200" href="#" title="Ягодицы">
+                <area shape="poly" intro="null" data-key="25"  coords="80,200, 135,200, 135,320, 80,320" href="#" title="Ноги">
+
+                <area shape="poly" intro="null" data-key="28"  coords="60,75,   75,75,  75,200, 60,200"  href="#" title="Руки">
+                <area shape="poly" intro="null" data-key="28"  coords="135,75,  150,75,  150,200, 135,200" href="#" title="Руки">
+            </map>
+        </p>
+    </div>
+{% elseif sex == 1 and party == 'head' %}
+    <div class="patry-box">
+        <img src="{{ asset('bundles/vidalmain/images/disease/3.png') }}" usemap="#Navigation">
+        <p>
+            <map id="Navigation" name="Navigation">
+                <area shape="poly" intro="null" data-key="1" coords="50,110, 155,110, 155,140, 50,140" href="#" title="Лоб">
+                <area shape="poly" intro="null" data-key="2" coords="50,155, 155,155, 155,180, 50,180" href="#" title="Глаза">
+                <area shape="poly" intro="null" data-key="4" coords="85,180, 120,180, 120,210, 85,210" href="#" title="Нос">
+                <area shape="poly" intro="null" data-key="5" coords="75,220, 125,220, 125,240, 75,240" href="#" title="Рот">
+
+                <area shape="poly" intro="null" data-key="3" coords="15,150, 35,150, 35,220, 15,220" href="#" title="Уши">
+                <area shape="poly" intro="null" data-key="3" coords="165,150, 185,150, 185,220, 165,220" href="#" title="Уши">
+            </map>
+        </p>
+    </div>
+{% elseif sex == 2 and party == 'head' %}
+    <div class="patry-box">
+        <img src="{{ asset('bundles/vidalmain/images/disease/6.png') }}" usemap="#Navigation">
+        <p>
+            <map id="Navigation" name="Navigation">
+                <area shape="poly" intro="null" data-key="20" coords="50,90, 155,90, 155,120, 50,120" href="#" title="Лоб">
+                <area shape="poly" intro="null" data-key="21" coords="50,125, 155,125, 155,150, 50,150" href="#" title="Глаза">
+                <area shape="poly" intro="null" data-key="23" coords="85,150, 120,150, 120,180, 85,180" href="#" title="Нос">
+                <area shape="poly" intro="null" data-key="24" coords="82,180, 125,180, 125,210, 82,210" href="#" title="Рот">
+
+                <area shape="poly" intro="null" data-key="22" coords="25,120, 45,120, 45,200, 25,200" href="#" title="Уши">
+                <area shape="poly" intro="null" data-key="22" coords="165,120, 185,120, 185,200, 165,200" href="#" title="Уши">
+            </map>
+        </p>
+    </div>
+{% endif %}

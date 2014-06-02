@@ -1,0 +1,17 @@
+node_modules
+web/bundles/
+web/upload
+web/images
+web/download
+web/netcat_files
+app/bootstrap*
+app/cache/*
+app/config/parameters.yml
+app/logs/*
+build/
+vendor/
+bin/
+.idea/*
+mysql-connector-*
+.gitconfig
+node_modules/

@@ -1,0 +1,87 @@
+{% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
+
+
+{% set isDoctor = is_granted('ROLE_DOCTOR') %}
+
+
+{% block title %}
+	<h1>{{ molecule.LatName|upper|raw }}
+		{% if molecule.RusName is not empty %}
+			<span>({{ molecule.RusName|upper|raw }})</span>
+		{% endif %}
+	</h1>
+{% endblock %}
+
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('molecules') }}">Активные вещества</a>
+		<i></i>
+		<span>{{ molecule.LatName|upper|raw }}</span>
+	</div>
+{% endblock %}
+
+
+{% block vidal %}
+	{% if molecule.GNParent is not empty %}
+		<div class="mnn anons">
+			<a title="Международное непатентованное наименование (МНН)" href="{{ path('gnp') }}"
+			   class="no-underline mnn">{{ molecule.GNParent }}</a>
+			<span class="small italic">{{ molecule.GNParent.description }}</span>
+		</div>
+	{% endif %}
+
+	{% if document %}
+		{% include 'VidalDrugBundle:Vidal:document_navigation.html.twig' %}
+	{% endif %}
+
+	<div class="block">
+		<span class="block-head">Входит в состав препаратов: </span>
+		<a href="{{ path('molecule_included', {'MoleculeID':molecule.MoleculeID}) }}">список</a>
+	</div>
+
+	{% if document %}
+		{% include 'VidalDrugBundle:Vidal:document_info.html.twig' %}
+	{% endif %}
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.mkb {
+			margin-top: 6px;
+		}
+		.mkb .products-table {
+			display: none;
+		}
+		#vidal .mnn.anons {
+			margin-left: 0;
+			font-size: 15px;
+		}
+		#vidal .mnn.anons a {
+			font-weight: bold;
+		}
+	</style>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.copy textarea')
+				.focus(function() { $(this).css('opacity', '1'); })
+				.blur(function() { $(this).css('opacity', '0.5'); });
+
+			$('.mkb-show').click(function() {
+				$('.mkb .products-table').show();
+				$(this).hide();
+				return false;
+			});
+		});
+	</script>
+{% endblock %}
+

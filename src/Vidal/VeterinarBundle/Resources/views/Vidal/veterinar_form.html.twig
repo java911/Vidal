@@ -1,0 +1,107 @@
+<form id="veterinar_form" method="GET" action="{{ path('veterinar') }}">
+
+	<div class="veterinar-search">
+		<select id="veterinar_type" name="t">
+			<option value="p"{{ t == 'p' ? ' selected="selected"' }}>Препараты</option>
+			<option value="c"{{ t == 'c' ? ' selected="selected"' }}>Фирмы-производители</option>
+			<option value="r"{{ t == 'r' ? ' selected="selected"' }}>Представительства фирм</option>
+		</select>
+
+		<input id="veterinar_input" type="text" name="q" placeholder="Введите слово для поиска..."
+			   value="{{ q is defined and q is not empty and not l ? q }}"/>
+		<input id="veterinar_submit" type="submit" value="Найти" class="btn-red">
+	</div>
+
+	<input type="hidden" name="p" id="s_page" value="{{ p }}"/>
+
+	<div class="veterinar-letters">
+		<div class="p">
+			<input type="submit" value="А" name="l" {{ l == 'А' ? ' class="active"' }}/>
+			<input type="submit" value="Б" name="l" {{ l == 'Б' ? ' class="active"' }}/>
+			<input type="submit" value="В" name="l" {{ l == 'В' ? ' class="active"' }}/>
+			<input type="submit" value="Г" name="l" {{ l == 'Г' ? ' class="active"' }}/>
+			<input type="submit" value="Д" name="l" {{ l == 'Д' ? ' class="active"' }}/>
+			<input type="submit" value="Е" name="l" {{ l == 'Е' ? ' class="active"' }}/>
+			<input type="submit" value="З" name="l" {{ l == 'З' ? ' class="active"' }}/>
+			<input type="submit" value="И" name="l" {{ l == 'И' ? ' class="active"' }}/>
+			<input type="submit" value="Й" name="l" {{ l == 'Й' ? ' class="active"' }}/>
+			<input type="submit" value="К" name="l" {{ l == 'К' ? ' class="active"' }}/>
+			<input type="submit" value="Л" name="l" {{ l == 'Л' ? ' class="active"' }}/>
+			<input type="submit" value="М" name="l" {{ l == 'М' ? ' class="active"' }}/>
+			<input type="submit" value="Н" name="l" {{ l == 'Н' ? ' class="active"' }}/>
+			<input type="submit" value="О" name="l" {{ l == 'О' ? ' class="active"' }}/>
+			<input type="submit" value="П" name="l" {{ l == 'П' ? ' class="active"' }}/>
+			<input type="submit" value="Р" name="l" {{ l == 'Р' ? ' class="active"' }}/>
+			<input type="submit" value="С" name="l" {{ l == 'С' ? ' class="active"' }}/>
+			<input type="submit" value="Т" name="l" {{ l == 'Т' ? ' class="active"' }}/>
+			<input type="submit" value="У" name="l" {{ l == 'У' ? ' class="active"' }}/>
+			<input type="submit" value="Ф" name="l" {{ l == 'Ф' ? ' class="active"' }}/>
+			<input type="submit" value="Х" name="l" {{ l == 'Х' ? ' class="active"' }}/>
+			<input type="submit" value="Ц" name="l" {{ l == 'Ц' ? ' class="active"' }}/>
+			<input type="submit" value="Ч" name="l" {{ l == 'Ч' ? ' class="active"' }}/>
+			<input type="submit" value="Ш" name="l" {{ l == 'Ш' ? ' class="active"' }}/>
+			<input type="submit" value="Э" name="l" {{ l == 'Э' ? ' class="active"' }}/>
+			<input type="submit" value="Ю" name="l" {{ l == 'Ю' ? ' class="active"' }}/>
+			<input type="submit" value="8" name="l" class="en{{ l == '8' ? ' active' }}"/>
+		</div>
+
+		<div class="c">
+			<input type="submit" value="А" name="l" {{ l == 'А' ? ' class="active"' }}/>
+			<input type="submit" value="Б" name="l" {{ l == 'Б' ? ' class="active"' }}/>
+			<input type="submit" value="В" name="l" {{ l == 'В' ? ' class="active"' }}/>
+			<input type="submit" value="Г" name="l" {{ l == 'Г' ? ' class="active"' }}/>
+			<input type="submit" value="Д" name="l" {{ l == 'Д' ? ' class="active"' }}/>
+			<input type="submit" value="З" name="l" {{ l == 'З' ? ' class="active"' }}/>
+			<input type="submit" value="К" name="l" {{ l == 'К' ? ' class="active"' }}/>
+			<input type="submit" value="М" name="l" {{ l == 'М' ? ' class="active"' }}/>
+			<input type="submit" value="Н" name="l" {{ l == 'Н' ? ' class="active"' }}/>
+			<input type="submit" value="О" name="l" {{ l == 'О' ? ' class="active"' }}/>
+			<input type="submit" value="П" name="l" {{ l == 'П' ? ' class="active"' }}/>
+			<input type="submit" value="Т" name="l" {{ l == 'Т' ? ' class="active"' }}/>
+			<input type="submit" value="Ф" name="l" {{ l == 'Ф' ? ' class="active"' }}/>
+			<input type="submit" value="Х" name="l" {{ l == 'Х' ? ' class="active"' }}/>
+			<input type="submit" value="Ц" name="l" {{ l == 'Ц' ? ' class="active"' }}/>
+			<input type="submit" value="8" name="l" class="en{{ l == '8' ? ' active' }}"/>
+			<input type="submit" value="A" name="l" class="en{{ l == 'A' ? ' active' }}"/>
+			<input type="submit" value="B" name="l" class="en{{ l == 'B' ? ' active' }}"/>
+			<input type="submit" value="E" name="l" class="en{{ l == 'E' ? ' active' }}"/>
+			<input type="submit" value="F" name="l" class="en{{ l == 'F' ? ' active' }}"/>
+			<input type="submit" value="H" name="l" class="en{{ l == 'H' ? ' active' }}"/>
+			<input type="submit" value="I" name="l" class="en{{ l == 'I' ? ' active' }}"/>
+			<input type="submit" value="K" name="l" class="en{{ l == 'K' ? ' active' }}"/>
+			<input type="submit" value="L" name="l" class="en{{ l == 'L' ? ' active' }}"/>
+			<input type="submit" value="N" name="l" class="en{{ l == 'N' ? ' active' }}"/>
+			<input type="submit" value="O" name="l" class="en{{ l == 'O' ? ' active' }}"/>
+			<input type="submit" value="P" name="l" class="en{{ l == 'P' ? ' active' }}"/>
+			<input type="submit" value="S" name="l" class="en{{ l == 'S' ? ' active' }}"/>
+			<input type="submit" value="T" name="l" class="en{{ l == 'T' ? ' active' }}"/>
+			<input type="submit" value="V" name="l" class="en{{ l == 'V' ? ' active' }}"/>
+			<input type="submit" value="W" name="l" class="en{{ l == 'W' ? ' active' }}"/>
+		</div>
+
+		<div class="r">
+			<input type="submit" value="А" name="l" {{ l == 'А' ? ' class="active"' }}/>
+			<input type="submit" value="Б" name="l" {{ l == 'Б' ? ' class="active"' }}/>
+			<input type="submit" value="В" name="l" {{ l == 'В' ? ' class="active"' }}/>
+			<input type="submit" value="Г" name="l" {{ l == 'Г' ? ' class="active"' }}/>
+			<input type="submit" value="Д" name="l" {{ l == 'Д' ? ' class="active"' }}/>
+			<input type="submit" value="З" name="l" {{ l == 'З' ? ' class="active"' }}/>
+			<input type="submit" value="И" name="l" {{ l == 'И' ? ' class="active"' }}/>
+			<input type="submit" value="К" name="l" {{ l == 'К' ? ' class="active"' }}/>
+			<input type="submit" value="М" name="l" {{ l == 'М' ? ' class="active"' }}/>
+			<input type="submit" value="Н" name="l" {{ l == 'Н' ? ' class="active"' }}/>
+			<input type="submit" value="О" name="l" {{ l == 'О' ? ' class="active"' }}/>
+			<input type="submit" value="П" name="l" {{ l == 'П' ? ' class="active"' }}/>
+			<input type="submit" value="Р" name="l" {{ l == 'Р' ? ' class="active"' }}/>
+			<input type="submit" value="С" name="l" {{ l == 'С' ? ' class="active"' }}/>
+			<input type="submit" value="Т" name="l" {{ l == 'Т' ? ' class="active"' }}/>
+			<input type="submit" value="Ф" name="l" {{ l == 'Ф' ? ' class="active"' }}/>
+			<input type="submit" value="Х" name="l" {{ l == 'Х' ? ' class="active"' }}/>
+			<input type="submit" value="Ц" name="l" {{ l == 'Ц' ? ' class="active"' }}/>
+			<input type="submit" value="Э" name="l" {{ l == 'Э' ? ' class="active"' }}/>
+			<input type="submit" value="W" name="l" class="en{{ l == 'W' ? ' active' }}"/>
+		</div>
+	</div>
+
+	<div class="clear"></div>
+</form>

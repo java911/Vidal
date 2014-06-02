@@ -1,0 +1,41 @@
+{% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
+
+
+{% block title %}
+	<h1>
+		{{ company.CompanyName|raw }}{{ company.Property is not empty ? ', ' ~ company.Property|raw|replace({'&amp;':'&'}) }}
+	</h1>
+{% endblock %}
+
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('firms') }}">Фирмы-производители</a>
+	</div>
+{% endblock %}
+
+
+{% block vidal %}
+	{# представительства #}
+	{% if productsRepresented is not empty %}
+		<div class="block">
+			<div class="block-head">Информация о препаратах предоставлена представительствами</div>
+			<ul class="ul-style">
+				{% for product in productsRepresented %}
+					<li>
+						<a href="{{ path('inf_item', {'InfoPageID':product.InfoPageID}) }}" class="no-underline">
+							{{ product.InfoPageName }}</a>
+						{% if product.InfoPageCountry is not empty and product.InfoPageCountry != 'Unknown' %}
+							<span class="small">({{ product.InfoPageCountry }})</span>
+						{% endif %}
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	{% endif %}
+
+	{% include 'VidalDrugBundle:Vidal:render_products.html.twig' %}
+
+{% endblock %}

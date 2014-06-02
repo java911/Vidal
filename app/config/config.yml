@@ -1,0 +1,198 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: @VidalDrugBundle/Resources/config/admin.xml }
+
+
+framework:
+    #esi:             ~
+    translator:      { fallback: "%locale%" }
+    secret:          %secret%
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    templating:      { engines: ['twig'], assets_version: v98 }
+    form:            ~
+    csrf_protection: false
+    validation:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+        #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
+    trusted_proxies: ~
+    session:
+        cookie_lifetime: 31536000
+        save_path: '/home/twigavid/vidal/sessions'
+    fragments:       ~
+
+# Twig Configuration
+twig:
+    debug:            %kernel.debug%
+    strict_variables: %kernel.debug%
+    globals:
+        portal: %portal%
+    form:
+        resources:
+            - 'VidalMainBundle:Form:form_table_layout.html.twig'
+
+# Assetic Configuration
+assetic:
+    debug:          %kernel.debug%
+    use_controller: false
+    bundles:        [ ]
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        default_connection: default
+        connections:
+            default:
+                driver:   %database_driver%
+                host:     %database_host%
+                port:     %database_port%
+                dbname:   %database_vidal%
+                user:     %database_user%
+                password: %database_password%
+                charset:  UTF8
+                mapping_types:
+                    enum: string
+                options:
+                    1002: "SET NAMES utf8"
+            drug:
+                driver:   %database_driver%
+                host:     %database_host%
+                port:     %database_port%
+                dbname:   %database_drug%
+                user:     %database_user%
+                password: %database_password%
+                charset:  UTF8
+                mapping_types:
+                    enum: string
+                options:
+                    1002: "SET NAMES utf8"
+            veterinar:
+                driver:   %database_driver%
+                host:     %database_host%
+                port:     %database_port%
+                dbname:   %database_veterinar%
+                user:     %database_user%
+                password: %database_password%
+                charset:  UTF8
+                mapping_types:
+                    enum: string
+                options:
+                    1002: "SET NAMES utf8"
+    orm:
+        auto_generate_proxy_classes: %kernel.debug%
+        entity_managers:
+            default:
+                connection: default
+                mappings:
+                    VidalMainBundle: ~
+            drug:
+                connection: drug
+                mappings:
+                    VidalDrugBundle: ~
+            veterinar:
+                connection: veterinar
+                mappings:
+                    VidalVeterinarBundle: ~
+
+#Iphp FileStore
+iphp_file_store:
+    mappings:
+        avatar:
+            upload_dir: %upload_dir%/avatar
+            upload_path: /upload/avatar
+            overwrite_duplicates: false
+            namer:
+                translit: ~
+        banner:
+            upload_dir: %upload_dir%/banner
+            upload_path: /upload/banner
+            overwrite_duplicates: false
+            namer:
+                 translit: ~
+        photo:
+            upload_dir: %upload_dir%/photo
+            upload_path: /upload/photo
+            overwrite_duplicates: false
+            namer:
+                 translit: ~
+        video:
+            upload_dir: %upload_dir%/video
+            upload_path: /upload/video
+            overwrite_duplicates: false
+            namer:
+                 translit: ~
+        product_photo:
+            upload_dir: %upload_dir%/product_photo
+            upload_path: /upload/product_photo
+            overwrite_duplicates: false
+            namer:
+                 translit: ~
+        infopage_photo:
+            upload_dir: %upload_dir%/infopage_photo
+            upload_path: /upload/infopage_photo
+            overwrite_duplicates: false
+            namer:
+                 translit: ~
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: %mailer_transport%
+    host:      %mailer_host%
+    username:  %mailer_user%
+    password:  %mailer_password%
+    spool:     { type: memory }
+
+
+# KnpPaginator Configuration
+knp_paginator:
+    page_range: 5                      # default page range used in pagination control
+    default_options:
+        page_name: p                   # page query parameter name
+    template:
+        pagination: KnpPaginatorBundle:Pagination:sliding.html.twig     # sliding pagination controls template
+        sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
+
+
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        # Enable the SonataAdminBundle block
+        sonata.admin.block.admin_list:
+            contexts:   [admin]
+        sonata.block.service.text:
+        sonata.block.service.rss:
+
+#Sonata admin configuration
+sonata_admin:
+    title:      Vidal.ru
+    title_logo: /favicon.ico
+    templates:
+        # default global templates
+        layout:  VidalDrugBundle:Sonata:admin_layout.html.twig
+        #ajax:    SonataAdminBundle::ajax_layout.html.twig
+
+        # default actions templates, should extend a global templates
+        list:    VidalDrugBundle:Sonata:list_layout.html.twig
+        show:    SonataAdminBundle:CRUD:show.html.twig
+        edit:    SonataAdminBundle:CRUD:edit.html.twig
+
+    dashboard:
+        blocks:
+            # display a dashboard block
+            - { position: center, type: sonata.admin.block.admin_list }
+
+gregwar_captcha:
+    length:  4
+    charset: 123456789
+    background_color: [255,255,255]
+    max_front_lines: 0
+    max_behind_lines: 0
+    invalid_message: "Проверочный код указан неверно"
+
+ornicar_apc:
+    host: http://www.vidal.ru
+    web_dir: %kernel.root_dir%/../web

@@ -1,0 +1,205 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+{% block content %}
+
+    <div class="breadcrumbs">
+        <a href="{{ path('index') }}">Видаль</a>
+        <i></i>
+        <span>Симптомы</span>
+    </div>
+    <table style="width:100%">
+        <tr>
+            <td>
+                Пол
+                <select class="symptom-select">
+                    <option>Мужской</option>
+                    <option>Женский</option>
+                </select>
+            </td>
+            <td style="text-align: right">
+                Часть тела
+                <select class="symptom-select">
+                    <optgroup label="Голова">
+                        <option>Лоб</option>
+                        <option>Затылок</option>
+                        <option>Глаза</option>
+                        <option>Уши</option>
+                        <option>Нос</option>
+                        <option>Губы</option>
+                    </optgroup>
+                    <optgroup label="Туловище">
+                        <option>Шея</option>
+                        <option>Грудь</option>
+                        <option>Спина</option>
+                        <option>Поясница</option>
+                        <option>Верхняя часть живота</option>
+                        <option>Средняя часть живота</option>
+                        <option>Нижняя часть живота</option>
+                        <option>Ягодицы</option>
+                        <option>Гениталии</option>
+                    </optgroup>
+                    <optgroup label="Конечности">
+                        <option>Руки</option>
+                        <option>ноги</option>
+                    </optgroup>
+                    <option>Ошие симптомы</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div id="svg"></div>
+            </td>
+            <td style="vertical-align: top; text-align: right">
+               <ul class="list-disease">
+                   <li>болит голова</li>
+                   <li>болит голова</li>
+                   <li>болит голова</li>
+                   <li>болит голова</li>
+                   <li>болит голова</li>
+                   <li>болит голова</li>
+                   <li>болит голова</li>
+                   <li>болит голова</li>
+                   <li>болит голова</li>
+                   <li>болит голова</li>
+                   <li>болит голова</li>
+                   <li>болит голова</li>
+               </ul>
+            </td>
+        </tr>
+    </table>
+{% endblock %}
+
+
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/raphail.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/vidalmain/jquery-chosen/chosen.jquery.min.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+
+            $('select').chosen({
+                disable_search: true,
+                no_results_text: "не найдено"
+            });
+
+            var lines = [];
+            var circles = [];
+            var texts = [];
+            var svg = Raphael('svg',282,430);
+
+            svg.image('{{ asset('bundles/vidalmain/images/disease/1.png') }}',0,0,282,430);
+            // Голова
+            lines[0] = svg.path("M 10 40 L 135 40");
+            lines[0].attr("stroke","#cc1111");
+            lines[0].attr("stroke-width","2");
+            lines[0].node.setAttribute("id","line-0");
+            lines[0].node.setAttribute("class","lines");
+            circles[0] = svg.circle(10,40,5);
+            circles[0].attr("stroke","#cc1111");
+            circles[0].attr("fill","#cc1111");
+            circles[0].node.setAttribute("id","circle-0");
+            circles[0].node.setAttribute("class","circles");
+            // Руки
+            lines[1] = svg.path("M 10 200 L 95 200");
+            lines[1].attr("stroke","#cc1111");
+            lines[1].attr("stroke-width","2");
+            lines[1].node.setAttribute("id","line-1");
+            lines[1].node.setAttribute("class","lines");
+            circles[1] = svg.circle(10,200,5);
+            circles[1].attr("stroke","#cc1111");
+            circles[1].attr("fill","#cc1111");
+            circles[1].node.setAttribute("id","circle-1");
+            circles[1].node.setAttribute("class","circles");
+            // Спина
+            lines[2] = svg.path("M 10 120 L 135 120");
+            lines[2].attr("stroke","#cc1111");
+            lines[2].attr("stroke-width","2");
+            lines[2].node.setAttribute("id","line-2");
+            lines[2].node.setAttribute("class","lines");
+            circles[2] = svg.circle(10,120,5);
+            circles[2].attr("stroke","#cc1111");
+            circles[2].attr("fill","#cc1111");
+            circles[2].node.setAttribute("id","circle-2");
+            circles[2].node.setAttribute("class","circles");
+            // Ноги
+            lines[3] = svg.path("M 10 350 L 120 350");
+            lines[3].attr("stroke","#cc1111");
+            lines[3].attr("stroke-width","2");
+            lines[3].node.setAttribute("id","line-3");
+            lines[3].node.setAttribute("class","lines");
+            circles[3] = svg.circle(10,350,5);
+            circles[3].attr("stroke","#cc1111");
+            circles[3].attr("fill","#cc1111");
+            circles[3].node.setAttribute("id","circle-3");
+            circles[3].node.setAttribute("class","circles");
+            // Текст
+            texts[0] = svg.text(30,20, 'Голова').attr({fill: '#FFFFFF', 'font-size': 15 });
+            texts[1] = svg.text(30,180, 'Руки').attr({fill: '#FFFFFF', 'font-size': 15  });
+            texts[2] = svg.text(30,100, 'Спина').attr({fill: '#FFFFFF', 'font-size': 15 });
+            texts[3] = svg.text(30,330, 'Ноги').attr({fill: '#FFFFFF', 'font-size': 15  });
+
+            //Действия
+            $('.circles').hover(
+                function(){
+                    id = this.id;
+                    id = id.substr(-1);
+                    circles[id].animate(
+                            {
+                                r : 7,
+                                fill : '#FF0000'
+                            },200);
+                    texts[id].animate(
+                            {
+                                fill: '#CC1111'
+                            },200);
+                },
+                function(){
+                    id = this.id;
+                    id = id.substr(-1);
+                    circles[id].animate(
+                            {
+                                r : 5,
+                                fill : '#CC1111'
+                            },200);
+                    texts[id].animate(
+                            {
+                                fill: '#FFFFFF'
+                            },200);
+                }
+            );
+        })
+    </script>
+
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .symptom-select{
+            width: 200px;
+            text-align: left;
+        }
+        .list-disease{
+            border: 1px solid #D71344;
+            border-radius: 4px;
+            height: 400px;
+            overflow-y: auto;
+            padding-left: 0;
+        }
+        .list-disease li{
+            list-style: none;
+            padding: 3px 5px;
+            margin-left: 0;
+            border-bottom: 1px solid #aaaaaa;
+            text-align: left;
+        }
+        .list-disease li:hover{
+            background: #DDDDDD;
+            cursor: pointer;
+        }
+
+    </style>
+{% endblock %}

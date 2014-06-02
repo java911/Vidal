@@ -1,0 +1,123 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block title %}
+	<h1>РЕГИСТРАЦИЯ</h1>
+{% endblock %}
+
+
+{% block content %}
+	<div class="anons oldreg">
+		Пользователи, зарегистрированные на старом сайте vidal.ru,
+		могут воспользоваться своим логином и паролем для входа на новый сайт
+	</div>
+
+	<p class="reg-info">Для регистрации заполните форму.
+		<span class="raspberry asterisk">*</span> - поля обязательные для заполнения</p>
+
+	{% if error is defined %}
+		<div class="error anons">
+			Извините, такой e-mail адрес уже занят. Если он принадлежит Вам, то вы можете воспользоваться функцией
+			<a href="{{ path('password_reset') }}">восстановления пароля</a>
+		</div>
+	{% endif %}
+
+	<form id="register_form" action="{{ path('registration') }}" method="post" {{ form_enctype(form) }}>
+		{% form_theme form 'VidalMainBundle:Form:registration_form.html.twig' %}
+		{{ form_widget(form) }}
+		<p class="addition-info">Специализацию вы можете указать в профиле после регистрации</p>
+	</form>
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.reg-info {
+			color:     #777777;
+			margin:    10px 0 20px;
+			font-size: 90%;
+		}
+		.addition-info {
+			color:      #777777;
+			margin:     10px 0 0;
+			text-align: center;
+			font-size:  90%;
+		}
+		.form_table .eula-checkbox {
+			margin-left: 10px;
+		}
+		.row_birthdate .chosen-container {
+			width:        68px !important;
+			margin-right: 15px;
+		}
+		#register_birthdate_month_chosen {
+			width: 100px !important;
+		}
+		.row_student .form_widget, .row_eula .form_widget, .eula {
+			user-select:         none;
+			-moz-user-select:    none;
+			-webkit-user-select: none;
+			-ms-user-select:     none;
+		}
+		.eula {
+			margin: 0 0 6px;
+			color: #666d75;
+		}
+		.eula a {
+			font-weight: bold;
+		}
+		#register_birthdate select {
+			width:        92px;
+			margin-right: 6px;
+		}
+		.oldreg {
+			border:  1px solid #9DABB4;
+			padding: 5px 10px;
+		}
+		.error {
+			margin-bottom: 15px;
+			font-size:     13px;
+			color:         #d00;
+		}
+		.error a {
+			color:       #d00;
+			font-weight: bold;
+		}
+		#register_captcha {
+			display:        inline-block;
+			float:          left;
+			width:          62px;
+			vertical-align: top;
+			margin-top:     11px;
+		}
+	</style>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script>
+		$(document).ready(function() {
+			$("#register_city").autocomplete({
+				source:    Routing.generate('ajax_city'),
+				minLength: 2,
+				delay:     100,
+				autoFocus: true,
+				limit:     15
+			});
+
+			var $miniChoices = $('#register_jobAlignment, #register_jobType, #register_academicDegree');
+			$('#register_form select').not($miniChoices).chosen({
+				search_contains: true,
+				no_results_text: "не найдено"
+			});
+			$($miniChoices).chosen({
+				disable_search:  true,
+				no_results_text: "не найдено"
+			});
+
+			$('#register_form input[type="checkbox"]').checkbox();
+		});
+	</script>
+{% endblock %}

@@ -1,0 +1,97 @@
+<div class="navigation">
+	<i></i>
+
+	<div class="navigation-items">
+		{% if products is defined and products|length %}
+			<div>
+				<a href="#products">{{ products|length == 1 ? 'Лекарственная форма' : 'Лекарственные формы' }}</a>
+			</div>
+		{% endif %}
+
+		{% if Composition is defined and Composition is not empty %}
+			<div><a href="#composition">Форма выпуска, состав и упаковка</a></div>
+		{% endif %}
+
+		{#{% if document.clphPointers.count %}#}
+			{#<div>#}
+			{#{% if document.clphPointers|length == 1 %}#}
+				{#<a href="#clphpointer">Клинико-фармакологический указатель</a>#}
+			{#{% else %}#}
+				{#<a href="#clphpointer">Клинико-фармакологические указатели</a>#}
+			{#{% endif %}#}
+			{#</div>#}
+		{#{% endif %}#}
+
+		{% if product is defined and product.clphGroups.count %}
+			<div>
+				{% if product.clphGroups|length == 1 %}
+					<a href="#clphgroup">Клинико-фармакологическая группа</a>
+				{% else %}
+					<a href="#clphgroup">Клинико-фармакологические группы</a>
+				{% endif %}
+			</div>
+		{% endif %}
+
+		{% if product is defined and product.phthgroups.count %}
+			<div>
+				{% if product.clphGroups|length == 1 %}
+					<a href="#phthgroup">Фармако-терапевтическая группа:</a>
+				{% else %}
+					<a href="#phthgroup">Фармако-терапевтические группы</a>
+				{% endif %}
+			</div>
+		{% endif %}
+
+		{% if document.PhInfluence is not empty %}
+			<div><a href="#influence">Фармакологическое действие</a></div>
+		{% endif %}
+		{% if document.PhKinetics is not empty %}
+			<div><a href="#kinetics">Фармакокинетика</a></div>
+		{% endif %}
+		{% if document.Indication is not empty %}
+			<div><a href="#indication">Показания</a></div>
+		{% endif %}
+		{% if document.Dosage is not empty %}
+			<div><a href="#dosage">Режим дозирования</a></div>
+		{% endif %}
+		{% if document.SideEffects is not empty %}
+			<div><a href="#side_effects">Побочное действие</a></div>
+		{% endif %}
+		{% if document.ContraIndication is not empty %}
+			<div><a href="#contra">Противопоказания к применению</a></div>
+		{% endif %}
+		{% if document.SideEffects is not empty %}
+			<div><a href="#special">Особые указания</a></div>
+		{% endif %}
+		{% if document.OverDosage is not empty %}
+			<div><a href="#over_dosage">Передозировка</a></div>
+		{% endif %}
+		{% if document.Interaction is not empty %}
+			<div><a href="#interaction">Лекарственное взаимодействие</a></div>
+		{% endif %}
+		{% if document.PharmDelivery is not empty %}
+			<div><a href="#pharm">Условия отпуска из аптек</a></div>
+		{% endif %}
+		{% if document.StorageCondition is not empty %}
+			<div><a href="#storage">Условия и сроки хранения</a></div>
+		{% endif %}
+	</div>
+
+	{# ссылка админу на редактирование #}
+	{% if isAdmin and document is defined and document is not null %}
+		<a class="admin-edit fade" target="_blank"
+		   href="{{ path('admin_vidal_drug_document_edit', {'id':document.DocumentID}) }}">
+			<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+		</a>
+	{% endif %}
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('.conditions a, .navigation a').click(function() {
+			var selector = $(this).attr('href');
+			$(selector).addClass('block-highlight');
+			setTimeout(function() { $(selector).removeClass('block-highlight'); }, 2000);
+		});
+	});
+</script>

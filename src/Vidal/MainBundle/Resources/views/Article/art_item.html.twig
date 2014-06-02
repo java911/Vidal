@@ -1,0 +1,54 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block title %}
+	<h1>{{ article|raw }}</h1>
+{% endblock %}
+
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('vracham') }}">Информация для специалистов</a>
+		<i></i>
+		<a href="{{ path('art', {'url':rubrique.url}) }}">{{ rubrique.title }}</a>
+
+		{% if type is defined and type %}
+			<i></i>
+			<a href="{{ path('art', {'url':[rubrique.url, type.url]|join('/') }) }}">{{ type.title }}</a>
+		{% endif %}
+
+		{% if category is defined and category %}
+			<i></i>
+			<a href="{{ path('art', {'url':[rubrique.url, type.url, category.url]|join('/') }) }}">{{ category.title }}</a>
+		{% endif %}
+
+	</div>
+{% endblock %}
+
+
+{% block content %}
+	<div class="article-wrap text">
+		{# админам карандашик редактирования #}
+		{% if isAdmin %}
+			<a class="admin-edit fade" target="_blank"
+			   href="{{ path('admin_vidal_drug_art_edit', {'id':article.id}) }}">
+				<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+			</a>
+		{% endif %}
+
+		<div class="article-body text">
+			{{ article.body|raw }}
+		</div>
+		<div class="article-footer">
+			<span class="article-date">{{ article.date|date('d.m.Y') }}</span>
+		</div>
+	</div>
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/article.css') }}"/>
+{% endblock %}

@@ -1,0 +1,159 @@
+{# Тут будет генерация тела из кусочков с лейблами #}
+<style>
+    .patry-box{
+        position: relative;
+    }
+</style>
+{% if sex == 1 and party == 'all' %}
+    <div class="patry-box">
+        <p>
+            {#// style="filter:url(#dropshadow)"#}
+        <svg id="Navigation" name="Navigation" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" xmlns="http://www.w3.org/2000/svg">
+            <image xlink:href="{{ asset('bundles/vidalmain/images/disease/1.png') }}" x="0" y="0" width="200" height="350" rx="20" ry="20"/>
+
+            <rect  intro="head"               x="80" y="5" width="40" height="50"  rx="20" ry="20"/>
+            <rect  intro="null" data-key="7"  x="80" y="55" width="40" height="15" rx="20" ry="20"/>
+            <rect  intro="null" data-key="8"  x="80" y="80" width="40" height="15"  rx="20" ry="20"/>
+            <rect  intro="null" data-key="10" x="80" y="110" width="40" height="15" rx="20" ry="20"/>
+            <rect  intro="null" data-key="11" x="80" y="130" width="40" height="15" rx="20" ry="20"/>
+            <rect  intro="null" data-key="31" x="80" y="150" width="40" height="15" rx="20" ry="20"/>
+            <rect  intro="null" data-key="13" x="80" y="160" width="40" height="40" rx="20" ry="20"/>
+            <rect  intro="null" data-key="9"  x="55" y="100" width="25" height="110" rx="20" ry="20"/>
+            <rect  intro="null" data-key="9"  x="125" y="100" width="25" height="110" rx="20" ry="20"/>
+            <rect  intro="null" data-key="6"  x="70" y="200" width="60" height="125"  rx="20" ry="20"  />
+            <defs>
+                <filter id="dropshadow" height="130%">
+                    <feOffset result="offOut" in="SourceGraphic" dx="20" dy="20" />
+                    <feColorMatrix result="matrixOut" in="offOut" type="matrix"
+                                   values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0" />
+                    <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="10" />
+                    <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+                </filter>
+            </defs>
+        </svg>
+        </p>
+    </div>
+{% elseif sex == 2 and party == 'all' %}
+    <div class="patry-box">
+        <p>
+            <svg id="Navigation" name="Navigation" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" xmlns="http://www.w3.org/2000/svg">
+                <image xlink:href="{{ asset('bundles/vidalmain/images/disease/4.png') }}" x="0" y="0" width="200" height="350" rx="20" ry="20"/>
+                <rect  intro="head"                x="85" y="5"    width="40" height="50"   rx="20" ry="20"/>
+                <rect  intro="null" data-key="26"  x="85" y="55"   width="40" height="25"   rx="20" ry="20"/>
+                <rect  intro="null" data-key="27"  x="85" y="70"   width="40" height="30"   rx="20" ry="20"/>
+                <rect  intro="null" data-key="29"  x="85" y="100"  width="40" height="20"   rx="20" ry="20"/>
+                <rect  intro="null" data-key="30"  x="85" y="120"  width="40" height="20"   rx="20" ry="20"/>
+                <rect  intro="null" data-key="31"  x="85" y="140"  width="40" height="20"   rx="20" ry="20"/>
+                <rect  intro="null" data-key="38"  x="85" y="160"  width="40" height="30"   rx="20" ry="20"/>
+                <rect  intro="null" data-key="25"  x="80" y="200"  width="55" height="130" rx="20" ry="20"/>
+                <rect  intro="null" data-key="28"  x="55" y="80"   width="25" height="130"  rx="20" ry="20"/>
+                <rect  intro="null" data-key="28"  x="125" y="80"  width="25" height="130"  rx="20" ry="20"/>
+                <defs>
+                    <filter id="dropshadow" height="130%">
+                        <feOffset result="offOut" in="SourceGraphic" dx="20" dy="20" />
+                        <feColorMatrix result="matrixOut" in="offOut" type="matrix"
+                                       values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0" />
+                        <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="10" />
+                        <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+                    </filter>
+                </defs>
+            </svg>
+        </p>
+    </div>
+{% elseif sex == 1 and party == 'all-back' %}
+    <div class="patry-box">
+        <p>
+            <svg id="Navigation" name="Navigation" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" xmlns="http://www.w3.org/2000/svg">
+                <image xlink:href="{{ asset('bundles/vidalmain/images/disease/2.png') }}" x="0" y="0" width="200" height="350" rx="20" ry="20"/>
+                <rect  intro="head"               x="80" y="5"  width="40" height="50"    rx="20" ry="20" />
+                <rect  intro="null" data-key="7"  x="80" y="55"  width="50" height="20"   rx="20" ry="20"  />
+                <rect  intro="null" data-key="16" x="70" y="75"  width="60" height="75"   rx="20" ry="20"  />
+                <rect  intro="null" data-key="17" x="70" y="150" width="60" height="15"   rx="20" ry="20" />
+                <rect  intro="null" data-key="18" x="70" y="165" width="60" height="35"   rx="20" ry="20" />
+                <rect  intro="null" data-key="6"  x="70" y="200" width="60" height="125"  rx="20" ry="20"  />
+                <rect  intro="null" data-key="9"  x="55" y="75"  width="15" height="125"  rx="20" ry="20" />
+                <rect  intro="null" data-key="9"  x="130" y="75" width="15" height="125"  rx="20" ry="20" />
+                <defs>
+                    <filter id="dropshadow" height="130%">
+                        <feOffset result="offOut" in="SourceGraphic" dx="20" dy="20" />
+                        <feColorMatrix result="matrixOut" in="offOut" type="matrix"
+                                       values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0" />
+                        <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="10" />
+                        <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+                    </filter>
+                </defs>
+            </svg>
+        </p>
+    </div>
+{% elseif sex == 2 and party == 'all-back' %}
+    <div class="patry-box">
+        <p>
+            <svg id="Navigation" name="Navigation" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" xmlns="http://www.w3.org/2000/svg">
+                <image xlink:href="{{ asset('bundles/vidalmain/images/disease/5.png') }}" x="0" y="0" width="200" height="350" rx="20" ry="20"/>
+                <rect  intro="head"                x="90" y="5"    width="35" height="50" rx="20" ry="20"/>
+                <rect  intro="null" data-key="26"  x="80" y="55"   width="55" height="20" rx="20" ry="20"/>
+                <rect  intro="null" data-key="35"  x="80" y="75"   width="55" height="85" rx="20" ry="20"/>
+                <rect  intro="null" data-key="36"  x="80" y="150"  width="55" height="15" rx="20" ry="20"/>
+                <rect  intro="null" data-key="37"  x="80" y="165"  width="55" height="35" rx="20" ry="20"/>
+                <rect  intro="null" data-key="25"  x="80" y="200"  width="55" height="130" rx="20" ry="20"/>
+                <rect  intro="null" data-key="28"  x="60" y="75"   width="15" height="125" rx="20" ry="20"/>
+                <rect  intro="null" data-key="28"  x="135" y="75"  width="15" height="125" rx="20" ry="20"/>
+                <defs>
+                    <filter id="dropshadow" height="130%">
+                        <feOffset result="offOut" in="SourceGraphic" dx="20" dy="20" />
+                        <feColorMatrix result="matrixOut" in="offOut" type="matrix"
+                                       values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0" />
+                        <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="10" />
+                        <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+                    </filter>
+                </defs>
+            </svg>
+        </p>
+    </div>
+{% elseif sex == 1 and party == 'head' %}
+    <div class="patry-box">
+        <p>
+            <svg id="Navigation" name="Navigation" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" xmlns="http://www.w3.org/2000/svg">
+                <image xlink:href="{{ asset('bundles/vidalmain/images/disease/3.png') }}" x="0" y="0" width="200" height="350" rx="20" ry="20"/>
+                <rect  intro="null" data-key="1" x="50" y="110" width="105" height="30" rx="20" ry="20"/>
+                <rect  intro="null" data-key="2" x="50" y="155" width="105" height="25" rx="20" ry="20"/>
+                <rect  intro="null" data-key="4" x="85" y="180" width="35"  height="30" rx="20" ry="20"/>
+                <rect  intro="null" data-key="5" x="75" y="220" width="50"  height="20" rx="20" ry="20"/>
+                <rect  intro="null" data-key="3" x="15" y="150" width="20"  height="70" rx="20" ry="20"/>
+                <rect  intro="null" data-key="3" x="165" y="150" width="20" height="70" rx="20" ry="20"/>
+                <defs>
+                    <filter id="dropshadow" height="130%">
+                        <feOffset result="offOut" in="SourceGraphic" dx="20" dy="20" />
+                        <feColorMatrix result="matrixOut" in="offOut" type="matrix"
+                                       values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0" />
+                        <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="10" />
+                        <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+                    </filter>
+                </defs>
+            </svg>
+        </p>
+    </div>
+{% elseif sex == 2 and party == 'head' %}
+    <div class="patry-box">
+        <p>
+            <svg id="Navigation" name="Navigation" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" xmlns="http://www.w3.org/2000/svg">
+                <image xlink:href="{{ asset('bundles/vidalmain/images/disease/6.png') }}" x="0" y="0" width="200" height="350" rx="20" ry="20"/>
+                <rect  intro="null" data-key="20" x="50"  y="90"   width="105" height="30" rx="20" ry="20"/>
+                <rect  intro="null" data-key="21" x="50"  y="125"  width="105" height="25" rx="20" ry="20"/>
+                <rect  intro="null" data-key="23" x="85"  y="150"  width="35"  height="30" rx="20" ry="20"/>
+                <rect  intro="null" data-key="24" x="82"  y="180"  width="43"  height="30" rx="20" ry="20"/>
+                <rect  intro="null" data-key="22" x="25"  y="120"  width="20"  height="80" rx="20" ry="20"/>
+                <rect  intro="null" data-key="22" x="165" y="120"  width="20"  height="80" rx="20" ry="20"/>
+                <defs>
+                    <filter id="dropshadow" height="130%">
+                        <feOffset result="offOut" in="SourceGraphic" dx="20" dy="20" />
+                        <feColorMatrix result="matrixOut" in="offOut" type="matrix"
+                                       values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0" />
+                        <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="10" />
+                        <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+                    </filter>
+                </defs>
+            </svg>
+        </p>
+    </div>
+{% endif %}

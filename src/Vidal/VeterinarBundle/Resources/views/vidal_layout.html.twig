@@ -1,0 +1,31 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% set menu_left = 'veterinar' %}
+
+
+{% block title %}
+	<h1>ВИДАЛЬ-ВЕТЕРИНАР</h1>
+{% endblock %}
+
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('veterinar') }}">Видаль-Ветеринар</a>
+	</div>
+{% endblock %}
+
+
+{% block content %}
+	<div id="vidal" class="vidal veterinar">
+		{% block vidal %}{% endblock %}
+	</div>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/indication.js') }}"></script>
+{% endblock %}

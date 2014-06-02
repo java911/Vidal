@@ -1,0 +1,112 @@
+<form id="form" method="GET" action="{{ path('firms') }}">
+
+	<div id="form_controls">
+		<input id="form_submit" type="submit" value="Найти" class="btn-red">
+		<input id="form_input" type="text" name="q" placeholder="Введите слово для поиска..."
+			   value="{{ q is defined and q is not empty and not l ? q }}"/>
+	</div>
+
+	<div class="letters">
+		<div class="ru">
+			<input type="submit" value="А" name="l" {{ l == 'А' ? ' class="active"' }}/>
+			<input type="submit" value="Б" name="l" {{ l == 'Б' ? ' class="active"' }}/>
+			<input type="submit" value="В" name="l" {{ l == 'В' ? ' class="active"' }}/>
+			<input type="submit" value="Г" name="l" {{ l == 'Г' ? ' class="active"' }}/>
+			<input type="submit" value="Д" name="l" {{ l == 'Д' ? ' class="active"' }}/>
+			<input type="submit" value="Е" name="l" {{ l == 'Е' ? ' class="active"' }}/>
+			<input type="submit" value="З" name="l" {{ l == 'З' ? ' class="active"' }}/>
+			<input type="submit" value="И" name="l" {{ l == 'И' ? ' class="active"' }}/>
+			<input type="submit" value="Й" name="l" {{ l == 'Й' ? ' class="active"' }}/>
+			<input type="submit" value="К" name="l" {{ l == 'К' ? ' class="active"' }}/>
+			<input type="submit" value="Л" name="l" {{ l == 'Л' ? ' class="active"' }}/>
+			<input type="submit" value="М" name="l" {{ l == 'М' ? ' class="active"' }}/>
+			<input type="submit" value="Н" name="l" {{ l == 'Н' ? ' class="active"' }}/>
+			<input type="submit" value="О" name="l" {{ l == 'О' ? ' class="active"' }}/>
+			<input type="submit" value="П" name="l" {{ l == 'П' ? ' class="active"' }}/>
+			<input type="submit" value="Р" name="l" {{ l == 'Р' ? ' class="active"' }}/>
+			<input type="submit" value="С" name="l" {{ l == 'С' ? ' class="active"' }}/>
+			<input type="submit" value="Т" name="l" {{ l == 'Т' ? ' class="active"' }}/>
+			<input type="submit" value="У" name="l" {{ l == 'У' ? ' class="active"' }}/>
+			<input type="submit" value="Ф" name="l" {{ l == 'Ф' ? ' class="active"' }}/>
+			<input type="submit" value="Х" name="l" {{ l == 'Х' ? ' class="active"' }}/>
+			<input type="submit" value="Ц" name="l" {{ l == 'Ц' ? ' class="active"' }}/>
+			<input type="submit" value="Ч" name="l" {{ l == 'Ч' ? ' class="active"' }}/>
+			<input type="submit" value="Ш" name="l" {{ l == 'Ш' ? ' class="active"' }}/>
+			<input type="submit" value="Щ" name="l" {{ l == 'Щ' ? ' class="active"' }}/>
+			<input type="submit" value="Э" name="l" {{ l == 'Э' ? ' class="active"' }}/>
+			<input type="submit" value="Ю" name="l" {{ l == 'Ю' ? ' class="active"' }}/>
+			<input type="submit" value="Я" name="l" {{ l == 'Я' ? ' class="active"' }}/>
+		</div>
+
+		<div class="en">
+			<input type="submit" value="A" name="l" class="en{{ l == 'A' ? ' active' }}"/>
+			<input type="submit" value="B" name="l" class="en{{ l == 'B' ? ' active' }}"/>
+			<input type="submit" value="C" name="l" class="en{{ l == 'C' ? ' active' }}"/>
+			<input type="submit" value="D" name="l" class="en{{ l == 'D' ? ' active' }}"/>
+			<input type="submit" value="E" name="l" class="en{{ l == 'E' ? ' active' }}"/>
+			<input type="submit" value="F" name="l" class="en{{ l == 'F' ? ' active' }}"/>
+			<input type="submit" value="G" name="l" class="en{{ l == 'G' ? ' active' }}"/>
+			<input type="submit" value="H" name="l" class="en{{ l == 'H' ? ' active' }}"/>
+			<input type="submit" value="I" name="l" class="en{{ l == 'I' ? ' active' }}"/>
+			<input type="submit" value="J" name="l" class="en{{ l == 'J' ? ' active' }}"/>
+			<input type="submit" value="K" name="l" class="en{{ l == 'K' ? ' active' }}"/>
+			<input type="submit" value="L" name="l" class="en{{ l == 'L' ? ' active' }}"/>
+			<input type="submit" value="M" name="l" class="en{{ l == 'M' ? ' active' }}"/>
+			<input type="submit" value="N" name="l" class="en{{ l == 'N' ? ' active' }}"/>
+			<input type="submit" value="O" name="l" class="en{{ l == 'O' ? ' active' }}"/>
+			<input type="submit" value="P" name="l" class="en{{ l == 'P' ? ' active' }}"/>
+			<input type="submit" value="Q" name="l" class="en{{ l == 'Q' ? ' active' }}"/>
+			<input type="submit" value="R" name="l" class="en{{ l == 'R' ? ' active' }}"/>
+			<input type="submit" value="S" name="l" class="en{{ l == 'S' ? ' active' }}"/>
+			<input type="submit" value="T" name="l" class="en{{ l == 'T' ? ' active' }}"/>
+			<input type="submit" value="U" name="l" class="en{{ l == 'U' ? ' active' }}"/>
+			<input type="submit" value="V" name="l" class="en{{ l == 'V' ? ' active' }}"/>
+			<input type="submit" value="W" name="l" class="en{{ l == 'W' ? ' active' }}"/>
+			<input type="submit" value="X" name="l" class="en{{ l == 'X' ? ' active' }}"/>
+			<input type="submit" value="Y" name="l" class="en{{ l == 'Y' ? ' active' }}"/>
+			<input type="submit" value="Z" name="l" class="en{{ l == 'Z' ? ' active' }}"/>
+			<input type="submit" value="3" name="l" class="en{{ l == '3' ? ' active' }}"/>
+			<input type="submit" value="4" name="l" class="en{{ l == '4' ? ' active' }}"/>
+			<input type="submit" value="5" name="l" class="en{{ l == '5' ? ' active' }}"/>
+		</div>
+	</div>
+</form>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#form_input')
+			.autocomplete({
+				minLength: 2,
+				source:    function(request, response) {
+					$.ajax({
+						url:      "http://twiga.vidal.ru:9200/website/autocomplete_company/_search",
+						type:     "POST",
+						dataType: "JSON",
+						data:     '{ "query":{"query_string":{"query":"' + request.term + '*"}}, "fields":["name"], "size":15, "highlight":{"fields":{"name":{}}} }',
+						success:  function(data) {
+							response($.map(data.hits.hits, function(item) {
+								return {
+									label: item.highlight.name,
+									value: item.fields.name
+								}
+							}));
+						}
+					});
+				},
+				select:    function(event, ui) {
+					if (ui.item) {
+						$(this).val(ui.item.value);
+					}
+				}
+			}).data("ui-autocomplete")._renderItem = function(ul, item) {
+			return $("<li></li>")
+				.data("item.autocomplete", item)
+				.append("<a>" + item.label + "</a>")
+				.appendTo(ul);
+		};
+
+		$('.letters input').click(function() {
+			$('#form_input').attr('disabled', 'disabled');
+		});
+	});
+</script>

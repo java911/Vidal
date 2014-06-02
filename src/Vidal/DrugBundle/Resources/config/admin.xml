@@ -1,0 +1,207 @@
+<!-- Vidal/DrugBundle/Resources/config/admin.xml -->
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+		<!-- Содержимое -->
+		<service id="sonata.admin.publication" class="Vidal\DrugBundle\Admin\PublicationAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Содержимое" label="Новости"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\Publication</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.aboutservice" class="Vidal\MainBundle\Admin\AboutServiceAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Содержимое" label="Наши услуги"/>
+			<argument />
+			<argument>Vidal\MainBundle\Entity\AboutService</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.about" class="Vidal\MainBundle\Admin\AboutAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Содержимое" label="О компании"/>
+			<argument />
+			<argument>Vidal\MainBundle\Entity\About</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.qa" class="Vidal\MainBundle\Admin\QuestionAnswerAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Содержимое" label="Ответы специалистов"/>
+			<argument />
+			<argument>Vidal\MainBundle\Entity\QuestionAnswer</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.module" class="Vidal\MainBundle\Admin\ModuleAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Содержимое" label="Модули"/>
+			<argument />
+			<argument>Vidal\MainBundle\Entity\Module</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.tag" class="Vidal\DrugBundle\Admin\TagAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Содержимое" label="Теги"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\Tag</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.tag" class="Vidal\MainBundle\Admin\UserAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Содержимое" label="Пользователи"/>
+			<argument />
+			<argument>Vidal\MainBundle\Entity\User</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<!-- Энциклопедия -->
+		<service id="sonata.admin.article" class="Vidal\DrugBundle\Admin\ArticleAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Энциклопедия" label="Статьи"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\Article</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.articletype" class="Vidal\DrugBundle\Admin\ArticleTypeAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Энциклопедия" label="Категории"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\ArticleType</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.articlerubrique" class="Vidal\DrugBundle\Admin\ArticleRubriqueAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Энциклопедия" label="Рубрики"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\ArticleRubrique</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<!-- Информация специалистам -->
+		<service id="sonata.admin.art" class="Vidal\DrugBundle\Admin\ArtAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Информация специалистам" label="Статьи"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\Art</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.artrubrique" class="Vidal\DrugBundle\Admin\ArtRubriqueAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Информация специалистам" label="Разделы"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\ArtRubrique</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.arttype" class="Vidal\DrugBundle\Admin\ArtTypeAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Информация специалистам" label="Категории"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\ArtType</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.artcategory" class="Vidal\DrugBundle\Admin\ArtCategoryAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Информация специалистам" label="Подкатегории"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\ArtCategory</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<!-- Фарм-компании -->
+		<service id="sonata.admin.pharmPortfolio" class="Vidal\DrugBundle\Admin\PharmPortfolioAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Фармацевтические компании" label="Портфели препаратов"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\PharmPortfolio</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.pharmArticle" class="Vidal\DrugBundle\Admin\PharmArticleAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Фармацевтические компании" label="Новости"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\PharmArticle</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.pharmCompany" class="Vidal\DrugBundle\Admin\PharmCompanyAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Фармацевтические компании" label="Компании"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\PharmCompany</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<!-- Баннеры -->
+		<service id="sonata.admin.banner" class="Vidal\MainBundle\Admin\BannerAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Баннеры" label="Баннеры"/>
+			<argument />
+			<argument>Vidal\MainBundle\Entity\Banner</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.bannergroup" class="Vidal\MainBundle\Admin\BannerGroupAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Баннеры" label="Баннерные места"/>
+			<argument />
+			<argument>Vidal\MainBundle\Entity\BannerGroup</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<!-- Справочник -->
+		<service id="sonata.admin.document" class="Vidal\DrugBundle\Admin\DocumentAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Справочник" label="Документы"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\Document</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.product" class="Vidal\DrugBundle\Admin\ProductAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Справочник" label="Препараты"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\Product</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.company" class="Vidal\DrugBundle\Admin\CompanyAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Справочник" label="Компании"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\Company</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.infoPage" class="Vidal\DrugBundle\Admin\InfoPageAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Справочник" label="Представительства"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\InfoPage</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<!-- Не используется -->
+		<service id="sonata.admin.productcompany" class="Vidal\DrugBundle\Admin\ProductCompanyAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Не используется" label="-" show_in_dashboard="false"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\ProductCompany</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+    </services>
+</container>

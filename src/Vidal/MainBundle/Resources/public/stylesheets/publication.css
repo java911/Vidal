@@ -1,0 +1,43 @@
+.publications {
+	margin: 20px 0;
+}
+.publication {
+	position:      relative;
+	margin-bottom: 15px;
+	overflow:      hidden;
+}
+.publication .photo {
+	display:    inline-block;
+	float:      left;
+	margin-top: 4px;
+}
+.publication .photo img {
+	max-width: 135px;
+}
+.publication.with-photo > div {
+	margin-left: 160px;
+}
+.publication-title {
+	margin-bottom: 5px;
+}
+.publication-title a {
+	font-weight:     bold;
+	text-decoration: none;
+	font-size:       15px;
+}
+.publication-title a:hover {
+	text-decoration: underline;
+}
+.publication-announce {
+	margin-bottom: 6px;
+	font-size:     15px;
+}
+.publication-announce p {
+	margin: 0;
+}
+.publication-date {
+	text-align: right;
+	font-size:  13px;
+	font-style: italic;
+	color:      gray;
+}

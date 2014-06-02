@@ -1,0 +1,77 @@
+{% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
+
+
+{% block vidal %}
+	{% if menu_drugs is defined %}
+		{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' %}
+	{% endif %}
+
+	<div class="description">
+		<span>Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)</span>
+
+		<div>
+			Рекомендованная Всемирной Организацией Здравоохранения для международных исследований использования
+			лекарственных препаратов. Эта система классификации активно используется в фармакоэкономике для учета
+			лекарственных средств, а также применяется при проведении клинических исследований для оценки сопутствующей
+			терапии (<a target="_blank"
+				href="http://vidal.ru/vracham/provizoram-i-farmatsevtam/ATC-systema-klassifikatsii-lekarstv.html">подробнее</a>).
+			<br/>
+			<i>Например</i>: <a href="#B" data="B">Антикоагулянты</a>.
+		</div>
+	</div>
+
+	{% include 'VidalDrugBundle:Drugs:atc_generated.html.twig' %}
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/treeview/jquery.treeview.css') }}"/>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.edit.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.async.js') }}" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var $tree = $('.treeview');
+
+			$tree.treeview({
+				animated:  "fast",
+				collapsed: true,
+				url:       Routing.generate('atc_ajax'),
+				ajax:      {
+					type: "post"
+				}
+			});
+
+			$('#tree_collapse').on('click', function() {
+				$tree.find('ul').hide();
+				$tree.find('div.collapsable-hitarea').removeClass('collapsable-hitarea').addClass('expandable-hitarea');
+				$tree.find('div.lastCollapsable-hitarea').removeClass('lastCollapsable-hitarea').addClass('lastExpandable-hitarea');
+				$tree.find('li.collapsable').removeClass('collapsable').addClass('expandable');
+				$tree.find('li.lastCollapsable').removeClass('lastCollapsable').addClass('lastExpandable');
+				return false;
+			});
+
+			$tree.on('click', 'i', function() {
+				location.href = Routing.generate('atc_item', {'ATCCode': $(this).closest('li').attr('id') });
+				return false;
+			});
+
+			$('a[data="B"]').click(function() {
+				$('#tree_collapse').click();
+				$tree.find('span').removeClass('highlight');
+				$('#B > div').click();
+				$('#B > span').addClass('highlight');
+				setTimeout(function() {
+					$('#B01 > div').click();
+					$('#B01 > span').addClass('highlight');
+				}, 1000);
+			});
+		});
+	</script>
+{% endblock %}

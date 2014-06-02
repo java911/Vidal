@@ -1,0 +1,20 @@
+<br />
+{% if article1 is defined and article1 is not null and article1 is not empty %}
+    {% if article1 is not null %}
+        <div class="article-item text">
+            <div class="article-title">{{ article1.title |  raw}}</div>
+            <div class="article-announce text">{{ article1.body | raw}}</div>
+        </div>
+    {% endif %}
+    {% for article in articles %}
+        <div class="article-item text">
+            <a href="{{ path('article',{rubrique: article.rubrique.rubrique, link: article.link}) }}">
+                <div class="article-title">{{ article.title |  raw}}</div>
+            </a>
+            <div class="article-announce text">{{ article.announce | raw}}</div>
+        </div>
+    {% endfor %}
+{% else %}
+    <b>К сожалению, у нас пока нет информации по данному заболеванию.<br />
+    В ближайшее время мы ее добавим.</b>
+{% endif %}

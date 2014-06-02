@@ -1,0 +1,83 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block title %}
+    <h1>Записаться к врачу</h1>
+{% endblock %}
+
+
+{% block content %}
+    <form method="post">
+    {{ form_widget(form) }}
+    </form>
+{% endblock %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+        .row_birthdate .chosen-container {
+            width:        68px !important;
+            margin-right: 15px;
+        }
+        #form_birthdate_month_chosen {
+            width: 100px !important;
+        }
+        .row_student .form_widget {
+            user-select:         none;
+            -moz-user-select:    none;
+            -webkit-user-select: none;
+            -ms-user-select:     none;
+        }
+        .form_table .form_label {
+            overflow: hidden;
+        }
+        .form_table .no-selection {
+            float:        right;
+            font-size:    15px;
+            color:        #999;
+            font-style:   italic;
+            margin-right: 10px;
+        }
+        .form_table .no-selection label {
+            margin-right: 5px;
+        }
+        .form_table .form_button {
+            padding-top:    10px !important;
+            padding-bottom: 30px !important;
+        }
+        .form_table .row_avatar label {
+            color: #666d75;
+        }
+        .form_table .input-upload {
+            width: 200px !important;
+        }
+        .reset-avatar {
+            margin-top:   15px;
+            padding-left: 2px;
+            font-weight:  bold;
+            font-size:    15px;
+        }
+        #profile_birthdate select {
+            width:        92px;
+            margin-right: 6px;
+        }
+        .links {
+            padding-right: 12px;
+            font-weight:   bold;
+        }
+    </style>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function(){
+            $('#form select').chosen({
+                search_contains: true,
+                no_results_text: "не найдено",
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,188 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block menu %}
+	{% include 'VidalMainBundle::menu_big.html.twig' %}
+{% endblock %}
+
+
+{% block title %}
+	<h1>АНОНСЫ</h1>
+{% endblock %}
+
+
+{% block content %}
+	{{ render(controller('VidalMainBundle:Index:Module', {'moduleId':1})) }}
+
+	{# Последние новости #}
+	<div class="title title-news">
+		<a href="{{ path('news') }}">Новости медицины и фармации</a>
+	</div>
+	<div class="news">
+		{% for publication in publications %}
+			{% set withPhoto = publication.photo and is_file(publication.photo.path) %}
+			<div class="publication{{ withPhoto ? ' with-photo' }}">
+				{# админам карандашик редактирования #}
+				{% if isAdmin %}
+					<a class="admin-edit fade" target="_blank"
+					   href="{{ path('admin_vidal_drug_publication_edit', {'id':publication.id}) }}">
+						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+					</a>
+				{% endif %}
+
+				{% if withPhoto %}
+					<a class="photo" href="{{ path('publication', {id:publication.id}) }}">
+						<img src="{{ publication.photo.path }}" alt="{{ publication.title }}"/>
+					</a>
+				{% endif %}
+				<div>
+					<div class="publication-title">
+						<a href="{{ path('publication', {id:publication.id}) }}">{{ publication.title|raw }}</a>
+					</div>
+					<div class="publication-announce">
+						{{ publication.announce|raw }}
+					</div>
+					<div class="publication-footer">
+						<div class="publication-date">
+							{{ publication.date|date('d.m.Y') }}
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+	<a href="{{ path('news') }}" id="more_news">все</a>
+
+	{# Статьи энциклопедии #}
+	<div class="title title-articles">
+		<a href="{{ path('articles') }}">Статьи</a>
+	</div>
+	<div class="articles">
+		{% for article in articles %}
+			{% if article.isArticle %}
+				<div class="article">
+					{# админам карандашик редактирования #}
+					{% if isAdmin %}
+						<a class="admin-edit fade" target="_blank"
+						   href="{{ path('admin_vidal_drug_article_edit', {'id':article.id}) }}">
+							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+						</a>
+					{% endif %}
+
+					<a class="article-title"
+					   href="{{ path('article', {'rubrique':article.rubrique.rubrique, 'link':article.link}) }}">
+						{{ article.title|raw }}
+					</a>
+
+					<div class="article-announce text">
+						{{ article.announce|raw }}
+					</div>
+					<div class="article-footer">
+						<span>Рубрика:</span>
+						<a href="{{ path('rubrique', {'rubrique':article.rubrique.rubrique}) }}"
+							>{{ article.rubrique.title }}</a>
+
+						<div class="article-date">{{ article.date|date('d.m.Y') }}</div>
+					</div>
+				</div>
+			{% else %}
+				{# отдельная статья специалистам - Art #}
+				<div class="article">
+					{# админам карандашик редактирования #}
+					{% if isAdmin %}
+						<a class="admin-edit fade" target="_blank"
+						   href="{{ path('admin_vidal_drug_art_edit', {'id':article.id}) }}">
+							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+						</a>
+					{% endif %}
+
+					<a class="article-title"
+					   href="{{ path('art', {'url':article.rubrique.url ~ '/' ~ (article.type ? article.type.url ~ '/') ~ (article.category ? article.category.url ~ '/') ~ article.link ~ '~' ~ article.id }) }}">
+						{{ article.title|raw }}
+					</a>
+
+					<div class="article-announce text">
+						{{ article.announce|raw }}
+					</div>
+					<div class="article-footer">
+						<span>Рубрика:</span>
+						<a href="{{ path('vracham') }}">Статьи специалистам</a>
+
+						<div class="article-date">{{ article.date|date('d.m.Y') }}</div>
+					</div>
+				</div>
+			{% endif %}
+		{% endfor %}
+	</div>
+	<a href="{{ path('articles') }}" id="more_articles">все</a>
+
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/publication.css') }}"/>
+	<style tyle="text/css">
+		h1 {
+			margin-bottom: 12px;
+		}
+		.title-articles {
+			margin-top: 20px;
+		}
+
+		.articles, .news {
+			padding: 10px 10px 0;
+		}
+		.article, .publication {
+			position:       relative;
+			padding-bottom: 10px;
+			border-bottom:  1px solid #ddd;
+			margin-bottom:  8px;
+		}
+		.article-title {
+			display:         block;
+			margin-bottom:   5px;
+			font-weight:     bold;
+			text-decoration: none;
+			font-size:       15px;
+		}
+		.article-title:hover {
+			text-decoration: underline;
+		}
+		.article-announce, .publication-announce {
+			margin-bottom: 6px;
+			font-size:     14px;
+		}
+		.article-announce p {
+			margin: 0;
+		}
+		.article-footer,
+		.publication-footer {
+			overflow:  hidden;
+			font-size: 13px;
+		}
+		.article-date,
+		.publication-date {
+			display:    inline-block;
+			float:      right;
+			font-size:  13px;
+			font-style: italic;
+			color:      #959595;
+		}
+		.article-footer span {
+			color: #888;
+		}
+		.article-footer a {
+			text-decoration: none;
+			color:           #2f4053;
+		}
+		.article-footer a:hover {
+			text-decoration: underline;
+		}
+
+		/* more */
+		#more_news, #more_articles {
+			padding-left: 8px;
+		}
+	</style>
+{% endblock %}

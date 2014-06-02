@@ -1,0 +1,17 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+{% block content %}
+    <h1>ЗАКАЗ УСПЕШНО ОФОРМЛЕН</h1>
+    {% if group is defined and summPrice is defined%}
+        <script>
+            $(document).ready(function(){
+                    _gaq.push(['_trackEvent', 'Payment', '{{ group }}','{{ summPrice }}']);
+            })
+        </script>
+    {% endif %}
+    Ваш заказ принят! <br />
+    В ближайшее время с Вами свяжутся для подтверждения заказа. <br />
+    <br />
+    Спасибо!
+
+{% endblock %}

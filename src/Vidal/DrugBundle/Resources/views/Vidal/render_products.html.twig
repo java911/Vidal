@@ -1,0 +1,128 @@
+{% if products is defined and products|length %}
+	{% set isAdmin = is_granted('ROLE_ADMIN') %}
+
+	<table class="products-table">
+		<tr class="products-table-header">
+			<td class="products-table-loz"></td>
+			<td>Название</td>
+			<td></td>
+			<td title="Показания к применению"></td>
+			<td>Форма выпуска</td>
+			<td title="Владелец регистрационного удостоверения">Владелец рег/уд</td>
+		</tr>
+
+		{% for id, product in products %}
+			{% set id = product.ProductID %}
+			<tr>
+				<td class="products-table-loz">
+					{% if product.NonPrescriptionDrug %}
+						<img src="{{ asset('bundles/vidalmain/images/g2.gif') }}" class="loz"
+							 title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>
+					{% endif %}
+					{% if product.ProductTypeCode == 'BAD' %}
+						<span class="bads">БАД</span>
+					{% endif %}
+				</td>
+				<td class="products-table-name{{ isAdmin ? ' admin' }}">
+					{# админу карандашик на редактирование #}
+					{% if isAdmin %}
+						<a class="admin-edit" target="_blank"
+						   href="{{ path('admin_vidal_drug_product_edit', {'id':product.ProductID}) }}">
+							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+						</a>
+					{% endif %}
+					{% if from is defined %}
+						<a class="no-underline"
+						   href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID, 'from':from}) }}">
+							{{ product.RusName|raw }}</a>
+					{% else %}
+						<a class="no-underline"
+						   href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}">
+							{{ product.RusName|raw }}</a>
+					{% endif %}
+				</td>
+				<td class="products-table-picture">
+					{% if product.photo %}
+						<a class="no-underline"
+						   href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"
+							><img src="{{ product.photo.path }}"/></a>
+					{% elseif pictures[id] is defined %}
+						{% set path = '/upload/products/' ~ pictures[id] %}
+						{% if is_file(path) %}
+							<a class="no-underline"
+							   href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"
+								><img src="{{ path }}"/></a>
+						{% endif %}
+					{% endif %}
+				</td>
+				<td class="products-table-indication" title="Показания к применению">
+					{% if product.Indication is defined and product.Indication is not empty %}
+						<img src="{{ asset('bundles/vidalmain/images/more.png') }}"/>
+						<div>{{ product.Indication|raw }}</div>
+					{% elseif indications is defined and indications[product.ProductID] is not empty %}
+						<img src="{{ asset('bundles/vidalmain/images/more.png') }}"/>
+						<div>{{ indications[product.ProductID]|raw }}</div>
+					{% endif %}
+				</td>
+				<td class="products-table-zip">
+					<div>{{ product.ZipInfo|raw }}</div>
+				<span>рег. №: {{ product.RegistrationNumber }}
+					{% if product.RegistrationDate is not empty %}
+						от {{ product.RegistrationDate }}
+					{% endif %}
+				</span>
+				</td>
+				<td class="products-table-company">
+					{# компании регистраторы/производители препарата #}
+					{% if companies[id] is defined %}
+						{% for company in companies[id] %}
+							<div{% if loop.index > 1 %} class="dot"{% endif %}>
+								{% if company.ItsMainCompany %}
+									<a class="no-underline"
+									   href="{{ path('firm_item', {'CompanyID':company.CompanyID}) }}">
+										{{ company.LocalName|raw }}
+									</a>
+									{% if company.Country is not empty and company.Country != 'Unknown' %}
+										<span class="small">({{ company.Country }})</span>
+									{% endif %}
+								{% elseif company.CompanyRusNote is not empty and company.CompanyRusNote != 'представительство' %}
+									<span class="tip">{{ company.CompanyRusNote }}:</span>
+									<a class="no-underline"
+									   href="{{ path('firm_item', {'CompanyID':company.CompanyID}) }}">
+										{{ company.LocalName|raw }}
+									</a>
+									{% if company.Country is not empty and company.Country != 'Unknown' %}
+										<span class="small">({{ company.Country }})</span>
+									{% endif %}
+								{% else %}
+									<span class="tip">произведено</span>
+									<a class="no-underline"
+									   href="{{ path('firm_item', {'CompanyID':company.CompanyID}) }}">
+										{{ company.LocalName|raw }}
+									</a>
+									{% if company.Country is not empty and company.Country != 'Unknown' %}
+										<span class="small">({{ company.Country }})</span>
+									{% endif %}
+								{% endif %}
+							</div>
+						{% endfor %}
+					{% endif %}
+
+					{# представительство #}
+					{% if infoPages is defined and infoPages[product.DocumentID] is defined %}
+						{% set inf = infoPages[product.DocumentID] %}
+						<div class="dot">
+							<span class="tip">представительство:</span>
+							<a class="no-underline" href="{{ path('inf_item', {'InfoPageID':inf.InfoPageID}) }}">
+								{{ inf.RusName|raw }}
+							</a>
+							{% if inf.Country is not empty and inf.Country != 'Unknown' %}
+								<span class="small">({{ inf.Country }})</span>
+							{% endif %}
+						</div>
+					{% endif %}
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+{% endif %}

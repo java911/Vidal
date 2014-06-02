@@ -1,0 +1,107 @@
+{% set isLogged = app.user and is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+
+{# блок основных боковых меню #}
+<ul class="sidebar-menu ul">
+	<li>
+		<a href="{{ path('articles') }}"
+		   class="{{ menu_left is defined and menu_left == 'articles' ? 'active' : 'dotted' }}">Медицинская
+			энциклопедия</a>
+	</li>
+	<li>
+		<a href="{{ path('qa') }}"
+		   class="{{ menu_left is defined and menu_left == 'qa' ? 'active' : 'dotted' }}">Ответы специалистов</a>
+	</li>
+	<li>
+		<a href="{{ path('news') }}"
+		   class="{{ menu_left is defined and menu_left == 'news' ? 'active' : 'dotted' }}">Новости</a>
+	</li>
+	<li>
+		<a href="{{ path('services') }}"
+		   class="{{ menu_left is defined and menu_left == 'services' ? 'active' : 'dotted' }}">Наши услуги</a>
+	</li>
+	<li>
+		<a href="{{ path('about') }}"
+		   class="{{ menu_left is defined and menu_left == 'about' ? 'active' : 'dotted' }}">О компании</a>
+	</li>
+	<li>
+		<a href="{{ path('veterinar') }}"
+		   class="{{ menu_left is defined and menu_left == 'veterinar' ? 'active' : 'dotted' }}">Ветеринария</a>
+	</li>
+	<li style="display: none">
+		<a href="{{ path('shkola') }}"
+		   class="{{ menu_left is defined and menu_left == 'shkola' ? 'active' : 'dotted' }}">Школа здоровья</a>
+	</li>
+	<li>
+		<a href="/reckittbenckiser/index.html?medi" class="dotted" target="_blank">Без боли</a>
+	</li>
+
+	{{ render(controller('VidalMainBundle:Market:countProduct')) }}
+</ul>
+
+{# блок авторизации или личного кабинета #}
+<div class="auth auth-main">
+	{% if isLogged %}
+		<div class="auth-welcome">
+			Здравствуйте,<br/>
+			{{ app.user.politeReference }}
+		</div>
+
+		<ul class="auth-controls ul">
+			{% if is_granted('ROLE_ADMIN') %}
+				<li>
+					<a href="{{ path('sonata_admin_dashboard') }}" class="dotted">Панель администратора</a>
+				</li>
+			{% endif %}
+			<li>
+				<a href="{{ path('profile') }}" class="dotted">Профиль</a>
+			</li>
+			<li>
+				<a href="{{ path('logout') }}" class="dotted">Выйти</a>
+			</li>
+		</ul>
+	{% else %}
+		{% include 'VidalMainBundle:Auth:login_form.html.twig' %}
+	{% endif %}
+</div>
+
+{% if not isLogged %}
+	<div class="go-registration">
+		<a href="{{ path('registration') }}">Регистрация</a>
+
+		<div class="go-reset ">
+			<a href="{{ path('password_reset') }}" class="no-underline">Забыли пароль?</a>
+		</div>
+	</div>
+{% endif %}
+
+{# баннеры #}
+{% if indexPage is defined %}
+	{{ render(controller('VidalMainBundle:Banner:render', {'groupId':7})) }}
+{% else %}
+	{{ render(controller('VidalMainBundle:Banner:render', {'groupId':8})) }}
+{% endif %}
+
+{# Яндекс.Директ #}
+{% if app.environment == 'prod' %}
+	<div id="yad_left" class="yad">
+		<script type="text/javascript">
+			yandex_partner_id = 49912;
+			yandex_site_bg_color = 'FFFFFF';
+			yandex_ad_format = 'direct';
+			yandex_font_size = 1;
+			yandex_direct_type = 'vertical';
+			yandex_direct_border_type = 'block';
+			yandex_direct_limit = 2;
+			yandex_direct_title_font_size = 3;
+			yandex_direct_bg_color = 'FFFFFF';
+			yandex_direct_border_color = 'EEEEEE';
+			yandex_direct_title_color = '000000';
+			yandex_direct_url_color = 'D71344';
+			yandex_direct_text_color = '333333';
+			yandex_direct_hover_color = 'D71344';
+			yandex_direct_favicon = false;
+			yandex_no_sitelinks = false;
+			document.write('<scr' + 'ipt type="text/javascript" src="//an.yandex.ru/system/context.js"></scr' + 'ipt>');
+		</script>
+	</div>
+{% endif %}

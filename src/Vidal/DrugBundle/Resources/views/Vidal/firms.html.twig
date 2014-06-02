@@ -1,0 +1,66 @@
+{% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
+
+
+{% block vidal %}
+	{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' %}
+	{% include 'VidalDrugBundle:Vidal:firms_form.html.twig' %}
+
+	<div class="info-line">
+		{% if l %}
+			Найдено фирм-производителей {{ l in ['1','2','3','4','5','6','7','8','9','0'] ? 'c цифры' : 'на букву' }}
+			<i>{{ l }}</i>:
+			<span>{{ pagination.totalItemCount }}</span>
+		{% elseif q %}
+			{% if pagination.totalItemCount %}
+				Найдено фирм-производителей по запросу <i>{{ q }}</i>:
+				<span>{{ pagination.totalItemCount }}</span>
+			{% else %}
+				Не найдено фирм-производителей по запросу <i>{{ q }}</i>
+			{% endif %}
+		{% else %}
+			Найдено фирм-производителей:
+			<span>{{ pagination.totalItemCount }}</span>
+		{% endif %}
+	</div>
+
+	{% if pagination is defined and pagination.totalItemCount %}
+		<table class="products-table">
+			<tr class="products-table-header">
+				<td>Название</td>
+				<td>Страна</td>
+			</tr>
+			{% for company in pagination %}
+				<tr>
+					<td>
+						<a class="no-underline" href="{{ path('firm_item', {'CompanyID':company.CompanyID}) }}"
+							>{{ company.LocalName|raw }}{{ company.Property is not empty ? ', ' ~ company.Property|raw|replace({'&amp;':'&'}) }}</a>
+					</td>
+					<td>{{ company.CountryCode }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+
+		<div class="navigation">
+			{{ knp_pagination_render(pagination) }}
+		</div>
+	{% endif %}
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		#form > * {
+			vertical-align: top;
+		}
+		#form_controls {
+			clear: both;
+		}
+		#form_submit {
+			float: right;
+		}
+		#form_input {
+			width: 408px;
+		}
+	</style>
+{% endblock %}

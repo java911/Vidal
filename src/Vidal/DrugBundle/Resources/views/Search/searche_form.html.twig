@@ -1,0 +1,45 @@
+<form id="searche_form" method="get" action="{{ path('searche') }}">
+	<select class="search-type" name="t">
+		<option value="all" {{ t == 'all' ? 'selected="selected"' }}>
+			Везде
+		</option>
+		<option value="product" {{ t == 'product' ? 'selected="selected"' }}>
+			По препарату
+		</option>
+		<option value="company" {{ t == 'company' ? 'selected="selected"' }}>
+			По компании
+		</option>
+		<option value="molecule" {{ t == 'molecule' ? 'selected="selected"' }}>
+			По активному веществу
+		</option>
+		<option value="atc" {{ t == 'atc' ? 'selected="selected"' }}>
+			По АТХ коду
+		</option>
+		<option value="nosology" {{ t == 'nosology' ? 'selected="selected"' }}>
+			По показаниям (МКБ-10)
+		</option>
+		<option value="clphgroup" {{ t == 'clphgroup' ? 'selected="selected"' }}>
+			Клинико-фармакологическая группа
+		</option>
+		<option value="phthgroup" {{ t == 'phthgroup' ? 'selected="selected"' }}>
+			Фармако-терапевтическая группа
+		</option>
+		<option value="disease" {{ t == 'disease' ? 'selected="selected"' }}>
+			По заболеванию
+		</option>
+	</select>
+
+	<input class="search-query border-radius" type="text" name="q" placeholder="Введите слово для поиска..."
+		   autocomplete="off"
+		   value="{{ app.request.attributes.get('_route') == 'searche' ? app.request.get('q') }}"/>
+
+	<div class="controls">
+		<div class="search-bad no-selection">
+			<input id="search_bad" class="checkbox"
+				   type="checkbox" name="bad"{{ app.request.get('bad') ? ' checked="checked"' }}/>
+			<label for="search_bad">включить в поиск БАДы</label>
+		</div>
+
+		<input class="search-button btn-red" type="submit" value="Найти"/>
+	</div>
+</form>

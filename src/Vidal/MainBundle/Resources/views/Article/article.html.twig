@@ -1,0 +1,74 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block title %}
+	<h1>
+		{{ article.title|raw }}
+		{# админам карандашик редактирования #}
+		{% if is_granted('ROLE_ADMIN') %}
+			<a class="admin-edit fade" target="_blank"
+			   href="{{ path('admin_vidal_drug_article_edit', {'id':article.id}) }}">
+				<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+			</a>
+		{% endif %}
+	</h1>
+{% endblock %}
+
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('articles') }}">Медицинская энциклопедия</a>
+		<i></i>
+		<a href="{{ path('rubrique', {'rubrique':rubrique.rubrique}) }}">{{ rubrique }}</a>
+	</div>
+{% endblock %}
+
+
+{% block content %}
+	{% include 'VidalMainBundle:Article:render_article.html.twig' %}
+
+	{% if documents is not empty %}
+	<div class="documents">
+		<div class="documents-anons anons">
+			<span>{{ article.title|raw }}</span>: Применяемые препараты безрецептурного отпуска
+		</div>
+
+		<ul class="ul-style">
+			{% for document in documents %}
+				<li>
+					<a href="{{ path('document', {'EngName':document.Name, 'DocumentID':document.DocumentID}) }}"
+					   class="no-underline">
+						{{ document.RusName|ucwords|raw }}
+					</a>
+				</li>
+			{% endfor %}
+		</ul>
+
+		<div class="anons red-warning">
+			Перед началом применения любого препарата посоветуйтесь со специалистом
+			и ознакомьтесь с инструкцией по применению.
+		</div>
+	</div>
+	{% endif %}
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/article.css') }}"/>
+	<style type="text/css">
+		.documents-anons {
+			margin-top: 22px;
+		}
+		.red-warning {
+			color:      rgb(255, 0, 0);
+			font-size:  12px;
+			margin-top: 20px;
+		}
+		.documents .ul-style {
+			font-size: 16px;
+		}
+	</style>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'VidalVeterinarBundle::vidal_layout.html.twig' %}
+
+
+{% block vidal %}
+	<h1>{{ molecule.LatName|upper|raw }}
+		{% if molecule.RusName is not empty %}
+			<span>({{ molecule.RusName|upper|raw }})</span>
+		{% endif %}
+	</h1>
+
+	{% if molecule.GNParent is not empty %}
+		<div class="mnn anons">
+			<a title="Международное непатентованное наименование (МНН)" href="{{ path('gnp') }}"
+			   class="no-underline mnn">{{ molecule.GNParent }}</a>
+			<span class="small italic">{{ molecule.GNParent.description }}</span>
+		</div>
+	{% endif %}
+
+	{% if document %}
+		{% include 'VidalVeterinarBundle:Vidal:document_navigation.html.twig' %}
+	{% endif %}
+
+	<div class="block">
+		<span class="block-head">Входит в состав препаратов: </span>
+		<a href="{{ path('v_molecule_included', {'MoleculeID':molecule.MoleculeID}) }}">список</a>
+	</div>
+
+	{% if document %}
+		{% include 'VidalVeterinarBundle:Vidal:document_info.html.twig' %}
+	{% endif %}
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		#vidal .mnn.anons {
+			margin-left: 0;
+			font-size: 15px;
+		}
+		#vidal .mnn.anons a {
+			font-weight: bold;
+		}
+	</style>
+{% endblock %}
+

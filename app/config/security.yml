@@ -1,0 +1,30 @@
+security:
+    encoders:
+        Vidal\MainBundle\Entity\User: plaintext
+
+    role_hierarchy:
+        ROLE_DOCTOR: ~
+        ROLE_ADMIN: [ROLE_DOCTOR, ROLE_ALLOWED_TO_SWITCH]
+
+    providers:
+        local_database:
+            entity: { class: Vidal\MainBundle\Entity\User, property: username}
+
+    firewalls:
+        everything:
+            pattern: ^/
+            form_login:
+                login_path: /login
+                check_path: /login-submit
+            logout:
+                path:   /logout
+                target: /
+            remember_me:
+                key:      "%secret%"
+                lifetime: 2592000
+                path:     /
+                domain:   ~
+            anonymous: ~
+
+    access_control:
+        - { path: ^/admin/, roles: [ROLE_ADMIN] }
