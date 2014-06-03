@@ -52,6 +52,21 @@ class Banner extends BaseEntity
 	 */
 	protected $clicks;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $limitDay = 0;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $dateDay;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $clickDay = 0;
+
 	/**
 	 * @ORM\Column(type="integer", nullable=true)
 	 * @Assert\Range(
@@ -266,4 +281,54 @@ class Banner extends BaseEntity
 	{
 		return $this->banner['mimeType'] == 'application/x-shockwave-flash';
 	}
+
+    /**
+     * @param mixed $limitDay
+     */
+    public function setLimitDay($limitDay = 0)
+    {
+        $this->limitDay = $limitDay;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLimitDay()
+    {
+        return $this->limitDay;
+    }
+
+    /**
+     * @param mixed $clickDay
+     */
+    public function setClickDay($clickDay = 0)
+    {
+        $this->clickDay = $clickDay;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getClickDay()
+    {
+        return $this->clickDay;
+    }
+
+    /**
+     * @param mixed $dateDay
+     */
+    public function setDateDay($dateDay)
+    {
+        $this->dateDay = $dateDay;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDateDay()
+    {
+        return $this->dateDay;
+    }
+
+
 }
