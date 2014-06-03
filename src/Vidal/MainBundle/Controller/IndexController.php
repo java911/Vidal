@@ -90,7 +90,7 @@ class IndexController extends Controller
                 $this->get('email.service')->send(
                     $this->container->getParameter('manager_emails'),
                     array('VidalMainBundle:Email:qa_question.html.twig', array('faq' => $faq)),
-                    'Ответ на сайте vidal.ru'
+                    'Вопрос на сайте vidal.ru'
                 );
 			}
 		}
@@ -105,7 +105,6 @@ class IndexController extends Controller
             $request->query->get('p', $p),
             3
         );
-//        $qaPagination->setTemplate('VidalMainBundle:Index:sliding2.html.twig ');
 
 		return array(
 			'title'           => 'Ответы специалистов',

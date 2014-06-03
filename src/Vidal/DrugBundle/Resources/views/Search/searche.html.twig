@@ -157,7 +157,7 @@
 				</div>
 			</div>
 		</div>
-		{% include 'VidalDrugBundle:Vidal:render_bads.html.twig' %}
+		{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':bads, 'pictures':bad_pictures, 'companies':bad_companies, 'infoPages':bad_infoPages} %}
 	{% endif %}
 
 	{# Найдено клинико-фармакологических групп #}

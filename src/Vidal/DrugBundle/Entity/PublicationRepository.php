@@ -12,9 +12,10 @@ class PublicationRepository extends EntityRepository
 			SELECT p
 			FROM VidalDrugBundle:Publication p
 			WHERE p.enabled = TRUE
-				AND p.date < CURRENT_TIMESTAMP()
+				AND p.date < :now
 			ORDER BY p.priority DESC, p.date DESC
-		')->setMaxResults($top)
+		')->setParameter('now', new \DateTime())
+			->setMaxResults($top)
 			->getResult();
 	}
 
@@ -24,9 +25,10 @@ class PublicationRepository extends EntityRepository
 			SELECT p
 			FROM VidalDrugBundle:Publication p
 			WHERE p.enabled = TRUE
-				AND p.date < CURRENT_TIMESTAMP()
+				AND p.date < :now
 			ORDER BY p.priority DESC, p.date DESC
-		')->setFirstResult($from)
+		')->setParameter('now', new \DateTime())
+			->setFirstResult($from)
 			->setMaxResults($max)
 			->getResult();
 	}

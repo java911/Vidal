@@ -31,13 +31,14 @@ class DoctrineEventSubscriber implements EventSubscriber
 	{
 		$entity = $args->getEntity();
 
-		# пользователю надо прописать регион
 		if ($entity instanceof User) {
-			if ($region = $entity->getCity()->getRegion()) {
-				$entity->setRegion($region);
-			}
-			if ($country = $entity->getCity()->getCountry()) {
-				$entity->setCountry($country);
+			if ($city = $entity->getCity()) {
+				if ($region = $city->getRegion()) {
+					$entity->setRegion($region);
+				}
+				if ($country = $city->getCountry()) {
+					$entity->setCountry($country);
+				}
 			}
 		}
 	}
@@ -46,14 +47,14 @@ class DoctrineEventSubscriber implements EventSubscriber
 	{
 		$entity = $args->getEntity();
 
-		# пользователю надо прописать регион
 		if ($entity instanceof User) {
-			if ($region = $entity->getCity()->getRegion()) {
-				$entity->setRegion($region);
-			}
-			if ($country = $entity->getCity()->getCountry()) {
-				$entity->setCountry($country);
-				//var_dump($entity->getCountry());exit;
+			if ($city = $entity->getCity()) {
+				if ($region = $city->getRegion()) {
+					$entity->setRegion($region);
+				}
+				if ($country = $city->getCountry()) {
+					$entity->setCountry($country);
+				}
 			}
 		}
 	}

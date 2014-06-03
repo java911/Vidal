@@ -25,10 +25,11 @@ class BannerRepository extends EntityRepository
 			->andWhere('g = :groupId')
 			->andWhere('g.enabled = TRUE')
 			->andWhere('b.enabled = TRUE')
-			->andWhere('b.starts < CURRENT_TIMESTAMP()')
-			->andWhere('b.ends IS NULL OR b.ends > CURRENT_TIMESTAMP()')
+			->andWhere('b.starts < :now')
+			->andWhere('b.ends IS NULL OR b.ends > :now')
 			->andWhere('b.expires IS NULL OR b.expires > 0')
-			->setParameter('groupId', $groupId);
+			->setParameter('groupId', $groupId)
+			->setParameter('now', new \DateTime());
 
 		$banners = $qb->getQuery()->getResult();
 

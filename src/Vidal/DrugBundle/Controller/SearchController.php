@@ -39,9 +39,9 @@ class SearchController extends Controller
 		}
 
 		# для некоторых типов запроса надо найти основание слова (чтоб не учитывать окончание)
-//		if (in_array($t, array('all', 'molecule', 'atc'))) {
-//			$q = $this->get('lingua.service')->stem_string($q);
-//		}
+		//		if (in_array($t, array('all', 'molecule', 'atc'))) {
+		//			$q = $this->get('lingua.service')->stem_string($q);
+		//		}
 
 		if ($t == 'all' || $t == 'product') {
 			$productsRaw = $em->getRepository('VidalDrugBundle:Product')->findByQuery($q, $bad);
@@ -121,7 +121,7 @@ class SearchController extends Controller
 		$q   = trim($q);
 		$t   = $request->query->get('t', 'all'); # тип запроса из селект-бокса
 		$p   = $request->query->get('p', 1); # номер страницы
-		$bad = $request->query->has('b'); # включать ли бады
+		$bad = $request->query->has('bad'); # включать ли бады
 
 		$params = array(
 			'q'     => $q,
@@ -138,9 +138,9 @@ class SearchController extends Controller
 		}
 
 		# для некоторых типов запроса надо найти основание слова (чтоб не учитывать окончание)
-//		if (in_array($t, array('all', 'molecule', 'atc', 'nosology', 'clphgroup', 'phthgroup'))) {
-//			$q = $this->get('lingua.service')->stem_string($q);
-//		}
+		//		if (in_array($t, array('all', 'molecule', 'atc', 'nosology', 'clphgroup', 'phthgroup'))) {
+		//			$q = $this->get('lingua.service')->stem_string($q);
+		//		}
 
 		if ($t == 'all' || $t == 'product') {
 			$productsRaw = $em->getRepository('VidalDrugBundle:Product')->findByQuery($q, $bad);
@@ -297,14 +297,60 @@ class SearchController extends Controller
 		$l  = $request->query->get('l', null); // буква
 		$n  = $request->query->has('n'); // только безрецептурные препараты
 
+		$letters = explode(' ', 'А Б В Г Д Е Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Э Ю Я');
+
 		$params = array(
-			't'     => $t,
-			'p'     => $p,
-			'l'     => $l,
-			'n'     => $n,
-			'menu'  => 'drugs',
-			'title' => 'Поиск по алфавиту',
+			't'       => $t,
+			'p'       => $p,
+			'l'       => $l,
+			'n'       => $n,
+			'menu'    => 'drugs',
+			'title'   => 'Поиск по алфавиту',
+			'letters' => $letters,
 		);
+
+//		$pdo  = $em->getConnection();
+//		$sql  = "
+//			SELECT DISTINCT LEFT(RusName, 2) as r
+//			FROM product
+//			WHERE MarketStatusID IN (1,2,7)
+//				AND ProductTypeCode IN ('DRUG', 'GOME')
+//				AND (
+//				RusName LIKE 'А%'
+//				OR RusName LIKE 'Б%'
+//				OR RusName LIKE 'В%'
+//				OR RusName LIKE 'Г%'
+//				OR RusName LIKE 'Д%'
+//				OR RusName LIKE 'Е%'
+//				OR RusName LIKE 'Ж%'
+//				OR RusName LIKE 'З%'
+//				OR RusName LIKE 'И%'
+//				OR RusName LIKE 'Й%'
+//				OR RusName LIKE 'К%'
+//				OR RusName LIKE 'Л%'
+//				OR RusName LIKE 'М%'
+//				OR RusName LIKE 'Н%'
+//				OR RusName LIKE 'О%'
+//				OR RusName LIKE 'П%'
+//				OR RusName LIKE 'Р%'
+//				OR RusName LIKE 'С%'
+//				OR RusName LIKE 'Т%'
+//				OR RusName LIKE 'У%'
+//				OR RusName LIKE 'Ф%'
+//				OR RusName LIKE 'Х%'
+//				OR RusName LIKE 'Ц%'
+//				OR RusName LIKE 'Ч%'
+//				OR RusName LIKE 'Ш%'
+//				OR RusName LIKE 'Э%'
+//				OR RusName LIKE 'Ю%'
+//				OR RusName LIKE 'Я%'
+//			)
+//			ORDER BY r ASC
+//		";
+//		$stmt = $pdo->prepare($sql);
+//		$stmt->execute();
+//		$subs = $stmt->fetchAll(\PDO::FETCH_COLUMN, 0);
+//		$params['subs'] = $subs;
 
 		# БАДы только безрецептурные
 		if ($t == 'b') {
