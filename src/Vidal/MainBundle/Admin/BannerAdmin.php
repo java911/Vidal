@@ -34,6 +34,7 @@ class BannerAdmin extends Admin
 			->add('clicks', null, array('label' => 'Переходов'))
 			->add('displayed', null, array('label' => 'Показов'))
 			->add('expires', null, array('label' => 'Осталось показов'))
+
 			->add('presence', null, array('label' => 'Приоритет появления'))
 			->add('enabled', null, array('label' => 'Активен'))
 			->add('starts', null, array('label' => 'Дата начала'))
@@ -49,6 +50,8 @@ class BannerAdmin extends Admin
 			->add('link', null, array('label' => 'Ссылка', 'required' => true))
 			->add('group', null, array('label' => 'Баннерное место', 'required' => true))
 			->add('expires', null, array('label' => 'Осталось показов', 'help' => 'Оставьте пустым, чтоб не учитывать'))
+            ->add('limitDay', null, array('label' => 'Лимит показов в день'))
+            ->add('clickDay', null, array('label' => 'Осталось показов в день'))
 			->add('presence', null, array('label' => 'Приоритет', 'help' => 'Как часто появляется: 1-100%. Оставьте пустым, если без приоритета'))
 			->add('enabled', null, array('label' => 'Активен', 'required' => false))
 			->add('starts', null, array('label' => 'Дата начала'))
@@ -80,6 +83,7 @@ class BannerAdmin extends Admin
 			->add('clicks', null, array('label' => 'Переходов'))
 			->add('displayed', null, array('label' => 'Показов'))
 			->add('expires', null, array('label' => 'Осталось показов'))
+
 			->add('presence', null, array('label' => 'Приоритет %'))
 			->add('starts', null, array('label' => 'Дата начала', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
 			->add('ends', null, array('label' => 'Дата окончания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
