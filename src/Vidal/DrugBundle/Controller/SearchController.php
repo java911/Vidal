@@ -434,6 +434,31 @@ class SearchController extends Controller
 		return new JsonResponse($html);
 	}
 
+	/**
+	 * @Route("/search-options", name="search_options", options={"expose":true})
+	 */
+	public function searchOptions($type)
+	{
+		$em = $this->getDoctrine()->getManager('drug');
+
+		switch($type) {
+			case 'molecule':
+				return new JsonResponse($em->getRepository('VidalDrugBundle:Molecule')->getOptions());
+			case 'atc':
+				return new JsonResponse($em->getRepository('VidalDrugBundle:Molecule')->getOptions());
+			case 'companies':
+				return new JsonResponse($em->getRepository('VidalDrugBundle:Molecule')->getOptions());
+			case 'nosology':
+				return new JsonResponse($em->getRepository('VidalDrugBundle:Molecule')->getOptions());
+			case 'clphgroup':
+				return new JsonResponse($em->getRepository('VidalDrugBundle:ClPhGroups')->getOptions());
+			case 'phthgroup':
+				return new JsonResponse($em->getRepository('VidalDrugBundle:PhThGroups')->getOptions());
+			default:
+				return new JsonResponse(array());
+		}
+	}
+
 	/** Получить массив идентификаторов продуктов */
 	private function getProductIds($products)
 	{

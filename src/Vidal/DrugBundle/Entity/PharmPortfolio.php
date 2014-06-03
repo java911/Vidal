@@ -4,11 +4,14 @@ namespace Vidal\DrugBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Iphp\FileStoreBundle\Mapping\Annotation as FileStore;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="PharmPortfolioRepository")
  * @ORM\Table(name="pharm_portfolio")
  * @UniqueEntity("url")
+ * @FileStore\Uploadable
  */
 class PharmPortfolio extends BaseEntity
 {
@@ -32,6 +35,23 @@ class PharmPortfolio extends BaseEntity
 	 * @ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")
 	 */
 	protected $DocumentID;
+
+	/**
+	 * @ORM\Column(type="array", nullable=true)
+	 * @FileStore\UploadableField(mapping="video")
+	 * @Assert\File(
+	 *        maxSize="100M",
+	 *        maxSizeMessage="Видео не может быть больше 100Мб",
+	 *        mimeTypesMessage="Видео должно быть в формате .flv"
+	 * )
+	 */
+	protected $video;
+
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $videoWidth;
+
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $videoHeight;
 
 	public function __toString()
 	{
@@ -132,5 +152,53 @@ class PharmPortfolio extends BaseEntity
 	public function getUrl()
 	{
 		return $this->url;
+	}
+
+	/**
+	 * @param mixed $video
+	 */
+	public function setVideo($video)
+	{
+		$this->video = $video;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getVideo()
+	{
+		return $this->video;
+	}
+
+	/**
+	 * @param mixed $videoHeight
+	 */
+	public function setVideoHeight($videoHeight)
+	{
+		$this->videoHeight = $videoHeight;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getVideoHeight()
+	{
+		return $this->videoHeight;
+	}
+
+	/**
+	 * @param mixed $videoWidth
+	 */
+	public function setVideoWidth($videoWidth)
+	{
+		$this->videoWidth = $videoWidth;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getVideoWidth()
+	{
+		return $this->videoWidth;
 	}
 }

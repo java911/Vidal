@@ -1,9 +1,15 @@
 services:
-    drug.subscriber:
+    default.subscriber:
         class: Vidal\MainBundle\Service\DoctrineEventSubscriber
         arguments: [@service_container]
         tags:
             - { name: doctrine.event_subscriber, connection: default }
+
+    drug.subscriber:
+        class: Vidal\DrugBundle\Service\DoctrineEventSubscriber
+        arguments: [@service_container]
+        tags:
+            - { name: doctrine.event_subscriber, connection: drug }
 
     default.timestampable:
         class: Gedmo\Timestampable\TimestampableListener
@@ -36,3 +42,17 @@ services:
     findDrug.service:
           class: Vidal\MainBundle\Service\FindDrugService
           arguments: [ @doctrine.orm.entity_manager ]
+
+    lingua.service:
+        class: Vidal\DrugBundle\Service\LinguaService
+
+    elastica.service:
+        class: Vidal\DrugBundle\Service\ElasticaService
+        arguments: [@lingua.service]
+
+    drug.timestampable:
+        class: Gedmo\Timestampable\TimestampableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: drug }
+        calls:
+            - [ setAnnotationReader, [ @annotation_reader ] ]

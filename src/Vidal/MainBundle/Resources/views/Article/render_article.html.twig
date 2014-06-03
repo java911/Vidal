@@ -2,7 +2,7 @@
 
 <div class="article-wrap text">
 	{% if article.video and article.video.path is defined %}
-		{% set width = article.videoWidth > 480 ? 480 : module.videoWidth %}
+		{% set width = article.videoWidth > 480 ? 480 : article.videoWidth %}
 		{% set height = article.videoWidth > 480
 		? (article.videoHeight * 480 / article.videoWidth) | number_format(0)
 		: article.videoHeight %}
