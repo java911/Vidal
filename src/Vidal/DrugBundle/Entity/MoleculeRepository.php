@@ -98,19 +98,19 @@ class MoleculeRepository extends EntityRepository
 
 	public function getOptions()
 	{
-		$raw = $this->_em->createQuery('
-		 	SELECT m.MoleculeID, m.RusName, m.LatName
-		 	FROM VidalDrugBundle:Molecule m
-		 	ORDER BY m.LatName ASC
-		 ')->getResult();
-
-		$molecules = [];
-		foreach ($raw as $r) {
-			$key             = $r['MoleculeID'];
-			$molecules[$key] = $r['LatName'] . ' (' . $r['RusName'] . ')';
-		}
-
-		return $molecules;
+//		$raw = $this->_em->createQuery('
+//		 	SELECT m.MoleculeID, m.RusName, m.LatName
+//		 	FROM VidalDrugBundle:Molecule m
+//		 	ORDER BY m.LatName ASC
+//		 ')->getResult();
+//
+//		$molecules = array();
+//		foreach ($raw as $r) {
+//			$key             = $r['MoleculeID'];
+//			$molecules[$key] = $r['LatName'] . ' (' . $r['RusName'] . ')';
+//		}
+//
+//		return $molecules;
 	}
 
 	public function findByQuery($q)
