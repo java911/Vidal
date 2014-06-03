@@ -299,11 +299,23 @@ class SearchController extends Controller
 
 		$letters = explode(' ', 'А Б В Г Д Е Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Э Ю Я');
 
+		$params = array(
+			't'       => $t,
+			'p'       => $p,
+			'l'       => $l,
+			'n'       => $n,
+			'menu'    => 'drugs',
+			'title'   => 'Поиск по алфавиту',
+			'letters' => $letters,
+		);
+
 //		$pdo  = $em->getConnection();
 //		$sql  = "
 //			SELECT DISTINCT LEFT(RusName, 2) as r
 //			FROM product
-//			WHERE MarketStatusID IN (1,2,7) AND (
+//			WHERE MarketStatusID IN (1,2,7)
+//				AND ProductTypeCode IN ('DRUG', 'GOME')
+//				AND (
 //				RusName LIKE 'А%'
 //				OR RusName LIKE 'Б%'
 //				OR RusName LIKE 'В%'
@@ -338,17 +350,7 @@ class SearchController extends Controller
 //		$stmt = $pdo->prepare($sql);
 //		$stmt->execute();
 //		$subs = $stmt->fetchAll(\PDO::FETCH_COLUMN, 0);
-
-		$params = array(
-			't'       => $t,
-			'p'       => $p,
-			'l'       => $l,
-			'n'       => $n,
-			'menu'    => 'drugs',
-			'title'   => 'Поиск по алфавиту',
-			'letters' => $letters,
-			//'subs'    => $subs,
-		);
+//		$params['subs'] = $subs;
 
 		# БАДы только безрецептурные
 		if ($t == 'b') {
