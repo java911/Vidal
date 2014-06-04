@@ -26,9 +26,9 @@ class PharmArticleRepository extends EntityRepository
 			SELECT a
 			FROM VidalDrugBundle:PharmArticle a
 			WHERE a.enabled = TRUE
-				AND a.created < CURRENT_TIMESTAMP()
+				AND a.created < :now
 			ORDER BY a.created DESC, a.priority DESC
-		');
+		')->setParameter('now', new \DateTime());
 	}
 
 	public function getQueryOfCompany($id)

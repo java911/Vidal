@@ -258,6 +258,7 @@
 			var $searcheForm = $('#searche_form');
 			var $searcheSelect = $('#searche_form .search-type');
 			var $searcheQuery = $('#searche_form .search-query');
+			var $searcheOption = $('#searche_form .search-option');
 
 			$searcheQuery.autocomplete({
 				minLength: 2,
@@ -286,11 +287,18 @@
 			$searcheSelect.chosen({disable_search: true});
 
 			///////////////////////////////////////////////////////
+//			$searcheOption.chosen();
 //			$searcheSelect.change(function() {
 //				var value = $searcheSelect.val();
 //				if (value == 'molecule' || value == 'nozology' || value == 'atc' || value == 'company' || value == 'clphgroup' || value == 'phthgroup') {
-//					$.getJSON(Routing.generate('search_options', {'type':value}), function() {
-//						alert();
+//					$.getJSON(Routing.generate('search_options', {'type':value}), function(data) {
+//						if (data.length > 0) {
+//							$searcheOption.find('option').remove();
+//							$.each(data, function(index, option) {
+//								$searcheOption.append($('<option></option>').val(option.id).text(option.title));
+//							});
+//							$searcheOption.trigger("chosen:updated");
+//						}
 //					});
 //				}
 //			});

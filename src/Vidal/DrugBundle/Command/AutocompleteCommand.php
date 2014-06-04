@@ -40,22 +40,6 @@ class AutocompleteCommand extends ContainerAwareCommand
 			$elasticaType->delete();
 		}
 
-		// Create the index new
-		$elasticaIndex->create(
-			array(
-				'number_of_shards'   => 4,
-				'number_of_replicas' => 1,
-				'analysis'           => array(
-					'analyzer' => array(
-						'default' => array(
-							'tokenizer' => 'whitespace',
-						),
-					),
-				)
-			),
-			true
-		);
-
 		// Define mapping
 		$mapping = new \Elastica\Type\Mapping();
 		$mapping->setType($elasticaType);
