@@ -128,11 +128,11 @@ class ATCRepository extends EntityRepository
 			$EngName      = str_replace('  ', ' ', $EngName);
 
 			if (!empty($RusName)) {
-				$atcNames[] = $atcCodes[$i]['ATCCode'] . ' > ' . $RusName;
+				$atcNames[] = mb_strtolower($atcCodes[$i]['ATCCode'], 'UTF-8') . ' > ' . $RusName;
 			}
 
 			if (!empty($EngName)) {
-				$atcNames[] = $atcCodes[$i]['ATCCode'] . ' > ' . $EngName;
+				$atcNames[] = mb_strtolower($atcCodes[$i]['ATCCode'], 'UTF-8') . ' > ' . $EngName;
 			}
 		}
 
