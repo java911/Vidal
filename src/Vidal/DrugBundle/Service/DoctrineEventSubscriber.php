@@ -11,6 +11,7 @@ use Vidal\DrugBundle\Entity\Art;
 use Vidal\DrugBundle\Entity\Publication;
 use Vidal\DrugBundle\Entity\Product;
 use Vidal\DrugBundle\Entity\Document;
+use Vidal\DrugBundle\Entity\PharmPortfolio;
 
 class DoctrineEventSubscriber implements EventSubscriber
 {
@@ -50,7 +51,7 @@ class DoctrineEventSubscriber implements EventSubscriber
 		$entity = $args->getEntity();
 
 		# проставляем мета к видео, если его загрузили
-		if ($entity instanceof Article || $entity instanceof Art || $entity instanceof Publication) {
+		if ($entity instanceof Article || $entity instanceof Art || $entity instanceof Publication || $entity instanceof PharmPortfolio) {
 			$this->setVideoMeta($entity);
 		}
 
@@ -80,7 +81,7 @@ class DoctrineEventSubscriber implements EventSubscriber
 		$entity = $args->getEntity();
 
 		# проставляем мета к видео, если его загрузили
-		if ($entity instanceof Article || $entity instanceof Art || $entity instanceof Publication) {
+		if ($entity instanceof Article || $entity instanceof Art || $entity instanceof Publication || $entity instanceof PharmPortfolio) {
 			$this->setVideoMeta($entity);
 		}
 	}

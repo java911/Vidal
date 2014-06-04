@@ -234,8 +234,7 @@
 	and (molecules is not defined or molecules is empty)
 	and (nozologies is not defined or nozologies is empty)
 	and (search_infoPages is empty and search_companies is empty)
-	and (bads is not defined)
-	%}
+	and (bads is not defined) %}
 		<div class="no-results">
 			Не найдено результатов
 		</div>
@@ -257,33 +256,44 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			var $searcheForm = $('#searche_form');
+			var $searcheSelect = $('#searche_form .search-type');
+			var $searcheQuery = $('#searche_form .search-query');
 
-			$searcheForm.find('.search-query')
-				.autocomplete({
-					minLength: 2,
-					source:    function(request, response) {
-						$.ajax({
-							url:      "http://twiga.vidal.ru:9200/website/autocompleteext/_search",
-							type:     "POST",
-							dataType: "JSON",
-							data:     '{ "query":{"query_string":{"query":"' + request.term + '*"}}, "fields":["name"], "size":15, "highlight":{"fields":{"name":{}}} }',
-							success:  function(data) {
-								response($.map(data.hits.hits, function(item) {
-									return {
-										label: item.highlight.name,
-										value: item.fields.name
-									}
-								}));
-							}
-						});
-					}
-				})
+			$searcheQuery.autocomplete({
+				minLength: 2,
+				source:    function(request, response) {
+					$.ajax({
+						url:      "http://twiga.vidal.ru:9200/website/autocompleteext/_search",
+						type:     "POST",
+						dataType: "JSON",
+						data:     '{ "query":{"query_string":{"query":"' + request.term + '*"}}, "fields":["name"], "size":15, "highlight":{"fields":{"name":{}}} }',
+						success:  function(data) {
+							response($.map(data.hits.hits, function(item) {
+								return {
+									label: item.highlight.name,
+									value: item.fields.name
+								}
+							}));
+						}
+					});
+				}
+			})
 				.data("ui-autocomplete")._renderItem =
 				function(ul, item) {
 					return $("<li></li>").data("item.autocomplete", item).append("<a>" + item.label + "</a>").appendTo(ul);
 				};
 
-			$searcheForm.find('.search-type').chosen({disable_search: true});
+			$searcheSelect.chosen({disable_search: true});
+
+			///////////////////////////////////////////////////////
+//			$searcheSelect.change(function() {
+//				var value = $searcheSelect.val();
+//				if (value == 'molecule' || value == 'nozology' || value == 'atc' || value == 'company' || value == 'clphgroup' || value == 'phthgroup') {
+//					$.getJSON(Routing.generate('search_options', {'type':value}), function() {
+//						alert();
+//					});
+//				}
+//			});
 		});
 	</script>
 {% endblock %}

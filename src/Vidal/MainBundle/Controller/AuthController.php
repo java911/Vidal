@@ -77,11 +77,11 @@ class AuthController extends Controller
 				);
 
 				# уведомление администраторов о регистрации
-				$this->get('email.service')->send(
-					$this->container->getParameter('manager_emails'),
-					array('VidalMainBundle:Email:registration_notice.html.twig', array('user' => $user)),
-					'Зарегистрировался новый пользователь'
-				);
+//				$this->get('email.service')->send(
+//					$this->container->getParameter('manager_emails'),
+//					array('VidalMainBundle:Email:registration_notice.html.twig', array('user' => $user)),
+//					'Зарегистрировался новый пользователь'
+//				);
 
 				return $this->redirect($this->generateUrl('profile'));
 			}
