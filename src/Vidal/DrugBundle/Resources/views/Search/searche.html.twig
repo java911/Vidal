@@ -273,6 +273,7 @@
 			var $searcheQuery = $('#searche_form .search-query');
 			var $searcheOption = $('#searche_form .search-option');
 			var $optionWrap = $('.option-wrap');
+			var $searcheLoader = $('.searche-loader');
 
 			var types = {'product': 'препарат', 'molecule': 'вещество', 'atc': 'АТХ код', 'company': 'компания'};
 			var type = 'all';
@@ -339,13 +340,16 @@
 			$searcheSelect.change(function() {
 				var value = $searcheSelect.val();
 				if (value == 'molecule' || value == 'nosology' || value == 'atc' || value == 'clphgroup' || value == 'phthgroup') {
+					$searcheLoader.show();
+					$searcheOption.attr('disabled', true).trigger("chosen:updated");
 					$.getJSON(Routing.generate('search_options', {'type': value}), function(data) {
 						if (data.length > 0) {
 							$searcheOption.find('option').remove();
 							$.each(data, function(index, option) {
 								$searcheOption.append($('<option></option>').val(option.id).text(option.title));
 							});
-							$searcheOption.trigger("chosen:updated");
+							$searcheOption.attr('disabled', false).trigger("chosen:updated");
+							$searcheLoader.hide();
 						}
 					});
 					$searcheQuery.hide();

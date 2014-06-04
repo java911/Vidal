@@ -275,10 +275,8 @@ h1 span {
 	user-select:           none;
 }
 .ajax-loader {
-	display:    block;
-	height:     32px;
-	width:      32px;
-	margin:     40px auto;
+	height:     16px;
+	width:      16px;
 	background: url(../images/ajax-loader.gif) no-repeat top left;
 }
 .title {
