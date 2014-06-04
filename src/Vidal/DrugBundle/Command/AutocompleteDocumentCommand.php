@@ -54,7 +54,6 @@ class AutocompleteDocumentCommand extends ContainerAwareCommand
 
 		# Set mapping
 		$mapping->setProperties(array(
-			'id'   => array('type' => 'integer', 'include_in_all' => FALSE),
 			'name' => array('type' => 'string', 'include_in_all' => TRUE),
 		));
 
@@ -62,7 +61,7 @@ class AutocompleteDocumentCommand extends ContainerAwareCommand
 		$mapping->send();
 
 		for ($i = 0; $i < count($names); $i++) {
-			$document = new \Elastica\Document($i + 1, array('name' => $names[$i]));
+			$document = new \Elastica\Document(null, array('name' => $names[$i]));
 			$elasticaType->addDocument($document);
 			$elasticaType->getIndex()->refresh();
 
@@ -79,6 +78,6 @@ class AutocompleteDocumentCommand extends ContainerAwareCommand
 		$pat = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/&amp;/');
 		$rep = array('', '', '&');
 
-		return preg_replace($pat, $rep, $string);
+		return mb_strtolower(preg_replace($pat, $rep, $string), 'UTF-8');
 	}
 }
