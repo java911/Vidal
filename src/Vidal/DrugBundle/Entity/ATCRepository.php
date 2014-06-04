@@ -136,6 +136,7 @@ class ATCRepository extends EntityRepository
 			}
 		}
 
+		$atcNames = array_unique($atcNames);
 		usort($atcNames, 'strcasecmp');
 
 		return $atcNames;
