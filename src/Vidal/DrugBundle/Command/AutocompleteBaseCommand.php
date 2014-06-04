@@ -29,10 +29,18 @@ class AutocompleteBaseCommand extends ContainerAwareCommand
 		$elasticaClient = new \Elastica\Client();
 		$elasticaIndex  = $elasticaClient->getIndex('website');
 
+		// Create the index new
 		$elasticaIndex->create(
 			array(
 				'number_of_shards'   => 4,
 				'number_of_replicas' => 1,
+				'analysis'           => array(
+					'analyzer' => array(
+						'default' => array(
+							'tokenizer' => 'whitespace',
+						),
+					),
+				)
 			),
 			true
 		);

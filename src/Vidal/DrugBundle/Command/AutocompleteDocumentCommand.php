@@ -36,7 +36,7 @@ class AutocompleteDocumentCommand extends ContainerAwareCommand
 		")->getResult();
 
 		foreach ($documents as $document) {
-			$names[] = $document['DocumentID'] . ' - ' . $this->strip($document['RusName']);
+			$names[] = $document['DocumentID'] . ' ' . $this->strip($document['RusName']);
 		}
 
 		$elasticaClient = new \Elastica\Client();
