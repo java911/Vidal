@@ -29,23 +29,15 @@
 		</option>
 	</select>
 
-	<style>
-		#searche_form .search-query {
-
-		}
-		#searche_form .search-option {
-			width: 266px;
-			display: none;
-		}
-	</style>
-
 	<input class="search-query border-radius" type="text" name="q" placeholder="Введите слово для поиска..."
 		   autocomplete="off"
 		   value="{{ app.request.attributes.get('_route') == 'searche' ? app.request.get('q') }}"/>
 
-	<select class="search-option" name="o">
-		<option></option>
-	</select>
+	<div class="option-wrap">
+		<select class="search-option" name="o">
+			<option></option>
+		</select>
+	</div>
 
 	<div class="controls">
 		<div class="search-bad no-selection">

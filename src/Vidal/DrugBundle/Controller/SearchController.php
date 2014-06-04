@@ -38,11 +38,6 @@ class SearchController extends Controller
 			return $this->render('VidalDrugBundle:Search:search_too_short.html.twig', $params);
 		}
 
-		# для некоторых типов запроса надо найти основание слова (чтоб не учитывать окончание)
-		//		if (in_array($t, array('all', 'molecule', 'atc'))) {
-		//			$q = $this->get('lingua.service')->stem_string($q);
-		//		}
-
 		if ($t == 'all' || $t == 'product') {
 			$productsRaw = $em->getRepository('VidalDrugBundle:Product')->findByQuery($q, $bad);
 
@@ -79,31 +74,33 @@ class SearchController extends Controller
 			}
 		}
 
-		# поиск по активному веществу
-		if (($t == 'all' || $t == 'molecule') && $p == 1) {
-			$params['molecules'] = $em->getRepository('VidalDrugBundle:Molecule')->findByQuery($q);
-		}
-
-		# поиск по АТХ коду
-		if ($t == 'atc') {
-			$qUpper             = mb_strtoupper($q, 'utf-8');
-			$params['atcCodes'] = $em->getRepository('VidalDrugBundle:ATC')->findByQuery($qUpper);
-		}
-
-		# поиск по компании
-		if ($t == 'all' || $t == 'company') {
-			$params['search_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByQuery($q);
-			$params['search_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByQuery($q);
-		}
-
-		# поиск по заболеванию (это статьи и синонимы)
-		if ($t == 'all' || $t == 'disease') {
-			$articles = $em->getRepository('VidalDrugBundle:Article')->findByQuery($q);
-			# если есть БАДы, то исключаем дублирующие их статьи
-			if (isset($params['bads']) && !empty($articles)) {
-				$articles = $this->excludeBads($articles, $params['bads']);
+		if ($p == 1) {
+			# поиск по активному веществу
+			if ($t == 'all' || $t == 'molecule') {
+				$params['molecules'] = $em->getRepository('VidalDrugBundle:Molecule')->findByQuery($q);
 			}
-			$params['articles'] = $articles;
+
+			# поиск по АТХ коду
+			if ($t == 'all' || $t == 'atc') {
+				$qUpper             = mb_strtoupper($q, 'utf-8');
+				$params['atcCodes'] = $em->getRepository('VidalDrugBundle:ATC')->findByQuery($qUpper);
+			}
+
+			# поиск по компании
+			if ($t == 'all' || $t == 'company') {
+				$params['search_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByQuery($q);
+				$params['search_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByQuery($q);
+			}
+
+			# поиск по заболеванию (это статьи и синонимы)
+			if ($t == 'all' || $t == 'disease') {
+				$articles = $em->getRepository('VidalDrugBundle:Article')->findByQuery($q);
+				# если есть БАДы, то исключаем дублирующие их статьи
+				if (isset($params['bads']) && !empty($articles)) {
+					$articles = $this->excludeBads($articles, $params['bads']);
+				}
+				$params['articles'] = $articles;
+			}
 		}
 
 		return $params;
@@ -122,10 +119,12 @@ class SearchController extends Controller
 		$t   = $request->query->get('t', 'all'); # тип запроса из селект-бокса
 		$p   = $request->query->get('p', 1); # номер страницы
 		$bad = $request->query->has('bad'); # включать ли бады
+		$o   = $request->query->get('o', null); # опция на поиск по группе из списка
 
 		$params = array(
 			'q'     => $q,
 			't'     => $t,
+			'o'     => $o,
 			'title' => 'Расширенный поиск',
 		);
 
@@ -136,11 +135,6 @@ class SearchController extends Controller
 		elseif (mb_strlen($q, 'UTF-8') < 2) {
 			return $this->render('VidalDrugBundle:Search:searche_too_short.html.twig', $params);
 		}
-
-		# для некоторых типов запроса надо найти основание слова (чтоб не учитывать окончание)
-		//		if (in_array($t, array('all', 'molecule', 'atc', 'nosology', 'clphgroup', 'phthgroup'))) {
-		//			$q = $this->get('lingua.service')->stem_string($q);
-		//		}
 
 		if ($t == 'all' || $t == 'product') {
 			$productsRaw = $em->getRepository('VidalDrugBundle:Product')->findByQuery($q, $bad);
@@ -191,26 +185,16 @@ class SearchController extends Controller
 			}
 
 			# поиск по АТХ коду
-			if ($t == 'atc') {
+			if ($t == 'all' || $t == 'atc') {
 				$qUpper             = mb_strtoupper($q, 'utf-8');
 				$params['atcCodes'] = $em->getRepository('VidalDrugBundle:ATC')->findByQuery($qUpper);
 				$params['atcTree']  = true;
 			}
 
 			# поиск по компании
-			if ($t == 'company') {
+			if ($t == 'all' || $t == 'company') {
 				$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByQuery($q);
 				$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByQuery($q);
-			}
-
-			# поиск по клиннико-фармакологической группе
-			if ($t == 'clphgroup') {
-				$params['clphgroups'] = $em->getRepository('VidalDrugBundle:Document')->findClPhGroupsByQuery($q);
-			}
-
-			# поиск по фармако-терапевтической группе
-			if ($t == 'phthgroup') {
-				$params['phthgroups'] = $em->getRepository('VidalDrugBundle:Product')->findPhThGroupsByQuery($q);
 			}
 
 			# поиск по заболеванию (это статьи и синонимы)
@@ -221,6 +205,16 @@ class SearchController extends Controller
 					$articles = $this->excludeBads($articles, $params['bads']);
 				}
 				$params['articles'] = $articles;
+			}
+
+			# поиск по клиннико-фармакологической группе
+			if ($t == 'clphgroup') {
+				$params['clphgroups'] = $em->getRepository('VidalDrugBundle:Document')->findClPhGroupsByQuery($q);
+			}
+
+			# поиск по фармако-терапевтической группе
+			if ($t == 'phthgroup') {
+				$params['phthgroups'] = $em->getRepository('VidalDrugBundle:Product')->findPhThGroupsByQuery($q);
 			}
 		}
 
@@ -309,48 +303,48 @@ class SearchController extends Controller
 			'letters' => $letters,
 		);
 
-//		$pdo  = $em->getConnection();
-//		$sql  = "
-//			SELECT DISTINCT LEFT(RusName, 2) as r
-//			FROM product
-//			WHERE MarketStatusID IN (1,2,7)
-//				AND ProductTypeCode IN ('DRUG', 'GOME')
-//				AND (
-//				RusName LIKE 'А%'
-//				OR RusName LIKE 'Б%'
-//				OR RusName LIKE 'В%'
-//				OR RusName LIKE 'Г%'
-//				OR RusName LIKE 'Д%'
-//				OR RusName LIKE 'Е%'
-//				OR RusName LIKE 'Ж%'
-//				OR RusName LIKE 'З%'
-//				OR RusName LIKE 'И%'
-//				OR RusName LIKE 'Й%'
-//				OR RusName LIKE 'К%'
-//				OR RusName LIKE 'Л%'
-//				OR RusName LIKE 'М%'
-//				OR RusName LIKE 'Н%'
-//				OR RusName LIKE 'О%'
-//				OR RusName LIKE 'П%'
-//				OR RusName LIKE 'Р%'
-//				OR RusName LIKE 'С%'
-//				OR RusName LIKE 'Т%'
-//				OR RusName LIKE 'У%'
-//				OR RusName LIKE 'Ф%'
-//				OR RusName LIKE 'Х%'
-//				OR RusName LIKE 'Ц%'
-//				OR RusName LIKE 'Ч%'
-//				OR RusName LIKE 'Ш%'
-//				OR RusName LIKE 'Э%'
-//				OR RusName LIKE 'Ю%'
-//				OR RusName LIKE 'Я%'
-//			)
-//			ORDER BY r ASC
-//		";
-//		$stmt = $pdo->prepare($sql);
-//		$stmt->execute();
-//		$subs = $stmt->fetchAll(\PDO::FETCH_COLUMN, 0);
-//		$params['subs'] = $subs;
+		//		$pdo  = $em->getConnection();
+		//		$sql  = "
+		//			SELECT DISTINCT LEFT(RusName, 2) as r
+		//			FROM product
+		//			WHERE MarketStatusID IN (1,2,7)
+		//				AND ProductTypeCode IN ('DRUG', 'GOME')
+		//				AND (
+		//				RusName LIKE 'А%'
+		//				OR RusName LIKE 'Б%'
+		//				OR RusName LIKE 'В%'
+		//				OR RusName LIKE 'Г%'
+		//				OR RusName LIKE 'Д%'
+		//				OR RusName LIKE 'Е%'
+		//				OR RusName LIKE 'Ж%'
+		//				OR RusName LIKE 'З%'
+		//				OR RusName LIKE 'И%'
+		//				OR RusName LIKE 'Й%'
+		//				OR RusName LIKE 'К%'
+		//				OR RusName LIKE 'Л%'
+		//				OR RusName LIKE 'М%'
+		//				OR RusName LIKE 'Н%'
+		//				OR RusName LIKE 'О%'
+		//				OR RusName LIKE 'П%'
+		//				OR RusName LIKE 'Р%'
+		//				OR RusName LIKE 'С%'
+		//				OR RusName LIKE 'Т%'
+		//				OR RusName LIKE 'У%'
+		//				OR RusName LIKE 'Ф%'
+		//				OR RusName LIKE 'Х%'
+		//				OR RusName LIKE 'Ц%'
+		//				OR RusName LIKE 'Ч%'
+		//				OR RusName LIKE 'Ш%'
+		//				OR RusName LIKE 'Э%'
+		//				OR RusName LIKE 'Ю%'
+		//				OR RusName LIKE 'Я%'
+		//			)
+		//			ORDER BY r ASC
+		//		";
+		//		$stmt = $pdo->prepare($sql);
+		//		$stmt->execute();
+		//		$subs = $stmt->fetchAll(\PDO::FETCH_COLUMN, 0);
+		//		$params['subs'] = $subs;
 
 		# БАДы только безрецептурные
 		if ($t == 'b') {
@@ -441,15 +435,13 @@ class SearchController extends Controller
 	{
 		$em = $this->getDoctrine()->getManager('drug');
 
-		switch($type) {
+		switch ($type) {
 			case 'molecule':
 				return new JsonResponse($em->getRepository('VidalDrugBundle:Molecule')->getOptions());
 			case 'atc':
-				return new JsonResponse($em->getRepository('VidalDrugBundle:Molecule')->getOptions());
-			case 'companies':
-				return new JsonResponse($em->getRepository('VidalDrugBundle:Molecule')->getOptions());
+				return new JsonResponse($em->getRepository('VidalDrugBundle:ATC')->getOptions());
 			case 'nosology':
-				return new JsonResponse($em->getRepository('VidalDrugBundle:Molecule')->getOptions());
+				return new JsonResponse($em->getRepository('VidalDrugBundle:Nozology')->getOptions());
 			case 'clphgroup':
 				return new JsonResponse($em->getRepository('VidalDrugBundle:ClPhGroups')->getOptions());
 			case 'phthgroup':

@@ -98,4 +98,32 @@ class ClPhGroupsRepository extends EntityRepository
 
 		return $where;
 	}
+
+	public function getOptions()
+	{
+		$raw = $this->_em->createQuery('
+			SELECT g.ClPhGroupsID, g.Name
+			FROM VidalDrugBundle:ClPhGroups g
+		 	ORDER BY g.Name ASC
+		 ')->getResult();
+
+		$items = array();
+
+		foreach ($raw as $r) {
+			$items[] = array(
+				'id'    => $r['ClPhGroupsID'],
+				'title' => $this->strip($r['Name'])
+			);
+		}
+
+		return $items;
+	}
+
+	private function strip($string)
+	{
+		$pat = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/&amp;/');
+		$rep = array('', '', '&');
+
+		return preg_replace($pat, $rep, $string);
+	}
 }

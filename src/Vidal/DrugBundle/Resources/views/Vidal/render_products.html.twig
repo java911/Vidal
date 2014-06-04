@@ -19,7 +19,7 @@
 						<img src="{{ asset('bundles/vidalmain/images/g2.gif') }}" class="loz"
 							 title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>
 					{% endif %}
-					{% if product.ProductTypeCode == 'BAD' %}
+					{% if product.ProductTypeCode is defined and product.ProductTypeCode == 'BAD' %}
 						<span class="bads">БАД</span>
 					{% endif %}
 				</td>

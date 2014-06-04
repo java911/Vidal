@@ -116,3 +116,7 @@
 #searche_filter li b {
 	display: none;
 }
+#wrapper #searche_form .chosen-container .chosen-drop, #searche_form .search-option, .option-wrap {
+	display: inline-block;
+	width:   266px;
+}

@@ -720,6 +720,9 @@ h1 span {
 	font-size:   14px;
 	line-height: 14px;
 }
+.products-table-company a {
+	font-size: 12px;
+}
 .products-table-picture {
 	text-align: center;
 }

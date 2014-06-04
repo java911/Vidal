@@ -105,13 +105,15 @@ class MoleculeRepository extends EntityRepository
 		 ')->getResult();
 
 		$molecules = array();
+
 		foreach ($raw as $r) {
-			$key             = $r['MoleculeID'];
-			$molecules[$key]['id'] = $key;
-			$molecules[$key]['title'] = $r['LatName'] . ' (' . $r['RusName'] . ')';
+			$molecules[] = array(
+				'id'    => $r['MoleculeID'],
+				'title' => $r['LatName'] . ' (' . $r['RusName'] . ')'
+			);
 		}
 
-		return array_values($molecules);
+		return $molecules;
 	}
 
 	public function findByQuery($q)

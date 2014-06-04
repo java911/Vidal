@@ -38,30 +38,41 @@ class ATCRepository extends EntityRepository
 
 	public function findByQuery($q)
 	{
-		$qb = $this->_em->createQueryBuilder();
+		if ($code = strstr($q, ' > ', true)) {
+			$atcCodesRaw = $this->_em->createQuery('
+				SELECT DISTINCT a.ATCCode, a.RusName, a.EngName, a.ParentATCCode
+				FROM VidalDrugBundle:ATC a
+				WHERE a.ATCCode = :code
+				ORDER BY a.ATCCode ASC
+			')->setParameter('code', $code)
+				->getResult();
+		}
+		else {
+			$qb = $this->_em->createQueryBuilder();
+			$qb->select('DISTINCT a.ATCCode, a.RusName, a.EngName, a.ParentATCCode')
+				->from('VidalDrugBundle:ATC', 'a')
+				->where('a.ATCCode LIKE :q')
+				->orderBy('a.ATCCode', 'ASC')
+				->setParameter('q', $q . '%');
 
-		$qb->select('DISTINCT a.ATCCode, a.RusName, a.EngName, a.ParentATCCode')
-			->from('VidalDrugBundle:ATC', 'a')
-			->where('a.ATCCode LIKE :q')
-			->orderBy('a.ATCCode', 'ASC')
-			->setParameter('q', $q . '%');
+			# поиск по словам
+			$words = explode(' ', $q);
+			$where = '';
 
-		# поиск по словам
-		$words = explode(' ', $q);
-		$where = '';
-
-		for ($i = 0; $i < count($words); $i++) {
-			$word = $words[$i];
-			if ($i > 0) {
-				$where .= ' OR ';
+			for ($i = 0; $i < count($words); $i++) {
+				$word = $words[$i];
+				if ($i > 0) {
+					$where .= ' OR ';
+				}
+				$where .= "(a.RusName LIKE '$word%' OR a.EngName LIKE '$word%' OR a.RusName LIKE '% $word%' OR a.EngName LIKE '% $word%')";
 			}
-			$where .= "(a.RusName LIKE '$word%' OR a.EngName LIKE '$word%' OR a.RusName LIKE '% $word%' OR a.EngName LIKE '% $word%')";
+
+			$qb->orWhere($where);
+
+			$atcCodesRaw = $qb->getQuery()->getResult();
 		}
 
-		$qb->orWhere($where);
-
-		$atcCodesRaw = $qb->getQuery()->getResult();
-		$atcCodes    = array();
+		$atcCodes = array();
 
 		for ($i = 0, $c = count($atcCodesRaw); $i < $c; $i++) {
 			$key            = $atcCodesRaw[$i]['ATCCode'];
@@ -117,16 +128,40 @@ class ATCRepository extends EntityRepository
 			$EngName      = str_replace('  ', ' ', $EngName);
 
 			if (!empty($RusName)) {
-				$atcNames[] = $atcCodes[$i]['ATCCode'] . ' - ' . $RusName;
+				$atcNames[] = $atcCodes[$i]['ATCCode'] . ' > ' . $RusName;
 			}
 
 			if (!empty($EngName)) {
-				$atcNames[] = $atcCodes[$i]['ATCCode'] . ' - ' . $EngName;
+				$atcNames[] = $atcCodes[$i]['ATCCode'] . ' > ' . $EngName;
 			}
 		}
 
 		usort($atcNames, 'strcasecmp');
 
 		return $atcNames;
+	}
+
+	public function getOptions()
+	{
+		$raw = $this->_em->createQuery('
+			SELECT a.ATCCode, a.RusName, a.EngName
+			FROM VidalDrugBundle:ATC a
+		 	ORDER BY a.ATCCode ASC
+		 ')->getResult();
+
+		$items = array();
+
+		foreach ($raw as $r) {
+			$title = $r['ATCCode'] . ' - ' . $r['RusName'];
+			if (!empty($r['EngName'])) {
+				$title .= ' (' . $r['EngName'] . ')';
+			}
+			$items[] = array(
+				'id'    => $r['ATCCode'],
+				'title' => $title
+			);
+		}
+
+		return $items;
 	}
 }

@@ -121,4 +121,24 @@ class PhThGroupsRepository extends EntityRepository
 
 		return array_keys($uniques);
 	}
+
+	public function getOptions()
+	{
+		$raw = $this->_em->createQuery('
+			SELECT g.id, g.Name
+			FROM VidalDrugBundle:PhThGroups g
+		 	ORDER BY g.Name ASC
+		 ')->getResult();
+
+		$items = array();
+
+		foreach ($raw as $r) {
+			$items[] = array(
+				'id'    => $r['id'],
+				'title' => $r['Name'],
+			);
+		}
+
+		return $items;
+	}
 }

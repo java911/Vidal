@@ -4,47 +4,6 @@
 {% block vidal %}
 	{% include 'VidalDrugBundle:Search:search_info.html.twig' %}
 
-	{# Найдено АТХ #}
-	{% if atcCodes is defined %}
-		<div class="block">
-			{% if atcCodes is not empty %}
-				<div class="block-head anons"
-					 title="Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)">
-					Найдено кодов АТХ: <span>{{ atcCodes|length }}</span>
-				</div>
-
-				<table class="products-table">
-					<tr class="products-table-header">
-						<td style="width:10%">АТХ код</td>
-						<td style="width:40%">Название</td>
-						<td style="width:40%">Латинское название</td>
-						<td style="width:10%">Входит в&nbsp;группу</td>
-					</tr>
-					{% for code, atc in atcCodes %}
-						<tr>
-							<td>
-								<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}"
-								   class="no-underline">{{ atc.ATCCode }}</a>
-							</td>
-							<td>{{ atc.RusName }}</td>
-							<td>{{ atc.EngName }}</td>
-							<td>
-								{% if atc.ParentATCCode is not empty %}
-									<a href="{{ path('atc', {'ATCCode':atc.ParentATCCode}) }}"
-									   class="no-underline">{{ atc.ParentATCCode }}</a>
-								{% endif %}
-							</td>
-						</tr>
-					{% endfor %}
-				</table>
-			{% else %}
-				<div class="no-results">
-					Не найдено результатов по AТХ коду <span>{{ q }}</span>
-				</div>
-			{% endif %}
-		</div>
-	{% endif %}
-
 	{# Найдено препаратов #}
 	{% if productsPagination is defined %}
 		{% if productsPagination is not empty %}
@@ -99,6 +58,47 @@
 			</div>
 		</div>
 		{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':bads, 'pictures':bad_pictures, 'companies':bad_companies, 'infoPages':bad_infoPages} %}
+	{% endif %}
+
+	{# Найдено АТХ #}
+	{% if atcCodes is defined %}
+		<div class="block">
+			{% if atcCodes is not empty %}
+				<div class="block-head anons"
+					 title="Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)">
+					Найдено кодов АТХ: <span>{{ atcCodes|length }}</span>
+				</div>
+
+				<table class="products-table">
+					<tr class="products-table-header">
+						<td style="width:10%">АТХ код</td>
+						<td style="width:40%">Название</td>
+						<td style="width:40%">Латинское название</td>
+						<td style="width:10%">Входит в&nbsp;группу</td>
+					</tr>
+					{% for code, atc in atcCodes %}
+						<tr>
+							<td>
+								<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}"
+								   class="no-underline">{{ atc.ATCCode }}</a>
+							</td>
+							<td>{{ atc.RusName }}</td>
+							<td>{{ atc.EngName }}</td>
+							<td>
+								{% if atc.ParentATCCode is not empty %}
+									<a href="{{ path('atc', {'ATCCode':atc.ParentATCCode}) }}"
+									   class="no-underline">{{ atc.ParentATCCode }}</a>
+								{% endif %}
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			{% else %}
+				<div class="no-results">
+					Не найдено результатов по AТХ коду <span>{{ q }}</span>
+				</div>
+			{% endif %}
+		</div>
 	{% endif %}
 
 	{# поиск по компании #}
