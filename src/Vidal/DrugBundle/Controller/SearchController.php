@@ -435,7 +435,7 @@ class SearchController extends Controller
 	}
 
 	/**
-	 * @Route("/search-options", name="search_options", options={"expose":true})
+	 * @Route("/search-options/{type}", name="search_options", options={"expose"=true})
 	 */
 	public function searchOptions($type)
 	{

@@ -41,7 +41,7 @@ class AutocompleteDocumentCommand extends ContainerAwareCommand
 
 		$elasticaClient = new \Elastica\Client();
 		$elasticaIndex  = $elasticaClient->getIndex('website');
-		$elasticaType   = $elasticaIndex->getType('autocomplete_document2');
+		$elasticaType   = $elasticaIndex->getType('autocomplete_document');
 
 		# delete if exists
 		if ($elasticaType->exists()) {
