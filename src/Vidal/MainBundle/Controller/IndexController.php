@@ -72,7 +72,7 @@ class IndexController extends Controller
 			->add('authorFirstName', null, array('label' => 'Ваше имя'))
 			->add('authorEmail', null, array('label' => 'Ваш e-mail'))
             ->add('place', 'entity', array(
-                'label'         => 'Место жалобы',
+                'label'         => 'Область заболевания',
                 'empty_value'   => 'выберите',
                 'required'      => true,
                 'class'         => 'VidalMainBundle:QuestionAnswerPlace',
