@@ -105,15 +105,15 @@ class IndexController extends Controller
 			}
 		}
 		$qus = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByEnabled(1);
-		krsort($qus);
+//		krsort($qus);
 
-            $p = ceil(count($qus)/10);
+            $p = ceil(count($qus)/3);
 
 
         $qaPagination = $this->get('knp_paginator')->paginate(
             $qus,
             $request->query->get('p', $p),
-            10
+            3
         );
 
 		return array(
@@ -133,8 +133,12 @@ class IndexController extends Controller
 	 */
 	public function doctorAnswerListAction(Request $request)
 	{
-		$questions = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByAnswer(null);
-		return array('questions' => $questions);
+        if ( $this->getUser()->getConfirmation() == 1 ){
+            $questions = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByAnswer(null);
+            return array('questions' => $questions);
+        }else{
+
+        }
 	}
 
 	/**

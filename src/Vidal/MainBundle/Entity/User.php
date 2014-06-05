@@ -954,7 +954,7 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
     /**
      * @param mixed $confirmation
      */
-    public function setConfirmation($confirmation)
+    public function setConfirmation($confirmation = 1)
     {
         $this->confirmation = $confirmation;
     }
