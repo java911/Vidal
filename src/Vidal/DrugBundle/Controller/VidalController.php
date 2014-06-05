@@ -267,11 +267,11 @@ class VidalController extends Controller
 	/**
 	 * Список препаратов по активному веществу: одно-монокомпонентные
 	 *
-	 * @Route("/drugs/molecule/{MoleculeID}", name="molecule", requirements={"MoleculeID":"\d+"})
+	 * @Route("/drugs/molecule/{MoleculeID}/{search}", name="molecule", requirements={"MoleculeID":"\d+"})
 	 * @Route("/poisk_preparatov/act_{MoleculeID}.{ext}", name="molecule_old", requirements={"MoleculeID":"\d+"}, defaults={"ext"="htm"})
 	 * @Template("VidalDrugBundle:Vidal:molecule.html.twig")
 	 */
-	public function moleculeAction($MoleculeID)
+	public function moleculeAction($MoleculeID, $search = 0)
 	{
 		$em       = $this->getDoctrine()->getManager('drug');
 		$molecule = $em->getRepository('VidalDrugBundle:Molecule')->findByMoleculeID($MoleculeID);
@@ -281,12 +281,13 @@ class VidalController extends Controller
 		}
 
 		$document = $em->getRepository('VidalDrugBundle:Document')->findByMoleculeID($MoleculeID);
-
-		return array(
+		$params   = array(
 			'molecule' => $molecule,
 			'document' => $document,
 			'title'    => $molecule->getTitle() . ' | Активные вещества',
 		);
+
+		return $search ? $this->render('VidalDrugBundle:Vidal:search_molecule.html.twig', $params) : $params;
 	}
 
 	/**
@@ -379,7 +380,7 @@ class VidalController extends Controller
 
 		if (!$product
 			|| $product->getName() != str_replace(' ', '_', $EngName)
-			|| !in_array($product->getMarketStatusID()->getMarketStatusID(), array(1,2,7))
+			|| !in_array($product->getMarketStatusID()->getMarketStatusID(), array(1, 2, 7))
 			|| $product->getInactive() == true
 		) {
 			throw $this->createNotFoundException();

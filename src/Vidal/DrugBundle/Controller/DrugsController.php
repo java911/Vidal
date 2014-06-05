@@ -18,11 +18,11 @@ class DrugsController extends Controller
 	/**
 	 * Препараты по коду АТХ
 	 *
-	 * @Route("/drugs/atc/{ATCCode}", name="atc_item", options={"expose":true})
+	 * @Route("/drugs/atc/{ATCCode}/{search}", name="atc_item", options={"expose":true})
 	 * @Route("poisk_preparatov/lat_{ATCCode}.{ext}", name="atc_item_old", defaults={"ext"="htm"})
 	 * @Template("VidalDrugBundle:Drugs:atc_item.html.twig")
 	 */
-	public function atcItemAction($ATCCode)
+	public function atcItemAction($ATCCode, $search = 0)
 	{
 		$em  = $this->getDoctrine()->getManager('drug');
 		$atc = $em->getRepository('VidalDrugBundle:ATC')->findOneByATCCode($ATCCode);
@@ -46,7 +46,7 @@ class DrugsController extends Controller
 			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 		}
 
-		return $params;
+		return $search ? $this->render('VidalDrugBundle:Drugs:search_atc_item.html.twig', $params) : $params;
 	}
 
 	/**
@@ -248,10 +248,10 @@ class DrugsController extends Controller
 	/**
 	 * Список препаратов по фармако-терапевтической группе
 	 *
-	 * @Route("/drugs/pharm-group/{id}", name="pharm_item", defaults={"id":"\d+"})
+	 * @Route("/drugs/pharm-group/{id}/{search}", name="pharm_item", defaults={"id":"\d+"})
 	 * @Template("VidalDrugBundle:Drugs:pharm_item.html.twig")
 	 */
-	public function pharmItemAction($id)
+	public function pharmItemAction($id, $search = 0)
 	{
 		$em        = $this->getDoctrine()->getManager('drug');
 		$phthgroup = $em->getRepository('VidalDrugBundle:PhThGroups')->findById($id);
@@ -275,17 +275,17 @@ class DrugsController extends Controller
 			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 		}
 
-		return $params;
+		return $search ? $this->render('VidalDrugBundle:Drugs:search_pharm_item.html.twig', $params) : $params;
 	}
 
 	/**
 	 * Список препаратов и активных веществ по показанию (Nozology)
 	 *
-	 * @Route("/drugs/nosology/{Code}", name="nosology_item", options={"expose":true})
+	 * @Route("/drugs/nosology/{Code}/{search}", name="nosology_item", options={"expose":true})
 	 * @Route("/poisk_preparatov/lno_{Code}", name="nosology_item_old")
 	 * @Template("VidalDrugBundle:Drugs:nosology_item.html.twig")
 	 */
-	public function nosologyItemAction(Request $request, $Code)
+	public function nosologyItemAction(Request $request, $Code, $search = 0)
 	{
 		$em        = $this->getDoctrine()->getManager('drug');
 		$routeName = $request->get('_route');
@@ -340,7 +340,7 @@ class DrugsController extends Controller
 			}
 		}
 
-		return $params;
+		return $search ? $this->render('VidalDrugBundle:Drugs:search_nosology_item.html.twig', $params) : $params;
 	}
 
 	/**
@@ -436,10 +436,10 @@ class DrugsController extends Controller
 	}
 
 	/**
-	 * @Route("/drugs/clinic-group/{id}", name="clinic_group")
+	 * @Route("/drugs/clinic-group/{id}/{search}", name="clinic_group")
 	 * @Template("VidalDrugBundle:Drugs:clinic_group.html.twig")
 	 */
-	public function clinicGroupAction($id)
+	public function clinicGroupAction($id, $search = 0)
 	{
 		$em        = $this->getDoctrine()->getManager('drug');
 		$clphGroup = $em->getRepository('VidalDrugBundle:ClPhGroups')->findOneById($id);
@@ -463,7 +463,7 @@ class DrugsController extends Controller
 			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 		}
 
-		return $params;
+		return $search ? $this->render('VidalDrugBundle:Drugs:search_clinic_group.html.twig', $params) : $params;
 	}
 
 	/** Получить массив идентификаторов продуктов */

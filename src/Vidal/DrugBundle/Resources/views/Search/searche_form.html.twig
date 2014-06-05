@@ -1,4 +1,6 @@
 <form id="searche_form" method="get" action="{{ path('searche') }}">
+	<div class="searche-loader ajax-loader"></div>
+
 	<select class="search-type" name="t">
 		<option value="all" {{ t == 'all' ? 'selected="selected"' }}>
 			Везде
@@ -29,23 +31,15 @@
 		</option>
 	</select>
 
-	<style>
-		#searche_form .search-query {
-
-		}
-		#searche_form .search-option {
-			width: 266px;
-			display: none;
-		}
-	</style>
-
 	<input class="search-query border-radius" type="text" name="q" placeholder="Введите слово для поиска..."
 		   autocomplete="off"
 		   value="{{ app.request.attributes.get('_route') == 'searche' ? app.request.get('q') }}"/>
 
-	<select class="search-option" name="o">
-		<option></option>
-	</select>
+	<div class="option-wrap">
+		<select class="search-option" name="o">
+			<option></option>
+		</select>
+	</div>
 
 	<div class="controls">
 		<div class="search-bad no-selection">
@@ -56,4 +50,14 @@
 
 		<input class="search-button btn-red" type="submit" value="Найти"/>
 	</div>
+
+	<style>
+		.searche-loader {
+			position: absolute;
+			top:      7px;
+			right:    246px;
+			z-index:  100;
+			display:  none;
+		}
+	</style>
 </form>

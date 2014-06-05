@@ -275,10 +275,8 @@ h1 span {
 	user-select:           none;
 }
 .ajax-loader {
-	display:    block;
-	height:     32px;
-	width:      32px;
-	margin:     40px auto;
+	height:     16px;
+	width:      16px;
 	background: url(../images/ajax-loader.gif) no-repeat top left;
 }
 .title {
@@ -719,6 +717,9 @@ h1 span {
 	width:       30%;
 	font-size:   14px;
 	line-height: 14px;
+}
+.products-table-company a {
+	font-size: 12px;
 }
 .products-table-picture {
 	text-align: center;
