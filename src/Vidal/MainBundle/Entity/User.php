@@ -170,6 +170,21 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	/** @ORM\ManyToOne(targetEntity="Country", inversedBy="doctors") */
 	protected $country;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $confirmation = 0;
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     * @FileStore\UploadableField(mapping="docs")
+     * @Assert\Image(
+     *        maxSize="2M",
+     *    maxSizeMessage="Принимаются фотографии размером до 2 Мб"
+     * )
+     */
+    protected $confirmationScan;
+
 	public function __construct()
 	{
         $this->answers = new ArrayCollection();
@@ -935,4 +950,44 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	{
 		return $this->country;
 	}
+
+    /**
+     * @param mixed $confirmation
+     */
+    public function setConfirmation($confirmation)
+    {
+        $this->confirmation = $confirmation;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getConfirmation()
+    {
+        return $this->confirmation;
+    }
+
+    /**
+     * @param mixed $confirmationScan
+     */
+    public function setConfirmationScan($confirmationScan)
+    {
+        $this->confirmationScan = $confirmationScan;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getConfirmationScan()
+    {
+        return $this->confirmationScan;
+    }
+
+
+    public function resetConfirmationScan()
+    {
+        $this->confirmationScan = array();
+
+        return $this;
+    }
 }

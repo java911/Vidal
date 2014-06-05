@@ -137,6 +137,13 @@ iphp_file_store:
             overwrite_duplicates: false
             namer:
                  translit: ~
+        docs:
+            upload_dir: %upload_dir%/docs
+            upload_path: /upload/docs
+            overwrite_duplicates: false
+            namer:
+                 translit: ~
+
 
 # Swiftmailer Configuration
 swiftmailer:
