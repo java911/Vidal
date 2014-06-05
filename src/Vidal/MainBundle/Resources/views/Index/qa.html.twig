@@ -37,8 +37,7 @@
 						<div class="qa-answer">
                             <b>Ответ: </b>
                             {{ qa.answer|raw }}
-                            <br />
-                            <div class="link"><b>Ссылка:</b> <i>vidal.ru{{ path('qa') }}?p={{ app.request.get('p') }}#qa{{ qa.id }}</i></div>
+                            <div class="link"><b>Поделиться</b> <i>vidal.ru{{ path('qa') }}?p={{ app.request.get('p') }}#qa{{ qa.id }}</i></div>
                         </div>
 					</div>
 				{% endfor %}
@@ -50,8 +49,7 @@
 						<div class="qa-answer">
                             <b>Ответ: </b>
                             {{ qa.answer|raw }}
-                            <br />
-                            <div class="link"><b>Ссылка:</b> <i>vidal.ru{{ path('qa') }}?p={{ app.request.get('p') }}#qa{{ qa.id }}</i></div>
+                            <div class="link"><b>Поделиться</b> <i>vidal.ru{{ path('qa') }}?p={{ app.request.get('p') }}#qa{{ qa.id }}</i></div>
                         </div>
 					</div>
 				{% endfor %}
@@ -67,9 +65,14 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<style type="text/css">
-        .link{
+        .link i{
             color: #555555;
             font-size: 10px;
+            display: none;
+        }
+        .link b{
+            cursor: pointer;
+            font-size: 13px;
         }
         .qa {
             position:      relative;
@@ -166,7 +169,18 @@
                     $('#form').fadeOut();
                 }
                 return false;
-            })
+            });
+
+            $('#form_place').chosen({
+                search_contains: true,
+                no_results_text: "не найдено",
+                width: '326px'
+            });
+
+            $('.link').click(function(){
+               $(this).children('i').css('display','inline');
+               $(this).children('b').css('display','none');
+            });
         });
 	</script>
 {% endblock %}

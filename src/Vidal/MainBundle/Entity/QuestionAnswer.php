@@ -26,6 +26,11 @@ class QuestionAnswer extends BaseEntity
     protected $answerUser;
 
     /**
+     * @ORM\ManyToOne(targetEntity="QuestionAnswerPlace", inversedBy="qas")
+     */
+    protected $place = 0;
+
+    /**
 	 * @ORM\Column(type="text")
 	 * @Assert\NotBlank(message="Пожалуйста, укажите вопрос")
 	 */
@@ -146,4 +151,22 @@ class QuestionAnswer extends BaseEntity
 	{
 		return $this->emailSent;
 	}
+
+    /**
+     * @param mixed $place
+     */
+    public function setPlace($place)
+    {
+        $this->place = $place;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlace()
+    {
+        return $this->place;
+    }
+
+
 }

@@ -30,6 +30,7 @@ class QuestionAnswerAdmin extends Admin
 	{
 		$formMapper
             ->add('authorFirstName', null, array('label' => 'Автор вопроса', 'required' => true))
+            ->add('place', null, array('label' => 'Место жалобы', 'required' => true))
             ->add('authorEmail', null, array('label' => 'Email автора', 'required' => true))
 			->add('question', null, array('label' => 'Вопрос', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('answer', null, array('label' => 'Ответ', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
@@ -54,6 +55,7 @@ class QuestionAnswerAdmin extends Admin
 	{
 		$listMapper
 			->add('id')
+            ->add('place', null, array('label' => 'Место жалобы', 'required' => true))
 			->add('question', null, array('label' => 'Вопрос'))
 			->add('answer', null, array('label' => 'Ответ', 'template' => 'VidalDrugBundle:Sonata:qa_answer.html.twig'))
 			->add('created', null, array(
