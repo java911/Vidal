@@ -37,6 +37,28 @@ class AuthController extends Controller
 	}
 
 	/**
+	 * @Route("/registration-resend", name="registration_resend")
+	 */
+	public function registrationResend()
+	{
+		$security = $this->get('security.context');
+		if (!$security->isGranted('IS_AUTHENTICATED_REMEMBERED') || $security->isGranted('ROLE_DOCTOR')) {
+			throw $this->createNotFoundException();
+		}
+
+		$user = $this->getUser();
+
+		# уведомление пользователя о регистрации
+		$this->get('email.service')->send(
+			$user->getUsername(),
+			array('VidalMainBundle:Email:registration.html.twig', array('user' => $user)),
+			'Благодарим за регистрацию на нашем портале!'
+		);
+
+		return new JsonResponse('OK');
+	}
+
+	/**
 	 * Регистрация врача на сайте
 	 *
 	 * @Route("/registration", name="registration")
@@ -77,11 +99,11 @@ class AuthController extends Controller
 				);
 
 				# уведомление администраторов о регистрации
-//				$this->get('email.service')->send(
-//					$this->container->getParameter('manager_emails'),
-//					array('VidalMainBundle:Email:registration_notice.html.twig', array('user' => $user)),
-//					'Зарегистрировался новый пользователь'
-//				);
+				//				$this->get('email.service')->send(
+				//					$this->container->getParameter('manager_emails'),
+				//					array('VidalMainBundle:Email:registration_notice.html.twig', array('user' => $user)),
+				//					'Зарегистрировался новый пользователь'
+				//				);
 
 				return $this->redirect($this->generateUrl('profile'));
 			}

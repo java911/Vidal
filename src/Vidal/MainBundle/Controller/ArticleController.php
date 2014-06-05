@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Lsw\SecureControllerBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ArticleController extends Controller
 {
@@ -144,12 +145,15 @@ class ArticleController extends Controller
 	}
 
 	/**
-	 * @Route("/pharma-company/{id}", name="pharma_company")
-	 *
+	 * @Route("/vracham/pharma-company/{id}", name="pharma_company")
 	 * @Template("VidalMainBundle:Article:pharmaCompany.html.twig")
 	 */
 	public function pharmaCompanyAction(Request $request, $id)
 	{
+		if ($response = $this->checkRole()) {
+			return $response;
+		}
+
 		$em      = $this->getDoctrine()->getManager('drug');
 		$company = $em->getRepository('VidalDrugBundle:PharmCompany')->findOneById($id);
 
@@ -174,12 +178,14 @@ class ArticleController extends Controller
 
 	/**
 	 * @Route("/vracham/pharma-news", name="pharma_news")
-	 * @Secure(roles="ROLE_DOCTOR")
-	 *
 	 * @Template("VidalMainBundle:Article:pharmaNews.html.twig")
 	 */
 	public function pharmaNewsAction(Request $request)
 	{
+		if ($response = $this->checkRole()) {
+			return $response;
+		}
+
 		$em     = $this->getDoctrine()->getManager('drug');
 		$params = array(
 			'title'     => 'Новости Фармацевтических компаний',
@@ -196,15 +202,15 @@ class ArticleController extends Controller
 	}
 
 	/**
-	 * Категории статей для врачей
-	 *
 	 * @Route("/vracham", name="vracham")
-	 * @Secure(roles="ROLE_DOCTOR")
-	 *
 	 * @Template("VidalMainBundle:Article:vracham.html.twig")
 	 */
 	public function vrachamAction()
 	{
+		if ($response = $this->checkRole()) {
+			return $response;
+		}
+
 		$em = $this->getDoctrine()->getManager('drug');
 
 		return array(
@@ -222,6 +228,10 @@ class ArticleController extends Controller
 	 */
 	public function portfolioAction()
 	{
+		if ($response = $this->checkRole()) {
+			return $response;
+		}
+
 		$em     = $this->getDoctrine()->getManager('drug');
 		$params = array(
 			'title'      => 'Портфели препаратов',
@@ -233,11 +243,14 @@ class ArticleController extends Controller
 
 	/**
 	 * @Route("/vracham/podrobno-o-preparate/{url}", name="portfolio_item")
-	 *
 	 * @Template("VidalMainBundle:Article:portfolioItem.html.twig")
 	 */
 	public function portfolioItemAction($url)
 	{
+		if ($response = $this->checkRole()) {
+			return $response;
+		}
+
 		$em        = $this->getDoctrine()->getManager('drug');
 		$portfolio = $em->getRepository('VidalDrugBundle:PharmPortfolio')->findOneByUrl($url);
 
@@ -255,11 +268,14 @@ class ArticleController extends Controller
 
 	/**
 	 * @Route("/vracham/expert/", name="vracham_expert")
-	 * @Secure(roles="ROLE_DOCTOR")
 	 * @Template
 	 */
 	public function vrachamExpertAction()
 	{
+		if ($response = $this->checkRole()) {
+			return $response;
+		}
+
 		return array(
 			'title' => 'Видаль-Эксперт',
 			'menu'  => 'vracham',
@@ -268,11 +284,14 @@ class ArticleController extends Controller
 
 	/**
 	 * @Route("/vracham/expert/Vidal-CD/", name="vracham_expert_cd")
-	 * @Secure(roles="ROLE_DOCTOR")
 	 * @Template("VidalMainBundle:Article:vrachamExpertCd.html.twig")
 	 */
 	public function vrachamExpertCdAction()
 	{
+		if ($response = $this->checkRole()) {
+			return $response;
+		}
+
 		return array(
 			'menu'  => 'vracham',
 			'title' => 'Электронный справочник Видаль',
@@ -288,15 +307,15 @@ class ArticleController extends Controller
 	}
 
 	/**
-	 * Категории статей для врачей
-	 *
 	 * @Route("/vracham/{url}", name="art", requirements={"url"=".+"})
-	 * @Secure(roles="ROLE_DOCTOR")
-	 *
 	 * @Template("VidalMainBundle:Article:art.html.twig")
 	 */
 	public function artAction(Request $request, $url)
 	{
+		if ($response = $this->checkRole()) {
+			return $response;
+		}
+
 		$parts    = explode('/', $url);
 		$em       = $this->getDoctrine()->getManager('drug');
 		$rubrique = $em->getRepository('VidalDrugBundle:ArtRubrique')->findOneByUrl($parts[0]);
@@ -389,5 +408,27 @@ class ArticleController extends Controller
 		$rep = array('', '', '&', '');
 
 		return preg_replace($pat, $rep, $string);
+	}
+
+	private function checkRole()
+	{
+		$response = null;
+		$secutiry = $this->get('security.context');
+
+		if (!$secutiry->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+			$response = $this->render('VidalMainBundle:Auth:login.html.twig', array(
+				'title' => 'Закрытый раздел',
+				'menu'  => 'vracham',
+			));
+		}
+		elseif (!$secutiry->isGranted('ROLE_DOCTOR')) {
+			$response = $this->render('VidalMainBundle:Auth:confirm.html.twig', array(
+				'title' => 'Подтвердите e-mail',
+				'menu'  => 'vracham',
+				'user'  => $this->getUser(),
+			));
+		}
+
+		return $response;
 	}
 }
