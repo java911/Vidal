@@ -11,6 +11,7 @@ use Vidal\MainBundle\Entity\MapRegion;
 use Vidal\MainBundle\Entity\MapCoord;
 use Vidal\MainBundle\Entity\QuestionAnswer;
 use Lsw\SecureControllerBundle\Annotation\Secure;
+use Doctrine\ORM\EntityRepository;
 
 class IndexController extends Controller
 {
@@ -70,6 +71,15 @@ class IndexController extends Controller
 		$builder
 			->add('authorFirstName', null, array('label' => 'Ваше имя'))
 			->add('authorEmail', null, array('label' => 'Ваш e-mail'))
+            ->add('place', 'entity', array(
+                'label'         => 'Место жалобы',
+                'empty_value'   => 'выберите',
+                'required'      => true,
+                'class'         => 'VidalMainBundle:QuestionAnswerPlace',
+                'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('s')->orderBy('s.title', 'ASC');
+                    }
+            ))
 			->add('question', null, array('label' => 'Вопрос'))
 			->add('captcha', 'captcha', array('label' => 'Введите код с картинки'))
 			->add('submit', 'submit', array('label' => 'Задать вопрос', 'attr' => array('class' => 'btn')));

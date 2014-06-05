@@ -166,7 +166,14 @@
                     $('#form').fadeOut();
                 }
                 return false;
-            })
+            });
+
+            $('#form_place').chosen({
+                search_contains: true,
+                no_results_text: "не найдено",
+                width: '326px'
+            });
+
         });
 	</script>
 {% endblock %}
