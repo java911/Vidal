@@ -56,11 +56,17 @@ class DrugsController extends Controller
 	 * @Route("/drugs/atc", name="atc")
 	 * @Template("VidalDrugBundle:Drugs:atc.html.twig")
 	 */
-	public function atcAction()
+	public function atcAction(Request $request)
 	{
+		$em      = $this->getDoctrine()->getManager('drug');
+		$choices = $em->getRepository('VidalDrugBundle:ATC')->getChoices();
+		$atcCode = $request->query->get('c', null);
+
 		$params = array(
 			'menu_drugs' => 'atc',
 			'title'      => 'АТХ',
+			'ATCCode'    => $atcCode,
+			'choices'    => $choices,
 		);
 
 		return $params;
@@ -349,17 +355,24 @@ class DrugsController extends Controller
 	 * @Route("/drugs/nosology", name="nosology")
 	 * @Template("VidalDrugBundle:Drugs:nosology.html.twig")
 	 */
-	public function nosologyAction()
+	public function nosologyAction(Request $request)
 	{
-		return array(
-			'menu_drugs' => 'nosology',
-			'title'      => 'Нозологический указатель',
+		$em           = $this->getDoctrine()->getManager('drug');
+		$choices      = $em->getRepository('VidalDrugBundle:Nozology')->getChoices();
+		$nosologyCode = $request->query->get('c', null);
+
+		$params = array(
+			'menu_drugs'   => 'nosology',
+			'title'        => 'Нозологический указатель',
+			'nosologyCode' => $nosologyCode,
+			'choices'      => $choices,
 		);
+
+		return $params;
 	}
 
 	/**
 	 * [AJAX] Подгрузка дерева Нозологических указателей
-	 *
 	 * @Route("/drugs/nosology-ajax", name="nosology_ajax", options={"expose":true})
 	 */
 	public function nosologyAjaxAction(Request $request)

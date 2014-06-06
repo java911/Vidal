@@ -13,20 +13,49 @@
 			Позволяет искать препараты по их показаниям.
 			Cоставлен на основе Международной классификации болезней и проблем, связанных со здоровьем -
 			10 пересмотр (МКБ-10), ВОЗ 1995.
-			<br/>
-			<i>Например</i>:
-			<a href="#I00-I99" data="I20-I25">Ишемическая болезнь сердца</a>,
-			<a href="#G00-G99" data="G00-G99">БОЛЕЗНИ НЕРВНОЙ СИСТЕМЫ</a>
+			{% if not nosologyCode %}
+				<br/><i>Например</i>:
+				<a href="#I00-I99" data="I20-I25">Ишемическая болезнь сердца</a>,
+				<a href="#G00-G99" data="G00-G99">БОЛЕЗНИ НЕРВНОЙ СИСТЕМЫ</a>
+			{% endif %}
 		</div>
 	</div>
 
-	{% include 'VidalDrugBundle:Drugs:nosology_generated.html.twig' %}
+	<form id="select_form" action="{{ path('nosology') }}" method="GET">
+		<select name="c">
+			<option></option>
+			{% for code, text in choices %}
+				<option value="{{ code }}"{{ nosologyCode == code ? ' selected' }}>
+					{{ text }}
+				</option>
+			{% endfor %}
+		</select>
+		<input type="submit" value="Найти" class="btn-red"/>
+	</form>
+
+	{% if nosologyCode %}
+		{{ render(controller('VidalDrugBundle:Drugs:nosologyItem', {'Code':nosologyCode, 'search':1})) }}
+	{% else %}
+		{% include 'VidalDrugBundle:Drugs:nosology_generated.html.twig' %}
+	{% endif %}
+
 {% endblock %}
 
 
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/treeview/jquery.treeview.css') }}"/>
+	<style type="text/css">
+		#select_form {
+			margin: 20px 0 20px;
+		}
+		#select_form input[type="submit"] {
+			float: right;
+		}
+		#select_form select {
+			width: 420px;
+		}
+	</style>
 {% endblock %}
 
 
@@ -37,6 +66,10 @@
 	<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.async.js') }}" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
+			$('#select_form select').chosen({
+				placeholder_text_single: "Поиск по Нозологическому указателю..."
+			});
+
 			var $tree = $('.treeview');
 
 			$tree.treeview({
