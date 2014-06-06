@@ -72,6 +72,24 @@
 			<a href="{{ path('password_reset') }}" class="no-underline">Забыли пароль?</a>
 		</div>
 	</div>
+{% elseif not app.user.emailConfirmed %}
+	<div class="confirm">
+		<a href="{{ path('registration_resend') }}" id="confirm_email" class="note"
+		   title="Отправить письмо для активации">
+			Пожалуйста, подтвердите e-mail
+		</a>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#confirm_email').click(function() {
+				$.getJSON(this.href, function(data) {
+					$('.confirm').html('<span class="good">Письмо отослано на адрес {{ app.user.username }}</span>');
+				});
+				return false;
+			});
+		});
+	</script>
 {% endif %}
 
 {# баннеры #}
