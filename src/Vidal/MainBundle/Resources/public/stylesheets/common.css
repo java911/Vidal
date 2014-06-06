@@ -1230,6 +1230,10 @@ h1 span {
 .text {
 	overflow: hidden;
 }
+.text p {
+	margin-left:  0 !important;
+	margin-right: 0 !important;
+}
 .text a,
 .text a * {
 	color:           #d71344 !important;

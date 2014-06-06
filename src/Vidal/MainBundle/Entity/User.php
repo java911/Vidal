@@ -33,8 +33,8 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	 * @ORM\Column(type="array", nullable=true)
 	 * @FileStore\UploadableField(mapping="avatar")
 	 * @Assert\Image(
-	 *        maxSize="2M",
-	 *    maxSizeMessage="Принимаются фотографии размером до 2 Мб"
+	 * 		maxSize="2M",
+	 * 		maxSizeMessage="Принимаются фотографии размером до 2 Мб"
 	 * )
 	 */
 	protected $avatar;
@@ -156,10 +156,10 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	/** @ORM\Column(type="boolean") */
 	protected $oldUser;
 
-    /**
-     * @ORM\OneToMany(targetEntity="QuestionAnswer", mappedBy="answerUser")
-     */
-    protected $answers;
+	/**
+	 * @ORM\OneToMany(targetEntity="QuestionAnswer", mappedBy="answerUser")
+	 */
+	protected $answers;
 
 	/** @ORM\Column(length=255, nullable=true) */
 	protected $school;
@@ -170,29 +170,30 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	/** @ORM\ManyToOne(targetEntity="Country", inversedBy="doctors") */
 	protected $country;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $confirmation = 0;
+	/**
+	 * @ORM\Column(type="boolean")
+	 */
+	protected $confirmation;
 
-    /**
-     * @ORM\Column(type="array", nullable=true)
-     * @FileStore\UploadableField(mapping="docs")
-     * @Assert\Image(
-     *        maxSize="2M",
-     *    maxSizeMessage="Принимаются фотографии размером до 2 Мб"
-     * )
-     */
-    protected $confirmationScan;
+	/**
+	 * @ORM\Column(type="array", nullable=true)
+	 * @FileStore\UploadableField(mapping="docs")
+	 * @Assert\Image(
+	 * 		maxSize="2M",
+	 * 		maxSizeMessage="Принимаются фотографии размером до 2 Мб"
+	 * )
+	 */
+	protected $confirmationScan;
 
 	public function __construct()
 	{
-        $this->answers = new ArrayCollection();
+		$this->answers        = new ArrayCollection();
 		$this->emailConfirmed = false;
 		$this->hideBirthdate  = false;
 		$this->hidePhone      = false;
 		$this->hideIcq        = false;
 		$this->oldUser        = false;
+		$this->confirmation   = false;
 		$this->roles          = 'ROLE_UNCONFIRMED';
 	}
 
@@ -887,21 +888,21 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 		return $this->oldUser;
 	}
 
-    /**
-     * @param mixed $answers
-     */
-    public function setAnswers($answers)
-    {
-        $this->answers = $answers;
-    }
+	/**
+	 * @param mixed $answers
+	 */
+	public function setAnswers($answers)
+	{
+		$this->answers = $answers;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getAnswers()
-    {
-        return $this->answers;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getAnswers()
+	{
+		return $this->answers;
+	}
 
 	/**
 	 * @param mixed $school
@@ -951,43 +952,42 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 		return $this->country;
 	}
 
-    /**
-     * @param mixed $confirmation
-     */
-    public function setConfirmation($confirmation = 1)
-    {
-        $this->confirmation = $confirmation;
-    }
+	/**
+	 * @param mixed $confirmation
+	 */
+	public function setConfirmation($confirmation = 1)
+	{
+		$this->confirmation = $confirmation;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getConfirmation()
-    {
-        return $this->confirmation;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getConfirmation()
+	{
+		return $this->confirmation;
+	}
 
-    /**
-     * @param mixed $confirmationScan
-     */
-    public function setConfirmationScan($confirmationScan)
-    {
-        $this->confirmationScan = $confirmationScan;
-    }
+	/**
+	 * @param mixed $confirmationScan
+	 */
+	public function setConfirmationScan($confirmationScan)
+	{
+		$this->confirmationScan = $confirmationScan;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getConfirmationScan()
-    {
-        return $this->confirmationScan;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getConfirmationScan()
+	{
+		return $this->confirmationScan;
+	}
 
+	public function resetConfirmationScan()
+	{
+		$this->confirmationScan = array();
 
-    public function resetConfirmationScan()
-    {
-        $this->confirmationScan = array();
-
-        return $this;
-    }
+		return $this;
+	}
 }
