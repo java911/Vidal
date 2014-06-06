@@ -23,6 +23,7 @@ security:
                 key:      "%secret%"
                 lifetime: 2592000
                 path:     /
+                domain:   .vidal.ru
             anonymous: ~
 
     access_control:
