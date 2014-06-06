@@ -183,7 +183,7 @@ class NozologyRepository extends EntityRepository
 
 		foreach ($raw as $r) {
 			$key         = $r['NozologyCode'];
-			$items[$key] = $r['Name'];
+			$items[$key] = $r['NozologyCode'] . ' - ' . $r['Name'];
 		}
 
 		return $items;
