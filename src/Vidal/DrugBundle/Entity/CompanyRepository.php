@@ -5,6 +5,17 @@ use Doctrine\ORM\EntityRepository;
 
 class CompanyRepository extends EntityRepository
 {
+	public function findOneByCompanyID($CompanyID)
+	{
+		return $this->_em->createQuery('
+			SELECT c
+			FROM VidalDrugBundle:Company c
+			LEFT JOIN VidalDrugBundle:Country country WITH c.CountryCode = country
+			WHERE c = :CompanyID
+		')->setParameter('CompanyID', $CompanyID)
+			->getOneOrNullResult();
+	}
+
 	public function findByCompanyID($CompanyID)
 	{
 		return $this->_em->createQuery('

@@ -19,7 +19,6 @@ class DrugsController extends Controller
 	 * Препараты по коду АТХ
 	 *
 	 * @Route("/drugs/atc/{ATCCode}/{search}", name="atc_item", options={"expose":true})
-	 * @Route("poisk_preparatov/lat_{ATCCode}.{ext}", name="atc_item_old", defaults={"ext"="htm"})
 	 * @Template("VidalDrugBundle:Drugs:atc_item.html.twig")
 	 */
 	public function atcItemAction($ATCCode, $search = 0)

@@ -5,6 +5,16 @@ use Doctrine\ORM\EntityRepository;
 
 class DocumentRepository extends EntityRepository
 {
+	public function findOneByDocumentID($id)
+	{
+		return $this->createQueryBuilder('d')
+			->select('d')
+			->where('d.DocumentID = :id')
+			->setParameter('id', $id)
+			->getQuery()
+			->getOneOrNullResult();
+	}
+
 	public function findById($id)
 	{
 		return $this->createQueryBuilder('d')
@@ -12,6 +22,17 @@ class DocumentRepository extends EntityRepository
 			->where('d.DocumentID = :id')
 			->setParameter('id', $id)
 			->getQuery()
+			->getOneOrNullResult();
+	}
+
+	public function findOneByName($name)
+	{
+		return $this->_em->createQuery('
+			SELECT d
+			FROM VidalDrugBundle:Document d
+			WHERE d.Name = :name
+		')->setParameter('name', $name)
+			->setMaxResults(1)
 			->getOneOrNullResult();
 	}
 

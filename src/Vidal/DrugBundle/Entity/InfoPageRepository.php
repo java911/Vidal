@@ -5,6 +5,18 @@ use Doctrine\ORM\EntityRepository;
 
 class InfoPageRepository extends EntityRepository
 {
+	public function findOneByInfoPageID($InfoPageID)
+	{
+		return $this->_em->createQuery("
+			SELECT i
+			FROM VidalDrugBundle:InfoPage i
+			LEFT JOIN VidalDrugBundle:Country c WITH i.CountryCode = c
+			WHERE i.CountryEditionCode = 'RUS'
+				AND i = :InfoPageID
+		")->setParameter('InfoPageID', $InfoPageID)
+			->getOneOrNullResult();
+	}
+
 	public function findByInfoPageID($InfoPageID)
 	{
 		return $this->_em->createQuery("
