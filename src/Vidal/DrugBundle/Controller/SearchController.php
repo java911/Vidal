@@ -193,8 +193,8 @@ class SearchController extends Controller
 
 			# поиск по компании
 			if ($t == 'all' || $t == 'company') {
-				$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByQuery($q);
-				$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByQuery($q);
+				$params['search_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByQuery($q);
+				$params['search_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByQuery($q);
 			}
 
 			# поиск по заболеванию (это статьи и синонимы)

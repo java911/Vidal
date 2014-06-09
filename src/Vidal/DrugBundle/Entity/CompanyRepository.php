@@ -199,6 +199,7 @@ class CompanyRepository extends EntityRepository
 		foreach ($companies as $company) {
 			$name           = preg_replace('/ &.+; /', ' ', $company['LocalName']);
 			$name           = preg_replace('/&.+;/', ' ', $name);
+			$name           = mb_strtolower($name, 'utf-8');
 			$companyNames[] = $name;
 		}
 
@@ -212,6 +213,7 @@ class CompanyRepository extends EntityRepository
 		foreach ($infoPages as $infoPage) {
 			$name            = preg_replace('/ &.+; /', ' ', $infoPage['RusName']);
 			$name            = preg_replace('/&.+;/', ' ', $name);
+			$name            = mb_strtolower($name, 'utf-8');
 			$infoPageNames[] = $name;
 		}
 
