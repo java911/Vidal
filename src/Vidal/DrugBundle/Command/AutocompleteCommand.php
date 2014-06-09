@@ -32,8 +32,6 @@ class AutocompleteCommand extends ContainerAwareCommand
 		$companyNames  = $em->getRepository('VidalDrugBundle:Company')->findAutocomplete();
 		$atcNames      = $em->getRepository('VidalDrugBundle:ATC')->findAutocomplete();
 
-		var_dump($companyNames);exit;
-
 		$elasticaClient = new \Elastica\Client();
 		$elasticaIndex  = $elasticaClient->getIndex('website');
 		$elasticaType   = $elasticaIndex->getType('autocomplete');
