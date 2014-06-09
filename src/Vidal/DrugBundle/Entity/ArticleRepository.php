@@ -55,14 +55,14 @@ class ArticleRepository extends EntityRepository
 				AND a.title NOT LIKE :l5
 				AND a.synonym NOT LIKE :l6
 			ORDER BY a.title ASC
-		')->setParameter('now', new \DateTime())
-			->setParameters(array(
-				'l1' => $l . '%',
-				'l2' => '% ' . $l . '%',
-				'l3' => $l . '%',
-				'l4' => '% ' . $l . '%',
-				'l5' => '% ' . $l . ' %',
-				'l6' => '% ' . $l . ' %',
+		')->setParameters(array(
+				'now' => new \DateTime(),
+				'l1'  => $l . '%',
+				'l2'  => '% ' . $l . '%',
+				'l3'  => $l . '%',
+				'l4'  => '% ' . $l . '%',
+				'l5'  => '% ' . $l . ' %',
+				'l6'  => '% ' . $l . ' %',
 			))
 			->getResult();
 	}
@@ -78,6 +78,8 @@ class ArticleRepository extends EntityRepository
 			->andWhere('r.enabled = TRUE')
 			->andWhere('a.date < CURRENT_TIMESTAMP()')
 			->andWhere('r.id != 19')
+			->andWhere('a.date < :now')
+			->setParameter('now', new \DateTime())
 			->orderBy('a.title', 'ASC');
 
 		# поиск по словам

@@ -16,6 +16,19 @@ class ProductRepository extends EntityRepository
 			->getOneOrNullresult();
 	}
 
+	public function findBadByName($name)
+	{
+		return $this->_em->createQuery("
+			SELECT p
+			FROM VidalDrugBundle:Product p
+			WHERE p.Name = :name
+				AND p.inactive = FALSE
+				AND p.ProductTypeCode = 'BAD'
+		")->setParameter('name', $name)
+			->setMaxResults(1)
+			->getOneOrNullresult();
+	}
+
 	public function findByDocumentID($DocumentID)
 	{
 		return $this->_em->createQuery('

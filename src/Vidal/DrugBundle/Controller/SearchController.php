@@ -403,19 +403,8 @@ class SearchController extends Controller
 			$q                  = trim($q);
 			$params['articles'] = $em->getRepository('VidalDrugBundle:Article')->findByQuery($q);
 		}
-		else {
-
-		}
 
 		return $params;
-	}
-
-	/**
-	 * @Route("/patsientam/spisok-boleznei-po-alfavitu/")
-	 */
-	public function r1()
-	{
-		return $this->redirect($this->generateUrl('disease'), 301);
 	}
 
 	/**

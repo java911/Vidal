@@ -187,7 +187,7 @@ class IndexController extends Controller
 	/** @Route("/Vidal/vidal-russia/Novosti-pharmatsevticheskih-kompanii/") */
 	public function r10()
 	{
-		return $this->redirect($this->generateUrl('pharm_news'), 301);
+		return $this->redirect($this->generateUrl('pharma_news'), 301);
 	}
 
 	/**

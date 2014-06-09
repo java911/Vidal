@@ -61,43 +61,41 @@
 	{% endif %}
 
 	{# Найдено АТХ #}
-	{% if atcCodes is defined %}
+	{% if atcCodes is defined and atcCodes is not empty %}
 		<div class="block">
-			{% if atcCodes is not empty %}
-				<div class="block-head anons"
-					 title="Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)">
-					Найдено кодов АТХ: <span>{{ atcCodes|length }}</span>
-				</div>
+			<div class="block-head anons"
+				 title="Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)">
+				Найдено кодов АТХ: <span>{{ atcCodes|length }}</span>
+			</div>
 
-				<table class="products-table">
-					<tr class="products-table-header">
-						<td style="width:10%">АТХ код</td>
-						<td style="width:40%">Название</td>
-						<td style="width:40%">Латинское название</td>
-						<td style="width:10%">Входит в&nbsp;группу</td>
+			<table class="products-table">
+				<tr class="products-table-header">
+					<td style="width:10%">АТХ код</td>
+					<td style="width:40%">Название</td>
+					<td style="width:40%">Латинское название</td>
+					<td style="width:10%">Входит в&nbsp;группу</td>
+				</tr>
+				{% for code, atc in atcCodes %}
+					<tr>
+						<td>
+							<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}"
+							   class="no-underline">{{ atc.ATCCode }}</a>
+						</td>
+						<td>{{ atc.RusName }}</td>
+						<td>{{ atc.EngName }}</td>
+						<td>
+							{% if atc.ParentATCCode is not empty %}
+								<a href="{{ path('atc', {'ATCCode':atc.ParentATCCode}) }}"
+								   class="no-underline">{{ atc.ParentATCCode }}</a>
+							{% endif %}
+						</td>
 					</tr>
-					{% for code, atc in atcCodes %}
-						<tr>
-							<td>
-								<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}"
-								   class="no-underline">{{ atc.ATCCode }}</a>
-							</td>
-							<td>{{ atc.RusName }}</td>
-							<td>{{ atc.EngName }}</td>
-							<td>
-								{% if atc.ParentATCCode is not empty %}
-									<a href="{{ path('atc', {'ATCCode':atc.ParentATCCode}) }}"
-									   class="no-underline">{{ atc.ParentATCCode }}</a>
-								{% endif %}
-							</td>
-						</tr>
-					{% endfor %}
-				</table>
-			{% else %}
-				<div class="no-results">
-					Не найдено результатов по AТХ коду <span>{{ q }}</span>
-				</div>
-			{% endif %}
+				{% endfor %}
+			</table>
+		</div>
+	{% elseif t == 'atc' %}
+		<div class="no-results">
+			Не найдено результатов по AТХ коду <span>{{ q }}</span>
 		</div>
 	{% endif %}
 
@@ -127,8 +125,8 @@
 	and (productsPagination is not defined or productsPagination is empty)
 	and (molecules is not defined or molecules is empty)
 	and (search_infoPages is empty and search_companies is empty)
-	and (bads is not defined)
-	%}
+	and (bads is not defined or bads is empty)
+	and (atcCodes is empty) %}
 		<div class="no-results">
 			Не найдено результатов
 		</div>

@@ -70,8 +70,8 @@ class VidalController extends Controller
 
 		# редирект молекулы в препаратах
 		if ($pos = strpos($url, 'lact_')) {
-			$sub     = substr($url, $pos);
-			$id      = preg_replace('/[^0-9]/', '', $sub);
+			$sub      = substr($url, $pos);
+			$id       = preg_replace('/[^0-9]/', '', $sub);
 			$molecule = $em->getRepository('VidalDrugBundle:Molecule')->findOneByMoleculeID($id);
 			if (!$molecule) {
 				throw $this->createNotFoundException();
@@ -84,8 +84,8 @@ class VidalController extends Controller
 
 		# редирект молекулы описания
 		if ($pos = strpos($url, 'act_')) {
-			$sub     = substr($url, $pos);
-			$id      = preg_replace('/[^0-9]/', '', $sub);
+			$sub      = substr($url, $pos);
+			$id       = preg_replace('/[^0-9]/', '', $sub);
 			$molecule = $em->getRepository('VidalDrugBundle:Molecule')->findOneByMoleculeID($id);
 			if (!$molecule) {
 				throw $this->createNotFoundException();
@@ -113,8 +113,8 @@ class VidalController extends Controller
 
 		# редирект представительства
 		if ($pos = strpos($url, 'inf_')) {
-			$sub     = substr($url, $pos);
-			$id      = preg_replace('/[^0-9]/', '', $sub);
+			$sub      = substr($url, $pos);
+			$id       = preg_replace('/[^0-9]/', '', $sub);
 			$infoPage = $em->getRepository('VidalDrugBundle:InfoPage')->findOneByInfoPageID($id);
 			if (!$infoPage) {
 				throw $this->createNotFoundException();
@@ -126,8 +126,6 @@ class VidalController extends Controller
 		}
 
 		# иначе это документ без идентификатора
-		# /poisk_preparatov/%3Cb%3Eorungal%3C/herpferon.htm
-
 		$sub      = substr($url, 0, strrpos($url, '.'));
 		$name     = substr($sub, strrpos($sub, '/') + 1);
 		$document = $em->getRepository('VidalDrugBundle:Document')->findOneByName($name);
@@ -139,6 +137,44 @@ class VidalController extends Controller
 			'EngName'    => $document->getName(),
 			'DocumentID' => $document->getDocumentID(),
 		)), 301);
+	}
+
+	/** @Route("/BAD/opisanie/") */
+	public function r3()
+	{
+		return $this->redirect($this->generateUrl('searche_letter', array('t' => 'b',)), 301);
+	}
+
+
+	/** @Route("/BAD/opisanie/{url}", requirements={"url"=".+"}) */
+	public function r4($url)
+	{
+		$em      = $this->getDoctrine()->getManager('drug');
+		$name    = substr($url, 0, strpos($url, '.'));
+		$matches = array();
+
+		if (preg_match('/_([0-9]+).html$/', $url, $matches)) {
+			$id      = $matches[1];
+			$product = $em->getRepository('VidalDrugBundle:Product')->findByProductID($id);
+		}
+		else {
+			$product = $em->getRepository('VidalDrugBundle:Product')->findBadByName($name);
+		}
+
+		if ($product) {
+			return $this->redirect($this->generateUrl('product', array(
+				'ProductID' => $product->getProductID(),
+				'EngName'   => $product->getName(),
+			)), 301);
+		}
+
+		return $this->redirect($this->generateUrl('searche_letter'), 301);
+	}
+
+	/** @Route("/patsientam/spisok-boleznei-po-alfavitu/") */
+	public function r5()
+	{
+		return $this->redirect($this->generateUrl('searche_disease'), 301);
 	}
 
 	/**
