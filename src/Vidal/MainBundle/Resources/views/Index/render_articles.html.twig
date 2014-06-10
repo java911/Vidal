@@ -26,7 +26,6 @@
 
 						<div class="article-date">{{ article.date|date('d.m.Y') }}</div>
 					</div>
-					{% include 'VidalMainBundle:Index:render_tags.html.twig' with {'object':article} %}
 				</div>
 			{% else %}
 				{# отдельная статья специалистам - Art #}
@@ -53,7 +52,6 @@
 
 						<div class="article-date">{{ article.date|date('d.m.Y') }}</div>
 					</div>
-					{% include 'VidalMainBundle:Index:render_tags.html.twig' with {'object':article} %}
 				</div>
 			{% endif %}
 		{% endfor %}
