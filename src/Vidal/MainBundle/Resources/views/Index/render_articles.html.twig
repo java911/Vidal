@@ -1,0 +1,61 @@
+{% if articles is not empty %}
+	<div class="articles">
+		{% for article in articles %}
+			{% if article.isArticle %}
+				<div class="article">
+					{# админам карандашик редактирования #}
+					{% if isAdmin %}
+						<a class="admin-edit fade" target="_blank"
+						   href="{{ path('admin_vidal_drug_article_edit', {'id':article.id}) }}">
+							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+						</a>
+					{% endif %}
+
+					<a class="article-title"
+					   href="{{ path('article', {'rubrique':article.rubrique.rubrique, 'link':article.link}) }}">
+						{{ article.title|raw }}
+					</a>
+
+					<div class="article-announce text">
+						{{ article.announce|raw }}
+					</div>
+					<div class="article-footer">
+						<span>Рубрика:</span>
+						<a href="{{ path('rubrique', {'rubrique':article.rubrique.rubrique}) }}"
+							>{{ article.rubrique.title }}</a>
+
+						<div class="article-date">{{ article.date|date('d.m.Y') }}</div>
+					</div>
+					{% include 'VidalMainBundle:Index:render_tags.html.twig' with {'object':article} %}
+				</div>
+			{% else %}
+				{# отдельная статья специалистам - Art #}
+				<div class="article">
+					{# админам карандашик редактирования #}
+					{% if isAdmin %}
+						<a class="admin-edit fade" target="_blank"
+						   href="{{ path('admin_vidal_drug_art_edit', {'id':article.id}) }}">
+							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+						</a>
+					{% endif %}
+
+					<a class="article-title"
+					   href="{{ path('art', {'url':article.rubrique.url ~ '/' ~ (article.type ? article.type.url ~ '/') ~ (article.category ? article.category.url ~ '/') ~ article.link ~ '~' ~ article.id }) }}">
+						{{ article.title|raw }}
+					</a>
+
+					<div class="article-announce text">
+						{{ article.announce|raw }}
+					</div>
+					<div class="article-footer">
+						<span>Рубрика:</span>
+						<a href="{{ path('vracham') }}">Статьи специалистам</a>
+
+						<div class="article-date">{{ article.date|date('d.m.Y') }}</div>
+					</div>
+					{% include 'VidalMainBundle:Index:render_tags.html.twig' with {'object':article} %}
+				</div>
+			{% endif %}
+		{% endfor %}
+	</div>
+{% endif %}

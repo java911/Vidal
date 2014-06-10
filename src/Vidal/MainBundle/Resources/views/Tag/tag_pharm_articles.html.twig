@@ -1,0 +1,16 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block content %}
+	<div class="title">
+		Новости фарм. компаний по теме <span>"{{ tag.text }}"</span>
+	</div>
+
+	{% include 'VidalMainBundle:Index:render_pharm_articles.html.twig' with {'articles':pagination} %}
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/publication.css') }}"/>
+{% endblock %}

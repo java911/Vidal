@@ -3,26 +3,27 @@ namespace Vidal\DrugBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/** @ORM\Entity @ORM\Table(name="tag") */
+/** @ORM\Entity @ORM\Table(name="tag") @UniqueEntity("text") */
 class Tag
 {
 	/** @ORM\Column(type="integer") @ORM\Id @ORM\GeneratedValue */
 	protected $id;
 
-	/** @ORM\Column(length=255) */
+	/** @ORM\Column(length=255, unique=true) */
 	protected $text;
 
-	/** @ORM\ManyToMany(targetEntity="Article", mappedBy="tags") */
+	/** @ORM\ManyToMany(targetEntity="Article", mappedBy="tags", fetch="EXTRA_LAZY") */
 	protected $articles;
 
-	/** @ORM\ManyToMany(targetEntity="Art", mappedBy="tags") */
+	/** @ORM\ManyToMany(targetEntity="Art", mappedBy="tags", fetch="EXTRA_LAZY") */
 	protected $arts;
 
-	/** @ORM\ManyToMany(targetEntity="Publication", mappedBy="tags") */
+	/** @ORM\ManyToMany(targetEntity="Publication", mappedBy="tags", fetch="EXTRA_LAZY") */
 	protected $publications;
 
-	/** @ORM\ManyToMany(targetEntity="PharmArticle", mappedBy="tags") */
+	/** @ORM\ManyToMany(targetEntity="PharmArticle", mappedBy="tags", fetch="EXTRA_LAZY") */
 	protected $pharmArticles;
 
 	public function __construct()

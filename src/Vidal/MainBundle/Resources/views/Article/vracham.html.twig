@@ -28,10 +28,8 @@
 							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
 						</a>
 					{% endif %}
-					<div class="article-title">
-						<a class="no-underline"
-						   href="{{ path('art', {'url':art.rubrique.url ~ '/' ~ (art.type ? art.type.url ~ '/') ~ (art.category ? art.category.url ~ '/') ~ art.link ~ '~' ~ art.id }) }}">{{ art.title|raw }}</a>
-					</div>
+					<a class="no-underline"
+					   href="{{ path('art', {'url':art.rubrique.url ~ '/' ~ (art.type ? art.type.url ~ '/') ~ (art.category ? art.category.url ~ '/') ~ art.link ~ '~' ~ art.id }) }}">{{ art.title|raw }}</a>
 				</li>
 			{% endfor %}
 		</ul>

@@ -1,0 +1,39 @@
+{% if object.tags is not empty %}
+	<div class="tags no-selection">
+		{% for tag in object.tags %}
+			<span>
+				<span>{{ tag.text }}</span>
+				<ul>
+					{% if tag.publications.count %}
+						<li>
+							<a href="{{ path('tag_news', {'id':tag.id}) }}">
+								Новости по теме <i>{{ tag.text }}</i>
+							</a><b>{{ tag.publications.count }}</b>
+						</li>
+					{% endif %}
+					{% if tag.articles.count %}
+						<li>
+							<a href="{{ path('tag_articles', {'id':tag.id}) }}">
+								Статьи медицинской энциклопедии по теме <i>{{ tag.text }}</i>
+							</a><b>{{ tag.articles.count }}</b>
+						</li>
+					{% endif %}
+					{% if tag.arts.count %}
+						<li>
+							<a href="{{ path('tag_arts', {'id':tag.id}) }}">
+								Статьи для специалистов по теме <i>{{ tag.text }}</i>
+							</a><b>{{ tag.arts.count }}</b>
+						</li>
+					{% endif %}
+					{% if tag.pharmArticles.count %}
+						<li>
+							<a href="{{ path('tag_pharm_articles', {'id':tag.id}) }}">
+								Новости фарм. компаний по теме <i>{{ tag.text }}</i>
+							</a><b>{{ tag.pharmArticles.count }}</b>
+						</li>
+					{% endif %}
+				</ul>
+			</span>
+		{% endfor %}
+	</div>
+{% endif %}

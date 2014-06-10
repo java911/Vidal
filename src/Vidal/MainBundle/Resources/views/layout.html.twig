@@ -42,7 +42,7 @@
 
 	{% block javascripts %}
 		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/jquery-1.11.0.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/ready.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/ready.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('bundles/vidalmain/checkbox/jquery.checkbox.js') }}"></script>
 		<script type="text/javascript"
@@ -51,14 +51,6 @@
 				src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 		<script type="text/javascript"
 				src="{{ asset('bundles/vidalmain/jquery-ui/jquery-ui-1.10.4.custom.min.js') }}"></script>
-		<script>
-			$(document).ready(function() {
-				$('a[href^="http"], a[href^="ftp"]').not('a[href^="http://vidal"]').click(function() {
-					window.open(this.href, "");
-					return false;
-				});
-			});
-		</script>
 	{% endblock %}
 </head>
 

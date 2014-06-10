@@ -1,0 +1,19 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block content %}
+	<div class="title">
+		Статьи медицинской энциклопедии по теме <span>"{{ tag.text }}"</span>
+	</div>
+
+	{% include 'VidalMainBundle:Index:render_articles.html.twig' with {'articles':pagination} %}
+	<div class="navigation">
+		{{ knp_pagination_render(pagination) }}
+	</div>
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/publication.css') }}"/>
+{% endblock %}

@@ -317,6 +317,22 @@ h1 span {
 	font-size: 9px;
 	color:     #2f4053;
 }
+.tags a {
+	display:         inline-block;
+	position:        relative;
+	font-size:       11px;
+	border:          1px solid #d4d4d4;
+	border-radius:   3px;
+	padding:         1px 4px;
+	background:      #f6f6f6;
+	color:           #505050;
+	text-decoration: none;
+}
+.tags a:hover {
+	color:            #333;
+	background-color: #eee;
+	border-color:     #bbb;
+}
 
 /* боковое меню */
 .sidebar-menu .active {
@@ -1246,6 +1262,7 @@ h1 span {
 /* text */
 .text {
 	overflow: hidden;
+	width:    520px;
 }
 .text p {
 	margin-left:  0 !important;

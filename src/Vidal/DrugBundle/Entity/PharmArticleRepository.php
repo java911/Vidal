@@ -43,4 +43,18 @@ class PharmArticleRepository extends EntityRepository
 		')->setParameter('now', new \DateTime())
 			->setParameter('id', $id);
 	}
+
+	public function getQueryByTag($tagId)
+	{
+		return $this->_em->createQuery('
+			SELECT a
+			FROM VidalDrugBundle:PharmArticle a
+			JOIN a.tags t
+			WHERE a.enabled = TRUE
+				AND a.created < :now
+				AND t = :tagId
+			ORDER BY a.created DESC, a.priority DESC
+		')->setParameter('now', new \DateTime())
+			->setParameter('tagId', $tagId);
+	}
 }

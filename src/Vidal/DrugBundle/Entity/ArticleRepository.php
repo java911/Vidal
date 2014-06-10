@@ -36,9 +36,10 @@ class ArticleRepository extends EntityRepository
 			SELECT a
 			FROM VidalDrugBundle:Article a
 			WHERE a.enabled = TRUE
-				AND a.date < CURRENT_TIMESTAMP()
+				AND a.date < :now
 			ORDER BY a.priority DESC, a.date DESC
-		')->setFirstResult($from)
+		')->setParameter('now', new \DateTime())
+			->setFirstResult($from)
 			->setMaxResults($max)
 			->getResult();
 	}
@@ -129,9 +130,25 @@ class ArticleRepository extends EntityRepository
 			FROM VidalDrugBundle:Article a
 			WHERE a.enabled = 1
 				AND a.rubrique = :id
-				AND a.date < CURRENT_TIMESTAMP()
+				AND a.date < :now
 			ORDER BY a.title ASC
-		')->setParameter('id', $id)
+		')->setParameter('now', new \DateTime())
+			->setParameter('id', $id)
+			->getResult();
+	}
+
+	public function getQueryByTag($tagId)
+	{
+		return $this->_em->createQuery('
+			SELECT a
+			FROM VidalDrugBundle:Article a
+			JOIN a.tags t
+			WHERE a.enabled = 1
+				AND a.date < :now
+				AND t = :tagId
+			ORDER BY a.title ASC
+		')->setParameter('now', new \DateTime())
+			->setParameter('tagId', $tagId)
 			->getResult();
 	}
 }

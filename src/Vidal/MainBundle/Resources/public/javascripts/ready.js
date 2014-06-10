@@ -64,4 +64,26 @@ $(document).ready(function() {
 		$("html, body").animate({ scrollTop: 0 }, 600);
 		return false;
 	});
+
+	$('a[href^="http"], a[href^="ftp"]').not('a[href^="http://vidal"]').click(function() {
+		window.open(this.href, "");
+		return false;
+	});
+
+	$('.tags > span').click(function(e) {
+		e.stopPropagation();
+		var $ul = $(this).find('> ul');
+		$('.tags ul').not($ul).hide();
+		$ul.toggle();
+	});
+
+	$('.tags ul').mouseover(function(e) {
+		e.stopPropagation();
+	}).click(function(e) {
+		e.stopPropagation();
+	});
+
+	$('body').click(function() {
+		$('.tags ul').hide();
+	});
 });
