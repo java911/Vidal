@@ -2,7 +2,7 @@
 	<div class="pharm-articles">
 		{% for article in pagination %}
 			<div class="pharm-article">
-				{% if article.company %}
+				{% if article.company and company is not defined %}
 					<div class="article-company">
 						<a href="{{ path('pharma_company', {'id':article.company.id}) }}">
 							{{ article.company.title|raw }}
@@ -23,11 +23,13 @@
 
 				<div class="article-footer">
 					{{ article.created|date('d.m.Y') }}
-					<div class="article-more">
-						<a href="{{ path('pharma_company', {'id':article.company.id}) }}">
-							Другие новости этой компании
-						</a>
-					</div>
+					{% if company is not defined %}
+						<div class="article-more">
+							<a href="{{ path('pharma_company', {'id':article.company.id}) }}">
+								Другие новости этой компании
+							</a>
+						</div>
+					{% endif %}
 				</div>
 
 				{% include 'VidalMainBundle:Index:render_tags.html.twig' with {'object':article} %}

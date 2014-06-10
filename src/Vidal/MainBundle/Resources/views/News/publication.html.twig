@@ -27,7 +27,7 @@
 
 
 {% block content %}
-	<div class="publication text">
+	<div class="publication">
 		{% if withPhoto %}
 			<div class="publication-header with-photo">
 				<div class="photo">
@@ -59,13 +59,15 @@
 			</script>
 		{% endif %}
 
-		<div class="publication-body">
+		<div class="publication-body text">
 			{{ publication.body|raw }}
 		</div>
 
 		<div class="publication-footer">
 			<span class="publication-date">{{ publication.created|date('d.m.Y') }}</span>
 		</div>
+
+		{% include 'VidalMainBundle:Index:render_tags.html.twig' with {'object':publication} %}
 	</div>
 
 {% endblock %}
@@ -73,39 +75,5 @@
 
 {% block stylesheets %}
 	{{ parent() }}
-	<style type="text/css">
-		.publication {
-			font-size: 15px;
-			position:  relative;
-		}
-		.publication-body p:first-child {
-			margin-top: 0;
-		}
-		.publication-header {
-			margin-bottom: 20px;
-			overflow:      hidden;
-		}
-		.publication-header .photo {
-			display:    inline-block;
-			float:      left;
-			margin-top: 2px;
-		}
-		.publication-header .photo img {
-			max-width: 185px;
-		}
-		.publication-header.with-photo .publication-announce {
-			margin-left: 205px;
-		}
-		.publication-footer {
-			overflow: hidden;
-		}
-		.publication-date {
-			display:    inline-block;
-			float:      right;
-			text-align: right;
-			font-size:  13px;
-			font-style: italic;
-			color:      gray;
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/publication.css') }}"/>
 {% endblock %}

@@ -19,7 +19,6 @@ class ArticleController extends Controller
 	/**
 	 * Конкретная статья рубрики
 	 * @Route("/encyclopedia/{rubrique}/{link}", name="article")
-	 *
 	 * @Template("VidalMainBundle:Article:article.html.twig")
 	 */
 	public function articleAction($rubrique, $link)
@@ -45,7 +44,7 @@ class ArticleController extends Controller
 	 * Конкретная рубрика
 	 * @Route("/encyclopedia/{rubrique}", name="rubrique")
 	 *
-	 * @Template()
+	 * @Template("VidalMainBundle:Article:rubrique.html.twig")
 	 */
 	public function rubriqueAction($rubrique)
 	{
@@ -162,7 +161,7 @@ class ArticleController extends Controller
 		$params = array(
 			'title'     => $company . ' | Новости Фармацевтических компаний',
 			'company'   => $company,
-			'menu_left' => 'vracham'
+			'menu_left' => 'vracham',
 		);
 
 		$params['pagination'] = $this->get('knp_paginator')->paginate(

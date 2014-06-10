@@ -13,10 +13,15 @@ class NewsController extends Controller
 	const PUBLICATIONS_PER_PAGE  = 25;
 	const PUBLICATIONS_PER_PHARM = 5;
 
+	/** @Route("/novosti/novosti_{id}.{ext}", defaults={"ext"="html"}) */
+	public function r1($id)
+	{
+		return $this->redirect($this->generateUrl('publication', array('id' => $id)), 301);
+	}
+
 	/**
-	 * @Route("/novosti/novosti_{id}.{ext}", name="publication_old", defaults={"ext"="html"})
 	 * @Route("/novosti/{id}", name="publication")
-	 * @Template()
+	 * @Template("VidalMainBundle:News:publication.html.twig")
 	 */
 	public function publicationAction($id)
 	{
@@ -36,7 +41,7 @@ class NewsController extends Controller
 
 	/**
 	 * @Route("/novosti", name="news")
-	 * @Template()
+	 * @Template("VidalMainBundle:News:news.html.twig")
 	 */
 	public function newsAction(Request $request)
 	{
