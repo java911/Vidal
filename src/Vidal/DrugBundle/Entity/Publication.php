@@ -438,4 +438,9 @@ class Publication extends BaseEntity
 	{
 		return $this->hidden2;
 	}
+
+	public function getT()
+	{
+		return 'Publication';
+	}
 }

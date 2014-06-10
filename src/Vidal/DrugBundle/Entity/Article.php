@@ -635,4 +635,9 @@ class Article extends BaseEntity
 	{
 		return true;
 	}
+
+	public function getT()
+	{
+		return 'Article';
+	}
 }

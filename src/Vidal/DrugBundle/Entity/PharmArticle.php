@@ -287,4 +287,9 @@ class PharmArticle extends BaseEntity
 	{
 		return $this->hidden2;
 	}
+
+	public function getT()
+	{
+		return 'PharmArticle';
+	}
 }

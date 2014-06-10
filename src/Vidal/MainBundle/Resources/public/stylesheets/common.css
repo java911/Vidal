@@ -1262,7 +1262,11 @@ h1 span {
 /* text */
 .text {
 	overflow: hidden;
-	width:    520px;
+}
+.article .text, .publication .text {
+	width:   520px;
+	padding: 0;
+	margin:  0;
 }
 .text p {
 	margin-left:  0 !important;
