@@ -16,7 +16,7 @@
 
 
 {% block content %}
-	{% include 'VidalMainBundle:Index:render_news.html.twig' with {'news':publicationsPagination} %}
+	{% include 'VidalMainBundle:Index:render_news.html.twig' with {'news':publicationsPagination, 'showTags':1} %}
 
 	<div class="navigation">
 		{{ knp_pagination_render(publicationsPagination) }}

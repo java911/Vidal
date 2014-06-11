@@ -28,6 +28,9 @@
 							{{ publication.date|date('d.m.Y') }}
 						</div>
 					</div>
+					{% if showTags is defined and showTags %}
+						{% include 'VidalMainBundle:Index:render_tags.html.twig' with {'object':publication} %}
+					{% endif %}
 				</div>
 			</div>
 		{% endfor %}
