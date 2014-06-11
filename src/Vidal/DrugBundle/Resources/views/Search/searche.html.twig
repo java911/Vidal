@@ -47,6 +47,30 @@
 			{% endif %}
 		{% endif %}
 
+		{# Найдено Медицинских изделий #}
+		{% if mis is defined %}
+			<div class="block">
+				<div class="block-anons">
+					<div class="block-head">
+						Найдено медицинских изделий (МИ): <span>{{ mis|length }}</span>
+					</div>
+				</div>
+			</div>
+			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':mis, 'pictures':mi_pictures, 'companies':mi_companies, 'infoPages':mi_infoPages} %}
+		{% endif %}
+
+		{# Найдено БАДов #}
+		{% if bads is defined %}
+			<div class="block">
+				<div class="block-anons">
+					<div class="block-head">
+						Найдено БАДов: <span>{{ bads|length }}</span>
+					</div>
+				</div>
+			</div>
+			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':bads, 'pictures':bad_pictures, 'companies':bad_companies, 'infoPages':bad_infoPages} %}
+		{% endif %}
+
 		{# Найдено показаний МКБ-10 #}
 		{% if nozologies is defined %}
 			{% if nozologies is not empty %}
@@ -157,18 +181,6 @@
 					Не найдено результатов по активному веществу <span>{{ q }}</span>
 				</div>
 			{% endif %}
-		{% endif %}
-
-		{# Найдено БАДов #}
-		{% if bads is defined %}
-			<div class="block">
-				<div class="block-anons">
-					<div class="block-head">
-						Найдено БАДов: <span>{{ bads|length }}</span>
-					</div>
-				</div>
-			</div>
-			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':bads, 'pictures':bad_pictures, 'companies':bad_companies, 'infoPages':bad_infoPages} %}
 		{% endif %}
 
 		{# Найдено клинико-фармакологических групп #}

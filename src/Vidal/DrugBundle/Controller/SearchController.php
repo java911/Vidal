@@ -45,10 +45,18 @@ class SearchController extends Controller
 			if ($bad) {
 				$products = array();
 				$bads     = array();
+				$mis      = array();
 				foreach ($productsRaw as $product) {
-					$product['ProductTypeCode'] == 'BAD'
-						? $bads[] = $product
-						: $products[] = $product;
+					switch ($product['ProductTypeCode']) {
+						case 'BAD':
+							$bads[] = $product;
+							break;
+						case 'MI':
+							$mis[] = $product;
+							break;
+						default:
+							$products[] = $product;
+					}
 				}
 				if (count($bads)) {
 					$badIds                  = $this->getProductIds($bads);
@@ -56,6 +64,13 @@ class SearchController extends Controller
 					$params['bad_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($badIds);
 					$params['bad_pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($badIds, date('Y'));
 					$params['bad_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($bads);
+				}
+				if (count($mis)) {
+					$miIds = $this->getProductIds($mis);
+					$params['mis'] = $mis;
+					$params['mi_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($miIds);
+					$params['mi_pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($miIds, date('Y'));
+					$params['mi_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($mis);
 				}
 			}
 			else {
