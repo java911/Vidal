@@ -42,7 +42,7 @@ class SearchController extends Controller
 			$productsRaw = $em->getRepository('VidalDrugBundle:Product')->findByQuery($q, $bad);
 
 			# если включаем бады, то их надо в отдельную группу
-			if ($bad) {
+			if ($bad && $p == 1) {
 				$products = array();
 				$bads     = array();
 				foreach ($productsRaw as $product) {
@@ -140,7 +140,7 @@ class SearchController extends Controller
 			$productsRaw = $em->getRepository('VidalDrugBundle:Product')->findByQuery($q, $bad);
 
 			# если включаем бады, то их надо в отдельную группу
-			if ($bad) {
+			if ($bad && $p == 1) {
 				$products = array();
 				$bads     = array();
 				foreach ($productsRaw as $product) {
