@@ -63,7 +63,7 @@
 	{{ parent() }}
 	<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.edit.js') }}" type="text/javascript"></script>
-	<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.async.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.async.atc.js') }}" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#select_form select').chosen({
@@ -87,11 +87,6 @@
 				$tree.find('div.lastCollapsable-hitarea').removeClass('lastCollapsable-hitarea').addClass('lastExpandable-hitarea');
 				$tree.find('li.collapsable').removeClass('collapsable').addClass('expandable');
 				$tree.find('li.lastCollapsable').removeClass('lastCollapsable').addClass('lastExpandable');
-				return false;
-			});
-
-			$tree.on('click', 'i', function() {
-				location.href = Routing.generate('atc_item', {'ATCCode': $(this).closest('li').attr('id') });
 				return false;
 			});
 
