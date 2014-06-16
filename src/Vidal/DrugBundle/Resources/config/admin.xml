@@ -203,5 +203,13 @@
 			<argument />
 		</service>
 
+		<service id="sonata.admin.video" class="Vidal\DrugBundle\Admin\VideoAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Не используется" label="-" show_in_dashboard="false"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\Video</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
     </services>
 </container>
