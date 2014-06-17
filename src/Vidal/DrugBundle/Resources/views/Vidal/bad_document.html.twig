@@ -23,7 +23,7 @@
 	<div class="breadcrumbs">
 		<a href="{{ path('index') }}">Видаль</a>
 		<i></i>
-		<a href="{{ path('searche_letter') }}">БАДы</a>
+		<a href="{{ path('searche_letter') }}">{{ isMI is defined ? 'Медицинские изделия' : 'БАДы'}}</a>
 	</div>
 {% endblock %}
 
@@ -57,6 +57,10 @@
 				{% endif %}
 			{% endfor %}
 		</div>
+	{% endif %}
+
+	{% if document is defined %}
+		{% include 'VidalDrugBundle:Vidal:document_navigation.html.twig' %}
 	{% endif %}
 
 	{# Форма выпуска #}

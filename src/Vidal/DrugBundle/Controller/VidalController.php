@@ -145,7 +145,6 @@ class VidalController extends Controller
 		return $this->redirect($this->generateUrl('searche_letter', array('t' => 'b',)), 301);
 	}
 
-
 	/** @Route("/BAD/opisanie/{url}", requirements={"url"=".+"}) */
 	public function r4($url)
 	{
@@ -554,6 +553,15 @@ class VidalController extends Controller
 		$params['products']     = array($product);
 		$params['owners']       = $em->getRepository('VidalDrugBundle:Company')->findOwnersByProducts($productIds);
 		$params['distributors'] = $em->getRepository('VidalDrugBundle:Company')->findDistributorsByProducts($productIds);
+
+		# медицинские изделия выводятся по-другому
+		if ($product->isMI()) {
+			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds);
+			$params['title']    = $this->strip($product->getRusName()) . ' | Медицинские изделия';
+			$params['isMI']     = true;
+
+			return $this->render("VidalDrugBundle:Vidal:bad_document.html.twig", $params);
+		}
 
 		# БАДы выводятся по-другому
 		if ($product->isBAD() || ($document && $document->isBAD())) {
