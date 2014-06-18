@@ -10,7 +10,6 @@ use Iphp\FileStoreBundle\Mapping\Annotation as FileStore;
 /** @ORM\Entity(repositoryClass="ArticleRepository") @ORM\Table(name="article") @FileStore\Uploadable */
 class Article extends BaseEntity
 {
-
     /**
      * @ORM\ManyToMany(targetEntity = "DiseaseState", inversedBy="articles")
      * @ORM\JoinTable(name="diseaseStateArticle",
@@ -635,5 +634,10 @@ class Article extends BaseEntity
 	public function isArticle()
 	{
 		return true;
+	}
+
+	public function getT()
+	{
+		return 'Article';
 	}
 }

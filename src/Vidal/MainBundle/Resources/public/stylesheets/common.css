@@ -195,6 +195,23 @@ h1 span {
 .bold {
 	font-weight: bold;
 }
+.good {
+	color: green;
+}
+.note {
+	display:         block;
+	background:      beige;
+	border:          1px solid rgb(224, 224, 196);
+	font-size:       13px;
+	text-align:      center;
+	padding:         3px 6px;
+	color:           #726b53;
+	text-decoration: none;
+}
+.note:hover {
+	color:  #534d3c;
+	border: 1px solid rgb(192, 192, 168);
+}
 .dashed {
 	text-decoration: none;
 	border-bottom:   1px dashed #268366;
@@ -299,6 +316,22 @@ h1 span {
 .bads {
 	font-size: 9px;
 	color:     #2f4053;
+}
+.tags a {
+	display:         inline-block;
+	position:        relative;
+	font-size:       11px;
+	border:          1px solid #d4d4d4;
+	border-radius:   3px;
+	padding:         1px 4px;
+	background:      #f6f6f6;
+	color:           #505050;
+	text-decoration: none;
+}
+.tags a:hover {
+	color:            #333;
+	background-color: #eee;
+	border-color:     #bbb;
 }
 
 /* боковое меню */
@@ -1228,7 +1261,12 @@ h1 span {
 
 /* text */
 .text {
-	overflow: hidden;
+	overflow:  hidden;
+	max-width: 520px;
+}
+.article .text, .publication .text {
+	padding: 0;
+	margin:  0;
 }
 .text p {
 	margin-left:  0 !important;

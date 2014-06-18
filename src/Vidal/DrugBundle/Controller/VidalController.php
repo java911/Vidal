@@ -13,10 +13,167 @@ class VidalController extends Controller
 	const COMPANIES_PER_PAGE = 50;
 	const MOLECULES_PER_PAGE = 50;
 
-	/** @Route("/poisk_preparatov/", name="r1") */
+	/** @Route("/poisk_preparatov/") */
 	public function r1()
 	{
 		return $this->redirect($this->generateUrl('searche'), 301);
+	}
+
+	/** @Route("/poisk_preparatov/{url}", requirements={"url"=".+"}) */
+	public function r2($url)
+	{
+		$em = $this->getDoctrine()->getManager('drug');
+
+		# редирект препарата
+		if ($pos = strpos($url, '__')) {
+			$sub     = substr($url, $pos);
+			$id      = preg_replace('/[^0-9]/', '', $sub);
+			$product = $em->getRepository('VidalDrugBundle:Product')->findByProductID($id);
+			if (!$product) {
+				throw $this->createNotFoundException();
+			}
+
+			return $this->redirect($this->generateUrl('product', array(
+				'EngName'   => $product->getName(),
+				'ProductID' => $product->getProductID(),
+			)), 301);
+		}
+
+		# редирект документа
+		if ($pos = strpos($url, '~')) {
+			$sub      = substr($url, $pos);
+			$id       = preg_replace('/[^0-9]/', '', $sub);
+			$document = $em->getRepository('VidalDrugBundle:Document')->findOneByDocumentID($id);
+			if (!$document) {
+				throw $this->createNotFoundException();
+			}
+
+			return $this->redirect($this->generateUrl('document', array(
+				'EngName'    => $document->getName(),
+				'DocumentID' => $document->getDocumentID(),
+			)), 301);
+		}
+
+		# редирект компании
+		if ($pos = strpos($url, 'fir_')) {
+			$sub     = substr($url, $pos);
+			$id      = preg_replace('/[^0-9]/', '', $sub);
+			$company = $em->getRepository('VidalDrugBundle:Company')->findOneByCompanyID($id);
+			if (!$company) {
+				throw $this->createNotFoundException();
+			}
+
+			return $this->redirect($this->generateUrl('firm_item', array(
+				'CompanyID' => $company->getCompanyID(),
+			)), 301);
+		}
+
+		# редирект молекулы в препаратах
+		if ($pos = strpos($url, 'lact_')) {
+			$sub      = substr($url, $pos);
+			$id       = preg_replace('/[^0-9]/', '', $sub);
+			$molecule = $em->getRepository('VidalDrugBundle:Molecule')->findOneByMoleculeID($id);
+			if (!$molecule) {
+				throw $this->createNotFoundException();
+			}
+
+			return $this->redirect($this->generateUrl('molecule_included', array(
+				'MoleculeID' => $molecule->getMoleculeID(),
+			)), 301);
+		}
+
+		# редирект молекулы описания
+		if ($pos = strpos($url, 'act_')) {
+			$sub      = substr($url, $pos);
+			$id       = preg_replace('/[^0-9]/', '', $sub);
+			$molecule = $em->getRepository('VidalDrugBundle:Molecule')->findOneByMoleculeID($id);
+			if (!$molecule) {
+				throw $this->createNotFoundException();
+			}
+
+			return $this->redirect($this->generateUrl('molecule', array(
+				'MoleculeID' => $molecule->getMoleculeID(),
+			)), 301);
+		}
+
+		# редирект ATC
+		if ($pos = strpos($url, 'at_')) {
+			$sub  = substr($url, $pos);
+			$code = substr($sub, strpos($sub, '_') + 1);
+			$code = substr($code, 0, strrpos($code, '.'));
+			$atc  = $em->getRepository('VidalDrugBundle:ATC')->findOneByATCCode($code);
+			if (!$atc) {
+				throw $this->createNotFoundException();
+			}
+
+			return $this->redirect($this->generateUrl('atc_item', array(
+				'ATCCode' => $atc->getATCCode(),
+			)), 301);
+		}
+
+		# редирект представительства
+		if ($pos = strpos($url, 'inf_')) {
+			$sub      = substr($url, $pos);
+			$id       = preg_replace('/[^0-9]/', '', $sub);
+			$infoPage = $em->getRepository('VidalDrugBundle:InfoPage')->findOneByInfoPageID($id);
+			if (!$infoPage) {
+				throw $this->createNotFoundException();
+			}
+
+			return $this->redirect($this->generateUrl('inf_item', array(
+				'InfoPageID' => $infoPage->getInfoPageID(),
+			)), 301);
+		}
+
+		# иначе это документ без идентификатора
+		$sub      = substr($url, 0, strrpos($url, '.'));
+		$name     = substr($sub, strrpos($sub, '/') + 1);
+		$document = $em->getRepository('VidalDrugBundle:Document')->findOneByName($name);
+		if (!$document) {
+			throw $this->createNotFoundException();
+		}
+
+		return $this->redirect($this->generateUrl('document', array(
+			'EngName'    => $document->getName(),
+			'DocumentID' => $document->getDocumentID(),
+		)), 301);
+	}
+
+	/** @Route("/BAD/opisanie/") */
+	public function r3()
+	{
+		return $this->redirect($this->generateUrl('searche_letter', array('t' => 'b',)), 301);
+	}
+
+	/** @Route("/BAD/opisanie/{url}", requirements={"url"=".+"}) */
+	public function r4($url)
+	{
+		$em      = $this->getDoctrine()->getManager('drug');
+		$name    = substr($url, 0, strpos($url, '.'));
+		$matches = array();
+
+		if (preg_match('/_([0-9]+).html$/', $url, $matches)) {
+			$id      = $matches[1];
+			$product = $em->getRepository('VidalDrugBundle:Product')->findByProductID($id);
+		}
+		else {
+			$product = $em->getRepository('VidalDrugBundle:Product')->findBadByName($name);
+		}
+
+		if ($product) {
+			return $this->redirect($this->generateUrl('product', array(
+				'ProductID' => $product->getProductID(),
+				'EngName'   => $product->getName(),
+			)), 301);
+		}
+
+		return $this->redirect($this->generateUrl('searche_letter'), 301);
+	}
+
+	/** @Route("/patsientam/spisok-boleznei-po-alfavitu/") */
+	public function r5()
+	{
+		return $this->redirect($this->generateUrl('searche_disease'), 301);
 	}
 
 	/**
@@ -68,8 +225,6 @@ class VidalController extends Controller
 	 * Список препаратов по компании
 	 *
 	 * @Route("/drugs/firm/{CompanyID}", name="firm_item", requirements={"CompanyID":"\d+"})
-	 * @Route("/poisk_preparatov/fir_{CompanyID}.{ext}", name="firm_item_old", requirements={"CompanyID":"\d+"}, defaults={"ext"="htm"})
-	 * @Route("/poisk_preparatov/lfir_{CompanyID}.{ext}", name="firm_products_old", requirements={"CompanyID":"\d+"}, defaults={"ext"="htm"})
 	 * @Template("VidalDrugBundle:Vidal:firm_item.html.twig")
 	 */
 	public function firmItemAction($CompanyID)
@@ -139,8 +294,6 @@ class VidalController extends Controller
 	 * Страничка представительства и список препаратов
 	 *
 	 * @Route("/drugs/company/{InfoPageID}", name="inf_item", requirements={"InfoPageID":"\d+"})
-	 * @Route("/poisk_preparatov/inf_{InfoPageID}.{ext}", name="inf_item_old", requirements={"InfoPageID":"\d+"}, defaults={"ext"="htm"})
-	 * @Route("/poisk_preparatov/linf_{InfoPageID}.{ext}", name="linf_item_old", requirements={"InfoPageID":"\d+"}, defaults={"ext"="htm"})
 	 * @Template("VidalDrugBundle:Vidal:inf_item.html.twig")
 	 */
 	public function infItemAction($InfoPageID)
@@ -266,9 +419,7 @@ class VidalController extends Controller
 
 	/**
 	 * Список препаратов по активному веществу: одно-монокомпонентные
-	 *
 	 * @Route("/drugs/molecule/{MoleculeID}/{search}", name="molecule", requirements={"MoleculeID":"\d+"})
-	 * @Route("/poisk_preparatov/act_{MoleculeID}.{ext}", name="molecule_old", requirements={"MoleculeID":"\d+"}, defaults={"ext"="htm"})
 	 * @Template("VidalDrugBundle:Vidal:molecule.html.twig")
 	 */
 	public function moleculeAction($MoleculeID, $search = 0)
@@ -294,7 +445,6 @@ class VidalController extends Controller
 	 * Отображение списка препаратов, в состав которых входит активное вещество (Molecule)
 	 *
 	 * @Route("/drugs/molecule-in/{MoleculeID}", name="molecule_included", requirements={"MoleculeID":"\d+"})
-	 * @Route("/poisk_preparatov/lact_{MoleculeID}.{ext}", name="molecule_included_old", requirements={"MoleculeID":"\d+"}, defaults={"ext"="htm"})
 	 * @Template("VidalDrugBundle:Vidal:molecule_included.html.twig")
 	 */
 	public function moleculeIncludedAction($MoleculeID)
@@ -366,10 +516,7 @@ class VidalController extends Controller
 
 	/**
 	 * Описание препарата
-	 *
 	 * @Route("/drugs/{EngName}__{ProductID}.{ext}", name="product", requirements={"ProductID":"\d+", "EngName"=".+"}, defaults={"ext"="htm"})
-	 * @Route("/poisk_preparatov/{EngName}__{ProductID}.{ext}", name="product_old", requirements={"ProductID":"\d+", "EngName"=".+"}, defaults={"ext"="htm"})
-	 *
 	 * @Template("VidalDrugBundle:Vidal:document.html.twig")
 	 */
 	public function productAction($EngName, $ProductID)
@@ -407,6 +554,15 @@ class VidalController extends Controller
 		$params['owners']       = $em->getRepository('VidalDrugBundle:Company')->findOwnersByProducts($productIds);
 		$params['distributors'] = $em->getRepository('VidalDrugBundle:Company')->findDistributorsByProducts($productIds);
 
+		# медицинские изделия выводятся по-другому
+		if ($product->isMI()) {
+			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds);
+			$params['title']    = $this->strip($product->getRusName()) . ' | Медицинские изделия';
+			$params['isMI']     = true;
+
+			return $this->render("VidalDrugBundle:Vidal:bad_document.html.twig", $params);
+		}
+
 		# БАДы выводятся по-другому
 		if ($product->isBAD() || ($document && $document->isBAD())) {
 			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds);
@@ -426,7 +582,6 @@ class VidalController extends Controller
 	 * Описание по документу и отображение информации по препаратам или веществу
 	 *
 	 * @Route("/drugs/{EngName}~{DocumentID}", name="document", requirements={"DocumentID":"\d+"})
-	 * @Route("/poisk_preparatov/{EngName}~{DocumentID}.{ext}", name="document_old", requirements={"DocumentID":"\d+"}, defaults={"ext"="htm"})
 	 * @Route("/poisk_preparatov/{EngName}.{ext}", name="document_name_old", defaults={"ext"="htm"})
 	 * @Template("VidalDrugBundle:Vidal:document.html.twig")
 	 */

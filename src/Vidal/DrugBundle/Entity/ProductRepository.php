@@ -16,6 +16,19 @@ class ProductRepository extends EntityRepository
 			->getOneOrNullresult();
 	}
 
+	public function findBadByName($name)
+	{
+		return $this->_em->createQuery("
+			SELECT p
+			FROM VidalDrugBundle:Product p
+			WHERE p.Name = :name
+				AND p.inactive = FALSE
+				AND p.ProductTypeCode = 'BAD'
+		")->setParameter('name', $name)
+			->setMaxResults(1)
+			->getOneOrNullresult();
+	}
+
 	public function findByDocumentID($DocumentID)
 	{
 		return $this->_em->createQuery('
@@ -232,7 +245,8 @@ class ProductRepository extends EntityRepository
 
 	public function findByQuery($q, $badIncluded = false)
 	{
-		$qb = $this->_em->createQueryBuilder();
+		$miIncluded = $badIncluded;
+		$qb         = $this->_em->createQueryBuilder();
 
 		$qb->select('p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.ProductID, p.photo,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, pt.ProductTypeCode,
@@ -245,12 +259,15 @@ class ProductRepository extends EntityRepository
 			->andWhere('p.inactive = FALSE');
 
 		# включать ли бады
+		$productTypes = array('DRUG', 'GOME');
 		if ($badIncluded) {
-			$qb->andWhere("p.ProductTypeCode IN ('DRUG', 'GOME', 'BAD')");
+			$productTypes[] = 'BAD';
 		}
-		else {
-			$qb->andWhere("p.ProductTypeCode IN ('DRUG', 'GOME')");
+		if ($miIncluded) {
+			$productTypes[] = 'MI';
 		}
+		$qb->andWhere('p.ProductTypeCode IN (:productTypes)')
+			->setParameter('productTypes', $productTypes);
 
 		$q     = str_replace('-', ' ', $q);
 		$words = explode(' ', $q);
@@ -282,15 +299,11 @@ class ProductRepository extends EntityRepository
 			}
 
 			# включать ли бады
-			if ($badIncluded) {
-				$qb->where("p.ProductTypeCode IN ('DRUG', 'GOME', 'BAD')");
-			}
-			else {
-				$qb->where("p.ProductTypeCode IN ('DRUG', 'GOME')");
-			}
+			$qb->where('p.ProductTypeCode IN (:productTypes)')
+				->setParameter('productTypes', $productTypes);
 
 			$productsRaw = $qb
-				->andWhere('p.MarketStatusID IN (1,2)')
+				->andWhere('p.MarketStatusID IN (1,2,7)')
 				->andWhere('p.inactive = FALSE')
 				->andWhere($where)
 				->getQuery()->getResult();

@@ -5,6 +5,17 @@ use Doctrine\ORM\EntityRepository;
 
 class CompanyRepository extends EntityRepository
 {
+	public function findOneByCompanyID($CompanyID)
+	{
+		return $this->_em->createQuery('
+			SELECT c
+			FROM VidalDrugBundle:Company c
+			LEFT JOIN VidalDrugBundle:Country country WITH c.CountryCode = country
+			WHERE c = :CompanyID
+		')->setParameter('CompanyID', $CompanyID)
+			->getOneOrNullResult();
+	}
+
 	public function findByCompanyID($CompanyID)
 	{
 		return $this->_em->createQuery('
@@ -188,6 +199,7 @@ class CompanyRepository extends EntityRepository
 		foreach ($companies as $company) {
 			$name           = preg_replace('/ &.+; /', ' ', $company['LocalName']);
 			$name           = preg_replace('/&.+;/', ' ', $name);
+			$name           = mb_strtolower($name, 'utf-8');
 			$companyNames[] = $name;
 		}
 
@@ -201,6 +213,7 @@ class CompanyRepository extends EntityRepository
 		foreach ($infoPages as $infoPage) {
 			$name            = preg_replace('/ &.+; /', ' ', $infoPage['RusName']);
 			$name            = preg_replace('/&.+;/', ' ', $name);
+			$name            = mb_strtolower($name, 'utf-8');
 			$infoPageNames[] = $name;
 		}
 

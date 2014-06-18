@@ -46,6 +46,19 @@ class PharmPortfolioAdmin extends Admin
 			->add('video', 'iphp_file', array('label' => 'Видео', 'required' => false, 'help' => 'Загрузить флеш-видео в формате .flv'))
 			->add('priority', null, array('label' => 'Приоритет', 'required' => false))
 			->add('created', null, array('label' => 'Дата создания', 'required' => false))
+			->add('videos', 'sonata_type_collection',
+				array(
+					'label'              => 'Видео файлы',
+					'by_reference'       => false,
+					'cascade_validation' => true,
+					'required'           => false,
+				),
+				array(
+					'edit'         => 'inline',
+					'inline'       => 'table',
+					'allow_delete' => true
+				)
+			)
 			->add('enabled', null, array('label' => 'Активен', 'required' => false));
 	}
 

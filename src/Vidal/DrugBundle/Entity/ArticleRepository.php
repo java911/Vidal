@@ -36,9 +36,10 @@ class ArticleRepository extends EntityRepository
 			SELECT a
 			FROM VidalDrugBundle:Article a
 			WHERE a.enabled = TRUE
-				AND a.date < CURRENT_TIMESTAMP()
+				AND a.date < :now
 			ORDER BY a.priority DESC, a.date DESC
-		')->setFirstResult($from)
+		')->setParameter('now', new \DateTime())
+			->setFirstResult($from)
 			->setMaxResults($max)
 			->getResult();
 	}
@@ -55,14 +56,14 @@ class ArticleRepository extends EntityRepository
 				AND a.title NOT LIKE :l5
 				AND a.synonym NOT LIKE :l6
 			ORDER BY a.title ASC
-		')->setParameter('now', new \DateTime())
-			->setParameters(array(
-				'l1' => $l . '%',
-				'l2' => '% ' . $l . '%',
-				'l3' => $l . '%',
-				'l4' => '% ' . $l . '%',
-				'l5' => '% ' . $l . ' %',
-				'l6' => '% ' . $l . ' %',
+		')->setParameters(array(
+				'now' => new \DateTime(),
+				'l1'  => $l . '%',
+				'l2'  => '% ' . $l . '%',
+				'l3'  => $l . '%',
+				'l4'  => '% ' . $l . '%',
+				'l5'  => '% ' . $l . ' %',
+				'l6'  => '% ' . $l . ' %',
 			))
 			->getResult();
 	}
@@ -78,6 +79,8 @@ class ArticleRepository extends EntityRepository
 			->andWhere('r.enabled = TRUE')
 			->andWhere('a.date < CURRENT_TIMESTAMP()')
 			->andWhere('r.id != 19')
+			->andWhere('a.date < :now')
+			->setParameter('now', new \DateTime())
 			->orderBy('a.title', 'ASC');
 
 		# поиск по словам
@@ -127,9 +130,25 @@ class ArticleRepository extends EntityRepository
 			FROM VidalDrugBundle:Article a
 			WHERE a.enabled = 1
 				AND a.rubrique = :id
-				AND a.date < CURRENT_TIMESTAMP()
+				AND a.date < :now
 			ORDER BY a.title ASC
-		')->setParameter('id', $id)
+		')->setParameter('now', new \DateTime())
+			->setParameter('id', $id)
+			->getResult();
+	}
+
+	public function getQueryByTag($tagId)
+	{
+		return $this->_em->createQuery('
+			SELECT a
+			FROM VidalDrugBundle:Article a
+			JOIN a.tags t
+			WHERE a.enabled = 1
+				AND a.date < :now
+				AND t = :tagId
+			ORDER BY a.title ASC
+		')->setParameter('now', new \DateTime())
+			->setParameter('tagId', $tagId)
 			->getResult();
 	}
 }

@@ -23,13 +23,12 @@
 			<i></i>
 			<a href="{{ path('art', {'url':[rubrique.url, type.url, category.url]|join('/') }) }}">{{ category.title }}</a>
 		{% endif %}
-
 	</div>
 {% endblock %}
 
 
 {% block content %}
-	<div class="article-wrap text">
+	<div class="article-wrap">
 		{# админам карандашик редактирования #}
 		{% if isAdmin %}
 			<a class="admin-edit fade" target="_blank"
@@ -44,11 +43,12 @@
 		<div class="article-footer">
 			<span class="article-date">{{ article.date|date('d.m.Y') }}</span>
 		</div>
+		{#{% include 'VidalMainBundle:Index:render_tags.html.twig' with {'object':article} %}#}
 	</div>
 {% endblock %}
 
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/article.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/publication.css') }}"/>
 {% endblock %}

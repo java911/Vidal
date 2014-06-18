@@ -42,20 +42,38 @@ class SearchController extends Controller
 			$productsRaw = $em->getRepository('VidalDrugBundle:Product')->findByQuery($q, $bad);
 
 			# если включаем бады, то их надо в отдельную группу
-			if ($bad) {
+			if ($bad && $p == 1) {
 				$products = array();
 				$bads     = array();
+				$mis      = array();
+
 				foreach ($productsRaw as $product) {
-					$product['ProductTypeCode'] == 'BAD'
-						? $bads[] = $product
-						: $products[] = $product;
+					switch ($product['ProductTypeCode']) {
+						case 'BAD':
+							$bads[] = $product;
+							break;
+						case 'MI':
+							$mis[] = $product;
+							break;
+						default:
+							$products[] = $product;
+					}
 				}
+
 				if (count($bads)) {
 					$badIds                  = $this->getProductIds($bads);
 					$params['bads']          = $bads;
 					$params['bad_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($badIds);
 					$params['bad_pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($badIds, date('Y'));
 					$params['bad_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($bads);
+				}
+
+				if (count($mis)) {
+					$miIds                   = $this->getProductIds($mis);
+					$params['mis']           = $mis;
+					$params['mi_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($miIds);
+					$params['mi_pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($miIds, date('Y'));
+					$params['mi_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($mis);
 				}
 			}
 			else {
@@ -140,20 +158,38 @@ class SearchController extends Controller
 			$productsRaw = $em->getRepository('VidalDrugBundle:Product')->findByQuery($q, $bad);
 
 			# если включаем бады, то их надо в отдельную группу
-			if ($bad) {
+			if ($bad && $p == 1) {
 				$products = array();
 				$bads     = array();
+				$mis      = array();
+
 				foreach ($productsRaw as $product) {
-					$product['ProductTypeCode'] == 'BAD'
-						? $bads[] = $product
-						: $products[] = $product;
+					switch ($product['ProductTypeCode']) {
+						case 'BAD':
+							$bads[] = $product;
+							break;
+						case 'MI':
+							$mis[] = $product;
+							break;
+						default:
+							$products[] = $product;
+					}
 				}
+
 				if (count($bads)) {
 					$badIds                  = $this->getProductIds($bads);
 					$params['bads']          = $bads;
 					$params['bad_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($badIds);
 					$params['bad_pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($badIds, date('Y'));
 					$params['bad_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($bads);
+				}
+
+				if (count($mis)) {
+					$miIds                   = $this->getProductIds($mis);
+					$params['mis']           = $mis;
+					$params['mi_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($miIds);
+					$params['mi_pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($miIds, date('Y'));
+					$params['mi_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($mis);
 				}
 			}
 			else {
@@ -193,8 +229,8 @@ class SearchController extends Controller
 
 			# поиск по компании
 			if ($t == 'all' || $t == 'company') {
-				$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByQuery($q);
-				$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByQuery($q);
+				$params['search_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByQuery($q);
+				$params['search_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByQuery($q);
 			}
 
 			# поиск по заболеванию (это статьи и синонимы)
@@ -403,19 +439,8 @@ class SearchController extends Controller
 			$q                  = trim($q);
 			$params['articles'] = $em->getRepository('VidalDrugBundle:Article')->findByQuery($q);
 		}
-		else {
-
-		}
 
 		return $params;
-	}
-
-	/**
-	 * @Route("/patsientam/spisok-boleznei-po-alfavitu/")
-	 */
-	public function r1()
-	{
-		return $this->redirect($this->generateUrl('disease'), 301);
 	}
 
 	/**

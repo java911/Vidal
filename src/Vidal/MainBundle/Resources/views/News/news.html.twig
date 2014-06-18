@@ -16,38 +16,7 @@
 
 
 {% block content %}
-	<div class="publications">
-		{% for publication in publicationsPagination.items %}
-			{% set withPhoto = publication.photo and is_file(publication.photo.path) %}
-			<div class="publication{{ withPhoto ? ' with-photo' }}">
-				{# админам карандашик редактирования #}
-				{% if isAdmin %}
-					<a class="admin-edit fade" target="_blank"
-					   href="{{ path('admin_vidal_drug_publication_edit', {'id':publication.id}) }}">
-						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-					</a>
-				{% endif %}
-
-				{% if withPhoto %}
-					<a class="photo" href="{{ path('publication', {id:publication.id}) }}">
-						<img src="{{ publication.photo.path }}" alt="{{ publication.title }}"/>
-					</a>
-				{% endif %}
-
-				<div>
-					<div class="publication-title">
-						<a href="{{ path('publication', {id:publication.id}) }}">{{ publication.title|raw }}</a>
-					</div>
-					<div class="publication-announce text">
-						{{ publication.announce|raw }}
-					</div>
-					<div class="publication-date">
-						{{ publication.date|date('d.m.Y') }}
-					</div>
-				</div>
-			</div>
-		{% endfor %}
-	</div>
+	{% include 'VidalMainBundle:Index:render_news.html.twig' with {'news':publicationsPagination, 'showTags':1} %}
 
 	<div class="navigation">
 		{{ knp_pagination_render(publicationsPagination) }}

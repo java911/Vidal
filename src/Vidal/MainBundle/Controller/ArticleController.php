@@ -19,7 +19,6 @@ class ArticleController extends Controller
 	/**
 	 * Конкретная статья рубрики
 	 * @Route("/encyclopedia/{rubrique}/{link}", name="article")
-	 *
 	 * @Template("VidalMainBundle:Article:article.html.twig")
 	 */
 	public function articleAction($rubrique, $link)
@@ -45,7 +44,7 @@ class ArticleController extends Controller
 	 * Конкретная рубрика
 	 * @Route("/encyclopedia/{rubrique}", name="rubrique")
 	 *
-	 * @Template()
+	 * @Template("VidalMainBundle:Article:rubrique.html.twig")
 	 */
 	public function rubriqueAction($rubrique)
 	{
@@ -75,12 +74,10 @@ class ArticleController extends Controller
 		return $this->redirect($this->generateUrl('articles'), 301);
 	}
 
-	/**
-	 * @Route("/patsientam/entsiklopediya/{rubrique}/")
-	 */
-	public function r2($rubrique)
+	/** @Route("/poisk_preparatov/") */
+	public function r2()
 	{
-		return $this->redirect($this->generateUrl('rubrique', array('rubrique' => $rubrique), 301));
+		return $this->redirect($this->generateUrl('searche'), 301);
 	}
 
 	/** @Route("/patsientam/entsiklopediya/{url}", requirements={"url"=".+"}) */
@@ -164,7 +161,7 @@ class ArticleController extends Controller
 		$params = array(
 			'title'     => $company . ' | Новости Фармацевтических компаний',
 			'company'   => $company,
-			'menu_left' => 'vracham'
+			'menu_left' => 'vracham',
 		);
 
 		$params['pagination'] = $this->get('knp_paginator')->paginate(
@@ -303,7 +300,18 @@ class ArticleController extends Controller
 	 */
 	public function r5($url)
 	{
-		return $this->redirect($this->generateUrl('art', array('url' => $url)), 301);
+		//return $this->redirect($this->generateUrl('art', array('url' => $url)), 301);
+
+		$parts        = explode('/', $url);
+		$rubriqueName = $parts[0];
+		$em           = $this->getDoctrine()->getManager('drug');
+		$rubrique     = $em->getRepository('VidalDrugBundle:ArtRubrique')->findOneByUrl($rubriqueName);
+
+		if (!$rubrique) {
+			throw $this->createNotFoundException();
+		}
+
+		return $this->redirect($this->generateUrl('art', array('url' => $rubriqueName)), 301);
 	}
 
 	/**

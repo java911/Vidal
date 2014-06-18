@@ -164,4 +164,26 @@ class ATCRepository extends EntityRepository
 
 		return $items;
 	}
+
+	public function getChoices()
+	{
+		$raw = $this->_em->createQuery('
+			SELECT a.ATCCode, a.RusName, a.EngName
+			FROM VidalDrugBundle:ATC a
+		 	ORDER BY a.ATCCode ASC
+		 ')->getResult();
+
+		$items = array();
+
+		foreach ($raw as $r) {
+			$key   = $r['ATCCode'];
+			$title = $r['ATCCode'] . ' - ' . $r['RusName'];
+			if (!empty($r['EngName']) && $r['EngName'] != $r['RusName']) {
+				$title .= ' (' . $r['EngName'] . ')';
+			}
+			$items[$key] = $title;
+		}
+
+		return $items;
+	}
 }

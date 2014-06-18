@@ -296,8 +296,13 @@
 						<tr>
 							<td class="products-table-loz">
 								{% if p.NonPrescriptionDrug %}
-									<img src="{{ loz }}" class="loz"
+									<img src="{{ asset('bundles/vidalmain/images/g2.gif') }}"
 										 title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>
+								{% elseif p.ProductTypeCode is defined and p.ProductTypeCode == 'BAD' %}
+									<span class="bads">БАД</span>
+								{% else %}
+									<img src="{{ asset('bundles/vidalmain/images/g3.gif') }}"
+										 title="Препарат отпускается по рецепту"/>
 								{% endif %}
 							</td>
 							<td class="products-table-name">

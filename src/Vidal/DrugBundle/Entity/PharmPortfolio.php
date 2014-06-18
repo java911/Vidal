@@ -3,6 +3,7 @@
 namespace Vidal\DrugBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Iphp\FileStoreBundle\Mapping\Annotation as FileStore;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -53,9 +54,17 @@ class PharmPortfolio extends BaseEntity
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $videoHeight;
 
+	/** @ORM\ManyToMany(targetEntity="Video", inversedBy="portfolios", cascade={"persist"}) */
+	protected $videos;
+
 	public function __toString()
 	{
 		return $this->title;
+	}
+
+	public function __construct()
+	{
+		$this->videos = new ArrayCollection();
 	}
 
 	/**
@@ -200,5 +209,35 @@ class PharmPortfolio extends BaseEntity
 	public function getVideoWidth()
 	{
 		return $this->videoWidth;
+	}
+
+	/**
+	 * @param mixed $videos
+	 */
+	public function setVideos($videos)
+	{
+		$this->videos = $videos;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getVideos()
+	{
+		return $this->videos;
+	}
+
+	public function addVideo(Video $video)
+	{
+		if (!$this->videos->contains($video)) {
+			$this->videos[] = $video;
+		}
+
+		return $this;
+	}
+
+	public function removeVideo(Video $video)
+	{
+		$this->videos->removeElement($video);
 	}
 }

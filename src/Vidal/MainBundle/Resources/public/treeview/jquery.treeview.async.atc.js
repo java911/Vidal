@@ -21,7 +21,7 @@ function load(settings, root, child, container) {
 		if (this.code) {
 			var current = withChildren
 				? $("<li/>").attr("id", this.id || "").html('<span class="t">' + this.code + '</span>' + "<span>" + this.text + "</span>").appendTo(parent)
-				: $("<li/>").attr("id", this.id || "").html('<span class="t">' + this.code + '</span>' + "<i>" + this.text + "</i>").appendTo(parent);
+				: $("<li/>").attr("id", this.id || "").html('<span class="t">' + this.code + '</span>' + '<a target="blank" href="/drugs/atc/' + this.code + '">' + this.text + '</a>').appendTo(parent);
 			}
 		else {
 			var current = withChildren

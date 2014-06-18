@@ -5,6 +5,16 @@ use Doctrine\ORM\EntityRepository;
 
 class MoleculeRepository extends EntityRepository
 {
+	public function findOneByMoleculeID($MoleculeID)
+	{
+		return $this->_em->createQuery('
+		 	SELECT m
+		 	FROM VidalDrugBundle:Molecule m
+		 	WHERE m = :MoleculeID
+		')->setParameter('MoleculeID', $MoleculeID)
+			->getOneOrNullResult();
+	}
+
 	public function findByMoleculeID($MoleculeID)
 	{
 		return $this->_em->createQuery('

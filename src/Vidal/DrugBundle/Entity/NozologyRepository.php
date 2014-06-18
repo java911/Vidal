@@ -170,4 +170,22 @@ class NozologyRepository extends EntityRepository
 
 		return $items;
 	}
+
+	public function getChoices()
+	{
+		$raw = $this->_em->createQuery('
+			SELECT n.NozologyCode, n.Name
+			FROM VidalDrugBundle:Nozology n
+		 	ORDER BY n.NozologyCode ASC
+		 ')->getResult();
+
+		$items = array();
+
+		foreach ($raw as $r) {
+			$key         = $r['NozologyCode'];
+			$items[$key] = $r['NozologyCode'] . ' - ' . $r['Name'];
+		}
+
+		return $items;
+	}
 }

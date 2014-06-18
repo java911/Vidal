@@ -1,0 +1,19 @@
+parameters:
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: '3306'
+    database_vidal: twigavid_vidal
+    database_drug: twigavid_drug2
+    database_veterinar: twigavid_veterinar
+    database_user: root
+    database_password:
+    mailer_transport: gmail
+    mailer_host: null
+    mailer_user: binacy@gmail.com
+    mailer_password: 2q32q3q2
+    manager_emails: [7binary@bk.ru, m.vlasenko@vidal.ru]
+    locale: ru
+    secret: b1874938efec4f6781e475354bd9zb39127274f3
+    upload_dir: '%kernel.root_dir%/../web/upload'
+    #session_dir: '/home/twigavid/vidal/sessions'
+    portal: «Vidal.ru»

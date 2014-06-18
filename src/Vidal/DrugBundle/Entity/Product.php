@@ -783,6 +783,11 @@ class Product
 		return $this->ProductTypeCode == 'BAD';
 	}
 
+	public function isMI()
+	{
+		return $this->ProductTypeCode == 'MI';
+	}
+
 	/**
 	 * @param mixed $inactive
 	 */

@@ -621,4 +621,9 @@ class Art extends BaseEntity
 	{
 		return false;
 	}
+
+	public function getT()
+	{
+		return 'Art';
+	}
 }
