@@ -104,10 +104,10 @@ class ProductDocumentCommand extends ContainerAwareCommand
 
 		$count = count($raw);
 
-		for ($i = 0; $i < $count; $i++) {
+		foreach ($raw as $ProductID => $DocumentID) {
 			$updateQuery->setParameters(array(
-				'ProductID'  => $raw[$i]['ProductID'],
-				'DocumentID' => $raw[$i]['DocumentID'],
+				'ProductID'  => $ProductID,
+				'DocumentID' => $DocumentID,
 			))->execute();
 
 			if ($i && $i % 500 == 0) {
