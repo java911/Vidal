@@ -123,17 +123,28 @@ class AppointmentController extends Controller
      * @Route("/soaptest", name="soaptest")
      */
     public function soapTestAction(){
-        $cert="/var/www/vidal/web/sert/testSSLClient.p12"; //Сертификат
+        $cert="/var/www/vidal/web/sert/testSSLClient.pem"; //Сертификат
+        $wsdl="http://schemas.xmlsoap.org/soap/envelope"; //Адрес wdsl сервиса
+        $loc = "https://mosmedzdrav.ru:10002/emias-soap-sercvice/PGUServicesInfo2?wsdl"; //Адрес точки доступа
+        $pass = 'testSSLClient';
         if (!is_file($cert)){
             echo 'sd';
             exit;
         }
-        $wsdl="https://mosmedzdrav.ru:10002/emias-soap-sercvice/PGUServicesInfo2?wsdl"; //Адрес wdsl сервиса
-        $loc = "https://mosmedzdrav.ru:10002/emias-soap-sercvice/PGUServicesInfo2?wsdl"; //Адрес точки доступа
+        $sslOptions = array(
+            'ssl' => array(
+                'cafile' => "/var/www/vidal/web/sert/RootMedCA.cer",
+                'allow_self_signed' => true,
+                'verify_peer' => false,
+            ),
+        );
+        $sslContext = stream_context_create($sslOptions);
         $sp = new \SoapClient($wsdl,array(
+            'stream_context' => $sslContext,
             'local_cert' => $cert,
             'trace' => 1,
             'exceptions' => 1,
+            'passphrase'    => $pass,
             'soap_version' => SOAP_1_2,
             'location' =>$loc,
             "authentication"=>SOAP_AUTHENTICATION_DIGEST,
