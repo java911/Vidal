@@ -242,10 +242,10 @@ class MarketController extends Controller{
                 $order->setSum($sum[$group]);
                 $succes = false;
                 if ($group == 'zdravzona'){
-//                    $succes = $this->mailSend($group, $order, $basket);
+                    $succes = $this->mailSend($group, $order, $basket);
                     $succes = true;
                 }else{
-//                    $succes = $this->emacsSend($group, $order, $basket);
+                    $succes = $this->emacsSend($group, $order, $basket);
                     $succes = true;
                 }
                 if ($succes == true ){
