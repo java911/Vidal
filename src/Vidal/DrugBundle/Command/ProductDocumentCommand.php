@@ -103,16 +103,22 @@ class ProductDocumentCommand extends ContainerAwareCommand
 		');
 
 		$count = count($raw);
+		$i     = 0;
 
-		for ($i = 0; $i < $count; $i++) {
-			$updateQuery->setParameters(array(
-				'ProductID'  => $raw[$i]['ProductID'],
-				'DocumentID' => $raw[$i]['DocumentID'],
-			))->execute();
+		foreach ($raw as $ProductID => $DocumentID) {
+			try {
+				$updateQuery->setParameters(array(
+					'ProductID'  => $ProductID,
+					'DocumentID' => $DocumentID,
+				))->execute();
+			}
+			catch (\Exception $e) {
+			}
 
 			if ($i && $i % 500 == 0) {
 				$output->writeln(".. $i / $count");
 			}
+			$i++;
 		}
 
 		$output->writeln('+++ vidal:product_document completed!');

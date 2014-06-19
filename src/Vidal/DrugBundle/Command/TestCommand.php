@@ -12,7 +12,7 @@ class TestCommand extends ContainerAwareCommand
 	protected function configure()
 	{
 		$this
-			->setName('vidal:_')
+			->setName('vidal:test')
 			->setDescription('Command to copy')
 			//->addArgument('user', InputArgument::OPTIONAL, '')
 			//->addOption('email', null, InputOption::VALUE_NONE, '')
@@ -22,9 +22,11 @@ class TestCommand extends ContainerAwareCommand
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		ini_set('memory_limit', -1);
+		$output->writeln('--- vidal: started');
+
 		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
-		$output->writeln('--- vidal: started');
+
 
 		$output->writeln('+++ vidal: completed');
 	}
