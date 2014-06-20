@@ -109,13 +109,14 @@ class DrugsController extends Controller
 	/**
 	 * Препараты по КФУ
 	 *
-	 * @Route("/drugs/clinic-pointer/{id}", name="kfu_item", options={"expose":true})
+	 * @Route("/drugs/clinic-pointer/{code}", name="kfu_item", options={"expose":true})
 	 * @Template("VidalDrugBundle:Drugs:kfu_item.html.twig")
 	 */
-	public function kfuItemAction($id)
+	public function kfuItemAction($code)
 	{
-		$em  = $this->getDoctrine()->getManager('drug');
-		$kfu = $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->findOneById($id);
+		$em   = $this->getDoctrine()->getManager('drug');
+		$repo = $em->getRepository('VidalDrugBundle:ClinicoPhPointers');
+		$kfu  = $repo->findOneByCode($code);
 
 		if (!$kfu) {
 			throw $this->createNotFoundException();
@@ -125,7 +126,8 @@ class DrugsController extends Controller
 			'menu_drugs' => 'kfu',
 			'kfu'        => $kfu,
 			'title'      => $this->strip($kfu) . ' | Клинико-фармакологические указатели',
-			'parent'     => $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->findParent($kfu),
+			'parent'     => $repo->findParent($kfu),
+			'children'   => $repo->findChildren($code),
 		);
 
 		$products = $em->getRepository('VidalDrugBundle:Product')->findByKfu($kfu);
@@ -457,7 +459,7 @@ class DrugsController extends Controller
 		$clphGroup = $em->getRepository('VidalDrugBundle:ClPhGroups')->findOneById($id);
 
 		if (!$clphGroup) {
-			return $this->createNotFoundException();
+			throw $this->createNotFoundException();
 		}
 
 		$params = array(

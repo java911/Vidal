@@ -55,7 +55,7 @@ class VidalController extends Controller
 		}
 
 		# редирект компании
-		if ($pos = strpos($url, 'fir_')) {
+		if (($pos = strpos($url, 'fir_')) !== false) {
 			$sub     = substr($url, $pos);
 			$id      = preg_replace('/[^0-9]/', '', $sub);
 			$company = $em->getRepository('VidalDrugBundle:Company')->findOneByCompanyID($id);
@@ -69,7 +69,7 @@ class VidalController extends Controller
 		}
 
 		# редирект молекулы в препаратах
-		if ($pos = strpos($url, 'lact_')) {
+		if (($pos = strpos($url, 'lact_')) !== false) {
 			$sub      = substr($url, $pos);
 			$id       = preg_replace('/[^0-9]/', '', $sub);
 			$molecule = $em->getRepository('VidalDrugBundle:Molecule')->findOneByMoleculeID($id);
@@ -83,7 +83,7 @@ class VidalController extends Controller
 		}
 
 		# редирект молекулы описания
-		if ($pos = strpos($url, 'act_')) {
+		if (($pos = strpos($url, 'act_')) !== false) {
 			$sub      = substr($url, $pos);
 			$id       = preg_replace('/[^0-9]/', '', $sub);
 			$molecule = $em->getRepository('VidalDrugBundle:Molecule')->findOneByMoleculeID($id);
@@ -97,7 +97,7 @@ class VidalController extends Controller
 		}
 
 		# редирект ATC
-		if ($pos = strpos($url, 'at_')) {
+		if (($pos = strpos($url, 'at_')) !== false) {
 			$sub  = substr($url, $pos);
 			$code = substr($sub, strpos($sub, '_') + 1);
 			$code = substr($code, 0, strrpos($code, '.'));
@@ -112,7 +112,7 @@ class VidalController extends Controller
 		}
 
 		# редирект представительства
-		if ($pos = strpos($url, 'inf_')) {
+		if (($pos = strpos($url, 'inf_')) !== false) {
 			$sub      = substr($url, $pos);
 			$id       = preg_replace('/[^0-9]/', '', $sub);
 			$infoPage = $em->getRepository('VidalDrugBundle:InfoPage')->findOneByInfoPageID($id);
@@ -122,6 +122,21 @@ class VidalController extends Controller
 
 			return $this->redirect($this->generateUrl('inf_item', array(
 				'InfoPageID' => $infoPage->getInfoPageID(),
+			)), 301);
+		}
+
+		# редирект клинико-фармакологического указателя
+		if (($pos = strpos($url, 'lkf_')) !== false) {
+			$sub  = substr($url, $pos);
+			$code = str_replace('lkf_', '', $sub);
+			$code = str_replace('.htm', '', $code);
+			$kfu  = $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->findOneByCode($code);
+			if (!$kfu) {
+				throw $this->createNotFoundException();
+			}
+
+			return $this->redirect($this->generateUrl('kfu_item', array(
+				'code' => $code,
 			)), 301);
 		}
 

@@ -98,6 +98,23 @@ class ClinicoPhPointersRepository extends EntityRepository
 		return $this->findOneByCode($parentCode);
 	}
 
+	public function findChildren($code)
+	{
+		$len = strlen($code) + 3;
+
+		return $this->_em->createQuery('
+			SELECT c
+			FROM VidalDrugBundle:ClinicoPhPointers c
+			WHERE c.Code LIKE :code
+				AND LENGTH(c.Code) = :len
+			ORDER BY c.Code ASC
+		')->setParameters(array(
+				'code' => $code . '%',
+				'len'  => $len,
+			))
+			->getResult();
+	}
+
 	public function findBase($kfu)
 	{
 		$code = $kfu->getCode();
