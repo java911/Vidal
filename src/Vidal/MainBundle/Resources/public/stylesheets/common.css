@@ -1001,7 +1001,7 @@ h1 span {
 	width: 51px;
 }
 
-/* menu small/big */
+/* menu */
 .menu {
 	overflow:      hidden;
 	margin-bottom: 24px;
@@ -1011,7 +1011,7 @@ h1 span {
 	float:             left;
 	width:             130px;
 	height:            99px;
-	background-image:  url(../images/bg/menu_small2_.png);
+	background-image:  url(../images/bg/menu-small.png);
 	background-repeat: no-repeat;
 }
 .menu-drugs {
@@ -1027,19 +1027,19 @@ h1 span {
 	background-position: -390px 0;
 }
 .menu-drugs:hover, .menu-drugs.active {
-	background-position: 0 -101px;
+	background-position: 0 -100px;
 }
 .menu-symptoms:hover, .menu-symptoms.active {
-	background-position: -130px -101px;
+	background-position: -130px -100px;
 }
 .menu-doctors:hover, .menu-doctors.active {
-	background-position: -260px -101px;
+	background-position: -260px -100px;
 }
 .menu-pharmacy:hover, .menu-pharmacy.active {
-	background-position: -390px -101px;
+	background-position: -390px -100px;
 }
 .menu-big a {
-	background-image: url(../images/bg/menu_big2_.png);
+	background-image: url(../images/bg/menu-big.png);
 	height:           246px;
 }
 .menu-big .menu-drugs {
