@@ -34,11 +34,14 @@ class BannerController extends Controller
         # массив имеет ключи 'inetnum', 'country', 'city', 'region', 'district', 'lat', 'lng'
         $data = $geo->get_value();
         $city =     $geo->get_value('city', true);
-        $country =  $this->getDoctrine()->getRepository('EvrikaMainBundle:Country')->findOneByShortTitle($geo->get_value('country', true))->getTitle();
+        $country =  $this->getDoctrine()->getRepository('VidalMainBundle:Country')->findOneByShortTitle($geo->get_value('country', true))->getTitle();
         $ar = $geo->get_value();
 
+//        echo $country;
+//        exit;
+
 		return $this->render('VidalMainBundle:Banner:render.html.twig', array(
-			'banner' => $this->getDoctrine()->getRepository('VidalMainBundle:Banner')->findByGroup($groupId)
+			'banner' => $this->getDoctrine()->getRepository('VidalMainBundle:Banner')->findByGroup($groupId, $country, $city)
 		));
 	}
 }

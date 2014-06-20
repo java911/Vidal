@@ -35,6 +35,11 @@ class Country
      */
     protected $banners;
 
+    /**
+     *  @ORM\Column(type="string", length=63)
+     */
+    protected $shortTitle;
+
 	public function __construct()
 	{
 		$this->cities  = new ArrayCollection();
