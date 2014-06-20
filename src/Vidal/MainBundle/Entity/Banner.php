@@ -81,7 +81,19 @@ class Banner extends BaseEntity
 	/** @ORM\ManyToOne(targetEntity="BannerGroup", inversedBy="banners") */
 	protected $group;
 
-	/**
+    /**
+     * @ORM\ManyToMany(targetEntity="Country", inversedBy="banners")
+     */
+    protected $countries;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="City", inversedBy="banners")
+     */
+    protected $cities;
+
+
+
+    /**
 	 * @ORM\OneToOne(targetEntity="Banner")
 	 * @ORM\JoinColumn(name="reference_id", referencedColumnName="id")
 	 */
@@ -92,6 +104,8 @@ class Banner extends BaseEntity
 		$this->starts    = new \DateTime();
 		$this->clicks    = 0;
 		$this->displayed = 0;
+        $this->cities       = new ArrayCollection();
+        $this->countries       = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -330,5 +344,51 @@ class Banner extends BaseEntity
         return $this->dateDay;
     }
 
+    /**
+     * @param mixed $cities
+     */
+    public function setCities($cities)
+    {
+        $this->cities = $cities;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCities()
+    {
+        return $this->cities;
+    }
+
+    public function addCity($city){
+        $this->cities[] = $city;
+    }
+
+    public function removeCity($city){
+        $this->cities->removeElement($city);
+    }
+    /**
+     * @param mixed $countries
+     */
+    public function setCountries($countries)
+    {
+        $this->countries = $countries;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCountries()
+    {
+        return $this->countries;
+    }
+
+    public function addCountry($country){
+        $this->countries[] = $country;
+    }
+
+    public function removeCountry($country){
+        $this->countries->removeElement($country);
+    }
 
 }

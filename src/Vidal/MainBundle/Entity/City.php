@@ -34,6 +34,11 @@ class City
     /** @ORM\OneToMany(targetEntity="User", mappedBy="city") */
     protected $doctors;
 
+    /**
+     * @ORM\ManyToMany(targetEntity = "Banner", mappedBy = "cities")
+     */
+    protected $banners;
+
     public function __construct()
     {
         $this->doctors = new ArrayCollection();
@@ -115,4 +120,22 @@ class City
 	{
 		return $this->title;
 	}
+
+    /**
+     * @param mixed $banners
+     */
+    public function setBanners($banners)
+    {
+        $this->banners = $banners;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBanners()
+    {
+        return $this->banners;
+    }
+
+
 }
