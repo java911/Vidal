@@ -16,6 +16,26 @@ class DrugsController extends Controller
 	const KFG_PER_PAGE   = 50;
 
 	/**
+	 * @Route("/drugs/atc-tree", name="atc_tree")
+	 * @Template("VidalDrugBundle:Drugs:atc_tree.html.twig")
+	 */
+	public function atcTreeAction(Request $request)
+	{
+		$em      = $this->getDoctrine()->getManager('drug');
+		$choices = $em->getRepository('VidalDrugBundle:ATC')->getChoices();
+		$atcCode = $request->query->get('c', null);
+
+		$params = array(
+			'menu_drugs' => 'atc',
+			'title'      => 'АТХ',
+			'ATCCode'    => $atcCode,
+			'choices'    => $choices,
+		);
+
+		return $params;
+	}
+
+	/**
 	 * Препараты по коду АТХ
 	 *
 	 * @Route("/drugs/atc/{ATCCode}/{search}", name="atc_item", options={"expose":true})
@@ -57,16 +77,30 @@ class DrugsController extends Controller
 	 */
 	public function atcAction(Request $request)
 	{
-		$em      = $this->getDoctrine()->getManager('drug');
-		$choices = $em->getRepository('VidalDrugBundle:ATC')->getChoices();
-		$atcCode = $request->query->get('c', null);
+		$em = $this->getDoctrine()->getManager('drug');
+		$q  = $request->query->get('q', null);
+		$l  = $request->query->get('l', null);
 
 		$params = array(
 			'menu_drugs' => 'atc',
 			'title'      => 'АТХ',
-			'ATCCode'    => $atcCode,
-			'choices'    => $choices,
+			'l'          => $l,
+			'q'          => $q,
 		);
+
+		if ($l) {
+			$codesByLetter           = $em->getRepository('VidalDrugBundle:ATC')->findByLetter($l);
+			$params['codeByLetter']  = array_shift($codesByLetter);
+			$params['codesByLetter'] = $codesByLetter;
+		}
+		elseif ($q) {
+			$params['atcCodes'] = mb_strlen($q, 'utf-8') < 2
+				? null
+				: $em->getRepository('VidalDrugBundle:ATC')->findByQuery($q);
+		}
+		else {
+			$params['showTree'] = true;
+		}
 
 		return $params;
 	}
@@ -351,12 +385,44 @@ class DrugsController extends Controller
 	}
 
 	/**
-	 * Список нозологических указателей
-	 *
 	 * @Route("/drugs/nosology", name="nosology")
 	 * @Template("VidalDrugBundle:Drugs:nosology.html.twig")
 	 */
-	public function nosologyAction(Request $request)
+	public function nologyAction(Request $request)
+	{
+		$em = $this->getDoctrine()->getManager('drug');
+		$q  = $request->query->get('q', null);
+		$l  = $request->query->get('l', null);
+
+		$params = array(
+			'menu_drugs'   => 'nosology',
+			'title'        => 'Нозологический указатель',
+			'l'          => $l,
+			'q'          => $q,
+		);
+
+		if ($l) {
+			$codesByLetter           = $em->getRepository('VidalDrugBundle:Nozology')->findByLetter($l);
+			$params['codeByLetter']  = array_shift($codesByLetter);
+			$params['codesByLetter'] = $codesByLetter;
+		}
+		elseif ($q) {
+			$params['codes'] = mb_strlen($q, 'utf-8') < 2
+				? null
+				: $em->getRepository('VidalDrugBundle:Nozology')->findByQuery($q);
+		}
+		else {
+			$params['showTree'] = true;
+		}
+
+		return $params;
+	}
+
+	/**
+	 * @Route("/drugs/nosology-tree", name="nosology_tree")
+	 * @Template("VidalDrugBundle:Drugs:nosology_tree.html.twig")
+	 */
+	public function nosologyTreeAction(Request $request)
 	{
 		$em           = $this->getDoctrine()->getManager('drug');
 		$choices      = $em->getRepository('VidalDrugBundle:Nozology')->getChoices();

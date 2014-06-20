@@ -5,6 +5,17 @@ use Doctrine\ORM\EntityRepository;
 
 class ATCRepository extends EntityRepository
 {
+	public function findByLetter($l)
+	{
+		return $this->_em->createQuery('
+			SELECT a
+			FROM VidalDrugBundle:ATC a
+			WHERE a.ATCCode LIKE :l
+			ORDER BY a.ATCCode ASC
+		')->setParameter('l', $l . '%')
+			->getResult();
+	}
+
 	public function findOneByATCCode($ATCCode)
 	{
 		return $this->_em->createQuery('
@@ -123,9 +134,9 @@ class ATCRepository extends EntityRepository
 			$patterns     = array('/<SUP>.*<\/SUP>/', '/<SUB>.*<\/SUB>/', '/&alpha;/', '/&amp;/');
 			$replacements = array('', '', ' ', ' ');
 			$RusName      = preg_replace($patterns, $replacements, $atcCodes[$i]['RusName']);
-			$RusName      = str_replace('  ', ' ', $RusName);
+			$RusName      = mb_strtolower(str_replace('  ', ' ', $RusName), 'UTF-8');
 			$EngName      = preg_replace($patterns, $replacements, $atcCodes[$i]['EngName']);
-			$EngName      = str_replace('  ', ' ', $EngName);
+			$EngName      = mb_strtolower(str_replace('  ', ' ', $EngName), 'UTF-8');
 
 			if (!empty($RusName)) {
 				$atcNames[] = mb_strtolower($atcCodes[$i]['ATCCode'], 'UTF-8') . ' > ' . $RusName;

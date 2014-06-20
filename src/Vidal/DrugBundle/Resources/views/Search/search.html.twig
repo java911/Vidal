@@ -73,6 +73,7 @@
 	{% endif %}
 
 	{# Найдено АТХ #}
+	{% include 'VidalDrugBundle:Search:render_atc.html.twig' %}
 	{% if atcCodes is defined and atcCodes is not empty %}
 		<div class="block">
 			<div class="block-head anons"
