@@ -5,6 +5,7 @@ namespace Vidal\MainBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -124,8 +125,9 @@ class AppointmentController extends Controller
      */
     public function soapTestAction(){
         $cert="/var/www/vidal/web/sert/testSSLClient.pem"; //Сертификат
-        $wsdl="http://schemas.xmlsoap.org/soap/envelope"; //Адрес wdsl сервиса
-        $loc = "https://mosmedzdrav.ru:10002/emias-soap-sercvice/PGUServicesInfo2?wsdl"; //Адрес точки доступа
+        $wsdl="https://mosmedzdrav.ru:10002/emias-soap-sercvice/PGUServicesInfo2?wsdl"; //Адрес wdsl сервиса
+//        $wsdl="http://schemas.xmlsoap.org/soap/envelope"; //Адрес wdsl сервиса
+        $loc = "https://mosmedzdrav.ru:10002/emias-soap-sercvice/PGUServicesInfo2"; //Адрес точки доступа
         $pass = 'testSSLClient';
         if (!is_file($cert)){
             echo 'sd';
@@ -139,22 +141,38 @@ class AppointmentController extends Controller
             ),
         );
         $sslContext = stream_context_create($sslOptions);
-        $sp = new \SoapClient($wsdl,array(
-            'stream_context' => $sslContext,
+        $sp = new \SoapClient(null,array(
             'local_cert' => $cert,
+            'passphrase'    => $pass,
+            'stream_context' => $sslContext,
             'trace' => 1,
             'exceptions' => 1,
-            'passphrase'    => $pass,
             'soap_version' => SOAP_1_2,
             'location' =>$loc,
+            'uri' =>$wsdl,
             "authentication"=>SOAP_AUTHENTICATION_DIGEST,
             "style"=>SOAP_DOCUMENT,
             "use"=>SOAP_LITERAL,
-
+            'cache_wsdl' => WSDL_CACHE_NONE
         ));
         try{
-            $data = $sp->getSpeciality();
-            print_r($data);
+//            var_dump($sp);
+            var_dump($sp->__getFunctions());
+            exit;
+//            $data = $sp->__soapCall("getSpecialitiesInfo",array($omsNumber,$birthDate,$externalSystemId));
+            $omsNumber = 'R25090000002789';
+            $omsSeries = '';
+            $birthDate = '2083-08-17';
+//            $birthDate = new \DateTime('2083-08-17');
+            $externalSystemId = 'MIS';
+            try{
+//                $data = $sp->getSpecialitiesInfo($omsNumber,$birthDate,$externalSystemId);
+//                $data = $sp->__soapCall("getSpecialitiesInfo",array($omsNumber,$birthDate,$externalSystemId));
+                print_r($data);
+            }catch (SoapFault $e){
+                echo $e->getMessage();
+                exit;
+            }
         }  catch (SoapFault $e) {
             echo "<h2>Exception Error!</h2>";
             echo $sp->__getLastRequest();
