@@ -30,6 +30,16 @@ class Country
 	/** @ORM\OneToMany(targetEntity="User", mappedBy="country") */
 	protected $doctors;
 
+    /**
+     * @ORM\ManyToMany(targetEntity = "Banner", mappedBy = "countries")
+     */
+    protected $banners;
+
+    /**
+     *  @ORM\Column(type="string", length=63)
+     */
+    protected $shortTitle;
+
 	public function __construct()
 	{
 		$this->cities  = new ArrayCollection();
@@ -102,4 +112,22 @@ class Country
 	{
 		return $this->doctors;
 	}
+
+    /**
+     * @param mixed $banners
+     */
+    public function setBanners($banners)
+    {
+        $this->banners = $banners;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBanners()
+    {
+        return $this->banners;
+    }
+
+
 }
