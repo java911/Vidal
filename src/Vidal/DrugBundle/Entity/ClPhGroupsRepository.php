@@ -23,7 +23,7 @@ class ClPhGroupsRepository extends EntityRepository
 			ORDER BY g.Name ASC
 		')->getResult();
 
-		$names = [];
+		$names = array();
 
 		foreach ($raw as $r) {
 			$names[] = mb_strtolower($r['Name'], 'utf-8');
