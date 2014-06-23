@@ -16,6 +16,26 @@ class DrugsController extends Controller
 	const KFG_PER_PAGE   = 50;
 
 	/**
+	 * @Route("/drugs/atc-tree", name="atc_tree")
+	 * @Template("VidalDrugBundle:Drugs:atc_tree.html.twig")
+	 */
+	public function atcTreeAction(Request $request)
+	{
+		$em      = $this->getDoctrine()->getManager('drug');
+		$choices = $em->getRepository('VidalDrugBundle:ATC')->getChoices();
+		$atcCode = $request->query->get('c', null);
+
+		$params = array(
+			'menu_drugs' => 'atc',
+			'title'      => 'АТХ',
+			'ATCCode'    => $atcCode,
+			'choices'    => $choices,
+		);
+
+		return $params;
+	}
+
+	/**
 	 * Препараты по коду АТХ
 	 *
 	 * @Route("/drugs/atc/{ATCCode}/{search}", name="atc_item", options={"expose":true})
@@ -57,16 +77,30 @@ class DrugsController extends Controller
 	 */
 	public function atcAction(Request $request)
 	{
-		$em      = $this->getDoctrine()->getManager('drug');
-		$choices = $em->getRepository('VidalDrugBundle:ATC')->getChoices();
-		$atcCode = $request->query->get('c', null);
+		$em = $this->getDoctrine()->getManager('drug');
+		$q  = $request->query->get('q', null);
+		$l  = $request->query->get('l', null);
 
 		$params = array(
 			'menu_drugs' => 'atc',
 			'title'      => 'АТХ',
-			'ATCCode'    => $atcCode,
-			'choices'    => $choices,
+			'l'          => $l,
+			'q'          => $q,
 		);
+
+		if ($l) {
+			$codesByLetter           = $em->getRepository('VidalDrugBundle:ATC')->findByLetter($l);
+			$params['codeByLetter']  = array_shift($codesByLetter);
+			$params['codesByLetter'] = $codesByLetter;
+		}
+		elseif ($q) {
+			$params['atcCodes'] = mb_strlen($q, 'utf-8') < 2
+				? null
+				: $em->getRepository('VidalDrugBundle:ATC')->findByQuery($q);
+		}
+		else {
+			$params['showTree'] = true;
+		}
 
 		return $params;
 	}
@@ -109,13 +143,14 @@ class DrugsController extends Controller
 	/**
 	 * Препараты по КФУ
 	 *
-	 * @Route("/drugs/clinic-pointer/{id}", name="kfu_item", options={"expose":true})
+	 * @Route("/drugs/clinic-pointer/{code}", name="kfu_item", options={"expose":true})
 	 * @Template("VidalDrugBundle:Drugs:kfu_item.html.twig")
 	 */
-	public function kfuItemAction($id)
+	public function kfuItemAction($code)
 	{
-		$em  = $this->getDoctrine()->getManager('drug');
-		$kfu = $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->findOneById($id);
+		$em   = $this->getDoctrine()->getManager('drug');
+		$repo = $em->getRepository('VidalDrugBundle:ClinicoPhPointers');
+		$kfu  = $repo->findOneByCode($code);
 
 		if (!$kfu) {
 			throw $this->createNotFoundException();
@@ -125,7 +160,8 @@ class DrugsController extends Controller
 			'menu_drugs' => 'kfu',
 			'kfu'        => $kfu,
 			'title'      => $this->strip($kfu) . ' | Клинико-фармакологические указатели',
-			'parent'     => $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->findParent($kfu),
+			'parent'     => $repo->findParent($kfu),
+			'children'   => $repo->findChildren($code),
 		);
 
 		$products = $em->getRepository('VidalDrugBundle:Product')->findByKfu($kfu);
@@ -349,12 +385,44 @@ class DrugsController extends Controller
 	}
 
 	/**
-	 * Список нозологических указателей
-	 *
 	 * @Route("/drugs/nosology", name="nosology")
 	 * @Template("VidalDrugBundle:Drugs:nosology.html.twig")
 	 */
-	public function nosologyAction(Request $request)
+	public function nologyAction(Request $request)
+	{
+		$em = $this->getDoctrine()->getManager('drug');
+		$q  = $request->query->get('q', null);
+		$l  = $request->query->get('l', null);
+
+		$params = array(
+			'menu_drugs'   => 'nosology',
+			'title'        => 'Нозологический указатель',
+			'l'          => $l,
+			'q'          => $q,
+		);
+
+		if ($l) {
+			$codesByLetter           = $em->getRepository('VidalDrugBundle:Nozology')->findByLetter($l);
+			$params['codeByLetter']  = array_shift($codesByLetter);
+			$params['codesByLetter'] = $codesByLetter;
+		}
+		elseif ($q) {
+			$params['codes'] = mb_strlen($q, 'utf-8') < 2
+				? null
+				: $em->getRepository('VidalDrugBundle:Nozology')->findByQuery($q);
+		}
+		else {
+			$params['showTree'] = true;
+		}
+
+		return $params;
+	}
+
+	/**
+	 * @Route("/drugs/nosology-tree", name="nosology_tree")
+	 * @Template("VidalDrugBundle:Drugs:nosology_tree.html.twig")
+	 */
+	public function nosologyTreeAction(Request $request)
 	{
 		$em           = $this->getDoctrine()->getManager('drug');
 		$choices      = $em->getRepository('VidalDrugBundle:Nozology')->getChoices();
@@ -457,7 +525,7 @@ class DrugsController extends Controller
 		$clphGroup = $em->getRepository('VidalDrugBundle:ClPhGroups')->findOneById($id);
 
 		if (!$clphGroup) {
-			return $this->createNotFoundException();
+			throw $this->createNotFoundException();
 		}
 
 		$params = array(

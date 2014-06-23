@@ -15,45 +15,109 @@
 			лекарственных средств, а также применяется при проведении клинических исследований для оценки сопутствующей
 			терапии (<a target="_blank"
 						href="http://vidal.ru/vracham/provizoram-i-farmatsevtam/ATC-systema-klassifikatsii-lekarstv.html">подробнее</a>).
-			{% if not ATCCode %}
+			{% if showTree is defined %}
 				<br/><i>Например</i>:
 				<a href="#B" data="B">Антикоагулянты</a>.
 			{% endif %}
 		</div>
 	</div>
 
-	<form id="select_form" action="{{ path('atc') }}" method="GET">
-		<select name="c">
-			<option></option>
-			{% for code, text in choices %}
-				<option value="{{ code }}"{{ ATCCode == code ? ' selected' }}>
-					{{ text }}
-				</option>
-			{% endfor %}
-		</select>
-		<input type="submit" value="Найти" class="btn-red"/>
-	</form>
+	{% include 'VidalDrugBundle:Drugs:atc_form.html.twig' %}
 
-	{% if ATCCode %}
-		{{ render(controller('VidalDrugBundle:Drugs:atcItem', {'ATCCode':ATCCode, 'search':1})) }}
-	{% else %}
+	{# коды по букве #}
+	{% if codesByLetter is defined and codesByLetter is not empty %}
+		<div class="anons">
+			<b>{{ codeByLetter.RusName|raw }}</b>
+		</div>
+
+		<table class="products-table codes">
+			<tr class="products-table-header">
+				<td>АТХ код</td>
+				<td>Название</td>
+			</tr>
+			{% for atc in codesByLetter %}
+				{% set length = atc.ATCCode|length %}
+				<tr {{ length == 3 ? ' class="bold"' }}>
+					<td style="padding-left:{{ (length - 3) * 10 }}px">{{ atc.ATCCode }}</td>
+					<td>
+						<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}" class="no-underline">
+							{{ atc.RusName|raw }}
+						</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% endif %}
+
+	{# коды по поисковому запросу #}
+	{% if atcCodes is defined %}
+		{% if atcCodes is null %}
+			<div class="no-results">
+				Запрос должен содержать хотя бы 2 символа
+			</div>
+		{% elseif atcCodes is not empty %}
+			<div class="block">
+				<div class="block-head anons"
+					 title="Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)">
+					Найдено кодов АТХ: <span>{{ atcCodes|length }}</span>
+				</div>
+
+				<table class="products-table">
+					<tr class="products-table-header">
+						<td style="width:10%">АТХ код</td>
+						<td style="width:40%">Название</td>
+						<td style="width:40%">Латинское название</td>
+						<td style="width:10%">Входит в&nbsp;группу</td>
+					</tr>
+					{% for code, atc in atcCodes %}
+						<tr>
+							<td>
+								<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}"
+								   class="no-underline">{{ atc.ATCCode }}</a>
+							</td>
+							<td>{{ atc.RusName }}</td>
+							<td>{{ atc.EngName }}</td>
+							<td>
+								{% if atc.ParentATCCode is not empty %}
+									<a href="{{ path('atc', {'ATCCode':atc.ParentATCCode}) }}"
+									   class="no-underline">{{ atc.ParentATCCode }}</a>
+								{% endif %}
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		{% else %}
+			<div class="no-results">
+				Не найдено результатов по AТХ коду <span>{{ q }}</span>
+			</div>
+		{% endif %}
+	{% endif %}
+
+	{% if showTree is defined %}
 		{% include 'VidalDrugBundle:Drugs:atc_generated.html.twig' %}
 	{% endif %}
+
 {% endblock %}
 
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/treeview/jquery.treeview.css') }}"/>
-	<style type="text/css">
-		#select_form {
-			margin: 20px 0 20px;
+	{% if showTree is defined %}
+		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/treeview/jquery.treeview.css') }}"/>
+	{% endif %}
+	<style>
+		#form > * {
+			vertical-align: top;
 		}
-		#select_form input[type="submit"] {
+		#form_controls {
+			clear: both;
+		}
+		#form_submit {
 			float: right;
 		}
-		#select_form select {
-			width: 420px;
+		#form_input {
+			width: 404px;
 		}
 	</style>
 {% endblock %}
@@ -61,45 +125,44 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.js') }}" type="text/javascript"></script>
-	<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.edit.js') }}" type="text/javascript"></script>
-	<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.async.atc.js') }}" type="text/javascript"></script>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$('#select_form select').chosen({
-				placeholder_text_single: "Поиск по АТХ..."
-			});
+	{% if showTree is defined %}
+		<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.edit.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.async.atc.js') }}"
+				type="text/javascript"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				var $tree = $('.treeview');
 
-			var $tree = $('.treeview');
+				$tree.treeview({
+					animated:  "fast",
+					collapsed: true,
+					url:       Routing.generate('atc_ajax'),
+					ajax:      {
+						type: "post"
+					}
+				});
 
-			$tree.treeview({
-				animated:  "fast",
-				collapsed: true,
-				url:       Routing.generate('atc_ajax'),
-				ajax:      {
-					type: "post"
-				}
-			});
+				$('#tree_collapse').on('click', function() {
+					$tree.find('ul').hide();
+					$tree.find('div.collapsable-hitarea').removeClass('collapsable-hitarea').addClass('expandable-hitarea');
+					$tree.find('div.lastCollapsable-hitarea').removeClass('lastCollapsable-hitarea').addClass('lastExpandable-hitarea');
+					$tree.find('li.collapsable').removeClass('collapsable').addClass('expandable');
+					$tree.find('li.lastCollapsable').removeClass('lastCollapsable').addClass('lastExpandable');
+					return false;
+				});
 
-			$('#tree_collapse').on('click', function() {
-				$tree.find('ul').hide();
-				$tree.find('div.collapsable-hitarea').removeClass('collapsable-hitarea').addClass('expandable-hitarea');
-				$tree.find('div.lastCollapsable-hitarea').removeClass('lastCollapsable-hitarea').addClass('lastExpandable-hitarea');
-				$tree.find('li.collapsable').removeClass('collapsable').addClass('expandable');
-				$tree.find('li.lastCollapsable').removeClass('lastCollapsable').addClass('lastExpandable');
-				return false;
+				$('a[data="B"]').click(function() {
+					$('#tree_collapse').click();
+					$tree.find('span').removeClass('highlight');
+					$('#B > div').click();
+					$('#B > span').addClass('highlight');
+					setTimeout(function() {
+						$('#B01 > div').click();
+						$('#B01 > span').addClass('highlight');
+					}, 2000);
+				});
 			});
-
-			$('a[data="B"]').click(function() {
-				$('#tree_collapse').click();
-				$tree.find('span').removeClass('highlight');
-				$('#B > div').click();
-				$('#B > span').addClass('highlight');
-				setTimeout(function() {
-					$('#B01 > div').click();
-					$('#B01 > span').addClass('highlight');
-				}, 1000);
-			});
-		});
-	</script>
+		</script>
+	{% endif %}
 {% endblock %}

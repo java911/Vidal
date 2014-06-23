@@ -39,6 +39,16 @@ class NozologyRepository extends EntityRepository
 		return $result;
 	}
 
+	public function findByLetter($l)
+	{
+		return $this->_em->createQuery('
+		 	SELECT n
+		 	FROM VidalDrugBundle:Nozology n
+		 	WHERE n.NozologyCode LIKE :l
+		 ')->setParameter('l', $l . '%')
+			->getResult();
+	}
+
 	public function findNozologyNames()
 	{
 		$names = array();

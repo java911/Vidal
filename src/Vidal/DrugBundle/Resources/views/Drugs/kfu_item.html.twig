@@ -11,8 +11,6 @@
 		<a href="{{ path('index') }}">Видаль</a>
 		<i></i>
 		<a href="{{ path('kfu') }}" title="Клинико-фармакологические указатели">КФУ</a>
-		<i></i>
-		<a href="{{ path('kfu', {'show':kfu.ClPhPointerID}) }}">{{ kfu.Name|raw }}</a>
 	</div>
 {% endblock %}
 
@@ -23,9 +21,35 @@
 	{% if parent %}
 		<div class="block">
 			<span class="block-head">Входит в группу: </span>
-			<a href="{{ path('kfu', {'show':parent.ClPhPointerID}) }}" class="no-underline">
+			<a href="{{ path('kfu_item', {'code':parent.Code}) }}" class="no-underline">
 				{{ parent.Name|raw }}
 			</a>
+		</div>
+	{% endif %}
+
+	{% if children is not empty %}
+		<div class="block">
+			<div class="block-head">Включает группы</div>
+			<div class="block-content">
+				<table class="products-table">
+					<tr class="products-table-header">
+						<td>Код</td>
+						<td>Название</td>
+					</tr>
+					{% for child in children %}
+						<tr>
+							<td>
+								{{ child.Code }}
+							</td>
+							<td>
+								<a href="{{ path('kfu_item', {'code':child.Code}) }}" class="no-underline">
+									{{ child.Name|raw }}
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
 		</div>
 	{% endif %}
 
@@ -34,7 +58,7 @@
 			<div class="block-head">Препараты группы</div>
 			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' %}
 		</div>
-	{% else %}
+	{% elseif children is empty %}
 		<div class="no-results block">
 			Не найдено препаратов
 		</div>
