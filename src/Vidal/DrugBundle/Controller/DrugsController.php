@@ -15,6 +15,8 @@ class DrugsController extends Controller
 	const PHARM_PER_PAGE = 50;
 	const KFG_PER_PAGE   = 50;
 
+	private $nozologies;
+
 	/**
 	 * @Route("/drugs/atc-tree", name="atc_tree")
 	 * @Template("VidalDrugBundle:Drugs:atc_tree.html.twig")
@@ -395,16 +397,18 @@ class DrugsController extends Controller
 		$l  = $request->query->get('l', null);
 
 		$params = array(
-			'menu_drugs'   => 'nosology',
-			'title'        => 'Нозологический указатель',
+			'menu_drugs' => 'nosology',
+			'title'      => 'Нозологический указатель',
 			'l'          => $l,
 			'q'          => $q,
 		);
 
 		if ($l) {
-			$codesByLetter           = $em->getRepository('VidalDrugBundle:Nozology')->findByLetter($l);
-			$params['codeByLetter']  = array_shift($codesByLetter);
-			$params['codesByLetter'] = $codesByLetter;
+			$file                   = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Generated' . DIRECTORY_SEPARATOR . 'nosology.json';
+			$json                   = json_decode(file_get_contents($file), true);
+			$params['codeByLetter'] = $json[$l];
+			$this->orderNozologyCodes($json[$l]['children']);
+			$params['codesByLetter'] = $this->nozologies;
 		}
 		elseif ($q) {
 			$params['codes'] = mb_strlen($q, 'utf-8') < 2
@@ -416,6 +420,22 @@ class DrugsController extends Controller
 		}
 
 		return $params;
+	}
+
+	private function orderNozologyCodes($codes)
+	{
+		foreach ($codes as $code) {
+			$this->nozologies[] = array(
+				'code'          => $code['code'],
+				'Level'         => $code['Level'],
+				'text'          => $code['text'],
+				'countProducts' => $code['countProducts'],
+			);
+
+			if (isset($code['children'])) {
+				$this->orderNozologyCodes($code['children']);
+			}
+		}
 	}
 
 	/**

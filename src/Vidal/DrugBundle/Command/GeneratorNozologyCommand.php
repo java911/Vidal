@@ -32,7 +32,7 @@ class GeneratorNozologyCommand extends ContainerAwareCommand
 		}
 
 		# надо сгруппировать по родителю (запихпуть в list родителя дочерние)
-		for ($i = 3; $i > 0; $i--) {
+		for ($i = 4; $i > 0; $i--) {
 			foreach ($nozologies as $code => &$nozology) {
 				if ($nozology['Level'] == $i) {
 					# надо найти родителя

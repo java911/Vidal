@@ -143,10 +143,24 @@ class NozologyRepository extends EntityRepository
 		')->getResult();
 	}
 
+	public function countProducts()
+	{
+		return $this->_em->createQuery('
+			SELECT COUNT(DISTINCT p.ProductID) as countProducts, n.Code
+			FROM VidalDrugBundle:Product p
+			JOIN p.document d
+			JOIN d.nozologies n
+			WHERE p.MarketStatusID IN (1,2,7)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.inactive = FALSE
+			GROUP BY n.Code
+		')->getResult();
+	}
+
 	public function jsonForTree()
 	{
 		$raw = $this->_em->createQuery('
-			SELECT n.Code id, n.Name text, n.Level
+			SELECT n.Code id, n.Name text, n.Level, n.countProducts
 			FROM VidalDrugBundle:Nozology n
 			ORDER BY n.NozologyCode
 		')->getResult();

@@ -70,6 +70,9 @@ class ATC
 	 */
 	protected $pharmArticles;
 
+	/** @ORM\Column(type="integer") */
+	protected $countProducts = 0;
+
 	public function __construct()
 	{
 		$this->products      = new ArrayCollection();
@@ -263,5 +266,21 @@ class ATC
 	public function getPharmArticles()
 	{
 		return $this->pharmArticles;
+	}
+
+	/**
+	 * @param mixed $countProducts
+	 */
+	public function setCountProducts($countProducts)
+	{
+		$this->countProducts = $countProducts;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCountProducts()
+	{
+		return $this->countProducts;
 	}
 }
