@@ -93,6 +93,19 @@ class ATCRepository extends EntityRepository
 		return $atcCodes;
 	}
 
+	public function countProducts()
+	{
+		return $this->_em->createQuery('
+		 	SELECT a.ATCCode, COUNT(p.ProductID) as countProducts
+			FROM VidalDrugBundle:Product p
+			JOIN p.atcCodes a
+			WHERE p.MarketStatusID IN (1,2)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.inactive = FALSE
+			GROUP BY a
+		')->getResult();
+	}
+
 	public function findForTree()
 	{
 		return $this->_em->createQuery("
@@ -106,7 +119,7 @@ class ATCRepository extends EntityRepository
 	public function jsonForTree()
 	{
 		$atcRaw = $this->_em->createQuery('
-			SELECT a.ATCCode id, a.RusName text, a.ParentATCCode
+			SELECT a.ATCCode id, a.RusName text, a.ParentATCCode, a.countProducts
 			FROM VidalDrugBundle:ATC a
 			ORDER BY a.ATCCode ASC
 		')->getResult();

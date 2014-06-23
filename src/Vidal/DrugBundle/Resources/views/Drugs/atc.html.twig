@@ -6,21 +6,22 @@
 		{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' %}
 	{% endif %}
 
-	<div class="description">
-		<span>Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)</span>
+	{% if showTree is defined %}
+		<div class="description">
+			<span>Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)</span>
 
-		<div>
-			Рекомендованная Всемирной Организацией Здравоохранения для международных исследований использования
-			лекарственных препаратов. Эта система классификации активно используется в фармакоэкономике для учета
-			лекарственных средств, а также применяется при проведении клинических исследований для оценки сопутствующей
-			терапии (<a target="_blank"
-						href="http://vidal.ru/vracham/provizoram-i-farmatsevtam/ATC-systema-klassifikatsii-lekarstv.html">подробнее</a>).
-			{% if showTree is defined %}
+			<div>
+				Рекомендованная Всемирной Организацией Здравоохранения для международных исследований использования
+				лекарственных препаратов. Эта система классификации активно используется в фармакоэкономике для учета
+				лекарственных средств, а также применяется при проведении клинических исследований для оценки
+				сопутствующей
+				терапии (<a target="_blank"
+							href="http://vidal.ru/vracham/provizoram-i-farmatsevtam/ATC-systema-klassifikatsii-lekarstv.html">подробнее</a>).
 				<br/><i>Например</i>:
 				<a href="#B" data="B">Антикоагулянты</a>.
-			{% endif %}
+			</div>
 		</div>
-	</div>
+	{% endif %}
 
 	{% include 'VidalDrugBundle:Drugs:atc_form.html.twig' %}
 
@@ -37,12 +38,24 @@
 			</tr>
 			{% for atc in codesByLetter %}
 				{% set length = atc.ATCCode|length %}
-				<tr {{ length == 3 ? ' class="bold"' }}>
-					<td style="padding-left:{{ (length - 3) * 10 }}px">{{ atc.ATCCode }}</td>
+				<tr{{ length == 3 ? ' class="bold"' }}>
+					<td style="padding-left:{{ (length - 3) * 13 }}px">
+						{% if atc.countProducts > 0 %}
+							<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}" class="no-underline">
+								{{ atc.ATCCode }}
+							</a>
+						{% else %}
+							{{ atc.ATCCode }}
+						{% endif %}
+					</td>
 					<td>
-						<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}" class="no-underline">
+						{% if atc.countProducts > 0 %}
+							<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}" class="no-underline">
+								{{ atc.RusName|raw }}
+							</a>
+						{% else %}
 							{{ atc.RusName|raw }}
-						</a>
+						{% endif %}
 					</td>
 				</tr>
 			{% endfor %}
@@ -62,7 +75,7 @@
 					Найдено кодов АТХ: <span>{{ atcCodes|length }}</span>
 				</div>
 
-				<table class="products-table">
+				<table class="products-table atc">
 					<tr class="products-table-header">
 						<td style="width:10%">АТХ код</td>
 						<td style="width:40%">Название</td>
@@ -118,6 +131,9 @@
 		}
 		#form_input {
 			width: 404px;
+		}
+		.atc * {
+			font-size: 13px !important;
 		}
 	</style>
 {% endblock %}

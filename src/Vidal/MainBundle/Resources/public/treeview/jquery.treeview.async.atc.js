@@ -13,72 +13,30 @@
  *
  */
 
-;(function($) {
+;
+(function($) {
 
-function load(settings, root, child, container) {
-	function createNode(parent) {
-		var withChildren = this.hasChildren || this.children && this.children.length;
-		if (this.code) {
-			var current = withChildren
-				? $("<li/>").attr("id", this.id || "").html('<span class="t">' + this.code + '</span>' + "<span>" + this.text + "</span>").appendTo(parent)
-				: $("<li/>").attr("id", this.id || "").html('<span class="t">' + this.code + '</span>' + '<a target="blank" href="/drugs/atc/' + this.code + '">' + this.text + '</a>').appendTo(parent);
-			}
-		else {
-			var current = withChildren
-				? $("<li/>").attr("id", this.id || "").html("<span>" + this.text + "</span>").appendTo(parent)
-				: $("<li/>").attr("id", this.id || "").html("<i>" + this.text + "</i>").appendTo(parent);
-		}
-		if (this.classes) {
-			current.children("span").addClass(this.classes);
-		}
-		if (this.expanded) {
-			current.addClass("open");
-		}
-		if (withChildren) {
-			var branch = $("<ul/>").appendTo(current);
-			if (this.hasChildren) {
-				current.addClass("hasChildren");
-				createNode.call({
-					classes: "placeholder",
-					text: "&nbsp;",
-					children:[]
-				}, branch);
-			}
-			if (this.children && this.children.length) {
-				$.each(this.children, createNode, [branch])
-			}
-		}
-	}
-	$.ajax($.extend(true, {
-		url: settings.url,
-		dataType: "json",
-		data: {
-			root: root
-		},
-		success: function(response) {
-			child.empty();
-			$.each(response, createNode, [child]);
-	        $(container).treeview({add: child});
-	    }
-	}, settings.ajax));
-	/*
-	$.getJSON(settings.url, {root: root}, function(response) {
+	function load(settings, root, child, container) {
 		function createNode(parent) {
-			var current = $("<li/>").attr("id", this.id || "").html("<span>" + this.text + "</span>").appendTo(parent);
+			var withChildren = this.hasChildren || this.children && this.children.length;
+			var current = this.countProducts
+				? $("<li/>").attr("id", this.id || "").html('<span class="t">' + this.code + '</span>' + "<span>" + '<a target="blank" href="/drugs/atc/' + this.code + '">' + this.text + '</a>' + "</span>").appendTo(parent)
+				: $("<li/>").attr("id", this.id || "").html('<span class="t">' + this.code + '</span>' + "<span>" + this.text + "</span>").appendTo(parent);
+
 			if (this.classes) {
 				current.children("span").addClass(this.classes);
 			}
 			if (this.expanded) {
 				current.addClass("open");
 			}
-			if (this.hasChildren || this.children && this.children.length) {
+			if (withChildren) {
 				var branch = $("<ul/>").appendTo(current);
 				if (this.hasChildren) {
 					current.addClass("hasChildren");
 					createNode.call({
-						classes: "placeholder",
-						text: "&nbsp;",
-						children:[]
+						classes:  "placeholder",
+						text:     "&nbsp;",
+						children: []
 					}, branch);
 				}
 				if (this.children && this.children.length) {
@@ -86,35 +44,73 @@ function load(settings, root, child, container) {
 				}
 			}
 		}
-		child.empty();
-		$.each(response, createNode, [child]);
-        $(container).treeview({add: child});
-    });
-    */
-}
 
-var proxied = $.fn.treeview;
-$.fn.treeview = function(settings) {
-	if (!settings.url) {
-		return proxied.apply(this, arguments);
+		$.ajax($.extend(true, {
+			url:      settings.url,
+			dataType: "json",
+			data:     {
+				root: root
+			},
+			success:  function(response) {
+				child.empty();
+				$.each(response, createNode, [child]);
+				$(container).treeview({add: child});
+			}
+		}, settings.ajax));
+		/*
+		 $.getJSON(settings.url, {root: root}, function(response) {
+		 function createNode(parent) {
+		 var current = $("<li/>").attr("id", this.id || "").html("<span>" + this.text + "</span>").appendTo(parent);
+		 if (this.classes) {
+		 current.children("span").addClass(this.classes);
+		 }
+		 if (this.expanded) {
+		 current.addClass("open");
+		 }
+		 if (this.hasChildren || this.children && this.children.length) {
+		 var branch = $("<ul/>").appendTo(current);
+		 if (this.hasChildren) {
+		 current.addClass("hasChildren");
+		 createNode.call({
+		 classes: "placeholder",
+		 text: "&nbsp;",
+		 children:[]
+		 }, branch);
+		 }
+		 if (this.children && this.children.length) {
+		 $.each(this.children, createNode, [branch])
+		 }
+		 }
+		 }
+		 child.empty();
+		 $.each(response, createNode, [child]);
+		 $(container).treeview({add: child});
+		 });
+		 */
 	}
-	var container = this;
-	if (!container.children().size())
-		load(settings, "source", this, container);
-	var userToggle = settings.toggle;
-	return proxied.call(this, $.extend({}, settings, {
-		collapsed: true,
-		toggle: function() {
-			var $this = $(this);
-			if ($this.hasClass("hasChildren")) {
-				var childList = $this.removeClass("hasChildren").find("ul");
-				load(settings, this.id, childList, container);
-			}
-			if (userToggle) {
-				userToggle.apply(this, arguments);
-			}
+
+	var proxied = $.fn.treeview;
+	$.fn.treeview = function(settings) {
+		if (!settings.url) {
+			return proxied.apply(this, arguments);
 		}
-	}));
-};
+		var container = this;
+		if (!container.children().size())
+			load(settings, "source", this, container);
+		var userToggle = settings.toggle;
+		return proxied.call(this, $.extend({}, settings, {
+			collapsed: true,
+			toggle:    function() {
+				var $this = $(this);
+				if ($this.hasClass("hasChildren")) {
+					var childList = $this.removeClass("hasChildren").find("ul");
+					load(settings, this.id, childList, container);
+				}
+				if (userToggle) {
+					userToggle.apply(this, arguments);
+				}
+			}
+		}));
+	};
 
 })(jQuery);

@@ -6,39 +6,54 @@
 		{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' %}
 	{% endif %}
 
-	<div class="description">
-		<span>Нозологический указатель</span>
+	{% if showTree is defined %}
+		<div class="description">
+			<span>Нозологический указатель</span>
 
-		<div>
-			Позволяет искать препараты по их показаниям.
-			Cоставлен на основе Международной классификации болезней и проблем, связанных со здоровьем -
-			10 пересмотр (МКБ-10), ВОЗ 1995.
-			{% if showTree is defined %}
+			<div>
+				Позволяет искать препараты по их показаниям.
+				Cоставлен на основе Международной классификации болезней и проблем, связанных со здоровьем -
+				10 пересмотр (МКБ-10), ВОЗ 1995.
 				<br/><i>Например</i>:
 				<a href="#I00-I99" data="I20-I25">Ишемическая болезнь сердца</a>,
 				<a href="#G00-G99" data="G00-G99">БОЛЕЗНИ НЕРВНОЙ СИСТЕМЫ</a>
-			{% endif %}
+			</div>
 		</div>
-	</div>
+	{% endif %}
 
 	{% include 'VidalDrugBundle:Drugs:nosology_form.html.twig' %}
 
 	{# коды по букве #}
 	{% if codesByLetter is defined and codesByLetter is not empty %}
 		<div class="anons">
-			<b>{{ codeByLetter.Name|raw }}</b>
+			<b>{{ codeByLetter.text|raw }}</b>
 		</div>
 
-		<table class="products-table">
+		<table class="products-table nozologies">
 			<tr class="products-table-header">
 				<td style="width:78px">Код МКБ-10</td>
 				<td>Показание</td>
 			</tr>
 			{% for nozology in codesByLetter %}
-				<tr>
-					<td>{{ nozology.Code }}</td>
-					<td><a href="{{ path('nosology_item', {'Code':nozology.Code}) }}"
-						   class="no-underline">{{ nozology.Name|raw }}</a></td>
+				<tr{{ nozology.Level == 1 ? ' class="bold"' }}>
+					<td style="padding-left:{{ (nozology.Level-1) * 13 }}px">
+						{% if nozology.countProducts > 0 %}
+							<a href="{{ path('nosology_item', {'Code':nozology.code}) }}" target="_blank">
+								{{ nozology.code|raw }}
+							</a>
+						{% else %}
+							{{ nozology.code|raw }}
+						{% endif %}
+					</td>
+					<td>
+						{% if nozology.countProducts > 0 %}
+							<a href="{{ path('nosology_item', {'Code':nozology.code}) }}" target="_blank">
+								{{ nozology.text|raw }}
+							</a>
+						{% else %}
+							{{ nozology.text|raw }}
+						{% endif %}
+					</td>
 				</tr>
 			{% endfor %}
 		</table>
@@ -54,7 +69,7 @@
 			<div class="block">
 				<div class="block-anons">
 					<div class="block-head">
-						Найдено нозологических указателей: <span>{{ nozologies|length }}</span>
+						Найдено нозологических указателей: <span>{{ codes|length }}</span>
 					</div>
 				</div>
 			</div>
@@ -113,6 +128,18 @@
 		.codes .bold td {
 			padding-top:    5px;
 			padding-bottom: 5px;
+		}
+		.letters input {
+			width: 63px;
+		}
+		.nozologies a {
+			text-decoration: none;
+		}
+		.nozologies a:hover {
+			text-decoration: underline;
+		}
+		.nozologies * {
+			font-size: 13px !important;
 		}
 	</style>
 {% endblock %}
