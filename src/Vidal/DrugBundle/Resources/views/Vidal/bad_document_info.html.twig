@@ -30,14 +30,15 @@
 {# Свойства #}
 {% if document.PhInfluence is not empty %}
 	<div class="block" id="influence">
-		<div class="block-head">Свойства</div>
-		<div class="block-content">
-			{% if isDoctor %}
-				{{ document.PhInfluence|raw }}
-			{% else %}
-				{% include 'VidalMainBundle:Auth:closed_info.html.twig' %}
-			{% endif %}
-		</div>
+		{% if isDoctor %}
+			<div class="block-head">Свойства</div>
+			<div class="block-content">{{ document.PhInfluence|raw }}</div>
+		{% else %}
+			<div class="block-head">
+				<a href="#" class="closed-link">Свойства</a>
+			</div>
+			{% include 'VidalMainBundle:Auth:closed_info.html.twig' %}
+		{% endif %}
 	</div>
 {% endif %}
 
@@ -165,14 +166,15 @@
 {# Фармакокинетика #}
 {% if document.PhKinetics is not empty %}
 	<div class="block" id="kinetics">
-		<div class="block-head">Фармакокинетика</div>
-		<div class="block-content">
-			{% if isDoctor %}
-				{{ document.PhKinetics|raw }}
-			{% else %}
-				{% include 'VidalMainBundle:Auth:closed_info.html.twig' %}
-			{% endif %}
-		</div>
+		{% if isDoctor %}
+			<div class="block-head">Фармакокинетика</div>
+			<div class="block-content">{{ document.PhKinetics|raw }}</div>
+		{% else %}
+			<div class="block-head">
+				<a href="#" class="closed-link">Фармакокинетика</a>
+			</div>
+			{% include 'VidalMainBundle:Auth:closed_info.html.twig' %}
+		{% endif %}
 	</div>
 {% endif %}
 
@@ -259,13 +261,14 @@
 {# Лекарственное взаимодействие #}
 {% if document.Interaction is not empty %}
 	<div class="block" id="interaction">
-		<div class="block-head">Лекарственное взаимодействие</div>
-		<div class="block-content">
-			{% if isDoctor %}
-				{{ document.Interaction|raw }}
-			{% else %}
-				{% include 'VidalMainBundle:Auth:closed_info.html.twig' %}
-			{% endif %}
-		</div>
+		{% if isDoctor %}
+			<div class="block-head">Лекарственное взаимодействие</div>
+			<div class="block-content">{{ document.Interaction|raw }}</div>
+		{% else %}
+			<div class="block-head">
+				<a href="#" class="closed-link">Лекарственное взаимодействие</a>
+			</div>
+			{% include 'VidalMainBundle:Auth:closed_info.html.twig' %}
+		{% endif %}
 	</div>
 {% endif %}
