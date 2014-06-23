@@ -21,12 +21,30 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
+		$('#username').bind('keypress', function(e) {
+			if(e.keyCode==13){
+				$('#password').focus();
+			}
+		});
+
+		$('#password').bind('keypress', function(e) {
+			if(e.keyCode==13){
+				ajaxLogin();
+			}
+		});
+
 		$('.auth a.submit').click(function(e) {
 			e.preventDefault();
-
-			$.post(Routing.generate('ajax_login'), $('#auth_form').serialize(), function(data) {
-				data['success'] == 'yes' ? location.reload() : $('.auth-main .auth-fail-message').show();
-			});
+			ajaxLogin();
 		});
 	});
+
+	function ajaxLogin()
+	{
+		$.post(Routing.generate('ajax_login'), $('#auth_form').serialize(), function(data) {
+			data['success'] == 'yes'
+				? location.reload()
+				: $('.auth-main .auth-fail-message').fadeOut('fast').fadeIn('fast');
+		});
+	}
 </script>
