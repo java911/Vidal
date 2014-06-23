@@ -12,8 +12,8 @@ use Lsw\SecureControllerBundle\Annotation\Secure;
 
 class DrugsController extends Controller
 {
-	const PHARM_PER_PAGE = 50;
-	const KFG_PER_PAGE   = 50;
+	const PHARM_PER_PAGE = 150;
+	const KFG_PER_PAGE   = 150;
 
 	private $nozologies;
 

@@ -15,6 +15,23 @@ class ClPhGroupsRepository extends EntityRepository
 			->getOneOrNullResult();
 	}
 
+	public function getNames()
+	{
+		$raw = $this->_em->createQuery('
+			SELECT DISTINCT g.Name
+			FROM VidalDrugBundle:ClPhGroups g
+			ORDER BY g.Name ASC
+		')->getResult();
+
+		$names = [];
+
+		foreach ($raw as $r) {
+			$names[] = mb_strtolower($r['Name'], 'utf-8');
+		}
+
+		return $names;
+	}
+
 	public function findWithProducts()
 	{
 		return $this->_em->createQuery('
