@@ -41,7 +41,7 @@ class BannerController extends Controller
 			->findOneByShortTitle($geo->get_value('country', true));
 
 		$country = $country ? $country->getTitle() : 'Россия';
-		$ar      = $geo->get_value();
+//		$ar      = $geo->get_value();
 
 		return $this->render('VidalMainBundle:Banner:render.html.twig', array(
 			'banner' => $this->getDoctrine()->getRepository('VidalMainBundle:Banner')->findByGroup($groupId, $country, $city)
