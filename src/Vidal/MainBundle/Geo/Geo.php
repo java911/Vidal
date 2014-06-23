@@ -64,7 +64,7 @@ class Geo
         curl_setopt($ch, CURLOPT_TIMEOUT, 3);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
         $string = curl_exec($ch);
-        var_dump($string);
+//        var_dump($string);
         // если указана кодировка отличная от windows-1251, изменяем кодировку
         if($this->charset)
             $string = iconv('windows-1251', 'UTF-8', $string);

@@ -17,29 +17,29 @@ class BannerRepository extends EntityRepository
 
 	}
 
-	public function findByGroup($groupId, $country, $city)
+	public function findByGroup($groupId)
 	{
 		$qb = $this->createQueryBuilder('b');
 		$qb->select('b')
 			->leftJoin('b.group', 'g')
-            ->leftJoin('b.cities','ci')
-            ->leftJoin('b.countries','co')
+//            ->leftJoin('b.cities','ci')
+//            ->leftJoin('b.countries','co')
 			->andWhere('g = :groupId')
 			->andWhere('g.enabled = TRUE')
 			->andWhere('b.enabled = TRUE')
 			->andWhere('b.starts < :now')
 			->andWhere('b.ends IS NULL OR b.ends > :now')
 			->andWhere('b.expires IS NULL OR b.expires > 0')
-            ->andWhere('(
-					  ci.title = :city OR
-					  ci.title IS NULL OR
-					  co.title = :country OR
-					  co.title IS NULL
-					)')
-            ->groupBy('b')
+//            ->andWhere('(
+//					  ci.title = :city OR
+//					  ci.title IS NULL OR
+//					  co.title = :country OR
+//					  co.title IS NULL
+//					)')
+//            ->groupBy('b')
 			->setParameter('groupId', $groupId)
-            ->setParameter('country', $country)
-            ->setParameter('city', $city)
+//            ->setParameter('country', $country)
+//            ->setParameter('city', $city)
 			->setParameter('now', new \DateTime());
 
 		$banners = $qb->getQuery()->getResult();

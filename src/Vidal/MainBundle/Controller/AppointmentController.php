@@ -157,7 +157,7 @@ class AppointmentController extends Controller
         ));
         try{
 //            var_dump($sp);
-            var_dump($sp->__getFunctions());
+//            var_dump($sp->__getFunctions());
             exit;
 //            $data = $sp->__soapCall("getSpecialitiesInfo",array($omsNumber,$birthDate,$externalSystemId));
             $omsNumber = 'R25090000002789';
