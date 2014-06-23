@@ -31,18 +31,17 @@ class BannerController extends Controller
         $o = array( 'charset' => 'utf-8' );
         $geo = new Geo($o);
 
-        # этот метод позволяет получить все данные по ip в виде массива.
-        # массив имеет ключи 'inetnum', 'country', 'city', 'region', 'district', 'lat', 'lng'
-//        $data = $geo->get_value();
+
         $city =     $geo->get_value('city', true);
         $country =  $this->getDoctrine()->getRepository('VidalMainBundle:Country')->findOneByShortTitle($geo->get_value('country', true))->getTitle();
         $ar = $geo->get_value();
+//        $country = '1';
+//        $city = '1';
 
-//        echo $country;
-//        exit;
+        $banner = $this->getDoctrine()->getRepository('VidalMainBundle:Banner')->findByGroup($groupId, $country, $city);
 
 		return $this->render('VidalMainBundle:Banner:render.html.twig', array(
-			'banner' => $this->getDoctrine()->getRepository('VidalMainBundle:Banner')->findByGroup($groupId, $country, $city)
+			'banner' => $banner
 		));
 	}
 }

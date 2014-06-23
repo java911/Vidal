@@ -3,14 +3,14 @@
 	{% set width = banner.group.width %}
 	{% set height = banner.group.height %}
 
-    {% if banner is defined and banner is not null and banner.reference is not empty %}
-        {% if banner.reference %}
-            {% set banner = banner.reference %}
-        {% endif %}
-        {% set path = banner.banner.path %}
+    {% if banner is defined and banner is not null  %}
+
+        {% set path = banner.path %}
 
         {% if is_file(path) %}
+
             {% if banner.isSwf() %}
+
                 <div id="{{ group }}"
                      class="banner swf"
                      style="width:{{ width }}px; height:{{ height }}px"
@@ -41,6 +41,7 @@
                 {#</script>#}
 
             {% else %}
+
                 <div id="{{ group }}" class="banner" style="width:{{ width }}px; height:{{ height }}px">
                     <a href="{{ banner.link }}" target="_blank">
                         <img src="{{ path }}" style="width:{{ width }}px; height:{{ height }}px"/>
