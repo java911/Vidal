@@ -36,9 +36,6 @@ class ClinicoPhPointers
 	/** @ORM\Column(length=255) */
 	protected $url;
 
-	/** @ORM\Column(type="integer", nullable=true) */
-	protected $total;
-
 	/** @ORM\Column(type="integer") */
 	protected $countProducts = 0;
 
@@ -133,22 +130,6 @@ class ClinicoPhPointers
 	}
 
 	/**
-	 * @param mixed $UserInSp
-	 */
-	public function setUserInSp($UserInSp)
-	{
-		$this->UserInSp = $UserInSp;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getUserInSp()
-	{
-		return $this->UserInSp;
-	}
-
-	/**
 	 * @param mixed $documents
 	 */
 	public function setDocuments(ArrayCollection $documents)
@@ -178,22 +159,6 @@ class ClinicoPhPointers
 	public function getUsedInSp()
 	{
 		return $this->UsedInSp;
-	}
-
-	/**
-	 * @param mixed $total
-	 */
-	public function setTotal($total)
-	{
-		$this->total = $total;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getTotal()
-	{
-		return $this->total;
 	}
 
 	/**
