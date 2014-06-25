@@ -14,13 +14,9 @@
 			<div class="block-head">Клинико-фармакологические указатели</div>
 			<div class="block-content">
 				<table class="products-table">
-					<tr class="products-table-header">
-						<td>Код</td>
-						<td>Название</td>
-					</tr>
 					{% for clphPointer in document.clphPointers %}
 						<tr>
-							<td>{{ clphPointer.Code }}</td>
+							<td style="width:90px">{{ clphPointer.Code }}</td>
 							<td>
 								<a href="{{ path('kfu_item', {'code':clphPointer.Code}) }}" class="no-underline">
 									{{ clphPointer.Name|raw }}
