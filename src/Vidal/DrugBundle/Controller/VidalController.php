@@ -192,51 +192,6 @@ class VidalController extends Controller
 	}
 
 	/**
-	 * Список компаний
-	 *
-	 * @Route("/drugs/firms", name="firms")
-	 * @Template("VidalDrugBundle:Vidal:firms.html.twig")
-	 */
-	public function firmsAction(Request $request)
-	{
-		$em = $this->getDoctrine()->getManager('drug');
-		$q  = $request->query->get('q', null);
-		$l  = $request->query->get('l', null);
-		$p  = $request->query->get('p', 1);
-
-		//		$companies = $em->getRepository('VidalDrugBundle:Company')->getQuery()->getResult();
-		//		$letters   = array();
-		//		foreach ($companies as $company) {
-		//			$letter = mb_strtoupper(mb_substr($company->getLocalName(), 0, 1, 'utf-8'), 'utf-8');
-		//			if (!isset($letters[$letter])) {
-		//				$letters[$letter] = '';
-		//			}
-		//		}
-		//		var_dump($letters);
-		//		exit;
-
-		if ($l) {
-			$query = $em->getRepository('VidalDrugBundle:Company')->getQueryByLetter($l);
-		}
-		elseif ($q) {
-			$query = $em->getRepository('VidalDrugBundle:Company')->findByQueryString($q);
-		}
-		else {
-			$query = $em->getRepository('VidalDrugBundle:Company')->getQuery();
-		}
-
-		$params = array(
-			'menu_drugs' => 'firms',
-			'title'      => 'Фирмы-производители',
-			'q'          => $q,
-			'l'          => $l,
-			'pagination' => $this->get('knp_paginator')->paginate($query, $p, self::COMPANIES_PER_PAGE),
-		);
-
-		return $params;
-	}
-
-	/**
 	 * Список препаратов по компании
 	 *
 	 * @Route("/drugs/firm/{CompanyID}", name="firm_item", requirements={"CompanyID":"\d+"})
@@ -340,51 +295,6 @@ class VidalController extends Controller
 				$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 			}
 		}
-
-		return $params;
-	}
-
-	/**
-	 * Страничка представительств
-	 *
-	 * @Route("/drugs/companies", name="inf", requirements={"InfoPageID":"\d+"})
-	 * @Template("VidalDrugBundle:Vidal:inf.html.twig")
-	 */
-	public function infAction(Request $request)
-	{
-		$em = $this->getDoctrine()->getManager('drug');
-		$q  = $request->query->get('q', null);
-		$l  = $request->query->get('l', null);
-		$p  = $request->query->get('p', 1);
-
-		//		$companies = $em->getRepository('VidalDrugBundle:InfoPage')->getQuery()->getResult();
-		//		$letters   = array();
-		//		foreach ($companies as $company) {
-		//			$letter = mb_strtoupper(mb_substr($company->getRusName(), 0, 1, 'utf-8'), 'utf-8');
-		//			if (!isset($letters[$letter])) {
-		//				$letters[$letter] = '';
-		//			}
-		//		}
-		//		var_dump($letters);
-		//		exit;
-
-		if ($l) {
-			$query = $em->getRepository('VidalDrugBundle:InfoPage')->findByLetter($l);
-		}
-		elseif ($q) {
-			$query = $em->getRepository('VidalDrugBundle:InfoPage')->findByQuery($q);
-		}
-		else {
-			$query = $em->getRepository('VidalDrugBundle:InfoPage')->getQuery();
-		}
-
-		$params = array(
-			'menu_drugs' => 'inf',
-			'title'      => 'Представительства фирм',
-			'q'          => $q,
-			'l'          => $l,
-			'pagination' => $this->get('knp_paginator')->paginate($query, $p, self::COMPANIES_PER_PAGE),
-		);
 
 		return $params;
 	}

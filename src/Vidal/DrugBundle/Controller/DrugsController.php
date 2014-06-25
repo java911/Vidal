@@ -602,6 +602,48 @@ class DrugsController extends Controller
 		return $search ? $this->render('VidalDrugBundle:Drugs:search_clinic_group.html.twig', $params) : $params;
 	}
 
+	/**
+	 * @Route("/drugs/companies", name="companies")
+	 * @Template("VidalDrugBundle:Drugs:companies.html.twig")
+	 */
+	public function companiesAction(Request $request)
+	{
+		$em   = $this->getDoctrine()->getManager('drug');
+		$q    = $request->query->get('q', null);
+		$l    = $request->query->get('l', null);
+		$p    = $request->query->get('p', 1);
+		$type = $request->query->get('type', null);
+
+		$params = array(
+			'menu_drugs' => 'companies',
+			'title'      => 'Компании',
+			'q'          => $q,
+			'l'          => $l,
+		);
+
+		if ($l) {
+			$params['search_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByLetter($l);
+			$params['search_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByLetter($l);
+		}
+		elseif ($q) {
+			$params['search_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByQuery($q);
+			$params['search_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByQuery($q);
+		}
+		else {
+			if (!$type || $type == 'c') {
+				$query                          = $em->getRepository('VidalDrugBundle:Company')->getQuery($q);
+				$params['pagination_companies'] = $this->get('knp_paginator')->paginate($query, $p, 40, array('type' => 'c'));
+			}
+
+			if (!$type || $type == 'i') {
+				$query                          = $em->getRepository('VidalDrugBundle:InfoPage')->getQuery($q);
+				$params['pagination_infoPages'] = $this->get('knp_paginator')->paginate($query, $p, 40, array('type' => 'i'));
+			}
+		}
+
+		return $params;
+	}
+
 	/** Получить массив идентификаторов продуктов */
 	private function getProductIds($products)
 	{

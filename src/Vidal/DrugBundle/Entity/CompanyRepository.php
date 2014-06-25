@@ -94,7 +94,7 @@ class CompanyRepository extends EntityRepository
 		");
 	}
 
-	public function getQueryByLetter($l)
+	public function findByLetter($l)
 	{
 		return $this->_em->createQuery("
 			SELECT c
@@ -103,7 +103,8 @@ class CompanyRepository extends EntityRepository
 				AND c.LocalName LIKE :l
 				AND c.countProducts > 0
 			ORDER BY c.LocalName ASC
-		")->setParameter('l', $l . '%');
+		")->setParameter('l', $l . '%')
+			->getResult();
 	}
 
 	public function findByQueryString($q)

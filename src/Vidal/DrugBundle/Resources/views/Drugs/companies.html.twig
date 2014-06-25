@@ -1,0 +1,74 @@
+{% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
+
+
+{% block vidal %}
+	{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' %}
+	{% include 'VidalDrugBundle:Drugs:companies_form.html.twig' %}
+
+	{% if search_infoPages is defined and search_infoPages|length %}
+		<div class="info-line">
+			{% if l %}
+				Найдено представительств фирм на букву <i>{{ l }}</i>: <span>{{ search_infoPages|length }}</span>
+			{% elseif q %}
+				Найдено представительств фирм запросу <i>{{ q }}</i>: <span>{{ search_infoPages|length }}</span>
+			{% endif %}
+		</div>
+		{% include 'VidalDrugBundle:Drugs:render_infoPages.html.twig' with {'infoPages':search_infoPages} %}
+	{% endif %}
+
+	{% if search_companies is defined and search_companies|length %}
+		<div class="info-line">
+			{% if l %}
+				Найдено фирм-производителей {{ l in ['1','2','3','4','5','6','7','8','9','0'] ? 'c цифры' : 'на букву' }}
+				<i>{{ l }}</i>: <span>{{ search_companies|length }}</span>
+			{% elseif q %}
+				Найдено фирм-производителей по запросу <i>{{ q }}</i>: <span>{{ search_companies|length }}</span>
+			{% endif %}
+		</div>
+		{% include 'VidalDrugBundle:Drugs:render_companies.html.twig' with {'companies':search_companies} %}
+	{% endif %}
+
+	{# найдено представительств #}
+	{% if pagination_infoPages is defined and pagination_infoPages.totalItemCount %}
+		<div class="info-line">
+			Найдено представительств фирм:
+			<span>{{ pagination_infoPages.totalItemCount }}</span>
+		</div>
+		{% include 'VidalDrugBundle:Drugs:render_infoPages.html.twig' with {'infoPages':pagination_infoPages} %}
+		<div class="navigation">
+			{{ knp_pagination_render(pagination_infoPages) }}
+		</div>
+	{% endif %}
+
+	{# найдено фирм-производителей #}
+	{% if pagination_companies is defined and pagination_companies.totalItemCount %}
+		<div class="info-line">
+			Найдено фирм-производителей:
+			<span>{{ pagination_companies.totalItemCount }}</span>
+		</div>
+		{% include 'VidalDrugBundle:Drugs:render_companies.html.twig' with {'companies':pagination_companies} %}
+		<div class="navigation">
+			{{ knp_pagination_render(pagination_companies) }}
+		</div>
+	{% endif %}
+
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		#form > * {
+			vertical-align: top;
+		}
+		#form_controls {
+			clear: both;
+		}
+		#form_submit {
+			float: right;
+		}
+		#form_input {
+			width: 408px;
+		}
+	</style>
+{% endblock %}
