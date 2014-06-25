@@ -9,25 +9,25 @@ class ClinicoPhPointersRepository extends EntityRepository
 	public function findForTree()
 	{
 		return $this->_em->createQuery('
-		 	SELECT c.Name as text, c.ClPhPointerID as id, c.total
+		 	SELECT c.Name as text, c.Code as id
 		 	FROM VidalDrugBundle:ClinicoPhPointers c
 		 	WHERE c.Level = 0
-		 	ORDER BY c.Name
+		 	ORDER BY c.Code ASC
 		')->getResult();
 	}
 
 	public function jsonForTree()
 	{
 		$results = $this->_em->createQuery('
-		 	SELECT c.Name as text, c.ClPhPointerID as id, c.Code
+		 	SELECT c.Name as text, c.Code as id, c.countProducts
 		 	FROM VidalDrugBundle:ClinicoPhPointers c
-		 	ORDER BY c.Name
+		 	ORDER BY c.Code ASC
 		')->getResult();
 
 		$codes = array();
 
 		foreach ($results as $code) {
-			$key         = $code['Code'];
+			$key         = $code['id'];
 			$codes[$key] = $code;
 		}
 
@@ -47,19 +47,6 @@ class ClinicoPhPointersRepository extends EntityRepository
 			->getSingleScalarResult();
 
 		return $count ? false : true;
-	}
-
-	public function updateTotal($id, $total)
-	{
-		return $this->_em->createQuery('
-			UPDATE VidalDrugBundle:ClinicoPhPointers c
-			SET c.total = :total
-			WHERE c.ClPhPointerID = :id
-		')->setParameters(array(
-				'id'    => $id,
-				'total' => $total,
-			))
-			->execute();
 	}
 
 	public function findOneById($id)
@@ -127,5 +114,19 @@ class ClinicoPhPointersRepository extends EntityRepository
 		$codes = explode('.', $code);
 
 		return $this->findOneByCode($codes[0]);
+	}
+
+	public function countProducts()
+	{
+		return $this->_em->createQuery('
+			SELECT COUNT(p.ProductID) as countProducts, pointer.ClPhPointerID
+			FROM VidalDrugBundle:Product p
+			LEFT JOIN p.document d
+			JOIN d.clphPointers pointer
+			WHERE p.MarketStatusID IN (1,2,7)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.inactive = FALSE
+			GROUP BY pointer.ClPhPointerID
+		')->getResult();
 	}
 }

@@ -1,30 +1,38 @@
 {# Клинико-фармакологический указатель #}
-{#{% if document.clphPointers.count %}#}
-	{#<div class="block" id="clphpointer">#}
-		{#{% if document.clphPointers|length == 1 %}#}
-			{#{% set clphPointer = document.clphPointers[0] %}#}
-			{#<div class="block-head">Клинико-фармакологический указатель</div>#}
-			{#<div class="block-content">#}
-				{#<a href="{{ path('kfu_item', {'id':clphPointer.ClPhPointerID}) }}" class="no-underline">#}
-					{#{{ clphPointer.Name|raw }}#}
-				{#</a>#}
-			{#</div>#}
-		{#{% else %}#}
-			{#<div class="block-head">Клинико-фармакологические указатели</div>#}
-			{#<div class="block-content">#}
-				{#<ul class="ul-style">#}
-					{#{% for clphPointer in document.clphPointers %}#}
-						{#<li>#}
-							{#<a href="{{ path('kfu_item', {'id':clphPointer.ClPhPointerID}) }}" class="no-underline">#}
-								{#{{ clphPointer.Name|raw }}#}
-							{#</a>#}
-						{#</li>#}
-					{#{% endfor %}#}
-				{#</ul>#}
-			{#</div>#}
-		{#{% endif %}#}
-	{#</div>#}
-{#{% endif %}#}
+{% if document.clphPointers.count %}
+	<div class="block" id="clphpointer">
+		{% if document.clphPointers|length == 1 %}
+			{% set clphPointer = document.clphPointers[0] %}
+			<div class="block-head">Клинико-фармакологический указатель</div>
+			<div class="block-content">
+				<span>{{ clphPointer.Code }}</span>
+				<a href="{{ path('kfu_item', {'code':clphPointer.Code}) }}" class="no-underline">
+					{{ clphPointer.Name|raw }}
+				</a>
+			</div>
+		{% else %}
+			<div class="block-head">Клинико-фармакологические указатели</div>
+			<div class="block-content">
+				<table class="products-table">
+					<tr class="products-table-header">
+						<td>Код</td>
+						<td>Название</td>
+					</tr>
+					{% for clphPointer in document.clphPointers %}
+						<tr>
+							<td>{{ clphPointer.Code }}</td>
+							<td>
+								<a href="{{ path('kfu_item', {'code':clphPointer.Code}) }}" class="no-underline">
+									{{ clphPointer.Name|raw }}
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		{% endif %}
+	</div>
+{% endif %}
 
 {# Клинико-фармакологическая группа #}
 {% if product is defined and product.clphGroups.count %}

@@ -195,6 +195,10 @@ h1 span {
 .bold {
 	font-weight: bold;
 }
+tr.bold td {
+	background-color: #D7E1EC;
+	padding-left:     5px !important;
+}
 .good {
 	color: green;
 }
@@ -452,6 +456,7 @@ h1 span {
 	opacity: 1;
 }
 .closed-info {
+	display:    none;
 	font-size:  15px;
 	background: beige;
 	padding:    6px 8px 7px;

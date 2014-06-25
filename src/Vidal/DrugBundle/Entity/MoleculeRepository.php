@@ -326,4 +326,53 @@ class MoleculeRepository extends EntityRepository
 		 	ORDER BY m.RusName ASC
 		");
 	}
+
+	# надо получить список идентификаторов молекул у этого документа в строку
+	public function idsByDocument($DocumentID)
+	{
+		$raw = $this->_em->createQuery('
+			SELECT m.MoleculeID
+			FROM VidalDrugBundle:Molecule m
+			JOIN m.documents d
+			WHERE d.DocumentID = :DocumentID
+			ORDER BY m.MoleculeID ASC
+		')->setParameter('DocumentID', $DocumentID)
+			->getResult();
+
+		$moleculeIds = array();
+
+		foreach ($raw as $r) {
+			$moleculeIds[] = $r['MoleculeID'];
+		}
+
+		return $moleculeIds;
+	}
+
+	public function findByClPhPointerID($ClPhPointerID)
+	{
+		$raw = $this->_em->createQuery('
+			SELECT m.MoleculeID, m.LatName, d.DocumentID, d.ArticleID
+			FROM VidalDrugBundle:Molecule m
+			JOIN m.documents d
+			JOIN d.clphPointers pointer
+			WHERE pointer = :id
+				AND m.MoleculeID != 1144
+		')->setParameter('id', $ClPhPointerID)
+			->getResult();
+
+		$molecules = array();
+		$documents = array();
+
+		foreach ($raw as $r) {
+			$key = $r['MoleculeID'];
+
+			if (!isset($molecules[$key])) {
+				$molecules[$key] = $r['LatName'];
+			}
+
+			$documents[] = $r['DocumentID'];
+		}
+
+		return array($molecules, $documents);
+	}
 }

@@ -542,7 +542,7 @@ class ProductRepository extends EntityRepository
 		return $marketStatuses;
 	}
 
-	public function findByKfu($kfu)
+	public function findByKfu($ClPhPointerID)
 	{
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
@@ -557,7 +557,7 @@ class ProductRepository extends EntityRepository
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
-		')->setParameter('id', $kfu->getClPhPointerID())
+		')->setParameter('id', $ClPhPointerID)
 			->getResult();
 	}
 

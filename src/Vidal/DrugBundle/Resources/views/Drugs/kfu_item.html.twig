@@ -10,13 +10,13 @@
 	<div class="breadcrumbs">
 		<a href="{{ path('index') }}">Видаль</a>
 		<i></i>
-		<a href="{{ path('kfu') }}" title="Клинико-фармакологические указатели">КФУ</a>
+		<span>Клинико-фармакологические указатели</span>
+		{#<a href="{{ path('kfu') }}">Клинико-фармакологические указатели</a>#}
 	</div>
 {% endblock %}
 
 
 {% block vidal %}
-	<div class="anons">Клинико-фармакологический указатель</div>
 
 	{% if parent %}
 		<div class="block">
@@ -53,15 +53,57 @@
 		</div>
 	{% endif %}
 
-	{% if products is defined and products is not empty %}
-		<div class="block">
-			<div class="block-head">Препараты группы</div>
-			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' %}
-		</div>
+	{% if groups is defined %}
+		{% for name, group in groups %}
+			<div class="group">
+				<div class="molecules">
+					{% if group.molecules|length == 1 %}
+						<span>Активное вещество: </span>
+					{% elseif group.molecules|length > 1 %}
+						<div>Активные вещества</div>
+					{% endif %}
+
+					{% for MoleculeID in group.molecules %}
+						<a href="{{ path('molecule', {'MoleculeID':MoleculeID}) }}">
+							{{ molecules[MoleculeID]|upper|raw }}
+						</a>
+						{% if not loop.last %}
+							+
+						{% endif %}
+					{% endfor %}
+				</div>
+				{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':group.products} %}
+			</div>
+		{% endfor %}
 	{% elseif children is empty %}
 		<div class="no-results block">
 			Не найдено препаратов
 		</div>
 	{% endif %}
 
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.molecules {
+			margin-top: 15px;
+			padding:    3px 5px;
+			background: #e6e6e6;
+			border:     1px solid #ccc;
+		}
+		.molecules > div, .molecules > span {
+			font-size:     12px;
+			color:         #476173;
+			margin-bottom: 2px;
+		}
+		.molecules a {
+			text-decoration: none;
+			font-weight:     bold;
+		}
+		.molecules a:hover {
+			text-decoration: underline;
+		}
+	</style>
 {% endblock %}

@@ -158,6 +158,8 @@ class DrugsController extends Controller
 			throw $this->createNotFoundException();
 		}
 
+		$ClPhPointerID = $kfu->getClPhPointerID();
+
 		$params = array(
 			'menu_drugs' => 'kfu',
 			'kfu'        => $kfu,
@@ -166,7 +168,7 @@ class DrugsController extends Controller
 			'children'   => $repo->findChildren($code),
 		);
 
-		$products = $em->getRepository('VidalDrugBundle:Product')->findByKfu($kfu);
+		$products = $em->getRepository('VidalDrugBundle:Product')->findByKfu($ClPhPointerID);
 
 		if (!empty($products)) {
 			$productIds          = $this->getProductIds($products);
@@ -174,6 +176,41 @@ class DrugsController extends Controller
 			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
 			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
 			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
+
+			$repo = $em->getRepository('VidalDrugBundle:Molecule');
+			list($molecules, $documentIds) = $repo->findByClPhPointerID($ClPhPointerID);
+			$params['molecules'] = $molecules;
+
+			# надо создать группы молекул по каждому препарату
+			$groups = array();
+			$repo   = $em->getRepository('VidalDrugBundle:Molecule');
+
+			# надо сгруппировать продукты по документу
+			$docs = array();
+
+			for ($i = 0; $i < count($products); $i++) {
+				$key = $products[$i]['DocumentID'];
+				isset($docs[$key]) ? $docs[$key][] = $products[$i] : $docs[$key] = array($products[$i]);
+			}
+
+			foreach ($documentIds as $DocumentID) {
+				$moleculeIds = $repo->idsByDocument($DocumentID);
+				$group       = implode('-', $moleculeIds);
+
+				if (isset($groups[$group])) {
+					$groups[$group]['documents'][] = $DocumentID;
+					if (isset($docs[$DocumentID])) {
+						$groups[$group]['products'] = array_merge($groups[$group]['products'], $docs[$DocumentID]);
+					}
+				}
+				else {
+					$groups[$group]['documents'] = array($DocumentID);
+					$groups[$group]['molecules'] = $moleculeIds;
+					$groups[$group]['products']  = isset($docs[$DocumentID]) ? $docs[$DocumentID] : array();
+				}
+			}
+
+			$params['groups'] = $groups;
 		}
 
 		return $params;
@@ -215,10 +252,10 @@ class DrugsController extends Controller
 	 */
 	public function kfuAjaxAction(Request $request)
 	{
-		if ($request->request->has('root')) {
+		if ($request->query->has('root')) {
 			$file = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Generated' . DIRECTORY_SEPARATOR . 'kfu.json';
 			$json = json_decode(file_get_contents($file), true);
-			$root = $request->request->get('root');
+			$root = $request->query->get('root');
 			$data = $json[$root]['children'];
 
 			return new JsonResponse($data);
@@ -237,8 +274,7 @@ class DrugsController extends Controller
 	public function kfuGeneratorAction()
 	{
 		$em    = $this->getDoctrine()->getManager('drug');
-		$repo  = $em->getRepository('VidalDrugBundle:ClinicoPhPointers');
-		$codes = $repo->findForTree();
+		$codes = $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->findForTree();
 
 		return array('codes' => $codes);
 	}
@@ -576,6 +612,20 @@ class DrugsController extends Controller
 		}
 
 		return $productIds;
+	}
+
+	private function getDocumentIds($products)
+	{
+		$documentIds = array();
+
+		foreach ($products as $product) {
+			$key = $product['DocumentID'];
+			if (!isset($documentIds[$key])) {
+				$documentIds[$key] = true;
+			}
+		}
+
+		return array_keys($documentIds);
 	}
 
 	private function strip($string)
