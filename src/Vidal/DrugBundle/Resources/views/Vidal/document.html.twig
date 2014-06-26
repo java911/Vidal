@@ -55,17 +55,14 @@
 	{# подробнее о препарате #}
 	{% if document is defined and document.portfolios.count %}
 		<div class="block">
-			{% if isDoctor %}
-				{% set portfolio = document.portfolios[0] %}
-				<a href="{{ path('portfolio_item', {'url':portfolio.url}) }}"
-				   class="portfolio-link no-underline">
-					<span>Подробнее о препарате</span><img src="{{ asset('bundles/vidalmain/images/redbutton.jpg') }}"/>
-				</a>
-			{% else %}
-				<div class="block-head">
-					Портфель препарата:
-					<span class="small">(информация для специалистов)</span>
-				</div>
+			{% set portfolio = document.portfolios[0] %}
+
+			<a href="{{ path('portfolio_item', {'url':portfolio.url}) }}"
+			   class="portfolio-link no-underline closed-link">
+				<span>Подробнее о препарате</span><img src="{{ asset('bundles/vidalmain/images/redbutton.jpg') }}"/>
+			</a>
+
+			{% if not isDoctor %}
 				{% include 'VidalMainBundle:Auth:closed_info.html.twig' %}
 			{% endif %}
 		</div>
@@ -429,11 +426,11 @@
 			background:      url(../images/down.png) no-repeat 98% 50%;
 		}
 		.portfolio-link {
-			display:       inline-block;
-			background:    #eee;
-			font-weight:   bold;
-			padding:       1px 1px 0 10px;
-			border:        2px solid #ddd;
+			display:     inline-block;
+			background:  #eee;
+			font-weight: bold;
+			padding:     1px 1px 0 10px;
+			border:      2px solid #ddd;
 		}
 		.portfolio-link > span {
 			display:        inline-block;
@@ -442,6 +439,9 @@
 		}
 		.portfolio-link:hover {
 			border: 2px solid #bbb;
+		}
+		.closed-info {
+			display: none;
 		}
 	</style>
 {% endblock %}
@@ -460,6 +460,13 @@
 				$(this).hide();
 				return false;
 			});
+
+			{% if not isDoctor %}
+			$('.closed-link').click(function() {
+				$('.closed-info').slideDown();
+				return false;
+			});
+			{% endif %}
 		});
 	</script>
 {% endblock %}

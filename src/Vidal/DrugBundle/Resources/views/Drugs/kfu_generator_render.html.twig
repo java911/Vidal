@@ -1,5 +1,6 @@
 {% for code in codes %}
 	<li id="{{ code.id }}" class="hasChildren">
+		<span class="t">{{ code.id }}</span>
 		<span>{{ code.text|raw }}</span>
 		<ul>
 			<li><span class="placeholder">&nbsp;</span></li>

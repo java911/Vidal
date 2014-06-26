@@ -6,13 +6,13 @@
 		   title="Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)">АТХ</a>
 		<a href="{{ path('nosology') }}" {{ menu_drugs == 'nosology' ? 'class="active"' }}
 			>Нозологический указатель</a>
+		<a href="{{ path('kfu') }}" {{ menu_drugs == 'clinic_groups' ? 'class="active"' }}
+		   title="Клинико-фармакологические указатели">КФУ</a>
 		<a href="{{ path('pharm') }}" {{ menu_drugs == 'pharm' ? 'class="active"' }}
 		   title="Фармако-терапевтические группы ГосРеестра МинЗдрава РФ">ФТГ</a>
-		<a href="{{ path('clinic_groups') }}" {{ menu_drugs == 'clinic_groups' ? 'class="active"' }}
-		   title="Клинико-фармакологические группы">КФГ</a>
-		<a href="{{ path('firms') }}" {{ menu_drugs == 'firms' ? 'class="active"' }}
-		   title="Фирмы-производители">Фирмы</a>
-		<a href="{{ path('inf') }}" {{ menu_drugs == 'inf' ? 'class="active"' }}
-		   title="Представительства фирм">Представительства</a>
+		{#<a href="{{ path('clinic_groups') }}" {{ menu_drugs == 'clinic_groups' ? 'class="active"' }}#}
+		   {#title="Клинико-фармакологические группы">КФГ</a>#}
+		<a href="{{ path('companies') }}" {{ menu_drugs == 'companies' ? 'class="active"' }}
+		   title="Представительства и фирмы-производители">Компании</a>
 	</div>
 </div>

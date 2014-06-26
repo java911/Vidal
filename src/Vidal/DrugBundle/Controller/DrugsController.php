@@ -12,8 +12,8 @@ use Lsw\SecureControllerBundle\Annotation\Secure;
 
 class DrugsController extends Controller
 {
-	const PHARM_PER_PAGE = 50;
-	const KFG_PER_PAGE   = 50;
+	const PHARM_PER_PAGE = 150;
+	const KFG_PER_PAGE   = 150;
 
 	private $nozologies;
 
@@ -158,6 +158,8 @@ class DrugsController extends Controller
 			throw $this->createNotFoundException();
 		}
 
+		$ClPhPointerID = $kfu->getClPhPointerID();
+
 		$params = array(
 			'menu_drugs' => 'kfu',
 			'kfu'        => $kfu,
@@ -166,7 +168,7 @@ class DrugsController extends Controller
 			'children'   => $repo->findChildren($code),
 		);
 
-		$products = $em->getRepository('VidalDrugBundle:Product')->findByKfu($kfu);
+		$products = $em->getRepository('VidalDrugBundle:Product')->findByKfu($ClPhPointerID);
 
 		if (!empty($products)) {
 			$productIds          = $this->getProductIds($products);
@@ -174,6 +176,74 @@ class DrugsController extends Controller
 			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
 			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
 			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
+
+			$repo = $em->getRepository('VidalDrugBundle:Molecule');
+			list($molecules, $documentIds) = $repo->findByClPhPointerID($ClPhPointerID);
+			$params['molecules'] = $molecules;
+
+			# надо создать группы молекул по каждому препарату
+			$groups = array();
+			$repo   = $em->getRepository('VidalDrugBundle:Molecule');
+
+			# надо сгруппировать продукты по документу
+			$docs = array();
+
+			for ($i = 0; $i < count($products); $i++) {
+				$key       = $products[$i]['DocumentID'];
+				$productId = $products[$i]['ProductID'];
+				isset($docs[$key])
+					? $docs[$key][$productId] = $products[$i]
+					: $docs[$key] = array(strval($productId) => $products[$i]);
+			}
+
+			# надо считать задействованные документы, а незадействованные препараты потом отдельным списком выводим
+			$usedDocuments = array();
+
+			# группируем препараты по связке активных веществ
+			foreach ($documentIds as $DocumentID) {
+				$moleculeIds = $repo->idsByDocument($DocumentID);
+
+				if (in_array(1144, $moleculeIds) || in_array(2203, $moleculeIds)) {
+					$usedDocuments[] = $DocumentID;
+					continue;
+				}
+
+				if (count($moleculeIds) > 3) {
+					continue;
+				}
+
+				$group = implode('-', $moleculeIds);
+
+				if (isset($groups[$group])) {
+					$groups[$group]['documents'][] = $DocumentID;
+					if (isset($docs[$DocumentID])) {
+						foreach ($docs[$DocumentID] as $productId => $product) {
+							if (!isset($groups[$group]['products'][$productId])) {
+								$groups[$group]['products'][$productId] = $product;
+							}
+						}
+					}
+				}
+				else {
+					$groups[$group]['documents'] = array($DocumentID);
+					$groups[$group]['molecules'] = $moleculeIds;
+					$groups[$group]['products']  = isset($docs[$DocumentID]) ? $docs[$DocumentID] : array();
+				}
+
+				$usedDocuments[] = $DocumentID;
+			}
+
+			# надо получить список незадействованных препаратов
+			$unusedProducts = array();
+
+			foreach ($products as $product) {
+				if (!in_array($product['DocumentID'], $usedDocuments)) {
+					$unusedProducts[] = $product;
+				}
+			}
+
+			$params['unusedProducts'] = $unusedProducts;
+			$params['groups']         = $groups;
 		}
 
 		return $params;
@@ -218,6 +288,7 @@ class DrugsController extends Controller
 		if ($request->request->has('root')) {
 			$file = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Generated' . DIRECTORY_SEPARATOR . 'kfu.json';
 			$json = json_decode(file_get_contents($file), true);
+
 			$root = $request->request->get('root');
 			$data = $json[$root]['children'];
 
@@ -237,8 +308,7 @@ class DrugsController extends Controller
 	public function kfuGeneratorAction()
 	{
 		$em    = $this->getDoctrine()->getManager('drug');
-		$repo  = $em->getRepository('VidalDrugBundle:ClinicoPhPointers');
-		$codes = $repo->findForTree();
+		$codes = $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->findForTree();
 
 		return array('codes' => $codes);
 	}
@@ -566,6 +636,48 @@ class DrugsController extends Controller
 		return $search ? $this->render('VidalDrugBundle:Drugs:search_clinic_group.html.twig', $params) : $params;
 	}
 
+	/**
+	 * @Route("/drugs/companies", name="companies")
+	 * @Template("VidalDrugBundle:Drugs:companies.html.twig")
+	 */
+	public function companiesAction(Request $request)
+	{
+		$em   = $this->getDoctrine()->getManager('drug');
+		$q    = $request->query->get('q', null);
+		$l    = $request->query->get('l', null);
+		$p    = $request->query->get('p', 1);
+		$type = $request->query->get('type', null);
+
+		$params = array(
+			'menu_drugs' => 'companies',
+			'title'      => 'Компании',
+			'q'          => $q,
+			'l'          => $l,
+		);
+
+		if ($l) {
+			$params['search_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByLetter($l);
+			$params['search_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByLetter($l);
+		}
+		elseif ($q) {
+			$params['search_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByQuery($q);
+			$params['search_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByQuery($q);
+		}
+		else {
+			if (!$type || $type == 'c') {
+				$query                          = $em->getRepository('VidalDrugBundle:Company')->getQuery($q);
+				$params['pagination_companies'] = $this->get('knp_paginator')->paginate($query, $p, 40, array('type' => 'c'));
+			}
+
+			if (!$type || $type == 'i') {
+				$query                          = $em->getRepository('VidalDrugBundle:InfoPage')->getQuery($q);
+				$params['pagination_infoPages'] = $this->get('knp_paginator')->paginate($query, $p, 40, array('type' => 'i'));
+			}
+		}
+
+		return $params;
+	}
+
 	/** Получить массив идентификаторов продуктов */
 	private function getProductIds($products)
 	{
@@ -576,6 +688,20 @@ class DrugsController extends Controller
 		}
 
 		return $productIds;
+	}
+
+	private function getDocumentIds($products)
+	{
+		$documentIds = array();
+
+		foreach ($products as $product) {
+			$key = $product['DocumentID'];
+			if (!isset($documentIds[$key])) {
+				$documentIds[$key] = true;
+			}
+		}
+
+		return array_keys($documentIds);
 	}
 
 	private function strip($string)

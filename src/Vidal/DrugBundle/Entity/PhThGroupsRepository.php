@@ -108,7 +108,7 @@ class PhThGroupsRepository extends EntityRepository
 			$name = preg_replace('/ &.+; /', ' ', $result['Name']);
 			$name = preg_replace('/&.+;/', ' ', $name);
 
-			$names[] = $name;
+			$names[] = mb_strtolower($name, 'utf-8');
 		}
 
 		$uniques = array();

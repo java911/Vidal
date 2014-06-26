@@ -18,22 +18,20 @@ class GeneratorKfuCommand extends ContainerAwareCommand
 	{
 		ini_set('memory_limit', -1);
 		$output->writeln('--- vidal:generator_kfu started');
-		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
-		$repo  = $em->getRepository('VidalDrugBundle:ClinicoPhPointers');
-		$codes = $repo->jsonForTree();
+		$em    = $this->getContainer()->get('doctrine')->getManager('drug');
+		$codes = $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->jsonForTree();
 
 		# надо сгруппировать по родителю (запихпуть в list родителя дочерние)
-		for ($i = 14; $i > 0; $i = $i - 3) {
+		for ($i = 14; $i >= 5; $i = $i - 3) {
 			foreach ($codes as $codeValue => &$code) {
 				if (strlen($codeValue) == $i) {
 					$key = substr($codeValue, 0, -3);
-					if (isset($codes[$key]) && strlen($codeValue) > strlen($key)) {
+					if (isset($codes[$key])) {
 						$codes[$key]['children'][] = $code;
 						$codes[$key]['expanded']   = false;
 					}
 				}
-				unset($code['Code']);
 			}
 		}
 
@@ -48,9 +46,6 @@ class GeneratorKfuCommand extends ContainerAwareCommand
 
 		$file = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Generated' . DIRECTORY_SEPARATOR . 'kfu.json';
 		file_put_contents($file, json_encode($grouped));
-
-		//		$json = json_decode(file_get_contents($file), true);
-		//		$data = $json['16463']['children'];
 
 		$output->writeln('+++ vidal:generator_kfu completed');
 	}

@@ -542,7 +542,7 @@ class ProductRepository extends EntityRepository
 		return $marketStatuses;
 	}
 
-	public function findByKfu($kfu)
+	public function findByKfu($ClPhPointerID)
 	{
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
@@ -550,14 +550,16 @@ class ProductRepository extends EntityRepository
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
 				d.Name DocumentName
 			FROM VidalDrugBundle:Product p
-			LEFT JOIN p.document d
+			JOIN p.document d
 			JOIN d.clphPointers pointer
+			JOIN d.molecules m
 			WHERE pointer = :id
 				AND p.MarketStatusID IN (1,2,7)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 				AND p.inactive = FALSE
+				AND m.MoleculeID NOT IN (1144,2203)
 			ORDER BY p.RusName ASC
-		')->setParameter('id', $kfu->getClPhPointerID())
+		')->setParameter('id', $ClPhPointerID)
 			->getResult();
 	}
 

@@ -17,6 +17,7 @@
 
 function load(settings, root, child, container) {
 	function createNode(parent) {
+		var withChildren = this.hasChildren || this.children && this.children.length;
 		var current = this.countProducts
 			? $("<li/>").attr("id", this.id || "").html('<span class="t">' + this.code + '</span>' + "<span>" + '<a target="blank" href="/drugs/nosology/' + this.code + '">' + this.text + '</a>' + "</span>").appendTo(parent)
 			: $("<li/>").attr("id", this.id || "").html('<span class="t">' + this.code + '</span>' + "<span>" + this.text + "</span>").appendTo(parent);

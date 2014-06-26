@@ -1,5 +1,9 @@
 {# default Sliding pagination control implementation #}
 
+{% if type is defined %}
+	{% set query = query|merge({('type'): type}) %}
+{% endif %}
+
 {% if pageCount > 1 %}
 	<div class="pagination">
 		{% if first is defined and current != first %}
