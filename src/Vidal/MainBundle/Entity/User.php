@@ -173,20 +173,17 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	/**
 	 * @ORM\Column(type="boolean")
 	 */
-	protected $confirmation;
+	protected $confirmation = 0;
 
 	/**
 	 * @ORM\Column(type="array", nullable=true)
 	 * @FileStore\UploadableField(mapping="docs")
-	 * @Assert\Image(
-	 * 		maxSize="2M",
-	 * 		maxSizeMessage="Принимаются фотографии размером до 2 Мб"
-	 * )
 	 */
 	protected $confirmationScan;
 
 	public function __construct()
 	{
+        $this->confirmationScan = array();
 		$this->answers        = new ArrayCollection();
 		$this->emailConfirmed = false;
 		$this->hideBirthdate  = false;
@@ -955,7 +952,7 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	/**
 	 * @param mixed $confirmation
 	 */
-	public function setConfirmation($confirmation = 1)
+	public function setConfirmation($confirmation = 0)
 	{
 		$this->confirmation = $confirmation;
 	}
@@ -990,4 +987,5 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 
 		return $this;
 	}
+
 }

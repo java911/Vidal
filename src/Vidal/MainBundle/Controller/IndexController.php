@@ -12,6 +12,10 @@ use Vidal\MainBundle\Entity\MapCoord;
 use Vidal\MainBundle\Entity\QuestionAnswer;
 use Lsw\SecureControllerBundle\Annotation\Secure;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+
+
 
 class IndexController extends Controller
 {
@@ -137,9 +141,26 @@ class IndexController extends Controller
             $questions = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByAnswer(null);
             return array('questions' => $questions);
         }else{
-
+            return $this->redirect($this->generateUrl('confirmation_doctor'));
         }
+
 	}
+
+    /**
+     * @Route("/confirmation-doctor", name="confirmation_doctor")
+     * @Secure(roles="ROLE_DOCTOR")
+     * @Template()
+     */
+    public function confirmationDoctorAction(Request $request){
+        $user = $this->getUser();
+        $scan = $user->getConfirmationScan();
+        if ( empty($scan)){
+            return $this->redirect($this->generateUrl('profile').'#work');
+        }else{
+            return array();
+        }
+
+    }
 
 	/**
 	 * @Route("/otvety_specialistov_doctor/{faqId}", name="qa_admin_edit")
@@ -183,6 +204,7 @@ class IndexController extends Controller
 		}
 		return array('form' => $form->createView());
 	}
+
 
 	/** @Route("/Vidal/vidal-russia/Novosti-pharmatsevticheskih-kompanii/") */
 	public function r10()

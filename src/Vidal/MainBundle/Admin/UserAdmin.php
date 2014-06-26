@@ -41,6 +41,9 @@ class UserAdmin extends Admin
 			->add('firstName', null, array('label' => 'Имя', 'required' => true))
 			->add('lastName', null, array('label' => 'Фамилия', 'required' => true))
 			->add('surName', null, array('label' => 'Отчество', 'required' => false))
+			->add('ConfirmationScan', 'iphp_file', array('label' => 'Файл подтверждения', 'required' => false))
+			->add('Confirmation', null, array('label' => 'Подтвержденный', 'required' => false))
+
 			->add($formMapper->create('city', 'text', array(
 				'label' => 'Город',
 			))->addModelTransformer($cityToStringTransformer))
