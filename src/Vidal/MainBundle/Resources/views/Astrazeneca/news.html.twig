@@ -18,11 +18,11 @@
         <div class="tabs" style="width: 520px">
             <table style="width: 100%" border="0" cellpadding="0" cellspacing="0">
                 <tr>
+                    {#<td style="width: 20%; text-align: center;">#}
+                        {#<a href="{{ path('astrazeneca_index') }}" >Видеолекции</a>#}
+                    {#</td>#}
                     <td style="width: 20%; text-align: center;">
-                        <a href="{{ path('astrazeneca_index') }}" >Видеолекции</a>
-                    </td>
-                    <td style="width: 20%; text-align: center;">
-                        <a href="{{ path('astrazeneca_news') }}" class="active">Новости</a>
+                        <a href="{{ path('astrazeneca_news') }}" class="active">Статьи</a>
                     </td>
                     <td style="width: 20%; text-align: center;">
                         <a href="{{ path('astrazeneca_faq') }}">Вопрос-ответ</a>
@@ -38,10 +38,10 @@
         </div>
     </div>
     <h1>
-        Новости
+        Статьи
     </h1>
     <div class="title title-news">
-        <a href="{{ path('news') }}">Новости AstraZeneca</a>
+        <a href="{{ path('news') }}">Статьи AstraZeneca</a>
     </div>
     <br/>
     <div class="news">
