@@ -15,8 +15,8 @@
 			фармакологии с использованием публикаций в периодических медицинских изданиях последних лет.
 			<br/>
 			<i>Например</i>:
-			<a href="#17983" data="17983">Гомеопатические средства</a>,
-			<a href="#17200" data="17217">Вакцины</a>.
+			<a href="#33" data="33">Гомеопатические средства</a>,
+			<a href="#14.03" data="14.03">Вакцины</a>.
 		</div>
 	</div>
 
@@ -57,21 +57,21 @@
 				return false;
 			});
 
-			$('a[data="17983"]').click(function() {
+			$('a[data="33"]').click(function() {
 				$('#tree_collapse').click();
 				$tree.find('span').removeClass('highlight');
-				$('#17983 > div').click();
-				$('#17983 > span').addClass('highlight');
+				$('#33 > div').click();
+				$('#33 > span').addClass('highlight');
 			});
 
-			$('a[data="17217"]').click(function() {
+			$('a[data="14.03"]').click(function() {
 				$('#tree_collapse').click();
 				$tree.find('span').removeClass('highlight');
-				$('#17200 > div').click();
-				$('#17200 > span').addClass('highlight');
+				$('#14 > div').click();
+				$('#14 > span').addClass('highlight');
 				setTimeout(function() {
-					$('#17217 > div').click();
-					$('#17217 > span').addClass('highlight');
+					$('li[id="14.03"] > div').click();
+					$('li[id="14.03"] > span').addClass('highlight');
 				}, 1000);
 			});
 

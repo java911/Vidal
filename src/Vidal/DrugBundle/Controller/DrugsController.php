@@ -281,10 +281,11 @@ class DrugsController extends Controller
 	 */
 	public function kfuAjaxAction(Request $request)
 	{
-		if ($request->query->has('root')) {
+		if ($request->request->has('root')) {
 			$file = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Generated' . DIRECTORY_SEPARATOR . 'kfu.json';
 			$json = json_decode(file_get_contents($file), true);
-			$root = $request->query->get('root');
+
+			$root = $request->request->get('root');
 			$data = $json[$root]['children'];
 
 			return new JsonResponse($data);

@@ -19,8 +19,8 @@ function load(settings, root, child, container) {
 	function createNode(parent) {
 		var withChildren = this.hasChildren || this.children && this.children.length;
 		var current = this.countProducts
-			? $("<li/>").attr("id", this.id || "").html('<span class="t">' + this.code + '</span>' + "<span>" + '<a target="blank" href="/drugs/clinic-pointer/' + this.code + '">' + this.text + '</a>' + "</span>").appendTo(parent)
-			: $("<li/>").attr("id", this.id || "").html('<span class="t">' + this.code + '</span>' + "<span>" + this.text + "</span>").appendTo(parent);
+			? $("<li/>").attr("id", this.id || "").html('<span class="t">' + this.id + '</span>' + "<span>" + '<a target="blank" href="/drugs/clinic-pointer/' + this.id + '">' + this.text + '</a>' + "</span>").appendTo(parent)
+			: $("<li/>").attr("id", this.id || "").html('<span class="t">' + this.id + '</span>' + "<span>" + this.text + "</span>").appendTo(parent);
 		if (this.classes) {
 			current.children("span").addClass(this.classes);
 		}
