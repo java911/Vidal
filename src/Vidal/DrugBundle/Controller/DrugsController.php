@@ -233,8 +233,6 @@ class DrugsController extends Controller
 				$usedDocuments[] = $DocumentID;
 			}
 
-			//var_dump(implode(' ', $usedDocuments));exit;
-
 			# надо получить список незадействованных препаратов
 			$unusedProducts = array();
 
