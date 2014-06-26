@@ -131,15 +131,24 @@ class IndexController extends Controller
 	}
 
 	/**
-	 * @Route("/otvety_specialistov_doctor", name="qa_admin")
+	 * @Route("/otvety_specialistov_doctor/{party}", name="qa_admin", defaults={"party"="0"}, options={"expose"=true})
 	 * @Secure(roles="ROLE_DOCTOR")
 	 * @Template()
 	 */
-	public function doctorAnswerListAction(Request $request)
+	public function doctorAnswerListAction(Request $request, $party = 0)
 	{
         if ( $this->getUser()->getConfirmation() == 1 ){
-            $questions = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByAnswer(null);
-            return array('questions' => $questions);
+            $parties = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswerPlace')->findAll();
+            if ($party == 0){
+                $questions = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByAnswer(null);
+                $thisPartyId = 0;
+            }else{
+                $party = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswerPlace')->findOneById($party);
+                $questions = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findBy(array( 'answer' => null , 'place' => $party ));
+                $thisPartyId = $party->getId();
+            }
+
+            return array( 'questions' => $questions, 'parties' => $parties, 'thisPartyId'=> $thisPartyId );
         }else{
             return $this->redirect($this->generateUrl('confirmation_doctor'));
         }
@@ -163,7 +172,7 @@ class IndexController extends Controller
     }
 
 	/**
-	 * @Route("/otvety_specialistov_doctor/{faqId}", name="qa_admin_edit")
+	 * @Route("/otvety_specialistov_doctor_edit/{faqId}", name="qa_admin_edit")
 	 * @Secure(roles="ROLE_DOCTOR")
 	 * @Template()
 	 */
@@ -171,10 +180,11 @@ class IndexController extends Controller
 	{
 		$em  = $this->getDoctrine()->getManager();
 		$faq = $em->getRepository('VidalMainBundle:QuestionAnswer')->findOneById($faqId);
+        $question = $faq->getQuestion();
 		if ($faq->getAnswer() == null) {
 			$builder = $this->createFormBuilder($faq);
 			$builder
-				->add('question', null, array('label' => 'Вопрос', 'attr' => array('class' => 'ckeditor')))
+//				->add('question', null, array('label' => 'Вопрос', 'attr' => array('class' => 'ckeditor')))
 				->add('answer', null, array('label' => 'Ответ', 'attr' => array('class' => 'ckeditor')))
 				->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn')));
 
@@ -202,7 +212,7 @@ class IndexController extends Controller
 				}
 			}
 		}
-		return array('form' => $form->createView());
+		return array('form' => $form->createView(),'question'=>$question);
 	}
 
 
