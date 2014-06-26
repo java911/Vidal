@@ -203,7 +203,12 @@ class DrugsController extends Controller
 			foreach ($documentIds as $DocumentID) {
 				$moleculeIds = $repo->idsByDocument($DocumentID);
 
-				if (in_array(1144, $moleculeIds) || in_array(2203, $moleculeIds) || count($moleculeIds) > 3) {
+				if (in_array(1144, $moleculeIds) || in_array(2203, $moleculeIds)) {
+					$usedDocuments[] = $DocumentID;
+					continue;
+				}
+
+				if (count($moleculeIds) > 3) {
 					continue;
 				}
 
@@ -228,10 +233,11 @@ class DrugsController extends Controller
 				$usedDocuments[] = $DocumentID;
 			}
 
-			//var_dump($usedDocuments);exit;
+			//var_dump(implode(' ', $usedDocuments));exit;
 
 			# надо получить список незадействованных препаратов
 			$unusedProducts = array();
+
 			foreach ($products as $product) {
 				if (!in_array($product['DocumentID'], $usedDocuments)) {
 					$unusedProducts[] = $product;
