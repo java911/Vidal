@@ -40,7 +40,9 @@
 
 	{% if children is not empty %}
 		<div class="block">
-			<div class="block-head">Включает группы</div>
+			<div class="block-head">
+				{{ children|length == 1 ? 'Включает группу' : 'Включает группы' }}
+			</div>
 			<div class="block-content">
 				<table class="products-table">
 					{% for child in children %}
@@ -79,13 +81,22 @@
 						{% endif %}
 					{% endfor %}
 				</div>
-				{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':group.products} %}
+				{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':group.products|values} %}
 			</div>
 		{% endfor %}
 	{% elseif children is empty %}
 		<div class="no-results block">
 			Не найдено препаратов
 		</div>
+	{% endif %}
+
+	{% if unusedProducts is defined and unusedProducts is not empty %}
+		<div class="group">
+			<div class="molecules">
+				<span>Остальные препараты группы</span>
+			</div>
+		</div>
+		{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':unusedProducts} %}
 	{% endif %}
 
 {% endblock %}

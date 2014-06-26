@@ -36,6 +36,7 @@ class TwigExtension extends \Twig_Extension
 			new \Twig_SimpleFilter('upperFirst', array($this, 'upperFirst')),
 			new \Twig_SimpleFilter('ucwords', array($this, 'ucwords')),
 			new \Twig_SimpleFilter('type', array($this, 'type')),
+			new \Twig_SimpleFilter('values', array($this, 'values')),
 		);
 	}
 
@@ -164,5 +165,10 @@ class TwigExtension extends \Twig_Extension
 		$reflect = new \ReflectionClass($object);
 
 		return $reflect->getShortName();
+	}
+
+	public function values($array)
+	{
+		return array_values($array);
 	}
 }

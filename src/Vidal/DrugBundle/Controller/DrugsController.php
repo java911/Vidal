@@ -189,18 +189,34 @@ class DrugsController extends Controller
 			$docs = array();
 
 			for ($i = 0; $i < count($products); $i++) {
-				$key = $products[$i]['DocumentID'];
-				isset($docs[$key]) ? $docs[$key][] = $products[$i] : $docs[$key] = array($products[$i]);
+				$key       = $products[$i]['DocumentID'];
+				$productId = $products[$i]['ProductID'];
+				isset($docs[$key])
+					? $docs[$key][$productId] = $products[$i]
+					: $docs[$key] = array(strval($productId) => $products[$i]);
 			}
 
+			# надо считать задействованные документы, а незадействованные препараты потом отдельным списком выводим
+			$usedDocuments = array();
+
+			# группируем препараты по связке активных веществ
 			foreach ($documentIds as $DocumentID) {
 				$moleculeIds = $repo->idsByDocument($DocumentID);
-				$group       = implode('-', $moleculeIds);
+
+				if (in_array(1144, $moleculeIds) || in_array(2203, $moleculeIds) || count($moleculeIds) > 3) {
+					continue;
+				}
+
+				$group = implode('-', $moleculeIds);
 
 				if (isset($groups[$group])) {
 					$groups[$group]['documents'][] = $DocumentID;
 					if (isset($docs[$DocumentID])) {
-						$groups[$group]['products'] = array_merge($groups[$group]['products'], $docs[$DocumentID]);
+						foreach ($docs[$DocumentID] as $productId => $product) {
+							if (!isset($groups[$group]['products'][$productId])) {
+								$groups[$group]['products'][$productId] = $product;
+							}
+						}
 					}
 				}
 				else {
@@ -208,9 +224,22 @@ class DrugsController extends Controller
 					$groups[$group]['molecules'] = $moleculeIds;
 					$groups[$group]['products']  = isset($docs[$DocumentID]) ? $docs[$DocumentID] : array();
 				}
+
+				$usedDocuments[] = $DocumentID;
 			}
 
-			$params['groups'] = $groups;
+			//var_dump($usedDocuments);exit;
+
+			# надо получить список незадействованных препаратов
+			$unusedProducts = array();
+			foreach ($products as $product) {
+				if (!in_array($product['DocumentID'], $usedDocuments)) {
+					$unusedProducts[] = $product;
+				}
+			}
+
+			$params['unusedProducts'] = $unusedProducts;
+			$params['groups']         = $groups;
 		}
 
 		return $params;
