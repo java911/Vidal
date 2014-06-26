@@ -179,6 +179,7 @@ class DrugsController extends Controller
 
 			$repo = $em->getRepository('VidalDrugBundle:Molecule');
 			list($molecules, $documentIds) = $repo->findByClPhPointerID($ClPhPointerID);
+			$generics            = $em->getRepository('VidalDrugBundle:Document')->findGenerics($documentIds);
 			$params['molecules'] = $molecules;
 
 			# надо создать группы молекул по каждому препарату
@@ -208,7 +209,7 @@ class DrugsController extends Controller
 					continue;
 				}
 
-				if (count($moleculeIds) > 3) {
+				if (count($moleculeIds) > 3 || $generics[$DocumentID]) {
 					continue;
 				}
 
@@ -250,17 +251,35 @@ class DrugsController extends Controller
 	}
 
 	/**
-	 * Дерево КФУ
-	 *
 	 * @Route("/drugs/clinic-pointers", name="kfu")
 	 * @Template("VidalDrugBundle:Drugs:kfu.html.twig")
 	 */
 	public function kfuAction(Request $request)
 	{
+		$em = $this->getDoctrine()->getManager('drug');
+		$q  = $request->query->get('q', null);
+		$l  = $request->query->get('l', null);
+
 		$params = array(
 			'menu_drugs' => 'kfu',
 			'title'      => 'Клинико-фармакологические указатели',
+			'l'          => $l,
+			'q'          => $q,
 		);
+
+		if ($l) {
+			$codesByLetter           = $em->getRepository('VidalDrugBundle:ClPhPointers')->findByLetter($l);
+			$params['codeByLetter']  = array_shift($codesByLetter);
+			$params['codesByLetter'] = $codesByLetter;
+		}
+		elseif ($q) {
+			$params['atcCodes'] = mb_strlen($q, 'utf-8') < 2
+				? null
+				: $em->getRepository('VidalDrugBundle:ATC')->findByQuery($q);
+		}
+		else {
+			$params['showTree'] = true;
+		}
 
 		if ($request->query->has('show')) {
 			$em      = $this->getDoctrine()->getManager('drug');

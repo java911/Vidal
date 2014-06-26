@@ -548,7 +548,7 @@ class ProductRepository extends EntityRepository
 			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
 				p.RegistrationNumber, p.RegistrationDate, p.photo,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
-				d.Name DocumentName
+				d.Name DocumentName, d.ShowGenericsOnlyInGNList generic
 			FROM VidalDrugBundle:Product p
 			JOIN p.document d
 			JOIN d.clphPointers pointer
