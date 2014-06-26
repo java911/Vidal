@@ -24,7 +24,7 @@ class ParserXmlCommand extends ContainerAwareCommand
 
     protected $url_file_1 = 'http://vidal:3L29y4@ea.smacs.ru/exchange/price';
     protected $url_file_2 = 'http://vidal:3L29y4@smacs.ru/exchange/price';
-    protected $url_file_3 = 'http://vidal.loc/web/yandex_b.xml';
+    protected $url_file_3 = 'http://www.zdravzona.ru/bitrix/catalog_export/yandex_b.php';
 //    protected $url_file_3 = 'http://www.zdravzona.ru/bitrix/catalog_export/yandex_b.php';
 
     protected $arUrl; # Для пилюль список URL
@@ -32,12 +32,13 @@ class ParserXmlCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this->setName('vidal:parser:drugs')
-            ->setDescription('parser aptek');
+            ->setDescription('parser aptek')
+            ->addOption('val', null, InputOption::VALUE_REQUIRED, '');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
+        $val = $input->getOption('val');
         $output->writeln('--- vidal:parser started');
         # Подключаем пилюли URL
         include 'piluliCodeUrl.php';
@@ -54,65 +55,73 @@ class ParserXmlCommand extends ContainerAwareCommand
         $this->uploadFiles();
 
 
-
 //        # Ищем в первом магазине и добавляем оттуда лекарства
-        $array = $this->findShop_1('');
-        $c1 = count($array);
-        $output->writeln('<error> Count => '.$c1.'</error>');
-        $i = 0;
-        foreach($array as $pr){
-            $i ++ ;
-            $product = new MarketDrug();
-            $product->setCode($pr['code']);
-            $product->setTitle($pr['title']);
-            $product->setPrice($pr['price']);
-            $product->setManufacturer($pr['manufacturer']);
-            $product->setUrl($pr['url']);
-            $product->setGroupApt('eapteka');
-            $em->persist($product);
-            $em->flush($product);
-            $output->writeln('<comment>'.$i.' : '.$product->getTitle().'</comment>');
+        if ($val == 1){
+
+            $em->createQuery('
+                DELETE FROM VidalMainBundle:MarketDrug md
+            ')->execute();
+
+            $array = $this->findShop_1('');
+            $c1 = count($array);
+            $output->writeln('<error> Count => '.$c1.'</error>');
+            $i = 0;
+            foreach($array as $pr){
+                $i ++ ;
+                $product = new MarketDrug();
+                $product->setCode($pr['code']);
+                $product->setTitle($pr['title']);
+                $product->setPrice($pr['price']);
+                $product->setManufacturer($pr['manufacturer']);
+                $product->setUrl($pr['url']);
+                $product->setGroupApt('eapteka');
+                $em->persist($product);
+                $em->flush($product);
+                $output->writeln('<comment>'.$i.' : '.$product->getTitle().'</comment>');
+            }
         }
 
         # Ищем во втором магазине и добавляем оттуда лекартсва
-//        $array = $this->findShop_2('');
-//        $c2 = count($array);
-//        $output->writeln('<error> Count => '.$c2.'</error>');
-//        $i = 0;
-//        foreach($array as $pr){
-//            $i ++ ;
-//            $product = new MarketDrug();
-//            $product->setCode($pr['code']);
-//            $product->setTitle($pr['title']);
-//            $product->setPrice($pr['price']);
-//            $product->setManufacturer($pr['manufacturer']);
-//            $product->setUrl($pr['url']);
-//            $product->setGroupApt('piluli');
-//            $em->persist($product);
-//            $em->flush($product);
-//            $output->writeln('<comment>'.$i.' : '.$product->getTitle().'</comment>');
-//        }
+        if ($val == 2){
+            $array = $this->findShop_2('');
+            $c2 = count($array);
+            $output->writeln('<error> Count => '.$c2.'</error>');
+            $i = 0;
+            foreach($array as $pr){
+                $i ++ ;
+                $product = new MarketDrug();
+                $product->setCode($pr['code']);
+                $product->setTitle($pr['title']);
+                $product->setPrice($pr['price']);
+                $product->setManufacturer($pr['manufacturer']);
+                $product->setUrl($pr['url']);
+                $product->setGroupApt('piluli');
+                $em->persist($product);
+                $em->flush($product);
+                $output->writeln('<comment>'.$i.' : '.$product->getTitle().'</comment>');
+            }
+        }
 
-        # Ищем в третьем магазине и добавляем оттуда лекартсва
-//        $array = $this->findShop_3('');
-//        $c3 = count($array);
-//        $output->writeln('<error> Count => '.$c3.'</error>');
-//        $i = 0;
-//        foreach($array as $pr){
-//            $i ++ ;
-//            $product = new MarketDrug();
-//            $product->setCode($pr['code']);
-//            $product->setTitle($pr['title']);
-//            $product->setPrice($pr['price']);
-//            $product->setManufacturer($pr['manufacturer']);
-//            $product->setUrl($pr['url']);
-//            $product->setGroupApt('zdravzona');
-//            $em->persist($product);
-//            $em->flush($product);
-//            $output->writeln('<comment>'.$i.' : '.$product->getTitle().'</comment>');
-//        }
-        $output->writeln('<error> - '.$c1.'</error>');
-//        $output->writeln('<error>'.$c1.' - '.$c2.' - '.$c3.'</error>');
+        if ($val == 3){
+            # Ищем в третьем магазине и добавляем оттуда лекартсва
+            $array = $this->findShop_3('');
+            $c3 = count($array);
+            $output->writeln('<error> Count => '.$c3.'</error>');
+            $i = 0;
+            foreach($array as $pr){
+                $i ++ ;
+                $product = new MarketDrug();
+                $product->setCode($pr['code']);
+                $product->setTitle($pr['title']);
+                $product->setPrice($pr['price']);
+                $product->setManufacturer($pr['manufacturer']);
+                $product->setUrl($pr['url']);
+                $product->setGroupApt('zdravzona');
+                $em->persist($product);
+                $em->flush($product);
+                $output->writeln('<comment>'.$i.' : '.$product->getTitle().'</comment>');
+            }
+        }
 
         $output->writeln('+++ vidal:parser completed!');
     }
