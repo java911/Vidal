@@ -1,6 +1,6 @@
 <?php
 namespace Vidal\MainBundle\Command;
-
+ini_set('memory_limit', -1);
 use Doctrine\Tests\ORM\Functional\NativeQueryTest;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
