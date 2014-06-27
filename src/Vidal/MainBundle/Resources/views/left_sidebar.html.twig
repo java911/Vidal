@@ -32,9 +32,7 @@
 		   class="{{ menu_left is defined and menu_left == 'shkola' ? 'active' : 'dotted' }}">Школа здоровья</a>
 	</li>
 	<li>
-		<a href="/reckittbenckiser/index.html?medi" target="_blank">
-			<button class="btn-red">Без боли</button>
-		</a>
+        <a href="/reckittbenckiser/index.html?medi" target="_blank"><button class="btn-red">Без боли</button></a>
 
 	</li>
 
@@ -55,11 +53,9 @@
 					<a href="{{ path('sonata_admin_dashboard') }}" class="dotted">Панель администратора</a>
 				</li>
 			{% endif %}
-			{% if app.user and app.user.id in [7,8,31,13,16307,16324,19347] %}
-				<li>
-					<a href="{{ path('qa_admin') }}" class="dotted">Ответы</a>
-				</li>
-			{% endif %}
+            <li>
+                <a href="{{ path('qa_admin') }}" class="dotted">Ответы</a>
+            </li>
 			<li>
 				<a href="{{ path('profile') }}" class="dotted">Профиль</a>
 			</li>
