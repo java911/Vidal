@@ -65,22 +65,22 @@
 		{% for name, group in groups %}
 			<div class="group">
 				<div class="molecules">
-					{% if group.molecules|length == 1 %}
+					{% if group.moleculeIds|length == 1 %}
 						<span>Активное вещество: </span>
-					{% elseif group.molecules|length > 1 %}
+					{% elseif group.moleculeIds|length > 1 %}
 						<div>Активные вещества</div>
 					{% endif %}
 
-					{% for MoleculeID in group.molecules %}
+					{% for MoleculeID in group.moleculeIds %}
 						<a href="{{ path('molecule', {'MoleculeID':MoleculeID}) }}">
-							{{ molecules[MoleculeID]|upper|raw }}
+							{{ molecules[MoleculeID]['RusName']|upper|raw }}
 						</a>
 						{% if not loop.last %}
 							+
 						{% endif %}
 					{% endfor %}
 				</div>
-				{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':group.products|values} %}
+				{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':group.products} %}
 			</div>
 		{% endfor %}
 	{% elseif children is empty %}

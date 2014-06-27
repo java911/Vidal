@@ -177,74 +177,46 @@ class DrugsController extends Controller
 			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
 			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 
-			$repo = $em->getRepository('VidalDrugBundle:Molecule');
-			list($molecules, $documentIds) = $repo->findByClPhPointerID($ClPhPointerID);
-			$generics            = $em->getRepository('VidalDrugBundle:Document')->findGenerics($documentIds);
-			$params['molecules'] = $molecules;
+			####################################################################################################
+			# группируем препараты по активному веществу
+			$groups         = array();
+			$unusedProducts = array();
+			$moleculeRepo   = $em->getRepository('VidalDrugBundle:Molecule');
+			$molecules      = $moleculeRepo->findByProductIds($productIds);
 
-			# надо создать группы молекул по каждому препарату
-			$groups = array();
-			$repo   = $em->getRepository('VidalDrugBundle:Molecule');
+			foreach ($products as $product) {
+				$moleculeIds = $moleculeRepo->idsByProduct($product['ProductID']);
 
-			# надо сгруппировать продукты по документу
-			$docs = array();
-
-			for ($i = 0; $i < count($products); $i++) {
-				$key       = $products[$i]['DocumentID'];
-				$productId = $products[$i]['ProductID'];
-				isset($docs[$key])
-					? $docs[$key][$productId] = $products[$i]
-					: $docs[$key] = array(strval($productId) => $products[$i]);
-			}
-
-			# надо считать задействованные документы, а незадействованные препараты потом отдельным списком выводим
-			$usedDocuments = array();
-
-			# группируем препараты по связке активных веществ
-			foreach ($documentIds as $DocumentID) {
-				$moleculeIds = $repo->idsByDocument($DocumentID);
-
-				if (in_array(1144, $moleculeIds) || in_array(2203, $moleculeIds)) {
-					$usedDocuments[] = $DocumentID;
+				if (empty($moleculeIds) || in_array(1144, $moleculeIds) || in_array(2203, $moleculeIds)) {
 					continue;
 				}
 
-				if (count($moleculeIds) > 3 || $generics[$DocumentID]) {
+				if (($key = array_search(1144, $moleculeIds)) !== false) {
+					unset($moleculeIds[$key]);
+				}
+				if (($key = array_search(2203, $moleculeIds)) !== false) {
+					unset($moleculeIds[$key]);
+				}
+
+				if (empty($moleculeIds) || count($moleculeIds) > 3) {
+					$unusedProducts[] = $product;
 					continue;
 				}
 
 				$group = implode('-', $moleculeIds);
 
 				if (isset($groups[$group])) {
-					$groups[$group]['documents'][] = $DocumentID;
-					if (isset($docs[$DocumentID])) {
-						foreach ($docs[$DocumentID] as $productId => $product) {
-							if (!isset($groups[$group]['products'][$productId])) {
-								$groups[$group]['products'][$productId] = $product;
-							}
-						}
-					}
+					$groups[$group]['products'][] = $product;
 				}
 				else {
-					$groups[$group]['documents'] = array($DocumentID);
-					$groups[$group]['molecules'] = $moleculeIds;
-					$groups[$group]['products']  = isset($docs[$DocumentID]) ? $docs[$DocumentID] : array();
-				}
-
-				$usedDocuments[] = $DocumentID;
-			}
-
-			# надо получить список незадействованных препаратов
-			$unusedProducts = array();
-
-			foreach ($products as $product) {
-				if (!in_array($product['DocumentID'], $usedDocuments)) {
-					$unusedProducts[] = $product;
+					$groups[$group]['products']    = array($product);
+					$groups[$group]['moleculeIds'] = $moleculeIds;
 				}
 			}
 
-			$params['unusedProducts'] = $unusedProducts;
+			$params['molecules']      = $molecules;
 			$params['groups']         = $groups;
+			$params['unusedProducts'] = $unusedProducts;
 		}
 
 		return $params;

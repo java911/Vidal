@@ -240,8 +240,8 @@
 	and document.molecules|length < 5
 	and not document.ShowGenericsOnlyInGNList %}
 		<div class="block">
-			{% if document.molecules|length == 1 %}
-				{% set molecule = document.molecules[0] %}
+			{% if molecules|length == 1 %}
+				{% set molecule = molecules[0] %}
 				{% set gn = molecule.GNParent %}
 
 				{% if document.molecules[0].MoleculeID != 1144 %}

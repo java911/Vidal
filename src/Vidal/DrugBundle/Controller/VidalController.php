@@ -473,11 +473,13 @@ class VidalController extends Controller
 			$params['nozologies'] = $em->getRepository('VidalDrugBundle:Nozology')->findByDocumentID($documentId);
 		}
 
-		$productIds             = array($product->getProductID());
+		$productId              = $product->getProductID();
+		$productIds             = array($productId);
 		$params['product']      = $product;
 		$params['products']     = array($product);
 		$params['owners']       = $em->getRepository('VidalDrugBundle:Company')->findOwnersByProducts($productIds);
 		$params['distributors'] = $em->getRepository('VidalDrugBundle:Company')->findDistributorsByProducts($productIds);
+		$params['molecules']    = $em->getRepository('VidalDrugBundle:Molecule')->findByProductId($productId);
 
 		# медицинские изделия выводятся по-другому
 		if ($product->isMI()) {

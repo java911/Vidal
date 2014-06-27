@@ -28,7 +28,7 @@ class MoleculeRepository extends EntityRepository
 	public function findByDocumentID($DocumentID)
 	{
 		return $this->_em->createQuery('
-			SELECT m.MoleculeID, m.LatName, m.RusName, mnn.GNParent, mnn.description
+			SELECT m
 			FROM VidalDrugBundle:Molecule m
 			LEFT JOIN m.documents d
 			LEFT JOIN VidalDrugBundle:MoleculeBase mnn WITH mnn.GNParent = m.GNParent
@@ -39,26 +39,15 @@ class MoleculeRepository extends EntityRepository
 
 	public function findByProductID($ProductID)
 	{
-		$molecules = $this->_em->createQuery('
-			SELECT DISTINCT m.MoleculeID, m.LatName, m.RusName, mnn.GNParent, mnn.description
+		return $this->_em->createQuery('
+			SELECT m
 			FROM VidalDrugBundle:Molecule m
-			LEFT JOIN VidalDrugBundle:MoleculeName mn WITH mn.MoleculeID = m
-			LEFT JOIN mn.products p
-			LEFT JOIN VidalDrugBundle:MoleculeBase mnn WITH mnn.GNParent = m.GNParent
-			WHERE p = :ProductID
+			JOIN m.moleculeNames mn
+			JOIN mn.products p
+			WHERE p.ProductID = :ProductID
+				AND m.MoleculeID NOT IN (1144,2203)
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
-
-		# с этими идентификаторами надо возвращать пустой список (Мария)
-		$stopIds = array(1144, 2203);
-
-		foreach ($molecules as $molecule) {
-			if (in_array($molecule['MoleculeID'], $stopIds)) {
-				return array();
-			}
-		}
-
-		return $molecules;
 	}
 
 	public function findOneByProductID($ProductID)
@@ -327,16 +316,40 @@ class MoleculeRepository extends EntityRepository
 		");
 	}
 
-	# надо получить список идентификаторов молекул у этого документа в строку
-	public function idsByDocument($DocumentID)
+	public function findByProductIds($productIds)
+	{
+		$raw = $this->_em->createQuery('
+			SELECT DISTINCT m.MoleculeID, m.RusName, m.LatName
+			FROM VidalDrugBundle:Molecule m
+			JOIN m.moleculeNames mn
+			JOIN mn.products p
+			WHERE p.ProductID IN (:productIds)
+				AND m.MoleculeID NOT IN (1144, 2203)
+			ORDER BY m.MoleculeID ASC
+		')->setParameter('productIds', $productIds)
+			->getResult();
+
+		$molecules = array();
+
+		foreach ($raw as $r) {
+			$key             = $r['MoleculeID'];
+			$molecules[$key] = $r;
+		}
+
+		return $molecules;
+	}
+
+	# надо получить список идентификаторов молекул у этого продукта
+	public function idsByProduct($ProductID)
 	{
 		$raw = $this->_em->createQuery('
 			SELECT m.MoleculeID
 			FROM VidalDrugBundle:Molecule m
-			JOIN m.documents d
-			WHERE d.DocumentID = :DocumentID
+			JOIN m.moleculeNames mn
+			JOIN mn.products p
+			WHERE p.ProductID = :ProductID
 			ORDER BY m.MoleculeID ASC
-		')->setParameter('DocumentID', $DocumentID)
+		')->setParameter('ProductID', $ProductID)
 			->getResult();
 
 		$moleculeIds = array();
