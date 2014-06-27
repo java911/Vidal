@@ -235,35 +235,30 @@
 	{% endif %}
 
 	{# Блок активных веществ #}
-	{% if document is defined
-	and document.molecules is not empty
-	and document.molecules|length < 5
-	and not document.ShowGenericsOnlyInGNList %}
+	{% if molecules is not empty and molecules|length < 5 and (document is not defined or not document.ShowGenericsOnlyInGNList) %}
 		<div class="block">
 			{% if molecules|length == 1 %}
 				{% set molecule = molecules[0] %}
 				{% set gn = molecule.GNParent %}
 
-				{% if document.molecules[0].MoleculeID != 1144 %}
-					<span class="block-head">Активное вещество:</span>
-					<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
-					   class="no-underline">{{ molecule.RusName }}</a>
-					{% if molecule.RusName %}
-						<span class="small">({{ molecule.LatName }})</span>
-					{% endif %}
-					{% if gn is not empty %}
-						<div style="padding-left:146px">
-							<a title="Международное непатентованное наименование (МНН)" href="{{ path('gnp') }}"
-							   class="no-underline mnn">{{ gn.GNParent }}
-							</a>
-							<span class="small italic">{{ gn.description }}</span>
-						</div>
-					{% endif %}
+				<span class="block-head">Активное вещество:</span>
+				<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
+				   class="no-underline">{{ molecule.RusName }}</a>
+				{% if molecule.RusName %}
+					<span class="small">({{ molecule.LatName }})</span>
+				{% endif %}
+				{% if gn is not empty %}
+					<div style="padding-left:146px">
+						<a title="Международное непатентованное наименование (МНН)" href="{{ path('gnp') }}"
+						   class="no-underline mnn">{{ gn.GNParent }}
+						</a>
+						<span class="small italic">{{ gn.description }}</span>
+					</div>
 				{% endif %}
 			{% else %}
 				<div class="block-head">Активные вещества</div>
 				<ul class="ul-style">
-					{% for molecule in document.molecules %}
+					{% for molecule in molecules %}
 						{% set gn = molecule.GNParent %}
 						<li>
 							<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
@@ -351,11 +346,17 @@
 			{% spaceless %}
 				<textarea cols="92" rows="2">
 					{% if product is defined %}
-						<a href="{{ url('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}" target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+						<a href="{{ url('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"
+						   target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике
+							Видаль.</a>
 					{% elseif documentId is defined %}
-						<a href="{{ url('document', {'EngName':document.Name, 'DocumentID':document.DocumentID}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+						<a href="{{ url('document', {'EngName':document.Name, 'DocumentID':document.DocumentID}) }}"
+						   target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике
+							Видаль.</a>
 					{% else %}
-						<a href="{{ url('document', {'EngName':document.Name}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
+						<a href="{{ url('document', {'EngName':document.Name}) }}"
+						   target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике
+							Видаль.</a>
 					{% endif %}
 				</textarea>
 			{% endspaceless %}

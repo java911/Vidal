@@ -228,14 +228,12 @@
 	{% endif %}
 
 	{# Блок активных веществ #}
-	{% if document is defined
-	and document.molecules is not empty
-	and document.molecules|length < 5
-	and not document.ShowGenericsOnlyInGNList %}
+	{% if molecules is not empty and molecules|length < 5 and (document is not defined or not document.ShowGenericsOnlyInGNList) %}
 		<div class="block">
-			{% if document.molecules|length == 1 %}
-				{% set molecule = document.molecules[0] %}
+			{% if molecules|length == 1 %}
+				{% set molecule = molecules[0] %}
 				{% set gn = molecule.GNParent %}
+
 				<span class="block-head">Активное вещество:</span>
 				<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
 				   class="no-underline">{{ molecule.RusName }}</a>

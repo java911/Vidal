@@ -187,18 +187,7 @@ class DrugsController extends Controller
 			foreach ($products as $product) {
 				$moleculeIds = $moleculeRepo->idsByProduct($product['ProductID']);
 
-				if (empty($moleculeIds) || in_array(1144, $moleculeIds) || in_array(2203, $moleculeIds)) {
-					continue;
-				}
-
-				if (($key = array_search(1144, $moleculeIds)) !== false) {
-					unset($moleculeIds[$key]);
-				}
-				if (($key = array_search(2203, $moleculeIds)) !== false) {
-					unset($moleculeIds[$key]);
-				}
-
-				if (empty($moleculeIds) || count($moleculeIds) > 3) {
+				if (empty($moleculeIds) || count($moleculeIds) > 3 || in_array(1144, $moleculeIds) || in_array(2203, $moleculeIds)) {
 					$unusedProducts[] = $product;
 					continue;
 				}

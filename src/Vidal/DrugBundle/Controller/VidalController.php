@@ -481,6 +481,8 @@ class VidalController extends Controller
 		$params['distributors'] = $em->getRepository('VidalDrugBundle:Company')->findDistributorsByProducts($productIds);
 		$params['molecules']    = $em->getRepository('VidalDrugBundle:Molecule')->findByProductId($productId);
 
+		//var_dump(count($params['molecules']));exit;
+
 		# медицинские изделия выводятся по-другому
 		if ($product->isMI()) {
 			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds);
