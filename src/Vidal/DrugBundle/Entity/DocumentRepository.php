@@ -36,6 +36,25 @@ class DocumentRepository extends EntityRepository
 			->getOneOrNullResult();
 	}
 
+	public function findGenerics($documentIds)
+	{
+		$raw = $this->_em->createQuery('
+		 	SELECT d.DocumentID, d.ShowGenericsOnlyInGNList generic
+		 	FROM VidalDrugBundle:Document d
+		 	WHERE d.DocumentID IN (:documentIds)
+		')->setParameter('documentIds', $documentIds)
+			->getResult();
+
+		$generics = array();
+
+		foreach ($raw as $r) {
+			$key            = $r['DocumentID'];
+			$generics[$key] = $r['generic'];
+		}
+
+		return $generics;
+	}
+
 	public function findByName($name)
 	{
 		# обрезаем расширение после точки и разбиваем по тире
@@ -196,10 +215,10 @@ class DocumentRepository extends EntityRepository
 				->setParameter('nozologyCodes', $nozologyCodes);
 		}
 
-		$documents = $qb->getQuery()->getResult();
+		$documents   = $qb->getQuery()->getResult();
 		$documentIds = array();
 
-		for ($i=0, $c=count($documents); $i<$c; $i++) {
+		for ($i = 0, $c = count($documents); $i < $c; $i++) {
 			$documentIds[] = $documents[$i]['DocumentID'];
 		}
 
@@ -218,8 +237,8 @@ class DocumentRepository extends EntityRepository
 
 		$indications = array();
 
-		for ($i=0; $i<count($raw); $i++) {
-			$key = $raw[$i]['ProductID'];
+		for ($i = 0; $i < count($raw); $i++) {
+			$key               = $raw[$i]['ProductID'];
 			$indications[$key] = $raw[$i]['Indication'];
 		}
 
@@ -229,7 +248,7 @@ class DocumentRepository extends EntityRepository
 	public function findOneByText($text)
 	{
 		$pos = strpos($text, ' ');
-		$id = intval(substr($text, 0, $pos));
+		$id  = intval(substr($text, 0, $pos));
 
 		return $this->_em->createQuery('
 			SELECT d

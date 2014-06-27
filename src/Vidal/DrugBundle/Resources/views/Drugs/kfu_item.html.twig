@@ -92,7 +92,7 @@
 	{% if unusedProducts is defined and unusedProducts is not empty %}
 		<div class="group">
 			<div class="molecules">
-				<span>Остальные препараты группы</span>
+				<span>{{ groups is empty ? 'Препараты группы' : 'Остальные препараты группы' }}</span>
 			</div>
 		</div>
 		{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':unusedProducts} %}
