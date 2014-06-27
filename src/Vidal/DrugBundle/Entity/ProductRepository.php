@@ -533,7 +533,6 @@ class ProductRepository extends EntityRepository
 			->getResult();
 
 		$marketStatuses = array();
-
 		for ($i = 0; $i < count($raw); $i++) {
 			$key              = $raw[$i]['ProductID'];
 			$marketStatuses[] = $raw[$i]['MarketStatus'];
