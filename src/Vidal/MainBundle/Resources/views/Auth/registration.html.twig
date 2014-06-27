@@ -27,12 +27,42 @@
 		{{ form_widget(form) }}
 		<p class="addition-info">Специализацию вы можете указать в профиле после регистрации</p>
 	</form>
+
+	<img id="help" src="{{ asset('bundles/vidalmain/images/help.png') }}" title="Образец заполнения"/>
+	<div id="helper">
+		<div class="helper-header">Образец заполнения</div>
+		<img src="{{ asset('bundles/vidalmain/images/register.bmp') }}"/>
+	</div>
 {% endblock %}
 
 
 {% block stylesheets %}
 	{{ parent() }}
 	<style type="text/css">
+		#help {
+			position: absolute;
+			display:  inline-block;
+			top:      51px;
+			right:    0;
+			width:    35px;
+			cursor:   pointer;
+		}
+		#helper {
+			display:          none;
+			position:         absolute;
+			top:              51px;
+			right:            -348px;
+			width:            340px;
+			background-color: #eee;
+			text-align:       center;
+			box-shadow:       0 0 10px rgba(0, 0, 0, 0.5);
+		}
+		.helper-header {
+			padding:     8px 0 10px;
+			color:       #476173;
+			font-weight: bold;
+			font-size:   18px;
+		}
 		.reg-info {
 			color:     #777777;
 			margin:    10px 0 20px;
@@ -62,7 +92,7 @@
 		}
 		.eula {
 			margin: 0 0 6px;
-			color: #666d75;
+			color:  #666d75;
 		}
 		.eula a {
 			font-weight: bold;
@@ -118,6 +148,10 @@
 			});
 
 			$('#register_form input[type="checkbox"]').checkbox();
+
+			$('#help').click(function() {
+				$('#helper').toggle();
+			});
 		});
 	</script>
 {% endblock %}

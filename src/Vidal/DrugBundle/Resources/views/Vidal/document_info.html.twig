@@ -246,15 +246,8 @@
 {# Лекарственное взаимодействие #}
 {% if document.Interaction is not empty %}
 	<div class="block" id="interaction">
-		{% if isDoctor %}
-			<div class="block-head">Лекарственное взаимодействие</div>
-			<div class="block-content">{{ document.Interaction|raw }}</div>
-		{% else %}
-			<div class="block-head">
-				<a href="#" class="closed-link">Лекарственное взаимодействие</a>
-			</div>
-			{% include 'VidalMainBundle:Auth:closed_info.html.twig' %}
-		{% endif %}
+		<div class="block-head">Лекарственное взаимодействие</div>
+		<div class="block-content">{{ document.Interaction|raw }}</div>
 	</div>
 {% endif %}
 
