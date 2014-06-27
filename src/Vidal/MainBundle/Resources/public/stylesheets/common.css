@@ -1491,3 +1491,40 @@ tr.bold td {
 	font-size:    12px;
 	color:        #999;
 }
+
+/* реклама вакансий */
+#phrpAd {
+	background: #F5F5F5;
+	border:     1px solid #CED2D5 !important;
+}
+#phrpAd h1 {
+	background-color: #D8DBE2 !important;
+	color:            #476173 !important;
+	font-size:        12px !important;
+	padding:          0 0 2px !important;
+	margin-bottom:    5px !important;
+}
+#phrpAd a {
+	text-decoration: none !important;
+	color:           #555 !important;
+}
+#phrpAd a:hover {
+	text-decoration: underline !important;
+}
+#phrpAd .aSTtl a {
+	font-size: 11px;
+	color:     #d71344 !important;
+}
+#phrpAd .aCt {
+	font-weight: normal !important;
+	color:       gray !important;
+	font-size:   11px;
+}
+#phrpAd .aTtl {
+	font-size: 12px !important;
+}
+#phrpAd .aItem {
+	margin:         2px 10px 0px 10px !important;
+	border-bottom:  1px dashed #CED2D5;
+	padding-bottom: 3px;
+}
