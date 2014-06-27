@@ -162,8 +162,8 @@ class IndexController extends Controller
      */
     public function confirmationDoctorAction(Request $request){
         $user = $this->getUser();
-        $scan = $user->getConfirmationScan();
-        if ( empty($scan)){
+        $scan = $user->getConfirmation();
+        if ( $scan == 0){
             return $this->redirect($this->generateUrl('profile').'#work');
         }else{
             return array();
