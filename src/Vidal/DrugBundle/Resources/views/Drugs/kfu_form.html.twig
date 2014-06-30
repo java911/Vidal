@@ -63,7 +63,7 @@
 					query += ', "filter":{"term" :{"type" : "kfu"}}';
 					query += ' }';
 					$.ajax({
-						url:      "http://twiga.vidal.ru:9200/website/autocomplete_ext/_search",
+						url:      "http://localhost:9200/website/autocomplete_ext/_search",
 						type:     "POST",
 						dataType: "JSON",
 						data:     query,

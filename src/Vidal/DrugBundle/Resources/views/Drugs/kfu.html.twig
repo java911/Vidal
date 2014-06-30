@@ -71,10 +71,7 @@
 					</tr>
 					{% for code in codes %}
 						<tr>
-							<td>
-								<a href="{{ path('kfu_item', {'code':code.Code}) }}"
-								   class="no-underline">{{ code.Code }}</a>
-							</td>
+							<td>{{ code.Code }}</td>
 							<td>
 								{% if code.countProducts > 0 %}
 									<a href="{{ path('kfu_item', {'code':code.Code}) }}" class="no-underline">

@@ -199,15 +199,11 @@ class ClinicoPhPointersRepository extends EntityRepository
 			$name      = preg_replace($patterns, $replacements, $codes[$i]['Name']);
 			$name      = mb_strtolower(str_replace('  ', ' ', $name), 'UTF-8');
 
-			if (!empty($name)) {
-				$names[] = $name;
-			}
-
-			if (!empty($EngName)) {
-				$atcNames[] = mb_strtolower($atcCodes[$i]['ATCCode'], 'UTF-8') . ' > ' . $EngName;
+			if (!empty($name) && !isset($names[$name])) {
+				$names[$name] = '';
 			}
 		}
 
-		return $names;
+		return array_keys($names);
 	}
 }
