@@ -22,10 +22,10 @@ class AutocompleteExtCommand extends ContainerAwareCommand
 
 		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
-//		$productNames  = $em->getRepository('VidalDrugBundle:Product')->findAutocomplete();
-//		$moleculeNames = $em->getRepository('VidalDrugBundle:Molecule')->findAutocomplete();
-//		$companyNames  = $em->getRepository('VidalDrugBundle:Company')->findAutocomplete();
-//		$atcNames      = $em->getRepository('VidalDrugBundle:ATC')->findAutocomplete();
+		$productNames  = $em->getRepository('VidalDrugBundle:Product')->findAutocomplete();
+		$moleculeNames = $em->getRepository('VidalDrugBundle:Molecule')->findAutocomplete();
+		$companyNames  = $em->getRepository('VidalDrugBundle:Company')->findAutocomplete();
+		$atcNames      = $em->getRepository('VidalDrugBundle:ATC')->findAutocomplete();
 		$kfuNames      = $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->findAutocomplete();
 
 		$elasticaClient = new \Elastica\Client();
@@ -50,10 +50,10 @@ class AutocompleteExtCommand extends ContainerAwareCommand
 		$mapping->send();
 
 		# записываем в ElasticSearch документы автодополнения
-//		$this->save($productNames, 'product', $output, $elasticaType);
-//		$this->save($moleculeNames, 'molecule', $output, $elasticaType);
-//		$this->save($companyNames, 'company', $output, $elasticaType);
-//		$this->save($atcNames, 'atc', $output, $elasticaType);
+		$this->save($productNames, 'product', $output, $elasticaType);
+		$this->save($moleculeNames, 'molecule', $output, $elasticaType);
+		$this->save($companyNames, 'company', $output, $elasticaType);
+		$this->save($atcNames, 'atc', $output, $elasticaType);
 		$this->save($kfuNames, 'kfu', $output, $elasticaType);
 
 		$output->writeln("+++ vidal:autocomplete_ext completed!");
