@@ -37,13 +37,7 @@
 			{% for nozology in codesByLetter %}
 				<tr{{ nozology.Level == 1 ? ' class="bold"' }}>
 					<td style="padding-left:{{ (nozology.Level-1) * 13 }}px">
-						{% if nozology.countProducts > 0 %}
-							<a href="{{ path('nosology_item', {'Code':nozology.code}) }}" target="_blank">
-								{{ nozology.code|raw }}
-							</a>
-						{% else %}
-							{{ nozology.code|raw }}
-						{% endif %}
+						{{ nozology.code|raw }}
 					</td>
 					<td>
 						{% if nozology.countProducts > 0 %}
