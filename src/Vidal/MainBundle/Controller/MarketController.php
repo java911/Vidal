@@ -38,6 +38,39 @@ class MarketController extends Controller{
         '10' => 'Самовывоз',
         '11' => 'Срочная доставка в течение 2-х часов - 250 руб.',
     );
+
+
+
+
+    protected $shippingPiluli = Array(
+        '1' => '100',
+        '2' => '0',
+        '3' => '150',
+        '4' => '200',
+        '5' => '300',
+        '6' => '400',
+        '7' => '500',
+        '8' => '600',
+        '9' => '800',
+        '10' => '1000',
+    );
+
+    protected $shippingTitlePiluli = array(
+        '1' => 'Москва в пределах МКАД, а также районы: Северное и Южное Бутово, Новокосино, Жулебино, Митино - 100 руб.',
+        '2' => 'При заказе на сумму от 900 рублей в пределах МКАД, а также районы: Северное и Южное Бутово, Новокосино, Жулебино, Митино - бесплатно',
+        '3' => 'Отдаленные районы Москвы Солнцево, Павшинская пойма и др. - 150 руб.',
+        '4' => 'Подмосковье до 5 км от МКАД  - 200 руб.',
+        '5' => 'Подмосковье 5-10 км от МКАД   - 300 руб.',
+        '6' => 'Подмосковье 10-15 км от МКАД - 400 руб.',
+        '7' => 'Подмосковье 15-20 км от МКАД  - 500 руб.',
+        '8' => 'Подмосковье 20-30 км от МКАД  - 600 руб.',
+        '9' => 'Подмосковье 30-40 км от МКАД  - 800 руб.',
+        '10' => 'Подмосковье 40-50 км от МКАД  - 1000 руб.',
+    );
+
+
+
+
     protected $status = array(
         0 => 'принят',
         1 => 'в обработке',
@@ -195,6 +228,13 @@ class MarketController extends Controller{
 //            $session->start();
 //        }
 
+        if ($group == 'piluli'){
+            $array = $this->shippingTitlePiluli;
+        }else{
+            $array = $this->shippingTitle;
+        }
+
+
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         # генерация формы
@@ -212,7 +252,7 @@ class MarketController extends Controller{
             ->add('phone', null, array('label' => 'Телефон'))
             ->add('adress', null, array('label' => 'Адрес'))
 
-            ->add('shipping', 'choice', array('label' => 'Выбор доставки', 'choices' => $this->shippingTitle, 'attr' => array( 'class' => 'delivery-select')))
+            ->add('shipping', 'choice', array('label' => 'Выбор доставки', 'choices' => $array, 'attr' => array( 'class' => 'delivery-select')))
             ->add('comment', null, array('label' => 'Комментарий к доставке'))
             ->add('groupApt', 'hidden')
             ->add('submit', 'submit', array('label' => 'Отправить заказ', 'attr' => array('class' => 'btn-red')));
