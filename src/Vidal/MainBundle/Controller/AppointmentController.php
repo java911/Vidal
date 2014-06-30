@@ -125,9 +125,9 @@ class AppointmentController extends Controller
      */
     public function soapTestAction(){
         $cert="/var/www/vidal/web/sert/testSSLClient.pem"; //Сертификат
-        $wsdl="https://mosmedzdrav.ru:10002/emias-soap-sercvice/PGUServicesInfo2?wsdl"; //Адрес wdsl сервиса
+        $wsdl="https://mosmedzdrav.ru:10002/emias-soap-service/PGUServicesInfo2?wsdl"; //Адрес wdsl сервиса
 //        $wsdl="http://schemas.xmlsoap.org/soap/envelope"; //Адрес wdsl сервиса
-        $loc = "https://mosmedzdrav.ru:10002/emias-soap-sercvice/PGUServicesInfo2"; //Адрес точки доступа
+        $loc = "https://mosmedzdrav.ru:10002/emias-soap-service/PGUServicesInfo2?wsdl"; //Адрес точки доступа
         $pass = 'testSSLClient';
         if (!is_file($cert)){
             echo 'sd';
@@ -141,34 +141,47 @@ class AppointmentController extends Controller
             ),
         );
         $sslContext = stream_context_create($sslOptions);
-        $sp = new \SoapClient(null,array(
+        $sp = new \SoapClient($wsdl,array(
             'local_cert' => $cert,
             'passphrase'    => $pass,
             'stream_context' => $sslContext,
             'trace' => 1,
-            'exceptions' => 1,
+            'exceptions' => 0,
             'soap_version' => SOAP_1_2,
             'location' =>$loc,
-            'uri' =>$wsdl,
+//            'uri' =>$wsdl,
             "authentication"=>SOAP_AUTHENTICATION_DIGEST,
             "style"=>SOAP_DOCUMENT,
             "use"=>SOAP_LITERAL,
-            'cache_wsdl' => WSDL_CACHE_NONE
+//            'cache_wsdl' => WSDL_CACHE_NONE,
+//            'wsdl_cache_enabled' => false
         ));
         try{
 //            var_dump($sp);
-//            var_dump($sp->__getFunctions());
-            exit;
-//            $data = $sp->__soapCall("getSpecialitiesInfo",array($omsNumber,$birthDate,$externalSystemId));
+
             $omsNumber = 'R25090000002789';
             $omsSeries = '';
-            $birthDate = '2083-08-17';
-//            $birthDate = new \DateTime('2083-08-17');
-            $externalSystemId = 'MIS';
+//            $birthDate = '2083-08-17';
+            $birthDate = new \DateTime('1983-08-17');
+            $externalSystemId = 'MPGU';
+
+//            var_dump($sp->__getFunctions());
+//            exit;
+//            $data = $sp->getSpecialitiesInfo(array(
+//                'omsNumber' => $omsNumber,
+//                'birthDate' => $birthDate,
+//                'externalSystemId' => $externalSystemId
+//            ));
+
+            var_dump($sp->__soapCall('getSpecialitiesInfo',array('779999','9992511111','1987-02-06', 'MPGU')));
+//            exit;
+//            var_dump($data);
+
+
             try{
 //                $data = $sp->getSpecialitiesInfo($omsNumber,$birthDate,$externalSystemId);
 //                $data = $sp->__soapCall("getSpecialitiesInfo",array($omsNumber,$birthDate,$externalSystemId));
-                print_r($data);
+//                print_r($data);
             }catch (SoapFault $e){
                 echo $e->getMessage();
                 exit;
