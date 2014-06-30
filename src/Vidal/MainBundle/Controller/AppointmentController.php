@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Vidal\MainBundle\Entity\Appointment;
-
+use Vidal\MainBundle\Appointment\AppSoap;
 
 class AppointmentController extends Controller
 {
@@ -27,6 +27,8 @@ class AppointmentController extends Controller
             return true;
         }
     }
+
+
 
     /**
      * @Route("/appointment", name="appointment")
@@ -57,12 +59,23 @@ class AppointmentController extends Controller
                 $session = $request->getSession();
                 $session->set('EmiasBirthdate',$appointment->getBirthdate());
                 $session->set('EmiasOms',$appointment->getOMSCode());
+                $session->set('EmiasEmail',$appointment->getEmail());
                 $session->save();
-                return $this->redirect($this->generateUrl('appointment_list'));
+
+                $soap = $this->createConnection();
+                $specialties = $soap->getSpecialitiesInfo(array('omsNumber'=>'9988889785000068', 'birthDate'=>'2011-04-14T00:00:00', 'externalSystemId'=>'MPGU'));
+
+                if (is_array($specialties->return)){
+                    return $this->render('VidalMainBundle:Appointment:appointment_set_spec.html.twig', array('specialties' => $specialties->return));
+                }
             }
         }
         return array('form' => $form->createView());
     }
+
+
+
+
 
     /**
      * Список действительных записей
@@ -75,62 +88,13 @@ class AppointmentController extends Controller
         return array('appointmentList' => $appointmentList );
     }
 
-    /**
-     * @Route("/appointment-create", name="appointment_create")
-     */
-    public function createAction(){
-        if ( $this->isAuth() == false ){ return $this->redirect($this->generateUrl('appointment')); }
 
-        return array();
-    }
-
-    /**
-     * Отклонение заявки
-     * @Route("/appointment-remove/{appointmentId}", name="appointment_remove")
-     * @Template()
-     */
-    public function removeAction($appointmentId){
-
-    }
-
-    /**
-     * Получаем спициальности доступных врачей с ЕМИАСа
-     */
-    protected  function getSpecialty(){}
-
-    /**
-     * Получаем докторов по выбранной специальности с ЕМИАСа
-     */
-    protected function getDoctorsInfo($specialityId){}
-
-    /**
-     * Получаем расписание выбраного врача
-     */
-    protected function getAvailableResourceScsheduleInfo($availableResourceId, $complexResourceId){}
-
-    /**
-     * Создание заявки
-     * @param $availableResourceId
-     * @param $complexResourceId
-     * @param $receptionDate ( Дата регистрации )
-     * @param $startTime ( Время начала приема )
-     * @param $endTime ( Время окончания приема )
-     */
-    protected function createAppointment($availableResourceId,$complexResourceId,$receptionDate,$startTime,$endTime){
-
-    }
-
-    /**
-     * @Route("/soaptest", name="soaptest")
-     */
-    public function soapTestAction(){
+    protected function createConnection(){
         $cert="/var/www/vidal/web/sert/testSSLClient.pem"; //Сертификат
         $wsdl="https://mosmedzdrav.ru:10002/emias-soap-service/PGUServicesInfo2?wsdl"; //Адрес wdsl сервиса
-//        $wsdl="http://schemas.xmlsoap.org/soap/envelope"; //Адрес wdsl сервиса
-        $loc = "https://mosmedzdrav.ru:10002/emias-soap-service/PGUServicesInfo2?wsdl"; //Адрес точки доступа
         $pass = 'testSSLClient';
         if (!is_file($cert)){
-            echo 'sd';
+            echo 'file certificate not found!';
             exit;
         }
         $sslOptions = array(
@@ -141,56 +105,17 @@ class AppointmentController extends Controller
             ),
         );
         $sslContext = stream_context_create($sslOptions);
-        $sp = new \SoapClient($wsdl,array(
+        $sp = new \SoapClient($wsdl ,array(
             'local_cert' => $cert,
             'passphrase'    => $pass,
             'stream_context' => $sslContext,
-            'trace' => 1,
+            'trace' => 0,
             'exceptions' => 0,
-            'soap_version' => SOAP_1_2,
-            'location' =>$loc,
-//            'uri' =>$wsdl,
-            "authentication"=>SOAP_AUTHENTICATION_DIGEST,
-            "style"=>SOAP_DOCUMENT,
-            "use"=>SOAP_LITERAL,
-//            'cache_wsdl' => WSDL_CACHE_NONE,
-//            'wsdl_cache_enabled' => false
+            'cache_wsdl' => WSDL_CACHE_NONE,
+            'wsdl_cache_enabled' => false
         ));
-        try{
-//            var_dump($sp);
 
-            $omsNumber = 'R25090000002789';
-            $omsSeries = '';
-//            $birthDate = '2083-08-17';
-            $birthDate = new \DateTime('1983-08-17');
-            $externalSystemId = 'MPGU';
-
-//            var_dump($sp->__getFunctions());
-//            exit;
-//            $data = $sp->getSpecialitiesInfo(array(
-//                'omsNumber' => $omsNumber,
-//                'birthDate' => $birthDate,
-//                'externalSystemId' => $externalSystemId
-//            ));
-
-            var_dump($sp->__soapCall('getSpecialitiesInfo',array('779999','9992511111','1987-02-06', 'MPGU')));
-//            exit;
-//            var_dump($data);
-
-
-            try{
-//                $data = $sp->getSpecialitiesInfo($omsNumber,$birthDate,$externalSystemId);
-//                $data = $sp->__soapCall("getSpecialitiesInfo",array($omsNumber,$birthDate,$externalSystemId));
-//                print_r($data);
-            }catch (SoapFault $e){
-                echo $e->getMessage();
-                exit;
-            }
-        }  catch (SoapFault $e) {
-            echo "<h2>Exception Error!</h2>";
-            echo $sp->__getLastRequest();
-            echo get_class($e);
-            echo $e->getMessage();
-        }
+        return $sp;
     }
+
 }

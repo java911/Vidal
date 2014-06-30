@@ -1,0 +1,44 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block title %}
+    <h1>Шаг первый - выберите специальность</h1>
+{% endblock %}
+
+{% block content %}
+    {% if specialties is not empty %}
+            <div class="spec-box">
+            {% for spec in specialties %}
+                <div id="{{ spec.code }}">{{ spec.name }}</div>
+            {% endfor %}
+            </div>
+    {% else %}
+        Записи к врачам отсутствуют. <a href="{{ path('appointment_create') }}">Записаться</a>
+    {% endif %}
+{% endblock %}
+
+
+
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .spec-box{
+            width: 280px;
+        }
+        .spec-box div{
+            margin-top: -1px;
+            border: 1px solid #cc0000;
+            padding: 5px 10px;
+        }
+
+        .spec-box div:hover{
+            background: #eeeeee;
+            cursor: pointer;
+        }
+    </style>
+{% endblock %}

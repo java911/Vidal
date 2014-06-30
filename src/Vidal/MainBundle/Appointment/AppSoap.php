@@ -2,7 +2,7 @@
 
 namespace Vidal\MainBundle\Appointment;
 
-class Appointment{
+class AppSoap{
 
     /**
      * Данные для соединения
@@ -25,23 +25,22 @@ class Appointment{
      */
     protected $data;
 
-
-    public function __constructor($container){
-        $this->certificate = $container->getParameter('soap_certificate');
-        $this->wsdl =        $container->getParameter('soap_wsdl');
-        $this->pass =        $container->getParameter('soap_pass');
+    function  __construct(){
+        $this->certificate = '/var/www/vidal/web/sert/testSSLClient.pem';
+        $this->wsdl = 'https://mosmedzdrav.ru:10002/emias-soap-service/PGUServicesInfo2?wsdl';
+        $this->pass = 'testSSLClient';
         $this->user = array();
         $this->data['externalSystemId'] = 'MPGU';
 
         $this->sslOptions = array(
             'ssl' => array(
-                'cafile' => $container->getParameter('soap_ssl'),
+                'cafile' => "/var/www/vidal/web/sert/RootMedCA.cer",
                 'allow_self_signed' => true,
                 'verify_peer' => false,
             ),
         );
 
-        $sslContext = stream_context_create($this->$sslOptions);
+        $sslContext = stream_context_create($this->sslOptions);
 
         $this->soap = new \SoapClient($this->wsdl ,array(
             'local_cert' => $this->certificate,
@@ -81,7 +80,7 @@ class Appointment{
     public function getSpecialities(){
         if ( $this->validationArray(array('omsNumber','birthDate','externalSystemId')) ){
             $data['omsNumber'] = $this->data['omsNumber'];
-            $data['birthDate'] = $this->data['birthDate'];
+            $data['birthDate'] = $this->data['birthDate']->format('d-m-Y').'T00:00:00';
             $data['externalSystemId'] = $this->data['externalSystemId'];
             $result = $this->soap->getSpecialitiesInfo($data);
         }else{
