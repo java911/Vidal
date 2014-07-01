@@ -2,99 +2,198 @@
 
 
 {% block vidal %}
-	{% if menu_drugs is defined %}
-		{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' %}
+	{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' %}
+
+	{% if showTree is defined %}
+		<div class="description">
+			<span>Клинико-фармакологический указатель</span>
+
+			<div>
+				Позволяет искать группы препаратов.
+				Cоставлен на основании материалов, представленных в российских и зарубежных монографиях по
+				фармакологии с использованием публикаций в периодических медицинских изданиях последних лет.
+				<br/>
+				<i>Например</i>:
+				<a href="#33" data="33">Гомеопатические средства</a>,
+				<a href="#14.03" data="14.03">Вакцины</a>.
+			</div>
+		</div>
 	{% endif %}
 
-	<div class="description">
-		<span>Клинико-фармакологический указатель</span>
+	{% include 'VidalDrugBundle:Drugs:kfu_form.html.twig' %}
 
-		<div>
-			Позволяет искать группы препаратов.
-			Cоставлен на основании материалов, представленных в российских и зарубежных монографиях по
-			фармакологии с использованием публикаций в периодических медицинских изданиях последних лет.
-			<br/>
-			<i>Например</i>:
-			<a href="#33" data="33">Гомеопатические средства</a>,
-			<a href="#14.03" data="14.03">Вакцины</a>.
+	{# коды по букве #}
+	{% if codesByLetter is defined and codesByLetter is not empty %}
+		<div class="anons">
+			<b>{{ codeByLetter.Name|raw }}</b>
 		</div>
-	</div>
 
-	{% include 'VidalDrugBundle:Drugs:kfu_generated.html.twig' %}
+		<table class="products-table pointers">
+			<tr class="products-table-header">
+				<td style="width:124px;">Код КФУ</td>
+				<td>Название</td>
+			</tr>
+			{% for code in codesByLetter %}
+				<tr{{ code.Level == 1 ? ' class="bold"' }}>
+					<td style="padding-left:{{ code.Level * 13 }}px">
+						{{ code.Code }}
+					</td>
+					<td>
+						{% if code.countProducts > 0 %}
+							<a href="{{ path('kfu_item', {'code':code.Code}) }}" class="no-underline">
+								{{ code.Name|raw }}
+							</a>
+						{% else %}
+							{{ code.Name|raw }}
+						{% endif %}
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% endif %}
+
+	{# коды по поисковому запросу #}
+	{% if codes is defined %}
+		{% if codes is null %}
+			<div class="no-results">
+				Запрос должен содержать хотя бы 2 символа
+			</div>
+		{% elseif codes|length %}
+			<div class="block">
+				<div class="block-head anons">
+					Найдено клинико-фармакологических указателей: <span>{{ codes|length }}</span>
+				</div>
+
+				<table class="products-table atc">
+					<tr class="products-table-header">
+						<td>Код КФУ</td>
+						<td>Название</td>
+					</tr>
+					{% for code in codes %}
+						<tr>
+							<td>{{ code.Code }}</td>
+							<td>
+								{% if code.countProducts > 0 %}
+									<a href="{{ path('kfu_item', {'code':code.Code}) }}" class="no-underline">
+										{{ code.Name|raw }}
+									</a>
+								{% else %}
+									{{ code.Name|raw }}
+								{% endif %}
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		{% else %}
+			<div class="no-results">
+				Не найдено результатов по КФУ <span>{{ q }}</span>
+			</div>
+		{% endif %}
+	{% endif %}
+
+	{% if showTree is defined %}
+		{% include 'VidalDrugBundle:Drugs:kfu_generated.html.twig' %}
+	{% endif %}
 {% endblock %}
 
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/treeview/jquery.treeview.css') }}"/>
+	{% if showTree is defined %}
+		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/treeview/jquery.treeview.css') }}"/>
+	{% endif %}
+	<style type="text/css">
+		.letters input {
+			width: 24px;
+		}
+		#form > * {
+			vertical-align: top;
+		}
+		#form_controls {
+			clear: both;
+		}
+		#form_submit {
+			float: right;
+		}
+		#form_input {
+			width: 404px;
+		}
+		.pointers * {
+			font-size: 13px;
+		}
+	</style>
 {% endblock %}
 
 
 {% block javascripts %}
 	{{ parent() }}
-	<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.js') }}" type="text/javascript"></script>
-	<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.edit.js') }}" type="text/javascript"></script>
-	<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.async.kfu.js') }}" type="text/javascript"></script>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			var $tree = $('.treeview');
+	{% if showTree is defined %}
+		<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.edit.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('bundles/vidalmain/treeview/jquery.treeview.async.kfu.js') }}"
+				type="text/javascript"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				var $tree = $('.treeview');
 
-			$tree.treeview({
-				animated:  "fast",
-				collapsed: true,
-				url:       Routing.generate('kfu_ajax'),
-				ajax:      {
-					type: "post"
+				$tree.treeview({
+					animated:  "fast",
+					collapsed: true,
+					url:       Routing.generate('kfu_ajax'),
+					ajax:      {
+						type: "post"
+					}
+				});
+
+				$('#tree_collapse').on('click', function() {
+					$tree.find('ul').hide();
+					$tree.find('div.collapsable-hitarea').removeClass('collapsable-hitarea').addClass('expandable-hitarea');
+					$tree.find('div.lastCollapsable-hitarea').removeClass('lastCollapsable-hitarea').addClass('lastExpandable-hitarea');
+					$tree.find('li.collapsable').removeClass('collapsable').addClass('expandable');
+					$tree.find('li.lastCollapsable').removeClass('lastCollapsable').addClass('lastExpandable');
+					return false;
+				});
+
+				$('a[data="33"]').click(function() {
+					$('#tree_collapse').click();
+					$tree.find('span').removeClass('highlight');
+					$('#33 > div').click();
+					$('#33 > span').addClass('highlight');
+				});
+
+				$('a[data="14.03"]').click(function() {
+					$('#tree_collapse').click();
+					$tree.find('span').removeClass('highlight');
+					$('#14 > div').click();
+					$('#14 > span').addClass('highlight');
+					setTimeout(function() {
+						$('li[id="14.03"] > div').click();
+						$('li[id="14.03"] > span').addClass('highlight');
+					}, 1500);
+				});
+
+				{# если мы пришли показать КФУ - надо подгрузить и раскрыть конкретный узел #}
+				{% if showBaseKfu is defined %}
+				function parentCb() {
+					var $show = $('#{{ showKfu.ClPhPointerID }}');
+					if ($show.length == 0) {
+						setTimeout(parentCb, 500);
+					}
+					else {
+						$show.parents('li').removeClass('expandable').addClass('collapsable')
+							.find('> div').removeClass('expandable-hitarea').addClass('collapsable-hitarea')
+							.siblings('ul').show();
+						$show.find('> i, > span').addClass('highlight');
+						$('html, body').animate({ scrollTop: $show.closest('ul').offset().top}, 1500);
+					}
 				}
+
+				var $base = $('#{{ showBaseKfu.ClPhPointerID }}');
+				$base.find(' > div').click();
+				setTimeout(parentCb, 500);
+				{% endif %}
 			});
-
-			$('#tree_collapse').on('click', function() {
-				$tree.find('ul').hide();
-				$tree.find('div.collapsable-hitarea').removeClass('collapsable-hitarea').addClass('expandable-hitarea');
-				$tree.find('div.lastCollapsable-hitarea').removeClass('lastCollapsable-hitarea').addClass('lastExpandable-hitarea');
-				$tree.find('li.collapsable').removeClass('collapsable').addClass('expandable');
-				$tree.find('li.lastCollapsable').removeClass('lastCollapsable').addClass('lastExpandable');
-				return false;
-			});
-
-			$('a[data="33"]').click(function() {
-				$('#tree_collapse').click();
-				$tree.find('span').removeClass('highlight');
-				$('#33 > div').click();
-				$('#33 > span').addClass('highlight');
-			});
-
-			$('a[data="14.03"]').click(function() {
-				$('#tree_collapse').click();
-				$tree.find('span').removeClass('highlight');
-				$('#14 > div').click();
-				$('#14 > span').addClass('highlight');
-				setTimeout(function() {
-					$('li[id="14.03"] > div').click();
-					$('li[id="14.03"] > span').addClass('highlight');
-				}, 1000);
-			});
-
-			{# если мы пришли показать КФУ - надо подгрузить и раскрыть конкретный узел #}
-			{% if showBaseKfu is defined %}
-			function parentCb() {
-				var $show = $('#{{ showKfu.ClPhPointerID }}');
-				if ($show.length == 0) {
-					setTimeout(parentCb, 500);
-				}
-				else {
-					$show.parents('li').removeClass('expandable').addClass('collapsable')
-						.find('> div').removeClass('expandable-hitarea').addClass('collapsable-hitarea')
-						.siblings('ul').show();
-					$show.find('> i, > span').addClass('highlight');
-					$('html, body').animate({ scrollTop: $show.closest('ul').offset().top}, 1000);
-				}
-			}
-
-			var $base = $('#{{ showBaseKfu.ClPhPointerID }}');
-			$base.find(' > div').click();
-			setTimeout(parentCb, 500);
-			{% endif %}
-		});
-	</script>
+		</script>
+	{% endif %}
 {% endblock %}

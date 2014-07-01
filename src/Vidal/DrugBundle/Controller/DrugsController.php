@@ -229,14 +229,14 @@ class DrugsController extends Controller
 		);
 
 		if ($l) {
-			$codesByLetter           = $em->getRepository('VidalDrugBundle:ClPhPointers')->findByLetter($l);
+			$codesByLetter           = $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->findByLetter($l);
 			$params['codeByLetter']  = array_shift($codesByLetter);
 			$params['codesByLetter'] = $codesByLetter;
 		}
 		elseif ($q) {
-			$params['atcCodes'] = mb_strlen($q, 'utf-8') < 2
+			$params['codes'] = mb_strlen($q, 'utf-8') < 2
 				? null
-				: $em->getRepository('VidalDrugBundle:ATC')->findByQuery($q);
+				: $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->findByQuery($q);
 		}
 		else {
 			$params['showTree'] = true;

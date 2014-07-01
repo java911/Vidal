@@ -102,6 +102,17 @@ class ClinicoPhPointersRepository extends EntityRepository
 			->getResult();
 	}
 
+	public function findByLetter($letter)
+	{
+		return $this->_em->createQuery('
+			SELECT c.Code, c.Name, c.countProducts, c.Level
+			FROM VidalDrugBundle:ClinicoPhPointers c
+			WHERE c.Code LIKE :letter
+			ORDER BY c.Code ASC
+		')->setParameter('letter', $letter . '%')
+			->getResult();
+	}
+
 	public function findBase($kfu)
 	{
 		$code = $kfu->getCode();
@@ -128,5 +139,71 @@ class ClinicoPhPointersRepository extends EntityRepository
 				AND p.inactive = FALSE
 			GROUP BY pointer.ClPhPointerID
 		')->getResult();
+	}
+
+	public function findByQuery($q)
+	{
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select('n.Code, n.Name, n.Level, n.countProducts')
+			->from('VidalDrugBundle:ClinicoPhPointers', 'n')
+			->orderBy('n.Name', 'ASC');
+
+		# поиск по словам
+		$where = '';
+		$words = explode(' ', $q);
+
+		# находим все слова
+		for ($i = 0; $i < count($words); $i++) {
+			$word = $words[$i];
+			if ($i > 0) {
+				$where .= ' AND ';
+			}
+			$where .= "(n.Name LIKE '$word%' OR n.Name LIKE '% $word%')";
+		}
+
+		$qb->where($where);
+		$pointers = $qb->getQuery()->getResult();
+
+		# находим какое-либо из слов, если нет результата
+		if (empty($pointers)) {
+			$where = '';
+			for ($i = 0; $i < count($words); $i++) {
+				$word = $words[$i];
+				if ($i > 0) {
+					$where .= ' OR ';
+				}
+				$where .= "(n.Name LIKE '$word%' OR n.Name LIKE '% $word%')";
+			}
+
+			$qb->where($where);
+			$pointers = $qb->getQuery()->getResult();
+		}
+
+		return $pointers;
+	}
+
+	public function findAutocomplete()
+	{
+		$codes = $this->_em->createQuery('
+			SELECT p.Code, p.Name
+			FROM VidalDrugBundle:ClinicoPhPointers p
+			ORDER BY p.Name ASC
+		')->getResult();
+
+		$names = array();
+
+		for ($i = 0; $i < count($codes); $i++) {
+			$patterns     = array('/<SUP>.*<\/SUP>/', '/<SUB>.*<\/SUB>/', '/&alpha;/', '/&amp;/');
+			$replacements = array('', '', ' ', ' ');
+			$name      = preg_replace($patterns, $replacements, $codes[$i]['Name']);
+			$name      = mb_strtolower(str_replace('  ', ' ', $name), 'UTF-8');
+
+			if (!empty($name) && !isset($names[$name])) {
+				$names[$name] = '';
+			}
+		}
+
+		return array_keys($names);
 	}
 }

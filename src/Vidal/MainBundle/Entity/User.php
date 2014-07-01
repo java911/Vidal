@@ -33,8 +33,8 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	 * @ORM\Column(type="array", nullable=true)
 	 * @FileStore\UploadableField(mapping="avatar")
 	 * @Assert\Image(
-	 * 		maxSize="2M",
-	 * 		maxSizeMessage="Принимаются фотографии размером до 2 Мб"
+	 *        maxSize="2M",
+	 *        maxSizeMessage="Принимаются фотографии размером до 2 Мб"
 	 * )
 	 */
 	protected $avatar;
@@ -181,17 +181,21 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	 */
 	protected $confirmationScan;
 
+	/** @ORM\Column(type="boolean") */
+	protected $unsibscribed;
+
 	public function __construct()
 	{
-        $this->confirmationScan = array();
-		$this->answers        = new ArrayCollection();
-		$this->emailConfirmed = false;
-		$this->hideBirthdate  = false;
-		$this->hidePhone      = false;
-		$this->hideIcq        = false;
-		$this->oldUser        = false;
-		$this->confirmation   = false;
-		$this->roles          = 'ROLE_UNCONFIRMED';
+		$this->confirmationScan = array();
+		$this->answers          = new ArrayCollection();
+		$this->emailConfirmed   = false;
+		$this->hideBirthdate    = false;
+		$this->hidePhone        = false;
+		$this->hideIcq          = false;
+		$this->oldUser          = false;
+		$this->confirmation     = false;
+		$this->unsubscribed     = false;
+		$this->roles            = 'ROLE_UNCONFIRMED';
 	}
 
 	public function __toString()

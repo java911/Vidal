@@ -40,13 +40,7 @@
 				{% set length = atc.ATCCode|length %}
 				<tr{{ length == 3 ? ' class="bold"' }}>
 					<td style="padding-left:{{ (length - 3) * 13 }}px">
-						{% if atc.countProducts > 0 %}
-							<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}" class="no-underline">
-								{{ atc.ATCCode }}
-							</a>
-						{% else %}
-							{{ atc.ATCCode }}
-						{% endif %}
+						{{ atc.ATCCode }}
 					</td>
 					<td>
 						{% if atc.countProducts > 0 %}
