@@ -182,7 +182,7 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	protected $confirmationScan;
 
 	/** @ORM\Column(type="boolean") */
-	protected $unsibscribed;
+	protected $unsibscribed = false;
 
 	public function __construct()
 	{
@@ -991,5 +991,23 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 
 		return $this;
 	}
+
+    /**
+     * @param boolean $unsubscribed
+     */
+    public function setUnsubscribed($unsubscribed = false)
+    {
+        $this->unsubscribed = $unsubscribed;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getUnsubscribed()
+    {
+        return $this->unsubscribed;
+    }
+
+
 
 }
