@@ -1494,7 +1494,7 @@ tr.bold td {
 
 /* реклама вакансий */
 #phrpAd {
-	background: #F5F5F5;
+	background: #FAFAFA;
 	border:     1px solid #CED2D5 !important;
 }
 #phrpAd h1 {
@@ -1524,7 +1524,7 @@ tr.bold td {
 	font-size: 12px !important;
 }
 #phrpAd .aItem {
-	margin:         2px 10px 0px 10px !important;
-	border-bottom:  1px dashed #CED2D5;
-	padding-bottom: 3px;
+	margin: 5px 10px 0 !important;
+	border-bottom: 1px dashed #CED2D5;
+	padding-bottom: 6px;
 }
