@@ -19,6 +19,11 @@ class AstrazenecaNew extends BaseEntity
     /**
      * @ORM\Column(type="text", nullable=true)
      */
+    protected $anons;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
     protected $body;
 
     /**
@@ -52,5 +57,23 @@ class AstrazenecaNew extends BaseEntity
     {
         return $this->title;
     }
+
+    /**
+     * @param mixed $anons
+     */
+    public function setAnons($anons)
+    {
+        $this->anons = $anons;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAnons()
+    {
+        return $this->anons;
+    }
+
+
 
 }

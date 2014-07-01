@@ -18,35 +18,40 @@ class AstrazenecaController extends Controller
 
     /**
      * @Route("/astrazeneca", name="astrazeneca_index")
-     * @Template("VidalMainBundle:Astrazeneca:index.html.twig")
+     * @Template("VidalMainBundle:Astrazeneca:news.html.twig")
      */
     public function indexAction(){
-        return array();
+        $em = $this->getDoctrine()->getManager();
+        $params = array(
+            'indexPage'    => true,
+            'publications' => $em->getRepository('VidalMainBundle:AstrazenecaNew')->findAll(),
+        );
+        return $params;
     }
 
     /**
-     * @Route("/astrazeneca/news", name="astrazeneca_news")
+     * @Route("/astrazeneca/articles", name="astrazeneca_news")
      * @Template("VidalMainBundle:Astrazeneca:news.html.twig")
      */
     public function newsAction(Request $request){
-        $em = $this->getDoctrine()->getManager('drug');
+        $em = $this->getDoctrine()->getManager();
 
 
         $params = array(
             'indexPage'    => true,
-            'publications' => $em->getRepository('VidalDrugBundle:Publication')->findLast(self::PUBLICATIONS_SHOW),
+            'publications' => $em->getRepository('VidalMainBundle:AstrazenecaNew')->findAll(),
         );
 
         return $params;
     }
 
     /**
-     * @Route("/astrazeneca/new/{newId}", name="astrazeneca_new")
+     * @Route("/astrazeneca/article/{newId}", name="astrazeneca_new")
      * @Template("VidalMainBundle:Astrazeneca:new.html.twig")
      */
     public function showNewAction($newId){
-        $em = $this->getDoctrine()->getManager('drug');
-        $publication = $em->getRepository('VidalDrugBundle:Publication')->findOneById($newId);
+        $em = $this->getDoctrine()->getManager();
+        $publication = $em->getRepository('VidalMainBundle:AstrazenecaNew')->findOneById($newId);
 
         if (!$publication) {
             throw $this->createNotFoundException();

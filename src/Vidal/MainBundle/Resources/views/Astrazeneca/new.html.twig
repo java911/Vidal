@@ -1,6 +1,5 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
-{% set withPhoto = publication.photo and is_file(publication.photo.path) %}
 
 {% block nav %}
 	<div class="breadcrumbs">
@@ -36,7 +35,7 @@
         </div>
     </div>
     <h1>
-        {{ publication|raw }}
+        {{ publication.title |raw }}
         {# админу карандашик на правку #}
         {% if isAdmin %}
             <a class="admin-edit fade" target="_blank"
@@ -47,43 +46,13 @@
     </h1>
 
 	<div class="publication">
-		{% if withPhoto %}
-			<div class="publication-header with-photo">
-				<div class="photo">
-					<img src="{{ publication.photo.path }}" alt="{{ publication.title }}"/>
-				</div>
-			</div>
-		{% endif %}
-
-		{% if publication.video and publication.video.path is defined %}
-			{% set width = publication.videoWidth > 480 ? 480 : publication.videoWidth %}
-			{% set height = publication.videoWidth > 480
-			? (publication.videoHeight * 480 / publication.videoWidth) | number_format(0)
-			: publication.videoHeight %}
-
-			<p id="player1"></p>
-
-			<script src="{{ asset('bundles/vidalmain/javascripts/swfobject.js') }}" type="text/javascript"></script>
-			<script type="text/javascript">
-				var so = new SWFObject('/players/uppod.swf', 'mpl', {{ width }}, {{ height }}, '8');
-				so.addParam('allowscriptaccess', 'always');
-				so.addParam('allowfullscreen', 'true');
-				so.addVariable('height', '{{ height }}');
-				so.addVariable('width', '{{ width }}');
-				so.addVariable('file', '{{ publication.video.path }}');
-				so.addVariable('bufferlength', '10');
-				so.addVariable('autostart', 'false');
-				so.addVariable('enablejs', 'true');
-				so.write('player1');
-			</script>
-		{% endif %}
 
 		<div class="publication-body">
 			{{ publication.body|raw }}
 		</div>
 
 		<div class="publication-footer">
-			<span class="publication-date">{{ publication.created|date('d.m.Y') }}</span>
+			{#<span class="publication-date">{{ publication.created|date('d.m.Y') }}</span>#}
 		</div>
 	</div>
 

@@ -46,26 +46,29 @@
     <br/>
     <div class="news">
         {% for publication in publications %}
-            {% set withPhoto = publication.photo and is_file(publication.photo.path) %}
-            <div class="publication{{ withPhoto ? ' with-photo' }}">
+            {#{% set withPhoto = publication.photo and is_file(publication.photo.path) %}#}
+            <div class="publication">
                 {# админам карандашик редактирования #}
-                {% if withPhoto %}
-                    <a class="photo" href="{{ path('astrazeneca_new', {'newId' : publication.id}) }}">
-                        <img src="{{ publication.photo.path }}" alt="{{ publication.title }}"/>
-                    </a>
-                {% endif %}
+                {#{% if withPhoto %}#}
+                    {#<a class="photo" href="{{ path('astrazeneca_new', {'newId' : publication.id}) }}">#}
+                        {#<img src="{{ publication.photo.path }}" alt="{{ publication.title }}"/>#}
+                    {#</a>#}
+                {#{% endif %}#}
                 <div>
                     <div class="publication-title">
                         <a href="{{ path('astrazeneca_new', {'newId':publication.id}) }}">{{ publication.title|raw }}</a>
                     </div>
-                    <div class="publication-announce">
-                        {{ publication.announce|raw }}
+                    <div class="publication-anos">
+                        <a href="{{ path('astrazeneca_new', {'newId':publication.id}) }}">{{ publication.anons|raw }}</a>
                     </div>
-                    <div class="publication-footer">
-                        <div class="publication-date">
-                            {{ publication.date|date('d.m.Y') }}
-                        </div>
-                    </div>
+                    {#<div class="publication-announce">#}
+                        {#{{ publication.announce|raw }}#}
+                    {#</div>#}
+                    {#<div class="publication-footer">#}
+                        {#<div class="publication-date">#}
+                            {#{{ publication.date|date('d.m.Y') }}#}
+                        {#</div>#}
+                    {#</div>#}
                 </div>
             </div>
         {% endfor %}
@@ -82,6 +85,10 @@
             display: block;
             text-align: center;
             padding: 7px 0;
+        }
+        .publication-anos a{
+            color: #222222;
+            text-decoration: none;
         }
     </style>
 {% endblock %}
