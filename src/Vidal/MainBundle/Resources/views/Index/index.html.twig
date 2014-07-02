@@ -14,6 +14,14 @@
 {% block content %}
 	{{ render(controller('VidalMainBundle:Index:Module', {'moduleId':1})) }}
 
+	{# Актуальные новости #}
+	{% if publicationsPriority is not empty %}
+		<div class="title title-priority">
+			<a href="{{ path('news') }}">Актуальные новости</a>
+		</div>
+		{% include 'VidalMainBundle:Index:render_news.html.twig' with {'news':publicationsPriority, 'without_date':1} %}
+	{% endif %}
+
 	{# Последние новости #}
 	<div class="title title-news">
 		<a href="{{ path('news') }}">Новости медицины и фармации</a>
@@ -34,15 +42,18 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/publication.css') }}"/>
-	<style tyle="text/css">
+	<style type="text/css">
 		h1 {
 			margin-bottom: 12px;
 		}
-		.title-articles {
+		.title-articles, .title-news {
 			margin-top: 20px;
 		}
 		#more_news, #more_articles {
 			padding-left: 8px;
+		}
+		.priority-news .publications:last-child {
+			border-bottom: none;
 		}
 	</style>
 {% endblock %}

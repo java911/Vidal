@@ -23,11 +23,13 @@
 					<div class="publication-announce">
 						{{ publication.announce|raw }}
 					</div>
-					<div class="publication-footer">
-						<div class="publication-date">
-							{{ publication.date|date('d.m.Y') }}
+					{% if without_date is not defined %}
+						<div class="publication-footer">
+							<div class="publication-date">
+								{{ publication.date|date('d.m.Y') }}
+							</div>
 						</div>
-					</div>
+					{% endif %}
 					{% if showTags is defined and showTags %}
 						{#{% include 'VidalMainBundle:Index:render_tags.html.twig' with {'object':publication} %}#}
 					{% endif %}
