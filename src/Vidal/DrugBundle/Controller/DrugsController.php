@@ -37,6 +37,12 @@ class DrugsController extends Controller
 		return $params;
 	}
 
+	/** @Route("/poisk_preparatov/lat_{ATCCode}.{ext}", name="atc_item_old", defaults={"ext"="htm"}) */
+	public function redirectAtc($ATCCode)
+	{
+		return $this->redirect($this->generateUrl('atc_item', array('ATCCode' => $ATCCode)), 301);
+	}
+
 	/**
 	 * Препараты по коду АТХ
 	 *
@@ -369,6 +375,12 @@ class DrugsController extends Controller
 		}
 
 		return $search ? $this->render('VidalDrugBundle:Drugs:search_pharm_item.html.twig', $params) : $params;
+	}
+
+	/** @Route("/poisk_preparatov/lno_{Code}", name="nosology_item_old") */
+	public function redirectNosology($Code)
+	{
+		return $this->redirect($this->generateUrl('nosology_item', array('Code' => $Code)), 301);
 	}
 
 	/**
