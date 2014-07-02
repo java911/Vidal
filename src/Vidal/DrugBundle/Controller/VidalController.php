@@ -19,8 +19,7 @@ class VidalController extends Controller
 		return $this->redirect($this->generateUrl('searche'), 301);
 	}
 
-	/** @Route("/poisk_preparatov/{url}", requirements={"url"=".+"}) */
-	public function r2($url)
+	private function r2($url)
 	{
 		$em = $this->getDoctrine()->getManager('drug');
 
