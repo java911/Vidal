@@ -86,6 +86,7 @@ class ProductDocumentCommand extends ContainerAwareCommand
 			JOIN m.documents d WITH d.ArticleID = 1
 			WHERE p.document is NULL
 				AND SIZE(p.moleculeNames) = 1
+				AND m.MoleculeID NOT IN (1144,2203)
 		')->getResult();
 
 		$raw = array();
