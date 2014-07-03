@@ -335,7 +335,7 @@ class MoleculeRepository extends EntityRepository
 		return $this->_em->createQuery('
 		 	SELECT m
 		 	FROM VidalDrugBundle:Molecule m
-		 	JOIN m.documents d
+		 	JOIN m.documents d WITH d.ArticleID = 1
 		 	JOIN d.nozologies n
 		 	WHERE n.Code = :Code
 		')->setParameter('Code', $Code)
