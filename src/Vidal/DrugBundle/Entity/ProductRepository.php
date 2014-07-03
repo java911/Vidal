@@ -115,24 +115,29 @@ class ProductRepository extends EntityRepository
 			->getResult();
 	}
 
-	public function findByArticle($articleId)
+	public function findByArticle($articleId, $isDoctor = false)
 	{
-		return $this->_em->createQuery('
-			SELECT p.ProductID, p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.NonPrescriptionDrug,
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select('p.ProductID, p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.NonPrescriptionDrug,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
-				d.Name DocumentName
-			FROM VidalDrugBundle:Product p
-			JOIN p.document d
-			JOIN d.nozologies n
-			JOIN n.articles a
-			WHERE p.MarketStatusID IN (1,2,7)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
-				AND p.inactive = FALSE
-				AND a.id = :articleId
-			ORDER BY p.RusName ASC
-		')->setParameter('articleId', $articleId)
-			->getResult();
+				d.Name DocumentName')
+			->from('VidalDrugBundle:Product', 'p')
+			->join('p.document', 'd')
+			->join('d.nozologies', 'n')
+			->join('n.articles', 'a')
+			->where('p.MarketStatusID IN (1,2,7)')
+			->andWhere('p.inactive = FALSE')
+			->andWhere('a.id = :articleId')
+			->andWhere('d.ArticleID IN (2,5)')
+			->setParameter('articleId', $articleId);
+
+		if (!$isDoctor) {
+			$qb->andWhere('p.NonPrescriptionDrug = TRUE');
+		}
+
+		return $qb->getQuery()->getResult();
 	}
 
 	public function findByClPhGroupID($ClPhGroupsID)

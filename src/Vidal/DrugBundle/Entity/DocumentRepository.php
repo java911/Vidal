@@ -258,7 +258,7 @@ class DocumentRepository extends EntityRepository
 			->getOneOrNullResult();
 	}
 
-	public function findByArticle(Article $article)
+	public function findByArticle($articleId)
 	{
 		return $this->_em->createQuery('
 			SELECT d
@@ -270,10 +270,10 @@ class DocumentRepository extends EntityRepository
 				AND p.NonPrescriptionDrug = TRUE
 				AND p.MarketStatusID IN (1,2)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
-				AND d.ArticleID != 4
+				AND d.ArticleID = 1
 			GROUP BY d.RusName
 			ORDER BY d.RusName ASC
-		')->setParameter('articleId', $article->getId())
+		')->setParameter('articleId', $articleId)
 			->getResult();
 	}
 }
