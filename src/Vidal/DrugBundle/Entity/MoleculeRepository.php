@@ -402,4 +402,24 @@ class MoleculeRepository extends EntityRepository
 
 		return array($molecules, $documents);
 	}
+
+	public function findByKfu($ClPhPointerID, $moleculeIdsUsed)
+	{
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select('m')
+			->from('VidalDrugBundle:Molecule', 'm')
+			->join('m.documents', 'd')
+			->join('d.clphPointers', 'pointer')
+			->where('pointer = :id')
+			->orderBy('m.RusName', 'ASC')
+			->setParameter('id', $ClPhPointerID);
+
+		if (!empty($moleculeIdsUsed)) {
+			$qb->andWhere('m.MoleculeID NOT IN (:moleculeIdsUsed)')
+				->setParameter('moleculeIdsUsed', $moleculeIdsUsed);
+		}
+
+		return $qb->getQuery()->getResult();
+	}
 }

@@ -61,6 +61,15 @@
 		</div>
 	{% endif %}
 
+	{% for molecule in moleculesRest %}
+		<div class="molecules">
+			<span>Активное вещество: </span>
+			<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}">
+				{{ molecule.RusName|upper|raw }}
+			</a>
+		</div>
+	{% endfor %}
+
 	{% if groups is defined %}
 		{% for name, group in groups %}
 			<div class="group">

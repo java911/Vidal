@@ -168,7 +168,8 @@ class DrugsController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		$ClPhPointerID = $kfu->getClPhPointerID();
+		$ClPhPointerID   = $kfu->getClPhPointerID();
+		$moleculeIdsUsed = array();
 
 		$params = array(
 			'menu_drugs' => 'kfu',
@@ -216,7 +217,13 @@ class DrugsController extends Controller
 			$params['molecules']      = $molecules;
 			$params['groups']         = $groups;
 			$params['unusedProducts'] = $unusedProducts;
+
+			foreach ($molecules as $molecule) {
+				$moleculeIdsUsed[] = $molecule['MoleculeID'];
+			}
 		}
+
+		$params['moleculesRest'] = $em->getRepository('VidalDrugBundle:Molecule')->findByKfu($ClPhPointerID, $moleculeIdsUsed);
 
 		return $params;
 	}

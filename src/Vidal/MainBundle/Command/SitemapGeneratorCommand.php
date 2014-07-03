@@ -22,7 +22,8 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
 		$products = $em->createQuery('
-
+			SELECT p
+			FROM VidalMainBundle:Product p
 		')->getResult();
 
 		var_dump($products);
