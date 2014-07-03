@@ -265,11 +265,7 @@ class DocumentRepository extends EntityRepository
 			FROM VidalDrugBundle:Document d
 			JOIN d.nozologies n
 			JOIN n.articles a
-			JOIN d.products p
 			WHERE a = :articleId
-				AND p.NonPrescriptionDrug = TRUE
-				AND p.MarketStatusID IN (1,2)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 				AND d.ArticleID = 1
 			GROUP BY d.RusName
 			ORDER BY d.RusName ASC
