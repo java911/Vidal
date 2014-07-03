@@ -1,17 +1,17 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
-
 {% block title %}
     <h1>Шаг первый - выберите специальность</h1>
 {% endblock %}
 
 {% block content %}
     {% if specialties is not empty %}
-            <div class="spec-box">
+        <div class="spec-box">
             {% for spec in specialties %}
-                <div id="{{ spec.code }}">{{ spec.name }}</div>
+                <div class="spec-item" id="{{ spec.code }}">{{ spec.name }}</div>
+                <div class="doc-box" id="spec-{{ spec.code }}"></div>
             {% endfor %}
-            </div>
+        </div>
     {% else %}
         Записи к врачам отсутствуют. <a href="{{ path('appointment_create') }}">Записаться</a>
     {% endif %}
@@ -22,21 +22,91 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script>
+        $(document).ready(function(){
+            $('.spec-item').click(function(){
+                var id = $(this).attr('id');
+                $.ajax({
+                    type: "POST",
+                    url: Routing.generate('appointment_doctor',{'doctorId' : id }),
+                    success: function(msg){
+                        data = msg.data.availableResource;
+                        txt = '';
+                        $.each(data,function(i, val){
+                            console.log(val = val);
+                            txt +=  '<div class="doc-item" data-id="'+val.id+'" availableResourceId="'+val.lpuRoomsInfo.lpuRoomView.availableResourceId+'" ' +
+                                    'complexResourceId="'+val.lpuRoomsInfo.lpuRoomView.complexResourceId+'">';
+//                           txt +=  val.lastName+' '+val.firstName+' '+val.secondName+' ( ЛПУ: '+val.lpuRoomsInfo.lpuRoomView.lpuShortName+' каб.: '+val.lpuRoomsInfo.lpuRoomsView.roomNumber+') ';
+                            txt +=  val.lastName+' '+val.firstName+' '+val.secondName;
+                            txt +=  '</div>' +
+                                    '<div class="dateTime-box" doc-id="'+val.id+'">';
+                        });
+                        $('#spec-'+id).html(txt);
+                    }
+                });
+            });
+
+
+            $('.doc-box').on('click','.doc-item', function(){
+                alert('1');
+                var availableResourceId = $(this).attr('availableResourceId');
+                var complexResourceId = $(this).attr('complexResourceId');
+                $.ajax({
+                    type: "POST",
+                    url: Routing.generate('appointment_datetime',{'availableResourceId' : availableResourceId, 'complexResourceId': complexResourceId }),
+                    success: function(msg){
+                        data = msg.data.return;
+                        var txt = '';
+                        $.each(data.schedules,function(i, val){
+                            var d = new Date(val.date);
+                            console.log(dd = d);
+                            var curr_date = d.getDate();
+                            var curr_month = d.getMonth() + 1; //Months are zero based
+                            var curr_year = d.getFullYear();
+                            txt += '<div>'+curr_date + "." + curr_month + "." + curr_year;
+                            $.each(val.resourceSchedule.timePeriods,function(timei, timeval){
+                                if (timeval.allowedAppointment == true){
+                                    enabled = 'enabledTime';
+                                }else{
+                                    enabled = ''
+                                }
+                                var d = new Date(timeval.startTime);
+                                var curr_hour = d.getHours();
+                                var curr_minute = d.getMinutes(); //Months are zero based
+
+                                txt += '<span class="time '+enabled+'">'+curr_hour+':'+curr_minute+'</span>';
+                            });
+                            txt += '</div>';
+                        });
+                        $('.dateTime-box').html(txt);
+                    }
+                });
+            });
+
+        });
+    </script>
 {% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
     <style>
         .spec-box{
-            width: 280px;
+            width: 500px;
         }
-        .spec-box div{
+        .spec-box .spec-item{
             margin-top: -1px;
             border: 1px solid #cc0000;
             padding: 5px 10px;
-        }
+            text-transform: uppercase;
 
-        .spec-box div:hover{
+        }
+        div.doc-item {
+            margin-top: -1px;
+            border: 1px solid #cc0000;
+            padding: 5px 10px;
+            padding-left: 40px;
+        }
+        .spec-item:hover, .doc-item:hover{
             background: #eeeeee;
             cursor: pointer;
         }

@@ -16,9 +16,9 @@
         <div class="tabs" style="width: 520px">
             <table style="width: 100%" border="0" cellpadding="0" cellspacing="0">
                 <tr>
-                    {#<td style="width: 20%; text-align: center;">#}
-                        {#<a href="{{ path('astrazeneca_index') }}" class="active">Видеолекции</a>#}
-                    {#</td>#}
+                    <td style="width: 20%; text-align: center;">
+                        <a href="{{ path('astrazeneca_index') }}" class="active">Главная</a>
+                    </td>
                     <td style="width: 20%; text-align: center;">
                         <a href="{{ path('astrazeneca_news') }}">Статьи</a>
                     </td>
@@ -36,11 +36,62 @@
         </div>
     </div>
     <h1>ASTRAZENECA</h1>
-    <iframe width="560" height="315" src="//www.youtube.com/embed/hHTuXe1rZrQ" frameborder="0" allowfullscreen></iframe>
-    <br />
-    <br />
-    <br />
-    <iframe width="560" height="315" src="//www.youtube.com/embed/hHTuXe1rZrQ" frameborder="0" allowfullscreen></iframe>
+    <div class="sliderPanel">
+        <img src="{{ asset('bundles/vidalmain/images/Slider/icon_left.png') }}" class="sliderBtnLeft">
+        <img src="{{ asset('bundles/vidalmain/images/Slider/icon_right.png') }}" class="sliderBtnRight">
+        <div class="slider">
+            <div class="sliderBox">
+                <div class="item">
+                    <div class="img"><img src="{{ asset('bundles/vidalmain/images/Slider/Slide1.jpg') }}"></div>
+                    <div class="text">Говоря об «образе питания», следует отметить, что питание в учреждениях
+                        общественного питания, разнообразие и многочисленность мест приготовления
+                        потребляемой пищи (у многих родственников, знакомых и т.п.), – является несомненным
+                        риском для больного гастритом, – поскольку, несмотря на все попытки соблюдения
+                        гигиенических правил, технология приготовления пищи и микробный пейзаж, все-таки,
+                        будет существенно отличаться. Больным гастритом следует обратить внимание на то, что,
+                        даже с соблюдением правил выбора пищевых продуктов и общепринятых мер личной
+                        гигиены, после приема пищи, приготовленной на «чужой» кухне, возможно нарушение
+                        пищеварения.</div>
+                </div>
+                <div class="item">
+                    <div class="img"><img src="{{ asset('bundles/vidalmain/images/Slider/Slide6.jpg') }}"></div>
+                    <div class="text">Быстрое поглощение пищи (как, в прочем, и продолжительное, – что бывает
+                        частой, но упускаемой из виду, привычкой) также является нежелательным для
+                        больных гастритом. Важным является полноценное пережевывание пищи, в связи с
+                        чем, некоторым больным гастритом нужно напомнить о необходимости консультации и
+                        лечения у стоматолога.</div>
+                </div>
+                <div class="item">
+                    <div class="img"><img src="{{ asset('bundles/vidalmain/images/Slider/Slide3.jpg') }}"></div>
+                    <div class="text">Рекомендации некоторых специалистов по дробному приему пищи,
+                        разделенному на 5-6 раз в сутки, нуждается в уточнении по форме, стадии заболевания и
+                        индивидуальным особенностям больных. Прием жидкости между приемами пищи, в фазу
+                        желудочного пищеварения, также является нежелательным, учитывая влияние выпитой
+                        жидкости на уровень кислотности желудочного содержимого.
+                        Важным, также является соблюдение правила последнего приема пищи за 3-4 часа
+                        до сна, поскольку для полноценного сна нежелательно продолжение активного процесса
+                        пищеварения (и. наоборот).</div>
+                </div>
+                <div class="item">
+                    <div class="img"><img src="{{ asset('bundles/vidalmain/images/Slider/Slide4.jpg') }}"></div>
+                    <div class="text">Относительно «вида» (консистенции) пищи следует отметить, что
+                        излишне «грубая» и плохо перевариваемая пища, как, впрочем, и, наоборот, –
+                        излишнее «увлечение» легкоусвояемой, жидкой или гомогенизированной (протертой)
+                        пищей, – является нежелательным для больных гастритом. Следует также
+                        заглатывания горячей или, наоборот, излишне холодной пищи.</div>
+                </div>
+                <div class="item">
+                    <div class="img"><img src="{{ asset('bundles/vidalmain/images/Slider/Slide5.jpg') }}"></div>
+                    <div class="text">Следует отметить, что такой, достаточно сложный вопрос, как рекомендации
+                        больным гастритом, не может быть полностью изложен в коротком сообщении.
+                        Поэтому, принимая во внимание значимость отдельных нюансов, индивидуализации
+                        и обязательность системного комплексного подхода, для каждого отдельного случая,
+                        следует рекомендовать консультацию специалиста, достаточно хорошо знающего
+                        больного.</div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block stylesheets %}
@@ -52,5 +103,84 @@
             text-align: center;
             padding: 7px 0;
         }
+        .img img{
+            width: 500px;
+        }
+        .slider{
+            width: 502px;
+            position: absolute;
+            overflow: hidden;
+        }
+        .sliderBox .img{
+            border: 1px solid #CC3333;
+            width: 500px;
+        }
+        .sliderBox{
+            width: 4000px;
+            overflow: hidden;
+        }
+        .sliderPanel{
+            width: 502px;
+            min-height: 700px;
+            position: relative;
+            margin: 0 auto;
+        }
+        .sliderBtnLeft{
+            position: absolute;
+            z-index: 999;
+            top: 150px;
+            left: 10px;
+            cursor: pointer;
+            opacity: 0.5;
+        }
+
+        .sliderBtnRight{
+            position: absolute;
+            z-index: 999;
+            top: 150px;
+            right: 10px;
+            cursor: pointer;
+            opacity: 0.5;
+        }
+        .sliderPanel:hover .sliderBtnLeft, .sliderPanel:hover .sliderBtnRight{
+               opacity: 1;
+        }
+        .item{
+            float: left;
+        }
+        .item .text{
+            text-align: justify;
+            color: #333333;
+            font-size: 16px;
+            padding-top: 10px;
+            width: 500px;
+        }
     </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function(){
+            $('.sliderBtnLeft').click(function(){
+                $('.sliderBox .item').css('display','block');
+                var item = $('.sliderBox .item').eq(0);
+                $('.sliderBox .item').eq(0).fadeOut(200, function(){$('.sliderBox').append(item);});
+                //,function(){$('.sliderBox .item').eq(0).remove();}
+            });
+
+            $('.sliderBtnRight').click(function(){
+                var item = $('.sliderBox .item').eq(4);
+                item.css('display','none');
+                $('.sliderBox').prepend(item);
+                item.fadeIn('slow');
+                $('.sliderBox .item').eq(5).remove();
+            });
+        });
+        setInterval(function(){
+            $('.sliderBox .item').css('display','block');
+            var item = $('.sliderBox .item').eq(0);
+            $('.sliderBox .item').eq(0).fadeOut(300, function(){$('.sliderBox').append(item);});
+        },45000);
+    </script>
 {% endblock %}
