@@ -107,11 +107,31 @@ class ProductRepository extends EntityRepository
 			FROM VidalDrugBundle:Product p
 			JOIN p.atcCodes a WITH a = :ATCCode
 			LEFT JOIN p.document d
-			WHERE p.MarketStatusID IN (1,2)
+			WHERE p.MarketStatusID IN (1,2,7)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('ATCCode', $ATCCode)
+			->getResult();
+	}
+
+	public function findByArticle($articleId)
+	{
+		return $this->_em->createQuery('
+			SELECT p.ProductID, p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.NonPrescriptionDrug,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo,
+				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
+				d.Name DocumentName
+			FROM VidalDrugBundle:Product p
+			JOIN p.document d
+			JOIN d.nozologies n
+			JOIN n.articles a
+			WHERE p.MarketStatusID IN (1,2,7)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.inactive = FALSE
+				AND a.id = :articleId
+			ORDER BY p.RusName ASC
+		')->setParameter('articleId', $articleId)
 			->getResult();
 	}
 

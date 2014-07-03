@@ -26,18 +26,22 @@ class ArticleController extends Controller
 		$em       = $this->getDoctrine()->getManager('drug');
 		$rubrique = $em->getRepository('VidalDrugBundle:ArticleRubrique')->findOneByRubrique($rubrique);
 		$article  = $em->getRepository('VidalDrugBundle:Article')->findOneByLink($link);
+		$isDoctor = $this->get('security.context')->isGranted('ROLE_DOCTOR');
 
 		if (!$rubrique || !$article) {
 			throw $this->createNotFoundException();
 		}
 
-		return array(
+		$params = array(
 			'title'     => $this->strip($article . '') . ' | ' . $rubrique,
 			'menu_left' => 'articles',
 			'rubrique'  => $rubrique,
 			'article'   => $article,
-			'documents' => $em->getRepository('VidalDrugBundle:Document')->findByArticle($article),
+			'documents' => $em->getRepository('VidalDrugBundle:Document')->findByArticle($article, $isDoctor),
+			'isDoctor'  => $isDoctor,
 		);
+
+		return $params;
 	}
 
 	/**
