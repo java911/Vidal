@@ -78,7 +78,7 @@ class ProductRepository extends EntityRepository
 	{
 		$moleculeIds = array();
 		foreach ($molecules as $molecule) {
-			$moleculeIds[] = $molecule['MoleculeID'];
+			$moleculeIds[] = $molecule->getMoleculeID();
 		}
 
 		return $this->_em->createQuery('

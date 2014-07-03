@@ -32,8 +32,7 @@
 	{% if documents is not empty %}
 	<div class="documents">
 		<div class="documents-anons anons">
-			<b>{{ article.title|raw }}</b>:
-			применяемые препараты {{ not isDoctor ? 'безрецептурного отпуска' }}
+			<span>{{ article.title|raw }}</span>: Применяемые препараты безрецептурного отпуска
 		</div>
 
 		<ul class="ul-style">
