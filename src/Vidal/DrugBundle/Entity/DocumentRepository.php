@@ -147,6 +147,7 @@ class DocumentRepository extends EntityRepository
 			SELECT DISTINCT d.DocumentID, d.ArticleID, d.CountryEditionCode
 			FROM VidalDrugBundle:Document d
 			JOIN d.nozologies n WITH n.Code = :code
+			WHERE d.ArticleID IN (2,4,5,1)
 		")->setParameter('code', $code)
 			->getResult();
 	}

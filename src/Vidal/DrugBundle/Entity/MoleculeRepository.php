@@ -330,6 +330,18 @@ class MoleculeRepository extends EntityRepository
 		");
 	}
 
+	public function findByNozologyCode($Code)
+	{
+		return $this->_em->createQuery('
+		 	SELECT m
+		 	FROM VidalDrugBundle:Molecule m
+		 	JOIN m.documents d
+		 	JOIN d.nozologies n
+		 	WHERE n.Code = :Code
+		')->setParameter('Code', $Code)
+			->getResult();
+	}
+
 	public function findByProductIds($productIds)
 	{
 		$raw = $this->_em->createQuery('

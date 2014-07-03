@@ -413,17 +413,18 @@ class DrugsController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		$documents = $em->getRepository('VidalDrugBundle:Document')->findByNozologyCode($Code);
-		$params    = array(
+		$params = array(
 			'nozology' => $nozology,
 			'title'    => $nozology->getName() . ' | ' . 'Нозологический указатель',
 		);
 
+		$params['molecules'] = $em->getRepository('VidalDrugBundle:Molecule')->findByNozologyCode($Code);
+		$documents           = $em->getRepository('VidalDrugBundle:Document')->findByNozologyCode($Code);
+
 		if (!empty($documents)) {
-			$params['molecules'] = $em->getRepository('VidalDrugBundle:Molecule')->findByDocuments1($documents);
-			$products1           = $em->getRepository('VidalDrugBundle:Product')->findByDocuments25($documents);
-			$products2           = $em->getRepository('VidalDrugBundle:Product')->findByDocuments4($documents);
-			$products            = array();
+			$products1 = $em->getRepository('VidalDrugBundle:Product')->findByDocuments25($documents);
+			$products2 = $em->getRepository('VidalDrugBundle:Product')->findByDocuments4($documents);
+			$products  = array();
 
 			# надо слить продукты, исключая повторения и отсортировать по названию
 			foreach ($products1 as $id => $product) {

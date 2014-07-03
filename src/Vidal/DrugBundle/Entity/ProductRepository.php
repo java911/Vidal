@@ -360,7 +360,6 @@ class ProductRepository extends EntityRepository
 	{
 		$documentIds = array();
 
-		//d.CountryEditionCode = 'RUS'
 		foreach ($documents as $document) {
 			if ($document['CountryEditionCode'] == 'RUS' &&
 				($document['ArticleID'] == 2 || $document['ArticleID'] == 5)
@@ -581,6 +580,7 @@ class ProductRepository extends EntityRepository
 				AND p.MarketStatusID IN (1,2,7)
 				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
 				AND p.inactive = FALSE
+				AND d.ArticleID IN (1,2,3,4,5)
 			ORDER BY p.RusName ASC
 		')->setParameter('id', $ClPhPointerID)
 			->getResult();
