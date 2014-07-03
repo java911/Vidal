@@ -257,19 +257,4 @@ class DocumentRepository extends EntityRepository
 		')->setParameter('id', $id)
 			->getOneOrNullResult();
 	}
-
-	public function findByArticle($articleId)
-	{
-		return $this->_em->createQuery('
-			SELECT d
-			FROM VidalDrugBundle:Document d
-			JOIN d.nozologies n
-			JOIN n.articles a
-			WHERE a = :articleId
-				AND d.ArticleID = 1
-			GROUP BY d.RusName
-			ORDER BY d.RusName ASC
-		')->setParameter('articleId', $articleId)
-			->getResult();
-	}
 }

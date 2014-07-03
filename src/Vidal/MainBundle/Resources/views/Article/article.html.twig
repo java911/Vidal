@@ -43,16 +43,16 @@
 		{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':pre_products, 'companies':pre_companies, 'pictures':pre_pictures, 'infoPages':pre_infoPages} %}
 	{% endif %}
 
-	{% if documents is defined and documents is not empty %}
+	{% if molecules is defined and molecules is not empty %}
 		<div class="documents-anons anons">
 			<b>{{ article.title|raw }}</b>: возможно также применение препаратов с активными веществами
 		</div>
 		<ul class="ul-style documents">
-			{% for document in documents %}
+			{% for molecule in molecules %}
 				<li>
-					<a href="{{ path('document', {'EngName':document.Name, 'DocumentID':document.DocumentID}) }}"
+					<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
 					   class="no-underline">
-						{{ document.RusName|ucwords|raw }}
+						{{ molecule.RusName|upper|raw }}
 					</a>
 				</li>
 			{% endfor %}

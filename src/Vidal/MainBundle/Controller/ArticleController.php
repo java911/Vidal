@@ -66,7 +66,7 @@ class ArticleController extends Controller
 				$params['pre_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($productsPre);
 			}
 
-			$params['documents'] = $em->getRepository('VidalDrugBundle:Document')->findByArticle($articleId);
+			$params['molecules'] = $em->getRepository('VidalDrugBundle:Molecule')->findByArticle($articleId);
 		}
 		else {
 			$productIds          = $this->getProductIds($products);

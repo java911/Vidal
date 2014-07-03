@@ -50,6 +50,20 @@ class MoleculeRepository extends EntityRepository
 			->getResult();
 	}
 
+	public function findByArticle($articleId)
+	{
+		return $this->_em->createQuery('
+			SELECT m
+			FROM VidalDrugBundle:Molecule m
+			JOIN m.documents d WITH d.ArticleID = 1
+			JOIN d.nozologies n
+			JOIN n.articles a
+			WHERE a = :articleId
+			ORDER BY m.RusName ASC
+		')->setParameter('articleId', $articleId)
+			->getResult();
+	}
+
 	public function findOneByProductID($ProductID)
 	{
 		return $this->_em->createQuery('
