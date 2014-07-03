@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -73,10 +74,6 @@ class AppointmentController extends Controller
         return array('form' => $form->createView());
     }
 
-
-
-
-
     /**
      * Список действительных записей
      * @Route("/appointment-list", name="appointment_list")
@@ -87,6 +84,29 @@ class AppointmentController extends Controller
         $appointmentList = $this->getDoctrine()->getRepository('VidalMainBundle:Appointment')->findByStatus(1);
         return array('appointmentList' => $appointmentList );
     }
+
+    /**
+     * @Route("/appointment-doctors/{doctorId}", name="appointment_doctor", options={"expose"=true})
+     */
+    public function doctorsActions($doctorId){
+        if ( $this->isAuth() == false ){ return $this->redirect($this->generateUrl('appointment')); }
+        $soap = $this->createConnection();
+        $doctors = $soap->getDoctorsInfo(array('omsNumber'=>'9988889785000068', 'birthDate'=>'2011-04-14T00:00:00','specialityId'=>$doctorId, 'externalSystemId'=>'MPGU'));
+
+        return new JsonResponse(array( 'data'=> $doctors));
+    }
+
+    /**
+     * @Route("/appointment-datetime/{availableResourceId}/{complexResourceId}", name="appointment_datetime", options={"expose"=true})
+     */
+    public function datetimeActions($availableResourceId, $complexResourceId){
+        if ( $this->isAuth() == false ){ return $this->redirect($this->generateUrl('appointment')); }
+        $soap = $this->createConnection();
+        $datetime = $soap->getAvailableResourceScheduleInfo(array('omsNumber'=>'9988889785000068', 'birthDate'=>'2011-04-14T00:00:00','availableResourceId'=>$availableResourceId,'complexResourceId'=>$complexResourceId, 'externalSystemId'=>'MPGU'));
+
+        return new JsonResponse(array( 'data'=> $datetime));
+    }
+
 
 
     protected function createConnection(){
