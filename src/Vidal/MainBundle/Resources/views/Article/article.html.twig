@@ -29,29 +29,40 @@
 {% block content %}
 	{% include 'VidalMainBundle:Article:render_article.html.twig' %}
 
-	{% if documents is not empty %}
-	<div class="documents">
+	{% if products is defined and products is not empty %}
 		<div class="documents-anons anons">
-			<span>{{ article.title|raw }}</span>: Применяемые препараты безрецептурного отпуска
+			<b>{{ article.title|raw }}</b>: применяемые препараты безрецептурного отпуска
 		</div>
+		{% include 'VidalDrugBundle:Vidal:render_products.html.twig' %}
+	{% endif %}
 
-		<ul class="ul-style">
-			{% for document in documents %}
+	{% if pre_products is defined and pre_products is not empty %}
+		<div class="documents-anons anons">
+			<b>{{ article.title|raw }}</b>: применяемые рецептурные препараты
+		</div>
+		{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':pre_products, 'companies':pre_companies, 'pictures':pre_pictures, 'infoPages':pre_infoPages} %}
+	{% endif %}
+
+	{% if molecules is defined and molecules is not empty %}
+		<div class="documents-anons anons">
+			<b>{{ article.title|raw }}</b>: возможно также применение препаратов с активными веществами
+		</div>
+		<ul class="ul-style documents">
+			{% for molecule in molecules %}
 				<li>
-					<a href="{{ path('document', {'EngName':document.Name, 'DocumentID':document.DocumentID}) }}"
+					<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
 					   class="no-underline">
-						{{ document.RusName|ucwords|raw }}
+						{{ molecule.RusName|upper|raw }}
 					</a>
 				</li>
 			{% endfor %}
 		</ul>
-
-		<div class="anons red-warning">
-			Перед началом применения любого препарата посоветуйтесь со специалистом
-			и ознакомьтесь с инструкцией по применению.
-		</div>
-	</div>
 	{% endif %}
+
+	<div class="anons red-warning">
+		Перед началом применения любого препарата посоветуйтесь со специалистом
+		и ознакомьтесь с инструкцией по применению.
+	</div>
 {% endblock %}
 
 
@@ -67,7 +78,7 @@
 			font-size:  12px;
 			margin-top: 20px;
 		}
-		.documents .ul-style {
+		.ul-style + .documents {
 			font-size: 16px;
 		}
 	</style>

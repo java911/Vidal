@@ -258,7 +258,9 @@
 		and (nozologies is not defined or nozologies is empty)
 		and (search_infoPages is empty and search_companies is empty)
 		and (bads is not defined or bads is empty)
-		and (atcCodes is empty) %}
+		and (atcCodes is not defined or atcCodes is empty)
+		and (articles is not defined or articles is empty)
+		%}
 			<div class="no-results">
 				Не найдено результатов
 			</div>

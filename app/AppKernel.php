@@ -31,6 +31,7 @@ class AppKernel extends Kernel
             new Vidal\VeterinarBundle\VidalVeterinarBundle(),
             new Gregwar\CaptchaBundle\GregwarCaptchaBundle(),
 			new Ornicar\ApcBundle\OrnicarApcBundle(),
+			new Liuggio\ExcelBundle\LiuggioExcelBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

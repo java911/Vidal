@@ -37,6 +37,16 @@ class DrugsController extends Controller
 		return $params;
 	}
 
+	/** @Route("/poisk_preparatov/lat_{url}", requirements={"url"=".+"}) */
+	public function redirectLat($url)
+	{
+		if ($pos = strrpos($url, '.')) {
+			$url = substr($url, 0, $pos);
+		}
+
+		return $this->redirect($this->generateUrl('atc_item', array('ATCCode' => $url)), 301);
+	}
+
 	/**
 	 * Препараты по коду АТХ
 	 *
@@ -158,7 +168,8 @@ class DrugsController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		$ClPhPointerID = $kfu->getClPhPointerID();
+		$ClPhPointerID   = $kfu->getClPhPointerID();
+		$moleculeIdsUsed = array();
 
 		$params = array(
 			'menu_drugs' => 'kfu',
@@ -206,7 +217,13 @@ class DrugsController extends Controller
 			$params['molecules']      = $molecules;
 			$params['groups']         = $groups;
 			$params['unusedProducts'] = $unusedProducts;
+
+			foreach ($molecules as $molecule) {
+				$moleculeIdsUsed[] = $molecule['MoleculeID'];
+			}
 		}
+
+		$params['moleculesRest'] = $em->getRepository('VidalDrugBundle:Molecule')->findByKfu($ClPhPointerID, $moleculeIdsUsed);
 
 		return $params;
 	}
@@ -371,27 +388,25 @@ class DrugsController extends Controller
 		return $search ? $this->render('VidalDrugBundle:Drugs:search_pharm_item.html.twig', $params) : $params;
 	}
 
+	/** @Route("/poisk_preparatov/lno_{url}", requirements={"url"=".+"}) */
+	public function redirectNosology($url)
+	{
+		if ($pos = strrpos($url, '.')) {
+			$url = substr($url, 0, $pos);
+		}
+
+		return $this->redirect($this->generateUrl('nosology_item', array('Code' => $url)), 301);
+	}
+
 	/**
 	 * Список препаратов и активных веществ по показанию (Nozology)
 	 *
 	 * @Route("/drugs/nosology/{Code}/{search}", name="nosology_item", options={"expose":true})
-	 * @Route("/poisk_preparatov/lno_{Code}", name="nosology_item_old")
 	 * @Template("VidalDrugBundle:Drugs:nosology_item.html.twig")
 	 */
 	public function nosologyItemAction(Request $request, $Code, $search = 0)
 	{
-		$em        = $this->getDoctrine()->getManager('drug');
-		$routeName = $request->get('_route');
-
-		if ($routeName == 'nosology_item_old') {
-			if ($pos = strpos($Code, '.html')) {
-				$Code = substr($Code, 0, $pos);
-			}
-			elseif ($pos = strpos($Code, '.htm')) {
-				$Code = substr($Code, 0, $pos);
-			}
-		}
-
+		$em       = $this->getDoctrine()->getManager('drug');
 		$nozology = $em->getRepository('VidalDrugBundle:Nozology')->findOneByCode($Code);
 
 		if ($nozology === null) {

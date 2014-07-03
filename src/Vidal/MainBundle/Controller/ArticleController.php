@@ -31,13 +31,52 @@ class ArticleController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		return array(
+		$params = array(
 			'title'     => $this->strip($article . '') . ' | ' . $rubrique,
 			'menu_left' => 'articles',
 			'rubrique'  => $rubrique,
 			'article'   => $article,
-			'documents' => $em->getRepository('VidalDrugBundle:Document')->findByArticle($article),
 		);
+
+		$articleId = $article->getId();
+		$isDoctor  = $this->get('security.context')->isGranted('ROLE_DOCTOR');
+		$products  = $em->getRepository('VidalDrugBundle:Product')->findByArticle($articleId, $isDoctor);
+
+		if ($isDoctor) {
+			$productsPre = array();
+			$productsNon = array();
+
+			foreach ($products as $product) {
+				$product['NonPrescriptionDrug'] ? $productsNon[] = $product : $productsPre[] = $product;
+			}
+
+			if (!empty($productsNon)) {
+				$productIds          = $this->getProductIds($productsNon);
+				$params['products']  = $productsNon;
+				$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
+				$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+				$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($productsNon);
+			}
+
+			if (!empty($productsPre)) {
+				$productIds              = $this->getProductIds($productsPre);
+				$params['pre_products']  = $productsPre;
+				$params['pre_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
+				$params['pre_pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+				$params['pre_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($productsPre);
+			}
+
+			$params['molecules'] = $em->getRepository('VidalDrugBundle:Molecule')->findByArticle($articleId);
+		}
+		else {
+			$productIds          = $this->getProductIds($products);
+			$params['products']  = $products;
+			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
+			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
+		}
+
+		return $params;
 	}
 
 	/**
@@ -438,5 +477,16 @@ class ArticleController extends Controller
 		}
 
 		return $response;
+	}
+
+	private function getProductIds($products)
+	{
+		$productIds = array();
+
+		foreach ($products as $product) {
+			$productIds[] = $product['ProductID'];
+		}
+
+		return $productIds;
 	}
 }

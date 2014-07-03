@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class NewsController extends Controller
 {
-	const PUBLICATIONS_PER_PAGE  = 25;
+	const PUBLICATIONS_PER_PAGE  = 22;
 	const PUBLICATIONS_PER_PHARM = 5;
 
 	/** @Route("/novosti/novosti_{id}.{ext}", defaults={"ext"="html"}) */
@@ -46,14 +46,19 @@ class NewsController extends Controller
 	public function newsAction(Request $request)
 	{
 		$em     = $this->getDoctrine()->getManager('drug');
+		$page = $request->query->get('p', 1);
 		$params = array(
 			'menu_left' => 'news',
 			'title'     => 'Новости',
 		);
 
+		if ($page == 1) {
+			$params['publicationsPriority'] = $em->getRepository('VidalDrugBundle:Publication')->findLastPriority();
+		}
+
 		$params['publicationsPagination'] = $this->get('knp_paginator')->paginate(
 			$em->getRepository('VidalDrugBundle:Publication')->getQueryEnabled(),
-			$request->query->get('p', 1),
+			$page,
 			self::PUBLICATIONS_PER_PAGE
 		);
 

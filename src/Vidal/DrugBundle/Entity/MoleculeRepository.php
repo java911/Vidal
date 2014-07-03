@@ -50,6 +50,20 @@ class MoleculeRepository extends EntityRepository
 			->getResult();
 	}
 
+	public function findByArticle($articleId)
+	{
+		return $this->_em->createQuery('
+			SELECT m
+			FROM VidalDrugBundle:Molecule m
+			JOIN m.documents d WITH d.ArticleID = 1
+			JOIN d.nozologies n
+			JOIN n.articles a
+			WHERE a = :articleId
+			ORDER BY m.RusName ASC
+		')->setParameter('articleId', $articleId)
+			->getResult();
+	}
+
 	public function findOneByProductID($ProductID)
 	{
 		return $this->_em->createQuery('
@@ -387,5 +401,25 @@ class MoleculeRepository extends EntityRepository
 		}
 
 		return array($molecules, $documents);
+	}
+
+	public function findByKfu($ClPhPointerID, $moleculeIdsUsed)
+	{
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select('m')
+			->from('VidalDrugBundle:Molecule', 'm')
+			->join('m.documents', 'd')
+			->join('d.clphPointers', 'pointer')
+			->where('pointer = :id')
+			->orderBy('m.RusName', 'ASC')
+			->setParameter('id', $ClPhPointerID);
+
+		if (!empty($moleculeIdsUsed)) {
+			$qb->andWhere('m.MoleculeID NOT IN (:moleculeIdsUsed)')
+				->setParameter('moleculeIdsUsed', $moleculeIdsUsed);
+		}
+
+		return $qb->getQuery()->getResult();
 	}
 }

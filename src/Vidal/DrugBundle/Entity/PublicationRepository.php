@@ -6,13 +6,28 @@ use Doctrine\ORM\EntityRepository;
 
 class PublicationRepository extends EntityRepository
 {
-	public function findLast($top)
+	public function findLast($top = 5)
 	{
 		return $this->_em->createQuery('
 			SELECT p
 			FROM VidalDrugBundle:Publication p
 			WHERE p.enabled = TRUE
 				AND p.date < :now
+				AND p.priority IS NULL
+			ORDER BY p.date DESC
+		')->setParameter('now', new \DateTime())
+			->setMaxResults($top)
+			->getResult();
+	}
+
+	public function findLastPriority($top = 3)
+	{
+		return $this->_em->createQuery('
+			SELECT p
+			FROM VidalDrugBundle:Publication p
+			WHERE p.enabled = TRUE
+				AND p.date < :now
+				AND p.priority IS NOT NULL
 			ORDER BY p.priority DESC, p.date DESC
 		')->setParameter('now', new \DateTime())
 			->setMaxResults($top)
@@ -40,7 +55,8 @@ class PublicationRepository extends EntityRepository
 			FROM VidalDrugBundle:Publication p
 			WHERE p.enabled = TRUE
 				AND p.date < :now
-			ORDER BY p.priority DESC, p.date DESC
+				AND p.priority IS NULL
+			ORDER BY p.date DESC
 		')->setParameter('now', new \DateTime());
 	}
 

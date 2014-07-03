@@ -320,15 +320,17 @@
 	{% endif %}
 
 	{# Форма выпуска, состав и упаковка #}
-	<div class="block" id="composition">
-		<div class="block-head">Форма выпуска, состав и упаковка</div>
-		<div class="block-content composition">
-			{{ Composition|replace({
-			'[PRING]':'<i class"pring">Вспомогательные вещества</i>:',
-			'&loz;':'<img class="loz" src="'~loz~'" title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>'
-			})|raw }}
+	{% if Composition is not empty %}
+		<div class="block" id="composition">
+			<div class="block-head">Форма выпуска, состав и упаковка</div>
+			<div class="block-content composition">
+				{{ Composition|replace({
+				'[PRING]':'<i class"pring">Вспомогательные вещества</i>:',
+				'&loz;':'<img class="loz" src="'~loz~'" title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>'
+				})|raw }}
+			</div>
 		</div>
-	</div>
+	{% endif %}
 
 	{# блоки описания документа #}
 	{% if document is defined %}
@@ -443,6 +445,9 @@
 		}
 		.closed-info {
 			display: none;
+		}
+		.pictures a {
+			display: inline-block;
 		}
 	</style>
 {% endblock %}
