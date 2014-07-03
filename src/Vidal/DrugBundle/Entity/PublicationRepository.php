@@ -55,7 +55,8 @@ class PublicationRepository extends EntityRepository
 			FROM VidalDrugBundle:Publication p
 			WHERE p.enabled = TRUE
 				AND p.date < :now
-			ORDER BY p.priority DESC, p.date DESC
+				AND p.priority IS NULL
+			ORDER BY p.date DESC
 		')->setParameter('now', new \DateTime());
 	}
 

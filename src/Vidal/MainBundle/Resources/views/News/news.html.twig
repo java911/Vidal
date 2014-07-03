@@ -1,11 +1,6 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
-{% block title %}
-	<h1>НОВОСТИ</h1>
-{% endblock %}
-
-
 {% block nav %}
 	<div class="breadcrumbs">
 		<a href="{{ path('index') }}">Видаль</a>
@@ -16,6 +11,14 @@
 
 
 {% block content %}
+	{% if publicationsPriority is defined and publicationsPriority is not empty %}
+		<div class="title">Актуальные новости</div>
+		<div class="sticky">
+			{% include 'VidalMainBundle:Index:render_news.html.twig' with {'news':publicationsPriority, 'without_date':1} %}
+		</div>
+	{% endif %}
+
+	<div class="title">Новости медицины и фармации</div>
 	{% include 'VidalMainBundle:Index:render_news.html.twig' with {'news':publicationsPagination, 'showTags':1} %}
 
 	<div class="navigation">
@@ -27,4 +30,9 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/publication.css') }}"/>
+	<style type="text/css">
+		.sticky {
+			margin-bottom: 20px;
+		}
+	</style>
 {% endblock %}
