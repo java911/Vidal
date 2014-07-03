@@ -14,19 +14,13 @@ use Lsw\SecureControllerBundle\Annotation\Secure;
 
 class AstrazenecaController extends Controller
 {
-    const PUBLICATIONS_SHOW = 5;
 
     /**
      * @Route("/astrazeneca", name="astrazeneca_index")
-     * @Template("VidalMainBundle:Astrazeneca:news.html.twig")
+     * @Template("VidalMainBundle:Astrazeneca:index.html.twig")
      */
     public function indexAction(){
-        $em = $this->getDoctrine()->getManager();
-        $params = array(
-            'indexPage'    => true,
-            'publications' => $em->getRepository('VidalMainBundle:AstrazenecaNew')->findAll(),
-        );
-        return $params;
+        return array();
     }
 
     /**
