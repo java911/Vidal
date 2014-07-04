@@ -12,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 
 class SearchController extends Controller
 {
-	const PRODUCTS_PER_PAGE = 20;
+	const PRODUCTS_PER_PAGE = 40;
 
 	/**
 	 * @Route("/search", name="search")

@@ -12,8 +12,9 @@ use Lsw\SecureControllerBundle\Annotation\Secure;
 
 class DrugsController extends Controller
 {
-	const PHARM_PER_PAGE = 150;
-	const KFG_PER_PAGE   = 150;
+	const PHARM_PER_PAGE    = 150;
+	const KFG_PER_PAGE      = 150;
+	const PRODUCTS_PER_PAGE = 40;
 
 	private $nozologies;
 
@@ -81,9 +82,6 @@ class DrugsController extends Controller
 	}
 
 	/**
-	 * Дерево АТХ
-	 *
-	 * @Route("/drugs", name="drugs")
 	 * @Route("/drugs/atc", name="atc")
 	 * @Template("VidalDrugBundle:Drugs:atc.html.twig")
 	 */
@@ -413,17 +411,18 @@ class DrugsController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		$documents = $em->getRepository('VidalDrugBundle:Document')->findByNozologyCode($Code);
-		$params    = array(
+		$params = array(
 			'nozology' => $nozology,
 			'title'    => $nozology->getName() . ' | ' . 'Нозологический указатель',
 		);
 
+		$params['molecules'] = $em->getRepository('VidalDrugBundle:Molecule')->findByNozologyCode($Code);
+		$documents           = $em->getRepository('VidalDrugBundle:Document')->findByNozologyCode($Code);
+
 		if (!empty($documents)) {
-			$params['molecules'] = $em->getRepository('VidalDrugBundle:Molecule')->findByDocuments1($documents);
-			$products1           = $em->getRepository('VidalDrugBundle:Product')->findByDocuments25($documents);
-			$products2           = $em->getRepository('VidalDrugBundle:Product')->findByDocuments4($documents);
-			$products            = array();
+			$products1 = $em->getRepository('VidalDrugBundle:Product')->findByDocuments25($documents);
+			$products2 = $em->getRepository('VidalDrugBundle:Product')->findByDocuments4($documents);
+			$products  = array();
 
 			# надо слить продукты, исключая повторения и отсортировать по названию
 			foreach ($products1 as $id => $product) {
@@ -667,6 +666,64 @@ class DrugsController extends Controller
 			if (!$type || $type == 'i') {
 				$query                          = $em->getRepository('VidalDrugBundle:InfoPage')->getQuery($q);
 				$params['pagination_infoPages'] = $this->get('knp_paginator')->paginate($query, $p, 40, array('type' => 'i'));
+			}
+		}
+
+		return $params;
+	}
+
+	/**
+	 * @Route("/drugs", name="drugs")
+	 * @Route("/drugs/products", name="products")
+	 * @Template("VidalDrugBundle:Drugs:products.html.twig")
+	 */
+	public function productsAction(Request $request)
+	{
+		$em = $this->getDoctrine()->getManager('drug');
+		$t  = $request->query->get('t', 'p'); // тип препараты-бады-вместе
+		$p  = $request->query->get('p', 1); // номер страницы
+		$l  = $request->query->get('l', null); // буква
+		$n  = $request->query->has('n'); // только безрецептурные препараты
+
+		$letters = explode(' ', 'А Б В Г Д Е Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Э Ю Я');
+
+		$params = array(
+			't'          => $t,
+			'p'          => $p,
+			'l'          => $l,
+			'n'          => $n,
+			'menu_drugs' => 'products',
+			'title'      => 'Поиск препаратов по алфавиту',
+			'letters'    => $letters,
+		);
+
+		# БАДы только безрецептурные
+		if ($t == 'b') {
+			$n = false;
+		}
+
+		if ($l != null) {
+			$paginator  = $this->get('knp_paginator');
+			$pagination = $paginator->paginate(
+				$em->getRepository('VidalDrugBundle:Product')->getQueryByLetter($l, $t, $n),
+				$p,
+				self::PRODUCTS_PER_PAGE
+			);
+
+			$products             = $pagination->getItems();
+			$params['pagination'] = $pagination;
+
+			if (!empty($products)) {
+				$productIds = array();
+
+				foreach ($products as $product) {
+					$productIds[] = $product->getProductID();
+				}
+
+				$params['products']    = $products;
+				$params['indications'] = $em->getRepository('VidalDrugBundle:Document')->findIndicationsByProductIds($productIds);
+				$params['companies']   = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
+				$params['pictures']    = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
 			}
 		}
 
