@@ -40,27 +40,36 @@
     </h1>
     <div class="tests">
         {% for test in tests %}
-            <div id="{{ test.id }}" class="test">
-                {{ test.title }}
-                <br/>
-                <br/>
-                <table style="width: 100%">
+            <div id="t{{ test.id }}" class="test">
+                <table>
                     <tr>
-                        <td style="width: 50%; text-align: right;">
-                            <a class="btn-red yes" id="y{{ test.id }}" href="#" {% if loop.first %} data-type="last" {% endif %}>Да</a>
+                        <td style="width: 250px; text-align: center">
+                            <img src="{{ asset('bundles/vidalmain/images/test' ~test.id~ '.jpg') }}" style="width: 250px;">
                         </td>
-                        <td style="width: 50%; text-align: left;">
-                            <a class="btn-red no" id="n{{ test.id }}" href="#" {% if loop.first %} data-type="last" {% endif %}>Нет</a>
+                        <td style="width: 250px; text-align: center;" valign="center">
+                            {{ test.title }}
+                            <br/>
+                            <br/>
+                            <table style="width: 100%">
+                                <tr>
+                                    <td style="width: 50%; text-align: right;">
+                                        <a class="btn-red yes" id="y{{ test.id }}" href="#" {% if loop.last %} data-type="last" {% endif %}>Да</a>
+                                    </td>
+                                    <td style="width: 50%; text-align: left;">
+                                        <a class="btn-red no" id="n{{ test.id }}" href="#" {% if loop.last %} data-type="last" {% endif %}>Нет</a>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                 </table>
             </div>
         {% endfor %}
         <div class="test" style="display: none;" id="test-success">
-            У Вас высока вероятность гастрита, рекомендуем Вам пройти консультацию у врача-гастроэнтеролога. Найти специалистов Вы можете с помощью <a href="http://www.vidal.ru/astrazeneca/map">нашей карты</a>
+            У Вас высока вероятность гастрита, рекомендуем Вам пройти консультацию у врача-гастроэнтеролога. Найти специалистов Вы можете с помощью <br /><a href="http://www.vidal.ru/astrazeneca/map">нашей карты</a>
         </div>
         <div class="test" style="display: none;" id="test-fail">
-            Скорее всего у Вас нет гастрита, но, для его профилактики проконсультируйтесь со специалистом. Найти специалистов Вы можете с <a href="http://www.vidal.ru/astrazeneca/map">нашей карты</a>
+            Скорее всего у Вас нет гастрита, но, для его профилактики проконсультируйтесь со специалистом. Найти специалистов Вы можете с <br /><a href="http://www.vidal.ru/astrazeneca/map">нашей карты</a>
         </div>
     </div>
 {% endblock %}
@@ -74,19 +83,24 @@
             text-align: center;
             position: relative;
             width: 530px;
-            height: 73px;
+            /*min-height: 73px;*/
+            overflow: hidden;
         }
         .test{
-            position: absolute;
+            /*position: absolute;*/
             width: 530px;
-            height: 83px;
+            /*height: 83px;*/
             background: #FFFFFF;
+            display: none;
         }
         .tabs a{
             width: 100%;
             display: block;
             text-align: center;
             padding: 7px 0;
+        }
+        #t1{
+            display: block;
         }
         .yes, .no{
             margin-right: 5px;
@@ -98,20 +112,28 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
+        var next = 1;
         var t = 0;
         $(document).ready(function(){
             $('.yes').click(function(){
+                next ++;
+                $('.test').css('display','none');
+                $('#t1').css('display','none');
+                $('#t'+next).css('display','block');
+
                 t++;
                 $(this).parent().parent().parent().parent().parent().css('display','none');
-                console.log($(this).attr('data-type'));
                 if ( $(this).attr('data-type') == 'last' ){
                     showResult()
                 }
                 return false;
             });
             $('.no').click(function(){
+                next ++;
+                $('.test').css('display','none');
+                $('#t1').css('display','none');
+                $('#t'+next).css('display','block');
                 $(this).parent().parent().parent().parent().parent().css('display','none');
-                console.log($(this).attr('data-type'));
                 if ( $(this).attr('data-type') == 'last' ){
                     showResult()
                 }
