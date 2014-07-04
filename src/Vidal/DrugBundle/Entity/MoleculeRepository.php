@@ -59,6 +59,7 @@ class MoleculeRepository extends EntityRepository
 			JOIN d.nozologies n
 			JOIN n.articles a
 			WHERE a = :articleId
+				AND m.MoleculeID NOT IN (1144,2203)
 			ORDER BY m.RusName ASC
 		')->setParameter('articleId', $articleId)
 			->getResult();

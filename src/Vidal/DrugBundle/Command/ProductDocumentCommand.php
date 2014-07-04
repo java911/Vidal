@@ -21,14 +21,22 @@ class ProductDocumentCommand extends ContainerAwareCommand
 
 		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
+		# перед генерацией обнуляем существующую связь с документом
+		$em->createQuery('
+			UPDATE VidalDrugBundle:Product p
+			SET p.document = NULL
+		')->execute();
+
 		# генерируем Product.document по связям в таблице ProductDocument
-		$productDocuments = $em->createQuery('
+		$productDocuments = $em->createQuery("
 			SELECT pd.ProductID, pd.DocumentID, d.ArticleID
 			FROM VidalDrugBundle:ProductDocument pd
+			JOIN VidalDrugBundle:Product p WITH p.ProductID = pd.ProductID
 			JOIN VidalDrugBundle:Document d WITH d.DocumentID = pd.DocumentID
-			WHERE d.ArticleID != 1
+			WHERE d.ArticleID NOT IN (1,6)
+				AND p.ProductTypeCode NOT IN ('BAD','SUBS','SRED')
 			ORDER BY pd.ProductID ASC
-		')->getResult();
+		")->getResult();
 
 		$grouped = array();
 
@@ -43,7 +51,7 @@ class ProductDocumentCommand extends ContainerAwareCommand
 					WHERE p.ProductID = :ProductID
 				');
 
-		$articlePriority = array(2, 5, 4, 3, 1, 6);
+		$articlePriority = array(2, 5, 4, 3, 1);
 		$i               = 0;
 		$count           = count($grouped);
 
@@ -52,7 +60,7 @@ class ProductDocumentCommand extends ContainerAwareCommand
 				$DocumentID = $group[0]['DocumentID'];
 			}
 			else {
-				# если документов несколько, то надо взять один по приоритету Document.ArticleID [2,5,4,3,1,6]
+				# если документов несколько, то надо взять один по приоритету Document.ArticleID [2,5,4,3,1]
 				$curr       = array_search($group[0]['ArticleID'], $articlePriority);
 				$DocumentID = $group[0]['DocumentID'];
 
@@ -77,7 +85,25 @@ class ProductDocumentCommand extends ContainerAwareCommand
 			$i++;
 		}
 
-		# теперь надо установить Document
+		# для БАДов надо использователь только документ 6
+		$productDocuments = $em->createQuery("
+			SELECT pd.ProductID, pd.DocumentID
+			FROM VidalDrugBundle:ProductDocument pd
+			JOIN VidalDrugBundle:Product p WITH p.ProductID = pd.ProductID
+			JOIN VidalDrugBundle:Document d WITH d.DocumentID = pd.DocumentID
+			WHERE d.ArticleID = 6
+				AND p.ProductTypeCode IN ('BAD','SUBS','SRED')
+			ORDER BY pd.ProductID ASC
+		")->getResult();
+
+		foreach ($productDocuments as $pd) {
+			$updateQuery->setParameters(array(
+				'DocumentID' => $pd['DocumentID'],
+				'ProductID'  => $pd['ProductID'],
+			))->execute();
+		}
+
+		# теперь надо установить документ 1 по связи по веществу
 		$rawPD = $em->createQuery('
 			SELECT DISTINCT p.ProductID, d.DocumentID
 			FROM VidalDrugBundle:Product p

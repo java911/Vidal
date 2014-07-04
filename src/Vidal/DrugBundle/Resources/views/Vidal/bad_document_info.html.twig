@@ -82,34 +82,6 @@
 	</div>
 {% endif %}
 
-{# Клинико-фармакологический указатель #}
-{#{% if document.clphPointers.count %}#}
-	{#<div class="block" id="clphpointer">#}
-		{#{% if document.clphPointers|length == 1 %}#}
-			{#{% set clphPointer = document.clphPointers[0] %}#}
-			{#<div class="block-head">Клинико-фармакологический указатель</div>#}
-			{#<div class="block-content">#}
-				{#<a href="{{ path('kfu_item', {'id':clphPointer.ClPhPointerID}) }}" class="no-underline">#}
-					{#{{ clphPointer.Name|raw }}#}
-				{#</a>#}
-			{#</div>#}
-		{#{% else %}#}
-			{#<div class="block-head">Клинико-фармакологические указатели</div>#}
-			{#<div class="block-content">#}
-				{#<ul class="ul-style">#}
-					{#{% for clphPointer in document.clphPointers %}#}
-						{#<li>#}
-							{#<a href="{{ path('kfu_item', {'id':clphPointer.ClPhPointerID}) }}" class="no-underline">#}
-								{#{{ clphPointer.Name|raw }}#}
-							{#</a>#}
-						{#</li>#}
-					{#{% endfor %}#}
-				{#</ul>#}
-			{#</div>#}
-		{#{% endif %}#}
-	{#</div>#}
-{#{% endif %}#}
-
 {# Клинико-фармакологическая группа #}
 {% if product is defined and product.clphGroups.count %}
 	<div class="block" id="clphgroup">
