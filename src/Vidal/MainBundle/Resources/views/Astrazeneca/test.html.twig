@@ -40,17 +40,20 @@
     </h1>
     <div class="tests">
         {% for test in tests %}
-            <div id="{{ test.id }}" class="test">
+            <div id="t{{ test.id }}" class="test">
+                <div style="text-align: center">
+                    <img src="{{ asset('bundles/vidalmain/images/test' ~test.id~ '.jpg') }}" style="width: 250px;">
+                </div>
                 {{ test.title }}
                 <br/>
                 <br/>
                 <table style="width: 100%">
                     <tr>
                         <td style="width: 50%; text-align: right;">
-                            <a class="btn-red yes" id="y{{ test.id }}" href="#" {% if loop.first %} data-type="last" {% endif %}>Да</a>
+                            <a class="btn-red yes" id="y{{ test.id }}" href="#" {% if loop.last %} data-type="last" {% endif %}>Да</a>
                         </td>
                         <td style="width: 50%; text-align: left;">
-                            <a class="btn-red no" id="n{{ test.id }}" href="#" {% if loop.first %} data-type="last" {% endif %}>Нет</a>
+                            <a class="btn-red no" id="n{{ test.id }}" href="#" {% if loop.last %} data-type="last" {% endif %}>Нет</a>
                         </td>
                     </tr>
                 </table>
@@ -74,19 +77,24 @@
             text-align: center;
             position: relative;
             width: 530px;
-            height: 73px;
+            /*min-height: 73px;*/
+            overflow: hidden;
         }
         .test{
-            position: absolute;
+            /*position: absolute;*/
             width: 530px;
-            height: 83px;
+            /*height: 83px;*/
             background: #FFFFFF;
+            display: none;
         }
         .tabs a{
             width: 100%;
             display: block;
             text-align: center;
             padding: 7px 0;
+        }
+        #t1{
+            display: block;
         }
         .yes, .no{
             margin-right: 5px;
@@ -98,20 +106,28 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
+        var next = 1;
         var t = 0;
         $(document).ready(function(){
             $('.yes').click(function(){
+                next ++;
+                $('.test').css('display','none');
+                $('#t1').css('display','none');
+                $('#t'+next).css('display','block');
+
                 t++;
                 $(this).parent().parent().parent().parent().parent().css('display','none');
-                console.log($(this).attr('data-type'));
                 if ( $(this).attr('data-type') == 'last' ){
                     showResult()
                 }
                 return false;
             });
             $('.no').click(function(){
+                next ++;
+                $('.test').css('display','none');
+                $('#t1').css('display','none');
+                $('#t'+next).css('display','block');
                 $(this).parent().parent().parent().parent().parent().css('display','none');
-                console.log($(this).attr('data-type'));
                 if ( $(this).attr('data-type') == 'last' ){
                     showResult()
                 }
