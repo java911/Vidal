@@ -338,6 +338,7 @@ class MoleculeRepository extends EntityRepository
 		 	JOIN m.documents d WITH d.ArticleID = 1
 		 	JOIN d.nozologies n
 		 	WHERE n.Code = :Code
+		 		AND m.MoleculeID NOT IN (1144,2203)
 		')->setParameter('Code', $Code)
 			->getResult();
 	}
@@ -424,6 +425,7 @@ class MoleculeRepository extends EntityRepository
 			->join('m.documents', 'd')
 			->join('d.clphPointers', 'pointer')
 			->where('pointer = :id')
+			->andWhere('m.MoleculeID NOT IN (1144,2203)')
 			->orderBy('m.RusName', 'ASC')
 			->setParameter('id', $ClPhPointerID);
 

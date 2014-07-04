@@ -1,0 +1,180 @@
+{% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
+
+
+{% set showTable = l == null %}
+
+
+{% if t =='o' %}
+	{% set from = 'bad' %}
+{% endif %}
+
+
+{% block vidal %}
+	{% if menu_drugs is defined %}
+		{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' %}
+	{% endif %}
+
+	<div class="letters">
+		<form id="letters_form" method="GET" action="{{ path('products') }}">
+			<div class="letters-controls no-selection">
+				<select id="letters_type" name="t">
+					<option value="p"{{ t == 'p' ? ' selected="selected"' }}>Препараты</option>
+					<option value="b"{{ t == 'b' ? ' selected="selected"' }}>БАДы</option>
+					<option value="o"{{ t == 'o' ? ' selected="selected"' }}>Препараты и БАДы</option>
+				</select>
+				{% if t != 'b' %}
+					<span class="letters-controls-check no-selection">
+						<input id="letters_nonpres" type="checkbox" name="n"{{ n ? ' checked="checked"' }}
+							   class="checkbox"/>
+						<span class="small no-selection">только безрецептурные</span>
+					</span>
+				{% endif %}
+			</div>
+
+			<input type="hidden" name="p" id="letters_page" value="{{ p }}"/>
+
+			{# буквы #}
+			<div class="letters-russian">
+				{% for letter in letters %}
+					<input type="submit" value="{{ letter }}" name="l" class="letter{{ l == letter ? ' active' }}"/>
+				{% endfor %}
+			</div>
+
+			<div class="clear"></div>
+
+			{# под-буквы #}
+			{% include 'VidalDrugBundle:Drugs:letters_sub.html.twig' %}
+		</form>
+
+		{% if showTable %}
+			{% include 'VidalDrugBundle:Drugs:letters_table.html.twig' %}
+		{% endif %}
+	</div>
+
+	{% if products is defined and products is not empty %}
+		<div class="block">
+			<div class="block-anons">
+				<div class="block-head">
+					Найдено {{ n ? 'безрецептурных ' }}{{ t == 'p' ? 'препаратов' : t == 'b' ? 'БАДов' : 'препаратов и БАДов' }}
+					:
+					<span>{{ pagination.totalItemCount }}</span>
+				</div>
+			</div>
+		</div>
+
+		{% include 'VidalDrugBundle:Vidal:render_products.html.twig' %}
+
+		<div class="navigation">
+			{{ knp_pagination_render(pagination) }}
+		</div>
+	{% endif %}
+
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/letters.css') }}"/>
+	<style type="text/css">
+		#vidal h1 {
+			color: #d71344;
+		}
+		/* letters-controls */
+		.letters-controls {
+			margin-bottom: 8px;
+		}
+		.letters-controls-check {
+			display:     inline-block;
+			margin-left: 15px;
+		}
+		.letters-controls-check input, .letters-controls-check span {
+			vertical-align: top;
+		}
+
+		.letters-russian {
+			height: 24px;
+		}
+		.letters-sub > div {
+			height:  24px;
+			clear:   both;
+			display: none;
+		}
+		.letters-sub input {
+			width: 22px;
+		}
+		.letters-sub input, .letters .beige {
+			background-color: rgb(241, 241, 119);
+		}
+		{% if showTable %}
+		#letters_form {
+			height: 95px;
+		}
+		.letters-table {
+			width:                 100%;
+			border-collapse:       collapse;
+			border:                1px solid #d3d3d3;
+			border-radius:         2px;
+			-moz-border-radius:    2px;
+			-webkit-border-radius: 2px;
+		}
+		.letters-table td {
+			border-right: 1px solid #d3d3d3;
+			text-align:   center;
+			height:       16px;
+			padding:      0;
+		}
+		.letters-table .head td {
+			background-color: rgb(241, 241, 119);
+		}
+		.letters-table a {
+			display:               block;
+			height:                16px;
+			color:                 #2f4053;
+			text-decoration:       none;
+			font-size:             12px;
+			border-radius:         2px;
+			-moz-border-radius:    2px;
+			-webkit-border-radius: 2px;
+		}
+		.letters-table a:hover {
+			background-color: #d71344;
+			color:            white;
+		}
+		.letters-table .odd {
+			background-color: #f5f5f5;
+		}
+		{% endif %}
+	</style>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#letters_form input[type="submit"]').click(function() {
+				$('#letters_page').val('1');
+			});
+
+			$('#letters_type, #letters_nonpres').change(function() {
+				$('#letters_page').val('1');
+				$('.letter.active').click();
+			});
+
+			$('#letters_type').chosen({
+				disable_search: true
+			});
+
+			$('.letters-russian input[value="{{ l|first }}"]').addClass('beige');
+
+			$('.letters-sub input[value="{{ l }}"]').addClass('active').closest('div').show();
+
+			$('.letters-russian input').hover(function() {
+				$('.letters-russian input').removeClass('beige');
+				$(this).addClass('beige');
+				$('.letters-sub > div').hide();
+				$('.letters-sub > div[data="' + $(this).val() + '"]').show();
+			});
+		});
+	</script>
+{% endblock %}
