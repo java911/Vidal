@@ -11,42 +11,178 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:sitemap:generator');
+		$this->setName('vidal:sitemap:generate');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		ini_set('memory_limit', -1);
-		$output->writeln('--- vidal:sitemap:generator started');
+		$output->writeln('--- vidal:sitemap:generate started');
 
-		$em = $this->getContainer()->get('doctrine')->getManager('drug');
+		$container = $this->getContainer();
+		$em        = $container->get('doctrine')->getManager('drug');
+		$emDefault = $container->get('doctrine')->getManager();
 
+		////////////////////////////////////////////
+		$urlset  = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" /><!--?xml version="1.0" encoding="UTF-8"?-->');
+		$date    = new \DateTime();
+		$lastMod = $date->format('Y-m-d H:i:s');
+
+		# главная
+		$url = $urlset->addChild('url');
+		$url->addChild('loc', 'http://www.vidal.ru');
+		$url->addChild('lastmod', $lastMod);
+		$url->addChild('changefreq', 'weekly');
+		$url->addChild('priority', '1');
+
+		# картинка-1
+		$url   = $urlset->addChild('url');
+		$image = $url->addChild('image:image', null, 'http://www.google.com/schemas/sitemap-image/1.1');
+		$image->addChild('image:loc', 'http://www.vidal.ru/bundles/vidalmain/images/header.jpg', 'http://www.google.com/schemas/sitemap-image/1.1');
+		$image->addChild('image:caption', 'Видаль', 'http://www.google.com/schemas/sitemap-image/1.1');
+
+		# картинка-2
+		$url   = $urlset->addChild('url');
+		$image = $url->addChild('image:image', null, 'http://www.google.com/schemas/sitemap-image/1.1');
+		$image->addChild('image:loc', 'http://www.vidal.ru/bundles/vidalmain/images/vidal-group.jpg', 'http://www.google.com/schemas/sitemap-image/1.1');
+		$image->addChild('image:caption', 'Группа Видаль', 'http://www.google.com/schemas/sitemap-image/1.1');
+
+		# препараты
 		$products = $em->createQuery('
-			SELECT p
-			FROM VidalMainBundle:Product p
-		')->getResult();
+					SELECT p.ProductID, p.Name
+					FROM VidalDrugBundle:Product p
+					WHERE p.MarketStatusID IN (1,2,7)
+						AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+						AND p.inactive = FALSE
+				')->getResult();
 
-		var_dump($products);
-		exit;
-
-		$users = $em->createQuery('
-			SELECT u
-			FROM VidalMainBundle:User u
-			WHERE u.city IS NOT NULL
-		')->getResult();
-
-		foreach ($users as $user) {
-			$city = $user->getCity();
-			if ($region = $city->getRegion()) {
-				$user->setRegion($region);
-			}
-			if ($country = $city->getCountry()) {
-				$user->setCountry($country);
-			}
+		foreach ($products as $product) {
+			$url = $urlset->addChild('url');
+			$loc = "http://www.vidal.ru/drugs/{$product['Name']}__{$product['ProductID']}";
+			$url->addChild('loc', $loc);
+			$url->addChild('lastmod', $lastMod);
+			$url->addChild('changefreq', 'weekly');
+			$url->addChild('priority', '0.8');
 		}
 
-		$em->flush();
+		# активные вещества
+		$molecules = $em->createQuery('
+					SELECT m.MoleculeID
+					FROM VidalDrugBundle:Molecule m
+					JOIN m.documents d
+					WHERE m.MoleculeID NOT IN (1144,2203)
+				')->getResult();
 
-		$output->writeln('+++ vidal:sitemap:generator completed');
+		foreach ($molecules as $molecule) {
+			$url = $urlset->addChild('url');
+			$loc = "http://www.vidal.ru/drugs/molecule/{$molecule['MoleculeID']}";
+			$url->addChild('loc', $loc);
+			$url->addChild('lastmod', $lastMod);
+			$url->addChild('changefreq', 'weekly');
+			$url->addChild('priority', '0.8');
+		}
+
+		# статьи энциклопедии
+		$articles = $em->createQuery('
+					SELECT a.link, r.rubrique
+					FROM VidalDrugBundle:Article a
+					JOIN a.rubrique r
+					WHERE a.enabled = TRUE
+				')->getResult();
+
+		foreach ($articles as $article) {
+			$url = $urlset->addChild('url');
+			$loc = "http://www.vidal.ru/encyclopedia/{$article['rubrique']}/{$article['link']}";
+			$url->addChild('loc', $loc);
+			$url->addChild('lastmod', $lastMod);
+			$url->addChild('changefreq', 'weekly');
+			$url->addChild('priority', '0.8');
+		}
+
+		# новости
+		$publications = $em->createQuery('
+					SELECT p.id
+					FROM VidalDrugBundle:Publication p
+					WHERE p.enabled = TRUE
+				')->getResult();
+
+		foreach ($publications as $publication) {
+			$url = $urlset->addChild('url');
+			$loc = "http://www.vidal.ru/novosti/{$publication['id']}";
+			$url->addChild('loc', $loc);
+			$url->addChild('lastmod', $lastMod);
+			$url->addChild('changefreq', 'weekly');
+			$url->addChild('priority', '0.8');
+		}
+
+		# компании
+		$companies = $em->createQuery('
+			SELECT c.CompanyID
+			FROM VidalDrugBundle:Company c
+		')->getResult();
+
+		foreach ($companies as $company) {
+			$url = $urlset->addChild('url');
+			$loc = "http://www.vidal.ru/drugs/firm/{$company['CompanyID']}";
+			$url->addChild('loc', $loc);
+			$url->addChild('lastmod', $lastMod);
+			$url->addChild('changefreq', 'weekly');
+			$url->addChild('priority', '0.8');
+		}
+
+		# представительства
+		$infoPages = $em->createQuery('
+			SELECT i.InfoPageID
+			FROM VidalDrugBundle:InfoPage i
+			WHERE i.countProducts > 0
+		')->getResult();
+
+		foreach ($infoPages as $infoPage) {
+			$url = $urlset->addChild('url');
+			$loc = "http://www.vidal.ru/drugs/company/{$infoPage['InfoPageID']}";
+			$url->addChild('loc', $loc);
+			$url->addChild('lastmod', $lastMod);
+			$url->addChild('changefreq', 'weekly');
+			$url->addChild('priority', '0.8');
+		}
+
+		# о компании
+		$abouts = $emDefault->createQuery('
+					SELECT a.url
+					FROM VidalMainBundle:About a
+					WHERE a.enabled = 1
+				')->getResult();
+
+		foreach ($abouts as $about) {
+			$url = $urlset->addChild('url');
+			$loc = "http://www.vidal.ru/about/{$about['url']}";
+			$url->addChild('loc', $loc);
+			$url->addChild('lastmod', $lastMod);
+			$url->addChild('changefreq', 'weekly');
+			$url->addChild('priority', '0.9');
+		}
+
+		# наши услуги
+		$abouts = $emDefault->createQuery('
+					SELECT a.url
+					FROM VidalMainBundle:AboutService a
+					WHERE a.enabled = 1
+				')->getResult();
+
+		foreach ($abouts as $about) {
+			$url = $urlset->addChild('url');
+			$loc = "http://www.vidal.ru/services/{$about['url']}";
+			$url->addChild('loc', $loc);
+			$url->addChild('lastmod', $lastMod);
+			$url->addChild('changefreq', 'weekly');
+			$url->addChild('priority', '0.9');
+		}
+
+		# запись в файл
+		$urlset->asXML('web/sitemap.xml');
+
+		///////////////////////////////////////////
+
+		$output->writeln('+++ vidal:sitemap:generate completed');
 	}
 }
