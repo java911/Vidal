@@ -313,12 +313,6 @@ class SearchController extends Controller
 		return $params;
 	}
 
-	/**
-	 * Отображение препаратов или бадов по букве алфавита
-	 * @Route("/search/letter", name="searche_letter")
-	 *
-	 * @Template("VidalDrugBundle:Search:searche_letter.html.twig")
-	 */
 	public function searcheLetterAction(Request $request)
 	{
 		$em = $this->getDoctrine()->getManager('drug');
