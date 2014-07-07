@@ -1,7 +1,7 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 {% block title %}
-    <h1>Шаг первый - выберите специальность</h1>
+    <h1>Запись к врачу</h1>
 {% endblock %}
 
 {% block content %}
@@ -26,6 +26,22 @@
         <input type="hidden" name="startTime"                      id="startTime"   value="">
         <input type="hidden" name="endTime"                          id="endTime"   value="">
     </form>
+
+
+    <br />
+    <h1>Список записей</h1>
+    {% if apps is not empty and apps | length > 1 %}
+        <div class="spec-box">
+            {% for app in apps %}
+                {#<div class="spec-item" id="{{ spec.code }}">{{ spec.name }}</div>#}
+                {#<div class="doc-box" id="spec-{{ spec.code }}"></div>#}
+            {% endfor %}
+        </div>
+    {% else %}
+        <span style="padding-left: 40px;">Записи к врачам отсутствуют.</span>
+    {% endif %}
+
+
 {% endblock %}
 
 

@@ -65,9 +65,13 @@ class AppointmentController extends Controller
 
                 $soap = $this->createConnection();
                 $specialties = $soap->getSpecialitiesInfo(array('omsNumber'=>'9988889785000068', 'birthDate'=>'2011-04-14T00:00:00', 'externalSystemId'=>'MPGU'));
+                $apps = $soap->getAppointmentReceptionsByPatient(array('omsNumber'=>'9988889785000068', 'birthDate'=>'2011-04-14T00:00:00', 'externalSystemId'=>'MPGU'));
+
+//                print_r($apps);
+//                exit;
 
                 if (is_array($specialties->return)){
-                    return $this->render('VidalMainBundle:Appointment:appointment_set_spec.html.twig', array('specialties' => $specialties->return));
+                    return $this->render('VidalMainBundle:Appointment:appointment_set_spec.html.twig', array('specialties' => $specialties->return, 'apps' => $apps));
                 }
             }
         }
@@ -133,9 +137,9 @@ class AppointmentController extends Controller
 
 
     /**
-     * @Route("/appointment-create", name="appointment_create", options={"expose"=true})
+     * @Route("/appointment-list", name="appointment_list", options={"expose"=true})
      */
-    public function createActions(){
+    public function listActions(){
         if ( $this->isAuth() == false ){ return $this->redirect($this->generateUrl('appointment')); }
         $soap = $this->createConnection();
         $data = $soap->getAppointmentReceptionsByPatient(
