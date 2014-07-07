@@ -34,6 +34,7 @@
         <div class="app-box">
             {% for app in apps %}
                 <div class="app-item" id="{{ app.id }}">
+                    <a class="app-del" href="{{ path('appointment_delete',{'appointmentId' : app.id}) }}">Удалить</a>
                     <div class="app-date" style="font-weight: bold;"> {{ app.dateBegin | date('d.m.Y') }} с {{ app.dateBegin | date('H:i') }} до {{ app.dateEnd | date('H:i') }}</div>
                     <br />
                     <div class="app-doctor">
@@ -96,32 +97,36 @@
                     type: "POST",
                     url: Routing.generate('appointment_datetime',{'availableResourceId' : availableResourceId, 'complexResourceId': complexResourceId }),
                     success: function(msg){
-                        data = msg.data.return;
-                        var txt = '';
-                        if (data.schedules){
-                            $.each(data.schedules,function(i, val){
-                                var d = new Date(val.date);
-                                txt += '<div class="dateTime"><span class="date">'+ (d).toString('dd.MM.yyyy') + "</span><div style='margin-left: 25px;'>";
-                                if (val.resourceSchedule && val.resourceSchedule.timePeriods){
-                                    $.each(val.resourceSchedule.timePeriods,function(timei, timeval){
-                                        if (timeval.allowedAppointment == true){
-                                            enabled = 'enabledTime';
-                                        }else{
-                                            enabled = ''
-                                        }
-                                        var dStart = new Date(timeval.startTime);
-                                        var dEnd = new Date(timeval.endTime);
-                                        txt += '<span class="time '+enabled+'" data-availableResourceId="'+availableResourceId+'" data-complexResourceId="'+complexResourceId+'" data-date="'+d+'" data-start="'+dStart+'" data-end="'+dStart+'">'+ dStart.toString('HH:mm') +'</span>';
-                                    });
-                                }else{
-                                    alert('Произошла ошибка выдачи результатов');
-                                }
-                                txt += '</div>';
-                                txt += '</div>';
-                            });
-                            $('#doc-'+availableResourceId).html(txt);
+                        if ( msg.data.detail.exception ){
+                            alert(msg.data.detail.exception);
                         }else{
-                            alert('Произошла ошибка выдачи результатов');
+                            data = msg.data.return;
+                            var txt = '';
+                            if (data.schedules){
+                                $.each(data.schedules,function(i, val){
+                                    var d = new Date(val.date);
+                                    txt += '<div class="dateTime"><span class="date">'+ (d).toString('dd.MM.yyyy') + "</span><div style='margin-left: 25px;'>";
+                                    if (val.resourceSchedule && val.resourceSchedule.timePeriods){
+                                        $.each(val.resourceSchedule.timePeriods,function(timei, timeval){
+                                            if (timeval.allowedAppointment == true){
+                                                enabled = 'enabledTime';
+                                            }else{
+                                                enabled = ''
+                                            }
+                                            var dStart = new Date(timeval.startTime);
+                                            var dEnd = new Date(timeval.endTime);
+                                            txt += '<span class="time '+enabled+'" data-availableResourceId="'+availableResourceId+'" data-complexResourceId="'+complexResourceId+'" data-date="'+d+'" data-start="'+dStart+'" data-end="'+dStart+'">'+ dStart.toString('HH:mm') +'</span>';
+                                        });
+                                    }else{
+                                        alert('Произошла ошибка выдачи результатов');
+                                    }
+                                    txt += '</div>';
+                                    txt += '</div>';
+                                });
+                                $('#doc-'+availableResourceId).html(txt);
+                            }else{
+                                alert('Произошла ошибка выдачи результатов');
+                            }
                         }
                     }
                 });
@@ -230,6 +235,10 @@
             border-bottom: 1px solid #cccccc;
             padding: 10px;
             margin-top: -1px;
+        }
+        .app-del{
+            float: right;
+            margin-top: 30px;
         }
     </style>
 {% endblock %}

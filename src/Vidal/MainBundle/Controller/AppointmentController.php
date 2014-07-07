@@ -170,12 +170,12 @@ class AppointmentController extends Controller
     }
 
     /**
-     * @Route("/appointment-delete", name="appointment_delete", options={"expose"=true})
+     * @Route("/appointment-delete/{appointmentId}", name="appointment_delete", options={"expose"=true})
      */
     public function deleteAction($appointmentId){
         if ( $this->isAuth() == false ){ return $this->redirect($this->generateUrl('appointment')); }
-        $soap = $this->cancelAppointment();
-        $data = $soap->getAppointmentReceptionsByPatient(
+        $soap = $this->createConnection();
+        $data = $soap->cancelAppointment(
             array(
                 'omsNumber'=>'9988889785000068',
                 'birthDate'=>'2011-04-14T00:00:00',
@@ -184,7 +184,7 @@ class AppointmentController extends Controller
             )
         );
 
-        return new JsonResponse(array( 'data'=> $data));
+        return $this->redirect($this->generateUrl('appointment'));
     }
 
 
