@@ -27,17 +27,12 @@ class DocumentEmptyCommand extends ContainerAwareCommand
 			$this->cleanField($field, $pdo, $output);
 		}
 
-		$output->writeln("... DELETE FROM document WHERE YearEdition > 2014 OR (CountryEditionCode != 'RUS' AND ArticleID NOT IN (1,4))");
-		$stmt = $pdo->prepare("DELETE FROM document WHERE YearEdition > 2014 OR (CountryEditionCode != 'RUS' AND ArticleID NOT IN (1,4))");
-		$stmt->execute();
-
 		$output->writeln("+++ vidal:document_empty completed!");
 	}
 
-	private function cleanField($field, $pdo, $output)
+	private function cleanField($field, $pdo)
 	{
-		$output->writeln("... cleaning $field");
-		$stmt = $pdo->prepare("UPDATE document SET $field = NULL WHERE $field IN ('<P><P/>', '<p></p>');");
+		$stmt = $pdo->prepare("UPDATE document SET $field = NULL WHERE $field IN ('<P><P/>', '<P> <P/>');");
 		$stmt->execute();
 	}
 }
