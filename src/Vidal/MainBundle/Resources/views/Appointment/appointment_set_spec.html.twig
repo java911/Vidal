@@ -13,11 +13,19 @@
             {% endfor %}
         </div>
     {% else %}
-        Записи к врачам отсутствуют. <a href="{{ path('appointment_create') }}">Записаться</a>
+        {#Записи к врачам отсутствуют. <a href="{{ path('appointment_create') }}">Записаться</a>#}
     {% endif %}
 
     <div class="bg-gray-ap"></div>
     <div class="loader-ap"><img src="{{ asset('bundles/vidalmain/images/loader.gif') }}" style="width: 64px"></div>
+
+    <form method="POST" id="formdata" action="{{ path('appointment_create') }}">
+        <input type="hidden" name="availableResourceId"  id="availableResourceId"   value="">
+        <input type="hidden" name="complexResourceId"      id="complexResourceId"   value="">
+        <input type="hidden" name="receptionDate"              id="receptionDate"   value="">
+        <input type="hidden" name="startTime"                      id="startTime"   value="">
+        <input type="hidden" name="endTime"                          id="endTime"   value="">
+    </form>
 {% endblock %}
 
 
@@ -74,8 +82,9 @@
                                         }else{
                                             enabled = ''
                                         }
-                                        var d = new Date(timeval.startTime);
-                                        txt += '<span class="time '+enabled+'">'+ d.toString('HH:mm') +'</span>';
+                                        var dStart = new Date(timeval.startTime);
+                                        var dEnd = new Date(timeval.endTime);
+                                        txt += '<span class="time '+enabled+'" data-availableResourceId="'+availableResourceId+'" data-complexResourceId="'+complexResourceId+'" data-date="'+d+'" data-start="'+dStart+'" data-end="'+dStart+'">'+ dStart.toString('HH:mm') +'</span>';
                                     });
                                 }else{
                                     alert('Произошла ошибка выдачи результатов');
@@ -90,6 +99,16 @@
                     }
                 });
                 loadHide();
+            });
+
+            $('.doc-box').on('click','.time', function(){
+//               var link = Routing.generate('appointment_create',{availableResourceId:1,complexResourceId:1,receptionDate:1,startDate:1,endDate:1  });
+                $('#availableResourceId').val($(this).attr('data-availableResourceId'));
+                $('#complexResourceId').val($(this).attr('data-complexResourceId'));
+                $('#receptionDate').val($(this).attr('data-date'));
+                $('#startTime').val($(this).attr('data-start'));
+                $('#endTime').val($(this).attr('data-end'));
+                $('#formdata').submit();
             });
 
             function loadShow(){

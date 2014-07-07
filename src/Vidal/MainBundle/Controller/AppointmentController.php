@@ -108,7 +108,7 @@ class AppointmentController extends Controller
     }
 
     /**
-     * @Route("/appointment-create/{availableResourceId}/{complexResourceId}/{receptionDate}/{startDate}/{endDate}", name="appointment_create", options={"expose"=true})
+     * @Route("/appointment-create", name="appointment_create", options={"expose"=true})
      */
     public function createAppointment($availableResourceId, $complexResourceId,$receptionDate,$startDate, $endDate){
         if ( $this->isAuth() == false ){ return $this->redirect($this->generateUrl('appointment')); }
@@ -121,9 +121,9 @@ class AppointmentController extends Controller
                 'availableResourceId'=>$availableResourceId,
                 'complexResourceId'=>$complexResourceId,
                 'externalSystemId'=>'MPGU',
-                '$receptionDate'=> $receptionDate,
-                'startDate'=> $startDate,
-                'endDate'=> $endDate,
+                'receptionDate'=> $receptionDate,
+                'startTime'=> $startDate,
+                'endTime'=> $endDate,
                 'receptionTypeCodeOrLdpTypeCode' => $receptionTypeCodeOrLdpTypeCode
             )
         );
