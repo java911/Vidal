@@ -66,8 +66,20 @@ class AppointmentController extends Controller
                 $soap = $this->createConnection();
                 $specialties = $soap->getSpecialitiesInfo(array('omsNumber'=>'9988889785000068', 'birthDate'=>'2011-04-14T00:00:00', 'externalSystemId'=>'MPGU'));
 
+                $apps = $soap->getAppointmentReceptionsByPatient(array('omsNumber'=>'9988889785000068', 'birthDate'=>'2011-04-14T00:00:00', 'externalSystemId'=>'MPGU'));
+
+                if ( isset($apps->return) ){
+                    if (isset($apps->return->id)){
+                        $apps = array('0' => $apps->return);
+                    }else{
+                        $apps = $apps->return;
+                    }
+                }
+
+
+
                 if (is_array($specialties->return)){
-                    return $this->render('VidalMainBundle:Appointment:appointment_set_spec.html.twig', array('specialties' => $specialties->return));
+                    return $this->render('VidalMainBundle:Appointment:appointment_set_spec.html.twig', array('specialties' => $specialties->return, 'apps' => $apps));
                 }
             }
         }
@@ -107,6 +119,73 @@ class AppointmentController extends Controller
         return new JsonResponse(array( 'data'=> $datetime));
     }
 
+    /**
+     * @Route("/appointment-create", name="appointment_create", options={"expose"=true})
+     */
+    public function createAppointment(Request $request){
+        if ( $this->isAuth() == false ){ return $this->redirect($this->generateUrl('appointment')); }
+
+        $request = $request->request;
+        $availableResourceId    = $request->get('availableResourceId');
+        $complexResourceId        = $request->get('complexResourceId');
+        $receptionDate = new \DateTime($request->get('receptionDate'));
+        $startDate         = new \DateTime($request->get('startTime'));
+        $endDate             = new \DateTime($request->get('endTime'));
+        $receptionTypeCodeOrLdpTypeCode                         = 1863;
+
+        $soap = $this->createConnection();
+        $datetime = $soap->createAppointment(
+            array(
+                'omsNumber'=>'9988889785000068',
+                'birthDate'=>'2011-04-14T00:00:00',
+                'availableResourceId'=>$availableResourceId,
+                'complexResourceId'=>$complexResourceId,
+                'externalSystemId'=>'MPGU',
+                'receptionDate'=> $receptionDate->format('Y-m-d').'T'.$receptionDate->format('H:i:s'),
+                'startTime'=> $startDate->format('Y-m-d').'T'.$startDate->format('H:i:s'),
+                'endTime'=> $endDate->format('Y-m-d').'T'.$endDate->format('H:i:s'),
+                'receptionTypeCodeOrLdpTypeCode' => $receptionTypeCodeOrLdpTypeCode
+            )
+        );
+
+        return new JsonResponse(array( 'data'=> $datetime));
+    }
+
+
+    /**
+     * @Route("/appointment-list", name="appointment_list", options={"expose"=true})
+     */
+    public function listActions(){
+        if ( $this->isAuth() == false ){ return $this->redirect($this->generateUrl('appointment')); }
+        $soap = $this->createConnection();
+        $data = $soap->getAppointmentReceptionsByPatient(
+            array(
+                'omsNumber'=>'9988889785000068',
+                'birthDate'=>'2011-04-14T00:00:00',
+                'externalSystemId'=>'MPGU'
+            )
+        );
+
+        return new JsonResponse(array( 'data'=> $data));
+    }
+
+    /**
+     * @Route("/appointment-delete/{appointmentId}", name="appointment_delete", options={"expose"=true})
+     */
+    public function deleteAction($appointmentId){
+        if ( $this->isAuth() == false ){ return $this->redirect($this->generateUrl('appointment')); }
+        $soap = $this->createConnection();
+        $data = $soap->cancelAppointment(
+            array(
+                'omsNumber'=>'9988889785000068',
+                'birthDate'=>'2011-04-14T00:00:00',
+                'appointmentId'=>$appointmentId,
+                'externalSystemId'=>'MPGU'
+            )
+        );
+
+        return $this->redirect($this->generateUrl('appointment'));
+    }
 
 
     protected function createConnection(){
