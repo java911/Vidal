@@ -33,21 +33,18 @@
 
 			<input type="hidden" name="p" id="letters_page" value="{{ p }}"/>
 
+
 			{# буквы #}
-			<div class="letters-russian">
-				{% for letter in letters %}
-					<input type="submit" value="{{ letter }}" name="l" class="letter{{ l == letter ? ' active' }}"/>
-				{% endfor %}
+			<div class="syllables">
+				{{ render(controller('VidalDrugBundle:Drugs:syllables', {'t':t, 'l':l})) }}
 			</div>
-
 			<div class="clear"></div>
-
-			{# под-буквы #}
-			{% include 'VidalDrugBundle:Drugs:letters_sub.html.twig' %}
 		</form>
 
 		{% if showTable %}
-			{% include 'VidalDrugBundle:Drugs:letters_table.html.twig' %}
+			<div class="table">
+				{{ render(controller('VidalDrugBundle:Drugs:table', {'t':t, 'n':n})) }}
+			</div>
 		{% endif %}
 	</div>
 
@@ -169,11 +166,37 @@
 
 			$('.letters-sub input[value="{{ l }}"]').addClass('active').closest('div').show();
 
-			$('.letters-russian input').hover(function() {
+			$('.syllables').on('mouseenter', '.letters-russian input', function() {
 				$('.letters-russian input').removeClass('beige');
 				$(this).addClass('beige');
 				$('.letters-sub > div').hide();
 				$('.letters-sub > div[data="' + $(this).val() + '"]').show();
+			});
+
+			var $table = $('.table');
+			var $syllables = $('.syllables');
+
+			$('#letters_type').change(function() {
+				if (this.value == 'b') {
+					$('.letters-controls-check').hide();
+				}
+				else {
+					$('.letters-controls-check').show();
+				}
+
+				$syllables.fadeOut('fast');
+				$.getJSON(Routing.generate('ajax_syllables', {'t': this.value, 'n': $('#letters_nonpres').prop('checked') }), function(html) {
+					$syllables.html(html);
+					$syllables.fadeIn('fast');
+				});
+
+				{% if showTable %}
+				$table.fadeOut('fast');
+				$.getJSON(Routing.generate('ajax_table', {'t': this.value, 'n': $('#letters_nonpres').prop('checked') }), function(html) {
+					$table.html(html);
+					$table.fadeIn('fast');
+				});
+				{% endif %}
 			});
 		});
 	</script>

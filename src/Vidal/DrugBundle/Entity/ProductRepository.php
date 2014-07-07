@@ -633,6 +633,78 @@ class ProductRepository extends EntityRepository
 		return $count;
 	}
 
+	public function findByProductType($t = 'p', $n = false)
+	{
+		$pdo = $this->_em->getConnection();
+
+		switch ($t) {
+			case 'p':
+				$where = "('DRUG', 'GOME')";
+				break;
+			case 'b':
+				$where = "('BAD')";
+				break;
+			default:
+				$where = "('DRUG', 'GOME', 'BAD')";
+		}
+
+		if ($n) {
+			$where .= " AND NonPrescriptionDrug = 1";
+		}
+
+		$sql = "
+			SELECT DISTINCT LEFT(RusName , 2) as letters
+			FROM product
+			WHERE LEFT(RusName, 1) NOT IN ('1','2','3','5','9','_','D','H','L','N','Q','S')
+				AND MarketStatusID IN (1,2,7)
+				AND ProductTypeCode IN {$where}
+			ORDER BY letters
+		";
+
+		$stmt = $pdo->prepare($sql);
+		$stmt->execute();
+
+		$raw           = $stmt->fetchAll();
+		$syllables     = array();
+		$secondLetters = array();
+
+		foreach ($raw as $r) {
+			$first  = mb_substr($r['letters'], 0, 1, 'utf-8');
+			$second = mb_substr($r['letters'], 1, 2, 'utf-8');
+
+			isset($syllables[$first])
+				? $syllables[$first][] = $r['letters']
+				: $syllables[$first] = array($r['letters']);
+
+			if (!isset($secondLetters[$second])) {
+				$secondLetters[$second] = true;
+			}
+		}
+
+		$raws          = array();
+		$table         = array();
+		$firstLetters  = array_keys($syllables);
+		$secondLetters = array_keys($secondLetters);
+
+		usort($secondLetters, 'strcmp');
+
+		foreach ($raw as $r) {
+			$key        = $r['letters'];
+			$raws[$key] = true;
+		}
+
+		foreach ($secondLetters as $secondLetter) {
+			$table[$secondLetter] = array();
+
+			foreach ($firstLetters as $firstLetter) {
+				$key                    = $firstLetter . $secondLetter;
+				$table[$secondLetter][] = isset($raws[$key]) ? $key : null;
+			}
+		}
+
+		return array($syllables, $table);
+	}
+
 	/**
 	 * Функция возвращает слово с заглавной первой буквой (c поддержкой кирилицы)
 	 *

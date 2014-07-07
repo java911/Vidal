@@ -672,6 +672,82 @@ class DrugsController extends Controller
 		return $params;
 	}
 
+	public function syllablesAction($t, $l)
+	{
+		$path      = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Generated' . DIRECTORY_SEPARATOR;
+		$file      = "{$path}syllables_$t.json";
+		$syllables = json_decode(file_get_contents($file), true);
+		$letters   = array_keys($syllables);
+
+		return $this->render('VidalDrugBundle:Drugs:products_syllables.html.twig', array(
+			'syllables' => $syllables,
+			'letters'   => $letters,
+			'l'         => $l,
+			't'         => $t,
+		));
+	}
+
+	/** @Route("/ajax-syllables", name="ajax_syllables", options={"expose":true}) */
+	public function ajaxSyllablesAction(Request $request)
+	{
+		$t = $request->query->get('t', 'p');
+		$l = $request->query->get('l', null);
+
+		$path      = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Generated' . DIRECTORY_SEPARATOR;
+		$file      = "{$path}syllables_$t.json";
+		$syllables = json_decode(file_get_contents($file), true);
+		$letters   = array_keys($syllables);
+
+		$view = $this->renderView('VidalDrugBundle:Drugs:products_syllables.html.twig', array(
+			'syllables' => $syllables,
+			'letters'   => $letters,
+			'l'         => $l,
+			't'         => $t,
+		));
+
+		return new JsonResponse($view);
+	}
+
+	public function tableAction($t, $n)
+	{
+		$path      = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Generated' . DIRECTORY_SEPARATOR;
+		$file      = "{$path}table_$t.json";
+		$table     = json_decode(file_get_contents($file), true);
+		$file      = "{$path}syllables_$t.json";
+		$syllables = json_decode(file_get_contents($file), true);
+		$letters   = array_keys($syllables);
+
+		return $this->render('VidalDrugBundle:Drugs:products_table.html.twig', array(
+			'table'   => $table,
+			'letters' => $letters,
+			't'       => $t,
+			'n'       => $n,
+		));
+	}
+
+	/** @Route("/ajax-table", name="ajax_table", options={"expose":true}) */
+	public function ajaxTableAction(Request $request)
+	{
+		$t = $request->query->get('t', 'p');
+		$n = $request->query->get('n', null);
+
+		$path      = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Generated' . DIRECTORY_SEPARATOR;
+		$file      = "{$path}table_$t.json";
+		$table     = json_decode(file_get_contents($file), true);
+		$file      = "{$path}syllables_$t.json";
+		$syllables = json_decode(file_get_contents($file), true);
+		$letters   = array_keys($syllables);
+
+		$view = $this->renderView('VidalDrugBundle:Drugs:products_table.html.twig', array(
+			'table'   => $table,
+			'letters' => $letters,
+			't'       => $t,
+			'n'       => $n,
+		));
+
+		return new JsonResponse($view);
+	}
+
 	/**
 	 * @Route("/drugs", name="drugs")
 	 * @Route("/drugs/products", name="products")
@@ -685,7 +761,7 @@ class DrugsController extends Controller
 		$l  = $request->query->get('l', null); // буква
 		$n  = $request->query->has('n'); // только безрецептурные препараты
 
-		$letters = explode(' ', 'А Б В Г Д Е Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Э Ю Я');
+		list($syllables, $table) = $em->getRepository('VidalDrugBundle:Product')->findByProductType($t);
 
 		$params = array(
 			't'          => $t,
@@ -694,7 +770,8 @@ class DrugsController extends Controller
 			'n'          => $n,
 			'menu_drugs' => 'products',
 			'title'      => 'Поиск препаратов по алфавиту',
-			'letters'    => $letters,
+			'syllables'  => $syllables,
+			'table'      => $table,
 		);
 
 		# БАДы только безрецептурные
@@ -758,8 +835,8 @@ class DrugsController extends Controller
 
 	private function strip($string)
 	{
-		$pat = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/&amp;/');
-		$rep = array('', '', '&');
+		$pat = array(' /<sup>(.*?)<\/sup >/i', ' /<sub>(.*?)<\/sub >/i', ' /&amp;/');
+		$rep = array('', '', ' & ');
 
 		return preg_replace($pat, $rep, $string);
 	}
