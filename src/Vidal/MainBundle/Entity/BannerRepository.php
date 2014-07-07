@@ -129,7 +129,7 @@ class BannerRepository extends EntityRepository
 			}
 		}
 
-		return $banners[$index];
+		return isset($banners[$index]) ? $banners[$index] : $banners[0];
 	}
 
 	private function countShow($banner)

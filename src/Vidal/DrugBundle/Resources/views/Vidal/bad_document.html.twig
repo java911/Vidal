@@ -23,7 +23,7 @@
 	<div class="breadcrumbs">
 		<a href="{{ path('index') }}">Видаль</a>
 		<i></i>
-		<a href="{{ path('searche_letter') }}">{{ isMI is defined ? 'Медицинские изделия' : 'БАДы'}}</a>
+		<a href="{{ path('products', {'t':'b'}) }}">{{ isMI is defined ? 'Медицинские изделия' : 'БАДы'}}</a>
 	</div>
 {% endblock %}
 
