@@ -107,6 +107,65 @@ class AppointmentController extends Controller
         return new JsonResponse(array( 'data'=> $datetime));
     }
 
+    /**
+     * @Route("/appointment-create/{availableResourceId}/{complexResourceId}/{receptionDate}/{startDate}/{endDate}", name="appointment_create", options={"expose"=true})
+     */
+    public function createAppointment($availableResourceId, $complexResourceId,$receptionDate,$startDate, $endDate){
+        if ( $this->isAuth() == false ){ return $this->redirect($this->generateUrl('appointment')); }
+        $receptionTypeCodeOrLdpTypeCode = 1863;
+        $soap = $this->createConnection();
+        $datetime = $soap->createAppointment(
+            array(
+                'omsNumber'=>'9988889785000068',
+                'birthDate'=>'2011-04-14T00:00:00',
+                'availableResourceId'=>$availableResourceId,
+                'complexResourceId'=>$complexResourceId,
+                'externalSystemId'=>'MPGU',
+                '$receptionDate'=> $receptionDate,
+                'startDate'=> $startDate,
+                'endDate'=> $endDate,
+                'receptionTypeCodeOrLdpTypeCode' => $receptionTypeCodeOrLdpTypeCode
+            )
+        );
+
+        return new JsonResponse(array( 'data'=> $datetime));
+    }
+
+
+    /**
+     * @Route("/appointment-create", name="appointment_create", options={"expose"=true})
+     */
+    public function createActions(){
+        if ( $this->isAuth() == false ){ return $this->redirect($this->generateUrl('appointment')); }
+        $soap = $this->createConnection();
+        $data = $soap->getAppointmentReceptionsByPatient(
+            array(
+                'omsNumber'=>'9988889785000068',
+                'birthDate'=>'2011-04-14T00:00:00',
+                'externalSystemId'=>'MPGU'
+            )
+        );
+
+        return new JsonResponse(array( 'data'=> $data));
+    }
+
+    /**
+     * @Route("/appointment-delete", name="appointment_delete", options={"expose"=true})
+     */
+    public function deleteAction($appointmentId){
+        if ( $this->isAuth() == false ){ return $this->redirect($this->generateUrl('appointment')); }
+        $soap = $this->cancelAppointment();
+        $data = $soap->getAppointmentReceptionsByPatient(
+            array(
+                'omsNumber'=>'9988889785000068',
+                'birthDate'=>'2011-04-14T00:00:00',
+                'appointmentId'=>$appointmentId,
+                'externalSystemId'=>'MPGU'
+            )
+        );
+
+        return new JsonResponse(array( 'data'=> $data));
+    }
 
 
     protected function createConnection(){

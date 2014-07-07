@@ -30,6 +30,7 @@
         $(document).ready(function(){
             $('.spec-item').click(function(){
                 var id = $(this).attr('id');
+                loadShow();
                 $.ajax({
                     type: "POST",
                     url: Routing.generate('appointment_doctor',{'doctorId' : id }),
@@ -48,47 +49,57 @@
                         $('#spec-'+id).html(txt);
                     }
                 });
+            loadHide();
             });
 
 
             $('.doc-box').on('click','.doc-item', function(){
                 var availableResourceId = $(this).attr('availableResourceId');
                 var complexResourceId = $(this).attr('complexResourceId');
+                loadShow();
                 $.ajax({
                     type: "POST",
                     url: Routing.generate('appointment_datetime',{'availableResourceId' : availableResourceId, 'complexResourceId': complexResourceId }),
                     success: function(msg){
                         data = msg.data.return;
                         var txt = '';
-                        $.each(data.schedules,function(i, val){
-                            var d = new Date(val.date);
-                            console.log(dd = d);
-                            var curr_date = d.getDate();
-                            var curr_month = d.getMonth() + 1; //Months are zero based
-                            var curr_year = d.getFullYear();
-//                            txt += '<div class="dateTime"><span class="date">'+curr_date + "." + curr_month + "." + curr_year + "</span>";
-                            txt += '<div class="dateTime"><span class="date">'+ (d).toString('dd.MM.yyyy') + "</span><div style='margin-left: 25px;'>";
-                            $.each(val.resourceSchedule.timePeriods,function(timei, timeval){
-                                if (timeval.allowedAppointment == true){
-                                    enabled = 'enabledTime';
+                        if (data.schedules){
+                            $.each(data.schedules,function(i, val){
+                                var d = new Date(val.date);
+                                txt += '<div class="dateTime"><span class="date">'+ (d).toString('dd.MM.yyyy') + "</span><div style='margin-left: 25px;'>";
+                                if (val.resourceSchedule && val.resourceSchedule.timePeriods){
+                                    $.each(val.resourceSchedule.timePeriods,function(timei, timeval){
+                                        if (timeval.allowedAppointment == true){
+                                            enabled = 'enabledTime';
+                                        }else{
+                                            enabled = ''
+                                        }
+                                        var d = new Date(timeval.startTime);
+                                        txt += '<span class="time '+enabled+'">'+ d.toString('HH:mm') +'</span>';
+                                    });
                                 }else{
-                                    enabled = ''
+                                    alert('Произошла ошибка выдачи результатов');
                                 }
-                                var d = new Date(timeval.startTime);
-                                var curr_hour = d.getHours();
-                                var curr_minute = d.getMinutes(); //Months are zero based
-
-                                txt += '<span class="time '+enabled+'">'+ d.toString('HH:mm') +'</span>';
-//                                txt += '<span class="time '+enabled+'">'+curr_hour+':'+curr_minute+'</span>';
+                                txt += '</div>';
+                                txt += '</div>';
                             });
-                            txt += '</div>';
-                            txt += '</div>';
-                        });
-                        $('#doc-'+availableResourceId).html(txt);
+                            $('#doc-'+availableResourceId).html(txt);
+                        }else{
+                            alert('Произошла ошибка выдачи результатов');
+                        }
                     }
                 });
+                loadHide();
             });
 
+            function loadShow(){
+                $('.bg-gray-ap').fadeIn();
+                $('.loader-ap').fadeIn();
+            }
+            function loadHide(){
+                $('.bg-gray-ap').fadeOut();
+                $('.loader-ap').fadeOut();
+            }
         });
     </script>
 {% endblock %}
@@ -157,6 +168,7 @@
             opacity: 0.5;
             filter: alpha(Opacity=50);
             z-index: 997;
+            display: none;
         }
         .loader-ap{
             position: fixed;
@@ -166,6 +178,7 @@
             margin-left: -32px;
             top: 300px;
             z-index: 998;
+            display: none;
         }
     </style>
 {% endblock %}
