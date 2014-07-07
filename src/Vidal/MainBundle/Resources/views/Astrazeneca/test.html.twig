@@ -1,14 +1,18 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
-{% block nav %}
-    <div class="breadcrumbs">
-        <a href="{{ path('index') }}">Видаль</a>
-        <i></i>
-        <a href="{{ path('astrazeneca_index') }}">astraZeneca</a>
-        <i></i>
-        <span>Тестирование</span>
-    </div>
+{#{% block nav %}#}
+    {#<div class="breadcrumbs">#}
+        {#<a href="{{ path('index') }}">Видаль</a>#}
+        {#<i></i>#}
+        {#<a href="{{ path('astrazeneca_index') }}">astraZeneca</a>#}
+        {#<i></i>#}
+        {#<span>Тестирование</span>#}
+    {#</div>#}
+{#{% endblock %}#}
+
+{% block title %}
+    <h1>Школа гастрита</h1>
 {% endblock %}
 
 {% block content %}
@@ -35,16 +39,16 @@
             </table>
         </div>
     </div>
-    <h1>
-       Тестирование
-    </h1>
+    {#<h1>#}
+       {#Тестирование#}
+    {#</h1>#}
     <div class="tests">
         {% for test in tests %}
             <div id="t{{ test.id }}" class="test">
                 <table>
                     <tr>
-                        <td style="width: 250px; text-align: center">
-                            <img src="{{ asset('bundles/vidalmain/images/test' ~test.id~ '.jpg') }}" style="width: 250px;">
+                        <td style="width: 220px; text-align: center">
+                            <img src="{{ asset('bundles/vidalmain/images/test' ~test.id~ '.jpg') }}" style="width: 220px; border: 1px solid #D6DADD;">
                         </td>
                         <td style="width: 250px; text-align: center;" valign="center">
                             {{ test.title }}
@@ -65,10 +69,12 @@
                 </table>
             </div>
         {% endfor %}
-        <div class="test" style="display: none;" id="test-success">
+        <div class="test" style="display: none;" id="test-success"
+            <br />
             У Вас высока вероятность гастрита, рекомендуем Вам пройти консультацию у врача-гастроэнтеролога. Найти специалистов Вы можете с помощью <br /><a href="http://www.vidal.ru/astrazeneca/map">нашей карты</a>
         </div>
         <div class="test" style="display: none;" id="test-fail">
+            <br />
             Скорее всего у Вас нет гастрита, но, для его профилактики проконсультируйтесь со специалистом. Найти специалистов Вы можете с <br /><a href="http://www.vidal.ru/astrazeneca/map">нашей карты</a>
         </div>
     </div>
@@ -77,20 +83,33 @@
 {% block stylesheets %}
     {{ parent() }}
     <style>
+        .active{
+            background: #d71344 !important;
+        }
+        .tabs{
+            background: url("{{ asset('bundles/vidalmain/images/bg-menu.png') }}");
+        }
+        .tabs a:hover{
+            background: url("{{ asset('bundles/vidalmain/images/bg-menu2.png') }}");
+        }
         .tests{
-            border: 1px solid #d71344;
+            /*border: 1px solid #d71344;*/
             padding: 10px;
             text-align: center;
             position: relative;
-            width: 530px;
+            width: 500px;
             /*min-height: 73px;*/
             overflow: hidden;
+            {#background: url('{{ asset('bundles/vidalmain/images/bg-menu.png') }}');#}
+
         }
         .test{
+            {#background: url('{{ asset('bundles/vidalmain/images/bg-menu.png') }}');#}
+
             /*position: absolute;*/
             width: 530px;
             /*height: 83px;*/
-            background: #FFFFFF;
+            /*background: #FFFFFF;*/
             display: none;
         }
         .tabs a{
