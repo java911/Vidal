@@ -65,10 +65,18 @@ class AppointmentController extends Controller
 
                 $soap = $this->createConnection();
                 $specialties = $soap->getSpecialitiesInfo(array('omsNumber'=>'9988889785000068', 'birthDate'=>'2011-04-14T00:00:00', 'externalSystemId'=>'MPGU'));
+
                 $apps = $soap->getAppointmentReceptionsByPatient(array('omsNumber'=>'9988889785000068', 'birthDate'=>'2011-04-14T00:00:00', 'externalSystemId'=>'MPGU'));
 
-//                print_r($apps);
-//                exit;
+                if ( isset($apps->return) ){
+                    if (isset($apps->return->id)){
+                        $apps = array('0' => $apps->return);
+                    }else{
+                        $apps = $apps->return;
+                    }
+                }
+
+
 
                 if (is_array($specialties->return)){
                     return $this->render('VidalMainBundle:Appointment:appointment_set_spec.html.twig', array('specialties' => $specialties->return, 'apps' => $apps));
@@ -114,9 +122,17 @@ class AppointmentController extends Controller
     /**
      * @Route("/appointment-create", name="appointment_create", options={"expose"=true})
      */
-    public function createAppointment($availableResourceId, $complexResourceId,$receptionDate,$startDate, $endDate){
+    public function createAppointment(Request $request){
         if ( $this->isAuth() == false ){ return $this->redirect($this->generateUrl('appointment')); }
-        $receptionTypeCodeOrLdpTypeCode = 1863;
+
+        $request = $request->request;
+        $availableResourceId    = $request->get('availableResourceId');
+        $complexResourceId        = $request->get('complexResourceId');
+        $receptionDate = new \DateTime($request->get('receptionDate'));
+        $startDate         = new \DateTime($request->get('startTime'));
+        $endDate             = new \DateTime($request->get('endTime'));
+        $receptionTypeCodeOrLdpTypeCode                         = 1863;
+
         $soap = $this->createConnection();
         $datetime = $soap->createAppointment(
             array(
@@ -125,9 +141,9 @@ class AppointmentController extends Controller
                 'availableResourceId'=>$availableResourceId,
                 'complexResourceId'=>$complexResourceId,
                 'externalSystemId'=>'MPGU',
-                'receptionDate'=> $receptionDate,
-                'startTime'=> $startDate,
-                'endTime'=> $endDate,
+                'receptionDate'=> $receptionDate->format('Y-m-d').'T'.$receptionDate->format('H:i:s'),
+                'startTime'=> $startDate->format('Y-m-d').'T'.$startDate->format('H:i:s'),
+                'endTime'=> $endDate->format('Y-m-d').'T'.$endDate->format('H:i:s'),
                 'receptionTypeCodeOrLdpTypeCode' => $receptionTypeCodeOrLdpTypeCode
             )
         );
