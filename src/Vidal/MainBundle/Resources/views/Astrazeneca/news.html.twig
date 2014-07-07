@@ -1,16 +1,19 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
-
-
-{% block nav %}
-    <div class="breadcrumbs">
-        <a href="{{ path('index') }}">Видаль</a>
-        <i></i>
-        <a href="{{ path('astrazeneca_index') }}">astraZeneca</a>
-        <i></i>
-        <span>Новости</span>
-    </div>
+{% block title %}
+    <h1>Школа гастрита</h1>
 {% endblock %}
+
+
+{#{% block nav %}#}
+    {#<div class="breadcrumbs">#}
+        {#<a href="{{ path('index') }}">Видаль</a>#}
+        {#<i></i>#}
+        {#<a href="{{ path('astrazeneca_index') }}">astraZeneca</a>#}
+        {#<i></i>#}
+        {#<span>Новости</span>#}
+    {#</div>#}
+{#{% endblock %}#}
 
 
 {% block content %}
@@ -37,9 +40,6 @@
             </table>
         </div>
     </div>
-    <h1>
-        Статьи AstraZeneca
-    </h1>
     <div class="news">
         {% for publication in publications %}
             {#{% set withPhoto = publication.photo and is_file(publication.photo.path) %}#}
@@ -76,6 +76,15 @@
     {{ parent() }}
     <link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/publication.css') }}"/>
     <style>
+        .active{
+            background: #d71344 !important;
+        }
+        .tabs{
+            background: url("{{ asset('bundles/vidalmain/images/bg-menu.png') }}");
+        }
+        .tabs a:hover{
+            background: url("{{ asset('bundles/vidalmain/images/bg-menu2.png') }}");
+        }
         .tabs a{
             width: 100%;
             display: block;

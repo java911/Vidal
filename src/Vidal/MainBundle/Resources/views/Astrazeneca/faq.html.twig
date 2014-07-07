@@ -1,14 +1,18 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
-{% block nav %}
-    <div class="breadcrumbs">
-        <a href="{{ path('index') }}">Видаль</a>
-        <i></i>
-        <a href="{{ path('astrazeneca_index') }}">astraZeneca</a>
-        <i></i>
-        <span>Ответы специалистов</span>
-    </div>
+{#{% block nav %}#}
+    {#<div class="breadcrumbs">#}
+        {#<a href="{{ path('index') }}">Видаль</a>#}
+        {#<i></i>#}
+        {#<a href="{{ path('astrazeneca_index') }}">astraZeneca</a>#}
+        {#<i></i>#}
+        {#<span>Ответы специалистов</span>#}
+    {#</div>#}
+{#{% endblock %}#}
+
+{% block title %}
+    <h1>Школа гастрита</h1>
 {% endblock %}
 
 {% block content %}
@@ -35,9 +39,9 @@
             </table>
         </div>
     </div>
-    <h1>Ответы специалистов</h1>
+    {#<h1>Ответы специалистов</h1>#}
     <div class="qa-ask">
-        <b><a href="#" id="ask">Спросить у специалистов:</a></b>
+        <button id="ask" name="" class="btn-red">Спросить у специалистов</button>
         <br/>
         <br/>
         <form method="POST">
@@ -78,6 +82,15 @@
 {% block stylesheets %}
     {{ parent() }}
     <style type="text/css">
+        .active{
+            background: #d71344 !important;
+        }
+        .tabs{
+            background: url("{{ asset('bundles/vidalmain/images/bg-menu.png') }}");
+        }
+        .tabs a:hover{
+            background: url("{{ asset('bundles/vidalmain/images/bg-menu2.png') }}");
+        }
         .qa {
             position:      relative;
             border:        3px solid #eee;

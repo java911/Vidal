@@ -2,7 +2,7 @@
 
 
 {% block title %}
-    <h1>КАРТА ЛПУ</h1>
+    <h1>Школа гастрита</h1>
 {% endblock %}
 
 
@@ -30,7 +30,7 @@
             </table>
         </div>
     </div>
-    <h1>Карта аптек</h1>
+    {#<h1>Карта аптек</h1>#}
     {#<div class="iption">#}
     {#<select class="select">#}
     {#{% for city in cities %}#}
@@ -46,6 +46,15 @@
 {% block stylesheets %}
     {{ parent() }}
     <style type="text/css">
+        .active{
+            background: #d71344 !important;
+        }
+        .tabs{
+            background: url("{{ asset('bundles/vidalmain/images/bg-menu.png') }}");
+        }
+        .tabs a:hover{
+            background: url("{{ asset('bundles/vidalmain/images/bg-menu2.png') }}");
+        }
         #map{
             width: 520px;
             height: 400px

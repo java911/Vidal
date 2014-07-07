@@ -1,14 +1,18 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
-{% block nav %}
-    <div class="breadcrumbs">
-        <a href="{{ path('index') }}">Видаль</a>
-        <i></i>
-        <a href="{{ path('astrazeneca_index') }}">astraZeneca</a>
-        <i></i>
-        <span>Главная</span>
-    </div>
+{#{% block nav %}#}
+    {#<div class="breadcrumbs">#}
+        {#<a href="{{ path('index') }}">Видаль</a>#}
+        {#<i></i>#}
+        {#<a href="{{ path('astrazeneca_index') }}">Школа гастрита</a>#}
+        {#<i></i>#}
+        {#<span>Главная</span>#}
+    {#</div>#}
+{#{% endblock %}#}
+
+{% block title %}
+    <h1>Школа гастрита</h1>
 {% endblock %}
 
 {% block content %}
@@ -35,7 +39,6 @@
             </table>
         </div>
     </div>
-    <h1>ASTRAZENECA</h1>
     <div class="sliderPanel">
         <img src="{{ asset('bundles/vidalmain/images/Slider/icon_left.png') }}" class="sliderBtnLeft">
         <img src="{{ asset('bundles/vidalmain/images/Slider/icon_right.png') }}" class="sliderBtnRight">
@@ -102,6 +105,16 @@
 {% block stylesheets %}
     {{ parent() }}
     <style>
+
+        .active{
+            background: #d71344 !important;
+        }
+        .tabs{
+            background: url("{{ asset('bundles/vidalmain/images/bg-menu.png') }}");
+        }
+        .tabs a:hover{
+            background: url("{{ asset('bundles/vidalmain/images/bg-menu2.png') }}");
+        }
         .tabs a{
             width: 100%;
             display: block;
@@ -112,7 +125,8 @@
             width: 500px;
         }
         .slider{
-            width: 502px;
+            width: 500px;
+            /*width: 502px;*/
             position: absolute;
             overflow: hidden;
             border-bottom: none;
@@ -125,10 +139,11 @@
             overflow: hidden;
         }
         .sliderPanel{
-            width: 502px;
+            width: 500px;
+            /*width: 502px;*/
             min-height: 700px;
             position: relative;
-            margin: 0 auto;
+            /*margin: 0 auto;*/
         }
         .sliderBtnLeft{
             position: absolute;
@@ -152,12 +167,12 @@
         }
         .item{
             float: left;
-            border: 1px solid #CC3333;
+            /*border: 1px solid #CC3333;*/
         }
         .item .text{
             text-align: justify;
-            color: #333333;
-            font-size: 16px;
+            color: #444444;
+            font-size: 14px;
             width: 480px;
             padding: 10px;
         }

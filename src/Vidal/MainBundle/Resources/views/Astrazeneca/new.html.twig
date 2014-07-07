@@ -1,12 +1,16 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
-{% block nav %}
-	<div class="breadcrumbs">
-		<a href="{{ path('index') }}">Видаль</a>
-		<i></i>
-		<a href="{{ path('news') }}">Новости</a>
-	</div>
+{#{% block nav %}#}
+	{#<div class="breadcrumbs">#}
+		{#<a href="{{ path('index') }}">Видаль</a>#}
+		{#<i></i>#}
+		{#<a href="{{ path('news') }}">Новости</a>#}
+	{#</div>#}
+{#{% endblock %}#}
+
+{% block title %}
+    <h1>Школа гастрита</h1>
 {% endblock %}
 
 
@@ -62,6 +66,15 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<style type="text/css">
+        .active{
+            background: #d71344 !important;
+        }
+        .tabs{
+            background: url("{{ asset('bundles/vidalmain/images/bg-menu.png') }}");
+        }
+        .tabs a:hover{
+            background: url("{{ asset('bundles/vidalmain/images/bg-menu2.png') }}");
+        }
 		.publication {
 			font-size: 15px;
 			position:  relative;
