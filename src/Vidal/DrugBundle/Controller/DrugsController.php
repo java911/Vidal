@@ -725,29 +725,6 @@ class DrugsController extends Controller
 		));
 	}
 
-	/** @Route("/ajax-table", name="ajax_table", options={"expose":true}) */
-	public function ajaxTableAction(Request $request)
-	{
-		$t = $request->query->get('t', 'p');
-		$n = $request->query->get('n', null);
-
-		$path      = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Generated' . DIRECTORY_SEPARATOR;
-		$file      = "{$path}table_$t.json";
-		$table     = json_decode(file_get_contents($file), true);
-		$file      = "{$path}syllables_$t.json";
-		$syllables = json_decode(file_get_contents($file), true);
-		$letters   = array_keys($syllables);
-
-		$view = $this->renderView('VidalDrugBundle:Drugs:products_table.html.twig', array(
-			'table'   => $table,
-			'letters' => $letters,
-			't'       => $t,
-			'n'       => $n,
-		));
-
-		return new JsonResponse($view);
-	}
-
 	/**
 	 * @Route("/drugs", name="drugs")
 	 * @Route("/drugs/products", name="products", options={"expose":true})
