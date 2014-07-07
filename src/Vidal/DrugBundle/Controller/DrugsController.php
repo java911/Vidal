@@ -750,7 +750,7 @@ class DrugsController extends Controller
 
 	/**
 	 * @Route("/drugs", name="drugs")
-	 * @Route("/drugs/products", name="products")
+	 * @Route("/drugs/products", name="products", options={"expose":true})
 	 * @Template("VidalDrugBundle:Drugs:products.html.twig")
 	 */
 	public function productsAction(Request $request)
@@ -759,7 +759,7 @@ class DrugsController extends Controller
 		$t  = $request->query->get('t', 'p'); // тип препараты-бады-вместе
 		$p  = $request->query->get('p', 1); // номер страницы
 		$l  = $request->query->get('l', null); // буква
-		$n  = $request->query->has('n'); // только безрецептурные препараты
+		$n  = $request->query->has('n') && $request->query->get('n') != 'false'; // только безрецептурные препараты
 
 		list($syllables, $table) = $em->getRepository('VidalDrugBundle:Product')->findByProductType($t);
 

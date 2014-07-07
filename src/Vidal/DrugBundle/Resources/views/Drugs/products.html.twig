@@ -177,24 +177,19 @@
 			var $syllables = $('.syllables');
 
 			$('#letters_type').change(function() {
+				{% if showTable %}
+				window.location = Routing.generate('products', {'t':this.value, 'n': $('#letters_nonpres').prop('checked')});
+				{% else %}
 				if (this.value == 'b') {
 					$('.letters-controls-check').hide();
 				}
 				else {
 					$('.letters-controls-check').show();
 				}
-
 				$syllables.fadeOut('fast');
 				$.getJSON(Routing.generate('ajax_syllables', {'t': this.value, 'n': $('#letters_nonpres').prop('checked') }), function(html) {
 					$syllables.html(html);
 					$syllables.fadeIn('fast');
-				});
-
-				{% if showTable %}
-				$table.fadeOut('fast');
-				$.getJSON(Routing.generate('ajax_table', {'t': this.value, 'n': $('#letters_nonpres').prop('checked') }), function(html) {
-					$table.html(html);
-					$table.fadeIn('fast');
 				});
 				{% endif %}
 			});
