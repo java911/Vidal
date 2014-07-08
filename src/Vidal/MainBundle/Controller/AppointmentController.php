@@ -22,6 +22,7 @@ class AppointmentController extends Controller
         $session = new Session();
         $emiasBirthdate = $session->get('EmiasBirthdate');
         $emiasOms = $session->get('EmiasOms');
+
         if ( $emiasBirthdate == null || $emiasOms == null ){
             return false;
         }else{
@@ -37,9 +38,28 @@ class AppointmentController extends Controller
      */
     public function indexAction(Request $request)
     {
+        if ($this->isAuth()){
+            $soap = $this->createConnection();
+            $specialties = $soap->getSpecialitiesInfo(array('omsNumber'=>'9988889785000068', 'birthDate'=>'2011-04-14T00:00:00', 'externalSystemId'=>'MPGU'));
+
+            $apps = $soap->getAppointmentReceptionsByPatient(array('omsNumber'=>'9988889785000068', 'birthDate'=>'2011-04-14T00:00:00', 'externalSystemId'=>'MPGU'));
+
+            if ( isset($apps->return) ){
+                if (isset($apps->return->id)){
+                    $apps = array('0' => $apps->return);
+                }else{
+                    $apps = $apps->return;
+                }
+            }
+
+
+
+            if (is_array($specialties->return)){
+                return $this->render('VidalMainBundle:Appointment:appointment_set_spec.html.twig', array('specialties' => $specialties->return, 'apps' => $apps));
+            }
+        }
         $em  = $this->getDoctrine()->getManager();
         $appointment = new Appointment();
-
         $builder = $this->createFormBuilder($appointment);
         $builder
             ->add('email', null, array('label' => 'E-mail'))

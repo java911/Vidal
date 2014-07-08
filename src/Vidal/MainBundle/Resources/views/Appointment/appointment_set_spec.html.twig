@@ -8,8 +8,10 @@
     {% if specialties is not empty %}
         <div class="spec-box">
             {% for spec in specialties %}
-                <div class="spec-item" id="{{ spec.code }}">{{ spec.name }}</div>
-                <div class="doc-box" id="spec-{{ spec.code }}"></div>
+                <div>
+                    <div class="spec-item" id="{{ spec.code }}">{{ spec.name }}</div>
+                    <div class="doc-box" id="spec-{{ spec.code }}"></div>
+                </div>
             {% endfor %}
         </div>
     {% else %}
@@ -61,17 +63,17 @@
             <tr>
                 <td colspan="2">
                     <div class="info" >
-                        <b>Врач:</b> Иванов Иван Иванович<br />
-                        <b>Место:</b> Больница номер 6 <br />
-                        <b>Специализация:</b> Терапевт<br />
-                        <b>Дата и время:</b> 28.02.2014 08:30
+                        <b>Врач:</b>  <span id="pfio"></span><br />
+                        <b>Место:</b> <span id="pplace"></span><br />
+                        <b>Специализация:</b> <span id="pspec"></span><br />
+                        <b>Дата и время:</b>  <span id="pdatetime"></span>
                     </div>
 
                 </td>
             </tr>
             <tr>
                 <td style="text-align: center;"><button class="btn-red" id="confirmAppBtn">Подтвердить</button></td>
-                <td style="text-align: center;"><button class="btn-red" id="cancelAppBtn">Отмена</button></td>
+                <td style="text-align: center;"><button class="btn-red" class="cancelAppBtn">Отмена</button></td>
             </tr>
         </table>
     </div>
@@ -84,7 +86,7 @@
             <tr><td colspan="2">&nbsp;</td></tr>
             <tr>
                 <td style="text-align: center;"><button class="btn-red" id="confirmRemoveBtn">Подтвердить</button></td>
-                <td style="text-align: center;"><button class="btn-red" id="cancelAppBtn">Отмена</button></td>
+                <td style="text-align: center;"><button class="btn-red" class="cancelAppBtn">Отмена</button></td>
             </tr>
         </table>
     </div>
@@ -104,6 +106,9 @@
             var doctorInfo = '';
             var doctorDate = '';
             var doctorTime = '';
+            var doctorFio  = '';
+            var doctorLpu  = '';
+            var doctorSpec = '';
             var availableResourceId = '';
             var complexResourceId   = '';
             var receptionDate       = '';
@@ -123,12 +128,22 @@
                         txt = '';
                         $.each(data,function(i, val){
                             if (val.lpuRoomsInfo && val.lpuRoomsInfo.lpuRoomView){
+                                txt += '<div>';
                                 txt +=  '<div class="doc-item" data-id="'+val.id+'" availableResourceId="'+val.lpuRoomsInfo.lpuRoomView.availableResourceId+'" ' +
                                         'complexResourceId="'+val.lpuRoomsInfo.lpuRoomView.complexResourceId+'">';
-//                           txt +=  val.lastName+' '+val.firstName+' '+val.secondName+' ( ЛПУ: '+val.lpuRoomsInfo.lpuRoomView.lpuShortName+' каб.: '+val.lpuRoomsInfo.lpuRoomsView.roomNumber+') ';
-                                txt +=  val.lastName+' '+val.firstName+' '+val.secondName;
+
+                                txt +=  '<span>' + val.lastName+' '+val.firstName+' '+val.secondName + '</span>';
+
+                                if (val.lpuRoomsInfo.lpuRoomView.lpuShortName){
+                                    txt += '<div style="font-size: 12px; font-style: italic;"> ( ';
+                                    txt +=  '  '+val.lpuRoomsInfo.lpuRoomView.lpuShortName;
+                                    txt +=  '  '+val.lpuRoomsInfo.lpuRoomView.roomNumber;
+                                    txt += ' ) </div>';
+                                }
+
                                 txt +=  '</div>' +
                                         '<div class="dateTime-box" id="doc-'+val.id+'"></div>';
+                                txt += '</div>';
                             }
                         });
                         $('#spec-'+id).html(txt);
@@ -141,6 +156,8 @@
             $('.doc-box').on('click','.doc-item', function(){
                 var availableResourceId = $(this).attr('availableResourceId');
                 var complexResourceId = $(this).attr('complexResourceId');
+                var $this = $(this);
+
                 loadShow();
                 $.ajax({
                     type: "POST",
@@ -166,7 +183,17 @@
                                                 }
                                                 var dStart = new Date(timeval.startTime);
                                                 var dEnd = new Date(timeval.endTime);
-                                                txt += '<span class="time '+enabled+'" data-availableResourceId="'+availableResourceId+'" data-complexResourceId="'+complexResourceId+'" data-date="'+d+'" data-start="'+dStart+'" data-end="'+dStart+'">'+ dStart.toString('HH:mm') +'</span>';
+                                                txt += '<span class="time '+enabled+'" ' +
+                                                        'data-availableResourceId="'+availableResourceId+'" '+
+                                                        'data-complexResourceId="'+complexResourceId+'" '+
+                                                        'data-date="'+d+'" data-start="'+dStart+'" ' +
+                                                        'data-end="'+dEnd+'" '+
+                                                        'data-doctorFio="'+$this.children('span').text()+'" '+
+                                                        'data-doctorLpu="'+$this.children('div').html()+'"'+
+                                                        'data-doctorSpec="'+$this.parent().parent().parent().children('.spec-item').html()+'"'+
+                                                        '>'+
+                                                        dStart.toString('HH:mm') +'</span>';
+//                                                        alert(txt);
                                             });
                                         }
                                     }else{
@@ -190,6 +217,18 @@
                 receptionDate       = $(this).attr('data-date');
                 startTime           = $(this).attr('data-start');
                 endTime             = $(this).attr('data-end');
+
+                doctorFio           = $(this).attr('data-doctorFio');
+                doctorLpu           = $(this).attr('data-doctorLpu');
+                doctorSpec          = $(this).attr('data-doctorSpec');
+
+                $('#pfio').html(doctorFio);
+                $('#pplace').html(doctorLpu);
+                $('#pspec').html(doctorSpec);
+                pdatetime = new Date(startTime);
+
+                $('#pdatetime').html(pdatetime.toString('dd.MM.yyyy HH:mm'));
+
                 $('#confirmApp').fadeIn();
             });
 
@@ -205,7 +244,7 @@
                 window.location.href = deleteUrl;
             });
 
-            $('#cancelAppBtn').click(function(){
+            $('.cancelAppBtn').click(function(){
                 $('.confirmApp').fadeOut();
                 deleteUrl = '';
             });
@@ -318,7 +357,7 @@
         }
         .confirmApp{
             width: 400px;
-            height: 170px;
+            height: 190px;
             border: 1px solid #d71344;
             background: #FFFFFF;
             position: fixed;
