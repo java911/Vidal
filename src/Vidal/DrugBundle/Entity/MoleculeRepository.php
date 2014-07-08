@@ -39,15 +39,28 @@ class MoleculeRepository extends EntityRepository
 
 	public function findByProductID($ProductID)
 	{
-		return $this->_em->createQuery('
+		$molecules = $this->_em->createQuery('
 			SELECT m
 			FROM VidalDrugBundle:Molecule m
 			JOIN m.moleculeNames mn
 			JOIN mn.products p
 			WHERE p.ProductID = :ProductID
-				AND m.MoleculeID NOT IN (1144,2203)
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
+
+		# если веществ больше 3, то их не отображают
+		if (count($molecules) > 3) {
+			return array();
+		}
+
+		# если среди них хотя бы одно запрещенное - не отображают
+		foreach ($molecules as $molecule) {
+			if (in_array($molecule->getMoleculeID(), array(1144, 2203))) {
+				return array();
+			}
+		}
+
+		return $molecules;
 	}
 
 	public function findByArticle($articleId)

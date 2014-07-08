@@ -29,7 +29,7 @@ class ProductDocumentCommand extends ContainerAwareCommand
 
 		# генерируем Product.document по связям в таблице ProductDocument
 		$productDocuments = $em->createQuery("
-			SELECT pd.ProductID, pd.DocumentID, d.ArticleID
+			SELECT pd.ProductID, pd.DocumentID, d.ArticleID, d.YearEdition
 			FROM VidalDrugBundle:ProductDocument pd
 			JOIN VidalDrugBundle:Product p WITH p.ProductID = pd.ProductID
 			JOIN VidalDrugBundle:Document d WITH d.DocumentID = pd.DocumentID
@@ -60,15 +60,35 @@ class ProductDocumentCommand extends ContainerAwareCommand
 				$DocumentID = $group[0]['DocumentID'];
 			}
 			else {
-				# если документов несколько, то надо взять один по приоритету Document.ArticleID [2,5,4,3,1]
-				$curr       = array_search($group[0]['ArticleID'], $articlePriority);
-				$DocumentID = $group[0]['DocumentID'];
+				# если 2 документа типа 2 и 5, то выбираем по году
+				$d2year     = $d5year = null;
+				$d2doc      = $d5doc = null;
 
 				foreach ($group as $pd) {
-					$next = array_search($pd['ArticleID'], $articlePriority);
-					if ($next < $curr) {
-						$curr       = $next;
-						$DocumentID = $pd['DocumentID'];
+					if ($pd['ArticleID'] == 2) {
+						$d2year = $pd['YearEdition'];
+						$d2doc  = $pd['DocumentID'];
+					}
+					elseif ($pd['ArticleID'] == 5) {
+						$d5year = $pd['YearEdition'];
+						$d5doc  = $pd['DocumentID'];
+					}
+				}
+
+				if ($d2year && $d5year) {
+					$DocumentID = $d2year >= $d5year ? $d2doc : $d5doc;
+				}
+				else {
+					# если документов несколько, то надо взять один по приоритету Document.ArticleID [2,5,4,3,1]
+					$curr       = array_search($group[0]['ArticleID'], $articlePriority);
+					$DocumentID = $group[0]['DocumentID'];
+
+					foreach ($group as $pd) {
+						$next = array_search($pd['ArticleID'], $articlePriority);
+						if ($next < $curr) {
+							$curr       = $next;
+							$DocumentID = $pd['DocumentID'];
+						}
 					}
 				}
 			}

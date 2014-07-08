@@ -556,7 +556,7 @@ class VidalController extends Controller
 		$params['products']     = array($product);
 		$params['owners']       = $em->getRepository('VidalDrugBundle:Company')->findOwnersByProducts($productIds);
 		$params['distributors'] = $em->getRepository('VidalDrugBundle:Company')->findDistributorsByProducts($productIds);
-		$params['molecules']    = $em->getRepository('VidalDrugBundle:Molecule')->findByProductId($productId);
+		$params['molecules']    = $em->getRepository('VidalDrugBundle:Molecule')->findByProductID($productId);
 
 		# медицинские изделия выводятся по-другому
 		if ($product->isMI()) {
@@ -581,6 +581,8 @@ class VidalController extends Controller
 
 		return $params;
 	}
+
+
 
 	/** Получить массив идентификаторов продуктов */
 	private function getProductIds($products)

@@ -131,7 +131,8 @@ class ProductRepository extends EntityRepository
 			->andWhere('p.inactive = FALSE')
 			->andWhere('a.id = :articleId')
 			->andWhere('d.ArticleID IN (2,5)')
-			->setParameter('articleId', $articleId);
+			->setParameter('articleId', $articleId)
+			->orderBy('p.RusName', 'ASC');
 
 		if (!$isDoctor) {
 			$qb->andWhere('p.NonPrescriptionDrug = TRUE');
@@ -657,7 +658,7 @@ class ProductRepository extends EntityRepository
 			FROM product
 			WHERE LEFT(RusName, 1) NOT IN ('1','2','3','5','9','_','D','H','L','N','Q','S')
 				AND MarketStatusID IN (1,2,7)
-				AND ProductTypeCode IN {$where}
+				ANProductTypeCode IN D {$where}
 			ORDER BY letters
 		";
 
