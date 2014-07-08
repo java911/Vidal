@@ -87,17 +87,6 @@ class AppointmentController extends Controller
     }
 
     /**
-     * Список действительных записей
-     * @Route("/appointment-list", name="appointment_list")
-     * @Template()
-     */
-    public function listAction(){
-        if ( $this->isAuth() == false ){ return $this->redirect($this->generateUrl('appointment')); }
-        $appointmentList = $this->getDoctrine()->getRepository('VidalMainBundle:Appointment')->findByStatus(1);
-        return array('appointmentList' => $appointmentList );
-    }
-
-    /**
      * @Route("/appointment-doctors/{doctorId}", name="appointment_doctor", options={"expose"=true})
      */
     public function doctorsActions($doctorId){
@@ -148,7 +137,7 @@ class AppointmentController extends Controller
             )
         );
 
-        return $this->redirect($this->generateUrl('appointment_list'));
+        return $this->redirect($this->generateUrl('appointment'));
     }
 
 
