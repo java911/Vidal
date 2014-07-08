@@ -148,7 +148,7 @@ class AppointmentController extends Controller
             )
         );
 
-        return new JsonResponse(array( 'data'=> $datetime));
+        return $this->redirect($this->generateUrl('appointment_list'));
     }
 
 

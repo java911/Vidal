@@ -53,7 +53,27 @@
         <span style="padding-left: 40px;">Записи к врачам отсутствуют.</span>
     {% endif %}
 
+    <div class="confirmApp">
+        <table>
+            <tr>
+                <td colspan="2" class="title">Подтвердите запись к врачу</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="info" >
+                        <b>Врач:</b> Иванов Иван Иванович<br />
+                        <b>Специализация:</b> Терапевт<br />
+                        <b>Дата и время:</b> 28.02.2014 08:30
+                    </div>
 
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;"><button class="btn-red">Подтвердить</button></td>
+                <td style="text-align: center;"><button class="btn-red">Отмена</button></td>
+            </tr>
+        </table>
+    </div>
 {% endblock %}
 
 
@@ -64,6 +84,16 @@
     <script src="{{ asset('bundles/vidalmain/javascripts/date.js') }}"></script>
     <script>
         $(document).ready(function(){
+
+            var doctorInfo = '';
+            var doctorDate = '';
+            var doctorTime = '';
+            var availableResourceId = '';
+            var complexResourceId   = '';
+            var receptionDate       = '';
+            var startTime           = '';
+            var endTime             = '';
+
             $('.spec-item').click(function(){
                 var id = $(this).attr('id');
                 loadShow();
@@ -97,7 +127,7 @@
                     type: "POST",
                     url: Routing.generate('appointment_datetime',{'availableResourceId' : availableResourceId, 'complexResourceId': complexResourceId }),
                     success: function(msg){
-                        if ( msg.data.detail.exception ){
+                        if ( msg.data.detail && msg.data.detail.exception ){
                             alert(msg.data.detail.exception);
                         }else{
                             data = msg.data.return;
@@ -106,17 +136,19 @@
                                 $.each(data.schedules,function(i, val){
                                     var d = new Date(val.date);
                                     txt += '<div class="dateTime"><span class="date">'+ (d).toString('dd.MM.yyyy') + "</span><div style='margin-left: 25px;'>";
-                                    if (val.resourceSchedule && val.resourceSchedule.timePeriods){
-                                        $.each(val.resourceSchedule.timePeriods,function(timei, timeval){
-                                            if (timeval.allowedAppointment == true){
-                                                enabled = 'enabledTime';
-                                            }else{
-                                                enabled = ''
-                                            }
-                                            var dStart = new Date(timeval.startTime);
-                                            var dEnd = new Date(timeval.endTime);
-                                            txt += '<span class="time '+enabled+'" data-availableResourceId="'+availableResourceId+'" data-complexResourceId="'+complexResourceId+'" data-date="'+d+'" data-start="'+dStart+'" data-end="'+dStart+'">'+ dStart.toString('HH:mm') +'</span>';
-                                        });
+                                    if (val.resourceSchedule){
+                                        if ( val.resourceSchedule.timePeriods){
+                                            $.each(val.resourceSchedule.timePeriods,function(timei, timeval){
+                                                if (timeval.allowedAppointment == true){
+                                                    enabled = 'enabledTime';
+                                                }else{
+                                                    enabled = ''
+                                                }
+                                                var dStart = new Date(timeval.startTime);
+                                                var dEnd = new Date(timeval.endTime);
+                                                txt += '<span class="time '+enabled+'" data-availableResourceId="'+availableResourceId+'" data-complexResourceId="'+complexResourceId+'" data-date="'+d+'" data-start="'+dStart+'" data-end="'+dStart+'">'+ dStart.toString('HH:mm') +'</span>';
+                                            });
+                                        }
                                     }else{
                                         alert('Произошла ошибка выдачи результатов');
                                     }
@@ -134,12 +166,20 @@
             });
 
             $('.doc-box').on('click','.time', function(){
-//               var link = Routing.generate('appointment_create',{availableResourceId:1,complexResourceId:1,receptionDate:1,startDate:1,endDate:1  });
-                $('#availableResourceId').val($(this).attr('data-availableResourceId'));
-                $('#complexResourceId').val($(this).attr('data-complexResourceId'));
-                $('#receptionDate').val($(this).attr('data-date'));
-                $('#startTime').val($(this).attr('data-start'));
-                $('#endTime').val($(this).attr('data-end'));
+                availableResourceId = $(this).attr('data-availableResourceId');
+                complexResourceId   = $(this).attr('data-complexResourceId');
+                receptionDate       = $(this).attr('data-date');
+                startTime           = $(this).attr('data-start');
+                endTime             = $(this).attr('data-end');
+            });
+
+            $('#confirmAppBtn').click(function(){
+                //               var link = Routing.generate('appointment_create',{availableResourceId:1,complexResourceId:1,receptionDate:1,startDate:1,endDate:1  });
+                $('#availableResourceId').val(availableResourceId);
+                $('#complexResourceId').val(complexResourceId);
+                $('#receptionDate').val(receptionDate);
+                $('#startTime').val(startTime);
+                $('#endTime').val(endTime);
                 $('#formdata').submit();
             });
 
@@ -239,6 +279,33 @@
         .app-del{
             float: right;
             margin-top: 30px;
+        }
+        .confirmApp{
+            width: 400px;
+            height: 170px;
+            border: 1px solid #d71344;
+            background: #FFFFFF;
+            position: absolute;
+            left: 50%;
+            margin-left: -200px;
+            top: 100px;
+            padding-top: 20px;
+            display: none;
+
+        }
+        .confirmApp table{
+            width: 100%;
+        }
+        .title{
+            text-align: center;
+            background: #FFFFFF;
+        }
+        .btn-red{
+            width: 135px;
+        }
+        .info{
+            line-height: 20px;
+            margin: 20px;
         }
     </style>
 {% endblock %}
