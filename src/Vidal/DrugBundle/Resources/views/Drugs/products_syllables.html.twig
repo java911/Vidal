@@ -1,0 +1,15 @@
+<div class="letters-russian">
+	{% for letter in letters %}
+		<input type="submit" value="{{ letter }}" name="l" class="letter{{ l == letter ? ' active' }}"/>
+	{% endfor %}
+</div>
+
+<div class="letters-sub">
+	{% for l, subs in syllables %}
+		<div data="{{ l }}">
+			{% for sub in subs %}
+				<input type="submit" value="{{ sub|capitalize }}" name="l" class="letter">
+			{% endfor %}
+		</div>
+	{% endfor %}
+</div>

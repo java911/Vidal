@@ -33,21 +33,16 @@
 
 			<input type="hidden" name="p" id="letters_page" value="{{ p }}"/>
 
+
 			{# буквы #}
-			<div class="letters-russian">
-				{% for letter in letters %}
-					<input type="submit" value="{{ letter }}" name="l" class="letter{{ l == letter ? ' active' }}"/>
-				{% endfor %}
+			<div class="syllables">
+				{{ render(controller('VidalDrugBundle:Drugs:syllables', {'t':t, 'l':l})) }}
 			</div>
-
 			<div class="clear"></div>
-
-			{# под-буквы #}
-			{% include 'VidalDrugBundle:Drugs:letters_sub.html.twig' %}
 		</form>
 
 		{% if showTable %}
-			{% include 'VidalDrugBundle:Drugs:letters_table.html.twig' %}
+			{% include 'VidalDrugBundle:Drugs:products_table_' ~ t ~ '.html.twig' %}
 		{% endif %}
 	</div>
 
@@ -169,11 +164,20 @@
 
 			$('.letters-sub input[value="{{ l }}"]').addClass('active').closest('div').show();
 
-			$('.letters-russian input').hover(function() {
+			$('.syllables').on('mouseenter', '.letters-russian input', function() {
 				$('.letters-russian input').removeClass('beige');
 				$(this).addClass('beige');
 				$('.letters-sub > div').hide();
 				$('.letters-sub > div[data="' + $(this).val() + '"]').show();
+			});
+
+			var $table = $('.table');
+			var $syllables = $('.syllables');
+
+			$('#letters_type').change(function() {
+				window.location = Routing.generate('products', {
+					't': this.value
+				});
 			});
 		});
 	</script>
