@@ -738,8 +738,6 @@ class DrugsController extends Controller
 		$l  = $request->query->get('l', null); // буква
 		$n  = $request->query->has('n') && $request->query->get('n') != 'false'; // только безрецептурные препараты
 
-		list($syllables, $table) = $em->getRepository('VidalDrugBundle:Product')->findByProductType($t);
-
 		$params = array(
 			't'          => $t,
 			'p'          => $p,
@@ -747,8 +745,6 @@ class DrugsController extends Controller
 			'n'          => $n,
 			'menu_drugs' => 'products',
 			'title'      => 'Поиск препаратов по алфавиту',
-			'syllables'  => $syllables,
-			'table'      => $table,
 		);
 
 		# БАДы только безрецептурные
