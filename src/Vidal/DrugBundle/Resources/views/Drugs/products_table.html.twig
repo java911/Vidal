@@ -12,7 +12,7 @@
 			{% for l in seconds %}
 				<td>
 					{% if l %}
-						<a href="{{ path('products', {'t':t, 'l':l, 'n':n}) }}">{{ l|capitalize }}</a>
+						<a href="{{ path('products', {'t':t, 'l':l}) }}">{{ l|capitalize }}</a>
 					{% endif %}
 				</td>
 			{% endfor %}

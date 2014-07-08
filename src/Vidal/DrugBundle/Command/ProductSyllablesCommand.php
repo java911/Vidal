@@ -19,19 +19,22 @@ class ProductSyllablesCommand extends ContainerAwareCommand
 		ini_set('memory_limit', -1);
 		$output->writeln('--- vidal:product_syllables started');
 
-		$em = $this->getContainer()->get('doctrine')->getManager('drug');
-
-		$types = array('p', 'b', 'o');
+		$em         = $this->getContainer()->get('doctrine')->getManager('drug');
+		$types      = array('p', 'b', 'o');
+		$templating = $this->getContainer()->get('templating');
 
 		foreach ($types as $t) {
 			list($syllables, $table) = $em->getRepository('VidalDrugBundle:Product')->findByProductType($t);
-			$path = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Generated' . DIRECTORY_SEPARATOR;
+			$path = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'Drugs' . DIRECTORY_SEPARATOR;
 
-			$file = "{$path}syllables_{$t}.json";
-			file_put_contents($file, json_encode($syllables));
+			$html = $templating->render('VidalDrugBundle:Drugs:products_table.html.twig', array(
+				't'       => $t,
+				'table'   => $table,
+				'letters' => array_keys($syllables),
+			));
 
-			$file = "{$path}table_{$t}.json";
-			file_put_contents($file, json_encode($table));
+			$file = "{$path}products_table_{$t}.html.twig";
+			file_put_contents($file, $html);
 		}
 
 		$output->writeln('+++ vidal:product_syllables completed!');

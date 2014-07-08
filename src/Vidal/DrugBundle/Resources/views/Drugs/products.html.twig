@@ -42,9 +42,7 @@
 		</form>
 
 		{% if showTable %}
-			<div class="table">
-				{{ render(controller('VidalDrugBundle:Drugs:table', {'t':t, 'n':n})) }}
-			</div>
+			{% include 'VidalDrugBundle:Drugs:products_table_' ~ t ~ '.html.twig' %}
 		{% endif %}
 	</div>
 
