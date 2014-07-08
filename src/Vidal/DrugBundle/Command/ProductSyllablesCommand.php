@@ -25,16 +25,21 @@ class ProductSyllablesCommand extends ContainerAwareCommand
 
 		foreach ($types as $t) {
 			list($syllables, $table) = $em->getRepository('VidalDrugBundle:Product')->findByProductType($t);
-			$path = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'Drugs' . DIRECTORY_SEPARATOR;
 
+			# записываем шаблон таблицы со слогами
+			$path = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'Drugs' . DIRECTORY_SEPARATOR;
+			$file = "{$path}products_table_{$t}.html.twig";
 			$html = $templating->render('VidalDrugBundle:Drugs:products_table.html.twig', array(
 				't'       => $t,
 				'table'   => $table,
 				'letters' => array_keys($syllables),
 			));
-
-			$file = "{$path}products_table_{$t}.html.twig";
 			file_put_contents($file, $html);
+
+			# записываем массив со слогами
+			$path = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Generated' . DIRECTORY_SEPARATOR;
+			$file = "{$path}syllables_{$t}.json";
+			file_put_contents($file, json_encode($syllables));
 		}
 
 		$output->writeln('+++ vidal:product_syllables completed!');
