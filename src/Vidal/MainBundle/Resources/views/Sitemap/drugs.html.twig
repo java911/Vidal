@@ -1,0 +1,10 @@
+<ul>
+	{% for about in abouts %}
+		<li>
+			<a href="{{ path('interaction') }}" target="_blank">Проверка лекарственного взаимодействия</a>
+		</li>
+		<li>
+			<a href="{{ path('products') }}" target="_blank">Препараты и БАДы по алфавиту</a>
+		</li>
+	{% endfor %}
+</ul>

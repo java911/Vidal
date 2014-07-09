@@ -3,6 +3,7 @@
 
 {% block vidal %}
 	{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' with {'menu_drugs':'interaction'} %}
+	{% include 'VidalDrugBundle:Drugs:interaction_description.html.twig' %}
 	{% include 'VidalDrugBundle:Drugs:interaction_form.html.twig' %}
 
 	{% if interactions is null %}
@@ -15,7 +16,8 @@
 		<ul class="ul-style interactions">
 			{% for interaction in interactions %}
 				<li>
-					<a href="{{ path('interaction_item', {'EngName':interaction.EngName|lower}) }}" class="no-underline">
+					<a href="{{ path('interaction_item', {'EngName':interaction.EngName|lower}) }}"
+					   class="no-underline">
 						{{ interaction.RusName|raw }}
 					</a>
 				</li>

@@ -16,6 +16,27 @@
 		<li>
 			<a href="{{ path('qa') }}" target="_blank">Ответы специалистов</a>
 		</li>
+		<li>
+			<a href="{{ path('news') }}" target="_blank">Новости</a>
+		</li>
+		<li class="hasChildren collapsable">
+			<div class="hitarea hasChildren-hitarea expandable-hitarea"></div>
+			<a href="{{ path('about') }}" target="_blank">О компании</a>
+			{% include 'VidalMainBundle:Sitemap:about.html.twig' %}
+		</li>
+		<li class="hasChildren collapsable">
+			<div class="hitarea hasChildren-hitarea expandable-hitarea"></div>
+			<a href="{{ path('services') }}" target="_blank">Наши услуги</a>
+			{% include 'VidalMainBundle:Sitemap:services.html.twig' %}
+		</li>
+		<li>
+			<a href="{{ path('veterinar') }}" target="_blank">Ветеринария</a>
+		</li>
+		<li class="hasChildren collapsable">
+			<div class="hitarea hasChildren-hitarea expandable-hitarea"></div>
+			<a href="{{ path('drugs') }}" target="_blank">Препараты</a>
+			{% include 'VidalMainBundle:Sitemap:drugs.html.twig' %}
+		</li>
 	</ul>
 {% endblock %}
 
@@ -29,6 +50,9 @@
 		}
 		.treeview a:hover {
 			text-decoration: underline !important;
+		}
+		.treeview > li > a {
+			font-weight: bold;
 		}
 	</style>
 {% endblock %}

@@ -3,6 +3,7 @@
 
 {% block vidal %}
 	{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' with {'menu_drugs':'interaction'} %}
+	{% include 'VidalDrugBundle:Drugs:interaction_description.html.twig' %}
 
 	<h1>{{ interaction.RusName|raw }}</h1>
 
