@@ -5,6 +5,17 @@ use Doctrine\ORM\EntityRepository;
 
 class MoleculeRepository extends EntityRepository
 {
+	public function findByName($name)
+	{
+		return $this->_em->createQuery('
+			SELECT m.MoleculeID
+		 	FROM VidalDrugBundle:Molecule m
+		 	WHERE m.LatName = :name
+		')->setParameter('name', $name)
+			->setMaxResults(1)
+			->getOneOrNullResult();
+	}
+
 	public function findOneByMoleculeID($MoleculeID)
 	{
 		return $this->_em->createQuery('

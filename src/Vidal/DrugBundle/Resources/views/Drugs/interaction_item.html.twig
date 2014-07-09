@@ -1,21 +1,11 @@
 {% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
 
 
-{% block title %}
-	<h1>{{ interaction.RusName|raw }}</h1>
-{% endblock %}
-
-
-{% block nav %}
-	<div class="breadcrumbs">
-		<a href="{{ path('index') }}">Видаль</a>
-		<i></i>
-		<a href="{{ path('interaction') }}">Лекарственное взаимодействие</a>
-	</div>
-{% endblock %}
-
-
 {% block vidal %}
+	{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' with {'menu_drugs':'interaction'} %}
+
+	<h1>{{ interaction.RusName|raw }}</h1>
+
 	<div class="interaction">
 		{{ interaction.text|raw }}
 	</div>

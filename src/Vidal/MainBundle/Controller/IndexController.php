@@ -499,6 +499,20 @@ class IndexController extends Controller
 		return new Response($html);
 	}
 
+	/**
+	 * @Route("/sitemap", name="sitemap")
+	 * @Template("VidalMainBundle:Sitemap:sitemap.html.twig")
+	 */
+	public function sitemapAction()
+	{
+		$params = array('title' => 'Карта сайта');
+		$emDrug = $this->getDoctrine()->getManager('drug');
+
+		$params['articleRubriques'] = $emDrug->getRepository('VidalDrugBundle:ArticleRubrique')->findSitemap();
+
+		return $params;
+	}
+
 	private function sortArticles($a, $b)
 	{
 		$dateA = $a->getDate();
