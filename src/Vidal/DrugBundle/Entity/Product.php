@@ -155,9 +155,6 @@ class Product
 	/** @ORM\Column(type="boolean") */
 	protected $inactive = false;
 
-	/** @ORM\OneToMany(targetEntity="PharmPortfolio", mappedBy="ProductID") */
-	protected $portfolios;
-
 	public function __construct()
 	{
 		$this->atcCodes        = new ArrayCollection();
@@ -166,7 +163,6 @@ class Product
 		$this->productCompany  = new ArrayCollection();
 		$this->moleculeNames   = new ArrayCollection();
 		$this->phthgroups      = new ArrayCollection();
-		$this->portfolios      = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -806,21 +802,5 @@ class Product
 	public function getInactive()
 	{
 		return $this->inactive;
-	}
-
-	/**
-	 * @param mixed $portfolios
-	 */
-	public function setPortfolios($portfolios)
-	{
-		$this->portfolios = $portfolios;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getPortfolios()
-	{
-		return $this->portfolios;
 	}
 }

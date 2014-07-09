@@ -583,23 +583,21 @@ class VidalController extends Controller
 	}
 
 	/**
-	 * @Route("/drugs/{EngName}~{DocumentID}.htm", name="document")
+	 * @Route("/drugs/{EngName}~{DocumentID}.{ext}", name="document", defaults={"ext"="htm"})
 	 * @Template("VidalDrugBundle:Vidal:document.html.twig")
 	 */
-	public function documentAction($EngName)
+	public function documentAction($EngName, $DocumentID)
 	{
 		$em       = $this->getDoctrine()->getManager('drug');
-		$document = $em->getRepository('VidalDrugBundle:Document')->findByName($EngName);
-		//$document = $em->getRepository('VidalDrugBundle:Document')->findById($DocumentID)
+		$document = $em->getRepository('VidalDrugBundle:Document')->findById($DocumentID);
 
 		if (!$document) {
 			throw $this->createNotFoundException();
 		}
 
-		$DocumentID          = $document->getDocumentID();
-		$params              = array('title' => $this->strip($document->getRusName()) . ' | Препараты');
+		$params     = array('title' => $this->strip($document->getRusName()) . ' | Препараты');
 		//		$params['molecules'] = $em->getRepository('VidalDrugBundle:Molecule')->findByDocumentID($DocumentID);
-		$params['products']  = $em->getRepository('VidalDrugBundle:Product')->findByDocumentID($DocumentID);
+		$params['products'] = $em->getRepository('VidalDrugBundle:Product')->findByDocumentID($DocumentID);
 
 		//		if (!empty($products)) {
 		//			$productIds = $this->getProductIds($products);
@@ -623,7 +621,7 @@ class VidalController extends Controller
 	/** @Route("/poisk_preparatov/{name}.htm") */
 	public function moleculeRedirect($name)
 	{
-		$em = $this->getDoctrine()->getManager('drug');
+		$em       = $this->getDoctrine()->getManager('drug');
 		$molecule = $em->getRepository('VidalDrugBundle:Molecule')->findByName($name);
 
 		if (!$molecule) {
@@ -631,7 +629,7 @@ class VidalController extends Controller
 		}
 
 		return $this->redirect($this->generateUrl('molecule', array('MoleculeID' => $molecule['MoleculeID'])));
-//		return $this->forward('VidalDrugBundle:Vidal:molecule', array('MoleculeID'  => $molecule['MoleculeID']));
+		//		return $this->forward('VidalDrugBundle:Vidal:molecule', array('MoleculeID'  => $molecule['MoleculeID']));
 	}
 
 	/** Получить массив идентификаторов продуктов */
