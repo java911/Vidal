@@ -23,6 +23,14 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/treeview/jquery.treeview.css') }}"/>
+	<style type="text/css">
+		.treeview a {
+			text-decoration: none !important;
+		}
+		.treeview a:hover {
+			text-decoration: underline !important;
+		}
+	</style>
 {% endblock %}
 
 
