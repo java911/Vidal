@@ -143,7 +143,7 @@ class AppointmentController extends Controller
         $receptionTypeCodeOrLdpTypeCode                         = 1863;
 
         $soap = $this->createConnection();
-        $datetime = $soap->createAppointment(
+        $id = $soap->createAppointment(
             array(
                 'omsNumber'=>'9988889785000068',
                 'birthDate'=>'2011-04-14T00:00:00',
@@ -156,6 +156,40 @@ class AppointmentController extends Controller
                 'receptionTypeCodeOrLdpTypeCode' => $receptionTypeCodeOrLdpTypeCode
             )
         );
+
+        $data = $soap->getAppointmentReceptionsByPatient(
+            array(
+                'omsNumber'=>'9988889785000068',
+                'birthDate'=>'2011-04-14T00:00:00',
+                'externalSystemId'=>'MPGU'
+            )
+        );
+
+        if (isset($id->return->appointmentId)){
+            if ( isset($data->return) ){
+                if (isset($data->return->id)){
+                    $data = array('0' => $data->return);
+                }else{
+                    $data = $data->return;
+                }
+            }
+
+            foreach ( $data as $val ){
+                if ( $id->return->appointmentId == $val->id ){
+                    $data = $val;
+                    break;
+                }
+            }
+
+            if (isset($data->id)){
+                $this->get('email.service')->send(
+                    "tulupov.m@gmail.com",
+//                array('zakaz@zdravzona.ru'),
+                    array('VidalMainBundle:Email:Appointment_create.html.twig', array('data' => $data )),
+                    'Запись ко врачу на сайте Vidal.ru'
+                );
+            }
+        }
 
         return $this->redirect($this->generateUrl('appointment'));
     }
@@ -192,6 +226,17 @@ class AppointmentController extends Controller
                 'externalSystemId'=>'MPGU'
             )
         );
+
+
+        if (isset($appointmentId)){
+                $this->get('email.service')->send(
+                    "tulupov.m@gmail.com",
+//                array('zakaz@zdravzona.ru'),
+                    array('VidalMainBundle:Email:Appointment_remove.html.twig', array('data' => $appointmentId )),
+                    'Отмена записи ко врачу на сайте Vidal.ru'
+                );
+            }
+
 
         return $this->redirect($this->generateUrl('appointment'));
     }
