@@ -7,9 +7,8 @@ use Iphp\FileStoreBundle\Mapping\Annotation as FileStore;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass = "PollQuestionRepository")
  * @ORM\Table(name="PollQuestion")
- * @Filestore\Uploadable
  */
 class PollQuestion extends BaseEntity
 {
