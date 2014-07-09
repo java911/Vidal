@@ -1,11 +1,12 @@
 <?php
-namespace Vidal\MainBundle\Command;
+namespace Vidal\DrugBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Vidal\DrugBundle\Entity\Interaction;
 
 class InteractionCommand extends ContainerAwareCommand
 {
@@ -19,7 +20,7 @@ class InteractionCommand extends ContainerAwareCommand
 		ini_set('memory_limit', -1);
 		$output->writeln('--- vidal:interaction started');
 
-		$em = $this->getContainer()->get('doctrine')->getManager();
+		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
 		$excel = \PHPExcel_IOFactory::load(__DIR__ . DIRECTORY_SEPARATOR . '1.xls');
 		$excel->setActiveSheetIndex(0);
@@ -28,12 +29,17 @@ class InteractionCommand extends ContainerAwareCommand
 		$highestRow    = $sheet->getHighestRow();
 		$highestColumn = $sheet->getHighestColumn();
 
-		//  Loop through each row of the worksheet in turn
-		for ($row = 1; $row <= $highestRow; $row++){
+		for ($row = 1; $row <= $highestRow; $row++) {
 			$rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
 			$rowData = $rowData[0];
 
-			var_dump($rowData);exit;
+			$interaction = new Interaction();
+			$interaction->setEngName($rowData[0]);
+			$interaction->setRusName($rowData[1]);
+			$interaction->setText($rowData[2]);
+
+			$em->persist($interaction);
+			$em->flush($interaction);
 		}
 
 		$output->writeln('+++ vidal:interaction completed');

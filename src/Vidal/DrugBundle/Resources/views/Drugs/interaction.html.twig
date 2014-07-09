@@ -1,0 +1,60 @@
+{% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
+
+
+{% block title %}
+	<h1>ЛЕКАРСТВЕННОЕ ВЗАИМОДЕЙСТВИЕ</h1>
+{% endblock %}
+
+
+{% block vidal %}
+	{% include 'VidalDrugBundle:Drugs:interaction_form.html.twig' %}
+
+	{% if interactions is null %}
+		<div class="block">
+			<div class="no-results">
+				Для поиска надо ввести хотя бы 2 символа
+			</div>
+		</div>
+	{% elseif interactions is not empty %}
+		<ul class="ul-style interactions">
+			{% for interaction in interactions %}
+				<li>
+					<a href="{{ path('interaction_item', {'EngName':interaction.EngName|lower}) }}" class="no-underline">
+						{{ interaction.RusName|raw }}
+					</a>
+				</li>
+			{% endfor %}
+		</ul>
+	{% elseif q is not empty %}
+		<div class="no-results">
+			Не найдено результатов по запросу <span>{{ q }}</span>
+		</div>
+	{% endif %}
+
+	{% if pagination is defined %}
+		{{ knp_pagination_render(interactions) }}
+	{% endif %}
+
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.interactions {
+			margin-bottom: 20px;
+		}
+		#form > * {
+			vertical-align: top;
+		}
+		#form_controls {
+			clear: both;
+		}
+		#form_submit {
+			float: right;
+		}
+		#form_input {
+			width: 404px;
+		}
+	</style>
+{% endblock %}

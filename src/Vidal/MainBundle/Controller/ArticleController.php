@@ -353,6 +353,12 @@ class ArticleController extends Controller
 		return $this->redirect($this->generateUrl('art', array('url' => $rubriqueName)), 301);
 	}
 
+	/** @Route("/vracham/expert/vzaimodeistvie{url}", requirements={"url"=".+"}) */
+	public function interactionRedirect()
+	{
+		return $this->redirect($this->generateUrl('interaction'), 301);
+	}
+
 	/**
 	 * @Route("/vracham/{url}", name="art", requirements={"url"=".+"})
 	 * @Template("VidalMainBundle:Article:art.html.twig")

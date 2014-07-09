@@ -25,18 +25,6 @@ class MoleculeRepository extends EntityRepository
 			->getOneOrNullResult();
 	}
 
-	public function findByDocumentID($DocumentID)
-	{
-		return $this->_em->createQuery('
-			SELECT m
-			FROM VidalDrugBundle:Molecule m
-			LEFT JOIN m.documents d
-			LEFT JOIN VidalDrugBundle:MoleculeBase mnn WITH mnn.GNParent = m.GNParent
-			WHERE d.DocumentID = :DocumentID
-		')->setParameter('DocumentID', $DocumentID)
-			->getResult();
-	}
-
 	public function findByProductID($ProductID)
 	{
 		$molecules = $this->_em->createQuery('

@@ -42,7 +42,8 @@
 						' "query":{"query_string":{"query":"' + request.term + '*"}}' +
 						', "fields":["code","name"]' +
 						', "size":15' +
-						', "highlight":{"fields":{"name":{}}}';
+						', "highlight":{"fields":{"name":{}}}' +
+						', "sort":[{"name":{"order":"asc"}}]';
 					query += ' }';
 					$.ajax({
 						url:      "http://twiga.vidal.ru:9200/website/autocomplete_nozology/_search",
