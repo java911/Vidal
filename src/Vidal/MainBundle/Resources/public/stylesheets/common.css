@@ -201,7 +201,6 @@ h1 span {
 	color:           #2f4053;
 	font-weight:     bold;
 	display:         inline-block;
-	margin-bottom:   10px;
 }
 .linke:hover {
 	color: #d71344;
@@ -1032,6 +1031,9 @@ tr.bold td {
 }
 .menu-drugs {
 	background-position: 0 0;
+}
+.menu-drugs .linke {
+	margin-bottom: 10px;
 }
 .menu-symptoms {
 	background-position: -130px 0;

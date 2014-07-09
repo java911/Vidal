@@ -37,6 +37,14 @@
 			<a href="{{ path('drugs') }}" target="_blank">Препараты</a>
 			{% include 'VidalMainBundle:Sitemap:drugs.html.twig' %}
 		</li>
+		<li class="hasChildren collapsable">
+			<div class="hitarea hasChildren-hitarea expandable-hitarea"></div>
+			<a href="{{ path('vracham') }}" target="_blank">Специалистам</a>
+			{% include 'VidalMainBundle:Sitemap:vracham.html.twig' %}
+		</li>
+		<li>
+			<a href="{{ path('pharmacies_map') }}" target="_blank">Аптеки</a>
+		</li>
 	</ul>
 {% endblock %}
 

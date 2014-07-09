@@ -507,11 +507,12 @@ class IndexController extends Controller
 	{
 		$params = array('title' => 'Карта сайта');
 		$emDrug = $this->getDoctrine()->getManager('drug');
-		$em = $this->getDoctrine()->getManager();
+		$em     = $this->getDoctrine()->getManager();
 
 		$params['articleRubriques'] = $emDrug->getRepository('VidalDrugBundle:ArticleRubrique')->findSitemap();
-		$params['abouts'] = $em->getRepository('VidalMainBundle:About')->findSitemap();
-		$params['services'] = $em->getRepository('VidalMainBundle:AboutService')->findSitemap();
+		$params['artRubriques']     = $emDrug->getRepository('VidalDrugBundle:ArtRubrique')->findSitemap();
+		$params['abouts']           = $em->getRepository('VidalMainBundle:About')->findSitemap();
+		$params['services']         = $em->getRepository('VidalMainBundle:AboutService')->findSitemap();
 
 		return $params;
 	}

@@ -57,6 +57,12 @@ class PharmPortfolio extends BaseEntity
 	/** @ORM\ManyToMany(targetEntity="Video", inversedBy="portfolios", cascade={"persist"}) */
 	protected $videos;
 
+	/**
+	 * @ORM\ManyToOne(targetEntity="Product", inversedBy="portfolios")
+	 * @ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")
+	 */
+	protected $ProductID;
+
 	public function __toString()
 	{
 		return $this->title;
@@ -239,5 +245,21 @@ class PharmPortfolio extends BaseEntity
 	public function removeVideo(Video $video)
 	{
 		$this->videos->removeElement($video);
+	}
+
+	/**
+	 * @param mixed $ProductID
+	 */
+	public function setProductID($ProductID)
+	{
+		$this->ProductID = $ProductID;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getProductID()
+	{
+		return $this->ProductID;
 	}
 }
