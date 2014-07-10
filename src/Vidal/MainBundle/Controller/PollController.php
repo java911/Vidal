@@ -30,6 +30,11 @@ class PollController extends Controller
      * @Template()
      */
     public function pollAction(Request $request, $pollId, $qId = 0){
+        $session = $request->getSession();
+        if ( $session->get('poll') ){
+            exit;
+        }
+
         $em = $this->getDoctrine()->getManager();
         $poll = $em->getRepository('VidalMainBundle:Poll')->findOneById($pollId);
         $question = $em->getRepository('VidalMainBundle:PollQuestion')->findOneById($qId);
@@ -71,6 +76,9 @@ class PollController extends Controller
                 );
             }else{
                 #Больше нету, показываем концовку
+                $session->set('poll',1);
+                $session->save();
+
                 $data = array(
                     'next'   => 'End',
                     'pollId' => $poll->getId(),
@@ -78,9 +86,6 @@ class PollController extends Controller
                     'title'  => '<div style="text-align: center"><b>Опрос завершен.</b><br /> Спасибо за внимание</div>',
                     'options'=> null
                 );
-                $session = $request->getSession();
-                $session->set('poll',1);
-                $session->save();
             }
             $response = new JsonResponse(array('data'=>$data));
             return $response;
