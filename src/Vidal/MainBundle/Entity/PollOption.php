@@ -22,6 +22,10 @@ class PollOption extends BaseEntity
      */
     protected $question;
 
+
+    public function __toString(){
+        return $this->title;
+    }
     /**
      * @param mixed $question
      */

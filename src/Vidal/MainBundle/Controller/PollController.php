@@ -46,10 +46,20 @@ class PollController extends Controller
         if ($qId == 0){
             #Первый вопрос
             $question = $em->getRepository('VidalMainBundle:PollQuestion')->findFirst($poll);
-            return array('question' => $question, 'questionNumber' => 1, 'questionCount' =>$count ,'poll' => $poll);
+            $options = $question->getOptions();
+            return array('question' => $question, 'questionNumber' => 1, 'questionCount' =>$count ,'poll' => $poll, 'options'  => $options);
         }else{
             #Следующий вопрос
             $question = $em->getRepository('VidalMainBundle:PollQuestion')->findNext($poll,$qId);
+            $opts = null;
+            if ($question){
+                $options = $question->getOptions();
+                foreach ( $options as $val ){
+                    $opts[] = $val->getTitle();
+                }
+                $options = $opts;
+            }
+
             if ( $question ){
                 #Есть еще один вопрос
                 $data = array(
@@ -57,6 +67,7 @@ class PollController extends Controller
                     'pollId' => $question->getPoll()->getId(),
                     'id'     => $question->getId(),
                     'title'  => $question->getTitle(),
+                    'options'  => $options
                 );
             }else{
                 #Больше нету, показываем концовку
@@ -65,6 +76,7 @@ class PollController extends Controller
                     'pollId' => $poll->getId(),
                     'id'     => null,
                     'title'  => '<div style="text-align: center"><b>Опрос завершен.</b><br /> Спасибо за внимание</div>',
+                    'options'=> null
                 );
             }
             $response = new JsonResponse(array('data'=>$data));

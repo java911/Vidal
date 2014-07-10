@@ -23,7 +23,7 @@ class PollQuestion extends BaseEntity
     protected $poll;
 
     /**
-     * @ORM\OneToMany(targetEntity = "Polloption", mappedBy = "question")
+     * @ORM\OneToMany(targetEntity = "PollOption", mappedBy = "question")
      */
     protected $options;
 

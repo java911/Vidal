@@ -48,8 +48,16 @@
         <span class="poll-title-text">{{ poll.title }}</span>
     </div>
     <div style="padding: 5px;">
-        <div class="poll-question">{{ question.title }}</div>
-        <div class="poll-answer"><textarea rows="3"  name="answerText" id="answerText" placeholder="Введите свой ответ"></textarea></div>
+            <div class="poll-question">{{ question.title }}</div>
+        {% if options is null %}
+            <div class="poll-answer"><textarea rows="3"  name="answerText" id="answerText" placeholder="Введите свой ответ"></textarea></div>
+        {% else %}
+            <div class="poll-answer">
+                {% for option in options %}
+                    <input type="radio" name="answerText" value="{{ option }}">&nbsp;{{ option }}<br />
+                {% endfor %}
+            </div>
+        {% endif %}
         <div class="poll-submit"><button class="btn-red" id="answer-send">Далее</button></div>
     </div>
 </div>
@@ -62,27 +70,46 @@
         var countQuest = {{ questionCount }};
         var questionId = {{ question.id }}
 
-        $('#answer-send').click(function(){
-            if ($('#answerText').val() == ''){
-                $('#answerText').css('borderColor','#CC0000');
+        $('#answer-send').on("click",function(){
+            if ($('textarea[name=answerText]').val() == '' || ( $('input[name=answerText]').length > 0 && $('*[name=answerText]:checked').length == 0 ) ){
+                $('*[name=answerText]').css('borderColor','#CC0000');
+                $('.poll-answer').css('color','#CC0000');
                 return false;
             }else{
-                $('#answerText').css('borderColor' ,'rgb(169, 169, 169)');
-                $('#answerText').val('');
+                $('*[name=answerText]').css('borderColor' ,'rgb(169, 169, 169)');
+                if ($('*[name=answerText]:checked').length){
+                    var value = $('*[name=answerText]:checked').attr('value');
+                }else{
+                    var value = $('*[name=answerText]').val();
+                }
                 $.ajax({
                     type: "POST",
                     url: Routing.generate('poll', {'pollId' : {{ poll.id}} , 'qId' : questionId }),
-                    data: "answer="+$('#answerText').html(),
+                    data: "answer="+value,
                     success: function(result){
                         data = result.data
                         if (data.pollId == {{ poll.id }}){
                             // Меняем вопрос и сколько осталось до конца теста
                             numberQuest ++;
-                            $('.poll-questionNumber').html(numberQuest+' / '+countQuest);
+                            if (numberQuest > countQuest){
+                                $('.poll-questionNumber').html('');
+                            }else{
+                                $('.poll-questionNumber').html(numberQuest+' / '+countQuest);
+                            }
                             // Меняем вопрос
                             $('.poll-question').html(data.title);
                             //Меняем id вопроса
                             questionId = data.id;
+                            //Меняем ответ(ы)
+                            if (data.options != null){
+                                txt = '';
+                                $.each(data.options,function(key,val){
+                                    txt +='<input type="radio" name="answerText" value="'+val+'">&nbsp;'+val+'<br />';
+                                });
+                                $('.poll-answer').html(txt);
+                            }else{
+                                $('.poll-answer').html('<textarea rows="3"  name="answerText" id="answerText" placeholder="Введите свой ответ"></textarea>')
+                            }
                             if (data.next == 'End'){
                                 $('#answerText').css('display','none');
                                 $('#answer-send').css('display','none');
