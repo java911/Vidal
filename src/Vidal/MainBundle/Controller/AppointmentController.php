@@ -22,6 +22,7 @@ class AppointmentController extends Controller
         $session = new Session();
         $emiasBirthdate = $session->get('EmiasBirthdate');
         $emiasOms = $session->get('EmiasOms');
+
         if ( $emiasBirthdate == null || $emiasOms == null ){
             return false;
         }else{
@@ -37,9 +38,28 @@ class AppointmentController extends Controller
      */
     public function indexAction(Request $request)
     {
+        if ($this->isAuth()){
+            $soap = $this->createConnection();
+            $specialties = $soap->getSpecialitiesInfo(array('omsNumber'=>'9988889785000068', 'birthDate'=>'2011-04-14T00:00:00', 'externalSystemId'=>'MPGU'));
+
+            $apps = $soap->getAppointmentReceptionsByPatient(array('omsNumber'=>'9988889785000068', 'birthDate'=>'2011-04-14T00:00:00', 'externalSystemId'=>'MPGU'));
+
+            if ( isset($apps->return) ){
+                if (isset($apps->return->id)){
+                    $apps = array('0' => $apps->return);
+                }else{
+                    $apps = $apps->return;
+                }
+            }
+
+
+
+            if (is_array($specialties->return)){
+                return $this->render('VidalMainBundle:Appointment:appointment_set_spec.html.twig', array('specialties' => $specialties->return, 'apps' => $apps));
+            }
+        }
         $em  = $this->getDoctrine()->getManager();
         $appointment = new Appointment();
-
         $builder = $this->createFormBuilder($appointment);
         $builder
             ->add('email', null, array('label' => 'E-mail'))
@@ -87,17 +107,6 @@ class AppointmentController extends Controller
     }
 
     /**
-     * Список действительных записей
-     * @Route("/appointment-list", name="appointment_list")
-     * @Template()
-     */
-    public function listAction(){
-        if ( $this->isAuth() == false ){ return $this->redirect($this->generateUrl('appointment')); }
-        $appointmentList = $this->getDoctrine()->getRepository('VidalMainBundle:Appointment')->findByStatus(1);
-        return array('appointmentList' => $appointmentList );
-    }
-
-    /**
      * @Route("/appointment-doctors/{doctorId}", name="appointment_doctor", options={"expose"=true})
      */
     public function doctorsActions($doctorId){
@@ -134,7 +143,7 @@ class AppointmentController extends Controller
         $receptionTypeCodeOrLdpTypeCode                         = 1863;
 
         $soap = $this->createConnection();
-        $datetime = $soap->createAppointment(
+        $id = $soap->createAppointment(
             array(
                 'omsNumber'=>'9988889785000068',
                 'birthDate'=>'2011-04-14T00:00:00',
@@ -148,7 +157,41 @@ class AppointmentController extends Controller
             )
         );
 
-        return $this->redirect($this->generateUrl('appointment_list'));
+        $data = $soap->getAppointmentReceptionsByPatient(
+            array(
+                'omsNumber'=>'9988889785000068',
+                'birthDate'=>'2011-04-14T00:00:00',
+                'externalSystemId'=>'MPGU'
+            )
+        );
+
+        if (isset($id->return->appointmentId)){
+            if ( isset($data->return) ){
+                if (isset($data->return->id)){
+                    $data = array('0' => $data->return);
+                }else{
+                    $data = $data->return;
+                }
+            }
+
+            foreach ( $data as $val ){
+                if ( $id->return->appointmentId == $val->id ){
+                    $data = $val;
+                    break;
+                }
+            }
+
+            if (isset($data->id)){
+                $this->get('email.service')->send(
+                    "tulupov.m@gmail.com",
+//                array('zakaz@zdravzona.ru'),
+                    array('VidalMainBundle:Email:Appointment_create.html.twig', array('data' => $data )),
+                    'Запись ко врачу на сайте Vidal.ru'
+                );
+            }
+        }
+
+        return $this->redirect($this->generateUrl('appointment'));
     }
 
 
@@ -183,6 +226,17 @@ class AppointmentController extends Controller
                 'externalSystemId'=>'MPGU'
             )
         );
+
+
+        if (isset($appointmentId)){
+                $this->get('email.service')->send(
+                    "tulupov.m@gmail.com",
+//                array('zakaz@zdravzona.ru'),
+                    array('VidalMainBundle:Email:Appointment_remove.html.twig', array('data' => $appointmentId )),
+                    'Отмена записи ко врачу на сайте Vidal.ru'
+                );
+            }
+
 
         return $this->redirect($this->generateUrl('appointment'));
     }

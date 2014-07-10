@@ -8,8 +8,10 @@
     {% if specialties is not empty %}
         <div class="spec-box">
             {% for spec in specialties %}
-                <div class="spec-item" id="{{ spec.code }}">{{ spec.name }}</div>
-                <div class="doc-box" id="spec-{{ spec.code }}"></div>
+                <div>
+                    <div class="spec-item" id="{{ spec.code }}">{{ spec.name }}</div>
+                    <div class="doc-box" id="spec-{{ spec.code }}"></div>
+                </div>
             {% endfor %}
         </div>
     {% else %}
@@ -33,8 +35,8 @@
     {% if apps is not empty and apps | length > 0 %}
         <div class="app-box">
             {% for app in apps %}
-                <div class="app-item" id="{{ app.id }}">
-                    <a class="app-del" href="{{ path('appointment_delete',{'appointmentId' : app.id}) }}">Удалить</a>
+                <div class="app-item" id="app{{ app.id }}">
+                    <a class="app-del" data-id="{{ app.id }}" href="{{ path('appointment_delete',{'appointmentId' : app.id}) }}">Удалить</a>
                     <div class="app-date" style="font-weight: bold;"> {{ app.dateBegin | date('d.m.Y') }} с {{ app.dateBegin | date('H:i') }} до {{ app.dateEnd | date('H:i') }}</div>
                     <br />
                     <div class="app-doctor">
@@ -53,7 +55,7 @@
         <span style="padding-left: 40px;">Записи к врачам отсутствуют.</span>
     {% endif %}
 
-    <div class="confirmApp">
+    <div class="confirmApp" id="confirmApp">
         <table>
             <tr>
                 <td colspan="2" class="title">Подтвердите запись к врачу</td>
@@ -61,19 +63,35 @@
             <tr>
                 <td colspan="2">
                     <div class="info" >
-                        <b>Врач:</b> Иванов Иван Иванович<br />
-                        <b>Специализация:</b> Терапевт<br />
-                        <b>Дата и время:</b> 28.02.2014 08:30
+                        <b>Врач:</b>  <span id="pfio"></span><br />
+                        <b>Место:</b> <span id="pplace"></span><br />
+                        <b>Специализация:</b> <span id="pspec"></span><br />
+                        <b>Дата и время:</b>  <span id="pdatetime"></span>
                     </div>
 
                 </td>
             </tr>
             <tr>
                 <td style="text-align: center;"><button class="btn-red" id="confirmAppBtn">Подтвердить</button></td>
-                <td style="text-align: center;"><button class="btn-red" id="cancelAppBtn">Отмена</button></td>
+                <td style="text-align: center;"><button class="btn-red cancelAppBtn">Отмена</button></td>
             </tr>
         </table>
     </div>
+
+    <div class="confirmApp" id="confirmRemove">
+        <table>
+            <tr>
+                <td colspan="2" class="title">Подтвердите отмену записи к врачу</td>
+            </tr>
+            <tr><td colspan="2">&nbsp;</td></tr>
+            <tr>
+                <td style="text-align: center;"><button class="btn-red" id="confirmRemoveBtn">Подтвердить</button></td>
+                <td style="text-align: center;"><button class="btn-red cancelAppBtn">Отмена</button></td>
+            </tr>
+        </table>
+    </div>
+
+
 {% endblock %}
 
 
@@ -88,11 +106,15 @@
             var doctorInfo = '';
             var doctorDate = '';
             var doctorTime = '';
+            var doctorFio  = '';
+            var doctorLpu  = '';
+            var doctorSpec = '';
             var availableResourceId = '';
             var complexResourceId   = '';
             var receptionDate       = '';
             var startTime           = '';
             var endTime             = '';
+            var deleteUrl           = '';
 
             $('.spec-item').click(function(){
                 var id = $(this).attr('id');
@@ -101,32 +123,47 @@
                     type: "POST",
                     url: Routing.generate('appointment_doctor',{'doctorId' : id }),
                     success: function(msg){
+                        loadHide();
                         data = msg.data.availableResource;
                         txt = '';
                         $.each(data,function(i, val){
-                            console.log(val = val);
-                            txt +=  '<div class="doc-item" data-id="'+val.id+'" availableResourceId="'+val.lpuRoomsInfo.lpuRoomView.availableResourceId+'" ' +
-                                    'complexResourceId="'+val.lpuRoomsInfo.lpuRoomView.complexResourceId+'">';
-//                           txt +=  val.lastName+' '+val.firstName+' '+val.secondName+' ( ЛПУ: '+val.lpuRoomsInfo.lpuRoomView.lpuShortName+' каб.: '+val.lpuRoomsInfo.lpuRoomsView.roomNumber+') ';
-                            txt +=  val.lastName+' '+val.firstName+' '+val.secondName;
-                            txt +=  '</div>' +
-                                    '<div class="dateTime-box" id="doc-'+val.id+'"></div>';
+                            if (val.lpuRoomsInfo && val.lpuRoomsInfo.lpuRoomView){
+                                txt += '<div>';
+                                txt +=  '<div class="doc-item" data-id="'+val.id+'" availableResourceId="'+val.lpuRoomsInfo.lpuRoomView.availableResourceId+'" ' +
+                                        'complexResourceId="'+val.lpuRoomsInfo.lpuRoomView.complexResourceId+'">';
+
+                                txt +=  '<span>' + val.lastName+' '+val.firstName+' '+val.secondName + '</span>';
+
+                                if (val.lpuRoomsInfo.lpuRoomView.lpuShortName){
+                                    txt += '<div style="font-size: 12px; font-style: italic;"> ( ';
+                                    txt +=  '  '+val.lpuRoomsInfo.lpuRoomView.lpuShortName;
+                                    txt +=  '  '+val.lpuRoomsInfo.lpuRoomView.roomNumber;
+                                    txt += ' ) </div>';
+                                }
+
+                                txt +=  '</div>' +
+                                        '<div class="dateTime-box" id="doc-'+val.id+'"></div>';
+                                txt += '</div>';
+                            }
                         });
                         $('#spec-'+id).html(txt);
+
                     }
                 });
-            loadHide();
             });
 
 
             $('.doc-box').on('click','.doc-item', function(){
                 var availableResourceId = $(this).attr('availableResourceId');
                 var complexResourceId = $(this).attr('complexResourceId');
+                var $this = $(this);
+
                 loadShow();
                 $.ajax({
                     type: "POST",
                     url: Routing.generate('appointment_datetime',{'availableResourceId' : availableResourceId, 'complexResourceId': complexResourceId }),
                     success: function(msg){
+                        loadHide();
                         if ( msg.data.detail && msg.data.detail.exception ){
                             alert(msg.data.detail.exception);
                         }else{
@@ -146,7 +183,17 @@
                                                 }
                                                 var dStart = new Date(timeval.startTime);
                                                 var dEnd = new Date(timeval.endTime);
-                                                txt += '<span class="time '+enabled+'" data-availableResourceId="'+availableResourceId+'" data-complexResourceId="'+complexResourceId+'" data-date="'+d+'" data-start="'+dStart+'" data-end="'+dStart+'">'+ dStart.toString('HH:mm') +'</span>';
+                                                txt += '<span class="time '+enabled+'" ' +
+                                                        'data-availableResourceId="'+availableResourceId+'" '+
+                                                        'data-complexResourceId="'+complexResourceId+'" '+
+                                                        'data-date="'+d+'" data-start="'+dStart+'" ' +
+                                                        'data-end="'+dEnd+'" '+
+                                                        'data-doctorFio="'+$this.children('span').text()+'" '+
+                                                        'data-doctorLpu="'+$this.children('div').html()+'"'+
+                                                        'data-doctorSpec="'+$this.parent().parent().parent().children('.spec-item').html()+'"'+
+                                                        '>'+
+                                                        dStart.toString('HH:mm') +'</span>';
+//                                                        alert(txt);
                                             });
                                         }
                                     }else{
@@ -162,7 +209,6 @@
                         }
                     }
                 });
-                loadHide();
             });
 
             $('.doc-box').on('click','.time', function(){
@@ -171,15 +217,39 @@
                 receptionDate       = $(this).attr('data-date');
                 startTime           = $(this).attr('data-start');
                 endTime             = $(this).attr('data-end');
-                $('.confirmApp').fadeIn();
+
+                doctorFio           = $(this).attr('data-doctorFio');
+                doctorLpu           = $(this).attr('data-doctorLpu');
+                doctorSpec          = $(this).attr('data-doctorSpec');
+
+                $('#pfio').html(doctorFio);
+                $('#pplace').html(doctorLpu);
+                $('#pspec').html(doctorSpec);
+                pdatetime = new Date(startTime);
+
+                $('#pdatetime').html(pdatetime.toString('dd.MM.yyyy HH:mm'));
+
+                $('#confirmApp').fadeIn();
             });
 
-            $('#cancelAppBtn').click(function(){
+            $('.app-del').click(function(){
+                deleteUrl = $(this).attr('href');
+                console.log(deleteUrl);
+                $('#confirmRemove').fadeIn();
+                return false;
+            });
+
+            $('#confirmRemoveBtn').click(function(){
                 $('.confirmApp').fadeOut();
+                window.location.href = deleteUrl;
+            });
+
+            $('.cancelAppBtn').click(function(){
+                $('.confirmApp').fadeOut();
+                deleteUrl = '';
             });
 
             $('#confirmAppBtn').click(function(){
-                //               var link = Routing.generate('appointment_create',{availableResourceId:1,complexResourceId:1,receptionDate:1,startDate:1,endDate:1  });
                 $('#availableResourceId').val(availableResourceId);
                 $('#complexResourceId').val(complexResourceId);
                 $('#receptionDate').val(receptionDate);
@@ -287,10 +357,10 @@
         }
         .confirmApp{
             width: 400px;
-            height: 170px;
+            height: 190px;
             border: 1px solid #d71344;
             background: #FFFFFF;
-            position: absolute;
+            position: fixed;
             left: 50%;
             margin-left: -200px;
             top: 100px;
@@ -311,6 +381,9 @@
         .info{
             line-height: 20px;
             margin: 20px;
+        }
+        #confirmRemove{
+            height: 90px;
         }
     </style>
 {% endblock %}
