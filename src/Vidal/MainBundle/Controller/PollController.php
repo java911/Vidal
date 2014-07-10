@@ -31,9 +31,6 @@ class PollController extends Controller
      */
     public function pollAction(Request $request, $pollId, $qId = 0){
         $session = $request->getSession();
-        if ( $session->get('poll') != null ){
-            exit;
-        }
 
         $em = $this->getDoctrine()->getManager();
         $poll = $em->getRepository('VidalMainBundle:Poll')->findOneById($pollId);
@@ -52,7 +49,11 @@ class PollController extends Controller
             #Первый вопрос
             $question = $em->getRepository('VidalMainBundle:PollQuestion')->findFirst($poll);
             $options = $question->getOptions();
-            return array('question' => $question, 'questionNumber' => 1, 'questionCount' =>$count ,'poll' => $poll, 'options'  => $options);
+            if ( $session->get('poll') != null ){
+                exit;
+            }else{
+                return array('question' => $question, 'questionNumber' => 1, 'questionCount' =>$count ,'poll' => $poll, 'options'  => $options);
+            }
         }else{
             #Следующий вопрос
             $question = $em->getRepository('VidalMainBundle:PollQuestion')->findNext($poll,$qId);
