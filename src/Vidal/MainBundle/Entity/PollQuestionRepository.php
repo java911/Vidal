@@ -10,7 +10,7 @@ class PollQuestionRepository extends EntityRepository
         $tid = $poll->getId();
         $result = $this->getEntityManager()
             ->createQuery("
-                    SELECT q FROM EvrikaMainBundle:PollQuestion q
+                    SELECT q FROM VidalMainBundle:PollQuestion q
                     LEFT JOIN q.poll p WITH p.id = $tid
                     WHERE q.id > $id
                     ORDER BY q.id ASC")
@@ -21,10 +21,10 @@ class PollQuestionRepository extends EntityRepository
 
     public function findFirst($poll)
     {
-        $tid = $test->getId();
+        $tid = $poll->getId();
         $result = $this->getEntityManager()
             ->createQuery("
-                    SELECT q FROM EvrikaMainBundle:PollQuestion q
+                    SELECT q FROM VidalMainBundle:PollQuestion q
                     LEFT JOIN q.poll p WITH p.id = $tid
                     ORDER BY q.id ASC")
             ->setMaxResults(1)

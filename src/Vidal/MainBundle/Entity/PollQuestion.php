@@ -23,12 +23,18 @@ class PollQuestion extends BaseEntity
     protected $poll;
 
     /**
-     * @ORM\OneToMany(targetEntity = "PollAnswer", mappedBy = "poll")
+     * @ORM\OneToMany(targetEntity = "Polloption", mappedBy = "question")
+     */
+    protected $options;
+
+    /**
+     * @ORM\OneToMany(targetEntity = "PollAnswer", mappedBy = "question")
      */
     protected $answers;
 
     public function __construct(){
         $this->answers = new ArrayCollection();
+        $this->options = new ArrayCollection();
     }
 
     public function addAnswer($answer){
@@ -103,5 +109,28 @@ class PollQuestion extends BaseEntity
     public function getTitle()
     {
         return $this->title;
+    }
+
+    public function addOption($option){
+        $this->options[] = $option;
+    }
+
+    public function removeOption($option){
+        $this->options->removeElement($option);
+    }
+
+    /**
+    * @param mixed $options
+    */
+    public function setOptions($options)
+    {
+        $this->options = $options;
+    }
+    /**
+    * @return mixed
+    */
+    public function getOptions()
+    {
+        return $this->options;
     }
 }

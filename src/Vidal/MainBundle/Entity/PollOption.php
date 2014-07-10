@@ -8,10 +8,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="PollAnswer")
- * @Filestore\Uploadable
+ * @ORM\Table(name="PollOption")
  */
-class PollAnswer extends BaseEntity
+class PollOption extends BaseEntity
 {
     /**
      * @ORM\Column(type="string")
@@ -19,30 +18,9 @@ class PollAnswer extends BaseEntity
     protected $title;
 
     /**
-     * @ORM\ManyToOne(targetEntity = "Poll", inversedBy = "answers")
-     */
-    protected $poll;
-
-    /**
-     * @ORM\ManyToOne(targetEntity = "PollQuestion", inversedBy = "answers")
+     * @ORM\ManyToOne(targetEntity = "PollQuestion", inversedBy = "options")
      */
     protected $question;
-
-    /**
-     * @param mixed $poll
-     */
-    public function setPoll($poll)
-    {
-        $this->poll = $poll;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPoll()
-    {
-        return $this->poll;
-    }
 
     /**
      * @param mixed $question

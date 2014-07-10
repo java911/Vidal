@@ -26,10 +26,10 @@ class PollController extends Controller
      * @param Integer $pollId Индентификатор теста
      * @param Integer $qId индентификатор предыдущего вопроса. Если 0, то вопрос первый
      * @return array | Response
-     * @Route("/poll/{pollId}/{qId}" name="poll", defaults={"qId" = "0"})
+     * @Route("/poll/{pollId}/{qId}", name="poll", defaults={"qId" = "0"}, options={"expose"=true})
      * @Template()
      */
-    public function PollAction(Request $request, $pollId, $qId = 0){
+    public function pollAction(Request $request, $pollId, $qId = 0){
         $em = $this->getDoctrine()->getManager();
         $poll = $em->getRepository('VidalMainBundle:Poll')->findOneById($pollId);
         $question = $em->getRepository('VidalMainBundle:PollQuestion')->findOneById($qId);
@@ -46,10 +46,10 @@ class PollController extends Controller
         if ($qId == 0){
             #Первый вопрос
             $question = $em->getRepository('VidalMainBundle:PollQuestion')->findFirst($poll);
-            return array('question' => $question, 'questionNumber' => 1, 'questionCount' =>$count );
+            return array('question' => $question, 'questionNumber' => 1, 'questionCount' =>$count ,'poll' => $poll);
         }else{
             #Следующий вопрос
-            $question = $em->getRepository('VidalMainBundle:PollQuestion')->findFirst($poll,$qId);
+            $question = $em->getRepository('VidalMainBundle:PollQuestion')->findNext($poll,$qId);
             if ( $question ){
                 #Есть еще один вопрос
                 $data = array(
@@ -62,9 +62,9 @@ class PollController extends Controller
                 #Больше нету, показываем концовку
                 $data = array(
                     'next'   => 'End',
-                    'pollId' => $question->getPoll()->getId(),
+                    'pollId' => $poll->getId(),
                     'id'     => null,
-                    'title'  => 'Спасибо за внимание',
+                    'title'  => '<div style="text-align: center"><b>Опрос завершен.</b><br /> Спасибо за внимание</div>',
                 );
             }
             $response = new JsonResponse(array('data'=>$data));

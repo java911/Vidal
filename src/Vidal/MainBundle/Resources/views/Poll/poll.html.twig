@@ -1,0 +1,96 @@
+<style>
+    .poll{
+        width: 240px;
+        border: 1px solid #CED2D5;
+        color: #555555;
+        text-shadow: 1px 0 #FFF ;
+    }
+    .poll-title{
+        margin-bottom: 5px;
+        background-color: #D8DBE2;
+    }
+    .poll-answer textarea{
+        width: 230px;
+        height: 50px;
+        font-size: 14px;
+        display: block;
+        outline: none;
+        padding-left: 10px;
+    }
+    .poll-questionNumber{
+        font-weight: bold;
+        padding-left: 10px;
+    }
+    .poll-question{
+        font-size: 14px;
+    }
+    .poll-submit{
+        margin-top: 10px;
+    }
+    .btn-red{
+        display: inline-block;
+        margin: 0;
+        padding: 5px 22px 7px;
+        background-color: #d71344;
+        color: #fff;
+        border: none;
+        outline: 0;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 15px;
+        text-align: center;
+    }
+
+</style>
+<div class="poll">
+    <div class="poll-title">
+        <span class="poll-questionNumber">1 / {{ questionCount }} </span>
+        <span class="poll-title-text">{{ poll.title }}</span>
+    </div>
+    <div style="padding: 5px;">
+        <div class="poll-question">{{ question.title }}</div>
+        <div class="poll-answer"><textarea rows="3"  name="answerText" id="answerText" placeholder="Введите свой ответ"></textarea></div>
+        <div class="poll-submit"><button class="btn-red" id="answer-send">Далее</button></div>
+    </div>
+</div>
+<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/jquery-1.11.0.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+<script>
+    $(document).ready(function(){
+        var numberQuest = 1;
+        var countQuest = {{ questionCount }};
+        var questionId = {{ question.id }}
+
+        $('#answer-send').click(function(){
+            if ($('#answerText').val() == ''){
+                $('#answerText').css('borderColor','#CC0000');
+                return false;
+            }else{
+                $('#answerText').css('borderColor' ,'rgb(169, 169, 169)');
+                $('#answerText').val('');
+                $.ajax({
+                    type: "POST",
+                    url: Routing.generate('poll', {'pollId' : {{ poll.id}} , 'qId' : questionId }),
+                    data: "answer="+$('#answerText').html(),
+                    success: function(result){
+                        data = result.data
+                        if (data.pollId == {{ poll.id }}){
+                            // Меняем вопрос и сколько осталось до конца теста
+                            numberQuest ++;
+                            $('.poll-questionNumber').html(numberQuest+' / '+countQuest);
+                            // Меняем вопрос
+                            $('.poll-question').html(data.title);
+                            //Меняем id вопроса
+                            questionId = data.id;
+                            if (data.next == 'End'){
+                                $('#answerText').css('display','none');
+                                $('#answer-send').css('display','none');
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
