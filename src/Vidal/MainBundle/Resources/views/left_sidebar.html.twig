@@ -31,12 +31,18 @@
 		<a href="{{ path('shkola') }}"
 		   class="{{ menu_left is defined and menu_left == 'shkola' ? 'active' : 'dotted' }}">Школа здоровья</a>
 	</li>
-	<li>
+
+    <li>
+        <a href="{{ path('astrazeneca_index') }}" class="dotted">Школа гастрита</a>
+    </li>
+
+    <li>
 		<a href="/reckittbenckiser/index.html?medi" target="_blank">
 			<button class="btn-red">Без боли</button>
 		</a>
 
 	</li>
+
 
 	{{ render(controller('VidalMainBundle:Market:countProduct')) }}
 </ul>
