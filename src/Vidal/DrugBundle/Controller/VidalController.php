@@ -582,42 +582,6 @@ class VidalController extends Controller
 		return $params;
 	}
 
-	/**
-	 * @Route("/drugs/{EngName}~{DocumentID}.{ext}", name="document", defaults={"ext"="htm"})
-	 * @Template("VidalDrugBundle:Vidal:document.html.twig")
-	 */
-	public function documentAction($EngName, $DocumentID)
-	{
-		$em       = $this->getDoctrine()->getManager('drug');
-		$document = $em->getRepository('VidalDrugBundle:Document')->findById($DocumentID);
-
-		if (!$document) {
-			throw $this->createNotFoundException();
-		}
-
-		$params     = array('title' => $this->strip($document->getRusName()) . ' | Препараты');
-		//		$params['molecules'] = $em->getRepository('VidalDrugBundle:Molecule')->findByDocumentID($DocumentID);
-		$params['products'] = $em->getRepository('VidalDrugBundle:Product')->findByDocumentID($DocumentID);
-
-		//		if (!empty($products)) {
-		//			$productIds = $this->getProductIds($products);
-		//			//			$params['atcCodes']     = $em->getRepository('VidalDrugBundle:ATC')->findByProducts($productIds);
-		//			//			$params['owners']       = $em->getRepository('VidalDrugBundle:Company')->findOwnersByProducts($productIds);
-		//			//			$params['distributors'] = $em->getRepository('VidalDrugBundle:Company')->findDistributorsByProducts($productIds);
-		//			//			$params['pictures']     = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds, date('Y'));
-		//		}
-		//		else {
-		//			//			$params['atcCodes'] = $em->getRepository('VidalDrugBundle:ATC')->findByDocumentID($DocumentID);
-		//			//			$params['pictures'] = array();
-		//		}
-
-		$params['nozologies'] = $em->getRepository('VidalDrugBundle:Nozology')->findByDocumentID($DocumentID);
-		$params['document']   = $document;
-		$params['infoPages']  = $em->getRepository('VidalDrugBundle:InfoPage')->findByDocumentID($DocumentID);
-
-		return $params;
-	}
-
 	/** @Route("/poisk_preparatov/{name}.htm") */
 	public function moleculeRedirect($name)
 	{
