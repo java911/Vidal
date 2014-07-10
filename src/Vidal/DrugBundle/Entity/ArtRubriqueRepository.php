@@ -19,10 +19,10 @@ class ArtRubriqueRepository extends EntityRepository
 	public function findSitemap()
 	{
 		$raw = $this->_em->createQuery('
-			SELECT a.title, a.link,
+			SELECT a.title, a.link, a.id,
 				r.title rubriqueTitle, r.url rubriqueUrl,
 				t.title typeTitle, t.url typeUrl,
-				c.title categoryTitle, t.url categoryUrl
+				c.title categoryTitle, c.url categoryUrl
 			FROM VidalDrugBundle:Art a
 			JOIN a.rubrique r
 			LEFT JOIN a.type t
@@ -36,30 +36,57 @@ class ArtRubriqueRepository extends EntityRepository
 		foreach ($raw as $r) {
 			$rubrique = $r['rubriqueUrl'];
 
-			if (!$r['categoryUrl'] && !$r['typeUrl']) {
-				# в рубрику
-				if (isset($result[$rubrique])) {
-					$result[$rubrique]['products'][] = $r;
-				}
-				else {
-					$result[$rubrique]             = array();
-					$result[$rubrique]['products'] = array($r);
-					$result[$rubrique]['title']    = $r['rubriqueTitle'];
-					$result[$rubrique]['url']      = $r['rubriqueUrl'];
-				}
+			if (!isset($result[$rubrique])) {
+				$result[$rubrique] = array(
+					'children' => array(),
+					'articles' => array(),
+					'title'    => $r['rubriqueTitle'],
+					'url'      => $r['rubriqueUrl'],
+				);
 			}
-			elseif (!$r['categoryUrl']) {
+
+			if ($r['categoryUrl'] === null && $r['typeUrl'] === null) {
+				# статья в рубрике
+				$result[$rubrique]['articles'][] = $r;
+			}
+			elseif ($r['categoryUrl'] === null) {
+				# статья в типе
 				$type = $r['typeUrl'];
-				# в тип
-				if (!isset($result[$rubrique])) {
-					$result[$rubrique]             = array();
-					$result[$rubrique]['children'] = array($type);
-					$result[$rubrique]['title']    = $r['rubriqueTitle'];
-					$result[$rubrique]['url']      = $r['rubriqueUrl'];
+				if (!isset($result[$rubrique]['children'][$type])) {
+					$result[$rubrique]['children'][$type] = array(
+						'children' => array(),
+						'articles' => array(),
+						'title'    => $r['typeTitle'],
+						'url'      => $r['typeUrl'],
+					);
 				}
+				$result[$rubrique]['children'][$type]['articles'][] = $r;
+			}
+			else {
+				# статья в категории
+				$type = $r['typeUrl'];
+				if (!isset($result[$rubrique]['children'][$type])) {
+					$result[$rubrique]['children'][$type] = array(
+						'children' => array(),
+						'articles' => array(),
+						'title'    => $r['typeTitle'],
+						'url'      => $r['typeUrl'],
+					);
+				}
+
+				$category = $r['categoryUrl'];
+				if (!isset($result[$rubrique]['children'][$type]['children'][$category])) {
+					$result[$rubrique]['children'][$type]['children'][$category] = array(
+						'articles' => array(),
+						'title'    => $r['categoryTitle'],
+						'url'      => $r['categoryUrl'],
+					);
+
+				}
+				$result[$rubrique]['children'][$type]['children'][$category]['articles'][] = $r;
 			}
 		}
 
-		return $raw;
+		return $result;
 	}
 }

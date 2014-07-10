@@ -1,24 +1,19 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
-{% block title %}
-	<h1>КАРТА САЙТА</h1>
-{% endblock %}
-
-
 {% block content %}
+	<h1>КАРТА САЙТА</h1>
+
+	<div class="treeview-controls">
+		<a id="tree_expand" href="#">
+			<img src="{{ asset('bundles/vidalmain/images/btn_down.png') }}"/><span>развернуть</span>
+		</a>
+		<a id="tree_collapse" href="#">
+			<img src="{{ asset('bundles/vidalmain/images/btn_up.png') }}"/><span>свернуть</span>
+		</a>
+	</div>
+
 	<ul id="tree" class="treeview">
-		<li class="hasChildren collapsable">
-			<div class="hitarea hasChildren-hitarea expandable-hitarea"></div>
-			<a href="{{ path('articles') }}" target="_blank">Медицинская энциклопедия</a>
-			{% include 'VidalMainBundle:Sitemap:encyclopedia.html.twig' %}
-		</li>
-		<li>
-			<a href="{{ path('qa') }}" target="_blank">Ответы специалистов</a>
-		</li>
-		<li>
-			<a href="{{ path('news') }}" target="_blank">Новости</a>
-		</li>
 		<li class="hasChildren collapsable">
 			<div class="hitarea hasChildren-hitarea expandable-hitarea"></div>
 			<a href="{{ path('about') }}" target="_blank">О компании</a>
@@ -29,21 +24,32 @@
 			<a href="{{ path('services') }}" target="_blank">Наши услуги</a>
 			{% include 'VidalMainBundle:Sitemap:services.html.twig' %}
 		</li>
-		<li>
-			<a href="{{ path('veterinar') }}" target="_blank">Ветеринария</a>
-		</li>
 		<li class="hasChildren collapsable">
 			<div class="hitarea hasChildren-hitarea expandable-hitarea"></div>
 			<a href="{{ path('drugs') }}" target="_blank">Препараты</a>
 			{% include 'VidalMainBundle:Sitemap:drugs.html.twig' %}
 		</li>
+		<li>
+			<a href="{{ path('qa') }}" target="_blank">Ответы специалистов</a>
+		</li>
+		<li>
+			<a href="{{ path('news') }}" target="_blank">Новости</a>
+		</li>
+		<li>
+			<a href="{{ path('veterinar') }}" target="_blank">Ветеринария</a>
+		</li>
+		<li>
+			<a href="{{ path('pharmacies_map') }}" target="_blank">Аптеки</a>
+		</li>
+		<li class="hasChildren collapsable">
+			<div class="hitarea hasChildren-hitarea expandable-hitarea"></div>
+			<a href="{{ path('articles') }}" target="_blank">Медицинская энциклопедия</a>
+			{% include 'VidalMainBundle:Sitemap:encyclopedia.html.twig' %}
+		</li>
 		<li class="hasChildren collapsable">
 			<div class="hitarea hasChildren-hitarea expandable-hitarea"></div>
 			<a href="{{ path('vracham') }}" target="_blank">Специалистам</a>
 			{% include 'VidalMainBundle:Sitemap:vracham.html.twig' %}
-		</li>
-		<li>
-			<a href="{{ path('pharmacies_map') }}" target="_blank">Аптеки</a>
 		</li>
 	</ul>
 {% endblock %}
@@ -62,6 +68,31 @@
 		.treeview > li > a {
 			font-weight: bold;
 		}
+		#wrapper .article {
+			color: #476173 !important;
+		}
+		.treeview-controls {
+			position: absolute;
+			top:      -4px;
+			left:     150px;
+		}
+		.treeview-controls a {
+			display:         inline-block;
+			text-decoration: none;
+			font-size:       13px !important;
+			color:           #911735 !important;
+		}
+		.treeview-controls a > * {
+			display:        inline-block;
+			vertical-align: top;
+		}
+		.treeview-controls a span {
+			margin-top: 5px;
+		}
+		.treeview-controls a img {
+			width:  35px;
+			height: 35px;
+		}
 	</style>
 {% endblock %}
 
@@ -77,6 +108,24 @@
 			$tree.treeview({
 				animated:  "fast",
 				collapsed: false
+			});
+
+			$('#tree_collapse').on('click', function() {
+				$tree.find('ul').hide();
+				$tree.find('div.collapsable-hitarea').removeClass('collapsable-hitarea').addClass('expandable-hitarea');
+				$tree.find('div.lastCollapsable-hitarea').removeClass('lastCollapsable-hitarea').addClass('lastExpandable-hitarea');
+				$tree.find('li.collapsable').removeClass('collapsable').addClass('expandable');
+				$tree.find('li.lastCollapsable').removeClass('lastCollapsable').addClass('lastExpandable');
+				return false;
+			});
+
+			$('#tree_expand').on('click', function() {
+				$tree.find('ul').show();
+				$tree.find('div.expandable-hitarea').removeClass('expandable-hitarea').addClass('collapsable-hitarea');
+				$tree.find('div.lastExpandable-hitarea').removeClass('lastExpandable-hitarea').addClass('lastCollapsable-hitarea');
+				$tree.find('li.expandable').removeClass('expandable').addClass('collapsable');
+				$tree.find('li.lastExpandable').removeClass('lastExpandable').addClass('lastCollapsable');
+				return false;
 			});
 		});
 	</script>
