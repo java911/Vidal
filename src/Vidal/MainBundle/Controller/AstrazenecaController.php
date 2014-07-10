@@ -24,6 +24,15 @@ class AstrazenecaController extends Controller
     }
 
     /**
+     * @Route("/astrazeneca/video", name="astrazeneca_video")
+     * @Template("VidalMainBundle:Astrazeneca:index.html.twig")
+     */
+    public function videoAction(){
+        return array();
+    }
+
+
+    /**
      * @Route("/astrazeneca/articles", name="astrazeneca_news")
      * @Template("VidalMainBundle:Astrazeneca:news.html.twig")
      */

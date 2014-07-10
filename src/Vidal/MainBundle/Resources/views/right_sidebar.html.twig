@@ -1,7 +1,7 @@
-{% if app.session.get('poll') is null %}
+{#{% if app.session.get('poll') is null %}#}
     {#<iframe src="{{ path('poll',{ pollId : 1}) }}" style="overflow: hidden; border: none; width: 245px; height: 200px"></iframe>#}
-    {{ render(controller('VidalMainBundle:Poll:poll', {'pollId': 1})) }}
-{% endif %}
+    {#{{ render(controller('VidalMainBundle:Poll:poll', {'pollId': 1})) }}#}
+{#{% endif %}#}
 
 {{ render(controller('VidalMainBundle:Banner:render', {'groupId':9})) }}
 
