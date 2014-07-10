@@ -31,9 +31,9 @@ class PollController extends Controller
      */
     public function pollAction(Request $request, $pollId, $qId = 0){
         $session = $request->getSession();
-//        if ( $session->get('poll') != null ){
-//            exit;
-//        }
+        if ( $session->get('poll') != null ){
+            exit;
+        }
 
         $em = $this->getDoctrine()->getManager();
         $poll = $em->getRepository('VidalMainBundle:Poll')->findOneById($pollId);
