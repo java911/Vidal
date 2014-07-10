@@ -1,0 +1,41 @@
+{% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
+
+
+{% block vidal %}
+	{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' with {'menu_drugs':'interaction'} %}
+	{% include 'VidalDrugBundle:Drugs:interaction_description.html.twig' %}
+
+	<h1>{{ interaction.RusName|raw }}</h1>
+
+	<div class="interaction">
+		{{ interaction.text|raw }}
+	</div>
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.sovm {
+			border-collapse: collapse;
+		}
+		.sovm td {
+			border:  1px solid #ccc;
+			padding: 5px 7px;
+		}
+		.sovm a {
+			text-decoration: none;
+		}
+		.sovm a:hover {
+			text-decoration: underline;
+		}
+		#vidal .sovm_head {
+			font-weight:  bold;
+			border-top:   none;
+			border-left:  none;
+			border-right: none;
+			padding:      0 0 10px;
+			font-size:    14px;
+		}
+	</style>
+{% endblock %}

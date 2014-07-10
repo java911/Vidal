@@ -1,6 +1,6 @@
 <?php
 
-namespace Vidal\MainBundle\Entity;
+namespace Vidal\DrugBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,6 +18,11 @@ class Interaction
 
 	/** @ORM\Column(type="text", nullable=true) */
 	protected $text;
+
+	public function __toString()
+	{
+		return $this->RusName;
+	}
 
 	/**
 	 * @param mixed $EngName

@@ -14,7 +14,7 @@ class DrugsController extends Controller
 {
 	const PHARM_PER_PAGE    = 150;
 	const KFG_PER_PAGE      = 150;
-	const PRODUCTS_PER_PAGE = 40;
+	const PRODUCTS_PER_PAGE = 50;
 
 	private $nozologies;
 
@@ -738,8 +738,6 @@ class DrugsController extends Controller
 		$l  = $request->query->get('l', null); // буква
 		$n  = $request->query->has('n') && $request->query->get('n') != 'false'; // только безрецептурные препараты
 
-		list($syllables, $table) = $em->getRepository('VidalDrugBundle:Product')->findByProductType($t);
-
 		$params = array(
 			't'          => $t,
 			'p'          => $p,
@@ -747,8 +745,6 @@ class DrugsController extends Controller
 			'n'          => $n,
 			'menu_drugs' => 'products',
 			'title'      => 'Поиск препаратов по алфавиту',
-			'syllables'  => $syllables,
-			'table'      => $table,
 		);
 
 		# БАДы только безрецептурные
@@ -780,6 +776,61 @@ class DrugsController extends Controller
 				$params['pictures']    = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
 			}
 		}
+
+		return $params;
+	}
+
+	/**
+	 * @Route("/drugs/interaction", name="interaction")
+	 * @Template("VidalDrugBundle:Drugs:interaction.html.twig")
+	 */
+	public function interactionAction(Request $request)
+	{
+		$em = $this->getDoctrine()->getManager('drug');
+		$l  = $request->query->get('l', null);
+		$q  = $request->query->get('q', null);
+
+		$params = array(
+			'title' => 'Лекарственное взаимодействие',
+			'l'     => $l,
+			'q'     => $q,
+		);
+
+		if ($l) {
+			$params['interactions'] = $em->getRepository('VidalDrugBundle:Interaction')->findByLetter($l);
+		}
+		elseif ($q) {
+			$params['interactions'] = mb_strlen($q, 'utf-8') < 2
+				? null
+				: $em->getRepository('VidalDrugBundle:Interaction')->findByQuery($q);
+		}
+		else {
+			$p                      = $request->query->get('p', 1);
+			$query                  = $em->getRepository('VidalDrugBundle:Interaction')->getQuery();
+			$params['interactions'] = $this->get('knp_paginator')->paginate($query, $p, self::PRODUCTS_PER_PAGE);
+			$params['pagination']   = true;
+		}
+
+		return $params;
+	}
+
+	/**
+	 * @Route("/drugs/interaction/{EngName}", name="interaction_item")
+	 * @Template("VidalDrugBundle:Drugs:interaction_item.html.twig")
+	 */
+	public function interactionItemAction($EngName)
+	{
+		$em          = $this->getDoctrine()->getManager('drug');
+		$interaction = $em->getRepository('VidalDrugBundle:Interaction')->findOneByEngName($EngName);
+
+		if (!$interaction) {
+			throw $this->createNotFoundException();
+		}
+
+		$params = array(
+			'title'       => $interaction->getRusName() . ' | Лекарственное взаимодействие',
+			'interaction' => $interaction,
+		);
 
 		return $params;
 	}

@@ -14,4 +14,14 @@ class AboutServiceRepository extends EntityRepository
 		 	ORDER BY s.priority DESC, s.title DESC
 		')->getResult();
 	}
+
+	public function findSitemap()
+	{
+		return $this->_em->createQuery('
+		 	SELECT a.title, a.url
+		 	FROM VidalMainBundle:AboutService a
+		 	WHERE a.enabled = TRUE
+		 	ORDER BY a.title
+		')->getResult();
+	}
 }

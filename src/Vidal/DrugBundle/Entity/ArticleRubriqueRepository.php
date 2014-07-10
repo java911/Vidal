@@ -51,4 +51,32 @@ class ArticleRubriqueRepository extends EntityRepository
 			ORDER BY r.priority DESC, r.title ASC
 		')->getResult();
 	}
+
+	public function findSitemap()
+	{
+		$raw = $this->_em->createQuery('
+			SELECT a.title, a.link, r.title rubriqueTitle, r.rubrique rubriqueLink
+			FROM VidalDrugBundle:Article a
+			JOIN a.rubrique r
+			WHERE a.enabled = TRUE
+				AND r.enabled = TRUE
+			ORDER BY r.title, a.title
+		')->getResult();
+
+		$rubriques = array();
+
+		foreach ($raw as $r) {
+			$key = $r['rubriqueLink'];
+			if (isset($rubriques[$key])) {
+				$rubriques[$key]['articles'][] = $r;
+			}
+			else {
+				$rubriques[$key]['articles'] = array($r);
+				$rubriques[$key]['rubriqueLink'] = $r['rubriqueLink'];
+				$rubriques[$key]['rubriqueTitle'] = $r['rubriqueTitle'];
+			}
+		}
+
+		return $rubriques;
+	}
 }

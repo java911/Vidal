@@ -84,7 +84,7 @@ body {
 }
 .footer-copyright {
 	height:         20px;
-	margin-top:     24px;
+	margin:         15px 0;
 	vertical-align: bottom;
 	text-align:     center;
 }
@@ -194,6 +194,16 @@ h1 span {
 }
 .bold {
 	font-weight: bold;
+}
+.linke {
+	border-bottom:   1px dashed #d71344;
+	text-decoration: none;
+	color:           #2f4053;
+	font-weight:     bold;
+	display:         inline-block;
+}
+.linke:hover {
+	color: #d71344;
 }
 tr.bold td {
 	background-color: #D7E1EC;
@@ -678,7 +688,7 @@ tr.bold td {
 }
 .copy-head {
 	color:     #476173;
-	font-size: 13px;
+	font-size: 12px;
 }
 .copy textarea {
 	width:                 100%;
@@ -1021,6 +1031,9 @@ tr.bold td {
 }
 .menu-drugs {
 	background-position: 0 0;
+}
+.menu-drugs .linke {
+	margin-bottom: 10px;
 }
 .menu-symptoms {
 	background-position: -130px 0;

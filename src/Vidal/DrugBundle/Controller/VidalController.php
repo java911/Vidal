@@ -556,7 +556,7 @@ class VidalController extends Controller
 		$params['products']     = array($product);
 		$params['owners']       = $em->getRepository('VidalDrugBundle:Company')->findOwnersByProducts($productIds);
 		$params['distributors'] = $em->getRepository('VidalDrugBundle:Company')->findDistributorsByProducts($productIds);
-		$params['molecules']    = $em->getRepository('VidalDrugBundle:Molecule')->findByProductId($productId);
+		$params['molecules']    = $em->getRepository('VidalDrugBundle:Molecule')->findByProductID($productId);
 
 		# медицинские изделия выводятся по-другому
 		if ($product->isMI()) {
@@ -580,6 +580,20 @@ class VidalController extends Controller
 		}
 
 		return $params;
+	}
+
+	/** @Route("/poisk_preparatov/{name}.htm") */
+	public function moleculeRedirect($name)
+	{
+		$em       = $this->getDoctrine()->getManager('drug');
+		$molecule = $em->getRepository('VidalDrugBundle:Molecule')->findByName($name);
+
+		if (!$molecule) {
+			throw $this->createNotFoundException();
+		}
+
+		return $this->redirect($this->generateUrl('molecule', array('MoleculeID' => $molecule['MoleculeID'])));
+		//		return $this->forward('VidalDrugBundle:Vidal:molecule', array('MoleculeID'  => $molecule['MoleculeID']));
 	}
 
 	/** Получить массив идентификаторов продуктов */

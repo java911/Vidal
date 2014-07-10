@@ -297,6 +297,7 @@ class ArticleController extends Controller
 		$params = array(
 			'title'     => $this->strip($portfolio->getTitle()) . ' | Портфель препарата',
 			'portfolio' => $portfolio,
+			'products'  => $em->getRepository('VidalDrugBundle:Product')->findByPortfolio($portfolio),
 		);
 
 		return $params;
@@ -351,6 +352,12 @@ class ArticleController extends Controller
 		}
 
 		return $this->redirect($this->generateUrl('art', array('url' => $rubriqueName)), 301);
+	}
+
+	/** @Route("/vracham/expert/vzaimodeistvie{url}", requirements={"url"=".+"}) */
+	public function interactionRedirect()
+	{
+		return $this->redirect($this->generateUrl('interaction'), 301);
 	}
 
 	/**

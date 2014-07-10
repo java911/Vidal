@@ -46,6 +46,23 @@ class ProductRepository extends EntityRepository
 			->getResult();
 	}
 
+	public function findByPortfolio($portfolio)
+	{
+		return $this->_em->createQuery('
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatusID, p.ProductID,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo
+			FROM VidalDrugBundle:Product p
+			JOIN p.document d
+			JOIN d.portfolios portfolio WITH portfolio.id = :portfolioId
+			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
+			WHERE p.MarketStatusID IN (1,2,7)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.inactive = FALSE
+			ORDER BY p.RusName ASC
+		')->setParameter('portfolioId', $portfolio->getId())
+			->getResult();
+	}
+
 	public function findByDocumentIDs($documentIds)
 	{
 		$raw = $this->_em->createQuery('
@@ -131,7 +148,8 @@ class ProductRepository extends EntityRepository
 			->andWhere('p.inactive = FALSE')
 			->andWhere('a.id = :articleId')
 			->andWhere('d.ArticleID IN (2,5)')
-			->setParameter('articleId', $articleId);
+			->setParameter('articleId', $articleId)
+			->orderBy('p.RusName', 'ASC');
 
 		if (!$isDoctor) {
 			$qb->andWhere('p.NonPrescriptionDrug = TRUE');
@@ -657,7 +675,7 @@ class ProductRepository extends EntityRepository
 			FROM product
 			WHERE LEFT(RusName, 1) NOT IN ('1','2','3','5','9','_','D','H','L','N','Q','S')
 				AND MarketStatusID IN (1,2,7)
-				AND ProductTypeCode IN {$where}
+				ANProductTypeCode IN D {$where}
 			ORDER BY letters
 		";
 
