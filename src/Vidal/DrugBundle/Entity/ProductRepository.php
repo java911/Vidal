@@ -46,6 +46,23 @@ class ProductRepository extends EntityRepository
 			->getResult();
 	}
 
+	public function findByPortfolio($portfolio)
+	{
+		return $this->_em->createQuery('
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatusID, p.ProductID,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo
+			FROM VidalDrugBundle:Product p
+			JOIN p.document d
+			JOIN d.portfolios portfolio WITH portfolio.id = :portfolioId
+			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
+			WHERE p.MarketStatusID IN (1,2,7)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.inactive = FALSE
+			ORDER BY p.RusName ASC
+		')->setParameter('portfolioId', $portfolio->getId())
+			->getResult();
+	}
+
 	public function findByDocumentIDs($documentIds)
 	{
 		$raw = $this->_em->createQuery('

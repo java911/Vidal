@@ -46,13 +46,34 @@
 	</div>
 
 	{# Препарат #}
-	<div class="block product">
-		<span class="block-head">Препарат:</span>
-		<a href="{{ path('document', {'EngName':document.name, 'DocumentID':document.DocumentID}) }}"
-		   class="no-underline bold">
-			{{ document.RusName|raw }}
-		</a>
-	</div>
+	{% if products is not empty %}
+		{% if products|length == 1 %}
+			<div class="block product">
+				<span class="block-head">Препарат:</span>
+				<a href="{{ path('product', {'EngName':products[0].Name, 'ProductID':products[0].ProductID}) }}"
+				   class="no-underline bold">
+					{{ products[0].RusName|raw }}
+				</a>
+			</div>
+		{% else %}
+			<div class="block product">
+				<div class="block-head">Препараты</div>
+				<ul class="ul-style">
+					{% for product in products %}
+						<li>
+							<a href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"
+							   class="no-underline bold">
+								{{ product.RusName|raw }}
+							</a>
+							<span class="zip">
+								{{ product.ZipInfo }}
+							</span>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endif %}
+	{% endif %}
 
 	{# Представительство #}
 	{% if infoPage %}
@@ -74,6 +95,10 @@
 		.product {
 			border-top:  1px solid #ccc;
 			padding-top: 16px;
+		}
+		.zip {
+			font-size:   13px;
+			margin-left: 5px;
 		}
 	</style>
 {% endblock %}

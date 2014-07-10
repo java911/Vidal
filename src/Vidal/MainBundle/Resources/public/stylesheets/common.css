@@ -84,7 +84,7 @@ body {
 }
 .footer-copyright {
 	height:         20px;
-	margin-top:     24px;
+	margin:         15px 0;
 	vertical-align: bottom;
 	text-align:     center;
 }

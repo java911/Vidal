@@ -297,6 +297,7 @@ class ArticleController extends Controller
 		$params = array(
 			'title'     => $this->strip($portfolio->getTitle()) . ' | Портфель препарата',
 			'portfolio' => $portfolio,
+			'products'  => $em->getRepository('VidalDrugBundle:Product')->findByPortfolio($portfolio),
 		);
 
 		return $params;
