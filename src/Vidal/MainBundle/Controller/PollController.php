@@ -78,7 +78,6 @@ class PollController extends Controller
             }else{
                 #Больше нету, показываем концовку
                 $session->set('poll',1);
-                $session->save();
 
                 $data = array(
                     'next'   => 'End',
