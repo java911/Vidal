@@ -1232,8 +1232,10 @@ tr.bold td {
 .banner a, .banner img {
 	display: block;
 }
-.left-sidebar .banner, .right-sidebar .banner {
-	margin-bottom: 24px;
+.left-sidebar > div
+.right-sidebar > div,
+{
+	margin-bottom: 25px;
 }
 .footer-banner {
 	text-align: center;
