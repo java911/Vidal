@@ -78,6 +78,9 @@ class PollController extends Controller
                     'title'  => '<div style="text-align: center"><b>Опрос завершен.</b><br /> Спасибо за внимание</div>',
                     'options'=> null
                 );
+                $session = $request->getSession();
+                $session->set('poll',1);
+                $session->save();
             }
             $response = new JsonResponse(array('data'=>$data));
             return $response;

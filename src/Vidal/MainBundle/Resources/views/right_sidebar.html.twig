@@ -1,3 +1,8 @@
+
+{% if app.session.get('poll') is not defined %}
+    <iframe src="{{ path('poll',{ pollId : 1}) }}" style="overflow: hidden; border: none; width: 245px; height: 200px"></iframe>
+{% endif %}
+
 {{ render(controller('VidalMainBundle:Banner:render', {'groupId':9})) }}
 
 {% if indexPage is defined %}

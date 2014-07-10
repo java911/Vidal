@@ -1,16 +1,22 @@
 <style>
+    body{
+        margin: 0;
+        padding: 0;
+    }
+
     .poll{
-        width: 240px;
+        width: 235px;
         border: 1px solid #CED2D5;
         color: #555555;
         text-shadow: 1px 0 #FFF ;
+        background: rgba(239, 239, 239, 0.3);
     }
     .poll-title{
         margin-bottom: 5px;
         background-color: #D8DBE2;
     }
     .poll-answer textarea{
-        width: 230px;
+        width: 225px;
         height: 50px;
         font-size: 14px;
         display: block;
@@ -26,6 +32,7 @@
     }
     .poll-submit{
         margin-top: 10px;
+        text-align: center;
     }
     .btn-red{
         display: inline-block;
@@ -45,7 +52,7 @@
 <div class="poll">
     <div class="poll-title">
         <span class="poll-questionNumber">1 / {{ questionCount }} </span>
-        <span class="poll-title-text">{{ poll.title }}</span>
+        <span class="poll-title-text">{{ poll.title | raw }} </span>
     </div>
     <div style="padding: 5px;">
             <div class="poll-question">{{ question.title }}</div>
@@ -77,6 +84,7 @@
                 return false;
             }else{
                 $('*[name=answerText]').css('borderColor' ,'rgb(169, 169, 169)');
+                $('.poll-answer').css('color','#555555');
                 if ($('*[name=answerText]:checked').length){
                     var value = $('*[name=answerText]:checked').attr('value');
                 }else{
