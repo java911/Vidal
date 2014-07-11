@@ -29,18 +29,36 @@
 {% block content %}
 	{% include 'VidalMainBundle:Article:render_article.html.twig' %}
 
+	{# купить в интернет-аптеке #}
+	{% if article.links.count %}
+		<div class="anons links-title">
+			Купить в интернет-аптеке
+		</div>
+		<ul class="ul-style links">
+			{% for link in article.links if link.title is not empty %}
+				<li>
+					<a href="{{ link.url|raw }}">{{ link.title }}</a>
+				</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+
 	{% if products is defined and products is not empty %}
 		<div class="documents-anons anons">
 			<b>{{ article.title|raw }}</b>: применяемые препараты безрецептурного отпуска
 		</div>
-		{% include 'VidalDrugBundle:Vidal:render_products.html.twig' %}
+		<div class="products non">
+			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' %}
+		</div>
 	{% endif %}
 
 	{% if pre_products is defined and pre_products is not empty %}
 		<div class="documents-anons anons">
 			<b>{{ article.title|raw }}</b>: применяемые рецептурные препараты
 		</div>
-		{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':pre_products, 'companies':pre_companies, 'pictures':pre_pictures, 'infoPages':pre_infoPages} %}
+		<div class="products pre">
+			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':pre_products, 'companies':pre_companies, 'pictures':pre_pictures, 'infoPages':pre_infoPages} %}
+		</div>
 	{% endif %}
 
 	{% if molecules is defined and molecules is not empty %}
@@ -54,20 +72,6 @@
 					   class="no-underline">
 						{{ molecule.RusName|upper|raw }}
 					</a>
-				</li>
-			{% endfor %}
-		</ul>
-	{% endif %}
-
-	{# если есть ссылки на покупку в интернет-аптеке #}
-	{% if article.links.count %}
-		<div class="anons links-title">
-			Купить в интернет-аптеке
-		</div>
-		<ul class="ul-style links">
-			{% for link in article.links if link.title is not empty %}
-				<li>
-					<a href="{{ link.url|raw }}">{{ link.title }}</a>
 				</li>
 			{% endfor %}
 		</ul>
@@ -88,7 +92,7 @@
 			margin-top: 22px;
 		}
 		.red-warning {
-			color: rgb(255, 49, 56);
+			color:      rgb(255, 49, 56);
 			font-size:  12px;
 			margin-top: 20px;
 		}
@@ -100,4 +104,38 @@
 			margin-bottom: 5px;
 		}
 	</style>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var maxRows = 20;
+
+			var $products = $('.products.non');
+			var rows = $products.find('tr').length;
+
+			if (rows > maxRows) {
+				$products.find('tr:gt(' + maxRows + ')').hide();
+				var $showMore = $('<div class="center"><a href="#" class="btn-red">Показать все ' + rows + '</a></div>');
+				$products.append($showMore);
+			}
+
+			$products = $('.products.pre');
+			rows = $products.find('tr').length;
+
+			if (rows > maxRows) {
+				$products.find('tr:gt(' + maxRows + ')').hide();
+				$showMore = $('<div class="center"><a href="#" class="btn-red">Показать все ' + rows + '</a></div>');
+				$products.append($showMore);
+			}
+
+			$products.on('click', '.btn-red', function(e) {
+				e.preventDefault();
+				$(this).hide();
+				$(this).closest('.products').find('tr').show();
+			});
+		});
+	</script>
 {% endblock %}
