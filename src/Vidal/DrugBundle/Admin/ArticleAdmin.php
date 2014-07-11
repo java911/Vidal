@@ -128,12 +128,11 @@ class ArticleAdmin extends Admin
 			->add('links', 'sonata_type_collection',
 				array(
 					'label'              => 'Ссылки Купить в интернет-аптеке',
-					'by_reference'       => false,
+					'by_reference'       => true,
 					'cascade_validation' => true,
 					'required'           => false,
 				),
 				array(
-					'edit'         => 'inline',
 					'inline'       => 'table',
 					'allow_delete' => true
 				)
