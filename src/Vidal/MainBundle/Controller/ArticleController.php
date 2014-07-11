@@ -17,7 +17,7 @@ class ArticleController extends Controller
 	const PHARM_PER_PAGE    = 5;
 
 	/**
-	 * Конкретная статья рубрики
+	 * Конкретная статья рубрики энциклопедии
 	 * @Route("/encyclopedia/{rubrique}/{link}", name="article")
 	 * @Template("VidalMainBundle:Article:article.html.twig")
 	 */
@@ -42,38 +42,41 @@ class ArticleController extends Controller
 		$isDoctor  = $this->get('security.context')->isGranted('ROLE_DOCTOR');
 		$products  = $em->getRepository('VidalDrugBundle:Product')->findByArticle($articleId, $isDoctor);
 
-		if ($isDoctor) {
-			$productsPre = array();
-			$productsNon = array();
+		if (!empty($products)) {
+			# если нашлись препараты по статье - надо разбить на 2 группы: безрецептурные и рецептурные
+			if ($isDoctor) {
+				$productsPre = array();
+				$productsNon = array();
 
-			foreach ($products as $product) {
-				$product['NonPrescriptionDrug'] ? $productsNon[] = $product : $productsPre[] = $product;
+				foreach ($products as $product) {
+					$product['NonPrescriptionDrug'] ? $productsNon[] = $product : $productsPre[] = $product;
+				}
+
+				if (!empty($productsNon)) {
+					$productIds          = $this->getProductIds($productsNon);
+					$params['products']  = $productsNon;
+					$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
+					$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+					$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($productsNon);
+				}
+
+				if (!empty($productsPre)) {
+					$productIds              = $this->getProductIds($productsPre);
+					$params['pre_products']  = $productsPre;
+					$params['pre_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
+					$params['pre_pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+					$params['pre_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($productsPre);
+				}
+
+				$params['molecules'] = $em->getRepository('VidalDrugBundle:Molecule')->findByArticle($articleId);
 			}
-
-			if (!empty($productsNon)) {
-				$productIds          = $this->getProductIds($productsNon);
-				$params['products']  = $productsNon;
+			else {
+				$productIds          = $this->getProductIds($products);
+				$params['products']  = $products;
 				$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
 				$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
-				$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($productsNon);
+				$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 			}
-
-			if (!empty($productsPre)) {
-				$productIds              = $this->getProductIds($productsPre);
-				$params['pre_products']  = $productsPre;
-				$params['pre_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-				$params['pre_pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
-				$params['pre_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($productsPre);
-			}
-
-			$params['molecules'] = $em->getRepository('VidalDrugBundle:Molecule')->findByArticle($articleId);
-		}
-		else {
-			$productIds          = $this->getProductIds($products);
-			$params['products']  = $products;
-			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
-			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 		}
 
 		return $params;

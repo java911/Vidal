@@ -211,5 +211,13 @@
 			<argument />
 		</service>
 
+		<service id="sonata.admin.articlelink" class="Vidal\DrugBundle\Admin\ArticleLinkAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Не используется" label="-" show_in_dashboard="false"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\ArticleLink</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
     </services>
 </container>

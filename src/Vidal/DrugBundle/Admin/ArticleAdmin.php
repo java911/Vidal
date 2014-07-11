@@ -125,6 +125,19 @@ class ArticleAdmin extends Admin
 			->add('metaDescription', null, array('label' => 'Мета описание', 'required' => false))
 			->add('metaKeywords', null, array('label' => 'Мета ключевые слова', 'required' => false))
 			->add('video', 'iphp_file', array('label' => 'Видео', 'required' => false, 'help' => 'Загрузить флеш-видео в формате .flv'))
+			->add('links', 'sonata_type_collection',
+				array(
+					'label'              => 'Ссылки Купить в интернет-аптеке',
+					'by_reference'       => false,
+					'cascade_validation' => true,
+					'required'           => false,
+				),
+				array(
+					'edit'         => 'inline',
+					'inline'       => 'table',
+					'allow_delete' => true
+				)
+			)
 			->add('enabled', null, array('label' => 'Активна', 'required' => false));
 	}
 

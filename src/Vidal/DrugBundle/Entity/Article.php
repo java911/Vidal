@@ -10,13 +10,13 @@ use Iphp\FileStoreBundle\Mapping\Annotation as FileStore;
 /** @ORM\Entity(repositoryClass="ArticleRepository") @ORM\Table(name="article") @FileStore\Uploadable */
 class Article extends BaseEntity
 {
-    /**
-     * @ORM\ManyToMany(targetEntity = "DiseaseState", inversedBy="articles")
-     * @ORM\JoinTable(name="diseaseStateArticle",
-     * 		joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
-     * 		inverseJoinColumns={@ORM\JoinColumn(name="state_id", referencedColumnName="id")})
-     */
-    protected $states;
+	/**
+	 * @ORM\ManyToMany(targetEntity = "DiseaseState", inversedBy="articles")
+	 * @ORM\JoinTable(name="diseaseStateArticle",
+	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="state_id", referencedColumnName="id")})
+	 */
+	protected $states;
 
 	/** @ORM\Column(length=255) */
 	protected $title;
@@ -117,9 +117,9 @@ class Article extends BaseEntity
 	 * @ORM\Column(type="array", nullable=true)
 	 * @FileStore\UploadableField(mapping="video")
 	 * @Assert\File(
-	 * 		maxSize="100M",
-	 * 		maxSizeMessage="Видео не может быть больше 100Мб",
-	 * 		mimeTypesMessage="Видео должно быть в формате .flv"
+	 *        maxSize="100M",
+	 *        maxSizeMessage="Видео не может быть больше 100Мб",
+	 *        mimeTypesMessage="Видео должно быть в формате .flv"
 	 * )
 	 */
 	protected $video;
@@ -136,6 +136,9 @@ class Article extends BaseEntity
 	/** @ORM\Column(length=10, nullable=true) */
 	protected $hidden2;
 
+	/** @ORM\OneToMany(targetEntity="ArticleLink", mappedBy="article", fetch="EXTRA_LAZY", cascade = {"persist", "remove"}) */
+	protected $links;
+
 	public function __construct()
 	{
 		$this->nozologies = new ArrayCollection();
@@ -143,7 +146,8 @@ class Article extends BaseEntity
 		$this->documents  = new ArrayCollection();
 		$this->atcCodes   = new ArrayCollection();
 		$this->tags       = new ArrayCollection();
-		$this->states       = new ArrayCollection();
+		$this->states     = new ArrayCollection();
+		$this->links      = new ArrayCollection();
 		$this->public     = true;
 		$now              = new \DateTime('now');
 		$this->created    = $now;
@@ -607,29 +611,31 @@ class Article extends BaseEntity
 		return $this->hidden2;
 	}
 
-    /**
-     * @param mixed $states
-     */
-    public function setStates($states)
-    {
-        $this->states = $states;
-    }
+	/**
+	 * @param mixed $states
+	 */
+	public function setStates($states)
+	{
+		$this->states = $states;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getStates()
-    {
-        return $this->states;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getStates()
+	{
+		return $this->states;
+	}
 
-    public function addState($state){
-        $this->states[] = $state;
-    }
+	public function addState($state)
+	{
+		$this->states[] = $state;
+	}
 
-    public function removeState($state){
-        $this->states->removeElement($state);
-    }
+	public function removeState($state)
+	{
+		$this->states->removeElement($state);
+	}
 
 	public function isArticle()
 	{
@@ -639,5 +645,38 @@ class Article extends BaseEntity
 	public function getT()
 	{
 		return 'Article';
+	}
+
+	/**
+	 * @param mixed $links
+	 */
+	public function setLinks($links)
+	{
+		$this->links = $links;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getLinks()
+	{
+		return $this->links;
+	}
+
+	public function addLink(ArticleLink $link)
+	{
+		if (!$this->links->contains($link)) {
+			$this->links[] = $link;
+			$link->setArticle($this);
+		}
+
+		return $this;
+	}
+
+	public function removeLink(ArticleLink $link)
+	{
+		$this->links->removeElement($link);
+
+		return $this;
 	}
 }
