@@ -49,6 +49,11 @@
 		</div>
 		<div class="products non">
 			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' %}
+			{% if products|length > 20 %}
+				<div class="center">
+					<a href="#" class="btn-red">Показать все {{ products|length }}</a>
+				</div>
+			{% endif %}
 		</div>
 	{% endif %}
 
@@ -58,6 +63,11 @@
 		</div>
 		<div class="products pre">
 			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':pre_products, 'companies':pre_companies, 'pictures':pre_pictures, 'infoPages':pre_infoPages} %}
+			{% if pre_products|length > 20 %}
+				<div class="center">
+					<a href="#" class="btn-red">Показать все {{ pre_products|length }}</a>
+				</div>
+			{% endif %}
 		</div>
 	{% endif %}
 
@@ -118,8 +128,6 @@
 
 			if (rows > maxRows) {
 				$products.find('tr:gt(' + maxRows + ')').hide();
-				var $showMore = $('<div class="center"><a href="#" class="btn-red">Показать все ' + rows + '</a></div>');
-				$products.append($showMore);
 			}
 
 			$products = $('.products.pre');
@@ -127,14 +135,13 @@
 
 			if (rows > maxRows) {
 				$products.find('tr:gt(' + maxRows + ')').hide();
-				$showMore = $('<div class="center"><a href="#" class="btn-red">Показать все ' + rows + '</a></div>');
-				$products.append($showMore);
 			}
 
-			$products.on('click', '.btn-red', function(e) {
+			$('.btn-red').click(function(e) {
 				e.preventDefault();
-				$(this).hide();
-				$(this).closest('.products').find('tr').show();
+				var $btn = $(e.target);
+				$btn.hide();
+				$btn.closest('.products').find('tr').show();
 				return false;
 			});
 		});
