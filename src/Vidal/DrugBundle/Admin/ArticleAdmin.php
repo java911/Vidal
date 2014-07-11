@@ -48,7 +48,7 @@ class ArticleAdmin extends Admin
 					},
 			))
 			->add('type', null, array('label' => 'Категория', 'required' => false, 'empty_value' => 'не указано'))
-            ->add('states', null, array('label' => 'Болезни', 'required' => false,  'empty_value' => 'не указано'))
+			->add('states', null, array('label' => 'Болезни', 'required' => false, 'empty_value' => 'не указано'))
 
 			->add('priority', null, array('label' => 'Приоритет', 'required' => false, 'help' => 'Закреплено на главной по приоритету. Оставьте пустым, чтоб снять приоритет'))
 			->add('announce', null, array('label' => 'Анонс', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
@@ -127,14 +127,14 @@ class ArticleAdmin extends Admin
 			->add('video', 'iphp_file', array('label' => 'Видео', 'required' => false, 'help' => 'Загрузить флеш-видео в формате .flv'))
 			->add('links', 'sonata_type_collection',
 				array(
-					'label'              => 'Ссылки Купить в интернет-аптеке',
-					'by_reference'       => true,
-					'cascade_validation' => true,
-					'required'           => false,
+					'label'        => 'Ссылки Купить в интернет-аптеке',
+					'required'     => false,
+					'by_reference' => false,
+					'type_options' => array('btn_delete' => true, 'btn_add' => true),
 				),
 				array(
-					'inline'       => 'table',
-					'allow_delete' => true
+					'edit'   => 'inline',
+					'inline' => 'table'
 				)
 			)
 			->add('enabled', null, array('label' => 'Активна', 'required' => false));

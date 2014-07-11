@@ -65,7 +65,7 @@
 			Купить в интернет-аптеке
 		</div>
 		<ul class="ul-style links">
-			{% for link in article.links %}
+			{% for link in article.links if link.title is not empty %}
 				<li>
 					<a href="{{ link.url|raw }}">{{ link.title }}</a>
 				</li>

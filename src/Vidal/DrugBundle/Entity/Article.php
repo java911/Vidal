@@ -136,7 +136,7 @@ class Article extends BaseEntity
 	/** @ORM\Column(length=10, nullable=true) */
 	protected $hidden2;
 
-	/** @ORM\OneToMany(targetEntity="ArticleLink", mappedBy="article", fetch="EXTRA_LAZY", cascade = {"persist", "remove"}) */
+	/** @ORM\OneToMany(targetEntity="ArticleLink", mappedBy="article", fetch="EXTRA_LAZY", cascade = {"persist", "remove"}, orphanRemoval=true) */
 	protected $links;
 
 	public function __construct()
