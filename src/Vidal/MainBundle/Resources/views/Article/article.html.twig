@@ -59,6 +59,20 @@
 		</ul>
 	{% endif %}
 
+	{# если есть ссылки на покупку в интернет-аптеке #}
+	{% if article.links.count %}
+		<div class="anons links-title">
+			Купить в интернет-аптеке
+		</div>
+		<ul class="ul-style links">
+			{% for link in article.links if link.title is not empty %}
+				<li>
+					<a href="{{ link.url|raw }}">{{ link.title }}</a>
+				</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+
 	<div class="anons red-warning">
 		Перед началом применения любого препарата посоветуйтесь со специалистом
 		и ознакомьтесь с инструкцией по применению.
@@ -74,12 +88,16 @@
 			margin-top: 22px;
 		}
 		.red-warning {
-			color:      rgb(255, 0, 0);
+			color: rgb(255, 49, 56);
 			font-size:  12px;
 			margin-top: 20px;
 		}
 		.ul-style + .documents {
 			font-size: 16px;
+		}
+		.links-title {
+			font-weight:   bold;
+			margin-bottom: 5px;
 		}
 	</style>
 {% endblock %}
