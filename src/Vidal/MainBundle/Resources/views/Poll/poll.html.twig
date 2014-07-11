@@ -78,7 +78,7 @@
         var questionId = {{ question.id }}
 
         $('#answer-send').on("click",function(){
-            if ($('textarea[name=answerText]').val() == '' || ( $('input[name=answerText]').length > 0 && $('*[name=answerText]:checked').length == 0 ) ){
+            if ($('input[name=answerText]').length > 0 && $('*[name=answerText]:checked').length == 0 ){
                 $('*[name=answerText]').css('borderColor','#CC0000');
                 $('.poll-answer').css('color','#CC0000');
                 return false;

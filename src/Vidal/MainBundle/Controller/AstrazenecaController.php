@@ -16,7 +16,7 @@ class AstrazenecaController extends Controller
 {
 
     /**
-     * @Route("/astrazeneca", name="astrazeneca_index")
+     * @Route("/shkola-gastrita", name="astrazeneca_index")
      * @Template("VidalMainBundle:Astrazeneca:index.html.twig")
      */
     public function indexAction(){
@@ -24,7 +24,7 @@ class AstrazenecaController extends Controller
     }
 
     /**
-     * @Route("/astrazeneca/video", name="astrazeneca_video")
+     * @Route("/shkola-gastrita/video", name="astrazeneca_video")
      * @Template("VidalMainBundle:Astrazeneca:video.html.twig")
      */
     public function videoAction(){
@@ -33,7 +33,7 @@ class AstrazenecaController extends Controller
 
 
     /**
-     * @Route("/astrazeneca/articles", name="astrazeneca_news")
+     * @Route("/shkola-gastrita/articles", name="astrazeneca_news")
      * @Template("VidalMainBundle:Astrazeneca:news.html.twig")
      */
     public function newsAction(Request $request){
@@ -49,7 +49,7 @@ class AstrazenecaController extends Controller
     }
 
     /**
-     * @Route("/astrazeneca/article/{newId}", name="astrazeneca_new")
+     * @Route("/shkola-gastrita/article/{newId}", name="astrazeneca_new")
      * @Template("VidalMainBundle:Astrazeneca:new.html.twig")
      */
     public function showNewAction($newId){
@@ -68,7 +68,7 @@ class AstrazenecaController extends Controller
     }
 
     /**
-     * @Route("/astrazeneca/map", name="astrazeneca_map")
+     * @Route("/shkola-gastrita/map", name="astrazeneca_map")
      * @Template("VidalMainBundle:Astrazeneca:map.html.twig")
      */
     public function mapAction(){
@@ -76,7 +76,7 @@ class AstrazenecaController extends Controller
     }
 
     /**
-     * @Route("/astrazeneca/map-ajax", name="astrazeneca_map_xml", options={"expose"=true})
+     * @Route("/shkola-gastrita/map-ajax", name="astrazeneca_map_xml", options={"expose"=true})
      * @Template("VidalMainBundle:Astrazeneca:map_xml.html.twig")
      */
     public function mapXmlAction(){
@@ -95,7 +95,7 @@ class AstrazenecaController extends Controller
     }
 
     /**
-     * @Route("/astrazeneca/testing", name="astrazeneca_testing")
+     * @Route("/shkola-gastrita/testing", name="astrazeneca_testing")
      * @Template("VidalMainBundle:Astrazeneca:test.html.twig")
      */
     public function testingAction(Request $request){
@@ -108,7 +108,7 @@ class AstrazenecaController extends Controller
     }
 
     /**
-     * @Route("/astrazeneca/testing-ajax/{step}", name="astrazeneca_testing_ajax", options={"expose"=true})
+     * @Route("/shkola-gastrita/testing-ajax/{step}", name="astrazeneca_testing_ajax", options={"expose"=true})
      */
     public function testingAjaxAction(Request $request, $step){
 
@@ -123,7 +123,7 @@ class AstrazenecaController extends Controller
     }
 
     /**
-     * @Route("/astrazeneca/faq", name="astrazeneca_faq")
+     * @Route("/shkola-gastrita/faq", name="astrazeneca_faq")
      * @Template("VidalMainBundle:Astrazeneca:faq.html.twig")
      */
     public function faqAction(Request $request){
@@ -159,7 +159,7 @@ class AstrazenecaController extends Controller
     }
 
     /**
-     * @Route("/astrazeneca/admin/faq", name="admin_astrazeneca_faq")
+     * @Route("/shkola-gastrita/admin/faq", name="admin_astrazeneca_faq")
      * @Template("VidalMainBundle:Astrazeneca:admin_faq.html.twig")
      */
     public function adminFaqListAction(){
@@ -171,7 +171,7 @@ class AstrazenecaController extends Controller
     }
 
     /**
-     * @Route("/astrazeneca/admin/faq/add", name="admin_astrazeneca_faq_add")
+     * @Route("/shkola-gastrita/admin/faq/add", name="admin_astrazeneca_faq_add")
      * @Template("VidalMainBundle:Astrazeneca:admin_faq_edit.html.twig")
      */
     public function adminFaqAddAction(Request $request){
@@ -206,7 +206,7 @@ class AstrazenecaController extends Controller
     }
 
     /**
-     * @Route("/astrazeneca/admin/faq/{faqId}", name="admin_astrazeneca_faq_edit")
+     * @Route("/shkola-gastrita/admin/faq/{faqId}", name="admin_astrazeneca_faq_edit")
      * @Template("VidalMainBundle:Astrazeneca:admin_faq_edit.html.twig")
      */
     public function adminFaqEditAction(Request $request, $faqId){
@@ -240,7 +240,7 @@ class AstrazenecaController extends Controller
     }
 
     /**
-     * @Route("/astrazeneca/admin/faq/delete/{faqId}", name="admin_astrazeneca_faq_delete")
+     * @Route("/shkola-gastrita/admin/faq/delete/{faqId}", name="admin_astrazeneca_faq_delete")
      * @Template("VidalMainBundle:Astrazeneca:admin_faq_edit.html.twig")
      */
     public function adminFaqDeleteAction(Request $request, $faqId){
@@ -268,7 +268,7 @@ class AstrazenecaController extends Controller
     }
 
     /**
-     * @Route("/zgetMapHintContent/{id}", name="zgetMapHintContent", options={"expose"=true})
+     * @Route("/shkola-gastrita/zgetMapHintContent/{id}", name="zgetMapHintContent", options={"expose"=true})
      */
     public function getMapHintContentaction($id)
     {
@@ -279,7 +279,7 @@ class AstrazenecaController extends Controller
     }
 
     /**
-     * @Route("/zgetMapBalloonContent/{id}", name="zgetMapBalloonContent", options={"expose"=true})
+     * @Route("/shkola-gastrita/zgetMapBalloonContent/{id}", name="zgetMapBalloonContent", options={"expose"=true})
      */
     public function getMapBalloonContent($id)
     {
