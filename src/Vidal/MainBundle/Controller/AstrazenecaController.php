@@ -159,6 +159,7 @@ class AstrazenecaController extends Controller
     }
 
     /**
+     * @Secure(roles="ROLE_ADMIN")
      * @Route("/shkola-gastrita/admin/faq", name="admin_astrazeneca_faq")
      * @Template("VidalMainBundle:Astrazeneca:admin_faq.html.twig")
      */
@@ -171,6 +172,7 @@ class AstrazenecaController extends Controller
     }
 
     /**
+     * @Secure(roles="ROLE_ADMIN")
      * @Route("/shkola-gastrita/admin/faq/add", name="admin_astrazeneca_faq_add")
      * @Template("VidalMainBundle:Astrazeneca:admin_faq_edit.html.twig")
      */
@@ -206,6 +208,7 @@ class AstrazenecaController extends Controller
     }
 
     /**
+     * @Secure(roles="ROLE_ADMIN")
      * @Route("/shkola-gastrita/admin/faq/{faqId}", name="admin_astrazeneca_faq_edit")
      * @Template("VidalMainBundle:Astrazeneca:admin_faq_edit.html.twig")
      */
@@ -240,6 +243,7 @@ class AstrazenecaController extends Controller
     }
 
     /**
+     * @Secure(roles="ROLE_ADMIN")
      * @Route("/shkola-gastrita/admin/faq/delete/{faqId}", name="admin_astrazeneca_faq_delete")
      * @Template("VidalMainBundle:Astrazeneca:admin_faq_edit.html.twig")
      */

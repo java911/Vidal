@@ -15,6 +15,10 @@
         margin-bottom: 5px;
         background-color: #D8DBE2;
     }
+    .poll-answer{
+        margin-top: 10px;
+    }
+
     .poll-answer textarea{
         width: 205px;
         height: 50px;
@@ -22,6 +26,8 @@
         display: block;
         outline: none;
         padding-left: 10px;
+        border: 1px solid #cccccc;
+
     }
     .poll-questionNumber{
         font-weight: bold;
@@ -57,7 +63,7 @@
     <div style="padding: 5px;">
             <div class="poll-question">{{ question.title }}</div>
         {% if options is null %}
-            <div class="poll-answer"><textarea rows="3"  name="answerText" id="answerText" placeholder="Введите свой ответ"></textarea></div>
+            <div class="poll-answer"><textarea rows="3"  name="answerText" id="answerText" placeholder="При желании, введите Ваши предложения"></textarea></div>
         {% else %}
             <div class="poll-answer">
                 {% for option in options %}
@@ -79,7 +85,7 @@
 
         $('#answer-send').on("click",function(){
             if ($('input[name=answerText]').length > 0 && $('*[name=answerText]:checked').length == 0 ){
-                $('*[name=answerText]').css('borderColor','#CC0000');
+//                $('*[name=answerText]').css('borderColor','#CC0000');
                 $('.poll-answer').css('color','#CC0000');
                 return false;
             }else{
@@ -116,7 +122,7 @@
                                 });
                                 $('.poll-answer').html(txt);
                             }else{
-                                $('.poll-answer').html('<textarea rows="3"  name="answerText" id="answerText" placeholder="Введите свой ответ"></textarea>')
+                                $('.poll-answer').html('<textarea rows="3"  name="answerText" id="answerText" placeholder="При желании, введите Ваши предложения"></textarea>')
                             }
                             if (data.next == 'End'){
                                 $('#answerText').css('display','none');
