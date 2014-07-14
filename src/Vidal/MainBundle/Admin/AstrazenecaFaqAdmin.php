@@ -29,8 +29,8 @@ class AstrazenecaFaqAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('authorFirstName', null, array('label' => 'Имя автора', 'required' => true))
-            ->add('authorEmail', null, array('label' => 'Email автора', 'required' => true))
+            ->add('authorFirstName', null, array('label' => 'Имя автора', 'required' => false))
+            ->add('authorEmail', null, array('label' => 'Email автора', 'required' => false))
             ->add('question', null, array('label' => 'Вопрос', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
             ->add('answer', null, array('label' => 'Ответ', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 
@@ -55,8 +55,8 @@ class AstrazenecaFaqAdmin extends Admin
     {
         $listMapper
             ->add('id')
-            ->add('authorFirstName', null, array('label' => 'Имя автора', 'required' => true))
-            ->add('authorEmail', null, array('label' => 'Email автора', 'required' => true))
+            ->add('authorFirstName', null, array('label' => 'Имя автора', 'required' => false))
+            ->add('authorEmail', null, array('label' => 'Email автора', 'required' => false))
             ->add('enabled', null, array('label' => 'Активен', 'required' => false))
             ->add('created', null, array(
                 'label'    => 'Дата создания',
