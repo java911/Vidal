@@ -410,6 +410,19 @@ class SearchController extends Controller
 	}
 
 	/**
+	 * @Route("/search/google", name="searche_google")
+	 * @Template("VidalDrugBundle:Search:searche_google.html.twig")
+	 */
+	public function googleAction()
+	{
+		$params = array(
+			'title' => 'Поиск Google по открытым разделам сайта',
+		);
+
+		return $params;
+	}
+
+	/**
 	 * @Route("/search/disease", name="searche_disease")
 	 * @Template("VidalDrugBundle:Search:searche_disease.html.twig")
 	 */

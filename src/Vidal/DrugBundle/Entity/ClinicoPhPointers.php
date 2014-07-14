@@ -46,7 +46,7 @@ class ClinicoPhPointers
 
 	public function __toString()
 	{
-		return $this->Name;
+		return $this->ClPhPointerID . ' - ' . $this->Name;
 	}
 
 	/**

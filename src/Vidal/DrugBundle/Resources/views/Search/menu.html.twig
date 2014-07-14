@@ -1,6 +1,12 @@
 {% set route = app.request.attributes.get('_route') %}
 
-<h1>РАСШИРЕННЫЙ ПОИСК</h1>
+<h1 style="margin-bottom:0;">РАСШИРЕННЫЙ ПОИСК</h1>
+
+{#<div>#}
+	{#<a href="{{ path('searche_google') }}" class="linke" style="margin:10px 0;">#}
+		{#Поиск Google по открытым разделам сайта#}
+	{#</a>#}
+{#</div>#}
 
 <div class="tabs">
 	<a href="{{ path('searche') }}"{{ route == 'searche' ? ' class="active"' }}>По запросу</a><a
@@ -28,6 +34,7 @@
 		$('.tabs-link').click(function(e) {
 			e.stopPropagation();
 			$('.tabs-more').toggle();
+			return false;
 		});
 
 		$('.tabs-more a').click(function(e) {
