@@ -81,7 +81,7 @@ class AstrazenecaFaq extends BaseEntity
     /**
      * @param mixed $authorEmail
      */
-    public function setAuthorEmail($authorEmail)
+    public function setAuthorEmail($authorEmail = '')
     {
         $this->authorEmail = $authorEmail;
     }
@@ -97,7 +97,7 @@ class AstrazenecaFaq extends BaseEntity
     /**
      * @param mixed $authorFirstName
      */
-    public function setAuthorFirstName($authorFirstName)
+    public function setAuthorFirstName($authorFirstName = '')
     {
         $this->authorFirstName = $authorFirstName;
     }
