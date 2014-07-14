@@ -41,7 +41,12 @@ class Company
 
 	public function __toString()
 	{
-		return $this->LocalName;
+		$name = $this->CompanyID . ' - ' . $this->LocalName;
+
+		if (!empty($this->Property)) {
+			$name .= ', ' .$this->Property;
+		}
+		return $name;
 	}
 
 	public function getId()

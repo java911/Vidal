@@ -2,11 +2,11 @@
 
 <h1>РАСШИРЕННЫЙ ПОИСК</h1>
 
-{#<div>#}
-	{#<a href="{{ path('searche_google') }}" class="linke" style="margin:10px 0;">#}
-		{#Поиск Google по открытым разделам сайта#}
-	{#</a>#}
-{#</div>#}
+<div style="margin:-10px 0 12px;">
+	<a href="{{ path('searche_google') }}" class="linke">
+		Поиск Google по открытым разделам сайта
+	</a>
+</div>
 
 <div class="tabs">
 	<a href="{{ path('searche') }}"{{ route == 'searche' ? ' class="active"' }}>По запросу</a><a
