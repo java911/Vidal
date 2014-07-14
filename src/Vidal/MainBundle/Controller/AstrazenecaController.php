@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Vidal\MainBundle\Entity\AstrazenecaFaq;
 use Vidal\MainBundle\Entity\AstrazenecaRegion;
 use Vidal\MainBundle\Entity\AstrazenecaMap;
@@ -153,6 +154,14 @@ class AstrazenecaController extends Controller
 		$form = $builder->getForm();
 		$form->handleRequest($request);
 
+        //@Assert\NotBlank(message="Пожалуйста, укажите Имя")
+        $builder = $this->createFormBuilder($faq);
+        $builder
+            ->add('authorFirstName', null, array('label' => 'Ваше имя', 'required' => true, 'constraints' => new NotBlank(array('message' => "Пожалуйста, укажите Имя"))))
+            ->add('authorEmail', null, array('label' => 'Ваш e-mail', 'required' => true, 'constraints' => new NotBlank(array('message' => "Пожалуйста, укажите Email"))))
+            ->add('question', null, array('label' => 'Вопрос', 'attr' => array('class' => 'ckeditor')))
+            ->add('captcha', 'captcha', array('label' => 'Введите код с картинки'))
+            ->add('submit', 'submit', array('label' => 'Задать вопрос', 'attr' => array('class' => 'btn')));
 		if ($request->isMethod('POST')) {
 			if ($form->isValid()) {
 				$faq = $form->getData();

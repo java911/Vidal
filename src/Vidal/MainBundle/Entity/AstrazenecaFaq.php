@@ -12,14 +12,12 @@ class AstrazenecaFaq extends BaseEntity
 {
 
     /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Пожалуйста, укажите Имя")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $authorFirstName;
 
     /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Пожалуйста, укажите E-mail")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $authorEmail;
 
@@ -81,7 +79,7 @@ class AstrazenecaFaq extends BaseEntity
     /**
      * @param mixed $authorEmail
      */
-    public function setAuthorEmail($authorEmail)
+    public function setAuthorEmail($authorEmail = '')
     {
         $this->authorEmail = $authorEmail;
     }
@@ -97,7 +95,7 @@ class AstrazenecaFaq extends BaseEntity
     /**
      * @param mixed $authorFirstName
      */
-    public function setAuthorFirstName($authorFirstName)
+    public function setAuthorFirstName($authorFirstName = '')
     {
         $this->authorFirstName = $authorFirstName;
     }
