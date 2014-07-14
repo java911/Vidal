@@ -1,0 +1,41 @@
+{% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
+
+
+{% block vidal %}
+	{% include 'VidalDrugBundle:Search:menu.html.twig' %}
+
+	{# поиск Google custom search #}
+	<script>
+		(function() {
+			var cx = '016453352662799351419:cjex5h49aww';
+			var gcse = document.createElement('script');
+			gcse.type = 'text/javascript';
+			gcse.async = true;
+			gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+				'//www.google.com/cse/cse.js?cx=' + cx;
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(gcse, s);
+		})();
+	</script>
+	<gcse:search></gcse:search>
+
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.gcse-wrap {
+			margin-top: 10px;
+			text-align: right;
+			height:     30px;
+		}
+		.gcse {
+			display: inline-block;
+			width:   520px;
+		}
+		.gsc-control-cse {
+			padding: 0 !important;
+		}
+	</style>
+{% endblock %}
