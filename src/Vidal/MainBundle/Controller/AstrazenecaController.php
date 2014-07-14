@@ -15,14 +15,13 @@ use Lsw\SecureControllerBundle\Annotation\Secure;
 
 class AstrazenecaController extends Controller
 {
-
 	/**
 	 * @Route("/shkola-gastrita", name="astrazeneca_index")
 	 * @Template("VidalMainBundle:Astrazeneca:index.html.twig")
 	 */
 	public function indexAction()
 	{
-		return array('no-yad' => true);
+		return array('noYad' => true);
 	}
 
 	/**
@@ -31,7 +30,7 @@ class AstrazenecaController extends Controller
 	 */
 	public function videoAction()
 	{
-		return array('no-yad' => true);
+		return array('noYad' => true);
 	}
 
 	/**
@@ -45,7 +44,7 @@ class AstrazenecaController extends Controller
 		$params = array(
 			'indexPage'    => true,
 			'publications' => $em->getRepository('VidalMainBundle:AstrazenecaNew')->findAll(),
-			'no-yad'       => true,
+			'noYad'       => true,
 		);
 
 		return $params;
@@ -68,7 +67,7 @@ class AstrazenecaController extends Controller
 			'publication' => $publication,
 			'menu_left'   => 'news',
 			'title'       => $this->strip($publication->getTitle()) . ' | Новости',
-			'no-yad'      => true,
+			'noYad'      => true,
 		);
 	}
 
@@ -78,7 +77,7 @@ class AstrazenecaController extends Controller
 	 */
 	public function mapAction()
 	{
-		return array('no-yad' => true);
+		return array('noYad' => true);
 	}
 
 	/**
@@ -99,7 +98,7 @@ class AstrazenecaController extends Controller
 		else {
 			$coords = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaMap')->findCoords($coords);
 		}
-		return array('coords' => $coords, 'no-yad' => true);
+		return array('coords' => $coords, 'noYad' => true);
 	}
 
 	/**
@@ -113,7 +112,7 @@ class AstrazenecaController extends Controller
 
 		return array(
 			'tests'  => $tests,
-			'no-yad' => true,
+			'noYad' => true,
 		);
 	}
 
@@ -176,7 +175,7 @@ class AstrazenecaController extends Controller
 			'title'           => 'Вопрос-ответ',
 			'questionAnswers' => $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaFaq')->findByEnabled(1),
 			'form'            => $form->createView(),
-			'no-yad'          => true,
+			'noYad'          => true,
 		);
 	}
 
@@ -191,7 +190,7 @@ class AstrazenecaController extends Controller
 		//            $this->redirect($this->generateUrl('index'));
 		//        }
 		$faqs = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaFaq')->findAll();
-		return array('faqs' => $faqs, 'no-yad' => true);
+		return array('faqs' => $faqs, 'noYad' => true);
 	}
 
 	/**
@@ -228,7 +227,7 @@ class AstrazenecaController extends Controller
 
 		return array(
 			'form'   => $form->createView(),
-			'no-yad' => true,
+			'noYad' => true,
 		);
 	}
 
@@ -265,7 +264,7 @@ class AstrazenecaController extends Controller
 		}
 		return array(
 			'form'   => $form->createView(),
-			'no-yad' => true,
+			'noYad' => true,
 		);
 	}
 
