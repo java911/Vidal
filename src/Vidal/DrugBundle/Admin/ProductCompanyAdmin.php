@@ -13,7 +13,7 @@ class ProductCompanyAdmin extends Admin
 	{
 		$formMapper
 			->add('CompanyID', null, array('label' => 'Компания', 'required' => true))
-			->add('CompanyRusNote', null, array('label' => 'Приписка', 'required' => false))
+			->add('CompanyRusNote', null, array('label' => 'Форма собственности', 'required' => false))
 			->add('ItsMainCompany', null, array('label' => 'Владелец рег.уд.', 'required' => false))
 		;
 	}
