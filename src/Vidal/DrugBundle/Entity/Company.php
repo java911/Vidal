@@ -44,8 +44,13 @@ class Company
 		$name = $this->CompanyID . ' - ' . $this->LocalName;
 
 		if (!empty($this->Property)) {
-			$name .= ', ' .$this->Property;
+			$name .= ', ' . $this->Property;
 		}
+
+		if ($country = $this->CountryCode) {
+			$name .= ' [' . $country->getCountryCode() . ']';
+		}
+
 		return $name;
 	}
 
