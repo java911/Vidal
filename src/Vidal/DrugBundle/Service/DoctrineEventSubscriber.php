@@ -44,6 +44,9 @@ class DoctrineEventSubscriber implements EventSubscriber
 		if ($entity instanceof Article || $entity instanceof Art) {
 			$this->setLink($entity);
 		}
+		elseif ($entity instanceof Document) {
+			$this->checkDublicate($args);
+		}
 	}
 
 	public function postPersist(LifecycleEventArgs $args)
@@ -223,5 +226,23 @@ class DoctrineEventSubscriber implements EventSubscriber
 		$rep = array('', '', '&');
 
 		return preg_replace($pat, $rep, $string);
+	}
+
+	private function checkDublicate($args)
+	{
+		$document     = $args->getEntity();
+		$DocumentID   = $document->getDocumentID();
+		$em           = $args->getEntityManager();
+		$documentInDb = $em->getRepository('VidalDrugBundle:Document')->findOneByDocumentID($DocumentID);
+
+		# если документ с таким идентификатором уже есть - его надо удалить, не проверяя внешних ключей
+		if ($documentInDb) {
+			$pdo  = $em->getConnection();
+			$stmt = $pdo->prepare('SET FOREIGN_KEY_CHECKS=0');
+			$stmt->execute();
+			$stmt = $pdo->prepare("DELETE FROM document WHERE DocumentID = $DocumentID");
+			$stmt->execute();
+		}
+
 	}
 }

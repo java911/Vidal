@@ -48,11 +48,12 @@
             {#{% set withPhoto = publication.photo and is_file(publication.photo.path) %}#}
             <div class="publication">
                 {# админам карандашик редактирования #}
-                {#{% if withPhoto %}#}
-                    {#<a class="photo" href="{{ path('astrazeneca_new', {'newId' : publication.id}) }}">#}
-                        {#<img src="{{ publication.photo.path }}" alt="{{ publication.title }}"/>#}
-                    {#</a>#}
-                {#{% endif %}#}
+				{% if isAdmin %}
+					<a class="admin-edit fade" target="_blank"
+					   href="{{ path('admin_vidal_main_astrazenecanew_edit', {'id':publication.id}) }}">
+						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+					</a>
+				{% endif %}
                 <div>
                     <div class="publication-title" style="font-family: sans-serif !important;">
                         <a href="{{ path('astrazeneca_new', {'newId':publication.id}) }}">{{ publication.title|raw }}</a>

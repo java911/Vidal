@@ -21,7 +21,10 @@ class AstrazenecaController extends Controller
 	 */
 	public function indexAction()
 	{
-		return array('noYad' => true);
+		return array(
+			'noYad' => true,
+			'title' => 'Школа гастрита',
+		);
 	}
 
 	/**
@@ -30,7 +33,10 @@ class AstrazenecaController extends Controller
 	 */
 	public function videoAction()
 	{
-		return array('noYad' => true);
+		return array(
+			'noYad' => true,
+			'title' => 'Видео | Школа гастрита',
+		);
 	}
 
 	/**
@@ -44,7 +50,8 @@ class AstrazenecaController extends Controller
 		$params = array(
 			'indexPage'    => true,
 			'publications' => $em->getRepository('VidalMainBundle:AstrazenecaNew')->findAll(),
-			'noYad'       => true,
+			'noYad'        => true,
+			'title'        => 'Статьи | Школа гастрита',
 		);
 
 		return $params;
@@ -66,8 +73,8 @@ class AstrazenecaController extends Controller
 		return array(
 			'publication' => $publication,
 			'menu_left'   => 'news',
-			'title'       => $this->strip($publication->getTitle()) . ' | Новости',
-			'noYad'      => true,
+			'title'       => $this->strip($publication->getTitle()) . 'Статьи | Школа гастрита',
+			'noYad'       => true,
 		);
 	}
 
@@ -77,7 +84,10 @@ class AstrazenecaController extends Controller
 	 */
 	public function mapAction()
 	{
-		return array('noYad' => true);
+		return array(
+			'noYad' => true,
+			'title' => 'Карта | Школа гастрита'
+		);
 	}
 
 	/**
@@ -111,8 +121,9 @@ class AstrazenecaController extends Controller
 		$tests = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaTest')->findAll();
 
 		return array(
-			'tests'  => $tests,
+			'tests' => $tests,
 			'noYad' => true,
+			'title' => 'Тестирование | Школа гастрита'
 		);
 	}
 
@@ -153,14 +164,14 @@ class AstrazenecaController extends Controller
 		$form = $builder->getForm();
 		$form->handleRequest($request);
 
-        //@Assert\NotBlank(message="Пожалуйста, укажите Имя")
-        $builder = $this->createFormBuilder($faq);
-        $builder
-            ->add('authorFirstName', null, array('label' => 'Ваше имя', 'required' => true, 'constraints' => new NotBlank(array('message' => "Пожалуйста, укажите Имя"))))
-            ->add('authorEmail', null, array('label' => 'Ваш e-mail', 'required' => true, 'constraints' => new NotBlank(array('message' => "Пожалуйста, укажите Email"))))
-            ->add('question', null, array('label' => 'Вопрос', 'attr' => array('class' => 'ckeditor')))
-            ->add('captcha', 'captcha', array('label' => 'Введите код с картинки'))
-            ->add('submit', 'submit', array('label' => 'Задать вопрос', 'attr' => array('class' => 'btn')));
+		//@Assert\NotBlank(message="Пожалуйста, укажите Имя")
+		$builder = $this->createFormBuilder($faq);
+		$builder
+			->add('authorFirstName', null, array('label' => 'Ваше имя', 'required' => true, 'constraints' => new NotBlank(array('message' => "Пожалуйста, укажите Имя"))))
+			->add('authorEmail', null, array('label' => 'Ваш e-mail', 'required' => true, 'constraints' => new NotBlank(array('message' => "Пожалуйста, укажите Email"))))
+			->add('question', null, array('label' => 'Вопрос', 'attr' => array('class' => 'ckeditor')))
+			->add('captcha', 'captcha', array('label' => 'Введите код с картинки'))
+			->add('submit', 'submit', array('label' => 'Задать вопрос', 'attr' => array('class' => 'btn')));
 		if ($request->isMethod('POST')) {
 			if ($form->isValid()) {
 				$faq = $form->getData();
@@ -172,10 +183,10 @@ class AstrazenecaController extends Controller
 		}
 
 		return array(
-			'title'           => 'Вопрос-ответ',
+			'title'           => 'Вопрос-ответ | Школа гастрита',
 			'questionAnswers' => $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaFaq')->findByEnabled(1),
 			'form'            => $form->createView(),
-			'noYad'          => true,
+			'noYad'           => true,
 		);
 	}
 
@@ -190,7 +201,11 @@ class AstrazenecaController extends Controller
 		//            $this->redirect($this->generateUrl('index'));
 		//        }
 		$faqs = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaFaq')->findAll();
-		return array('faqs' => $faqs, 'noYad' => true);
+		return array(
+			'faqs'  => $faqs,
+			'noYad' => true,
+			'title' => 'Вопрос-ответ | Школа гастрита',
+		);
 	}
 
 	/**
@@ -226,8 +241,9 @@ class AstrazenecaController extends Controller
 		}
 
 		return array(
-			'form'   => $form->createView(),
+			'form'  => $form->createView(),
 			'noYad' => true,
+			'title' => 'Добавить Вопрос-ответ | Школа гастрита',
 		);
 	}
 
@@ -250,7 +266,6 @@ class AstrazenecaController extends Controller
 		$builder
 			->add('question', null, array('label' => 'Вопрос'))
 			->add('answer', null, array('label' => 'Ответ'))
-
 			->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn')));
 
 		$form = $builder->getForm();
@@ -263,8 +278,9 @@ class AstrazenecaController extends Controller
 			}
 		}
 		return array(
-			'form'   => $form->createView(),
+			'form'  => $form->createView(),
 			'noYad' => true,
+			'title' => 'Редактировать Вопрос-ответ | Школа гастрита'
 		);
 	}
 
