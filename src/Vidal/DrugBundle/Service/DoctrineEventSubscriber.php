@@ -193,10 +193,10 @@ class DoctrineEventSubscriber implements EventSubscriber
 	private function autocompleteDocument($document)
 	{
 		try {
-			# autocomplete_document2
+			# autocomplete_document
 			$elasticaClient = new \Elastica\Client();
 			$elasticaIndex  = $elasticaClient->getIndex('website');
-			$elasticaType   = $elasticaIndex->getType('autocomplete_document2');
+			$elasticaType   = $elasticaIndex->getType('autocomplete_document');
 			$id             = $document->getDocumentID();
 
 			$document = new \Elastica\Document(
@@ -262,7 +262,7 @@ class DoctrineEventSubscriber implements EventSubscriber
 		$ProductID   = $product->getProductID();
 		$em          = $args->getEntityManager();
 		$productInDb = $em->getRepository('VidalDrugBundle:Product')->findByProductID($ProductID);
-		
+
 		$pdo  = $em->getConnection();
 		$stmt = $pdo->prepare('SET FOREIGN_KEY_CHECKS=0');
 		$stmt->execute();

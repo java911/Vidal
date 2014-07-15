@@ -1,9 +1,13 @@
 {% if app.session.get('poll') is null %}
-    {#<iframe src="{{ path('poll',{ pollId : 1}) }}" style="overflow: hidden; border: none; width: 245px; height: 200px"></iframe>#}
-    {{ render(controller('VidalMainBundle:Poll:poll', {'pollId': 1})) }}
+	{#<iframe src="{{ path('poll',{ pollId : 1}) }}" style="overflow: hidden; border: none; width: 245px; height: 200px"></iframe>#}
+	{{ render(controller('VidalMainBundle:Poll:poll', {'pollId': 1})) }}
 {% endif %}
 
 {{ render(controller('VidalMainBundle:Banner:render', {'groupId':9})) }}
+
+{% if noYad is not defined %}
+	{{ render(controller('VidalMainBundle:Banner:render', {'groupId':11})) }}
+{% endif %}
 
 {% if indexPage is defined %}
 	{{ render(controller('VidalMainBundle:Banner:render', {'groupId':5})) }}
@@ -21,20 +25,20 @@
 			w[n] = w[n] || [];
 			w[n].push(function() {
 				Ya.Direct.insertInto(49912, "yad_right", {
-					ad_format: "direct",
-					font_size: 0.9,
-					type: "vertical",
-					border_type: "block",
-					limit: 4,
+					ad_format:       "direct",
+					font_size:       0.9,
+					type:            "vertical",
+					border_type:     "block",
+					limit:           4,
 					title_font_size: 2,
-					site_bg_color: "FFFFFF",
-					bg_color: "F3F3F3",
-					border_color: "EEEEEE",
-					title_color: "222222",
-					url_color: "D71344",
-					text_color: "666666",
-					hover_color: "D71344",
-					no_sitelinks: false
+					site_bg_color:   "FFFFFF",
+					bg_color:        "F3F3F3",
+					border_color:    "EEEEEE",
+					title_color:     "222222",
+					url_color:       "D71344",
+					text_color:      "666666",
+					hover_color:     "D71344",
+					no_sitelinks:    false
 				});
 			});
 			t = d.getElementsByTagName("script")[0];
