@@ -45,7 +45,10 @@ class DoctrineEventSubscriber implements EventSubscriber
 			$this->setLink($entity);
 		}
 		elseif ($entity instanceof Document) {
-			$this->checkDublicate($args);
+			$this->checkDuplicateDocument($args);
+		}
+		elseif ($entity instanceof Product) {
+			$this->checkDuplicateProduct($args);
 		}
 	}
 
@@ -228,21 +231,53 @@ class DoctrineEventSubscriber implements EventSubscriber
 		return preg_replace($pat, $rep, $string);
 	}
 
-	private function checkDublicate($args)
+	private function checkDuplicateDocument($args)
 	{
 		$document     = $args->getEntity();
 		$DocumentID   = $document->getDocumentID();
 		$em           = $args->getEntityManager();
 		$documentInDb = $em->getRepository('VidalDrugBundle:Document')->findOneByDocumentID($DocumentID);
 
+		$pdo  = $em->getConnection();
+		$stmt = $pdo->prepare('SET FOREIGN_KEY_CHECKS=0');
+		$stmt->execute();
+
 		# если документ с таким идентификатором уже есть - его надо удалить, не проверяя внешних ключей
 		if ($documentInDb) {
-			$pdo  = $em->getConnection();
-			$stmt = $pdo->prepare('SET FOREIGN_KEY_CHECKS=0');
-			$stmt->execute();
 			$stmt = $pdo->prepare("DELETE FROM document WHERE DocumentID = $DocumentID");
 			$stmt->execute();
 		}
 
+		# надо почистить старые связи документа
+		$tables = explode(' ', 'document_indicnozology document_clphpointers documentoc_atc document_infopage art_document article_document molecule_document pharm_article_document publication_document');
+		foreach ($tables as $table) {
+			$stmt = $pdo->prepare("DELETE FROM {$table} WHERE DocumentID = {$DocumentID}");
+			$stmt->execute();
+		}
+	}
+
+	private function checkDuplicateProduct($args)
+	{
+		$product     = $args->getEntity();
+		$ProductID   = $product->getProductID();
+		$em          = $args->getEntityManager();
+		$productInDb = $em->getRepository('VidalDrugBundle:Product')->findByProductID($ProductID);
+		
+		$pdo  = $em->getConnection();
+		$stmt = $pdo->prepare('SET FOREIGN_KEY_CHECKS=0');
+		$stmt->execute();
+
+		# если продукт с таким идентификатором уже есть - его надо удалить, не проверяя внешних ключей
+		if ($productInDb) {
+			$stmt = $pdo->prepare("DELETE FROM product WHERE ProductID = $ProductID");
+			$stmt->execute();
+		}
+
+		# надо почистить старые связи документа
+		$tables = explode(' ', 'product_atc product_clphgroups product_company product_document product_moleculename product_phthgrp');
+		foreach ($tables as $table) {
+			$stmt = $pdo->prepare("DELETE FROM {$table} WHERE ProductID = {$ProductID}");
+			$stmt->execute();
+		}
 	}
 }

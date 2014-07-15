@@ -25,6 +25,12 @@ class ProductAdmin extends Admin
 			'SUBS' => 'Субстанция',
 		);
 
+		# новому продукту можно проставить идентификатор
+		if (!$this->getSubject()->getId()) {
+			$formMapper
+				->add('ProductID', null, array('label' => 'ID продукта', 'required' => true));
+		}
+
 		$formMapper
 			->add('RusName', 'text', array('label' => 'Название', 'required' => true))
 			->add('EngName', 'text', array('label' => 'Латинское', 'required' => true))
