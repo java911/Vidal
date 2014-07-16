@@ -225,7 +225,6 @@ class Document
 		$this->productDocument   = new ArrayCollection();
 		$this->nozologies        = new ArrayCollection();
 		$this->clphPointers      = new ArrayCollection();
-		$this->documentEditions  = new ArrayCollection();
 		$this->articles          = new ArrayCollection();
 		$this->arts              = new ArrayCollection();
 		$this->publications      = new ArrayCollection();

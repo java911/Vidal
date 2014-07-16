@@ -10,6 +10,7 @@ file that was distributed with this source code.
 #}
 
 {% extends base_template %}
+{% set route = app.request.attributes.get('_route') %}
 
 {% block title %}
 	{% if admin.id(object) is not null %}
@@ -19,7 +20,15 @@ file that was distributed with this source code.
 	{% endif %}
 {% endblock %}
 
+
 {% block actions %}
+	{% if app.session.flashBag.get('notice')|length %}
+		<div class="alert alert-success alert-dismissable">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+			Объект клонирован
+		</div>
+	{% endif %}
+
 	<div class="sonata-actions btn-group">
 		{% include 'SonataAdminBundle:Button:show_button.html.twig' %}
 		{% include 'SonataAdminBundle:Button:history_button.html.twig' %}
@@ -27,7 +36,7 @@ file that was distributed with this source code.
 		{% include 'SonataAdminBundle:Button:create_button.html.twig' %}
 		{% include 'SonataAdminBundle:Button:list_button.html.twig' %}
 
-		{% if app.request.attributes.get('_route') == 'admin_vidal_drug_document_edit' %}
+		{% if route == 'admin_vidal_drug_document_edit' %}
 			<a href="#" id="clone_document" class="btn sonata-action-element">Клонировать</a>
 			<script type="text/javascript">
 				$(document).ready(function(e) {
@@ -36,6 +45,23 @@ file that was distributed with this source code.
 						$.getJSON(Routing.generate('check_document', {'DocumentID': id}), function(isFree) {
 							isFree
 								? window.location = Routing.generate('clone_document', {'DocumentID': '{{ object.DocumentID }}', 'newDocumentID': id})
+								: alert('Такой идентификатор документа уже занят!');
+						});
+					});
+					return false;
+				});
+			</script>
+		{% endif %}
+
+		{% if route == 'admin_vidal_drug_product_edit' %}
+			<a href="#" id="clone_product" class="btn sonata-action-element">Клонировать</a>
+			<script type="text/javascript">
+				$(document).ready(function(e) {
+					$('#clone_product').click(function() {
+						var id = prompt('Пожалуйста, укажите новый свободный идентификатор препарата');
+						$.getJSON(Routing.generate('check_product', {'ProductID': id}), function(isFree) {
+							isFree
+								? window.location = Routing.generate('clone_product', {'ProductID': '{{ object.ProductID }}', 'newProductID': id})
 								: alert('Такой идентификатор документа уже занят!');
 						});
 					});

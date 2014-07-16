@@ -315,6 +315,16 @@ class SonataController extends Controller
 		return new JsonResponse($isFree);
 	}
 
+	/** @Route("/admin/check-product/{ProductID}", name="check_product", options={"expose":true}) */
+	public function checkProduct($ProductID)
+	{
+		$em          = $this->getDoctrine()->getManager('drug');
+		$productInDb = $em->getRepository('VidalDrugBundle:Product')->findOneByProductID($ProductID);
+		$isFree      = $productInDb ? 0 : 1;
+
+		return new JsonResponse($isFree);
+	}
+
 	/** @Route("/admin/clone-document/{DocumentID}/{newDocumentID}", name="clone_document", options={"expose":true}) */
 	public function cloneDocument($DocumentID, $newDocumentID)
 	{
@@ -344,6 +354,78 @@ class SonataController extends Controller
 		$stmt = $pdo->prepare($query);
 		$stmt->execute();
 
+		# надо склонировать связи старого документа на новый
+		$tables = explode(' ', 'document_indicnozology document_clphpointers documentoc_atc document_infopage art_document article_document molecule_document pharm_article_document publication_document');
+		$fields = explode(' ', 'NozologyCode ClPhPointerID ATCCode InfoPageID art_id article_id MoleculeID pharm_article_id publication_id');
+
+		for ($i = 0; $i < count($tables); $i++) {
+			$table = $tables[$i];
+			$field = $fields[$i];
+			$stmt  = $pdo->prepare("
+				INSERT INTO $table ($field, DocumentID)
+				SELECT $field, $newDocumentID
+				FROM $table
+				WHERE DocumentID = $DocumentID
+			");
+			$stmt->execute();
+		}
+
 		return $this->redirect($this->generateUrl('admin_vidal_drug_document_edit', array('id' => $newDocumentID)));
+	}
+
+	/** @Route("/admin/clone-product/{ProductID}/{newProductID}", name="clone_product", options={"expose":true}) */
+	public function cloneProduct($ProductID, $newProductID)
+	{
+		$em = $this->getDoctrine()->getManager('drug');
+
+		$columns = 'RusName, EngName, Name, NonPrescriptionDrug, CountryEditionCode, RegistrationDate,
+			DateOfCloseRegistration, RegistrationNumber, PPR, ZipInfo, Composition, DateOfIncludingText, ProductTypeCode,
+			ItsMultiProduct, BelongMultiProductID, CheckingRegDate, Personal, m, GNVLS, DLO, List_AB, List_PKKN,
+			StrongMeans, Poison, MinAs,	ValidPeriod, StrCond, photo, inactive, MarketStatusID';
+
+		$pdo   = $em->getConnection();
+		$query = "
+			INSERT INTO product (ProductID, document_id, $columns)
+			SELECT $newProductID, NULL, $columns
+			FROM product
+			WHERE ProductID = $ProductID
+		";
+
+		# отключаем проверку внешних ключей
+		$stmt = $pdo->prepare('SET FOREIGN_KEY_CHECKS=0');
+		$stmt->execute();
+
+		# вставляем документ с новым идентификатором
+		$stmt = $pdo->prepare($query);
+		$stmt->execute();
+
+		# надо склонировать связи старого документа на новый
+		$tables = explode(' ', 'product_atc product_clphgroups product_company product_phthgrp product_moleculename');
+		$fields = explode(' ', 'ATCCode ClPhGroupsID CompanyID PhThGroupsID MoleculeNameID');
+
+		for ($i = 0; $i < count($tables); $i++) {
+			$table = $tables[$i];
+			$field = $fields[$i];
+			$stmt  = $pdo->prepare("
+				INSERT INTO $table ($field, ProductID)
+				SELECT $field, $newProductID
+				FROM $table
+				WHERE ProductID = $ProductID
+			");
+			$stmt->execute();
+		}
+
+		# надо склонировать картинки
+		$stmt = $pdo->prepare("
+			INSERT INTO productpicture (ProductID, PictureID, YearEdition, CountryEditionCode, EditionCode)
+			SELECT $newProductID, PictureID, YearEdition, CountryEditionCode, EditionCode
+			FROM productpicture
+			WHERE ProductID = $ProductID
+		");
+		$stmt->execute();
+
+		$this->get('session')->getFlashbag()->add('notice', '');
+
+		return $this->redirect($this->generateUrl('admin_vidal_drug_product_edit', array('id' => $newProductID)));
 	}
 }
