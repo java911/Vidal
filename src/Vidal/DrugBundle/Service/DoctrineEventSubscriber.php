@@ -44,6 +44,16 @@ class DoctrineEventSubscriber implements EventSubscriber
 		if ($entity instanceof Article || $entity instanceof Art) {
 			$this->setLink($entity);
 		}
+
+		if ($entity instanceof Publication) {
+			$this->checkDuplicateTitle($args, 'publication');
+		}
+		elseif ($entity instanceof Article) {
+			$this->checkDuplicateTitle($args, 'article');
+		}
+		elseif ($entity instanceof Art) {
+			$this->checkDuplicateTitle($args, 'art');
+		}
 		elseif ($entity instanceof Document) {
 			$this->checkDuplicateDocument($args);
 		}
@@ -279,5 +289,22 @@ class DoctrineEventSubscriber implements EventSubscriber
 			$stmt = $pdo->prepare("DELETE FROM {$table} WHERE ProductID = {$ProductID}");
 			$stmt->execute();
 		}
+	}
+
+	private function checkDuplicateTitle($args, $table)
+	{
+		$session = $this->container->get('session');
+		$title   = $args->getEntity()->getTitle();
+
+		if ($session->has('title') && $session->get('title') == $title) {
+			$pdo  = $args->getEntityManager()->getConnection();
+			$stmt = $pdo->prepare('SET FOREIGN_KEY_CHECKS=0');
+			$stmt->execute();
+
+			$stmt = $pdo->prepare("DELETE FROM $table WHERE title = '$title'");
+			$stmt->execute();
+		}
+
+		$session->set('title', $title);
 	}
 }
