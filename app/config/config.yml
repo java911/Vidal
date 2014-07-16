@@ -186,7 +186,7 @@ sonata_admin:
         # default actions templates, should extend a global templates
         list:    VidalDrugBundle:Sonata:list_layout.html.twig
         show:    SonataAdminBundle:CRUD:show.html.twig
-        edit:    SonataAdminBundle:CRUD:edit.html.twig
+        edit:    VidalDrugBundle:Sonata:base_edit.html.twig
 
     dashboard:
         blocks:

@@ -258,4 +258,12 @@ class DocumentRepository extends EntityRepository
 		')->setParameter('id', $id)
 			->getOneOrNullResult();
 	}
+
+	public function findMaxId()
+	{
+		return $this->_em->createQuery('
+			SELECT MAX(d.DocumentID)
+			FROM VidalDrugBundle:Document d
+		')->getSingleScalarResult();
+	}
 }

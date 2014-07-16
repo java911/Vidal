@@ -236,15 +236,15 @@ class SonataController extends Controller
 		$em         = $this->getDoctrine()->getManager('drug');
 
 		# получаем список адресов по рассылке
-//		$doctors = $em->createQuery('
-//			SELECT u.username
-//			FROM VidalMainBundle:User u
-//		')->getResult();
-//
-//		$emails = array();
-//		foreach ($doctors as $doctor) {
-//			$emails[] = $doctor['username'];
-//		}
+		//		$doctors = $em->createQuery('
+		//			SELECT u.username
+		//			FROM VidalMainBundle:User u
+		//		')->getResult();
+		//
+		//		$emails = array();
+		//		foreach ($doctors as $doctor) {
+		//			$emails[] = $doctor['username'];
+		//		}
 
 		# разметка дайджеста
 		$subject = 'Тестовая рассылка';
@@ -303,5 +303,47 @@ class SonataController extends Controller
 		}
 
 		return $mail->send();
+	}
+
+	/** @Route("/admin/check-document/{DocumentID}", name="check_document", options={"expose":true}) */
+	public function checkDocument($DocumentID)
+	{
+		$em           = $this->getDoctrine()->getManager('drug');
+		$documentInDb = $em->getRepository('VidalDrugBundle:Document')->findOneByDocumentID($DocumentID);
+		$isFree       = $documentInDb ? 0 : 1;
+
+		return new JsonResponse($isFree);
+	}
+
+	/** @Route("/admin/clone-document/{DocumentID}/{newDocumentID}", name="clone_document", options={"expose":true}) */
+	public function cloneDocument($DocumentID, $newDocumentID)
+	{
+		$em = $this->getDoctrine()->getManager('drug');
+
+		$columns = 'RusName, EngName, Name, CompiledComposition, ArticleID, YearEdition, DateOfIncludingText,
+		 DateTextModified, Elaboration, CompaniesDescription, ClPhGrDescription, ClPhGrName, PhInfluence, PhKinetics,
+		 Dosage, OverDosage, Interaction, Lactation, SideEffects, StorageCondition, Indication, ContraIndication,
+		 SpecialInstruction, ShowGenericsOnlyInGNList, NewForCurrentEdition, CountryEditionCode, IsApproved,
+		 CountOfColorPhoto,	PregnancyUsing, NursingUsing, RenalInsuf, RenalInsufUsing, HepatoInsuf, HepatoInsufUsing,
+		 PharmDelivery, WithoutRenalInsuf, WithoutHepatoInsuf, ElderlyInsuf, ElderlyInsufUsing, ChildInsuf,
+		 ChildInsufUsing, ed';
+
+		$pdo   = $em->getConnection();
+		$query = "
+			INSERT INTO document (DocumentID, $columns)
+			SELECT $newDocumentID, $columns
+			FROM document
+			WHERE DocumentID = $DocumentID
+		";
+
+		# отключаем проверку внешних ключей
+		$stmt = $pdo->prepare('SET FOREIGN_KEY_CHECKS=0');
+		$stmt->execute();
+
+		# вставляем документ с новым идентификатором
+		$stmt = $pdo->prepare($query);
+		$stmt->execute();
+
+		return $this->redirect($this->generateUrl('admin_vidal_drug_document_edit', array('id' => $newDocumentID)));
 	}
 }

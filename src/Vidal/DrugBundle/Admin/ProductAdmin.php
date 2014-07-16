@@ -26,7 +26,7 @@ class ProductAdmin extends Admin
 		);
 
 		# новому продукту можно проставить идентификатор
-		if (!$this->getSubject()->getId()) {
+		if (!$this->getSubject()->getProductID()) {
 			$formMapper
 				->add('ProductID', null, array('label' => 'ID продукта', 'required' => true));
 		}
