@@ -40,6 +40,19 @@ class MarketController extends Controller{
     );
 
 
+    protected $shippingEapteka = Array(
+        '1' => '100',
+        '2' => '150',
+        '3' => '0',
+        '4' => '300'
+    );
+
+    protected $shippingTitleEapteka = array(
+        '1' => 'Курьером по Москве в пределах МКАД - 100  р.',
+        '2' => 'курьером в отдаленные районы Москвы - 150 р.',
+        '3' => 'Самовывоз - 0 р.',
+        '4' => 'Срочная доставка в течении 3х часов - 300 р.',
+    );
 
 
     protected $shippingPiluli = Array(
@@ -230,6 +243,8 @@ class MarketController extends Controller{
 
         if ($group == 'piluli'){
             $array = $this->shippingTitlePiluli;
+        }elseif($group == 'eapteka'){
+            $array = $this->shippingTitleEapteka;
         }else{
             $array = $this->shippingTitle;
         }
