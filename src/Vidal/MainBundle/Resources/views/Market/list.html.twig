@@ -1,11 +1,19 @@
 <br />
+
+<div class="popupMarket">
+    <div style="padding-bottom: 10px">
+    Товар добавлен в корзину
+    </div>
+    <a class="submit btn-red market-btn" href="{{  path('basket_list') }}" style="font-weight: bold;">перейти в корзину</a>
+</div>
+
 <div class="conditions">
     <h1 class="market-btn" style="cursor: pointer; text-decoration: underline; display: inline">Показать цены онлайн аптек </h1>
     <a class="submit btn-red market-btn" href="#market-block" style="float: right; font-weight: bold;">Где купить</a>
 </div>
 <div class="market-block" id="market-block">
     <div class="market-block-box" id="market-block-box"  style="display: none">
-    {#{{ dump(lists.eapteka) }}#}
+        {#{{ dump(lists.eapteka) }}#}
         {% if lists.eapteka is defined %}
             <div class="market-title">Интернет аптека «Eapteka.ru»:</div>
             <table>
@@ -52,16 +60,25 @@
 
 <script>
     $(document).ready(function(){
-       $('.market-btn').click(function(){
-           if ( $('.market-block-box').css('display') == 'none' ){
+        $('.market-btn').click(function(){
+            if ( $('.market-block-box').css('display') == 'none' ){
                 $('.market-block-box').fadeIn();
-           }else{
-               $('.market-block-box').fadeOut();
-           }
-       });
+            }else{
+                $('.market-block-box').fadeOut();
+            }
+        });
 //        alert(window.location.hash);
         if(window.location.hash == '#market-block') {
             $('.market-block-box').fadeIn();
         }
+
+        if(window.location.hash == '#inbasket') {
+                $('.popupMarket').fadeIn();
+            setInterval(function(){
+                $('.popupMarket').fadeOut();
+            }, 2000);
+        }
+
     });
+
 </script>

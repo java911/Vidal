@@ -132,7 +132,7 @@ class MarketController extends Controller{
             $basket->save();
         }
 
-        return $this->redirect($this->get('request')->server->get('HTTP_REFERER'));
+        return $this->redirect($this->get('request')->server->get('HTTP_REFERER').'#inbasket');
     }
 
     /**
