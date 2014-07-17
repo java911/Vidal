@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/** @ORM\Entity @ORM\Table(name="tag") @UniqueEntity("text") */
+/** @ORM\Entity(repositoryClass="TagRepository") @ORM\Table(name="tag") @UniqueEntity("text") */
 class Tag
 {
 	/** @ORM\Column(type="integer") @ORM\Id @ORM\GeneratedValue */

@@ -19,35 +19,25 @@ class TagCommand extends ContainerAwareCommand
 	{
 		ini_set('memory_limit', -1);
 		$em = $this->getContainer()->get('doctrine')->getManager('drug');
-
 		$output->writeln('--- vidal:tag started');
 
-		$articles = $em->createQuery('
-			SELECT a
-			FROM VidalDrugBundle:PharmArticle a
-		')->getResult();
+		$companies = file(__DIR__ . DIRECTORY_SEPARATOR . 'doc.txt');
+		$pdo       = $em->getConnection();
 
-		foreach ($articles as $article) {
-			if ($company = $article->getCompany()) {
-				$text = $company->getTitle();
-				$tag = $em->createQuery('
-					SELECT t
-					FROM VidalDrugBundle:Tag t
-					WHERE t.text = :text
-				')->setParameter('text', $text)
-					->getOneOrNullResult();
-
-				if (!$tag) {
-					$tag = new Tag();
-					$tag->setText($text);
-					$em->persist($tag);
-				}
-
-				$article->addTag($tag);
-				$em->flush();
-			}
+		foreach ($companies as $company) {
+			$stmt = $pdo->prepare("UPDATE tag SET text = '$company' WHERE text LIKE '$company'");
+			$stmt->execute();
 		}
 
 		$output->writeln('+++ vidal:tag completed');
+	}
+
+	private function mb_ucfirst($string, $encoding = 'utf-8')
+	{
+		$strlen    = mb_strlen($string, $encoding);
+		$firstChar = mb_substr($string, 0, 1, $encoding);
+		$then      = mb_substr($string, 1, $strlen - 1, $encoding);
+
+		return mb_strtoupper($firstChar, $encoding) . $then;
 	}
 }

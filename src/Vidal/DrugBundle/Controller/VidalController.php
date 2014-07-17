@@ -349,17 +349,6 @@ class VidalController extends Controller
 		$l  = $request->query->get('l', null);
 		$p  = $request->query->get('p', 1);
 
-		//		$molecules = $em->getRepository('VidalDrugBundle:Molecule')->getQuery()->getResult();
-		//		$letters   = array();
-		//		foreach ($molecules as $m) {
-		//			$letter = mb_strtoupper(mb_substr($m->getRusName(), 0, 1, 'utf-8'), 'utf-8');
-		//			if (!isset($letters[$letter])) {
-		//				$letters[$letter] = '';
-		//			}
-		//		}
-		//		var_dump($letters);
-		//		exit;
-
 		if ($l) {
 			$query = $em->getRepository('VidalDrugBundle:Molecule')->getQueryByLetter($l);
 		}
@@ -409,7 +398,7 @@ class VidalController extends Controller
 		$params   = array(
 			'molecule' => $molecule,
 			'document' => $document,
-			'title'    => $molecule->getTitle() . ' | Активные вещества',
+			'title'    => mb_strtoupper($molecule->getTitle(), 'utf-8') . ' | Активные вещества',
 		);
 
 		return $search ? $this->render('VidalDrugBundle:Vidal:search_molecule.html.twig', $params) : $params;
@@ -480,7 +469,7 @@ class VidalController extends Controller
 			'companies' => $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds),
 			'pictures'  => $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y')),
 			'infoPages' => $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($productsRaw),
-			'title'     => $molecule->getTitle() . ' | Активные вещества в препаратах',
+			'title'     => mb_strtoupper($molecule->getTitle(), 'utf-8') . ' | Активные вещества в препаратах',
 		);
 	}
 
@@ -582,7 +571,7 @@ class VidalController extends Controller
 		return $params;
 	}
 
-	/** @Route("/poisk_preparatov/{name}.htm") */
+	/** @Route("/poisk_preparatov/{name}.htm", requirements={"name":"^~"}) */
 	public function moleculeRedirect($name)
 	{
 		$em       = $this->getDoctrine()->getManager('drug');
@@ -594,6 +583,39 @@ class VidalController extends Controller
 
 		return $this->redirect($this->generateUrl('molecule', array('MoleculeID' => $molecule['MoleculeID'])));
 		//		return $this->forward('VidalDrugBundle:Vidal:molecule', array('MoleculeID'  => $molecule['MoleculeID']));
+	}
+
+	/**
+	 * @Route("/drugs/{EngName}~{DocumentID}", requirements={"DocumentID":"\d+"})
+	 * @Route("/poisk_preparatov/{EngName}~{DocumentID}.{ext}", requirements={"DocumentID":"\d+"}, defaults={"ext"="htm"})
+	 */
+	public function redirectDocument($EngName, $DocumentID = null)
+	{
+		$em       = $this->getDoctrine()->getManager('drug');
+		$document = null;
+
+		if ($DocumentID) {
+			$document = $em->getRepository('VidalDrugBundle:Document')->findOneByDocumentID($DocumentID);
+		}
+
+		if (!$document) {
+			$document = $em->getRepository('VidalDrugBundle:Document')->findOneByName($EngName);
+		}
+
+		if (!$document) {
+			throw $this->createNotFoundException();
+		}
+
+		$products = $document->getProducts();
+
+		if (empty($products)) {
+			throw $this->createNotFoundException();
+		}
+
+		return $this->redirect($this->generateUrl('product', array(
+			'EngName'   => $products[0]->getName(),
+			'ProductID' => $products[0]->getProductID(),
+		)));
 	}
 
 	/** Получить массив идентификаторов продуктов */
