@@ -5,7 +5,8 @@
 
 
 {% block title %}
-	<h1>{{ molecule.LatName|upper|raw }}
+	<h1>
+		<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}">{{ molecule.LatName|upper|raw }}</a>
 		{% if molecule.RusName is not empty %}
 			<span>({{ molecule.RusName|upper|raw }})</span>
 		{% endif %}

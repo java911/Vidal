@@ -22,64 +22,11 @@ class TagCommand extends ContainerAwareCommand
 		$output->writeln('--- vidal:tag started');
 
 		$companies = file(__DIR__ . DIRECTORY_SEPARATOR . 'doc.txt');
-		$i         = 0;
-		$total     = count($companies);
+		$pdo       = $em->getConnection();
 
 		foreach ($companies as $company) {
-			$company = trim($company);
-			$company = $this->mb_ucfirst($company);
-			$tag     = $em->getRepository('VidalDrugBundle:Tag')->createOrGet($company);
-
-			# статьи специалистам
-			$arts = $em->createQuery('
-				SELECT a
-				FROM VidalDrugBundle:Art a
-				WHERE a.title LIKE :text
-					OR a.announce LIKE :text
-					OR a.body LIKE :text
-			')->setParameter('text', '%' . $company . '%')->getResult();
-
-			if (!empty($arts)) {
-				foreach ($arts as $o) {
-					$o->addTag($tag);
-				}
-				$em->flush();
-			}
-
-			# статьи энциклопедии
-			$articles = $em->createQuery('
-				SELECT a
-				FROM VidalDrugBundle:Article a
-				WHERE a.title LIKE :text
-					OR a.announce LIKE :text
-					OR a.body LIKE :text
-			')->setParameter('text', '%' . $company . '%')->getResult();
-
-			if (!empty($articles)) {
-				foreach ($articles as $o) {
-					$o->addTag($tag);
-				}
-				$em->flush();
-			}
-
-			# новости
-			$publications = $em->createQuery('
-				SELECT a
-				FROM VidalDrugBundle:Publication a
-				WHERE a.title LIKE :text
-					OR a.announce LIKE :text
-					OR a.body LIKE :text
-			')->setParameter('text', '%' . $company . '%')->getResult();
-
-			if (!empty($publications)) {
-				foreach ($publications as $o) {
-					$o->addTag($tag);
-				}
-				$em->flush();
-			}
-
-			$i++;
-			$output->writeln("... $i / $total");
+			$stmt = $pdo->prepare("UPDATE tag SET text = '$company' WHERE text LIKE '$company'");
+			$stmt->execute();
 		}
 
 		$output->writeln('+++ vidal:tag completed');
