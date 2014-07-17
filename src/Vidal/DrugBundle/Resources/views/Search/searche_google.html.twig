@@ -1,9 +1,12 @@
 {% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
 
 
-{% block vidal %}
-	{% include 'VidalDrugBundle:Search:menu.html.twig' %}
+{% block title %}
+	<h1>Поиск Google по открытым разделам сайта</h1>
+{% endblock %}
 
+
+{% block vidal %}
 	{# поиск Google custom search #}
 	<script>
 		(function() {
@@ -18,24 +21,23 @@
 		})();
 	</script>
 	<gcse:search></gcse:search>
-
 {% endblock %}
 
 
 {% block stylesheets %}
 	{{ parent() }}
 	<style type="text/css">
-		.gcse-wrap {
-			margin-top: 10px;
-			text-align: right;
-			height:     30px;
+		.titleLink, .sl-table a, .sl-table-ol a, .sl-column a {
+			color: #d71344 !important;
 		}
-		.gcse {
-			display: inline-block;
-			width:   520px;
+		.gsc-wrapper a, .gsc-wrapper a b, .gsc-wrapper span * {
+			color: #d71344 !important;
 		}
 		.gsc-control-cse {
 			padding: 0 !important;
+		}
+		.gsc-orderby-container * {
+			display: none !important;
 		}
 	</style>
 {% endblock %}

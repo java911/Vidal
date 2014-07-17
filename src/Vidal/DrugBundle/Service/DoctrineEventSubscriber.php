@@ -44,6 +44,22 @@ class DoctrineEventSubscriber implements EventSubscriber
 		if ($entity instanceof Article || $entity instanceof Art) {
 			$this->setLink($entity);
 		}
+
+		if ($entity instanceof Publication) {
+			$this->checkDuplicateTitle($args, 'publication');
+		}
+		elseif ($entity instanceof Article) {
+			$this->checkDuplicateTitle($args, 'article');
+		}
+		elseif ($entity instanceof Art) {
+			$this->checkDuplicateTitle($args, 'art');
+		}
+		elseif ($entity instanceof Document) {
+			$this->checkDuplicateDocument($args);
+		}
+		elseif ($entity instanceof Product) {
+			$this->checkDuplicateProduct($args);
+		}
 	}
 
 	public function postPersist(LifecycleEventArgs $args)
@@ -187,10 +203,10 @@ class DoctrineEventSubscriber implements EventSubscriber
 	private function autocompleteDocument($document)
 	{
 		try {
-			# autocomplete_document2
+			# autocomplete_document
 			$elasticaClient = new \Elastica\Client();
 			$elasticaIndex  = $elasticaClient->getIndex('website');
-			$elasticaType   = $elasticaIndex->getType('autocomplete_document2');
+			$elasticaType   = $elasticaIndex->getType('autocomplete_document');
 			$id             = $document->getDocumentID();
 
 			$document = new \Elastica\Document(
@@ -223,5 +239,72 @@ class DoctrineEventSubscriber implements EventSubscriber
 		$rep = array('', '', '&');
 
 		return preg_replace($pat, $rep, $string);
+	}
+
+	private function checkDuplicateDocument($args)
+	{
+		$document     = $args->getEntity();
+		$DocumentID   = $document->getDocumentID();
+		$em           = $args->getEntityManager();
+		$documentInDb = $em->getRepository('VidalDrugBundle:Document')->findOneByDocumentID($DocumentID);
+
+		$pdo  = $em->getConnection();
+		$stmt = $pdo->prepare('SET FOREIGN_KEY_CHECKS=0');
+		$stmt->execute();
+
+		# если документ с таким идентификатором уже есть - его надо удалить, не проверяя внешних ключей
+		if ($documentInDb) {
+			$stmt = $pdo->prepare("DELETE FROM document WHERE DocumentID = $DocumentID");
+			$stmt->execute();
+		}
+
+		# надо почистить старые связи документа
+		$tables = explode(' ', 'document_indicnozology document_clphpointers documentoc_atc document_infopage art_document article_document molecule_document pharm_article_document publication_document');
+		foreach ($tables as $table) {
+			$stmt = $pdo->prepare("DELETE FROM {$table} WHERE DocumentID = {$DocumentID}");
+			$stmt->execute();
+		}
+	}
+
+	private function checkDuplicateProduct($args)
+	{
+		$product     = $args->getEntity();
+		$ProductID   = $product->getProductID();
+		$em          = $args->getEntityManager();
+		$productInDb = $em->getRepository('VidalDrugBundle:Product')->findByProductID($ProductID);
+
+		$pdo  = $em->getConnection();
+		$stmt = $pdo->prepare('SET FOREIGN_KEY_CHECKS=0');
+		$stmt->execute();
+
+		# если продукт с таким идентификатором уже есть - его надо удалить, не проверяя внешних ключей
+		if ($productInDb) {
+			$stmt = $pdo->prepare("DELETE FROM product WHERE ProductID = $ProductID");
+			$stmt->execute();
+		}
+
+		# надо почистить старые связи документа
+		$tables = explode(' ', 'product_atc product_clphgroups product_company product_document product_moleculename product_phthgrp');
+		foreach ($tables as $table) {
+			$stmt = $pdo->prepare("DELETE FROM {$table} WHERE ProductID = {$ProductID}");
+			$stmt->execute();
+		}
+	}
+
+	private function checkDuplicateTitle($args, $table)
+	{
+		$session = $this->container->get('session');
+		$title   = $args->getEntity()->getTitle();
+
+		if ($session->has('title') && $session->get('title') == $title) {
+			$pdo  = $args->getEntityManager()->getConnection();
+			$stmt = $pdo->prepare('SET FOREIGN_KEY_CHECKS=0');
+			$stmt->execute();
+
+			$stmt = $pdo->prepare("DELETE FROM $table WHERE title = '$title'");
+			$stmt->execute();
+		}
+
+		$session->set('title', $title);
 	}
 }

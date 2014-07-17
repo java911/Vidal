@@ -28,8 +28,12 @@ class DocumentAdmin extends Admin
 			'Not'  => 'Противопоказан',
 		);
 
+		# новому продукту можно проставить идентификатор
+		if (!$this->getSubject()->getDocumentID()) {
+			$formMapper->add('DocumentID', null, array('label' => 'ID документа', 'required' => true));
+		}
+
 		$formMapper
-			->add('DocumentID', null, array('label' => 'ID'))
 			->add('RusName', 'text', array('label' => 'Название', 'required' => true))
 			->add('EngName', 'text', array('label' => 'Латинское', 'required' => true))
 			->add('Name', 'text', array('label' => 'URL адрес', 'required' => true))
@@ -64,8 +68,7 @@ class DocumentAdmin extends Admin
 			->add('nozologies', null, array('label' => 'Нозологические указатели', 'required' => false, 'help' => 'МКБ-10 (Nozology)'))
 			->add('clphPointers', null, array('label' => 'Клинико-фармакологические указатели', 'required' => false))
 			->add('infoPages', null, array('label' => 'Представительства', 'required' => false))
-			->add('molecules', null, array('label' => 'Активные вещества', 'required' => false))
-		;
+			->add('molecules', null, array('label' => 'Активные вещества', 'required' => false));
 	}
 
 	// Fields to be shown on filter forms

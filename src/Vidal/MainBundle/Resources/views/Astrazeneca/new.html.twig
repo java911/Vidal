@@ -43,10 +43,11 @@
     </div>
     <h1>
         {{ publication.title |raw }}
+
         {# админу карандашик на правку #}
         {% if isAdmin %}
             <a class="admin-edit fade" target="_blank"
-               href="{{ path('admin_vidal_drug_publication_edit', {'id':publication.id}) }}">
+               href="{{ path('admin_vidal_main_astrazenecanew_edit', {'id':publication.id}) }}">
                 <img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
             </a>
         {% endif %}

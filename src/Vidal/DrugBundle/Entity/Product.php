@@ -10,7 +10,7 @@ use Iphp\FileStoreBundle\Mapping\Annotation as FileStore;
 /** @ORM\Entity(repositoryClass="ProductRepository") @ORM\Table(name="product") @FileStore\Uploadable */
 class Product
 {
-	/** @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue */
+	/** @ORM\Id @ORM\Column(type="integer") */
 	protected $ProductID;
 
 	/** @ORM\Column(length=500) */
