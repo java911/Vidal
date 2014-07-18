@@ -25,6 +25,9 @@ class TagCommand extends ContainerAwareCommand
 		$pdo       = $em->getConnection();
 
 		foreach ($companies as $company) {
+			$company = trim($company);
+			$company = $this->mb_ucfirst($company);
+
 			$stmt = $pdo->prepare("UPDATE tag SET text = '$company' WHERE text LIKE '$company'");
 			$stmt->execute();
 		}

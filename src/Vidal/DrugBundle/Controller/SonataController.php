@@ -428,4 +428,67 @@ class SonataController extends Controller
 
 		return $this->redirect($this->generateUrl('admin_vidal_drug_product_edit', array('id' => $newProductID)));
 	}
+
+	/** @Route("/tag-set/{tagId}", name="tag_set", options={"expose":true}) */
+	public function tagSetAction($tagId)
+	{
+		$em  = $this->getDoctrine()->getManager('drug');
+		$tag = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
+
+		if (!$tag) {
+			throw $this->createNotFoundException();
+		}
+
+		$text = $tag->getText();
+		$pdo  = $em->getConnection();
+
+		# проставляем тег у статей энкициклопедии
+		$articles = $em->createQuery('
+			SELECT a.id
+			FROM VidalDrugBundle:Article a
+			WHERE a.title LIKE :text
+				OR a.announce LIKE :text
+				OR a.body LIKE :text
+		')->setParameter('text', '%' . $text . '%')->getResult();
+
+		foreach ($articles as $a) {
+			$id   = $a['id'];
+			$stmt = $pdo->prepare("INSERT IGNORE INTO article_tag (tag_id, article_id) VALUES ($tagId, $id)");
+			$stmt->execute();
+		}
+
+		# проставляем тег у статей специалистам
+		$arts = $em->createQuery('
+			SELECT a.id
+			FROM VidalDrugBundle:Art a
+			WHERE a.title LIKE :text
+				OR a.announce LIKE :text
+				OR a.body LIKE :text
+		')->setParameter('text', '%' . $text . '%')->getResult();
+
+		foreach ($arts as $a) {
+			$id   = $a['id'];
+			$stmt = $pdo->prepare("INSERT IGNORE INTO art_tag (tag_id, art_id) VALUES ($tagId, $id)");
+			$stmt->execute();
+		}
+
+		# проставляем тег у новостей
+		$publications = $em->createQuery('
+			SELECT a.id
+			FROM VidalDrugBundle:Publication a
+			WHERE a.title LIKE :text
+				OR a.announce LIKE :text
+				OR a.body LIKE :text
+		')->setParameter('text', '%' . $text . '%')->getResult();
+
+		foreach ($publications as $p) {
+			$id   = $p['id'];
+			$stmt = $pdo->prepare("INSERT IGNORE INTO publication_tag (tag_id, publication_id) VALUES ($tagId, $id)");
+			$stmt->execute();
+		}
+
+		$this->get('session')->getFlashbag()->add('tag_set', '');
+
+		return $this->redirect($this->generateUrl('admin_vidal_drug_tag_edit', array('id' => $tagId)));
+	}
 }
