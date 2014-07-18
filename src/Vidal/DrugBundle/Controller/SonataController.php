@@ -509,67 +509,129 @@ class SonataController extends Controller
 	/** @Route("/admin/users-excel", name="users_excel") */
 	public function usersExcelAction()
 	{
-		$em           = $this->getDoctrine()->getManager();
-		$excelService = $this->get('xls.service_xls5');
+		$em = $this->getDoctrine()->getManager();
 
 		$users = $em->getRepository('VidalMainBundle:User')->findUsersExcel();
 
+		// ask the service for a Excel5
+		$phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
 
-		############################################################################################################
+		$phpExcelObject->getProperties()->setCreator("Vidal.ru")
+			->setLastModifiedBy("Vidal.ru")
+			->setTitle("Зарегистрированные пользователи Видаля")
+			->setSubject("Зарегистрированные пользователи Видаля");
 
-		$eventSpecialties = $em->getRepository('EvrikaMainBundle:Event')->findSpecialtiesByEventIds($eventIds);
-		$title            = "Выгрузка событий Эврики за $year год";
+		$phpExcelObject->setActiveSheetIndex(0)
+			->setCellValue('A1', 'Почтовый адрес')
+			->setCellValue('B1', 'Фамилия')
+			->setCellValue('C1', 'Имя')
+			->setCellValue('D1', 'Отчество')
+			->setCellValue('E1', 'Первичная специальность')
+			->setCellValue('F1', 'Вторичная специальность')
+			->setCellValue('G1', 'Специализация')
+			->setCellValue('H1', 'Университет')
+			->setCellValue('I1', 'Другое учебное заведение')
+			->setCellValue('J1', 'Год выпуска')
+			->setCellValue('K1', 'Форма обучения')
+			->setCellValue('L1', 'Ученая степень')
+			->setCellValue('M1', 'Дата рождения')
+			->setCellValue('N1', 'Номер телефона')
+			->setCellValue('O1', 'ICQ')
+			->setCellValue('P1', 'Тема диссертации')
+			->setCellValue('Q1', 'Профессиональные интересы')
+			->setCellValue('R1', 'Место работы')
+			->setCellValue('S1', 'Должность')
+			->setCellValue('T1', 'Стаж')
+			->setCellValue('U1', 'Достижения')
+			->setCellValue('V1', 'Публикации')
+			->setCellValue('W1', 'О себе');
 
-		$excelService->excelObj->getProperties()->setCreator("Evrika.ru")
-			->setLastModifiedBy("Evrika.ru")
-			->setTitle($title)
-			->setSubject($title)
-			->setDescription($title);
-
-		$excelService->excelObj->setActiveSheetIndex(0)
-			->setCellValue('A1', 'Событие')
-			->setCellValue('B1', 'Начинается')
-			->setCellValue('C1', 'Заканчивается')
-			->setCellValue('D1', 'Специальности')
-			->setCellValue('E1', 'Ссылка');
-
-		$worksheet = $excelService->excelObj->getActiveSheet();
-		$worksheet->getColumnDimension('A')->setAutoSize('true');
-		$worksheet->getColumnDimension('B')->setAutoSize('true');
-		$worksheet->getColumnDimension('C')->setAutoSize('true');
-		$worksheet->getColumnDimension('D')->setAutoSize('true');
-		$worksheet->getColumnDimension('E')->setAutoSize('true');
-
-		$worksheet->getStyle('A1')->getFont()->getColor()->setRGB('FF0000');
-		$worksheet->getStyle('B1')->getFont()->getColor()->setRGB('FF0000');
-		$worksheet->getStyle('C1')->getFont()->getColor()->setRGB('FF0000');
-		$worksheet->getStyle('D1')->getFont()->getColor()->setRGB('FF0000');
-		$worksheet->getStyle('E1')->getFont()->getColor()->setRGB('FF0000');
-
-		for ($i = 0; $i < count($events); $i++) {
-			$key = $events[$i]['id'];
-			$excelService->excelObj->setActiveSheetIndex(0)
-				->setCellValue('A' . ($i + 2), $events[$i]['title'])
-				->setCellValue('B' . ($i + 2), $events[$i]['starts'] ? $events[$i]['starts']->format('d.m.Y') : '')
-				->setCellValue('C' . ($i + 2), $events[$i]['ends'] ? $events[$i]['ends']->format('d.m.Y') : '')
-				->setCellValue('D' . ($i + 2), $eventSpecialties[$key])
-				->setCellValue('E' . ($i + 2), $events[$i]['sourceUrl']);
+		$worksheet = $phpExcelObject->getActiveSheet();
+		$alphabet  = explode(' ', 'A B C D E F G H I J K L N O P Q R S T U V W');
+		foreach ($alphabet as $letter) {
+			$worksheet->getColumnDimension($letter)->setAutoSize('true');
 		}
 
-		$excelService->excelObj->getActiveSheet()->setTitle('События');
+		for ($i = 0; $i < 100; $i++) {
+			$index = $i + 2;
+			$worksheet
+				->setCellValue("A{$index}", $users[$i]['username'])
+				->setCellValue("B{$index}", $users[$i]['lastName'])
+				->setCellValue("C{$index}", $users[$i]['firstName'])
+				->setCellValue("D{$index}", $users[$i]['surName'])
+			;
+		}
+
 		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
-		$excelService->excelObj->setActiveSheetIndex(0);
+		$phpExcelObject->setActiveSheetIndex(0);
 
-		//create the response
-		$filename = "Evrika.ru: события за $year год.xls";
-		$response = $excelService->getResponse();
+		// create the writer
+		$writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
+		// create the response
+		$response = $this->get('phpexcel')->createStreamedResponse($writer);
+		// adding headers
 		$response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-		$response->headers->set('Content-Disposition', "attachment;filename=\"$filename\"");
-
-		// If you are using a https connection, you have to set those two headers and use sendHeaders() for compatibility with IE <9
+		$response->headers->set('Content-Disposition', 'attachment;filename=stream-file.xls');
 		$response->headers->set('Pragma', 'public');
 		$response->headers->set('Cache-Control', 'maxage=1');
 
 		return $response;
+
+		############################################################################################################
+
+		//		$eventSpecialties = $em->getRepository('EvrikaMainBundle:Event')->findSpecialtiesByEventIds($eventIds);
+		//		$title            = "Выгрузка событий Эврики за $year год";
+		//
+		//		$excelService->excelObj->getProperties()->setCreator("Evrika.ru")
+		//			->setLastModifiedBy("Evrika.ru")
+		//			->setTitle($title)
+		//			->setSubject($title)
+		//			->setDescription($title);
+		//
+		//		$excelService->excelObj->setActiveSheetIndex(0)
+		//			->setCellValue('A1', 'Событие')
+		//			->setCellValue('B1', 'Начинается')
+		//			->setCellValue('C1', 'Заканчивается')
+		//			->setCellValue('D1', 'Специальности')
+		//			->setCellValue('E1', 'Ссылка');
+		//
+		//		$worksheet = $excelService->excelObj->getActiveSheet();
+		//		$worksheet->getColumnDimension('A')->setAutoSize('true');
+		//		$worksheet->getColumnDimension('B')->setAutoSize('true');
+		//		$worksheet->getColumnDimension('C')->setAutoSize('true');
+		//		$worksheet->getColumnDimension('D')->setAutoSize('true');
+		//		$worksheet->getColumnDimension('E')->setAutoSize('true');
+		//
+		//		$worksheet->getStyle('A1')->getFont()->getColor()->setRGB('FF0000');
+		//		$worksheet->getStyle('B1')->getFont()->getColor()->setRGB('FF0000');
+		//		$worksheet->getStyle('C1')->getFont()->getColor()->setRGB('FF0000');
+		//		$worksheet->getStyle('D1')->getFont()->getColor()->setRGB('FF0000');
+		//		$worksheet->getStyle('E1')->getFont()->getColor()->setRGB('FF0000');
+		//
+		//		for ($i = 0; $i < count($events); $i++) {
+		//			$key = $events[$i]['id'];
+		//			$excelService->excelObj->setActiveSheetIndex(0)
+		//				->setCellValue('A' . ($i + 2), $events[$i]['title'])
+		//				->setCellValue('B' . ($i + 2), $events[$i]['starts'] ? $events[$i]['starts']->format('d.m.Y') : '')
+		//				->setCellValue('C' . ($i + 2), $events[$i]['ends'] ? $events[$i]['ends']->format('d.m.Y') : '')
+		//				->setCellValue('D' . ($i + 2), $eventSpecialties[$key])
+		//				->setCellValue('E' . ($i + 2), $events[$i]['sourceUrl']);
+		//		}
+		//
+		//		$excelService->excelObj->getActiveSheet()->setTitle('События');
+		//		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+		//		$excelService->excelObj->setActiveSheetIndex(0);
+		//
+		//		//create the response
+		//		$filename = "Evrika.ru: события за $year год.xls";
+		//		$response = $excelService->getResponse();
+		//		$response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+		//		$response->headers->set('Content-Disposition', "attachment;filename=\"$filename\"");
+		//
+		//		// If you are using a https connection, you have to set those two headers and use sendHeaders() for compatibility with IE <9
+		//		$response->headers->set('Pragma', 'public');
+		//		$response->headers->set('Cache-Control', 'maxage=1');
+		//
+		//		return $response;
 	}
 }
