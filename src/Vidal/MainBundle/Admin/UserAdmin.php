@@ -42,7 +42,7 @@ class UserAdmin extends Admin
 			->add('lastName', null, array('label' => 'Фамилия', 'required' => true))
 			->add('surName', null, array('label' => 'Отчество', 'required' => false))
 			->add('ConfirmationScan', 'iphp_file', array('label' => 'Файл подтверждения', 'required' => false))
-			->add('Confirmation', 'checkbox', array('label' => 'Подтвержденный', 'required' => false))
+			->add('Confirmation', null, array('label' => 'Подтвержденный', 'required' => false))
 
 			->add($formMapper->create('city', 'text', array(
 				'label' => 'Город',
@@ -88,7 +88,7 @@ class UserAdmin extends Admin
 			->add('region', 'doctrine_orm_choice', array('label' => 'Область'), 'choice', array('choices' => $regionChoices))
 			->add('country', 'doctrine_orm_choice', array('label' => 'Страна'), 'choice', array('choices' => $countryChoices))
 			->add('emailConfirmed', null, array('label' => 'e-mail подтвержден'))
-			->add('oldUser', 'checkbox', array('label' => 'Со старого сайта'));
+			->add('oldUser', null, array('label' => 'Со старого сайта'));
 		;
 	}
 
