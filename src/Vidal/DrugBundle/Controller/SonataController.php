@@ -487,8 +487,89 @@ class SonataController extends Controller
 			$stmt->execute();
 		}
 
+		# проставляем тег у новостей фарм-компаний
+		$pharmArticles = $em->createQuery('
+			SELECT a.id
+			FROM VidalDrugBundle:PharmArticle a
+			WHERE a.text LIKE :text
+		')->setParameter('text', '%' . $text . '%')->getResult();
+
+		foreach ($pharmArticles as $p) {
+			$id   = $p['id'];
+			$stmt = $pdo->prepare("INSERT IGNORE INTO pharm_article_tag (tag_id, pharm_article_id) VALUES ($tagId, $id)");
+			$stmt->execute();
+		}
+
+		# добавляем для админки сонаты оповещение
 		$this->get('session')->getFlashbag()->add('tag_set', '');
 
 		return $this->redirect($this->generateUrl('admin_vidal_drug_tag_edit', array('id' => $tagId)));
+	}
+
+	/** @Route("/admin/users-excel", name="users_excel") */
+	public function usersExcelAction()
+	{
+		$em           = $this->getDoctrine()->getManager();
+		$excelService = $this->get('xls.service_xls5');
+
+		$users = $em->getRepository('VidalMainBundle:User')->findUsersExcel();
+
+
+		############################################################################################################
+
+		$eventSpecialties = $em->getRepository('EvrikaMainBundle:Event')->findSpecialtiesByEventIds($eventIds);
+		$title            = "Выгрузка событий Эврики за $year год";
+
+		$excelService->excelObj->getProperties()->setCreator("Evrika.ru")
+			->setLastModifiedBy("Evrika.ru")
+			->setTitle($title)
+			->setSubject($title)
+			->setDescription($title);
+
+		$excelService->excelObj->setActiveSheetIndex(0)
+			->setCellValue('A1', 'Событие')
+			->setCellValue('B1', 'Начинается')
+			->setCellValue('C1', 'Заканчивается')
+			->setCellValue('D1', 'Специальности')
+			->setCellValue('E1', 'Ссылка');
+
+		$worksheet = $excelService->excelObj->getActiveSheet();
+		$worksheet->getColumnDimension('A')->setAutoSize('true');
+		$worksheet->getColumnDimension('B')->setAutoSize('true');
+		$worksheet->getColumnDimension('C')->setAutoSize('true');
+		$worksheet->getColumnDimension('D')->setAutoSize('true');
+		$worksheet->getColumnDimension('E')->setAutoSize('true');
+
+		$worksheet->getStyle('A1')->getFont()->getColor()->setRGB('FF0000');
+		$worksheet->getStyle('B1')->getFont()->getColor()->setRGB('FF0000');
+		$worksheet->getStyle('C1')->getFont()->getColor()->setRGB('FF0000');
+		$worksheet->getStyle('D1')->getFont()->getColor()->setRGB('FF0000');
+		$worksheet->getStyle('E1')->getFont()->getColor()->setRGB('FF0000');
+
+		for ($i = 0; $i < count($events); $i++) {
+			$key = $events[$i]['id'];
+			$excelService->excelObj->setActiveSheetIndex(0)
+				->setCellValue('A' . ($i + 2), $events[$i]['title'])
+				->setCellValue('B' . ($i + 2), $events[$i]['starts'] ? $events[$i]['starts']->format('d.m.Y') : '')
+				->setCellValue('C' . ($i + 2), $events[$i]['ends'] ? $events[$i]['ends']->format('d.m.Y') : '')
+				->setCellValue('D' . ($i + 2), $eventSpecialties[$key])
+				->setCellValue('E' . ($i + 2), $events[$i]['sourceUrl']);
+		}
+
+		$excelService->excelObj->getActiveSheet()->setTitle('События');
+		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+		$excelService->excelObj->setActiveSheetIndex(0);
+
+		//create the response
+		$filename = "Evrika.ru: события за $year год.xls";
+		$response = $excelService->getResponse();
+		$response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+		$response->headers->set('Content-Disposition', "attachment;filename=\"$filename\"");
+
+		// If you are using a https connection, you have to set those two headers and use sendHeaders() for compatibility with IE <9
+		$response->headers->set('Pragma', 'public');
+		$response->headers->set('Cache-Control', 'maxage=1');
+
+		return $response;
 	}
 }

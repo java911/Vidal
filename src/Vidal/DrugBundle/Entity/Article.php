@@ -41,7 +41,7 @@ class Article extends BaseEntity
 	protected $link;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Nozology", inversedBy="articles")
+	 * @ORM\ManyToMany(targetEntity="Nozology", inversedBy="articles", orphanRemoval=true)
 	 * @ORM\JoinTable(name="article_n",
 	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")})
@@ -49,7 +49,7 @@ class Article extends BaseEntity
 	protected $nozologies;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Molecule", inversedBy="articles")
+	 * @ORM\ManyToMany(targetEntity="Molecule", inversedBy="articles", orphanRemoval=true)
 	 * @ORM\JoinTable(name="article_molecule",
 	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")})
@@ -57,7 +57,7 @@ class Article extends BaseEntity
 	protected $molecules;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Document", inversedBy="articles")
+	 * @ORM\ManyToMany(targetEntity="Document", inversedBy="articles", orphanRemoval=true)
 	 * @ORM\JoinTable(name="article_document",
 	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})
@@ -65,7 +65,7 @@ class Article extends BaseEntity
 	protected $documents;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="articles")
+	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="articles", orphanRemoval=true)
 	 * @ORM\JoinTable(name="article_atc",
 	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ATCCode", referencedColumnName="ATCCode")})
@@ -73,7 +73,7 @@ class Article extends BaseEntity
 	protected $atcCodes;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="InfoPage", inversedBy="articles")
+	 * @ORM\ManyToMany(targetEntity="InfoPage", inversedBy="articles", orphanRemoval=true)
 	 * @ORM\JoinTable(name="article_infopage",
 	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")})
@@ -110,7 +110,7 @@ class Article extends BaseEntity
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $subclassId;
 
-	/** @ORM\ManyToMany(targetEntity="Tag", inversedBy="articles") */
+	/** @ORM\ManyToMany(targetEntity="Tag", inversedBy="articles", orphanRemoval=true) */
 	protected $tags;
 
 	/**

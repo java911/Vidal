@@ -323,7 +323,6 @@ class ProductRepository extends EntityRepository
 		$qb->andWhere('p.ProductTypeCode IN (:productTypes)')
 			->setParameter('productTypes', $productTypes);
 
-		$q     = str_replace('-', ' ', $q);
 		$words = explode(' ', $q);
 
 		# поиск по всем словам вместе
