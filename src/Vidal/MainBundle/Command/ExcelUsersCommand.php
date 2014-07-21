@@ -1,5 +1,5 @@
 <?php
-namespace Vidal\DrugBundle\Command;
+namespace Vidal\MainBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,9 +17,9 @@ class ExcelUsersCommand extends ContainerAwareCommand
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		ini_set('memory_limit', -1);
-		$output->writeln('--- vidal:excel_users');
+		$output->writeln('--- vidal:excel_users started');
 
-		$em             = $this->getContainer()->get('doctrine')->getManager('drug');
+		$em             = $this->getContainer()->get('doctrine')->getManager();
 		$users          = $em->getRepository('VidalMainBundle:User')->findUsersExcel();
 		$phpExcelObject = $this->getContainer()->get('phpexcel')->createPHPExcelObject();
 
@@ -51,10 +51,11 @@ class ExcelUsersCommand extends ContainerAwareCommand
 			->setCellValue('T1', 'Стаж')
 			->setCellValue('U1', 'Достижения')
 			->setCellValue('V1', 'Публикации')
-			->setCellValue('W1', 'О себе');
+			->setCellValue('W1', 'О себе')
+			->setCellValue('X1', 'Со старого сайта');
 
 		$worksheet = $phpExcelObject->getActiveSheet();
-		$alphabet  = explode(' ', 'A B C D E F G H I J K L N O P Q R S T U V W');
+		$alphabet  = explode(' ', 'A B C D E F G H I J K L N O P Q R S T U V W X');
 		foreach ($alphabet as $letter) {
 			$worksheet->getColumnDimension($letter)->setAutoSize('true');
 		}
@@ -84,14 +85,17 @@ class ExcelUsersCommand extends ContainerAwareCommand
 				->setCellValue("T{$index}", $users[$i]['jobStage'])
 				->setCellValue("U{$index}", $users[$i]['jobAchievements'])
 				->setCellValue("V{$index}", $users[$i]['jobPublications'])
-				->setCellValue("W{$index}", $users[$i]['about']);
+				->setCellValue("W{$index}", $users[$i]['about'])
+				->setCellValue("X{$index}", $users[$i]['oldUser'] ? 'Да' : 'Нет');
 		}
 
 		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 		$phpExcelObject->setActiveSheetIndex(0);
 
-		$file   = '/home/twigavid/vidal/download/users.xls';
-		$writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
+		$file   = $this->getContainer()->get('kernel')->getRootDir() . DIRECTORY_SEPARATOR . '..'
+			. DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR . 'users.xls';
+
+		$writer = $this->getContainer()->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
 		$writer->save($file);
 
 		$output->writeln("+++ vidal:excel_users completed!");
