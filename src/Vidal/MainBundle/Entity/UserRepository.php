@@ -36,7 +36,9 @@ class UserRepository extends EntityRepository
 		 	LEFT JOIN u.region re
 		 	LEFT JOIN u.country co
 		 	ORDER BY u.id ASC
-		')->getResult();
+		')
+			//->setMaxResults(1000)
+			->getResult();
 
 		return $users;
 	}

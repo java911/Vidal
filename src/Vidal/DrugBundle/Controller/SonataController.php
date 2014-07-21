@@ -509,6 +509,8 @@ class SonataController extends Controller
 	/** @Route("/admin/users-excel", name="users_excel") */
 	public function usersExcelAction()
 	{
+		ini_set('memory_limit', -1);
+		set_time_limit(0);
 		$em = $this->getDoctrine()->getManager();
 
 		$users = $em->getRepository('VidalMainBundle:User')->findUsersExcel();
@@ -552,86 +554,39 @@ class SonataController extends Controller
 			$worksheet->getColumnDimension($letter)->setAutoSize('true');
 		}
 
-		for ($i = 0; $i < 100; $i++) {
+		for ($i = 0; $i < count($users); $i++) {
 			$index = $i + 2;
 			$worksheet
 				->setCellValue("A{$index}", $users[$i]['username'])
 				->setCellValue("B{$index}", $users[$i]['lastName'])
 				->setCellValue("C{$index}", $users[$i]['firstName'])
 				->setCellValue("D{$index}", $users[$i]['surName'])
-			;
+				->setCellValue("E{$index}", $users[$i]['primarySpecialty'])
+				->setCellValue("F{$index}", $users[$i]['secondarySpecialty'])
+				->setCellValue("G{$index}", $users[$i]['specialization'])
+				->setCellValue("H{$index}", $users[$i]['university'])
+				->setCellValue("I{$index}", $users[$i]['school'])
+				->setCellValue("J{$index}", $users[$i]['graduateYear'] ? $users[$i]['graduateYear']->format('Y') : null)
+				->setCellValue("K{$index}", $users[$i]['educationType'])
+				->setCellValue("L{$index}", $users[$i]['academicDegree'])
+				->setCellValue("M{$index}", $users[$i]['birthdate'] ? $users[$i]['birthdate']->format('d.m.Y') : null)
+				->setCellValue("N{$index}", $users[$i]['phone'])
+				->setCellValue("N{$index}", $users[$i]['icq'])
+				->setCellValue("P{$index}", $users[$i]['dissertation'])
+				->setCellValue("Q{$index}", $users[$i]['professionalInterests'])
+				->setCellValue("R{$index}", $users[$i]['jobPlace'])
+				->setCellValue("S{$index}", $users[$i]['jobPosition'])
+				->setCellValue("T{$index}", $users[$i]['jobStage'])
+				->setCellValue("U{$index}", $users[$i]['jobAchievements'])
+				->setCellValue("V{$index}", $users[$i]['jobPublications'])
+				->setCellValue("W{$index}", $users[$i]['about']);
 		}
 
 		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 		$phpExcelObject->setActiveSheetIndex(0);
 
-		// create the writer
+		$file   = '/home/twigavid/vidal/download/users.xls';
 		$writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
-		// create the response
-		$response = $this->get('phpexcel')->createStreamedResponse($writer);
-		// adding headers
-		$response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-		$response->headers->set('Content-Disposition', 'attachment;filename=stream-file.xls');
-		$response->headers->set('Pragma', 'public');
-		$response->headers->set('Cache-Control', 'maxage=1');
-
-		return $response;
-
-		############################################################################################################
-
-		//		$eventSpecialties = $em->getRepository('EvrikaMainBundle:Event')->findSpecialtiesByEventIds($eventIds);
-		//		$title            = "Выгрузка событий Эврики за $year год";
-		//
-		//		$excelService->excelObj->getProperties()->setCreator("Evrika.ru")
-		//			->setLastModifiedBy("Evrika.ru")
-		//			->setTitle($title)
-		//			->setSubject($title)
-		//			->setDescription($title);
-		//
-		//		$excelService->excelObj->setActiveSheetIndex(0)
-		//			->setCellValue('A1', 'Событие')
-		//			->setCellValue('B1', 'Начинается')
-		//			->setCellValue('C1', 'Заканчивается')
-		//			->setCellValue('D1', 'Специальности')
-		//			->setCellValue('E1', 'Ссылка');
-		//
-		//		$worksheet = $excelService->excelObj->getActiveSheet();
-		//		$worksheet->getColumnDimension('A')->setAutoSize('true');
-		//		$worksheet->getColumnDimension('B')->setAutoSize('true');
-		//		$worksheet->getColumnDimension('C')->setAutoSize('true');
-		//		$worksheet->getColumnDimension('D')->setAutoSize('true');
-		//		$worksheet->getColumnDimension('E')->setAutoSize('true');
-		//
-		//		$worksheet->getStyle('A1')->getFont()->getColor()->setRGB('FF0000');
-		//		$worksheet->getStyle('B1')->getFont()->getColor()->setRGB('FF0000');
-		//		$worksheet->getStyle('C1')->getFont()->getColor()->setRGB('FF0000');
-		//		$worksheet->getStyle('D1')->getFont()->getColor()->setRGB('FF0000');
-		//		$worksheet->getStyle('E1')->getFont()->getColor()->setRGB('FF0000');
-		//
-		//		for ($i = 0; $i < count($events); $i++) {
-		//			$key = $events[$i]['id'];
-		//			$excelService->excelObj->setActiveSheetIndex(0)
-		//				->setCellValue('A' . ($i + 2), $events[$i]['title'])
-		//				->setCellValue('B' . ($i + 2), $events[$i]['starts'] ? $events[$i]['starts']->format('d.m.Y') : '')
-		//				->setCellValue('C' . ($i + 2), $events[$i]['ends'] ? $events[$i]['ends']->format('d.m.Y') : '')
-		//				->setCellValue('D' . ($i + 2), $eventSpecialties[$key])
-		//				->setCellValue('E' . ($i + 2), $events[$i]['sourceUrl']);
-		//		}
-		//
-		//		$excelService->excelObj->getActiveSheet()->setTitle('События');
-		//		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
-		//		$excelService->excelObj->setActiveSheetIndex(0);
-		//
-		//		//create the response
-		//		$filename = "Evrika.ru: события за $year год.xls";
-		//		$response = $excelService->getResponse();
-		//		$response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-		//		$response->headers->set('Content-Disposition', "attachment;filename=\"$filename\"");
-		//
-		//		// If you are using a https connection, you have to set those two headers and use sendHeaders() for compatibility with IE <9
-		//		$response->headers->set('Pragma', 'public');
-		//		$response->headers->set('Cache-Control', 'maxage=1');
-		//
-		//		return $response;
+		$writer->save($file);
 	}
 }

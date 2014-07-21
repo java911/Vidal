@@ -39,20 +39,26 @@ class InfoController extends Controller
 			return $this->redirect($this->generateUrl('no_download', array('filename' => $filename)));
 		}
 
-		$filename = str_replace('/', '', $filename);
-		$path     = '/home/twigavid/vidal/download/' . $filename;
+		if ($filename == 'users.xls') {
+			exit;
+		}
+
+		$filename    = str_replace('/', '', $filename);
+		$path        = '/home/twigavid/vidal/download/' . $filename;
+		$contentType = 'application/octet-stream';
+
+		if (preg_match('/^(.+)\\.zip$/i', $filename)) {
+			$contentType = 'application/zip';
+		}
+
+		if (!file_exists($path)) {
+			throw $this->createNotFoundException();
+		}
 
 		header('X-Sendfile: ' . $path);
+		header('Content-Type: ' . $contentType);
 		header('Content-Disposition: attachment; filename="' . $filename . '"');
-		header('Content-Type ');
 		exit;
-
-//		$response = new Response();
-//		$response->headers->set('X-Sendfile', $path);
-//		$response->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '"');
-//		$response->headers->set('Content-Type', 'application/octet-stream');
-//
-//		return $response;
 	}
 
 	/**
