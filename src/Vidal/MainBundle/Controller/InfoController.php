@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Lsw\SecureControllerBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class InfoController extends Controller
 {
@@ -31,9 +32,16 @@ class InfoController extends Controller
 		);
 	}
 
-	/**
-	 * @Route("/download/{filename}", name="download")
-	 */
+	/** @Route("/check-keyvalue/{key}/{value}", name="check_keyvalue", options={"expose":true}) */
+	public function checkValue($key, $value)
+	{
+		$em      = $this->getDoctrine()->getManager();
+		$isMatch = $em->getRepository('VidalMainBundle:KeyValue')->checkMatch($key, $value);
+
+		return new JsonResponse($isMatch);
+	}
+
+	/** @Route("/download/{filename}", name="download", options={"expose":true}) */
 	public function downloadAction(Request $request, $filename)
 	{
 		if (!$this->get('security.context')->isGranted('ROLE_DOCTOR')) {
@@ -53,6 +61,9 @@ class InfoController extends Controller
 
 		if (preg_match('/^(.+)\\.zip$/i', $filename)) {
 			$contentType = 'application/zip';
+		}
+		elseif (preg_match('/^(.+)\\.xls$/i', $filename)) {
+			$contentType = 'application/vnd.ms-excel';
 		}
 
 		if (!file_exists($path)) {

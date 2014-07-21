@@ -52,7 +52,8 @@ class ExcelUsersCommand extends ContainerAwareCommand
 			->setCellValue('U1', 'Достижения')
 			->setCellValue('V1', 'Публикации')
 			->setCellValue('W1', 'О себе')
-			->setCellValue('X1', 'Со старого сайта');
+			->setCellValue('X1', 'Со старого сайта')
+			->setCellValue('Y1', 'Зарегистрирован');
 
 		$worksheet = $phpExcelObject->getActiveSheet();
 		$alphabet  = explode(' ', 'A B C D E F G H I J K L N O P Q R S T U V W X');
@@ -86,13 +87,14 @@ class ExcelUsersCommand extends ContainerAwareCommand
 				->setCellValue("U{$index}", $users[$i]['jobAchievements'])
 				->setCellValue("V{$index}", $users[$i]['jobPublications'])
 				->setCellValue("W{$index}", $users[$i]['about'])
-				->setCellValue("X{$index}", $users[$i]['oldUser'] ? 'Да' : 'Нет');
+				->setCellValue("X{$index}", $users[$i]['oldUser'] ? 'Да' : 'Нет')
+				->setCellValue("Y{$index}", $users[$i]['created'] ? $users[$i]['created']->format('d.m.Y') : null);
 		}
 
 		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 		$phpExcelObject->setActiveSheetIndex(0);
 
-		$file   = $this->getContainer()->get('kernel')->getRootDir() . DIRECTORY_SEPARATOR . '..'
+		$file = $this->getContainer()->get('kernel')->getRootDir() . DIRECTORY_SEPARATOR . '..'
 			. DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR . 'users.xls';
 
 		$writer = $this->getContainer()->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');

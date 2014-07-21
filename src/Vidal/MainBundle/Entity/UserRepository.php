@@ -26,7 +26,7 @@ class UserRepository extends EntityRepository
 		 		uni.title as university, u.school,
 		 		u.graduateYear, u.birthdate, u.academicDegree, u.phone, u.icq, u.educationType,
 		 		u.dissertation, u.professionalInterests, u.jobPlace, u.jobSite, u.jobPosition, u.jobStage,
-		 		u.jobAchievements, u.jobPublications, u.about, u.oldUser
+		 		u.jobAchievements, u.jobPublications, u.about, u.oldUser, u.created
 		 	FROM VidalMainBundle:User u
 		 	LEFT JOIN u.specialization s
 		 	LEFT JOIN u.primarySpecialty ps
