@@ -87,7 +87,7 @@ class Art extends BaseEntity
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $priority;
 
-	/** @ORM\ManyToMany(targetEntity="Tag", inversedBy="arts", orphanRemoval=true) */
+	/** @ORM\ManyToMany(targetEntity="Tag", inversedBy="arts") */
 	protected $tags;
 
 	/**

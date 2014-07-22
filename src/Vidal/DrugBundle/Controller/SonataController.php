@@ -380,6 +380,31 @@ class SonataController extends Controller
 		return $this->redirect($this->generateUrl('admin_vidal_drug_product_edit', array('id' => $newProductID)));
 	}
 
+	/** @Route("/tag-clean/{tagId}", name="tag_clean", options={"expose":true}) */
+	public function tagCleanAction($tagId)
+	{
+		$em  = $this->getDoctrine()->getManager('drug');
+		$tag = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
+
+		if (!$tag) {
+			throw $this->createNotFoundException();
+		}
+
+		$pdo = $em->getConnection();
+
+		$tagId = $tag->getId();
+		$tables = explode(' ', 'art_tag article_tag publication_tag pharmarticle_tag');
+		foreach ($tables as $table) {
+			$stmt = $pdo->prepare("DELETE FROM $table WHERE tag_id = $tagId");
+			$stmt->execute();
+		}
+
+		# добавляем для админки сонаты оповещение
+		$this->get('session')->getFlashbag()->add('tag_clean', '');
+
+		return $this->redirect($this->generateUrl('admin_vidal_drug_tag_edit', array('id' => $tagId)));
+	}
+
 	/** @Route("/tag-set/{tagId}", name="tag_set", options={"expose":true}) */
 	public function tagSetAction($tagId)
 	{
@@ -397,10 +422,16 @@ class SonataController extends Controller
 		$articles = $em->createQuery('
 			SELECT a.id
 			FROM VidalDrugBundle:Article a
-			WHERE a.title LIKE :text
-				OR a.announce LIKE :text
-				OR a.body LIKE :text
-		')->setParameter('text', '%' . $text . '%')->getResult();
+			WHERE (a.title LIKE :text1 OR a.title LIKE :text2 OR a.title LIKE :text3 OR a.title LIKE :text4 OR a.title LIKE :text5)
+				OR (a.announce LIKE :text1 OR a.announce LIKE :text2 OR a.announce LIKE :text3 OR a.announce LIKE :text4 OR a.announce LIKE :text5)
+				OR (a.body LIKE :text1 OR a.body LIKE :text2 OR a.body LIKE :text3 OR a.body LIKE :text4 OR a.body LIKE :text5)
+		')->setParameters(array(
+				'text1' => '% ' . $text . '%',
+				'text2' => '%"' . $text . '%',
+				'text3' => '%,' . $text . '%',
+				'text4' => '%.' . $text . '%',
+				'text5' => '%(' . $text . '%',
+			))->getResult();
 
 		foreach ($articles as $a) {
 			$id   = $a['id'];
@@ -412,10 +443,16 @@ class SonataController extends Controller
 		$arts = $em->createQuery('
 			SELECT a.id
 			FROM VidalDrugBundle:Art a
-			WHERE a.title LIKE :text
-				OR a.announce LIKE :text
-				OR a.body LIKE :text
-		')->setParameter('text', '%' . $text . '%')->getResult();
+			WHERE (a.title LIKE :text1 OR a.title LIKE :text2 OR a.title LIKE :text3 OR a.title LIKE :text4 OR a.title LIKE :text5)
+				OR (a.announce LIKE :text1 OR a.announce LIKE :text2 OR a.announce LIKE :text3 OR a.announce LIKE :text4 OR a.announce LIKE :text5)
+				OR (a.body LIKE :text1 OR a.body LIKE :text2 OR a.body LIKE :text3 OR a.body LIKE :text4 OR a.body LIKE :text5)
+		')->setParameters(array(
+				'text1' => '% ' . $text . '%',
+				'text2' => '%"' . $text . '%',
+				'text3' => '%,' . $text . '%',
+				'text4' => '%.' . $text . '%',
+				'text5' => '%(' . $text . '%',
+			))->getResult();
 
 		foreach ($arts as $a) {
 			$id   = $a['id'];
@@ -427,10 +464,16 @@ class SonataController extends Controller
 		$publications = $em->createQuery('
 			SELECT a.id
 			FROM VidalDrugBundle:Publication a
-			WHERE a.title LIKE :text
-				OR a.announce LIKE :text
-				OR a.body LIKE :text
-		')->setParameter('text', '%' . $text . '%')->getResult();
+			WHERE (a.title LIKE :text1 OR a.title LIKE :text2 OR a.title LIKE :text3 OR a.title LIKE :text4 OR a.title LIKE :text5)
+				OR (a.announce LIKE :text1 OR a.announce LIKE :text2 OR a.announce LIKE :text3 OR a.announce LIKE :text4 OR a.announce LIKE :text5)
+				OR (a.body LIKE :text1 OR a.body LIKE :text2 OR a.body LIKE :text3 OR a.body LIKE :text4 OR a.body LIKE :text5)
+		')->setParameters(array(
+				'text1' => '% ' . $text . '%',
+				'text2' => '%"' . $text . '%',
+				'text3' => '%,' . $text . '%',
+				'text4' => '%.' . $text . '%',
+				'text5' => '%(' . $text . '%',
+			))->getResult();
 
 		foreach ($publications as $p) {
 			$id   = $p['id'];
@@ -442,8 +485,14 @@ class SonataController extends Controller
 		$pharmArticles = $em->createQuery('
 			SELECT a.id
 			FROM VidalDrugBundle:PharmArticle a
-			WHERE a.text LIKE :text
-		')->setParameter('text', '%' . $text . '%')->getResult();
+			WHERE a.text LIKE :text1 OR a.text LIKE :text2 OR a.text LIKE :text3 OR a.text LIKE :text4 OR a.text LIKE :text5
+		')->setParameters(array(
+				'text1' => '% ' . $text . '%',
+				'text2' => '%"' . $text . '%',
+				'text3' => '%,' . $text . '%',
+				'text4' => '%.' . $text . '%',
+				'text5' => '%(' . $text . '%',
+			))->getResult();
 
 		foreach ($pharmArticles as $p) {
 			$id   = $p['id'];

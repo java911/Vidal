@@ -75,7 +75,7 @@ class Publication extends BaseEntity
 	 */
 	protected $infoPages;
 
-	/** @ORM\ManyToMany(targetEntity="Tag", inversedBy="publications", orphanRemoval=true) */
+	/** @ORM\ManyToMany(targetEntity="Tag", inversedBy="publications") */
 	protected $tags;
 
 	/**
