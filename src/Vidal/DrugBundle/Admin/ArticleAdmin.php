@@ -24,7 +24,7 @@ class ArticleAdmin extends Admin
 				'_page'       => 1,
 				'_per_page'   => 25,
 				'_sort_order' => 'DESC',
-				'_sort_by'    => 'created'
+				'_sort_by'    => 'date'
 			);
 		}
 	}
