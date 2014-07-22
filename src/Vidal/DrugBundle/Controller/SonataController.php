@@ -227,55 +227,6 @@ class SonataController extends Controller
 		exit;
 	}
 
-	/**
-	 * @Route("/email1", name="email1")
-	 */
-	public function email1Action()
-	{
-		$templating = $this->container->get('templating');
-		$em         = $this->getDoctrine()->getManager('drug');
-
-		# получаем список адресов по рассылке
-		//		$doctors = $em->createQuery('
-		//			SELECT u.username
-		//			FROM VidalMainBundle:User u
-		//		')->getResult();
-		//
-		//		$emails = array();
-		//		foreach ($doctors as $doctor) {
-		//			$emails[] = $doctor['username'];
-		//		}
-
-		# разметка дайджеста
-		$subject = 'Тестовая рассылка';
-		$html    = $templating->render('VidalMainBundle:Email:email.html.twig');
-
-		#testing
-		$emails = array(
-			'si-bu@yandex.ru',
-			'feijfrdug@mail.ru',
-			'ovshum@rambler.ru',
-			'm.yudintseva@vidal.ru',
-			'alfa__omega@mail.ru',
-			'meola243@gmail.com',
-			'tan-zh@yandex.ru',
-			'7binary@bk.ru',
-			'7binary@gmail.com',
-		);
-
-		# рассылка по 100 пользователям за цикл
-		for ($i = 0, $c = count($emails); $i < $c; $i++) {
-			$result = $this->send($emails[$i], $html, $subject);
-
-			if ($i && ($i % 50) == 0) {
-				sleep(30);
-			}
-		}
-
-		echo 'OK';
-		exit;
-	}
-
 	public function send($email, $html, $subject)
 	{
 		$mail = new \PHPMailer();
@@ -496,7 +447,7 @@ class SonataController extends Controller
 
 		foreach ($pharmArticles as $p) {
 			$id   = $p['id'];
-			$stmt = $pdo->prepare("INSERT IGNORE INTO pharm_article_tag (tag_id, pharm_article_id) VALUES ($tagId, $id)");
+			$stmt = $pdo->prepare("INSERT IGNORE INTO pharmarticle_tag (tag_id, pharmarticle_id) VALUES ($tagId, $id)");
 			$stmt->execute();
 		}
 
