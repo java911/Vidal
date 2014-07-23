@@ -120,7 +120,7 @@ class ArtAdmin extends Admin
 					'attr'         => array('class' => 'doc'),
 				))->addModelTransformer($documentTransformer)
 			)
-			->add('date', null, array('label' => 'Дата создания', 'required' => true))
+			->add('date', null, array('label' => 'Дата создания', 'required' => true, 'years' => range(2000, date('Y'))))
 			->add('synonym', null, array('label' => 'Синонимы', 'required' => false, 'help' => 'Через ;'))
 			->add('metaTitle', null, array('label' => 'Мета заголовок', 'required' => false))
 			->add('metaDescription', null, array('label' => 'Мета описание', 'required' => false))

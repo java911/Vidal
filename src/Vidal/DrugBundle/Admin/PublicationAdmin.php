@@ -127,7 +127,7 @@ class PublicationAdmin extends Admin
 					'attr'         => array('class' => 'doc'),
 				))->addModelTransformer($documentTransformer)
 			)
-			->add('date', null, array('label' => 'Дата создания', 'required' => true))
+			->add('date', null, array('label' => 'Дата создания', 'required' => true, 'years' => range(2000, date('Y'))))
 			->add('video', 'iphp_file', array('label' => 'Видео', 'required' => false, 'help' => 'Загрузить флеш-видео в формате .flv'))
 			->add('enabled', null, array('label' => 'Активна', 'required' => false));
 	}
