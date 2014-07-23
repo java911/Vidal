@@ -24,7 +24,7 @@ class PharmArticle extends BaseEntity
 	protected $hidden2;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Nozology", inversedBy="pharmArticles", orphanRemoval=true)
+	 * @ORM\ManyToMany(targetEntity="Nozology", inversedBy="pharmArticles")
 	 * @ORM\JoinTable(name="pharm_article_n",
 	 *        joinColumns={@ORM\JoinColumn(name="pharm_article_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")})
@@ -32,7 +32,7 @@ class PharmArticle extends BaseEntity
 	protected $nozologies;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Molecule", inversedBy="pharmArticles", orphanRemoval=true)
+	 * @ORM\ManyToMany(targetEntity="Molecule", inversedBy="pharmArticles")
 	 * @ORM\JoinTable(name="pharm_article_molecule",
 	 *        joinColumns={@ORM\JoinColumn(name="pharm_article_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")})
@@ -40,7 +40,7 @@ class PharmArticle extends BaseEntity
 	protected $molecules;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Document", inversedBy="pharmArticles", orphanRemoval=true)
+	 * @ORM\ManyToMany(targetEntity="Document", inversedBy="pharmArticles")
 	 * @ORM\JoinTable(name="pharm_article_document",
 	 *        joinColumns={@ORM\JoinColumn(name="pharm_article_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})
@@ -48,7 +48,7 @@ class PharmArticle extends BaseEntity
 	protected $documents;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="pharmArticles", orphanRemoval=true)
+	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="pharmArticles")
 	 * @ORM\JoinTable(name="pharm_article_atc",
 	 *        joinColumns={@ORM\JoinColumn(name="pharm_article_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ATCCode", referencedColumnName="ATCCode")})
@@ -56,14 +56,14 @@ class PharmArticle extends BaseEntity
 	protected $atcCodes;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="InfoPage", inversedBy="pharmArticles", orphanRemoval=true)
+	 * @ORM\ManyToMany(targetEntity="InfoPage", inversedBy="pharmArticles")
 	 * @ORM\JoinTable(name="pharm_article_infopage",
 	 *        joinColumns={@ORM\JoinColumn(name="pharm_article_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")})
 	 */
 	protected $infoPages;
 
-	/** @ORM\ManyToMany(targetEntity="Tag", inversedBy="pharmArticles", orphanRemoval=true) */
+	/** @ORM\ManyToMany(targetEntity="Tag", inversedBy="pharmArticles") */
 	protected $tags;
 
 	public function __construct()

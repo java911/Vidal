@@ -30,7 +30,7 @@ class Art extends BaseEntity
 	protected $link;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Nozology", inversedBy="arts", orphanRemoval=true)
+	 * @ORM\ManyToMany(targetEntity="Nozology", inversedBy="arts")
 	 * @ORM\JoinTable(name="art_n",
 	 *        joinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")})
@@ -38,7 +38,7 @@ class Art extends BaseEntity
 	protected $nozologies;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Molecule", inversedBy="arts", orphanRemoval=true)
+	 * @ORM\ManyToMany(targetEntity="Molecule", inversedBy="arts")
 	 * @ORM\JoinTable(name="art_molecule",
 	 *        joinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")})
@@ -46,7 +46,7 @@ class Art extends BaseEntity
 	protected $molecules;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Document", inversedBy="arts", orphanRemoval=true)
+	 * @ORM\ManyToMany(targetEntity="Document", inversedBy="arts")
 	 * @ORM\JoinTable(name="art_document",
 	 *        joinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})
@@ -54,7 +54,7 @@ class Art extends BaseEntity
 	protected $documents;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="arts", orphanRemoval=true)
+	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="arts")
 	 * @ORM\JoinTable(name="art_atc",
 	 *        joinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ATCCode", referencedColumnName="ATCCode")})
@@ -62,7 +62,7 @@ class Art extends BaseEntity
 	protected $atcCodes;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="InfoPage", inversedBy="arts", orphanRemoval=true)
+	 * @ORM\ManyToMany(targetEntity="InfoPage", inversedBy="arts")
 	 * @ORM\JoinTable(name="art_infopage",
 	 *        joinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")})

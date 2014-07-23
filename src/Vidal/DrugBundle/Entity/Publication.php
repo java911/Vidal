@@ -36,7 +36,7 @@ class Publication extends BaseEntity
 	protected $date;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Nozology", inversedBy="publications", orphanRemoval=true)
+	 * @ORM\ManyToMany(targetEntity="Nozology", inversedBy="publications")
 	 * @ORM\JoinTable(name="publication_n",
 	 *        joinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")})
@@ -44,7 +44,7 @@ class Publication extends BaseEntity
 	protected $nozologies;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Molecule", inversedBy="publications", orphanRemoval=true)
+	 * @ORM\ManyToMany(targetEntity="Molecule", inversedBy="publications")
 	 * @ORM\JoinTable(name="publication_molecule",
 	 *        joinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")})
@@ -52,7 +52,7 @@ class Publication extends BaseEntity
 	protected $molecules;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Document", inversedBy="publications", orphanRemoval=true)
+	 * @ORM\ManyToMany(targetEntity="Document", inversedBy="publications")
 	 * @ORM\JoinTable(name="publication_document",
 	 *        joinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})
@@ -60,7 +60,7 @@ class Publication extends BaseEntity
 	protected $documents;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="publications", orphanRemoval=true)
+	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="publications")
 	 * @ORM\JoinTable(name="publication_atc",
 	 *        joinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ATCCode", referencedColumnName="ATCCode")})
@@ -68,7 +68,7 @@ class Publication extends BaseEntity
 	protected $atcCodes;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="InfoPage", inversedBy="publications", orphanRemoval=true)
+	 * @ORM\ManyToMany(targetEntity="InfoPage", inversedBy="publications")
 	 * @ORM\JoinTable(name="publication_infopage",
 	 *        joinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")})
