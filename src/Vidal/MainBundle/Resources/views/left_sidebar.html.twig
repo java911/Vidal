@@ -27,20 +27,15 @@
 		<a href="{{ path('veterinar') }}"
 		   class="{{ menu_left is defined and menu_left == 'veterinar' ? 'active' : 'dotted' }}">Ветеринария</a>
 	</li>
-	<li style="display: none">
-		<a href="{{ path('shkola') }}"
-		   class="{{ menu_left is defined and menu_left == 'shkola' ? 'active' : 'dotted' }}">Школа здоровья</a>
-	</li>
-
     <li>
-        <a href="{{ path('astrazeneca_index') }}" class="dotted">Школа гастрита</a>
+        <a href="{{ path('astrazeneca_index') }}"
+		   class="{{ menu_left is defined and menu_left == 'shkola' ? 'active' : 'dotted' }}">Школа гастрита</a>
     </li>
 
     <li>
 		<a href="/reckittbenckiser/index.html?medi" target="_blank">
 			<button class="btn-red">Без боли</button>
 		</a>
-
 	</li>
 
 

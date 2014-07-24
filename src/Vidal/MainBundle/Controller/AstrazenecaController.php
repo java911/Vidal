@@ -22,8 +22,9 @@ class AstrazenecaController extends Controller
 	public function indexAction()
 	{
 		return array(
-			'noYad' => true,
-			'title' => 'Школа гастрита',
+			'noYad'     => true,
+			'title'     => 'Школа гастрита',
+			'menu_left' => 'shkola',
 		);
 	}
 
@@ -34,8 +35,9 @@ class AstrazenecaController extends Controller
 	public function videoAction()
 	{
 		return array(
-			'noYad' => true,
-			'title' => 'Видео | Школа гастрита',
+			'noYad'     => true,
+			'title'     => 'Видео | Школа гастрита',
+			'menu_left' => 'shkola',
 		);
 	}
 
@@ -52,6 +54,7 @@ class AstrazenecaController extends Controller
 			'publications' => $em->getRepository('VidalMainBundle:AstrazenecaNew')->findAll(),
 			'noYad'        => true,
 			'title'        => 'Статьи | Школа гастрита',
+			'menu_left'    => 'shkola',
 		);
 
 		return $params;
@@ -72,9 +75,9 @@ class AstrazenecaController extends Controller
 
 		return array(
 			'publication' => $publication,
-			'menu_left'   => 'news',
 			'title'       => $this->strip($publication->getTitle()) . 'Статьи | Школа гастрита',
 			'noYad'       => true,
+			'menu_left'   => 'shkola',
 		);
 	}
 
@@ -85,8 +88,9 @@ class AstrazenecaController extends Controller
 	public function mapAction()
 	{
 		return array(
-			'noYad' => true,
-			'title' => 'Карта | Школа гастрита'
+			'noYad'     => true,
+			'title'     => 'Карта | Школа гастрита',
+			'menu_left' => 'shkola',
 		);
 	}
 
@@ -108,7 +112,12 @@ class AstrazenecaController extends Controller
 		else {
 			$coords = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaMap')->findCoords($coords);
 		}
-		return array('coords' => $coords, 'noYad' => true);
+
+		return array(
+			'coords'    => $coords,
+			'noYad'     => true,
+			'menu_left' => 'shkola',
+		);
 	}
 
 	/**
@@ -121,9 +130,10 @@ class AstrazenecaController extends Controller
 		$tests = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaTest')->findAll();
 
 		return array(
-			'tests' => $tests,
-			'noYad' => true,
-			'title' => 'Тестирование | Школа гастрита'
+			'tests'     => $tests,
+			'noYad'     => true,
+			'title'     => 'Тестирование | Школа гастрита',
+			'menu_left' => 'shkola',
 		);
 	}
 
@@ -187,6 +197,7 @@ class AstrazenecaController extends Controller
 			'questionAnswers' => $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaFaq')->findByEnabled(1),
 			'form'            => $form->createView(),
 			'noYad'           => true,
+			'menu_left'       => 'shkola',
 		);
 	}
 
@@ -202,9 +213,10 @@ class AstrazenecaController extends Controller
 		//        }
 		$faqs = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaFaq')->findAll();
 		return array(
-			'faqs'  => $faqs,
-			'noYad' => true,
-			'title' => 'Вопрос-ответ | Школа гастрита',
+			'faqs'      => $faqs,
+			'noYad'     => true,
+			'title'     => 'Вопрос-ответ | Школа гастрита',
+			'menu_left' => 'shkola',
 		);
 	}
 
@@ -241,9 +253,10 @@ class AstrazenecaController extends Controller
 		}
 
 		return array(
-			'form'  => $form->createView(),
-			'noYad' => true,
-			'title' => 'Добавить Вопрос-ответ | Школа гастрита',
+			'form'      => $form->createView(),
+			'noYad'     => true,
+			'title'     => 'Добавить Вопрос-ответ | Школа гастрита',
+			'menu_left' => 'shkola',
 		);
 	}
 
@@ -278,9 +291,10 @@ class AstrazenecaController extends Controller
 			}
 		}
 		return array(
-			'form'  => $form->createView(),
-			'noYad' => true,
-			'title' => 'Редактировать Вопрос-ответ | Школа гастрита'
+			'form'      => $form->createView(),
+			'noYad'     => true,
+			'title'     => 'Редактировать Вопрос-ответ | Школа гастрита',
+			'menu_left' => 'shkola',
 		);
 	}
 
