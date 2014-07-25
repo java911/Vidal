@@ -71,10 +71,7 @@ class TagCommand extends ContainerAwareCommand
 			$pdo->prepare("DELETE FROM pharmarticle_tag WHERE pharmarticle_id = $id")->execute();
 		}
 
-		############################################################################################
-		############################################################################################
-		############################################################################################
-		# проставляем все теги
+		#================================ проставляем все теги =====================================================
 
 		$tags = $em->createQuery('
 			SELECT t.text, t.id
@@ -86,20 +83,9 @@ class TagCommand extends ContainerAwareCommand
 			$tagId = $tag['id'];
 
 			# проставляем тег у статей энкициклопедии
-			$articles = $em->createQuery('
-					SELECT a.id
-					FROM VidalDrugBundle:Article a
-					WHERE (a.title LIKE :text1 OR a.title LIKE :text2 OR a.title LIKE :text3 OR a.title LIKE :text4 OR a.title LIKE :text5)
-						OR (a.announce LIKE :text1 OR a.announce LIKE :text2 OR a.announce LIKE :text3 OR a.announce LIKE :text4 OR a.announce LIKE :text5)
-						OR (a.body LIKE :text1 OR a.body LIKE :text2 OR a.body LIKE :text3 OR a.body LIKE :text4 OR a.body LIKE :text5)
-				')->setParameters(array(
-					'text1' => '% ' . $text . '%',
-					'text2' => '%"' . $text . '%',
-					'text3' => '%,' . $text . '%',
-					'text4' => '%.' . $text . '%',
-					'text5' => '%(' . $text . '%',
-				))->getResult();
-
+			$stmt = $pdo->prepare("SELECT id FROM article WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
+			$stmt->execute();
+			$articles = $stmt->fetchAll();
 			foreach ($articles as $a) {
 				$id   = $a['id'];
 				$stmt = $pdo->prepare("INSERT IGNORE INTO article_tag (tag_id, article_id) VALUES ($tagId, $id)");
@@ -107,62 +93,31 @@ class TagCommand extends ContainerAwareCommand
 			}
 
 			# проставляем тег у статей специалистам
-			$arts = $em->createQuery('
-					SELECT a.id
-					FROM VidalDrugBundle:Art a
-					WHERE (a.title LIKE :text1 OR a.title LIKE :text2 OR a.title LIKE :text3 OR a.title LIKE :text4 OR a.title LIKE :text5)
-						OR (a.announce LIKE :text1 OR a.announce LIKE :text2 OR a.announce LIKE :text3 OR a.announce LIKE :text4 OR a.announce LIKE :text5)
-						OR (a.body LIKE :text1 OR a.body LIKE :text2 OR a.body LIKE :text3 OR a.body LIKE :text4 OR a.body LIKE :text5)
-				')->setParameters(array(
-					'text1' => '% ' . $text . '%',
-					'text2' => '%"' . $text . '%',
-					'text3' => '%,' . $text . '%',
-					'text4' => '%.' . $text . '%',
-					'text5' => '%(' . $text . '%',
-				))->getResult();
-
-			foreach ($arts as $a) {
+			$stmt = $pdo->prepare("SELECT id FROM art WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
+			$stmt->execute();
+			$articles = $stmt->fetchAll();
+			foreach ($articles as $a) {
 				$id   = $a['id'];
 				$stmt = $pdo->prepare("INSERT IGNORE INTO art_tag (tag_id, art_id) VALUES ($tagId, $id)");
 				$stmt->execute();
 			}
 
 			# проставляем тег у новостей
-			$publications = $em->createQuery('
-					SELECT a.id
-					FROM VidalDrugBundle:Publication a
-					WHERE (a.title LIKE :text1 OR a.title LIKE :text2 OR a.title LIKE :text3 OR a.title LIKE :text4 OR a.title LIKE :text5)
-						OR (a.announce LIKE :text1 OR a.announce LIKE :text2 OR a.announce LIKE :text3 OR a.announce LIKE :text4 OR a.announce LIKE :text5)
-						OR (a.body LIKE :text1 OR a.body LIKE :text2 OR a.body LIKE :text3 OR a.body LIKE :text4 OR a.body LIKE :text5)
-				')->setParameters(array(
-					'text1' => '% ' . $text . '%',
-					'text2' => '%"' . $text . '%',
-					'text3' => '%,' . $text . '%',
-					'text4' => '%.' . $text . '%',
-					'text5' => '%(' . $text . '%',
-				))->getResult();
-
-			foreach ($publications as $p) {
-				$id   = $p['id'];
+			$stmt = $pdo->prepare("SELECT id FROM publication WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
+			$stmt->execute();
+			$articles = $stmt->fetchAll();
+			foreach ($articles as $a) {
+				$id   = $a['id'];
 				$stmt = $pdo->prepare("INSERT IGNORE INTO publication_tag (tag_id, publication_id) VALUES ($tagId, $id)");
 				$stmt->execute();
 			}
 
 			# проставляем тег у новостей фарм-компаний
-			$pharmArticles = $em->createQuery('
-					SELECT a.id
-					FROM VidalDrugBundle:PharmArticle a
-					WHERE a.text LIKE :text1 OR a.text LIKE :text2 OR a.text LIKE :text3 OR a.text LIKE :text4 OR a.text LIKE :text5
-				')->setParameters(array(
-					'text1' => '% ' . $text . '%',
-					'text2' => '%"' . $text . '%',
-					'text3' => '%,' . $text . '%',
-					'text4' => '%.' . $text . '%',
-					'text5' => '%(' . $text . '%',
-				))->getResult();
-
-			foreach ($pharmArticles as $p) {
-				$id   = $p['id'];
+			$stmt = $pdo->prepare("SELECT id FROM pharm_article WHERE text REGEXP '[[:<:]]{$text}[[:>:]]'");
+			$stmt->execute();
+			$articles = $stmt->fetchAll();
+			foreach ($articles as $a) {
+				$id   = $a['id'];
 				$stmt = $pdo->prepare("INSERT IGNORE INTO pharmarticle_tag (tag_id, pharmarticle_id) VALUES ($tagId, $id)");
 				$stmt->execute();
 			}
