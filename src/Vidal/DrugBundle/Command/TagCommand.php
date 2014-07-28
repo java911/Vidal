@@ -21,7 +21,7 @@ class TagCommand extends ContainerAwareCommand
 		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 		$output->writeln('--- vidal:tag started');
 		$pdo  = $em->getConnection();
-		$date = '2014-05-14 00:00:00';
+		$date = '2014-05-15 00:00:00';
 
 		# новости
 		$publications = $em->createQuery("
@@ -76,6 +76,8 @@ class TagCommand extends ContainerAwareCommand
 		$tags = $em->createQuery('
 			SELECT t.text, t.id
 			FROM VidalDrugBundle:Tag t
+			WHERE t.id IN (21,25,26,27,31,32,34,45,54,60,69,71,74,85,97,102,110,126,133,135,137,141,146,150,151,152,
+				153,154,165,168,171,173,169,189,) OR (t.id >= 196 AND t.id <= 499)
 		')->getResult();
 
 		foreach ($tags as $tag) {
