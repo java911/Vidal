@@ -50,17 +50,17 @@
 			t.parentNode.insertBefore(s, t);
 		})(window, document, "yandex_context_callbacks");
 
-		function yandex_context_callbacks() {
-			var urls = ['zdravzona.ru', 'rlsnet.ru', 'eapteka.ru', 'piluli.ru'];
-			var contains = [];
-			for (var i = 0; i < urls.length; i++) {
-				contains.push('.yad a:contains(' + urls[i] + ')');
-			}
-			$(contains.join(', ')).each(function(i, e) {
-				var $tr = $(this).closest('tr');
-				$tr.remove();
-			});
-		}
+//		function yandex_context_callbacks() {
+//			var urls = ['zdravzona.ru', 'rlsnet.ru', 'eapteka.ru', 'piluli.ru'];
+//			var contains = [];
+//			for (var i = 0; i < urls.length; i++) {
+//				contains.push('.yad a:contains(' + urls[i] + ')');
+//			}
+//			$(contains.join(', ')).each(function(i, e) {
+//				var $tr = $(this).closest('tr');
+//				$tr.remove();
+//			});
+//		}
 	</script>
 {% endif %}
 
