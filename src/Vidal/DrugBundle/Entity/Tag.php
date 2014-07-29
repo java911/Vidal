@@ -14,16 +14,16 @@ class Tag
 	/** @ORM\Column(length=255, unique=true) */
 	protected $text;
 
-	/** @ORM\ManyToMany(targetEntity="Article", mappedBy="tags", fetch="EXTRA_LAZY") */
+	/** @ORM\ManyToMany(targetEntity="Article", mappedBy="tags", fetch="EXTRA_LAZY", orphanRemoval=true) */
 	protected $articles;
 
-	/** @ORM\ManyToMany(targetEntity="Art", mappedBy="tags", fetch="EXTRA_LAZY") */
+	/** @ORM\ManyToMany(targetEntity="Art", mappedBy="tags", fetch="EXTRA_LAZY", orphanRemoval=true) */
 	protected $arts;
 
-	/** @ORM\ManyToMany(targetEntity="Publication", mappedBy="tags", fetch="EXTRA_LAZY") */
+	/** @ORM\ManyToMany(targetEntity="Publication", mappedBy="tags", fetch="EXTRA_LAZY", orphanRemoval=true) */
 	protected $publications;
 
-	/** @ORM\ManyToMany(targetEntity="PharmArticle", mappedBy="tags", fetch="EXTRA_LAZY") */
+	/** @ORM\ManyToMany(targetEntity="PharmArticle", mappedBy="tags", fetch="EXTRA_LAZY", orphanRemoval=true) */
 	protected $pharmArticles;
 
 	public function __construct()

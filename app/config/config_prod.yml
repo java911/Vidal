@@ -21,3 +21,8 @@ monolog:
             type:  stream
             path:  %kernel.logs_dir%/%kernel.environment%.log
             level: debug
+
+framework:
+    session:
+        save_path: '/home/twigavid/vidal/session'
+        cookie_domain: .vidal.ru

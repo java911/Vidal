@@ -571,7 +571,7 @@ class VidalController extends Controller
 		return $params;
 	}
 
-	/** @Route("/poisk_preparatov/{name}.htm", requirements={"name":"^~"}) */
+	/** @Route("/poisk_preparatov/{name}.htm", requirements={"name":"[^~]+"}) */
 	public function moleculeRedirect($name)
 	{
 		$em       = $this->getDoctrine()->getManager('drug');

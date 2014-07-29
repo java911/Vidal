@@ -227,55 +227,6 @@ class SonataController extends Controller
 		exit;
 	}
 
-	/**
-	 * @Route("/email1", name="email1")
-	 */
-	public function email1Action()
-	{
-		$templating = $this->container->get('templating');
-		$em         = $this->getDoctrine()->getManager('drug');
-
-		# получаем список адресов по рассылке
-		//		$doctors = $em->createQuery('
-		//			SELECT u.username
-		//			FROM VidalMainBundle:User u
-		//		')->getResult();
-		//
-		//		$emails = array();
-		//		foreach ($doctors as $doctor) {
-		//			$emails[] = $doctor['username'];
-		//		}
-
-		# разметка дайджеста
-		$subject = 'Тестовая рассылка';
-		$html    = $templating->render('VidalMainBundle:Email:email.html.twig');
-
-		#testing
-		$emails = array(
-			'si-bu@yandex.ru',
-			'feijfrdug@mail.ru',
-			'ovshum@rambler.ru',
-			'm.yudintseva@vidal.ru',
-			'alfa__omega@mail.ru',
-			'meola243@gmail.com',
-			'tan-zh@yandex.ru',
-			'7binary@bk.ru',
-			'7binary@gmail.com',
-		);
-
-		# рассылка по 100 пользователям за цикл
-		for ($i = 0, $c = count($emails); $i < $c; $i++) {
-			$result = $this->send($emails[$i], $html, $subject);
-
-			if ($i && ($i % 50) == 0) {
-				sleep(30);
-			}
-		}
-
-		echo 'OK';
-		exit;
-	}
-
 	public function send($email, $html, $subject)
 	{
 		$mail = new \PHPMailer();
@@ -427,5 +378,89 @@ class SonataController extends Controller
 		$this->get('session')->getFlashbag()->add('notice', '');
 
 		return $this->redirect($this->generateUrl('admin_vidal_drug_product_edit', array('id' => $newProductID)));
+	}
+
+	/** @Route("/tag-clean/{tagId}", name="tag_clean", options={"expose":true}) */
+	public function tagCleanAction($tagId)
+	{
+		$em  = $this->getDoctrine()->getManager('drug');
+		$tag = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
+
+		if (!$tag) {
+			throw $this->createNotFoundException();
+		}
+
+		$pdo = $em->getConnection();
+
+		$tagId = $tag->getId();
+		$tables = explode(' ', 'art_tag article_tag publication_tag pharmarticle_tag');
+		foreach ($tables as $table) {
+			$stmt = $pdo->prepare("DELETE FROM $table WHERE tag_id = $tagId");
+			$stmt->execute();
+		}
+
+		# добавляем для админки сонаты оповещение
+		$this->get('session')->getFlashbag()->add('tag_clean', '');
+
+		return $this->redirect($this->generateUrl('admin_vidal_drug_tag_edit', array('id' => $tagId)));
+	}
+
+	/** @Route("/tag-set/{tagId}", name="tag_set", options={"expose":true}) */
+	public function tagSetAction($tagId)
+	{
+		$em  = $this->getDoctrine()->getManager('drug');
+		$tag = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
+
+		if (!$tag) {
+			throw $this->createNotFoundException();
+		}
+
+		$text = $tag->getText();
+		$pdo  = $em->getConnection();
+
+		# проставляем тег у статей энкициклопедии
+		$stmt = $pdo->prepare("SELECT id FROM article WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
+		$stmt->execute();
+		$articles = $stmt->fetchAll();
+		foreach ($articles as $a) {
+			$id   = $a['id'];
+			$stmt = $pdo->prepare("INSERT IGNORE INTO article_tag (tag_id, article_id) VALUES ($tagId, $id)");
+			$stmt->execute();
+		}
+
+		# проставляем тег у статей специалистам
+		$stmt = $pdo->prepare("SELECT id FROM art WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
+		$stmt->execute();
+		$articles = $stmt->fetchAll();
+		foreach ($articles as $a) {
+			$id   = $a['id'];
+			$stmt = $pdo->prepare("INSERT IGNORE INTO art_tag (tag_id, art_id) VALUES ($tagId, $id)");
+			$stmt->execute();
+		}
+
+		# проставляем тег у новостей
+		$stmt = $pdo->prepare("SELECT id FROM publication WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
+		$stmt->execute();
+		$articles = $stmt->fetchAll();
+		foreach ($articles as $a) {
+			$id   = $a['id'];
+			$stmt = $pdo->prepare("INSERT IGNORE INTO publication_tag (tag_id, publication_id) VALUES ($tagId, $id)");
+			$stmt->execute();
+		}
+
+		# проставляем тег у новостей фарм-компаний
+		$stmt = $pdo->prepare("SELECT id FROM pharm_article WHERE text REGEXP '[[:<:]]{$text}[[:>:]]'");
+		$stmt->execute();
+		$articles = $stmt->fetchAll();
+		foreach ($articles as $a) {
+			$id   = $a['id'];
+			$stmt = $pdo->prepare("INSERT IGNORE INTO pharmarticle_tag (tag_id, pharmarticle_id) VALUES ($tagId, $id)");
+			$stmt->execute();
+		}
+
+		# добавляем для админки сонаты оповещение
+		$this->get('session')->getFlashbag()->add('tag_set', '');
+
+		return $this->redirect($this->generateUrl('admin_vidal_drug_tag_edit', array('id' => $tagId)));
 	}
 }

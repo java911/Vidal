@@ -53,7 +53,7 @@
 			<argument />
 		</service>
 
-		<service id="sonata.admin.tag" class="Vidal\MainBundle\Admin\UserAdmin">
+		<service id="sonata.admin.user" class="Vidal\MainBundle\Admin\UserAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="Содержимое" label="Пользователи"/>
 			<argument />
 			<argument>Vidal\MainBundle\Entity\User</argument>

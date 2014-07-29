@@ -29,6 +29,20 @@ file that was distributed with this source code.
 		</div>
 	{% endif %}
 
+	{% if app.session.flashBag.get('tag_set')|length %}
+		<div class="alert alert-success alert-dismissable">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+			Для статей и новостей был проставлен тег <b>{{ object.text }}</b>
+		</div>
+	{% endif %}
+
+	{% if app.session.flashBag.get('tag_clean')|length %}
+		<div class="alert alert-success alert-dismissable">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+			Для статей и новостей был очищен тег <b>{{ object.text }}</b>
+		</div>
+	{% endif %}
+
 	<div class="sonata-actions btn-group">
 		{% include 'SonataAdminBundle:Button:show_button.html.twig' %}
 		{% include 'SonataAdminBundle:Button:history_button.html.twig' %}
@@ -36,6 +50,7 @@ file that was distributed with this source code.
 		{% include 'SonataAdminBundle:Button:create_button.html.twig' %}
 		{% include 'SonataAdminBundle:Button:list_button.html.twig' %}
 
+		{# кпопка клонирования документа #}
 		{% if route == 'admin_vidal_drug_document_edit' %}
 			<a href="#" id="clone_document" class="btn sonata-action-element">Клонировать</a>
 			<script type="text/javascript">
@@ -53,6 +68,7 @@ file that was distributed with this source code.
 			</script>
 		{% endif %}
 
+		{# кпопка клонирования продукта #}
 		{% if route == 'admin_vidal_drug_product_edit' %}
 			<a href="#" id="clone_product" class="btn sonata-action-element">Клонировать</a>
 			<script type="text/javascript">
@@ -68,6 +84,14 @@ file that was distributed with this source code.
 					return false;
 				});
 			</script>
+		{% endif %}
+
+		{# кнопка проставления тегов по компании #}
+		{% if route == 'admin_vidal_drug_tag_edit' %}
+			<a href="{{ path('tag_clean', {'tagId':object.id}) }}" id="tag_set" class="btn sonata-action-element"
+			   title="Очистить связи тега со статьями и новостями">Очистить</a>
+			<a href="{{ path('tag_set', {'tagId':object.id}) }}" id="tag_set" class="btn sonata-action-element"
+			   title="Выставить этот тег для статей и новостей">Выставить</a>
 		{% endif %}
 	</div>
 {% endblock %}

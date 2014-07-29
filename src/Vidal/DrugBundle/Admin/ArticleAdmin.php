@@ -24,7 +24,7 @@ class ArticleAdmin extends Admin
 				'_page'       => 1,
 				'_per_page'   => 25,
 				'_sort_order' => 'DESC',
-				'_sort_by'    => 'created'
+				'_sort_by'    => 'date'
 			);
 		}
 	}
@@ -32,8 +32,9 @@ class ArticleAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$em                  = $this->getModelManager()->getEntityManager($this->getSubject());
-		$documentTransformer = new DocumentTransformer($em, $this->getSubject());
-		$tagTransformer      = new TagTransformer($em, $this->getSubject());
+		$subject             = $this->getSubject();
+		$documentTransformer = new DocumentTransformer($em, $subject);
+		$tagTransformer      = new TagTransformer($em, $subject);
 
 		$formMapper
 			->add('title', null, array('label' => 'Заголовок', 'required' => true))
@@ -119,7 +120,7 @@ class ArticleAdmin extends Admin
 					'attr'         => array('class' => 'doc'),
 				))->addModelTransformer($documentTransformer)
 			)
-			->add('date', null, array('label' => 'Дата создания', 'required' => true))
+			->add('date', null, array('label' => 'Дата создания', 'required' => true, 'years' => range(2000, date('Y'))))
 			->add('synonym', null, array('label' => 'Синонимы', 'required' => false, 'help' => 'Через ;'))
 			->add('metaTitle', null, array('label' => 'Мета заголовок', 'required' => false))
 			->add('metaDescription', null, array('label' => 'Мета описание', 'required' => false))

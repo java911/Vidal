@@ -124,7 +124,7 @@ class PharmArticleAdmin extends Admin
 					'attr'         => array('class' => 'doc'),
 				))->addModelTransformer($documentTransformer)
 			)
-			->add('created', null, array('label' => 'Дата создания', 'required' => true))
+			->add('created', null, array('label' => 'Дата создания', 'required' => true, 'years' => range(2000, date('Y'))))
 			->add('enabled', null, array('label' => 'Активна', 'required' => false));
 	}
 

@@ -12,241 +12,266 @@
 {#{% endblock %}#}
 
 {% block title %}
-    <h1>Школа гастрита</h1>
+	<h1>Школа гастрита</h1>
 {% endblock %}
 
 {% block content %}
-    <div class="menu-drugs">
-        <div class="tabs" style="width: 520px">
-            <table style="width: 100%" border="0" cellpadding="0" cellspacing="0">
-                <tr>
-                    <td style="width: 15%; text-align: center;">
-                        <a href="{{ path('astrazeneca_index') }}" >Главная</a>
-                    </td>
-                    <td style="width: 15%; text-align: center;">
-                        <a href="{{ path('astrazeneca_video') }}" class="active">Видео</a>
-                    </td>
-                    <td style="width: 15%; text-align: center;">
-                        <a href="{{ path('astrazeneca_news') }}">Статьи</a>
-                    </td>
-                    <td style="width: 20%; text-align: center;">
-                        <a href="{{ path('astrazeneca_faq') }}">Консультация</a>
-                    </td>
-                    <td style="width: 20%; text-align: center;">
-                        <a href="{{ path('astrazeneca_testing') }}" >Тестирование</a>
-                    </td>
-                    <td style="width: 15%; text-align: center;">
-                        <a href="{{ path('astrazeneca_map') }}" >Карта</a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <div style="margin-bottom:20px">
-        <b style="color: #d71344">Симптомы гастрита</b>
-        <p id="video1"><embed type="application/x-shockwave-flash" src="/players/uppod.swf" width="480" height="270" style="" id="mpl" name="mpl" quality="high" allowscriptaccess="always" allowfullscreen="true" flashvars="height=270&amp;width=480&amp;file=/upload/video/noli-1.flv&amp;bufferlength=10&amp;autostart=false&amp;enablejs=true"></p>
+	<div class="menu-drugs">
+		<div class="tabs" style="width: 520px">
+			<table style="width: 100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td style="width: 15%; text-align: center;">
+						<a href="{{ path('astrazeneca_index') }}">Главная</a>
+					</td>
+					<td style="width: 15%; text-align: center;">
+						<a href="{{ path('astrazeneca_video') }}" class="active">Видео</a>
+					</td>
+					<td style="width: 15%; text-align: center;">
+						<a href="{{ path('astrazeneca_news') }}">Статьи</a>
+					</td>
+					<td style="width: 20%; text-align: center;">
+						<a href="{{ path('astrazeneca_faq') }}">Консультация</a>
+					</td>
+					<td style="width: 20%; text-align: center;">
+						<a href="{{ path('astrazeneca_testing') }}">Тестирование</a>
+					</td>
+					<td style="width: 15%; text-align: center;">
+						<a href="{{ path('astrazeneca_map') }}">Карта</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div style="margin-bottom:20px">
+		<b style="color: #d71344">Симптомы гастрита</b>
 
-        <script src="/bundles/vidalmain/javascripts/swfobject.js" type="text/javascript"></script>
-        <script type="text/javascript">
-            var so = new SWFObject('/players/uppod.swf', 'mpl', '480', '270', '8');
-            so.addParam('allowscriptaccess', 'always');
-            so.addParam('allowfullscreen', 'true');
-            so.addVariable('height', '270');
-            so.addVariable('width', '480');
-            so.addVariable('file', '/upload/video/astrazeneca/1.flv');
-            so.addVariable('bufferlength', '10');
-            so.addVariable('autostart', 'false');
-            so.addVariable('enablejs', 'true');
-            so.write('video1');
-        </script>
-    </div>
+		<p id="video1">
+			<embed type="application/x-shockwave-flash" src="/players/uppod.swf" width="480" height="270" style=""
+				   id="mpl" name="mpl" quality="high" allowscriptaccess="always" allowfullscreen="true"
+				   flashvars="height=270&amp;width=480&amp;file=/upload/video/noli-1.flv&amp;bufferlength=10&amp;autostart=false&amp;enablejs=true">
+		</p>
 
-    <div style="margin-bottom:20px">
-        <b style="color: #d71344">Что такое гастрит</b>
-        <p id="video2"><embed type="application/x-shockwave-flash" src="/players/uppod.swf" width="480" height="270" style="" id="mpl" name="mpl" quality="high" allowscriptaccess="always" allowfullscreen="true" flashvars="height=270&amp;width=480&amp;file=/upload/video/noli-1.flv&amp;bufferlength=10&amp;autostart=false&amp;enablejs=true"></p>
+		<script src="/bundles/vidalmain/javascripts/swfobject.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			var so = new SWFObject('/players/uppod.swf', 'mpl', '480', '270', '8');
+			so.addParam('allowscriptaccess', 'always');
+			so.addParam('allowfullscreen', 'true');
+			so.addVariable('height', '270');
+			so.addVariable('width', '480');
+			so.addVariable('file', '/upload/video/astrazeneca/1_2.flv');
+			so.addVariable('bufferlength', '10');
+			so.addVariable('autostart', 'false');
+			so.addVariable('enablejs', 'true');
+			so.write('video1');
+		</script>
+	</div>
 
-        <script src="/bundles/vidalmain/javascripts/swfobject.js" type="text/javascript"></script>
-        <script type="text/javascript">
-            var so = new SWFObject('/players/uppod.swf', 'mpl', '480', '270', '8');
-            so.addParam('allowscriptaccess', 'always');
-            so.addParam('allowfullscreen', 'true');
-            so.addVariable('height', '270');
-            so.addVariable('width', '480');
-            so.addVariable('file', '/upload/video/astrazeneca/2.flv');
-            so.addVariable('bufferlength', '10');
-            so.addVariable('autostart', 'false');
-            so.addVariable('enablejs', 'true');
-            so.write('video2');
-        </script>
-    </div>
-    <div style="margin-bottom:20px">
-        <b style="color: #d71344">Язвенная болезнь</b>
-        <p id="video3"><embed type="application/x-shockwave-flash" src="/players/uppod.swf" width="480" height="270" style="" id="mpl" name="mpl" quality="high" allowscriptaccess="always" allowfullscreen="true" flashvars="height=270&amp;width=480&amp;file=/upload/video/noli-1.flv&amp;bufferlength=10&amp;autostart=false&amp;enablejs=true"></p>
+	<div style="margin-bottom:20px">
+		<b style="color: #d71344">Что такое гастрит</b>
 
-        <script src="/bundles/vidalmain/javascripts/swfobject.js" type="text/javascript"></script>
-        <script type="text/javascript">
-            var so = new SWFObject('/players/uppod.swf', 'mpl', '480', '270', '8');
-            so.addParam('allowscriptaccess', 'always');
-            so.addParam('allowfullscreen', 'true');
-            so.addVariable('height', '270');
-            so.addVariable('width', '480');
-            so.addVariable('file', '/upload/video/astrazeneca/3.flv');
-            so.addVariable('bufferlength', '10');
-            so.addVariable('autostart', 'false');
-            so.addVariable('enablejs', 'true');
-            so.write('video3');
-        </script>
-    </div>
-    <div style="margin-bottom:20px">
-        <b style="color: #d71344">Как защищаться от гастрита</b>
-        <p id="video4"><embed type="application/x-shockwave-flash" src="/players/uppod.swf" width="480" height="270" style="" id="mpl" name="mpl" quality="high" allowscriptaccess="always" allowfullscreen="true" flashvars="height=270&amp;width=480&amp;file=/upload/video/noli-1.flv&amp;bufferlength=10&amp;autostart=false&amp;enablejs=true"></p>
+		<p id="video2">
+			<embed type="application/x-shockwave-flash" src="/players/uppod.swf" width="480" height="270" style=""
+				   id="mpl" name="mpl" quality="high" allowscriptaccess="always" allowfullscreen="true"
+				   flashvars="height=270&amp;width=480&amp;file=/upload/video/noli-1.flv&amp;bufferlength=10&amp;autostart=false&amp;enablejs=true">
+		</p>
 
-        <script src="/bundles/vidalmain/javascripts/swfobject.js" type="text/javascript"></script>
-        <script type="text/javascript">
-            var so = new SWFObject('/players/uppod.swf', 'mpl', '480', '270', '8');
-            so.addParam('allowscriptaccess', 'always');
-            so.addParam('allowfullscreen', 'true');
-            so.addVariable('height', '270');
-            so.addVariable('width', '480');
-            so.addVariable('file', '/upload/video/astrazeneca/4.flv');
-            so.addVariable('bufferlength', '10');
-            so.addVariable('autostart', 'false');
-            so.addVariable('enablejs', 'true');
-            so.write('video4');
-        </script>
-    </div>
-    <div style="margin-bottom:20px">
-        <b style="color: #d71344">Почему нужно ходить к врачу</b>
-        <p id="video5"><embed type="application/x-shockwave-flash" src="/players/uppod.swf" width="480" height="270" style="" id="mpl" name="mpl" quality="high" allowscriptaccess="always" allowfullscreen="true" flashvars="height=270&amp;width=480&amp;file=/upload/video/noli-1.flv&amp;bufferlength=10&amp;autostart=false&amp;enablejs=true"></p>
+		<script src="/bundles/vidalmain/javascripts/swfobject.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			var so = new SWFObject('/players/uppod.swf', 'mpl', '480', '270', '8');
+			so.addParam('allowscriptaccess', 'always');
+			so.addParam('allowfullscreen', 'true');
+			so.addVariable('height', '270');
+			so.addVariable('width', '480');
+			so.addVariable('file', '/upload/video/astrazeneca/2.flv');
+			so.addVariable('bufferlength', '10');
+			so.addVariable('autostart', 'false');
+			so.addVariable('enablejs', 'true');
+			so.write('video2');
+		</script>
+	</div>
+	<div style="margin-bottom:20px">
+		<b style="color: #d71344">Язвенная болезнь</b>
 
-        <script src="/bundles/vidalmain/javascripts/swfobject.js" type="text/javascript"></script>
-        <script type="text/javascript">
-            var so = new SWFObject('/players/uppod.swf', 'mpl', '480', '270', '8');
-            so.addParam('allowscriptaccess', 'always');
-            so.addParam('allowfullscreen', 'true');
-            so.addVariable('height', '270');
-            so.addVariable('width', '480');
-            so.addVariable('file', '/upload/video/astrazeneca/5.flv');
-            so.addVariable('bufferlength', '10');
-            so.addVariable('autostart', 'false');
-            so.addVariable('enablejs', 'true');
-            so.write('video5');
-        </script>
-    </div>
-    <br />
-    <br />
-    Для профилактики гастрита, рекомендуем Вам проконсультироваться со специалистом. Найти специалиста рядом с Вами Вы можете с помощью <a href="{{ path('astrazeneca_map') }}">нашей карты</a>
+		<p id="video3">
+			<embed type="application/x-shockwave-flash" src="/players/uppod.swf" width="480" height="270" style=""
+				   id="mpl" name="mpl" quality="high" allowscriptaccess="always" allowfullscreen="true"
+				   flashvars="height=270&amp;width=480&amp;file=/upload/video/noli-1.flv&amp;bufferlength=10&amp;autostart=false&amp;enablejs=true">
+		</p>
+
+		<script src="/bundles/vidalmain/javascripts/swfobject.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			var so = new SWFObject('/players/uppod.swf', 'mpl', '480', '270', '8');
+			so.addParam('allowscriptaccess', 'always');
+			so.addParam('allowfullscreen', 'true');
+			so.addVariable('height', '270');
+			so.addVariable('width', '480');
+			so.addVariable('file', '/upload/video/astrazeneca/3.flv');
+			so.addVariable('bufferlength', '10');
+			so.addVariable('autostart', 'false');
+			so.addVariable('enablejs', 'true');
+			so.write('video3');
+		</script>
+	</div>
+	<div style="margin-bottom:20px">
+		<b style="color: #d71344">Как защищаться от гастрита</b>
+
+		<p id="video4">
+			<embed type="application/x-shockwave-flash" src="/players/uppod.swf" width="480" height="270" style=""
+				   id="mpl" name="mpl" quality="high" allowscriptaccess="always" allowfullscreen="true"
+				   flashvars="height=270&amp;width=480&amp;file=/upload/video/noli-1.flv&amp;bufferlength=10&amp;autostart=false&amp;enablejs=true">
+		</p>
+
+		<script src="/bundles/vidalmain/javascripts/swfobject.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			var so = new SWFObject('/players/uppod.swf', 'mpl', '480', '270', '8');
+			so.addParam('allowscriptaccess', 'always');
+			so.addParam('allowfullscreen', 'true');
+			so.addVariable('height', '270');
+			so.addVariable('width', '480');
+			so.addVariable('file', '/upload/video/astrazeneca/4.flv');
+			so.addVariable('bufferlength', '10');
+			so.addVariable('autostart', 'false');
+			so.addVariable('enablejs', 'true');
+			so.write('video4');
+		</script>
+	</div>
+	<div style="margin-bottom:20px">
+		<b style="color: #d71344">Почему нужно ходить к врачу</b>
+
+		<p id="video5">
+			<embed type="application/x-shockwave-flash" src="/players/uppod.swf" width="480" height="270" style=""
+				   id="mpl" name="mpl" quality="high" allowscriptaccess="always" allowfullscreen="true"
+				   flashvars="height=270&amp;width=480&amp;file=/upload/video/noli-1.flv&amp;bufferlength=10&amp;autostart=false&amp;enablejs=true">
+		</p>
+
+		<script src="/bundles/vidalmain/javascripts/swfobject.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			var so = new SWFObject('/players/uppod.swf', 'mpl', '480', '270', '8');
+			so.addParam('allowscriptaccess', 'always');
+			so.addParam('allowfullscreen', 'true');
+			so.addVariable('height', '270');
+			so.addVariable('width', '480');
+			so.addVariable('file', '/upload/video/astrazeneca/5.flv');
+			so.addVariable('bufferlength', '10');
+			so.addVariable('autostart', 'false');
+			so.addVariable('enablejs', 'true');
+			so.write('video5');
+		</script>
+	</div>
+	<br/>
+	<br/>
+	Для профилактики гастрита, рекомендуем Вам проконсультироваться со специалистом. Найти специалиста рядом с Вами Вы можете с помощью
+	<a href="{{ path('astrazeneca_map') }}">нашей карты</a>
 
 {% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
-    <style>
+	{{ parent() }}
+	<style>
+		.content .active {
+			background: #d71344 !important;
+		}
+		.tabs {
+			background: url("{{ asset('bundles/vidalmain/images/bg-menu.png') }}");
+		}
+		.tabs a:hover {
+			background: url("{{ asset('bundles/vidalmain/images/bg-menu2.png') }}");
+		}
+		.tabs a {
+			/*width: 100%;*/
+			display:    block;
+			text-align: center;
+			padding:    7px 0;
+		}
+		.img img {
+			width: 500px;
+		}
+		.slider {
+			width:         500px;
+			/*width: 502px;*/
+			position:      absolute;
+			overflow:      hidden;
+			border-bottom: none;
+		}
+		.sliderBox .img {
+			width: 500px;
+		}
+		.sliderBox {
+			width:    4000px;
+			overflow: hidden;
+		}
+		.sliderPanel {
+			width:      500px;
+			/*width: 502px;*/
+			min-height: 700px;
+			position:   relative;
+			/*margin: 0 auto;*/
+		}
+		.sliderBtnLeft {
+			position: absolute;
+			z-index:  999;
+			top:      150px;
+			left:     10px;
+			cursor:   pointer;
+			opacity:  0.5;
+		}
 
-        .active{
-            background: #d71344 !important;
-        }
-        .tabs{
-            background: url("{{ asset('bundles/vidalmain/images/bg-menu.png') }}");
-        }
-        .tabs a:hover{
-            background: url("{{ asset('bundles/vidalmain/images/bg-menu2.png') }}");
-        }
-        .tabs a{
-            /*width: 100%;*/
-            display: block;
-            text-align: center;
-            padding: 7px 0;
-        }
-        .img img{
-            width: 500px;
-        }
-        .slider{
-            width: 500px;
-            /*width: 502px;*/
-            position: absolute;
-            overflow: hidden;
-            border-bottom: none;
-        }
-        .sliderBox .img{
-            width: 500px;
-        }
-        .sliderBox{
-            width: 4000px;
-            overflow: hidden;
-        }
-        .sliderPanel{
-            width: 500px;
-            /*width: 502px;*/
-            min-height: 700px;
-            position: relative;
-            /*margin: 0 auto;*/
-        }
-        .sliderBtnLeft{
-            position: absolute;
-            z-index: 999;
-            top: 150px;
-            left: 10px;
-            cursor: pointer;
-            opacity: 0.5;
-        }
+		.sliderBtnRight {
+			position: absolute;
+			z-index:  999;
+			top:      150px;
+			right:    10px;
+			cursor:   pointer;
+			opacity:  0.5;
+		}
+		.sliderPanel:hover .sliderBtnLeft, .sliderPanel:hover .sliderBtnRight {
+			opacity: 1;
+		}
+		.item {
+			float: left;
+			/*border: 1px solid #CC3333;*/
+		}
+		.item .text {
+			text-align: justify;
+			color:      #444444;
+			font-size:  14px;
+			width:      480px;
+			padding:    10px;
+		}
+		.asline {
+			border-bottom: 1px solid #CCC;
+			height:        1px;
+			width:         440px;
+			margin-left:   30px;
+			margin-top:    10px;
+		}
 
-        .sliderBtnRight{
-            position: absolute;
-            z-index: 999;
-            top: 150px;
-            right: 10px;
-            cursor: pointer;
-            opacity: 0.5;
-        }
-        .sliderPanel:hover .sliderBtnLeft, .sliderPanel:hover .sliderBtnRight{
-            opacity: 1;
-        }
-        .item{
-            float: left;
-            /*border: 1px solid #CC3333;*/
-        }
-        .item .text{
-            text-align: justify;
-            color: #444444;
-            font-size: 14px;
-            width: 480px;
-            padding: 10px;
-        }
-        .asline{
-            border-bottom: 1px solid #CCC;
-            height: 1px;
-            width: 440px;
-            margin-left: 30px;
-            margin-top: 10px;
-        }
-
-    </style>
+	</style>
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-    <script>
-        $(document).ready(function(){
-            $('.sliderBtnLeft').click(function(){
-                $('.sliderBox .item').css('display','block');
-                var item = $('.sliderBox .item').eq(0);
-                $('.sliderBox .item').eq(0).fadeOut(200, function(){$('.sliderBox').append(item);});
-                //,function(){$('.sliderBox .item').eq(0).remove();}
-            });
+	{{ parent() }}
+	<script>
+		$(document).ready(function() {
+			$('.sliderBtnLeft').click(function() {
+				$('.sliderBox .item').css('display', 'block');
+				var item = $('.sliderBox .item').eq(0);
+				$('.sliderBox .item').eq(0).fadeOut(200, function() {$('.sliderBox').append(item);});
+				//,function(){$('.sliderBox .item').eq(0).remove();}
+			});
 
-            $('.sliderBtnRight').click(function(){
-                var item = $('.sliderBox .item').eq(4);
-                item.css('display','none');
-                $('.sliderBox').prepend(item);
-                item.fadeIn('slow');
-                $('.sliderBox .item').eq(5).remove();
-            });
-        });
-        setInterval(function(){
-            $('.sliderBox .item').css('display','block');
-            var item = $('.sliderBox .item').eq(0);
-            $('.sliderBox .item').eq(0).fadeOut(300, function(){$('.sliderBox').append(item);});
-        },45000);
-    </script>
+			$('.sliderBtnRight').click(function() {
+				var item = $('.sliderBox .item').eq(4);
+				item.css('display', 'none');
+				$('.sliderBox').prepend(item);
+				item.fadeIn('slow');
+				$('.sliderBox .item').eq(5).remove();
+			});
+		});
+		setInterval(function() {
+			$('.sliderBox .item').css('display', 'block');
+			var item = $('.sliderBox .item').eq(0);
+			$('.sliderBox .item').eq(0).fadeOut(300, function() {$('.sliderBox').append(item);});
+		}, 45000);
+	</script>
 {% endblock %}
