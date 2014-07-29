@@ -20,18 +20,6 @@
 {% if app.environment == 'prod' and noYad is not defined %}
 	<div id="yad_right" class="yad"></div>
 	<script type="text/javascript">
-		function yandex_context_callbacks() {
-			var urls = ['zdravzona.ru', 'rlsnet.ru', 'eapteka.ru', 'piluli.ru'];
-			var contains = [];
-			for (var i = 0; i < urls.length; i++) {
-				contains.push('.yad a:contains('+ urls[i] + ')');
-			}
-			$(contains.join(', ')).each(function(i, e) {
-				var $tr = $(this).closest('tr');
-				$tr.remove();
-			});
-		}
-
 		(function(w, d, n, s, t) {
 			w[n] = w[n] || [];
 			w[n].push(function() {
@@ -42,6 +30,7 @@
 					border_type:     "block",
 					limit:           4,
 					title_font_size: 2,
+					links_underline: false,
 					site_bg_color:   "FFFFFF",
 					bg_color:        "F3F3F3",
 					border_color:    "EEEEEE",
@@ -49,6 +38,7 @@
 					url_color:       "D71344",
 					text_color:      "666666",
 					hover_color:     "D71344",
+					sitelinks_color: "0000CC",
 					no_sitelinks:    false
 				});
 			});
@@ -59,6 +49,18 @@
 			s.async = true;
 			t.parentNode.insertBefore(s, t);
 		})(window, document, "yandex_context_callbacks");
+
+		function yandex_context_callbacks() {
+			var urls = ['zdravzona.ru', 'rlsnet.ru', 'eapteka.ru', 'piluli.ru'];
+			var contains = [];
+			for (var i = 0; i < urls.length; i++) {
+				contains.push('.yad a:contains(' + urls[i] + ')');
+			}
+			$(contains.join(', ')).each(function(i, e) {
+				var $tr = $(this).closest('tr');
+				$tr.remove();
+			});
+		}
 	</script>
 {% endif %}
 
