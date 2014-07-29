@@ -516,11 +516,16 @@ class VidalController extends Controller
 
 		$product = $em->getRepository('VidalDrugBundle:Product')->findByProductID($ProductID);
 
-		if (!$product
-			|| $product->getName() != str_replace(' ', '_', $EngName)
-			|| !in_array($product->getMarketStatusID()->getMarketStatusID(), array(1, 2, 7))
-			|| $product->getInactive() == true
-		) {
+		if (!$product) {
+			throw $this->createNotFoundException();
+		}
+
+		if ($product->getName() != str_replace(' ', '_', $EngName)) {
+			$url = $this->generateUrl('product', array('EngName' => $product->getName(), 'ProductID' => $ProductID));
+			return $this->redirect($url, 301);
+		}
+
+		if (!in_array($product->getMarketStatusID()->getMarketStatusID(), array(1, 2, 7)) || $product->getInactive()) {
 			throw $this->createNotFoundException();
 		}
 
