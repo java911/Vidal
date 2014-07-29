@@ -526,7 +526,7 @@ class VidalController extends Controller
 		}
 
 		if (!in_array($product->getMarketStatusID()->getMarketStatusID(), array(1, 2, 7)) || $product->getInactive()) {
-			throw $this->createNotFoundException();
+			return $this->render('VidalDrugBundle:Vidal:product_restricted.html.twig');
 		}
 
 		$params   = array();

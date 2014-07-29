@@ -1,0 +1,34 @@
+{% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
+
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('products') }}">
+			{{ app.request.get('from') == 'bad' ? 'Препараты и БАДы' : 'Препараты' }}
+		</a>
+	</div>
+{% endblock %}
+
+
+{% block vidal %}
+	<div class="restricted">
+		<p class="restricted-1">Извините, данный препарат недоступен,<br/>
+			так как он с аннулированной или истекшей лицензией.</p>
+
+		<p>По всем вопросам обращайтесь к администрации сайта: <a href="mailto:vidal@vidal.ru">vidal@vidal.ru</a></p>
+	</div>
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.restricted {
+			margin-top:  50px;
+			font-weight: bold;
+			font-size:   16px;
+		}
+	</style>
+{% endblock %}
