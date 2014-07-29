@@ -7,16 +7,35 @@
 
 
 {% block content %}
-	<div class="with-link">
-		<a href="{{ path('vracham_expert_cd') }}" class="linke">Электронный справочник Видаль</a>
-	</div>
-	<div class="with-link last">
-		<a href="http://vidal.cloudapp.net/mobile/" class="linke" target="_blank">Поиск аналогов по МНН</a>
-	</div>
+	<table class="links">
+		<tr>
+			<td class="with-img">
+				<a href="{{ path('vracham_expert_cd') }}">
+					<img src="{{ asset('bundles/vidalmain/images/icons/cd.jpg') }}"/>
+				</a>
+			</td>
+			<td>
+				<a href="{{ path('vracham_expert_cd') }}">Электронный справочник Видаль</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<a href="http://vidal.cloudapp.net/mobile/" target="_blank">
+					<img src="{{ asset('bundles/vidalmain/images/icons/mobile.jpg') }}"/>
+				</a>
+			</td>
+			<td>
+				<a href="http://vidal.cloudapp.net/mobile/" target="_blank">
+					Справочник Видаль и поиск аналогов по МНН с использованием облачных технологий для мобильных
+					устройств
+				</a>
+			</td>
+		</tr>
+	</table>
 
 	{% if arts is not empty %}
 		<div class="arts-title anons">
-			<span>Рекомендуем к прочтению</span>
+			<span>Рекомендуем к прочтению:</span>
 		</div>
 		<ul class="arts-items ul-style">
 			{% for art in arts %}
@@ -85,12 +104,41 @@
 		}
 		.arts-title {
 			margin-bottom: 5px;
+			font-weight:   bold;
 		}
 		.arts-items {
 			margin-bottom: 26px;
 		}
 		.arts-items li {
 			position: relative;
+		}
+		.arts-items a {
+			color: #333;
+		}
+		h1 {
+			margin-bottom: 10px;
+		}
+
+		/* links */
+		.links {
+			border-collapse: collapse;
+			width:           100%;
+		}
+		.links img {
+			width: 60px;
+		}
+		.links .with-img {
+			width:          75px;
+			padding-bottom: 10px;
+		}
+		.links a {
+			text-decoration: none;
+			color:           #2f4053;
+			font-weight:     bold;
+			font-size:       13px;
+		}
+		.links a:hover {
+			color: #d71344;
 		}
 	</style>
 {% endblock %}
