@@ -21,9 +21,12 @@ php_value date.timezone Europe/Moscow
 # startpage (path "/") because otherwise Apache will apply the rewritting rules
 # to each configured DirectoryIndex file (e.g. index.php, index.html, index.pl).
 DirectoryIndex app.php
+RewriteRule /BAD/(.*)$ /drugs [R=301,L]
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
+
+
 
     # Determine the RewriteBase automatically and set it as environment variable.
     # If you are using Apache aliases to do mass virtual hosting or installed the
