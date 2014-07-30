@@ -19,7 +19,7 @@ $(document).ready(function() {
 				}
 				query += ' }';
 				$.ajax({
-					url:      "http://twiga.vidal.ru:9200/website/autocomplete/_search",
+					url:      "http://www.vidal.ru:9200/website/autocomplete/_search",
 					type:     "POST",
 					dataType: "JSON",
 					data:     query,
