@@ -151,6 +151,24 @@ class DrugsController extends Controller
 	}
 
 	/**
+	 * @Route("/poisk_preparatov/lkf_{code}.htm", requirements={"code"=".+"})
+	 * @Route("/poisk_preparatov/kf_{code}.htm", requirements={"code"=".+"})
+	 */
+	public function kfuRedirect($code)
+	{
+		$em  = $this->getDoctrine()->getManager('drug');
+		$kfu = $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->findOneByCode($code);
+
+		if (!$kfu) {
+			throw $this->createNotFoundException();
+		}
+
+		return $this->redirect($this->generateUrl('kfu_item', array(
+			'code' => $code,
+		)), 301);
+	}
+
+	/**
 	 * Препараты по КФУ
 	 *
 	 * @Route("/drugs/clinic-pointer/{code}", name="kfu_item", options={"expose":true})
@@ -320,17 +338,6 @@ class DrugsController extends Controller
 		$q  = $request->query->get('q', null);
 		$l  = $request->query->get('l', null);
 		$p  = $request->query->get('p', 1);
-
-		//		$companies = $em->getRepository('VidalDrugBundle:PhThGroups')->getQuery()->getResult();
-		//		$letters   = array();
-		//		foreach ($companies as $company) {
-		//			$letter = mb_strtoupper(mb_substr($company->getName(), 0, 1, 'utf-8'), 'utf-8');
-		//			if (!isset($letters[$letter])) {
-		//				$letters[$letter] = '';
-		//			}
-		//		}
-		//		var_dump($letters);
-		//		exit;
 
 		if ($l) {
 			$query = $em->getRepository('VidalDrugBundle:PhThGroups')->getQueryByLetter($l);
@@ -565,18 +572,6 @@ class DrugsController extends Controller
 		$q  = $request->query->get('q', null);
 		$l  = $request->query->get('l', null);
 		$p  = $request->query->get('p', 1);
-
-		//		$companies = $em->getRepository('VidalDrugBundle:ClPhGroups')->findWithProducts();
-		//		$letters   = array();
-		//		foreach ($companies as $company) {
-		//			$letter = mb_strtoupper(mb_substr($company->getName(), 0, 1, 'utf-8'), 'utf-8');
-		//			if (!isset($letters[$letter])) {
-		//				$letters[$letter] = '';
-		//			}
-		//		}
-		//		ksort($letters);
-		//		var_dump($letters);
-		//		exit;
 
 		if ($l) {
 			$query = $em->getRepository('VidalDrugBundle:ClPhGroups')->findByLetter($l);
