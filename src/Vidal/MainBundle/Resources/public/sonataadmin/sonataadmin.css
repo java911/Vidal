@@ -164,6 +164,10 @@ input[type="text"], textarea {
 	color:      red;
 }
 
+/* tag */
 .tag img {
 	width: 14px;
+}
+.tag-text, .tag-search {
+	width: 35%;
 }

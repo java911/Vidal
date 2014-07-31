@@ -544,8 +544,7 @@ class SonataController extends Controller
 			$em->flush($tag);
 		}
 
-		echo $text;
-		exit;
+		return new Response($text);
 	}
 
 	/** @Route("/admin-tag-search", name="admin_tag_search", options={"expose":true}) */
@@ -567,7 +566,6 @@ class SonataController extends Controller
 			$em->flush($tag);
 		}
 
-		echo $search;
-		exit;
+		return new Response($search);
 	}
 }
