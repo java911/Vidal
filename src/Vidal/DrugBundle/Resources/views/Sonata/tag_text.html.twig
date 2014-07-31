@@ -1,5 +1,1 @@
-<td class="swap">
-	<a class="btn btn-swap {{ object.enabled ? 'btn-positive' : 'btn-negative' }}"
-	   href="{{ path('swap_field', {'field':'enabled', 'entity':getClass(object), 'id':object.id}) }}">
-	</a>
-</td>
+<td class="tag-text" id="{{ object.id }}" style="width:35%">{{ object.text }}</td>

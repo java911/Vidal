@@ -144,6 +144,25 @@ file that was distributed with this source code.
 	</script>
 	{% endif %}
 
+	{# список тегов - изменяем инлайн #}
+	{% if route == 'admin_vidal_drug_tag_list' %}
+	<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/jquery.jeditable.mini.js') }}"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.tag-text').editable(Routing.generate('admin_tag_editable'), {submit:'OK',width:'300px'});
+			$('.tag-search').editable(Routing.generate('admin_tag_search'), {submit:'OK',width:'300px','placeholder':''});
+			$('.tag-set').click(function() {
+				$.getJSON(this.href);
+				return false;
+			});
+			$('.tag-clean').click(function() {
+				$.getJSON(this.href);
+				return false;
+			});
+		});
+	</script>
+	{% endif %}
+
 	{# если редактируем админку со стотьями специалистам - подключаем обработчик смены списка категорий/подкатегорий #}
 	{% if route in ['admin_vidal_drug_art_edit', 'admin_vidal_drug_art_create', 'admin_vidal_drug_art_list', 'admin_vidal_drug_artcategory_create'] %}
 	<script type="text/javascript">

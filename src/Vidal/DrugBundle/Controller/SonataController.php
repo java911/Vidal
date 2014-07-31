@@ -380,8 +380,8 @@ class SonataController extends Controller
 		return $this->redirect($this->generateUrl('admin_vidal_drug_product_edit', array('id' => $newProductID)));
 	}
 
-	/** @Route("/tag-clean/{tagId}", name="tag_clean", options={"expose":true}) */
-	public function tagCleanAction($tagId)
+	/** @Route("/tag-clean/{tagId}/{ajax}", name="tag_clean", options={"expose":true}) */
+	public function tagCleanAction($tagId, $ajax = false)
 	{
 		$em  = $this->getDoctrine()->getManager('drug');
 		$tag = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
@@ -397,6 +397,10 @@ class SonataController extends Controller
 		foreach ($tables as $table) {
 			$stmt = $pdo->prepare("DELETE FROM $table WHERE tag_id = $tagId");
 			$stmt->execute();
+		}
+
+		if ($ajax) {
+			return new JsonResponse('OK');
 		}
 
 		# добавляем для админки сонаты оповещение
@@ -457,8 +461,8 @@ class SonataController extends Controller
 		return $this->redirect($this->generateUrl('admin_vidal_drug_tag_edit', array('id' => $tagId)));
 	}
 
-	/** @Route("/tag-set/{tagId}", name="tag_set", options={"expose":true}) */
-	public function tagSetAction($tagId)
+	/** @Route("/tag-set/{tagId}/{ajax}", name="tag_set", options={"expose":true}) */
+	public function tagSetAction($tagId, $ajax = false)
 	{
 		$em  = $this->getDoctrine()->getManager('drug');
 		$tag = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
@@ -511,9 +515,59 @@ class SonataController extends Controller
 			$stmt->execute();
 		}
 
+		if ($ajax) {
+			return new JsonResponse('OK');
+		}
+
 		# добавляем для админки сонаты оповещение
 		$this->get('session')->getFlashbag()->add('tag_set', '');
 
 		return $this->redirect($this->generateUrl('admin_vidal_drug_tag_edit', array('id' => $tagId)));
+	}
+
+	/** @Route("/admin-tag-editable", name="admin_tag_editable", options={"expose":true}) */
+	public function tagEditableAction(Request $request)
+	{
+		$id = $request->request->get('id', null);
+		$em = $this->getDoctrine()->getManager('drug');
+
+		$tag = $em->getRepository('VidalDrugBundle:Tag')->findOneById($id);
+
+		if (!$tag) {
+			throw $this->createNotFoundException();
+		}
+
+		$text = trim($request->request->get('value'));
+
+		if (!empty($text)) {
+			$tag->setText($text);
+			$em->flush($tag);
+		}
+
+		echo $text;
+		exit;
+	}
+
+	/** @Route("/admin-tag-search", name="admin_tag_search", options={"expose":true}) */
+	public function tagSearchAction(Request $request)
+	{
+		$id = $request->request->get('id', null);
+		$em = $this->getDoctrine()->getManager('drug');
+
+		$tag = $em->getRepository('VidalDrugBundle:Tag')->findOneById($id);
+
+		if (!$tag) {
+			throw $this->createNotFoundException();
+		}
+
+		$search = trim($request->request->get('value'));
+
+		if (!empty($search)) {
+			$tag->setSearch($search);
+			$em->flush($tag);
+		}
+
+		echo $search;
+		exit;
 	}
 }
