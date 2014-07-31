@@ -392,7 +392,7 @@ class SonataController extends Controller
 
 		$pdo = $em->getConnection();
 
-		$tagId = $tag->getId();
+		$tagId  = $tag->getId();
 		$tables = explode(' ', 'art_tag article_tag publication_tag pharmarticle_tag');
 		foreach ($tables as $table) {
 			$stmt = $pdo->prepare("DELETE FROM $table WHERE tag_id = $tagId");
@@ -401,6 +401,58 @@ class SonataController extends Controller
 
 		# добавляем для админки сонаты оповещение
 		$this->get('session')->getFlashbag()->add('tag_clean', '');
+
+		return $this->redirect($this->generateUrl('admin_vidal_drug_tag_edit', array('id' => $tagId)));
+	}
+
+	/** @Route("/tag-clean-old/{tagId}", name="tag_clean_old", options={"expose":true}) */
+	public function tagCleanOldAction($tagId)
+	{
+		$em  = $this->getDoctrine()->getManager('drug');
+		$tag = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
+
+		if (!$tag) {
+			throw $this->createNotFoundException();
+		}
+
+		$pdo     = $em->getConnection();
+		$tagId   = $tag->getId();
+		$oldDate = new \DateTime('2014-05-15');
+
+		foreach ($tag->getArticles() as $a) {
+			if ($a->getDate() < $oldDate) {
+				$id   = $a->getId();
+				$stmt = $pdo->prepare("DELETE FROM article_tag WHERE tag_id = $tagId AND article_id = $id");
+				$stmt->execute();
+			}
+		}
+
+		foreach ($tag->getArts() as $a) {
+			if ($a->getDate() < $oldDate) {
+				$id   = $a->getId();
+				$stmt = $pdo->prepare("DELETE FROM art_tag WHERE tag_id = $tagId AND art_id = $id");
+				$stmt->execute();
+			}
+		}
+
+		foreach ($tag->getPublications() as $a) {
+			if ($a->getDate() < $oldDate) {
+				$id   = $a->getId();
+				$stmt = $pdo->prepare("DELETE FROM publication_tag WHERE tag_id = $tagId AND publication_id = $id");
+				$stmt->execute();
+			}
+		}
+
+		foreach ($tag->getPharmArticles() as $a) {
+			if ($a->getCreated() > $oldDate) {
+				$id   = $a->getId();
+				$stmt = $pdo->prepare("DELETE FROM pharmarticle_tag WHERE tag_id = $tagId AND pharmarticle_id = $id");
+				$stmt->execute();
+			}
+		}
+
+		# добавляем для админки сонаты оповещение
+		$this->get('session')->getFlashbag()->add('tag_clean_old', '');
 
 		return $this->redirect($this->generateUrl('admin_vidal_drug_tag_edit', array('id' => $tagId)));
 	}
@@ -415,8 +467,9 @@ class SonataController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		$text = $tag->getText();
-		$pdo  = $em->getConnection();
+		$tagSearch = $tag->getSearch();
+		$text      = empty($tagSearch) ? $tag->getText() : $tagSearch;
+		$pdo       = $em->getConnection();
 
 		# проставляем тег у статей энкициклопедии
 		$stmt = $pdo->prepare("SELECT id FROM article WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");

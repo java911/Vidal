@@ -43,6 +43,13 @@ file that was distributed with this source code.
 		</div>
 	{% endif %}
 
+	{% if app.session.flashBag.get('tag_clean_old')|length %}
+		<div class="alert alert-success alert-dismissable">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+			Для статей и новостей до 15.05.2014 был очищен тег <b>{{ object.text }}</b>
+		</div>
+	{% endif %}
+
 	<div class="sonata-actions btn-group">
 		{% include 'SonataAdminBundle:Button:show_button.html.twig' %}
 		{% include 'SonataAdminBundle:Button:history_button.html.twig' %}
@@ -88,9 +95,11 @@ file that was distributed with this source code.
 
 		{# кнопка проставления тегов по компании #}
 		{% if route == 'admin_vidal_drug_tag_edit' %}
-			<a href="{{ path('tag_clean', {'tagId':object.id}) }}" id="tag_set" class="btn sonata-action-element"
-			   title="Очистить связи тега со статьями и новостями">Очистить</a>
-			<a href="{{ path('tag_set', {'tagId':object.id}) }}" id="tag_set" class="btn sonata-action-element"
+			<a href="{{ path('tag_clean_old', {'tagId':object.id}) }}" class="btn sonata-action-element"
+			   title="Очистить связи тега со статьями и новостями">Очистить до 15.05</a>
+			<a href="{{ path('tag_clean', {'tagId':object.id}) }}" class="btn sonata-action-element"
+			   title="Очистить связи тега со статьями и новостями">Очистить все</a>
+			<a href="{{ path('tag_set', {'tagId':object.id}) }}" class="btn sonata-action-element"
 			   title="Выставить этот тег для статей и новостей">Выставить</a>
 		{% endif %}
 	</div>

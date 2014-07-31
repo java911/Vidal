@@ -26,17 +26,11 @@ class TagAdmin extends Admin
 		}
 	}
 
-	protected function configureShowField(ShowMapper $showMapper)
-	{
-		$showMapper
-			->add('id')
-			->add('text', null, array('label' => 'Тег'));
-	}
-
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('text', null, array('label' => 'Тег', 'required' => true));
+			->add('text', null, array('label' => 'Тег', 'required' => true))
+			->add('search', null, array('label' => 'Выставляется по слову', 'required' => false, 'help' => 'Оставьте пустым, чтоб выставлять по тегу'));
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -54,7 +48,6 @@ class TagAdmin extends Admin
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(
-					'show'   => array(),
 					'edit'   => array(),
 					'delete' => array(),
 				)
