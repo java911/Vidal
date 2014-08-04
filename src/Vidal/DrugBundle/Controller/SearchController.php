@@ -39,7 +39,7 @@ class SearchController extends Controller
 		}
 
 		if ($t == 'all' || $t == 'product') {
-			$productsRaw = $em->getRepository('VidalDrugBundle:Product')->findByQuery($q, $bad);
+			list($productsRaw, $anyOfWord) = $em->getRepository('VidalDrugBundle:Product')->findByQuery($q, $bad);
 
 			# если включаем бады, то их надо в отдельную группу
 			if ($bad && $p == 1) {
@@ -69,8 +69,8 @@ class SearchController extends Controller
 				}
 
 				if (count($mis)) {
-					$miIds                   = $this->getProductIds($mis);
-					$params['mis']           = $mis;
+					$miIds                  = $this->getProductIds($mis);
+					$params['mis']          = $mis;
 					$params['mi_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($miIds);
 					$params['mi_pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($miIds, date('Y'));
 					$params['mi_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($mis);
@@ -83,6 +83,7 @@ class SearchController extends Controller
 			$paginator                    = $this->get('knp_paginator');
 			$pagination                   = $paginator->paginate($products, $p, self::PRODUCTS_PER_PAGE);
 			$params['productsPagination'] = $pagination;
+			$params['anyOfWord']          = $anyOfWord;
 
 			if ($pagination->getTotalItemCount()) {
 				$productIds          = $this->getProductIds($pagination);
@@ -185,8 +186,8 @@ class SearchController extends Controller
 				}
 
 				if (count($mis)) {
-					$miIds                   = $this->getProductIds($mis);
-					$params['mis']           = $mis;
+					$miIds                  = $this->getProductIds($mis);
+					$params['mis']          = $mis;
 					$params['mi_companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($miIds);
 					$params['mi_pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($miIds, date('Y'));
 					$params['mi_infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($mis);

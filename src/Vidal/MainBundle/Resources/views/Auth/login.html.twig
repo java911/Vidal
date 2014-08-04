@@ -12,7 +12,7 @@
 		<div class="ar3">
 			После регистрации Вам будут доступны полные тексты описаний лекарственных препаратов,
 			а также в <a href="{{ path('vracham') }}">разделе для специалистов</a>:
-			<ul class="ul-style">
+			<ul>
 				<li>Данные наиболее актуальных клинических исследований</li>
 				<li>Алгоритмы ведения пациентов для врачей различных специальностей</li>
 				<li>Уникальная информация о применении лекарственных средств</li>
@@ -28,14 +28,14 @@
 	{{ parent() }}
 	<style type="text/css">
 		.auth-required {
-			width:       450px;
 			margin:      40px auto 0;
 			font-weight: bold;
-			font-size:   16px;
+			font-size:   15px;
 			color:       #2f4053;
 		}
 		.auth-required div {
-			margin-bottom: 24px;
+			margin-bottom: 28px;
+			text-align:    center;
 		}
 		.auth-required a {
 			text-decoration: none;
@@ -44,10 +44,12 @@
 			text-decoration: underline;
 		}
 		.ar3 ul {
-			font-weight: normal;
-			font-size:   15px;
-			color:       #333;
-			margin-top:  10px;
+			margin:  15px 0 0;
+			padding: 0;
+		}
+		.ar3 ul li {
+			margin-bottom: 5px;
+			font-size:     14px;
 		}
 	</style>
 {% endblock %}
