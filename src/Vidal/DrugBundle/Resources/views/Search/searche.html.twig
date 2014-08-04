@@ -5,6 +5,8 @@
 	{% include 'VidalDrugBundle:Search:menu.html.twig' %}
 	{% include 'VidalDrugBundle:Search:searche_form.html.twig' %}
 
+	{% include 'VidalDrugBundle:Search:navigation.html.twig' %}
+
 	<div class="search-results">
 
 	{% if o and q is empty %}
@@ -23,34 +25,10 @@
 		{# Найдено препаратов #}
 		{% include 'VidalDrugBundle:Search:search_products.html.twig' %}
 
-		{# Найдено Медицинских изделий #}
-		{% if mis is defined %}
-			<div class="block">
-				<div class="block-anons">
-					<div class="block-head">
-						Найдено медицинских изделий (МИ): <span>{{ mis|length }}</span>
-					</div>
-				</div>
-			</div>
-			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':mis, 'pictures':mi_pictures, 'companies':mi_companies, 'infoPages':mi_infoPages} %}
-		{% endif %}
-
-		{# Найдено БАДов #}
-		{% if bads is defined %}
-			<div class="block">
-				<div class="block-anons">
-					<div class="block-head">
-						Найдено БАДов: <span>{{ bads|length }}</span>
-					</div>
-				</div>
-			</div>
-			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':bads, 'pictures':bad_pictures, 'companies':bad_companies, 'infoPages':bad_infoPages} %}
-		{% endif %}
-
 		{# Найдено показаний МКБ-10 #}
 		{% if nozologies is defined %}
 			{% if nozologies is not empty %}
-				<div class="block">
+				<div class="block" id="search_nozologies">
 					<div class="block-anons">
 						<div class="block-head">
 							Найдено нозологических указателей: <span>{{ nozologies|length }}</span>
@@ -79,7 +57,7 @@
 
 		{# Найдено АТХ #}
 		{% if atcCodes is defined and atcCodes is not empty %}
-			<div class="block">
+			<div class="block" id="search_atc">
 				<div class="block-head anons"
 					 title="Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)">
 					Найдено кодов АТХ: <span>{{ atcCodes|length }}</span>
@@ -118,7 +96,7 @@
 		{# Найдено активных веществ #}
 		{% if molecules is defined %}
 			{% if molecules is not empty %}
-				<div class="block">
+				<div class="block" id="search_molecules">
 					<div class="block-anons">
 						<div class="block-head">
 							Найдено активных веществ: <span>{{ molecules|length }}</span>
@@ -162,7 +140,7 @@
 		{# Найдено клинико-фармакологических групп #}
 		{% if clphgroups is defined %}
 			{% if clphgroups is not empty %}
-				<div class="block">
+				<div class="block" id="search_clphgroups">
 					<div class="block-anons">
 						<div class="block-head">
 							Найдено клинико-фармакологических групп: <span>{{ clphgroups|length }}</span>
@@ -185,7 +163,7 @@
 		{# Найдено фармако-терапевтических групп #}
 		{% if phthgroups is defined %}
 			{% if phthgroups is not empty %}
-				<div class="block">
+				<div class="block" id="search_phthgroups">
 					<div class="block-anons">
 						<div class="block-head">
 							Найдено фармако-терапевтических групп: <span>{{ phthgroups|length }}</span>
@@ -211,7 +189,7 @@
 		{# Найдено заболеваний #}
 		{% if articles is defined %}
 			{% if articles is not empty %}
-				<div class="block">
+				<div class="block" id="search_articles">
 					<div class="block-anons">
 						<div class="block-head">
 							Найдено результатов по заболеваниям: <span>{{ articles|length }}</span>

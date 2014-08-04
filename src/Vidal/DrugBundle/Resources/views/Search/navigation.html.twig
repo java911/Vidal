@@ -1,0 +1,79 @@
+{% if noResults is not defined %}
+
+	<div class="navigation">
+		<i></i>
+
+		<div class="navigation-items">
+			{% if productsPagination is defined and productsPagination.totalItemCount %}
+				<div>
+					<a href="#search_products">препаратов: <span>{{ productsPagination.totalItemCount }}</span></a>
+				</div>
+			{% endif %}
+
+			{% if mis is defined %}
+				<div>
+					<a href="#search_mis">медицинских изделий: <span>{{ mis|length }}</span></a>
+				</div>
+			{% endif %}
+
+			{% if bads is defined %}
+				<div>
+					<a href="#search_bads">БАДов: <span>{{ bads|length }}</span></a>
+				</div>
+			{% endif %}
+
+			{% if molecules is defined and molecules|length %}
+				<div>
+					<a href="#search_molecules">активных веществ: <span>{{ molecules|length }}</span></a>
+				</div>
+			{% endif %}
+
+			{% if atcCodes is defined and atcCodes|length %}
+				<div>
+					<a href="#search_atc">кодов АТХ: <span>{{ atcCodes|length }}</span></a>
+				</div>
+			{% endif %}
+
+			{% if search_infoPages is defined and search_infoPages|length %}
+				<div>
+					<a href="#search_infoPages">представительств: <span>{{ search_infoPages|length }}</span></a>
+				</div>
+			{% endif %}
+
+			{% if search_companies is defined and search_companies|length %}
+				<div>
+					<a href="#search_companies">производителей: <span>{{ search_companies|length }}</span></a>
+				</div>
+			{% endif %}
+
+			{% if articles is defined and articles|length %}
+				<div>
+					<a href="#search_articles">заболеваний: <span>{{ articles|length }}</span></a>
+				</div>
+			{% endif %}
+
+			{% if nozologies is defined and nozologies|length %}
+				<div>
+					<a href="#search_nozologies">нозологических указалетей: <span>{{ nozologies|length }}</span></a>
+				</div>
+			{% endif %}
+
+			{% if clphgroups is defined and clphgroups|length %}
+				<div>
+					<a href="#search_clphgroups">
+						клинико-фармакологических групп: <span>{{ clphgroups|length }}</span>
+					</a>
+				</div>
+			{% endif %}
+
+			{% if phthgroups is defined and phthgroups|length %}
+				<div>
+					<a href="#search_phthgroups">
+						фармако-терапевтических групп: <span>{{ phthgroups|length }}</span>
+					</a>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+
+{% endif %}

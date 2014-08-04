@@ -30,6 +30,7 @@ class SearchController extends Controller
 		$params = array(
 			'q'     => $q,
 			't'     => $t,
+			'p'     => $p,
 			'title' => 'Поиск',
 		);
 
@@ -144,6 +145,7 @@ class SearchController extends Controller
 			'q'     => $q,
 			't'     => $t,
 			'o'     => $o,
+			'p'     => $p,
 			'title' => 'Расширенный поиск',
 		);
 
@@ -246,12 +248,12 @@ class SearchController extends Controller
 			}
 
 			# поиск по клиннико-фармакологической группе
-			if ($t == 'clphgroup') {
+			if ($t == 'all' || $t == 'clphgroup') {
 				$params['clphgroups'] = $em->getRepository('VidalDrugBundle:Document')->findClPhGroupsByQuery($q);
 			}
 
 			# поиск по фармако-терапевтической группе
-			if ($t == 'phthgroup') {
+			if ($t == 'all' || $t == 'phthgroup') {
 				$params['phthgroups'] = $em->getRepository('VidalDrugBundle:Product')->findPhThGroupsByQuery($q);
 			}
 		}
