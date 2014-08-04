@@ -8,6 +8,18 @@
 			Для доступа <a href="#username" id="goto-auth">авторизуйтесь</a> или
 			<a href="{{ path('registration') }}">зарегистрируйтесь</a>.
 		</div>
+
+		<div class="ar3">
+			После регистрации Вам будут доступны полные тексты описаний лекарственных препаратов,
+			а также в разделе для специалистов:
+			<ul class="ul-style">
+				<li>Данные наиболее актуальных клинических исследований</li>
+				<li>Алгоритмы ведения пациентов для врачей различных специальностей</li>
+				<li>Уникальная информация о применении лекарственных средств</li>
+				<li>Обзоры, новости и другая актуальная информация для специалистов</li>
+			</ul>
+		</div>
+
 	</div>
 {% endblock %}
 
@@ -18,10 +30,12 @@
 		.auth-required {
 			width:       450px;
 			margin:      40px auto 0;
-			text-align:  center;
 			font-weight: bold;
 			font-size:   16px;
 			color:       #2f4053;
+		}
+		.auth-required div {
+			margin-bottom: 24px;
 		}
 		.auth-required a {
 			text-decoration: none;
@@ -29,8 +43,11 @@
 		.auth-required a:hover {
 			text-decoration: underline;
 		}
-		.ar1 {
-			margin-bottom: 24px;
+		.ar3 ul {
+			font-weight: normal;
+			font-size:   15px;
+			color:       #333;
+			margin-top:  10px;
 		}
 	</style>
 {% endblock %}
