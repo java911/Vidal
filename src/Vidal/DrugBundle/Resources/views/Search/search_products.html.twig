@@ -1,0 +1,49 @@
+{% if productsPagination is defined %}
+	{% if productsPagination is not empty %}
+		{% if anyOfWord %}
+			<div class="any-title no-results">
+				<div>
+					Препаратов по запросу <span>{{ q }}</span> не найдено.
+				</div>
+				<div>
+					Отобразить результаты по любому из слов <span>{{ anyOfWord }}</span> ?
+				</div>
+			</div>
+			<a href="#" class="any-btn btn-gray">Показать</a>
+			<script type="text/javascript">
+				$(document).ready(function() {
+					$('.any-btn').click(function(e) {
+						e.preventDefault();
+						$(this).remove();
+						$('.any-title').remove();
+						$('.any').show();
+					});
+				});
+			</script>
+		{% endif %}
+
+		<div class="products{{ anyOfWord ? ' any' }}">
+			<div class="block">
+				<div class="block-anons">
+					<div class="block-head">
+						Найдено препаратов{{ anyOfWord ? ' по любому из слов' }}:
+						<span>{{ productsPagination.totalItemCount }}</span>
+					</div>
+				</div>
+			</div>
+			<div class="navigation">
+				{{ knp_pagination_render(productsPagination) }}
+			</div>
+			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':productsPagination.items} %}
+			{% if productsPagination.totalItemCount > 15 %}
+				<div class="navigation">
+					{{ knp_pagination_render(productsPagination) }}
+				</div>
+			{% endif %}
+		</div>
+	{% elseif t == 'product' %}
+		<div class="no-results">
+			Не найдено результатов по препарату <span>{{ q }}</span>
+		</div>
+	{% endif %}
+{% endif %}

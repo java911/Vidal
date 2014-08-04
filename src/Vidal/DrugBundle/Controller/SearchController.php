@@ -156,7 +156,7 @@ class SearchController extends Controller
 		}
 
 		if ($t == 'all' || $t == 'product') {
-			$productsRaw = $em->getRepository('VidalDrugBundle:Product')->findByQuery($q, $bad);
+			list($productsRaw, $anyOfWord) = $em->getRepository('VidalDrugBundle:Product')->findByQuery($q, $bad);
 
 			# если включаем бады, то их надо в отдельную группу
 			if ($bad && $p == 1) {
@@ -200,6 +200,7 @@ class SearchController extends Controller
 			$paginator                    = $this->get('knp_paginator');
 			$pagination                   = $paginator->paginate($products, $p, self::PRODUCTS_PER_PAGE);
 			$params['productsPagination'] = $pagination;
+			$params['anyOfWord']          = $anyOfWord;
 
 			if ($pagination->getTotalItemCount()) {
 				$productIds          = $this->getProductIds($pagination);

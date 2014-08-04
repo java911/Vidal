@@ -21,31 +21,7 @@
 		{% endif %}
 	{% else %}
 		{# Найдено препаратов #}
-		{% if productsPagination is defined %}
-			{% if productsPagination is not empty %}
-				<div class="block">
-					<div class="block-anons">
-						<div class="block-head">
-							Найдено препаратов: <span>{{ productsPagination.totalItemCount }}</span>
-						</div>
-					</div>
-				</div>
-
-				<div class="navigation">
-					{{ knp_pagination_render(productsPagination) }}
-				</div>
-				{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':productsPagination.items} %}
-				{% if productsPagination.totalItemCount > 15 %}
-					<div class="navigation">
-						{{ knp_pagination_render(productsPagination) }}
-					</div>
-				{% endif %}
-			{% elseif t == 'product' %}
-				<div class="no-results">
-					Не найдено результатов по препарату <span>{{ q }}</span>
-				</div>
-			{% endif %}
-		{% endif %}
+		{% include 'VidalDrugBundle:Search:search_products.html.twig' %}
 
 		{# Найдено Медицинских изделий #}
 		{% if mis is defined %}
@@ -273,6 +249,7 @@
 
 {% block stylesheets %}
 	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/search.css') }}"/>
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/searche.css') }}"/>
 {% endblock %}
 
