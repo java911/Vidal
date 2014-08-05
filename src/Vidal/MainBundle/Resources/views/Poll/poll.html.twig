@@ -56,28 +56,30 @@
 		}
 
 	</style>
-	<div class="poll">
-		<div class="poll-title">
-			<span class="poll-questionNumber">1 / {{ questionCount }} </span>
-			<span class="poll-title-text">{{ poll.title | raw }} </span>
-		</div>
-		<div style="padding: 5px;">
-			<div class="poll-question">{{ question.title }}</div>
-			{% if options is null %}
-				<div class="poll-answer"><textarea rows="3" name="answerText" id="answerText"
-												   placeholder="При желании, введите Ваши предложения"></textarea></div>
-			{% else %}
-				<div class="poll-answer">
-					{% for option in options %}
-						<input type="radio" name="answerText" value="{{ option }}">&nbsp;{{ option }}<br/>
-					{% endfor %}
-				</div>
-			{% endif %}
-			<div class="poll-submit">
-				<button class="btn-red sbtnPoll" id="answer-send">Далее</button>
-			</div>
-		</div>
-	</div>
+    <noindex>
+        <div class="poll">
+            <div class="poll-title">
+                <span class="poll-questionNumber">1 / {{ questionCount }} </span>
+                <span class="poll-title-text">{{ poll.title | raw }} </span>
+            </div>
+            <div style="padding: 5px;">
+                <div class="poll-question">{{ question.title }}</div>
+                {% if options is null %}
+                    <div class="poll-answer"><textarea rows="3" name="answerText" id="answerText"
+                                                       placeholder="При желании, введите Ваши предложения"></textarea></div>
+                {% else %}
+                    <div class="poll-answer">
+                        {% for option in options %}
+                            <input type="radio" name="answerText" value="{{ option }}">&nbsp;{{ option }}<br/>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="poll-submit">
+                    <button class="btn-red sbtnPoll" id="answer-send">Далее</button>
+                </div>
+            </div>
+        </div>
+    </noindex>
 	{#<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/jquery-1.11.0.min.js') }}"></script>#}
 	{#<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>#}
 	{#<script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>#}
