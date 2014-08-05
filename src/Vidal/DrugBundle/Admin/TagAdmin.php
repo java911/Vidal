@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 class TagAdmin extends Admin
 {
@@ -19,24 +20,18 @@ class TagAdmin extends Admin
 		if (!$this->hasRequest()) {
 			$this->datagridValues = array(
 				'_page'       => 1,
-				'_per_page'   => 25,
+				'_per_page'   => 200,
 				'_sort_order' => 'ASC',
 				'_sort_by'    => 'text'
 			);
 		}
 	}
 
-	protected function configureShowField(ShowMapper $showMapper)
-	{
-		$showMapper
-			->add('id')
-			->add('text', null, array('label' => 'Тег'));
-	}
-
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('text', null, array('label' => 'Тег', 'required' => true));
+			->add('text', null, array('label' => 'Тег', 'required' => true))
+			->add('search', null, array('label' => 'Выставляется по слову', 'required' => false, 'help' => 'Оставьте пустым, чтоб выставлять по тегу'));
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -49,15 +44,23 @@ class TagAdmin extends Admin
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
-			->add('text', null, array('label' => 'Тег'))
+			->add('text', null, array('label' => 'Тег', 'template' => 'VidalDrugBundle:Sonata:tag_text.html.twig'))
+			->add('search', null, array('label' => 'Выставляется по слову', 'template' => 'VidalDrugBundle:Sonata:tag_search.html.twig'))
 			->add('id')
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(
-					'show'   => array(),
-					'edit'   => array(),
-					'delete' => array(),
+					'edit'     => array(),
+					'delete'   => array(),
+					'tagClean' => array('template' => 'VidalDrugBundle:Sonata:tag_clean.html.twig'),
+					'tagSet'   => array('template' => 'VidalDrugBundle:Sonata:tag_set.html.twig'),
 				)
 			));
+	}
+
+	protected function configureRoutes(RouteCollection $collection)
+	{
+		$collection->add('tagSet')->add('tagClean');
+
 	}
 }

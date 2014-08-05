@@ -301,6 +301,7 @@ class ProductRepository extends EntityRepository
 	{
 		$miIncluded = $badIncluded;
 		$qb         = $this->_em->createQueryBuilder();
+		$anyOfWord  = false;
 
 		$qb->select('p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.ProductID, p.photo,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, pt.ProductTypeCode,
@@ -341,25 +342,31 @@ class ProductRepository extends EntityRepository
 
 		# поиск по любому из слов, если по всем не дал результата
 		if (empty($productsRaw)) {
-			$where = '';
+			# тут от Максимилиана правки, что если одно из слов короче 4 символов
+			foreach ($words as $word) {
+				if (mb_strlen($word, 'utf-8') < 4) {
+					$anyOfWord = implode(' | ', $words);
+					$where     = '';
 
-			for ($i = 0; $i < count($words); $i++) {
-				$word = $words[$i];
-				if ($i > 0) {
-					$where .= ' OR ';
+					for ($i = 0; $i < count($words); $i++) {
+						$word = $words[$i];
+						if ($i > 0) {
+							$where .= ' OR ';
+						}
+						$where .= "(p.RusName LIKE '$word%' OR p.EngName LIKE '$word%' OR p.RusName LIKE '% $word%' OR p.EngName LIKE '% $word%' OR p.RusName LIKE '%-$word' OR p.EngName LIKE '%-$word')";
+					}
+
+					# включать ли бады
+					$qb->where('p.ProductTypeCode IN (:productTypes)')
+						->setParameter('productTypes', $productTypes);
+
+					$productsRaw = $qb
+						->andWhere('p.MarketStatusID IN (1,2,7)')
+						->andWhere('p.inactive = FALSE')
+						->andWhere($where)
+						->getQuery()->getResult();
 				}
-				$where .= "(p.RusName LIKE '$word%' OR p.EngName LIKE '$word%' OR p.RusName LIKE '% $word%' OR p.EngName LIKE '% $word%' OR p.RusName LIKE '%-$word' OR p.EngName LIKE '%-$word')";
 			}
-
-			# включать ли бады
-			$qb->where('p.ProductTypeCode IN (:productTypes)')
-				->setParameter('productTypes', $productTypes);
-
-			$productsRaw = $qb
-				->andWhere('p.MarketStatusID IN (1,2,7)')
-				->andWhere('p.inactive = FALSE')
-				->andWhere($where)
-				->getQuery()->getResult();
 		}
 
 		$products        = array();
@@ -381,7 +388,7 @@ class ProductRepository extends EntityRepository
 			}
 		}
 
-		return array_values($products);
+		return array(array_values($products), $anyOfWord);
 	}
 
 	public function findByDocuments25($documents)

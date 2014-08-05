@@ -1,6 +1,6 @@
 {% if search_companies is defined %}
 	{% if search_infoPages is not empty %}
-		<div class="block">
+		<div class="block" id="search_infoPages">
 			<div class="block-anons">
 				<div class="block-head">
 					Найдено представительств: <span>{{ search_infoPages|length }}</span>
@@ -32,7 +32,7 @@
 	{% endif %}
 
 	{% if search_companies is not empty %}
-		<div class="block">
+		<div class="block" id="search_companies">
 			<div class="block-anons">
 				<div class="block-head">
 					Найдено производителей: <span>{{ search_companies|length }}</span>

@@ -26,7 +26,9 @@ RewriteRule /BAD/(.*)$ /drugs [R=301,L]
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-
+	# old subdomains
+	RewriteCond %{HTTP_HOST} ^(twiga|mailserver).vidal.ru
+    RewriteRule ^(.*)$ http://www.vidal.ru/$1 [R=301,L]
 
     # Determine the RewriteBase automatically and set it as environment variable.
     # If you are using Apache aliases to do mass virtual hosting or installed the

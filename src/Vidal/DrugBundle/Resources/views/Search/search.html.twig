@@ -1,63 +1,29 @@
 {% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
 
 
+{# если общий поиск не дал результатов #}
+{% if t == 'all'
+and (productsPagination is not defined or productsPagination.totalItemCount == 0)
+and (molecules is not defined or molecules is empty)
+and (search_infoPages is empty and search_companies is empty)
+and (bads is not defined or bads is empty)
+and (atcCodes is not defined or atcCodes is empty)
+and (articles is not defined or articles is empty) %}
+	{% set noResults = true %}
+{% endif %}
+
+
 {% block vidal %}
 	{% include 'VidalDrugBundle:Search:search_info.html.twig' %}
 
-	{# Найдено препаратов #}
-	{% if productsPagination is defined %}
-		{% if productsPagination is not empty %}
-			<div class="block">
-				<div class="block-anons">
-					<div class="block-head">
-						Найдено препаратов: <span>{{ productsPagination.totalItemCount }}</span>
-					</div>
-				</div>
-			</div>
-			<div class="navigation">
-				{{ knp_pagination_render(productsPagination) }}
-			</div>
-			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':productsPagination.items} %}
-			{% if productsPagination.totalItemCount > 15 %}
-				<div class="navigation">
-					{{ knp_pagination_render(productsPagination) }}
-				</div>
-			{% endif %}
-		{% elseif t == 'product' %}
-			<div class="no-results">
-				Не найдено результатов по препарату <span>{{ q }}</span>
-			</div>
-		{% endif %}
-	{% endif %}
+	{% include 'VidalDrugBundle:Search:navigation.html.twig' %}
 
-	{# Найдено Медицинских изделий #}
-	{% if mis is defined %}
-		<div class="block">
-			<div class="block-anons">
-				<div class="block-head">
-					Найдено медицинских изделий (МИ): <span>{{ mis|length }}</span>
-				</div>
-			</div>
-		</div>
-		{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':mis, 'pictures':mi_pictures, 'companies':mi_companies, 'infoPages':mi_infoPages} %}
-	{% endif %}
-
-	{# Найдено БАДов #}
-	{% if bads is defined %}
-		<div class="block">
-			<div class="block-anons">
-				<div class="block-head">
-					Найдено БАДов: <span>{{ bads|length }}</span>
-				</div>
-			</div>
-		</div>
-		{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':bads, 'pictures':bad_pictures, 'companies':bad_companies, 'infoPages':bad_infoPages} %}
-	{% endif %}
+	{% include 'VidalDrugBundle:Search:search_products.html.twig' %}
 
 	{# Найдено активных веществ #}
 	{% if molecules is defined %}
 		{% if molecules is not empty %}
-			<div class="block">
+			<div class="block" id="search_molecules">
 				<div class="block-anons">
 					<div class="block-head">
 						Найдено активных веществ: <span>{{ molecules|length }}</span>
@@ -74,7 +40,7 @@
 
 	{# Найдено АТХ #}
 	{% if atcCodes is defined and atcCodes is not empty %}
-		<div class="block">
+		<div class="block" id="search_atc">
 			<div class="block-head anons"
 				 title="Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)">
 				Найдено кодов АТХ: <span>{{ atcCodes|length }}</span>
@@ -117,7 +83,7 @@
 	{# Найдено заболеваний #}
 	{% if articles is defined %}
 		{% if articles is not empty %}
-			<div class="block">
+			<div class="block" id="search_articles">
 				<div class="block-anons">
 					<div class="block-head">
 						Найдено результатов по заболеваниям: <span>{{ articles|length }}</span>
@@ -133,13 +99,7 @@
 	{% endif %}
 
 	{# если общий поиск не дал результатов #}
-	{% if t == 'all'
-	and (productsPagination is not defined or productsPagination is empty)
-	and (molecules is not defined or molecules is empty)
-	and (search_infoPages is empty and search_companies is empty)
-	and (bads is not defined or bads is empty)
-	and (atcCodes is not defined or atcCodes is empty)
-	and (articles is not defined or articles is empty) %}
+	{% if noResults is defined %}
 		<div class="no-results">
 			Не найдено результатов
 		</div>
@@ -150,12 +110,5 @@
 
 {% block stylesheets %}
 	{{ parent() }}
-	<style type="text/css">
-		.products-table {
-			font-size: 13px;
-		}
-		.no-results {
-			margin: 30px 0 24px;
-		}
-	</style>
+	<link type="text/css" rel="stylesheet" href="{{ asset('bundles/vidalmain/stylesheets/search.css') }}"/>
 {% endblock %}

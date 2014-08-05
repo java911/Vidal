@@ -163,3 +163,11 @@ input[type="text"], textarea {
 	text-align: center;
 	color:      red;
 }
+
+/* tag */
+.tag img {
+	width: 14px;
+}
+.tag-text, .tag-search {
+	width: 35%;
+}

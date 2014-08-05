@@ -27,12 +27,12 @@
 		<a href="{{ path('veterinar') }}"
 		   class="{{ menu_left is defined and menu_left == 'veterinar' ? 'active' : 'dotted' }}">Ветеринария</a>
 	</li>
-    <li>
-        <a href="{{ path('astrazeneca_index') }}"
+	<li>
+		<a href="{{ path('astrazeneca_index') }}"
 		   class="{{ menu_left is defined and menu_left == 'shkola' ? 'active' : 'dotted' }}">Школа гастрита</a>
-    </li>
+	</li>
 
-    <li>
+	<li>
 		<a href="/reckittbenckiser/index.html?medi" target="_blank">
 			<button class="btn-red">Без боли</button>
 		</a>
@@ -109,18 +109,21 @@
 {% endif %}
 
 {# реклама вакансий #}
-<div id="phrpAd">
-	<script type="text/javascript">
-		(function() {
-			function l() {
-				var s = document.createElement('script');
-				s.type = 'text/javascript';
-				s.async = true;
-				s.src = 'http://pharmpersonal.ru/pub/ad';
-				var x = document.getElementsByTagName('script')[0];
-				x.parentNode.insertBefore(s, x);
-			}
-			if (window.attachEvent) window.attachEvent('onload', l); else window.addEventListener('load', l, false);
-		})();
-	</script>
-</div>
+{% if app.environment == 'prod' %}
+	<div id="phrpAd">
+		<script type="text/javascript">
+			(function() {
+				function l() {
+					var s = document.createElement('script');
+					s.type = 'text/javascript';
+					s.async = true;
+					s.src = 'http://pharmpersonal.ru/pub/ad';
+					var x = document.getElementsByTagName('script')[0];
+					x.parentNode.insertBefore(s, x);
+				}
+
+				if (window.attachEvent) window.attachEvent('onload', l); else window.addEventListener('load', l, false);
+			})();
+		</script>
+	</div>
+{% endif %}

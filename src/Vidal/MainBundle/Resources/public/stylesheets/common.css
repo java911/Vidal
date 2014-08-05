@@ -681,6 +681,9 @@ tr.bold td {
 	border-bottom: none;
 	color:         #d71344;
 }
+.navigation-items a span {
+	color: #333;
+}
 
 /* copy */
 .copy {
@@ -1554,18 +1557,18 @@ tr.bold td {
 	border-bottom:  1px dashed #CED2D5;
 	padding-bottom: 6px;
 }
-.popupMarket{
-    position: fixed;
-    background: #FFF0F0;
-    border: 2px solid #555;
-    box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
-    text-align: center;
-    top: 40%;
-    left: 50%;
-    width: 250px;
-    margin-left: -125px;
-    padding: 20px;
-    border-radius: 5px;
-    z-index: 999999;
-    display: none;
+.popupMarket {
+	position:      fixed;
+	background:    #FFF0F0;
+	border:        2px solid #555;
+	box-shadow:    0px 0px 10px rgba(0, 0, 0, 0.5);
+	text-align:    center;
+	top:           40%;
+	left:          50%;
+	width:         250px;
+	margin-left:   -125px;
+	padding:       20px;
+	border-radius: 5px;
+	z-index:       999999;
+	display:       none;
 }

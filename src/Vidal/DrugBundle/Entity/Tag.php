@@ -14,16 +14,19 @@ class Tag
 	/** @ORM\Column(length=255, unique=true) */
 	protected $text;
 
-	/** @ORM\ManyToMany(targetEntity="Article", mappedBy="tags", fetch="EXTRA_LAZY", orphanRemoval=true) */
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $search;
+
+	/** @ORM\ManyToMany(targetEntity="Article", mappedBy="tags", fetch="EXTRA_LAZY") */
 	protected $articles;
 
-	/** @ORM\ManyToMany(targetEntity="Art", mappedBy="tags", fetch="EXTRA_LAZY", orphanRemoval=true) */
+	/** @ORM\ManyToMany(targetEntity="Art", mappedBy="tags", fetch="EXTRA_LAZY") */
 	protected $arts;
 
-	/** @ORM\ManyToMany(targetEntity="Publication", mappedBy="tags", fetch="EXTRA_LAZY", orphanRemoval=true) */
+	/** @ORM\ManyToMany(targetEntity="Publication", mappedBy="tags", fetch="EXTRA_LAZY") */
 	protected $publications;
 
-	/** @ORM\ManyToMany(targetEntity="PharmArticle", mappedBy="tags", fetch="EXTRA_LAZY", orphanRemoval=true) */
+	/** @ORM\ManyToMany(targetEntity="PharmArticle", mappedBy="tags", fetch="EXTRA_LAZY") */
 	protected $pharmArticles;
 
 	public function __construct()
@@ -60,7 +63,7 @@ class Tag
 	 */
 	public function setText($text)
 	{
-		$this->text = $text;
+		$this->text = trim($text);
 	}
 
 	/**
@@ -133,5 +136,21 @@ class Tag
 	public function getPublications()
 	{
 		return $this->publications;
+	}
+
+	/**
+	 * @param mixed $search
+	 */
+	public function setSearch($search)
+	{
+		$this->search = trim($search);
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSearch()
+	{
+		return $this->search;
 	}
 }
