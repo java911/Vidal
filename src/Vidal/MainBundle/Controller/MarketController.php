@@ -474,7 +474,7 @@ class MarketController extends Controller{
             curl_close($curl);
 
         }
-        $summa = $basket->getAmounts();
+        $data = $basket->getAmounts();
         $summa = $summa[$group];
         $basket = $basket->getAll();
         $basket = $basket[$group];
