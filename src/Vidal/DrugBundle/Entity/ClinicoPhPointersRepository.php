@@ -165,6 +165,27 @@ class ClinicoPhPointersRepository extends EntityRepository
 		$qb->where($where);
 		$pointers = $qb->getQuery()->getResult();
 
+		# находим какое-либо из слов, если нет результата
+		if (empty($pointers)) {
+			foreach ($words as $word) {
+				if (mb_strlen($word, 'utf-8') < 3) {
+					return array();
+				}
+			}
+
+			$where = '';
+			for ($i = 0; $i < count($words); $i++) {
+				$word = $words[$i];
+				if ($i > 0) {
+					$where .= ' OR ';
+				}
+				$where .= "(n.Name LIKE '$word%' OR n.Name LIKE '% $word%')";
+			}
+
+			$qb->where($where);
+			$pointers = $qb->getQuery()->getResult();
+		}
+
 		return $pointers;
 	}
 

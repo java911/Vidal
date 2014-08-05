@@ -99,6 +99,33 @@ class ArticleRepository extends EntityRepository
 		$qb->andWhere($where);
 		$articles = $qb->getQuery()->getResult();
 
+		# находим какое-либо из слов, если нет результата
+		if (empty($articles)) {
+			foreach ($words as $word) {
+				if (mb_strlen($word, 'utf-8') < 3) {
+					return array();
+				}
+			}
+
+			$where = '';
+
+			for ($i = 0; $i < count($words); $i++) {
+				$word = $words[$i];
+				if ($i > 0) {
+					$where .= ' OR ';
+				}
+				$where .= "(a.title LIKE '$word%' OR a.title LIKE '% $word%' OR a.synonym LIKE '$word%' OR a.synonym LIKE '% $word%')";
+			}
+
+			$qb->where($where)
+				->andWhere('a.enabled = TRUE')
+				->andWhere('r.enabled = TRUE')
+				->andWhere('a.date < :now')
+				->andWhere('r.id != 19')
+				->setParameter('now', new \DateTime());
+			$articles = $qb->getQuery()->getResult();
+		}
+
 		return $articles;
 	}
 

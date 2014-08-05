@@ -220,7 +220,21 @@ class CompanyRepository extends EntityRepository
 		$qb->where("c.countProducts > 0")->andWhere($this->where($words, 'AND'));
 		$results = $qb->getQuery()->getResult();
 
-		return $results;
+		if (!empty($results)) {
+			return $results;
+		}
+
+		# поиск по любому слову
+		foreach ($words as $word) {
+			if (mb_strlen($word, 'utf-8') < 3) {
+				return array();
+			}
+		}
+
+		$words = $this->getWords($q);
+		$qb->where("c.countProducts > 0")->andWhere($this->where($words, 'OR'));
+
+		return $qb->getQuery()->getResult();
 	}
 
 	private function where($words, $s)
