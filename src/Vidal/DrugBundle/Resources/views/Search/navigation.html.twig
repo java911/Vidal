@@ -1,64 +1,75 @@
 {% if t == 'all' and noResults is not defined and p == 1 %}
+	{% set items = 0 %}
 
 	<div class="navigation">
 		<i></i>
 
 		<div class="navigation-items">
 			{% if productsPagination is defined and productsPagination.totalItemCount %}
+				{% set items = items + 1 %}
 				<div>
 					<a href="#search_products">препаратов: <span>{{ productsPagination.totalItemCount }}</span></a>
 				</div>
 			{% endif %}
 
 			{% if mis is defined %}
+				{% set items = items + 1 %}
 				<div>
 					<a href="#search_mis">медицинских изделий: <span>{{ mis|length }}</span></a>
 				</div>
 			{% endif %}
 
 			{% if bads is defined %}
+				{% set items = items + 1 %}
 				<div>
 					<a href="#search_bads">БАДов: <span>{{ bads|length }}</span></a>
 				</div>
 			{% endif %}
 
 			{% if molecules is defined and molecules|length %}
+				{% set items = items + 1 %}
 				<div>
 					<a href="#search_molecules">активных веществ: <span>{{ molecules|length }}</span></a>
 				</div>
 			{% endif %}
 
 			{% if atcCodes is defined and atcCodes|length %}
+				{% set items = items + 1 %}
 				<div>
 					<a href="#search_atc">кодов АТХ: <span>{{ atcCodes|length }}</span></a>
 				</div>
 			{% endif %}
 
 			{% if search_infoPages is defined and search_infoPages|length %}
+				{% set items = items + 1 %}
 				<div>
 					<a href="#search_infoPages">представительств: <span>{{ search_infoPages|length }}</span></a>
 				</div>
 			{% endif %}
 
 			{% if search_companies is defined and search_companies|length %}
+				{% set items = items + 1 %}
 				<div>
 					<a href="#search_companies">производителей: <span>{{ search_companies|length }}</span></a>
 				</div>
 			{% endif %}
 
 			{% if articles is defined and articles|length %}
+				{% set items = items + 1 %}
 				<div>
 					<a href="#search_articles">заболеваний: <span>{{ articles|length }}</span></a>
 				</div>
 			{% endif %}
 
 			{% if nozologies is defined and nozologies|length %}
+				{% set items = items + 1 %}
 				<div>
 					<a href="#search_nozologies">нозологических указалетей: <span>{{ nozologies|length }}</span></a>
 				</div>
 			{% endif %}
 
 			{% if clphgroups is defined and clphgroups|length %}
+				{% set items = items + 1 %}
 				<div>
 					<a href="#search_clphgroups">
 						клинико-фармакологических групп: <span>{{ clphgroups|length }}</span>
@@ -67,6 +78,7 @@
 			{% endif %}
 
 			{% if phthgroups is defined and phthgroups|length %}
+				{% set items = items + 1 %}
 				<div>
 					<a href="#search_phthgroups">
 						фармако-терапевтических групп: <span>{{ phthgroups|length }}</span>
@@ -75,5 +87,13 @@
 			{% endif %}
 		</div>
 	</div>
+
+	{% if items < 3 %}
+		<style type="text/css">
+			#vidal .navigation {
+				display: none;
+			}
+		</style>
+	{% endif %}
 
 {% endif %}

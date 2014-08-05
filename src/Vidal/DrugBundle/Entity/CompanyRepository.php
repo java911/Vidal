@@ -133,24 +133,6 @@ class CompanyRepository extends EntityRepository
 		$qb->andWhere($where);
 		$results = $qb->getQuery()->getResult();
 
-		# поиск по одному слову
-		if (empty($results)) {
-			$where = '';
-			for ($i = 0; $i < count($words); $i++) {
-				$word = $words[$i];
-				if ($i > 0) {
-					$where .= ' OR ';
-				}
-				$where .= "(c.LocalName LIKE '$word%' OR c.LocalName LIKE '% $word%')";
-			}
-
-			$qb->where("c.CountryEditionCode = 'RUS'")
-				->andWhere("c.countProducts > 0")
-				->andWhere($where);
-
-			return $qb->getQuery()->getResult();
-		}
-
 		return $results;
 	}
 
@@ -243,9 +225,15 @@ class CompanyRepository extends EntityRepository
 		}
 
 		# поиск по любому слову
-		$words = $this->getWords($q);
-		$qb->where("c.countProducts > 0")->andWhere($this->where($words, 'OR'));
-		$results = $qb->getQuery()->getResult();
+		foreach ($words as $word) {
+			if (mb_strlen($word, 'utf-8') < 4) {
+				$words = $this->getWords($q);
+				$qb->where("c.countProducts > 0")->andWhere($this->where($words, 'OR'));
+				$results = $qb->getQuery()->getResult();
+
+				break;
+			}
+		}
 
 		if (!empty($results)) {
 			return $results;

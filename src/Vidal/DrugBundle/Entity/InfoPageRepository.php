@@ -146,20 +146,7 @@ class InfoPageRepository extends EntityRepository
 		$qb->where('i.countProducts > 0')->andWhere($this->where($words, 'AND'));
 		$results = $qb->getQuery()->getResult();
 
-		if (!empty($results)) {
-			return $results;
-		}
-
-		# поиск по любому из слов
-		$words = $this->getWords($q);
-		$qb->where('i.countProducts > 0')->andWhere($this->where($words, 'OR'));
-		$results = $qb->getQuery()->getResult();
-
-		if (!empty($results)) {
-			return $results;
-		}
-
-		return array();
+		return $results;
 	}
 
 	public function findPortfolios($InfoPageID)

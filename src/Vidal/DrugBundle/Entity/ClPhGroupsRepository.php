@@ -85,19 +85,7 @@ class ClPhGroupsRepository extends EntityRepository
 		$qb->where($this->where($words, 'AND'));
 		$results = $qb->getQuery()->getResult();
 
-		if (!empty($results)) {
-			return $results;
-		}
-
-		# поиск по любому из слов
-		$qb->where($this->where($words, 'OR'));
-		$results = $qb->getQuery()->getResult();
-
-		if (!empty($results)) {
-			return $results;
-		}
-
-		return array();
+		return $results;
 	}
 
 	private function where($words, $s)

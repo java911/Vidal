@@ -365,6 +365,8 @@ class ProductRepository extends EntityRepository
 						->andWhere('p.inactive = FALSE')
 						->andWhere($where)
 						->getQuery()->getResult();
+
+					break;
 				}
 			}
 		}
@@ -525,7 +527,7 @@ class ProductRepository extends EntityRepository
 			->where("p.MarketStatusID IN (1,2,7) AND p.ProductTypeCode IN ('DRUG','GOME') AND p.inactive = FALSE")
 			->orderBy('g.Name', 'ASC');
 
-		# поиск по словам
+		# поиск по всем словам словам
 		$where = '';
 		$words = explode(' ', $q);
 
@@ -538,7 +540,6 @@ class ProductRepository extends EntityRepository
 		}
 
 		$qb->andWhere($where);
-
 		$groups = $qb->getQuery()->getResult();
 
 		for ($i = 0, $c = count($groups); $i < $c; $i++) {

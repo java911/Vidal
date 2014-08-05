@@ -160,7 +160,7 @@ class DocumentRepository extends EntityRepository
 			->from('VidalDrugBundle:Document', 'd')
 			->orderBy('d.ClPhGrName', 'ASC');
 
-		# поиск по словам
+		# поиск всем по словам
 		$where = '';
 		$words = explode(' ', $q);
 
@@ -173,7 +173,6 @@ class DocumentRepository extends EntityRepository
 		}
 
 		$qb->andWhere($where);
-
 		$groups = $qb->getQuery()->getResult();
 
 		for ($i = 0, $c = count($groups); $i < $c; $i++) {

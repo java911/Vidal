@@ -66,20 +66,19 @@ class ATCRepository extends EntityRepository
 				->orderBy('a.ATCCode', 'ASC')
 				->setParameter('q', $q . '%');
 
-			# поиск по словам
+			# поиск по всем словам вместе
 			$words = explode(' ', $q);
 			$where = '';
 
 			for ($i = 0; $i < count($words); $i++) {
 				$word = $words[$i];
 				if ($i > 0) {
-					$where .= ' OR ';
+					$where .= ' AND ';
 				}
 				$where .= "(a.RusName LIKE '$word%' OR a.EngName LIKE '$word%' OR a.RusName LIKE '% $word%' OR a.EngName LIKE '% $word%')";
 			}
 
 			$qb->orWhere($where);
-
 			$atcCodesRaw = $qb->getQuery()->getResult();
 		}
 
