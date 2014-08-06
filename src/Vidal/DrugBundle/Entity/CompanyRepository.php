@@ -241,13 +241,15 @@ class CompanyRepository extends EntityRepository
 	{
 		$s = ($s == 'OR') ? ' OR ' : ' AND ';
 
+		$i     = 0;
 		$where = '';
-		for ($i = 0; $i < count($words); $i++) {
-			$word = $words[$i];
+
+		foreach ($words as $word) {
 			if ($i > 0) {
 				$where .= $s;
 			}
 			$where .= "(c.LocalName LIKE '$word%' OR c.LocalName LIKE '% $word%')";
+			$i++;
 		}
 
 		return $where;
