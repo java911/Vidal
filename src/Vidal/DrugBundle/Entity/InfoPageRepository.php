@@ -146,6 +146,21 @@ class InfoPageRepository extends EntityRepository
 		$qb->where('i.countProducts > 0')->andWhere($this->where($words, 'AND'));
 		$results = $qb->getQuery()->getResult();
 
+		if (!empty($results)) {
+			return $results;
+		}
+
+		foreach ($words as $word) {
+			if (mb_strlen($word, 'utf-8') < 3) {
+				return array();
+			}
+		}
+
+		# поиск по одному из слов
+		$words = $this->getWords($q);
+		$qb->where('i.countProducts > 0')->andWhere($this->where($words, 'OR'));
+		$results = $qb->getQuery()->getResult();
+
 		return $results;
 	}
 
