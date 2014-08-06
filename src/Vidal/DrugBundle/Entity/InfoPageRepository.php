@@ -165,12 +165,14 @@ class InfoPageRepository extends EntityRepository
 	{
 		$s = ($s == 'OR') ? ' OR ' : ' AND ';
 
+		$i     = 0;
 		$where = '';
-		for ($i = 0; $i < count($words); $i++) {
-			$word = $words[$i];
+
+		foreach ($words as $word) {
 			if ($i > 0) {
 				$where .= $s;
 			}
+			$i++;
 			$where .= "(i.RusName LIKE '$word%' OR i.RusName LIKE '% $word%')";
 		}
 
