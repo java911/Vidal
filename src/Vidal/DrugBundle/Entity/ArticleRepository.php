@@ -77,7 +77,6 @@ class ArticleRepository extends EntityRepository
 			->leftJoin('a.rubrique', 'r')
 			->where('a.enabled = TRUE')
 			->andWhere('r.enabled = TRUE')
-			->andWhere('a.date < CURRENT_TIMESTAMP()')
 			->andWhere('r.id != 19')
 			->andWhere('a.date < :now')
 			->setParameter('now', new \DateTime())

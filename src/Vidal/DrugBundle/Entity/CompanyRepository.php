@@ -279,12 +279,12 @@ class CompanyRepository extends EntityRepository
 		);
 
 		$eng = array(
-			'A', 'B', 'V', 'G', 'D', 'E', 'IO', 'ZH', 'Z', 'I', 'Y',
+			'A', 'B', 'V', 'G', 'D', 'E', 'YO', 'ZH', 'Z', 'I', 'J',
 			'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F',
-			'H', 'TS', 'CH', 'SH', 'SCH', '', 'Y', '', 'E', 'YU', 'IA',
-			'a', 'b', 'v', 'g', 'd', 'e', 'io', 'zh', 'z', 'i', 'y',
+			'H', 'C', 'CH', 'SH', 'SHH', '', 'Y', '', 'E', 'YU', 'IA',
+			'a', 'b', 'v', 'g', 'd', 'e', 'yo', 'zh', 'z', 'i', 'j',
 			'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f',
-			'h', 'ts', 'ch', 'sh', 'sch', '', 'y', '', 'e', 'yu', 'ia',
+			'h', 'c', 'ch', 'sh', 'shh', '', 'y', '', 'e', 'yu', 'ya',
 		);
 
 		if ($isRussian) {
