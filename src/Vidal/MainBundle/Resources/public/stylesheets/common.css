@@ -1208,7 +1208,7 @@ tr.bold td {
 /* banners */
 .banner {
 	position: relative;
-	border:   1px solid #ccc;
+	/*border:   1px solid #ccc;*/
 }
 #banner_top {
 	position:      relative;
