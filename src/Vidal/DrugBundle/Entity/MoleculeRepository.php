@@ -161,6 +161,12 @@ class MoleculeRepository extends EntityRepository
 			return $results;
 		}
 
+		foreach ($words as $word) {
+			if (mb_strlen($word, 'utf-8') < 3) {
+				return array();
+			}
+		}
+
 		# поиск по любому из слов
 		$qb->where($this->where($words, 'OR'));
 		$results = $qb->getQuery()->getResult();

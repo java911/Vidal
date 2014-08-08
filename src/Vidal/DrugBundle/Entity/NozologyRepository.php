@@ -92,6 +92,12 @@ class NozologyRepository extends EntityRepository
 
 		# находим какое-либо из слов, если нет результата
 		if (empty($nozologies)) {
+			foreach ($words as $word) {
+				if (mb_strlen($word, 'utf-8') < 3) {
+					return array();
+				}
+			}
+
 			$where = '';
 			for ($i = 0; $i < count($words); $i++) {
 				$word = $words[$i];

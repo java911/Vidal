@@ -90,6 +90,12 @@ class ClPhGroupsRepository extends EntityRepository
 		}
 
 		# поиск по любому из слов
+		foreach ($words as $word) {
+			if (mb_strlen($word, 'utf-8') < 3) {
+				return array();
+			}
+		}
+
 		$qb->where($this->where($words, 'OR'));
 		$results = $qb->getQuery()->getResult();
 

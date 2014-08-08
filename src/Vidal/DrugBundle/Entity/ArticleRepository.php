@@ -77,7 +77,6 @@ class ArticleRepository extends EntityRepository
 			->leftJoin('a.rubrique', 'r')
 			->where('a.enabled = TRUE')
 			->andWhere('r.enabled = TRUE')
-			->andWhere('a.date < CURRENT_TIMESTAMP()')
 			->andWhere('r.id != 19')
 			->andWhere('a.date < :now')
 			->setParameter('now', new \DateTime())
@@ -101,6 +100,12 @@ class ArticleRepository extends EntityRepository
 
 		# находим какое-либо из слов, если нет результата
 		if (empty($articles)) {
+			foreach ($words as $word) {
+				if (mb_strlen($word, 'utf-8') < 3) {
+					return array();
+				}
+			}
+
 			$where = '';
 
 			for ($i = 0; $i < count($words); $i++) {

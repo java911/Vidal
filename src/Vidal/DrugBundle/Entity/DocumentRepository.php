@@ -160,7 +160,7 @@ class DocumentRepository extends EntityRepository
 			->from('VidalDrugBundle:Document', 'd')
 			->orderBy('d.ClPhGrName', 'ASC');
 
-		# поиск по словам
+		# поиск всем по словам
 		$where = '';
 		$words = explode(' ', $q);
 
@@ -173,8 +173,28 @@ class DocumentRepository extends EntityRepository
 		}
 
 		$qb->andWhere($where);
-
 		$groups = $qb->getQuery()->getResult();
+
+		if (empty($groups)) {
+			foreach ($words as $word) {
+				if (mb_strlen($word, 'utf-8') < 3) {
+					return array();
+				}
+			}
+
+			$where = '';
+
+			for ($i = 0; $i < count($words); $i++) {
+				$word = $words[$i];
+				if ($i > 0) {
+					$where .= ' AND ';
+				}
+				$where .= "(d.ClPhGrName LIKE '$word%' OR d.ClPhGrName LIKE '% $word%')";
+			}
+
+			$qb->where($where);
+			$groups = $qb->getQuery()->getResult();
+		}
 
 		for ($i = 0, $c = count($groups); $i < $c; $i++) {
 			$groups[$i]['description'] = preg_replace('/' . $q . '/iu', '<span class="query">$0</span>', $groups[$i]['description']);

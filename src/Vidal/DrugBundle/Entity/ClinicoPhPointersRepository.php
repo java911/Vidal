@@ -167,6 +167,12 @@ class ClinicoPhPointersRepository extends EntityRepository
 
 		# находим какое-либо из слов, если нет результата
 		if (empty($pointers)) {
+			foreach ($words as $word) {
+				if (mb_strlen($word, 'utf-8') < 3) {
+					return array();
+				}
+			}
+
 			$where = '';
 			for ($i = 0; $i < count($words); $i++) {
 				$word = $words[$i];
@@ -196,8 +202,8 @@ class ClinicoPhPointersRepository extends EntityRepository
 		for ($i = 0; $i < count($codes); $i++) {
 			$patterns     = array('/<SUP>.*<\/SUP>/', '/<SUB>.*<\/SUB>/', '/&alpha;/', '/&amp;/');
 			$replacements = array('', '', ' ', ' ');
-			$name      = preg_replace($patterns, $replacements, $codes[$i]['Name']);
-			$name      = mb_strtolower(str_replace('  ', ' ', $name), 'UTF-8');
+			$name         = preg_replace($patterns, $replacements, $codes[$i]['Name']);
+			$name         = mb_strtolower(str_replace('  ', ' ', $name), 'UTF-8');
 
 			if (!empty($name) && !isset($names[$name])) {
 				$names[$name] = '';

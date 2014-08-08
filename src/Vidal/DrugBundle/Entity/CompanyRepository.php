@@ -133,24 +133,6 @@ class CompanyRepository extends EntityRepository
 		$qb->andWhere($where);
 		$results = $qb->getQuery()->getResult();
 
-		# поиск по одному слову
-		if (empty($results)) {
-			$where = '';
-			for ($i = 0; $i < count($words); $i++) {
-				$word = $words[$i];
-				if ($i > 0) {
-					$where .= ' OR ';
-				}
-				$where .= "(c.LocalName LIKE '$word%' OR c.LocalName LIKE '% $word%')";
-			}
-
-			$qb->where("c.CountryEditionCode = 'RUS'")
-				->andWhere("c.countProducts > 0")
-				->andWhere($where);
-
-			return $qb->getQuery()->getResult();
-		}
-
 		return $results;
 	}
 
@@ -243,28 +225,31 @@ class CompanyRepository extends EntityRepository
 		}
 
 		# поиск по любому слову
-		$words = $this->getWords($q);
-		$qb->where("c.countProducts > 0")->andWhere($this->where($words, 'OR'));
-		$results = $qb->getQuery()->getResult();
-
-		if (!empty($results)) {
-			return $results;
+		foreach ($words as $word) {
+			if (mb_strlen($word, 'utf-8') < 3) {
+				return array();
+			}
 		}
 
-		return array();
+		$words = $this->getWords($q);
+		$qb->where("c.countProducts > 0")->andWhere($this->where($words, 'OR'));
+
+		return $qb->getQuery()->getResult();
 	}
 
 	private function where($words, $s)
 	{
 		$s = ($s == 'OR') ? ' OR ' : ' AND ';
 
+		$i     = 0;
 		$where = '';
-		for ($i = 0; $i < count($words); $i++) {
-			$word = $words[$i];
+
+		foreach ($words as $word) {
 			if ($i > 0) {
 				$where .= $s;
 			}
 			$where .= "(c.LocalName LIKE '$word%' OR c.LocalName LIKE '% $word%')";
+			$i++;
 		}
 
 		return $where;
@@ -294,12 +279,12 @@ class CompanyRepository extends EntityRepository
 		);
 
 		$eng = array(
-			'A', 'B', 'V', 'G', 'D', 'E', 'IO', 'ZH', 'Z', 'I', 'Y',
+			'A', 'B', 'V', 'G', 'D', 'E', 'YO', 'ZH', 'Z', 'I', 'J',
 			'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F',
-			'H', 'TS', 'CH', 'SH', 'SCH', '', 'Y', '', 'E', 'YU', 'IA',
-			'a', 'b', 'v', 'g', 'd', 'e', 'io', 'zh', 'z', 'i', 'y',
+			'H', 'C', 'CH', 'SH', 'SHH', '', 'Y', '', 'E', 'YU', 'IA',
+			'a', 'b', 'v', 'g', 'd', 'e', 'yo', 'zh', 'z', 'i', 'j',
 			'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f',
-			'h', 'ts', 'ch', 'sh', 'sch', '', 'y', '', 'e', 'yu', 'ia',
+			'h', 'c', 'ch', 'sh', 'shh', '', 'y', '', 'e', 'yu', 'ya',
 		);
 
 		if ($isRussian) {

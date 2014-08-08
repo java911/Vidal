@@ -344,29 +344,31 @@ class ProductRepository extends EntityRepository
 		if (empty($productsRaw)) {
 			# тут от Максимилиана правки, что если одно из слов короче 4 символов
 			foreach ($words as $word) {
-				if (mb_strlen($word, 'utf-8') < 4) {
-					$anyOfWord = implode(' | ', $words);
-					$where     = '';
-
-					for ($i = 0; $i < count($words); $i++) {
-						$word = $words[$i];
-						if ($i > 0) {
-							$where .= ' OR ';
-						}
-						$where .= "(p.RusName LIKE '$word%' OR p.EngName LIKE '$word%' OR p.RusName LIKE '% $word%' OR p.EngName LIKE '% $word%' OR p.RusName LIKE '%-$word' OR p.EngName LIKE '%-$word')";
-					}
-
-					# включать ли бады
-					$qb->where('p.ProductTypeCode IN (:productTypes)')
-						->setParameter('productTypes', $productTypes);
-
-					$productsRaw = $qb
-						->andWhere('p.MarketStatusID IN (1,2,7)')
-						->andWhere('p.inactive = FALSE')
-						->andWhere($where)
-						->getQuery()->getResult();
+				if (mb_strlen($word, 'utf-8') < 3) {
+					return array();
 				}
 			}
+
+			$anyOfWord = implode(' | ', $words);
+			$where     = '';
+
+			for ($i = 0; $i < count($words); $i++) {
+				$word = $words[$i];
+				if ($i > 0) {
+					$where .= ' OR ';
+				}
+				$where .= "(p.RusName LIKE '$word%' OR p.EngName LIKE '$word%' OR p.RusName LIKE '% $word%' OR p.EngName LIKE '% $word%' OR p.RusName LIKE '%-$word' OR p.EngName LIKE '%-$word')";
+			}
+
+			# включать ли бады
+			$qb->where('p.ProductTypeCode IN (:productTypes)')
+				->setParameter('productTypes', $productTypes);
+
+			$productsRaw = $qb
+				->andWhere('p.MarketStatusID IN (1,2,7)')
+				->andWhere('p.inactive = FALSE')
+				->andWhere($where)
+				->getQuery()->getResult();
 		}
 
 		$products        = array();
@@ -525,7 +527,7 @@ class ProductRepository extends EntityRepository
 			->where("p.MarketStatusID IN (1,2,7) AND p.ProductTypeCode IN ('DRUG','GOME') AND p.inactive = FALSE")
 			->orderBy('g.Name', 'ASC');
 
-		# поиск по словам
+		# поиск по всем словам словам
 		$where = '';
 		$words = explode(' ', $q);
 
@@ -538,8 +540,30 @@ class ProductRepository extends EntityRepository
 		}
 
 		$qb->andWhere($where);
-
 		$groups = $qb->getQuery()->getResult();
+
+		# поиск по любому из слов
+		if (empty($groups)) {
+			foreach ($words as $word) {
+				if (mb_strlen($word, 'utf-8') < 4) {
+					return array();
+				}
+			}
+
+			$where = '';
+
+			for ($i = 0; $i < count($words); $i++) {
+				$word = $words[$i];
+				if ($i > 0) {
+					$where .= ' AND ';
+				}
+				$where .= "(g.Name LIKE '$word%' OR g.Name LIKE '% $word%')";
+			}
+
+			$qb->where("p.MarketStatusID IN (1,2,7) AND p.ProductTypeCode IN ('DRUG','GOME') AND p.inactive = FALSE");
+			$qb->andWhere($where);
+			$groups = $qb->getQuery()->getResult();
+		}
 
 		for ($i = 0, $c = count($groups); $i < $c; $i++) {
 			$name               = $this->mb_ucfirst($groups[$i]['Name']);

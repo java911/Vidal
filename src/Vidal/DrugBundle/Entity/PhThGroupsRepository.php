@@ -75,6 +75,12 @@ class PhThGroupsRepository extends EntityRepository
 
 		# поиск по одному слову
 		if (empty($results)) {
+			foreach ($words as $word) {
+				if (mb_strlen($word, 'utf-8') < 3) {
+					return array();
+				}
+			}
+
 			$where = '';
 			for ($i = 0; $i < count($words); $i++) {
 				$word = $words[$i];

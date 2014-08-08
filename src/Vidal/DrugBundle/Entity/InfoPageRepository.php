@@ -150,16 +150,18 @@ class InfoPageRepository extends EntityRepository
 			return $results;
 		}
 
-		# поиск по любому из слов
+		foreach ($words as $word) {
+			if (mb_strlen($word, 'utf-8') < 3) {
+				return array();
+			}
+		}
+
+		# поиск по одному из слов
 		$words = $this->getWords($q);
 		$qb->where('i.countProducts > 0')->andWhere($this->where($words, 'OR'));
 		$results = $qb->getQuery()->getResult();
 
-		if (!empty($results)) {
-			return $results;
-		}
-
-		return array();
+		return $results;
 	}
 
 	public function findPortfolios($InfoPageID)
@@ -178,12 +180,14 @@ class InfoPageRepository extends EntityRepository
 	{
 		$s = ($s == 'OR') ? ' OR ' : ' AND ';
 
+		$i     = 0;
 		$where = '';
-		for ($i = 0; $i < count($words); $i++) {
-			$word = $words[$i];
+
+		foreach ($words as $word) {
 			if ($i > 0) {
 				$where .= $s;
 			}
+			$i++;
 			$where .= "(i.RusName LIKE '$word%' OR i.RusName LIKE '% $word%')";
 		}
 
