@@ -188,7 +188,7 @@ class InfoPageRepository extends EntityRepository
 				$where .= $s;
 			}
 			$i++;
-			$where .= "(i.RusName LIKE '$word%' OR i.RusName LIKE '% $word%')";
+			$where .= "(i.RusName LIKE '$word%' OR i.RusName LIKE '% $word%' OR i.EngName LIKE '$word%' OR i.EngName LIKE '% $word%')";
 		}
 
 		return $where;
