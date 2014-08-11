@@ -274,30 +274,22 @@
 		</div>
 	{% endif %}
 
+	{# блок горизонтального яндекс-директа #}
+	{% include 'VidalMainBundle::yad_horizontal.html.twig' %}
+
+	{# цены Он-лайн аптек #}
 	{{ render( controller('VidalMainBundle:Market:productList', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}
 
 	{# блок получения ссылки #}
 	{% if product is defined or document is defined %}
-		<div class="copy">
-			<div class="copy-head">
-				Если вы хотите разместить ссылку на описание этого препарата - используйте данный код
-			</div>
-			{% spaceless %}
-				<textarea cols="92" rows="2">
-					{% if product is defined %}
-						<a href="{{ url('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}" target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
-					{% else %}
-						<a href="{{ url('document', {'name':document.Name}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль.</a>
-					{% endif %}
-				</textarea>
-			{% endspaceless %}
-		</div>
+		{% include 'VidalDrugBundle:Vidal:document_get_link.html.twig' %}
 	{% endif %}
 
-
+	{# поп-ап неавторизованным #}
 	{% if not isDoctor %}
 		{% include 'VidalMainBundle:Auth:login_popup.html.twig' %}
 	{% endif %}
+
 
 {% endblock %}
 
