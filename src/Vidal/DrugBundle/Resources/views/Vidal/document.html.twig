@@ -340,11 +340,11 @@
 		{% include 'VidalDrugBundle:Vidal:document_info.html.twig' %}
 	{% endif %}
 
-	{# блок горизонтального яндекс-директа #}
-	{% include 'VidalMainBundle::yad_horizontal.html.twig' %}
-
 	{# цены Он-лайн аптек #}
 	{{ render( controller('VidalMainBundle:Market:productList', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}
+
+	{# блок горизонтального яндекс-директа #}
+	{% include 'VidalMainBundle::yad_horizontal.html.twig' %}
 
 	{# блок получения ссылки #}
 	{% if product is defined or document is defined %}
