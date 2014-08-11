@@ -12,9 +12,8 @@ class CompanyGroupAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('CompanyGroupID', null, array('label' => 'ID', 'required' => true))
 			->add('RusName', null, array('label' => 'Общеизвестна как', 'required' => true))
-			->add('companies', null, array('label' => 'Компании группы'))
+			->add('companies', null, array('label' => 'Компании группы', 'required' => false))
 		;
 	}
 

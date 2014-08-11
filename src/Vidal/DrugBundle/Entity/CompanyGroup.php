@@ -14,10 +14,10 @@ class CompanyGroup
 	/** @ORM\Column(length=255) */
 	protected $RusName;
 
-	/** @ORM\Column(length=255) */
+	/** @ORM\Column(length=255, nullable=true) */
 	protected $EngName;
 
-	/** @ORM\OneToMany(targetEntity="Company", mappedBy="CompanyGroupID") */
+	/** @ORM\OneToMany(targetEntity="Company", mappedBy="CompanyGroupID", cascade={"all"}) */
 	protected $companies;
 
 	public function __toString()
@@ -84,5 +84,19 @@ class CompanyGroup
 	public function getCompanies()
 	{
 		return $this->companies;
+	}
+
+	public function addCompanie(Company $company)
+	{
+		$this->companies[] = $company;
+
+		return $this;
+	}
+
+	public function removeCompanie(Company $company)
+	{
+		$this->companies->removeElement($company);
+
+		return $this;
 	}
 }
