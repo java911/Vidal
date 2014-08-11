@@ -8,7 +8,7 @@
 	{% endif %}
 
 
-	{% if anyOfWord
+	{% if anyOfWord is not empty
 	and p == 1
 	and noResults is not defined
 	and noProducts is not defined
@@ -18,10 +18,11 @@
 				Препаратов по запросу <span>{{ q }}</span> не найдено.
 			</div>
 			<div>
-				Отобразить результаты по любому из слов <span>{{ anyOfWord }}</span> ?
+				<a href="#" class="any-btn btn-red">Отобразить</a>
+				результаты по {{ anyOfWord|length == 1 ? 'слову' : 'любому из слов' }}
+				<span>{{ anyOfWord|join(' | ') }}</span> ?
 			</div>
 		</div>
-		<a href="#" class="any-btn btn-gray">Показать</a>
 		<script type="text/javascript">
 			$(document).ready(function() {
 				$('.any-btn, a[href="#search_products"], a[href="#search_bads"], a[href="#search_mis"]').click(function(e) {

@@ -214,6 +214,7 @@ class CompanyRepository extends EntityRepository
 		$qb->select('c.CompanyID, c.LocalName, c.Property, country.RusName Country')
 			->from('VidalDrugBundle:Company', 'c')
 			->leftJoin('VidalDrugBundle:Country', 'country', 'WITH', 'country.CountryCode = c.CountryCode')
+			->leftJoin('c.CompanyGroupID', 'g')
 			->orderBy('c.LocalName', 'ASC');
 
 		# поиск по всем словам
@@ -248,7 +249,7 @@ class CompanyRepository extends EntityRepository
 			if ($i > 0) {
 				$where .= $s;
 			}
-			$where .= "(c.LocalName LIKE '$word%' OR c.LocalName LIKE '% $word%')";
+			$where .= "(c.LocalName LIKE '$word%' OR c.LocalName LIKE '% $word%' OR g.RusName LIKE '$word%' OR g.RusName LIKE '% $word%')";
 			$i++;
 		}
 

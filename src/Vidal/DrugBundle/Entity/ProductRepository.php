@@ -301,7 +301,7 @@ class ProductRepository extends EntityRepository
 	{
 		$miIncluded = $badIncluded;
 		$qb         = $this->_em->createQueryBuilder();
-		$anyOfWord  = false;
+		$anyOfWord  = null;
 
 		$qb->select('p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.ProductID, p.photo,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, pt.ProductTypeCode,
@@ -342,18 +342,21 @@ class ProductRepository extends EntityRepository
 
 		# поиск по любому из слов, если по всем не дал результата
 		if (empty($productsRaw)) {
-			# тут от Максимилиана правки, что если одно из слов короче 4 символов
-			foreach ($words as $word) {
-				if (mb_strlen($word, 'utf-8') < 3) {
-					return array();
+			# определяем, стоит ли искать по любому слову, должно быть хотя бы одно слово от 3х символов
+			for ($i = 0; $i < count($words); $i++) {
+				if (mb_strlen($words[$i], 'utf-8') > 2) {
+					$anyOfWord[] = $words[$i];
 				}
 			}
 
-			$anyOfWord = implode(' | ', $words);
+			if (empty($anyOfWord)) {
+				return array(array(), null);
+			}
+
 			$where     = '';
 
-			for ($i = 0; $i < count($words); $i++) {
-				$word = $words[$i];
+			for ($i = 0; $i < count($anyOfWord); $i++) {
+				$word = $anyOfWord[$i];
 				if ($i > 0) {
 					$where .= ' OR ';
 				}

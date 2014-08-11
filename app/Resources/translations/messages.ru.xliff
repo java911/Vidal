@@ -517,6 +517,27 @@
 				<target>Удаление пользователя</target>
 			</trans-unit>
 
+			<trans-unit id="sonata-29">
+				<source>Company Group List</source>
+				<target>Группы компаний</target>
+			</trans-unit>
+			<trans-unit id="sonata-29-1">
+				<source>Company Group Show</source>
+				<target>Группа компаний</target>
+			</trans-unit>
+			<trans-unit id="sonata-29-2">
+				<source>Company Group Edit</source>
+				<target>Редактирование группы компаний</target>
+			</trans-unit>
+			<trans-unit id="sonata-29-3">
+				<source>Company Group Create</source>
+				<target>Создание группы компаний</target>
+			</trans-unit>
+			<trans-unit id="sonata-29-4">
+				<source>Company Group Delete</source>
+				<target>Удаление группы компаний</target>
+			</trans-unit>
+
         </body>
     </file>
 </xliff>

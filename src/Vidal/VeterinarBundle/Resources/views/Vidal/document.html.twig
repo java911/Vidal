@@ -159,6 +159,8 @@
 		{% include 'VidalVeterinarBundle:Vidal:document_info.html.twig' %}
 	{% endif %}
 
+	{% include 'VidalMainBundle::yad_horizontal.html.twig' %}
+
 	{# блок получения ссылки #}
 	{% if product is defined or document is defined %}
 		<div class="copy">

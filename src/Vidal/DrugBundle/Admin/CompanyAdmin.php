@@ -14,7 +14,9 @@ class CompanyAdmin extends Admin
 		$formMapper
 			->add('LocalName', null, array('label' => 'Название', 'required' => true))
 			->add('Property', null, array('label' => 'Приписка', 'required' => false))
-			->add('CountryCode', null, array('label' => 'Страна'));
+			->add('CountryCode', null, array('label' => 'Страна'))
+			->add('CompanyGroupID', null, array('label' => 'Группа компании'))
+		;
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -23,7 +25,9 @@ class CompanyAdmin extends Admin
 			->add('CompanyID', null, array('label' => 'ID'))
 			->add('LocalName', null, array('label' => 'Название'))
 			->add('Property', null, array('label' => 'Приписка'))
-			->add('CountryCode', null, array('label' => 'Страна'));
+			->add('CountryCode', null, array('label' => 'Страна'))
+			->add('CompanyGroupID', null, array('label' => 'Группа компании'))
+		;
 	}
 
 	protected function configureListFields(ListMapper $listMapper)
@@ -33,6 +37,7 @@ class CompanyAdmin extends Admin
 			->add('LocalName', null, array('label' => 'Название'))
 			->add('Property', null, array('label' => 'Приписка'))
 			->add('CountryCode', null, array('label' => 'Страна'))
+			->add('CompanyGroupID', null, array('label' => 'Группа компании'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(

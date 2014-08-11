@@ -34,6 +34,12 @@ class Company
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $countProducts;
 
+	/**
+	 * @ORM\ManyToOne(targetEntity="CompanyGroup", inversedBy="companies")
+	 * @ORM\JoinColumn(name="CompanyGroupID", referencedColumnName="CompanyGroupID")
+	 */
+	protected $CompanyGroupID;
+
 	public function __construct()
 	{
 		$this->productCompanies = new ArrayCollection();
@@ -201,5 +207,21 @@ class Company
 	public function getProductCompanies()
 	{
 		return $this->productCompanies;
+	}
+
+	/**
+	 * @param mixed $CompanyGroupID
+	 */
+	public function setCompanyGroupID($CompanyGroupID)
+	{
+		$this->CompanyGroupID = $CompanyGroupID;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCompanyGroupID()
+	{
+		return $this->CompanyGroupID;
 	}
 }
