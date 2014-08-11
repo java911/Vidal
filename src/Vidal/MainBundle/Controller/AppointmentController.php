@@ -30,10 +30,16 @@ class AppointmentController extends Controller
         }
     }
 
-
-
     /**
      * @Route("/appointment", name="appointment")
+     * @Template()
+     */
+    public function appointmentAction(){
+        return array();
+    }
+
+    /**
+     * @Route("/appointment12345", name="")
      * @Template()
      */
     public function indexAction(Request $request)
