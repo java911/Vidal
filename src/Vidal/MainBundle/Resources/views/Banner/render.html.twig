@@ -1,4 +1,4 @@
-{% if banner and is_file(banner.banner.path) %}
+{% if banner and is_file(banner.path) %}
 	{% set group = 'banner_' ~ banner.group.name %}
 	{% set width = banner.group.width %}
 	{% set height = banner.group.height %}
@@ -8,21 +8,11 @@
 		<a href="{{ banner.link }}" class="banner-link"
 		   style="width:{{ width }}px; height:{{ height }}px">
 			{% if isSwf %}
-				{#<div id="{{ group }}_swf">#}
-					{#{% if banner.fallback %}#}
-						{#<img src="{{ banner.fallback.path }}" style="width:{{ width }}px; height:{{ height }}px"/>#}
-					{#{% endif %}#}
-				{#</div>#}
-
-				<object width="{{ width }}" height="{{ height }}" class="banner-rotate">
-					<param name="movie" value="{{ banner.banner.path }}">
-					<param name="quality" value="high"/>
-					<param name="play" value="true"/>
-					<param name="loop" value="true"/>
-					<param name="wmode" value="transparent"/>
-					<embed src="{{ banner.banner.path }}" width="{{ width }}" height="{{ height }}"
-						   wmode="transparent" bgcolor="#FFFFFF" quality="high"></embed>
-				</object>
+				<div id="{{ group }}_swf">
+					{% if banner.fallback %}
+						<img src="{{ banner.fallback.path }}" style="width:{{ width }}px; height:{{ height }}px"/>
+					{% endif %}
+				</div>
 			{% else %}
 				<img src="{{ banner.banner.path }}" style="width:{{ width }}px; height:{{ height }}px"/>
 			{% endif %}
@@ -37,9 +27,6 @@
 				$.get(Routing.generate('banner_clicked', {'bannerId': '{{ banner.id }}'}));
 			});
 			{% if isSwf %}
-			if (swfobject.hasFlashPlayerVersion("9.0.0")) {
-				var $code = $('
-			}
 			swfobject.embedSWF("{{ banner.banner.path }}", "{{ group }}_swf", "{{ width }}", "{{ height }}", "9.0.0",
 				"/expressInstall.swf", null, {wmode:"opaque"});
 			{% endif %}
