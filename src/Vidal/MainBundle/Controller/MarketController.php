@@ -470,16 +470,32 @@ class MarketController extends Controller{
             curl_close($curl);
 
         }
-        $data = $basket->getAmounts();
+//        $data = $basket->getAmounts();
+        $summa = $basket->getSumma();
         $summa = $summa[$group];
+
         $basket = $basket->getAll();
         $basket = $basket[$group];
         $xml = simplexml_load_string($data);
         if ($xml->error->error_code){
+            if ($group == 'piluli'){
+                $array = $this->shippingTitlePiluli;
+            }elseif($group == 'eapteka'){
+                $array = $this->shippingTitleEapteka;
+            }else{
+                $array = $this->shippingTitle;
+            }
             $this->get('email.service')->send(
 //            "tulupov.m@gmail.com",
                 array($order->getEmail()),
-                array('VidalMainBundle:Email:market_notice_user.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa, 'ship' => $this->shippingTitle[$order->getShipping()] )),
+                array('VidalMainBundle:Email:market_notice_user.html.twig',
+                    array(
+                        'group' => $group,
+                        'order' => $order,
+                        'basket' => $basket,
+                        'summa' => $summa,
+                        'ship' => $array[$order->getShipping()]
+                    )),
                 'Заказ с сайта Vidal.ru'
             );
             return true;
