@@ -1,0 +1,45 @@
+{% if q in ['nurofen','нурофен','strepsils','стрепсилс','gaviscon','гавискон','lemsip','лемсип','dettol','деттол'] %}
+	<style>
+		.promotion {
+			margin: 20px 0 22px;
+		}
+		.promotion a {
+			text-decoration: none;
+			color:           #2f4053;
+			font-weight:     bold;
+			font-size:       14px;
+			border:          1px solid #848C96;
+			padding:         3px 10px;
+		}
+		.promotion a:hover, .promotion a:active {
+			background: #eee;
+		}
+		.promotion a span {
+			color: #d71344;
+		}
+	</style>
+
+	<div class="promotion">
+		{% if q in ['nurofen', 'нурофен'] %}
+			<a href="http://vidal.ru/reckittbenckiser/nurofen.html" target="_blank">
+				Описание <span>НУРОФЕН</span> в аптечке <b>Reckitt Benckiser</b>
+			</a>
+		{% elseif q in ['strepsils', 'стрепсилс'] %}
+			<a href="http://vidal.ru/reckittbenckiser/strepsils.html" target="_blank">
+				Описание <span>СТРЕПСИЛС</span> в аптечке <b>Reckitt Benckiser</b>
+			</a>
+		{% elseif q in ['gaviscon', 'гавискон'] %}
+			<a href="http://vidal.ru/reckittbenckiser/gaviscon.html" target="_blank">
+				Описание <span>ГАВИСКОН</span> в аптечке <b>Reckitt Benckiser</b>
+			</a>
+		{% elseif q in ['lemsip', 'лемсип'] %}
+			<a href="http://vidal.ru/reckittbenckiser/lemsip.html" target="_blank">
+				Описание <span>ЛЕМСИН</span> в аптечке <b>Reckitt Benckiser</b>
+			</a>
+		{% elseif q in ['dettol', 'деттол'] %}
+			<a href="http://vidal.ru/reckittbenckiser/dettol.html" target="_blank">
+				Описание <span>ДЕТТОЛ</span> в аптечке <b>Reckitt Benckiser</b>
+			</a>
+		{% endif %}
+	</div>
+{% endif %}

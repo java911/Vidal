@@ -6,16 +6,17 @@
 
 	<div id="{{ group }}" class="banner" style="width:{{ width }}px; height:{{ height }}px">
 		<a href="{{ banner.link }}" class="banner-link"
-		   style="width:{{ width }}px; height:{{ height }}px"></a>
-		{% if isSwf %}
-			<div id="{{ group }}_swf">
-				{% if banner.fallback %}
-					<img src="{{ banner.fallback.path }}" style="width:{{ width }}px; height:{{ height }}px"/>
-				{% endif %}
-			</div>
-		{% else %}
-			<img src="{{ banner.banner.path }}" style="width:{{ width }}px; height:{{ height }}px"/>
-		{% endif %}
+		   style="width:{{ width }}px; height:{{ height }}px">
+			{% if isSwf %}
+				<div id="{{ group }}_swf">
+					{% if banner.fallback %}
+						<img src="{{ banner.fallback.path }}" style="width:{{ width }}px; height:{{ height }}px"/>
+					{% endif %}
+				</div>
+			{% else %}
+				<img src="{{ banner.banner.path }}" style="width:{{ width }}px; height:{{ height }}px"/>
+			{% endif %}
+		</a>
 	</div>
 
 	<script type="text/javascript">
@@ -26,7 +27,8 @@
 				$.get(Routing.generate('banner_clicked', {'bannerId': '{{ banner.id }}'}));
 			});
 			{% if isSwf %}
-			swfobject.embedSWF("{{ banner.banner.path }}", "{{ group }}_swf", "{{ width }}", "{{ height }}", "9.0.0");
+			swfobject.embedSWF("{{ banner.banner.path }}", "{{ group }}_swf", "{{ width }}", "{{ height }}", "9.0.0",
+				"/expressInstall.swf", null, {wmode:"opaque"});
 			{% endif %}
 		});
 	</script>

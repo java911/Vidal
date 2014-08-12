@@ -1222,10 +1222,13 @@ tr.bold td {
 	clear:  both;
 	margin: 0 auto 20px;
 }
-.banner a, .banner img {
-	display: block;
+.banner a, .banner img, .banner div {
+	display:  block;
+	position: absolute;
+	top:      0;
+	left:     0;
 }
-.banner > a {
+.banner a {
 	position: absolute;
 	z-index:  666;
 }
