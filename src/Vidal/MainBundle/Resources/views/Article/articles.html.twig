@@ -46,4 +46,9 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/article.css') }}"/>
+    <style>
+        .rubriques div:first-child{
+            margin-right: 15px;
+        }
+    </style>
 {% endblock %}
