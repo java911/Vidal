@@ -20,6 +20,12 @@ class Banner extends BaseEntity
 	protected $banner;
 
 	/**
+	 * @ORM\Column(type="array", nullable=true)
+	 * @Filestore\UploadableField(mapping="banner")
+	 */
+	protected $fallback;
+
+	/**
 	 * @ORM\Column(length=500)
 	 * @Assert\Url(message="Ссылка для баннера указана некорректно")
 	 * @Assert\NotBlank(message="Укажите ссылку для баннера")
@@ -52,20 +58,20 @@ class Banner extends BaseEntity
 	 */
 	protected $clicks;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    protected $limitDay = 0;
+	/**
+	 * @ORM\Column(type="integer")
+	 */
+	protected $limitDay = 0;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $dateDay;
+	/**
+	 * @ORM\Column(type="datetime", nullable=true)
+	 */
+	protected $dateDay;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    protected $clickDay = 0;
+	/**
+	 * @ORM\Column(type="integer")
+	 */
+	protected $clickDay = 0;
 
 	/**
 	 * @ORM\Column(type="integer", nullable=true)
@@ -81,19 +87,17 @@ class Banner extends BaseEntity
 	/** @ORM\ManyToOne(targetEntity="BannerGroup", inversedBy="banners") */
 	protected $group;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Country", inversedBy="banners")
-     */
-    protected $countries;
+	/**
+	 * @ORM\ManyToMany(targetEntity="Country", inversedBy="banners")
+	 */
+	protected $countries;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="City", inversedBy="banners")
-     */
-    protected $cities;
+	/**
+	 * @ORM\ManyToMany(targetEntity="City", inversedBy="banners")
+	 */
+	protected $cities;
 
-
-
-    /**
+	/**
 	 * @ORM\OneToOne(targetEntity="Banner")
 	 * @ORM\JoinColumn(name="reference_id", referencedColumnName="id")
 	 */
@@ -104,8 +108,8 @@ class Banner extends BaseEntity
 		$this->starts    = new \DateTime();
 		$this->clicks    = 0;
 		$this->displayed = 0;
-        $this->cities       = new ArrayCollection();
-        $this->countries       = new ArrayCollection();
+		$this->cities    = new ArrayCollection();
+		$this->countries = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -296,99 +300,119 @@ class Banner extends BaseEntity
 		return $this->banner['mimeType'] == 'application/x-shockwave-flash';
 	}
 
-    /**
-     * @param mixed $limitDay
-     */
-    public function setLimitDay($limitDay = 0)
-    {
-        $this->limitDay = $limitDay;
-    }
+	/**
+	 * @param mixed $limitDay
+	 */
+	public function setLimitDay($limitDay = 0)
+	{
+		$this->limitDay = $limitDay;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getLimitDay()
-    {
-        return $this->limitDay;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getLimitDay()
+	{
+		return $this->limitDay;
+	}
 
-    /**
-     * @param mixed $clickDay
-     */
-    public function setClickDay($clickDay = 0)
-    {
-        $this->clickDay = $clickDay;
-    }
+	/**
+	 * @param mixed $clickDay
+	 */
+	public function setClickDay($clickDay = 0)
+	{
+		$this->clickDay = $clickDay;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getClickDay()
-    {
-        return $this->clickDay;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getClickDay()
+	{
+		return $this->clickDay;
+	}
 
-    /**
-     * @param mixed $dateDay
-     */
-    public function setDateDay($dateDay)
-    {
-        $this->dateDay = $dateDay;
-    }
+	/**
+	 * @param mixed $dateDay
+	 */
+	public function setDateDay($dateDay)
+	{
+		$this->dateDay = $dateDay;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getDateDay()
-    {
-        return $this->dateDay;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getDateDay()
+	{
+		return $this->dateDay;
+	}
 
-    /**
-     * @param mixed $cities
-     */
-    public function setCities($cities)
-    {
-        $this->cities = $cities;
-    }
+	/**
+	 * @param mixed $cities
+	 */
+	public function setCities($cities)
+	{
+		$this->cities = $cities;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getCities()
-    {
-        return $this->cities;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getCities()
+	{
+		return $this->cities;
+	}
 
-    public function addCity($city){
-        $this->cities[] = $city;
-    }
+	public function addCity($city)
+	{
+		$this->cities[] = $city;
+	}
 
-    public function removeCity($city){
-        $this->cities->removeElement($city);
-    }
-    /**
-     * @param mixed $countries
-     */
-    public function setCountries($countries)
-    {
-        $this->countries = $countries;
-    }
+	public function removeCity($city)
+	{
+		$this->cities->removeElement($city);
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getCountries()
-    {
-        return $this->countries;
-    }
+	/**
+	 * @param mixed $countries
+	 */
+	public function setCountries($countries)
+	{
+		$this->countries = $countries;
+	}
 
-    public function addCountry($country){
-        $this->countries[] = $country;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getCountries()
+	{
+		return $this->countries;
+	}
 
-    public function removeCountry($country){
-        $this->countries->removeElement($country);
-    }
+	public function addCountry($country)
+	{
+		$this->countries[] = $country;
+	}
 
+	public function removeCountry($country)
+	{
+		$this->countries->removeElement($country);
+	}
+
+	/**
+	 * @param mixed $fallback
+	 */
+	public function setFallback($fallback)
+	{
+		$this->fallback = $fallback;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getFallback()
+	{
+		return $this->fallback;
+	}
 }

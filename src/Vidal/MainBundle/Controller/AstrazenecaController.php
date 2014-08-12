@@ -21,10 +21,14 @@ class AstrazenecaController extends Controller
 	 */
 	public function indexAction()
 	{
+		$em    = $this->getDoctrine()->getManager();
+		$blogs = $em->getRepository('VidalMainBundle:AstrazenecaBlog')->findActive();
+
 		return array(
 			'noYad'     => true,
 			'title'     => 'Школа гастрита',
 			'menu_left' => 'shkola',
+			'blogs'     => $blogs,
 		);
 	}
 

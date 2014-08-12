@@ -11,7 +11,7 @@ framework:
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
-    templating:      { engines: ['twig'], assets_version: v131 }
+    templating:      { engines: ['twig'], assets_version: v132 }
     form:            ~
     csrf_protection: false
     validation:      { enable_annotations: true }
@@ -139,6 +139,12 @@ iphp_file_store:
         docs:
             upload_dir: %upload_dir%/docs
             upload_path: /upload/docs
+            overwrite_duplicates: false
+            namer:
+                 translit: ~
+        blog:
+            upload_dir: %upload_dir%/blog
+            upload_path: /upload/blog
             overwrite_duplicates: false
             namer:
                  translit: ~

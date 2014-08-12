@@ -25,29 +25,11 @@ class BannerAdmin extends Admin
 		}
 	}
 
-	protected function configureShowField(ShowMapper $showMapper)
-	{
-		$showMapper
-			->add('id')
-			->add('link', null, array('label' => 'Ссылка'))
-			->add('group', null, array('label' => 'Баннерное место'))
-			->add('clicks', null, array('label' => 'Переходов'))
-			->add('displayed', null, array('label' => 'Показов'))
-			->add('expires', null, array('label' => 'Осталось показов'))
-            ->add('countries', null, array('label' => 'Страны', 'required' => false))
-            ->add('cities', null, array('label' => 'города', 'required' => false))
-			->add('presence', null, array('label' => 'Приоритет появления'))
-			->add('enabled', null, array('label' => 'Активен'))
-			->add('starts', null, array('label' => 'Дата начала'))
-			->add('ends', null, array('label' => 'Дата окончания'))
-			->add('created', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
-			->add('updated', null, array('label' => 'Дата обновления', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'));
-	}
-
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
 			->add('banner', 'iphp_file', array('label' => 'Баннер'))
+			->add('fallback', 'iphp_file', array('label' => 'Изображение, если флэш не поддерживается', 'required' => false))
 			->add('link', null, array('label' => 'Ссылка', 'required' => true))
 			->add('group', null, array('label' => 'Баннерное место', 'required' => true))
 			->add('expires', null, array('label' => 'Осталось показов', 'help' => 'Оставьте пустым, чтоб не учитывать'))
@@ -96,7 +78,6 @@ class BannerAdmin extends Admin
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(
-					'show'   => array(),
 					'edit'   => array(),
 					'delete' => array(),
 				)

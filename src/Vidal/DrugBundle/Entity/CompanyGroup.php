@@ -17,7 +17,7 @@ class CompanyGroup
 	/** @ORM\Column(length=255, nullable=true) */
 	protected $EngName;
 
-	/** @ORM\OneToMany(targetEntity="Company", mappedBy="CompanyGroupID", cascade={"all"}) */
+	/** @ORM\OneToMany(targetEntity="Company", mappedBy="CompanyGroupID") */
 	protected $companies;
 
 	public function __toString()
@@ -84,19 +84,5 @@ class CompanyGroup
 	public function getCompanies()
 	{
 		return $this->companies;
-	}
-
-	public function addCompanie(Company $company)
-	{
-		$this->companies[] = $company;
-
-		return $this;
-	}
-
-	public function removeCompanie(Company $company)
-	{
-		$this->companies->removeElement($company);
-
-		return $this;
 	}
 }

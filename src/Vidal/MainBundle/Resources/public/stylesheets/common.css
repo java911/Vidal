@@ -1208,11 +1208,10 @@ tr.bold td {
 /* banners */
 .banner {
 	position: relative;
-	/*border:   1px solid #ccc;*/
 }
 #banner_top {
 	position:      relative;
-	margin-bottom: -15px;
+	margin-bottom: -2px;
 	z-index:       10;
 }
 #banner_top img {
@@ -1223,18 +1222,12 @@ tr.bold td {
 	clear:  both;
 	margin: 0 auto 20px;
 }
-.banner.swf {
-	position:   relative;
-	text-align: center;
-	background: transparent;
-}
-.banner.swf > div {
-	position:   absolute;
-	background: transparent;
-	cursor:     pointer;
-}
 .banner a, .banner img {
 	display: block;
+}
+.banner > a {
+	position: absolute;
+	z-index:  666;
 }
 .left-sidebar > div, .right-sidebar > div {
 	margin-bottom: 25px;
