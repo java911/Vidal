@@ -1,4 +1,4 @@
-{% if banner and is_file(banner.path) %}
+{% if banner and is_file(banner.banner.path) %}
 	{% set group = 'banner_' ~ banner.group.name %}
 	{% set width = banner.group.width %}
 	{% set height = banner.group.height %}
@@ -27,8 +27,8 @@
 				$.get(Routing.generate('banner_clicked', {'bannerId': '{{ banner.id }}'}));
 			});
 			{% if isSwf %}
-			swfobject.embedSWF("{{ banner.banner.path }}", "{{ group }}_swf", "{{ width }}", "{{ height }}", "9.0.0",
-				"/expressInstall.swf", null, {wmode:"opaque"});
+			{#swfobject.embedSWF("{{ banner.banner.path }}", "{{ group }}_swf", "{{ width }}", "{{ height }}", "9.0.0",#}
+				{#"/expressInstall.swf", null, {wmode:"opaque"});#}
 			{% endif %}
 		});
 	</script>
