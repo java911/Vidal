@@ -1,9 +1,9 @@
 {% if count > 0 %}
-    <div style="text-align: center">
+    <div style="text-align: right">
         <span style="padding: 10px 20px; border: 1px solid #d71344; ">
             <img src="{{ asset('bundles/vidalmain/images/basket_icon.png') }}" style="width: 24px; margin-bottom: -5px"/>
             <a href="{{ path('basket_list') }}" style="border: 0px; text-decoration: none; font-weight: 700; font-size: 16px; line-height: 19px;"
-               class="{{ menu_left is defined and menu_left == 'basket_list' ? 'active' : 'dotted' }}">КОРЗИНА ( {{ count }} )</a>
+               class="{{ menu_left is defined and menu_left == 'basket_list' ? 'active' : 'dotted' }}">Корзина ( {{ count }} )</a>
         </span>
     </div>
 {% endif %}
