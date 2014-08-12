@@ -51,6 +51,18 @@
 				src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 		<script type="text/javascript"
 				src="{{ asset('bundles/vidalmain/jquery-ui/jquery-ui-1.10.4.custom.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/swfobject.js') }}"></script>
+		<script>
+			$(document).ready(function() {
+				swfobject.registerObject("myId", "9.0.0", "expressInstall.swf");
+				//var myVideo = new SWFObject('your.swf', 'objectID', '187', '69', '6', '#ffffff');
+//				myVideo.addParam("wmode", "transparent");
+//				myVideo.addVariable("destination", "http://www.example.com/file.html");
+//				if (document.getElementById('flash-placeholder')) {
+//					myVideo.write('flash-placeholder');
+//				}
+			});
+		</script>
 	{% endblock %}
 </head>
 
