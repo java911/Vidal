@@ -1230,7 +1230,6 @@ tr.bold td {
 }
 .banner a {
 	position: absolute;
-	z-index:  666;
 }
 .left-sidebar > div, .right-sidebar > div {
 	margin-bottom: 25px;
