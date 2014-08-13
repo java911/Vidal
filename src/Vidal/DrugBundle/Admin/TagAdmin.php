@@ -20,7 +20,7 @@ class TagAdmin extends Admin
 		if (!$this->hasRequest()) {
 			$this->datagridValues = array(
 				'_page'       => 1,
-				'_per_page'   => 200,
+				'_per_page'   => 50,
 				'_sort_order' => 'ASC',
 				'_sort_by'    => 'text'
 			);
