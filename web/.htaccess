@@ -30,6 +30,10 @@ RewriteRule /BAD/(.*)$ /drugs [R=301,L]
 	RewriteCond %{HTTP_HOST} ^(twiga|mailserver).vidal.ru
     RewriteRule ^(.*)$ http://www.vidal.ru/$1 [R=301,L]
 
+    # non-www to www
+    RewriteCond %{HTTP_HOST} !^www\.
+    RewriteRule ^(.*)$ http://www.vidal.ru/$1 [R=301,L]
+
     # Determine the RewriteBase automatically and set it as environment variable.
     # If you are using Apache aliases to do mass virtual hosting or installed the
     # project in a subdirectory, the base path will be prepended to allow proper
