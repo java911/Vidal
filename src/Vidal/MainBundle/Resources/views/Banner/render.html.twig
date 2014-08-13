@@ -26,10 +26,6 @@
 				_gaq.push(['_trackEvent', '{{ group }}', 'click', '%клик по баннеру%']);
 				$.get(Routing.generate('banner_clicked', {'bannerId': '{{ banner.id }}'}));
 			});
-			{% if isSwf %}
-			{#swfobject.embedSWF("{{ banner.banner.path }}", "{{ group }}_swf", "{{ width }}", "{{ height }}", "9.0.0",#}
-				{#"/expressInstall.swf", null, {wmode:"opaque"});#}
-			{% endif %}
 		});
 	</script>
 {% endif %}
