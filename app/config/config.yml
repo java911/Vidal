@@ -22,6 +22,8 @@ framework:
     trusted_proxies: ~
     session:
         cookie_lifetime: 31536000
+        save_path: '/home/twigavid/vidal/session'
+        cookie_domain: .vidal.ru
     fragments:       ~
 
 # Twig Configuration
