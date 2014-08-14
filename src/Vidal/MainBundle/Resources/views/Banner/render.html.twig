@@ -3,16 +3,21 @@
 	{% set width = banner.group.width %}
 	{% set height = banner.group.height %}
 	{% set isSwf = banner.isSwf() %}
+	{% set isNn = app.request.has('nn') %}
 
 	<div id="{{ group }}" class="banner" style="width:{{ width }}px; height:{{ height }}px">
 		<a href="{{ banner.link }}" class="banner-link"
 		   style="width:{{ width }}px; height:{{ height }}px">
 			{% if isSwf %}
-				<div id="{{ group }}_swf">
-					{% if banner.fallback %}
-						<img src="{{ banner.fallback.path }}" style="width:{{ width }}px; height:{{ height }}px"/>
-					{% endif %}
-				</div>
+				{% if isNn %}
+					<div id="{{ group }}_swf">
+						{% if banner.fallback %}
+							<img src="{{ banner.fallback.path }}" style="width:{{ width }}px; height:{{ height }}px"/>
+						{% endif %}
+					</div>
+				{% else %}
+					<img src="{{ banner.fallback.path }}" style="width:{{ width }}px; height:{{ height }}px"/>
+				{% endif %}
 			{% else %}
 				<img src="{{ banner.banner.path }}" style="width:{{ width }}px; height:{{ height }}px"/>
 			{% endif %}
@@ -26,6 +31,10 @@
 				_gaq.push(['_trackEvent', '{{ group }}', 'click', '%клик по баннеру%']);
 				$.get(Routing.generate('banner_clicked', {'bannerId': '{{ banner.id }}'}));
 			});
+			{% if isSwf and isNn %}
+			swfobject.embedSWF("{{ banner.banner.path }}", "{{ group }}_swf", "{{ width }}", "{{ height }}", "9.0.0",
+				"/expressInstall.swf", null, {wmode: "opaque"});
+			{% endif %}
 		});
 	</script>
 {% endif %}
