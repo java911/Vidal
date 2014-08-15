@@ -21,10 +21,12 @@ class ParserXmlCommand extends ContainerAwareCommand
     protected $cacheFile_1; # Файл EAPTEKA
     protected $cacheFile_2; # Файл PILULI
     protected $cacheFile_3; # Файл ZDRAVZONA
+    protected $cacheFile_4; # Файл НОВАЯ
 
     protected $url_file_1 = 'http://vidal:3L29y4@ea.smacs.ru/exchange/price';
     protected $url_file_2 = 'http://vidal:3L29y4@smacs.ru/exchange/price';
     protected $url_file_3 = 'http://www.zdravzona.ru/bitrix/catalog_export/yandex_b.php';
+    protected $url_file_4 = 'http://www.wer.ru/catalog_export/vidal.xml';
 //    protected $url_file_3 = 'http://www.zdravzona.ru/bitrix/catalog_export/yandex_b.php';
 
     protected $arUrl; # Для пилюль список URL
@@ -46,6 +48,7 @@ class ParserXmlCommand extends ContainerAwareCommand
 
         $emDrug = $this->getContainer()->get('doctrine')->getManager('drug');
         $em = $this->getContainer()->get('doctrine')->getManager();
+        $em2 = $this->getContainer()->get('doctrine')->getManager('drug');
 //
 //        $em->createQuery('
 //			DELETE FROM VidalMainBundle:MarketDrug md
@@ -123,14 +126,59 @@ class ParserXmlCommand extends ContainerAwareCommand
             }
         }
 
+        if ($val == 4){
+            # Ищем в третьем магазине и добавляем оттуда лекартсва
+            $array = $this->findShop_4('');
+            $c3 = count($array);
+            $output->writeln('<error> Count => '.$c3.'</error>');
+            $i = 0;
+            foreach($array as $pr){
+//                print_r($pr);
+                $i ++ ;
+//                if ($i > 10) exit;
+                $product = new MarketDrug();
+                $product->setCode($pr['code']);
+                $product->setTitle($pr['title']);
+                $product->setPrice($pr['price']);
+                $product->setManufacturer($pr['manufacturer']);
+                $product->setUrl($pr['url']);
+                $product->setGroupApt('wer');
+                $em->persist($product);
+                $em->flush($product);
+                $output->writeln('<comment>'.$i.' : '.$product->getTitle().'</comment>');
+            }
+        }
+
+        if ($val == 5){
+            # Ищем в третьем магазине и добавляем оттуда лекартсва
+            $i = 0;
+            $docs = $em2->getRepository('VidalDrugBundle:Document')->findAll();
+            foreach($docs as $val){
+                $title = str_replace("'",'',$val->getRusName());
+                $title = str_replace("<SUP>",'',$title);
+                $title = str_replace("</SUP>",'',$title);
+                $title = str_replace("&reg;",'',$title);
+                $t = $em->getRepository('VidalMainBundle:MarketDrug')->find($title);
+                $d = count($t);
+                $i += ($d >1 ? 1 : 0);
+                $output->writeln('<comment>'.$title.' : '.$d.'</comment>');
+            }
+            $output->writeln('<comment> : '.$i.'</comment>');
+        }
+
+
+
         $output->writeln('+++ vidal:parser completed!');
     }
 
 
     protected function uploadFiles(){
-        $this->cacheFile_1 = simplexml_load_file($this->url_file_1);
-        $this->cacheFile_2 = simplexml_load_file($this->url_file_2);
-        $this->cacheFile_3 = simplexml_load_file($this->url_file_3);
+//        $this->cacheFile_1 = simplexml_load_file($this->url_file_1);
+//        $this->cacheFile_2 = simplexml_load_file($this->url_file_2);
+//        $this->cacheFile_3 = simplexml_load_file($this->url_file_3);
+        $data = file_get_contents($this->url_file_4);
+        $data = str_replace('&','%25',$data);
+        $this->cacheFile_4 = simplexml_load_string($data);
 
         return true;
     }
@@ -171,6 +219,27 @@ class ParserXmlCommand extends ContainerAwareCommand
                 'url'   => $url,
             );
         }
+        return $arr;
+    }
+
+    protected function findShop_4(){
+        $elems =  $this->cacheFile_4;
+        $arr = array();
+        $i = 0;
+        foreach ($elems->Worksheet->Table->Row as $elem){
+            $i++;
+            if ($i != 1){
+                $arr[] = array(
+                    'code' => (string) $elem->Cell[0]->Data[0],
+                    'manufacturer' => (string) $elem->Cell[2]->Data[0],
+                    'title' => (string) $elem->Cell[1]->Data[0],
+                    'price' => (string) $elem->Cell[3]->Data[0],
+                    'url'   => (string) $elem->Cell[6]->Data[0],
+                );
+            }
+        }
+//        print_r($arr);
+//        exit;
         return $arr;
     }
 
