@@ -14,6 +14,20 @@
 <div class="market-block" id="market-block">
     <div class="market-block-box" id="market-block-box"  style="display: none">
         {#{{ dump(lists.eapteka) }}#}
+        {% if lists.wer is defined %}
+            <div class="market-title">Интернет аптека «wer.ru»:</div>
+            <table>
+                {% for drug in lists.wer %}
+                    <tr>
+                        <td class="market-organization">{{ drug.manufacturer }}</td>
+                        <td>{{ drug.title }}</td>
+                        <td class="market-price">{{ drug.price }}&nbsp;р.</td>
+                        <td class="market-basket"><a href="{{ path('add_to_basket', { 'code' : drug.code , 'count' : 1 }) }}" data-id="100" data-group="wer">В корзину</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+
         {% if lists.eapteka is defined %}
             <div class="market-title">Интернет аптека «Eapteka.ru»:</div>
             <table>

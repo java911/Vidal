@@ -117,6 +117,46 @@
         <br />
         <br />
     {% endif %}
+
+    {% if products.wer is defined %}
+        <table class="basket-table">
+            <caption>Интернет-магазин Wer.ru</caption>
+            <tr>
+                <th>Наименование</th>
+                <th>Производитель</th>
+                <th>Цена</th>
+                <th>Количество</th>
+                <th>Сумма</th>
+                <th></th>
+            </tr>
+            {% for drug in products.wer  %}
+                <tr>
+                    <td class="basket-title"><a href="#" target="_blank">{{ drug.title }}</a></td>
+                    <td class="basket-org">{{ drug.manufacturer }}</td>
+                    <td class="basket-price">{{ drug.price |number_format(2, '.', ',') }}&nbsp;р.</td>
+                    <td class="basket-count">
+                        <input type="text" id="{{ drug.code }}" class="inp" value="{{ drug.count }}">
+                    </td>
+                    <td class="basket-summa"><span class="summa-ajax" id="sum_{{ drug.code }}">{{ ( drug.count * drug.price ) |number_format(2, '.', ',') }}</span>&nbsp;р.</td>
+                    <td class="baskremove"><a href="{{ path('remove_to_basket',{ 'code' : drug.code }) }}">x</a></td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td class="basket-itogo" colspan="6">
+                    Общая сумма: <span> {{ amounts.wer |number_format(2, '.', ',') }}&nbsp;р.</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="basket-submit" colspan="6">
+                    <a href="{{ path('basket_order',{ group : 'wer' }) }}" class="btn-red">Оформить заказ</a>
+                </td>
+            </tr>
+        </table>
+        <br />
+        <br />
+        <br />
+    {% endif %}
+
 {% endblock %}
 
 {% block javascripts %}
