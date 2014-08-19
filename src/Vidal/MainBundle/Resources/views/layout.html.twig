@@ -57,7 +57,7 @@
 
 <body>
 <div id="wrapper" class="wrapper">
-	{{ render(controller('VidalMainBundle:Banner:render', {'groupId':2, 'testing':app.request.query.has('tt')})) }}
+	{{ render(controller('VidalMainBundle:Banner:render', {'groupId':2})) }}
 
 	<div class="header">
 		{% include 'VidalMainBundle::header.html.twig' %}

@@ -11,9 +11,8 @@ $(document).ready(function() {
 				var query = '{' +
 					' "query":{"query_string":{"query":"' + request.term + '*"}}' +
 					', "fields":["name","type"]' +
-					', "size":15' +
-					', "highlight":{"fields":{"name":{}}}' +
-					', "sort":[{"type":{"order":"desc"},"name":{"order":"asc"}}]';
+					', "size":40' +
+					', "highlight":{"fields":{"name":{}}}';
 				if (type != 'all') {
 					query += ', "filter":{"term" :{"type" : "' + type + '"}}';
 				}
@@ -24,19 +23,24 @@ $(document).ready(function() {
 					dataType: "JSON",
 					data:     query,
 					success:  function(data) {
-						response($.map(data.hits.hits, function(item) {
+						var hits = data.hits.hits;
+						var values = $.map(hits, function(item) {
 							return {
-								label: item.highlight.name,
+								label: item.highlight && item.highlight.name ? item.highlight.name : '',
 								value: item.fields.name,
 								type:  item.fields.type
 							}
-						}));
+						});
+						values.sort(function(a, b) {
+							return (a.type == b.type) ? 0 : ((a.type < b.type) ? 1 : -1);
+						});
+						response(values.slice(0, 15));
 					}
 				});
 			},
 			select:    function(event, ui) {
 				if (ui.item) {
-					$(this).val(ui.item.value);
+					window.location = Routing.generate('search', {'q':ui.item.value[0]});
 				}
 			}
 		}).data("ui-autocomplete")._renderItem = function(ul, item) {

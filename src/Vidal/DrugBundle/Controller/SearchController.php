@@ -15,14 +15,14 @@ class SearchController extends Controller
 	const PRODUCTS_PER_PAGE = 40;
 
 	/**
-	 * @Route("/search", name="search")
+	 * @Route("/search", name="search", options={"expose":true})
 	 *
 	 * @Template("VidalDrugBundle:Search:search.html.twig")
 	 */
 	public function searchAction(Request $request)
 	{
-		$em     = $this->getDoctrine()->getManager('drug');
-		$q      = $request->query->get('q', ''); # поисковый запрос
+		$em = $this->getDoctrine()->getManager('drug');
+		$q  = $request->query->get('q', ''); # поисковый запрос
 		$q      = trim($q);
 		$t      = $request->query->get('t', 'all'); # тип запроса из селект-бокса
 		$p      = $request->query->get('p', 1); # номер страницы
