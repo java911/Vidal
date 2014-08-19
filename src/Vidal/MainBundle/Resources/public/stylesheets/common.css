@@ -1222,6 +1222,7 @@ tr.bold td {
 	position: absolute;
 	top:      0;
 	left:     0;
+	z-index:  5;
 }
 .banner a {
 	position: absolute;

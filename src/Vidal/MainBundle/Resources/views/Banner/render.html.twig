@@ -4,57 +4,54 @@
 	{% set height = banner.group.height %}
 	{% set isSwf = banner.isSwf() %}
 	{% set isProd = app.environment == 'prod' %}
-	{% set testing = testing is defined and testing %}
 
-	<div id="{{ group }}" class="banner" style="width:{{ width }}px; height:{{ height }}px">
-		<a href="{{ banner.link }}" class="banner-link" style="width:{{ width }}px; height:{{ height }}px">
-			{% if isSwf %}
-				{% if testing %}
-					<div id="{{ group }}_swf">
-						{% if banner.fallback %}
-							<img src="{{ banner.fallback.path }}" style="width:{{ width }}px; height:{{ height }}px"/>
-						{% endif %}
-					</div>
-				{% else %}
+<div id="{{ group }}" class="banner" style="width:{{ width }}px; height:{{ height }}px">
+	<a href="{{ banner.link }}" class="banner-link" style="width:{{ width }}px; height:{{ height }}px">
+		{% if isSwf %}
+			<div id="{{ group }}_swf">
+				{% if banner.fallback %}
 					<img src="{{ banner.fallback.path }}" style="width:{{ width }}px; height:{{ height }}px"/>
 				{% endif %}
-			{% else %}
-				<img src="{{ banner.banner.path }}" style="width:{{ width }}px; height:{{ height }}px"/>
-			{% endif %}
-		</a>
-
-		<a href="{{ banner.link }}" class="banner-link" style="width:{{ width }}px; height:{{ height }}px"></a>
-
-		{# админам карандашик редактирования #}
-		{% if is_granted('ROLE_ADMIN') %}
-			<a class="admin-edit fade" target="_blank"
-			   href="{{ path('admin_vidal_main_banner_edit', {'id':banner.id}) }}">
-				<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-			</a>
+			</div>
+		{% else %}
+			<img src="{{ banner.banner.path }}" style="width:{{ width }}px; height:{{ height }}px"/>
 		{% endif %}
-	</div>
+	</a>
 
-	<script type="text/javascript">
-		$(document).ready(function() {
-			{% if isProd %}
-			_gaq.push(['_trackEvent', ' {{ group }}', 'show', '%показ баннера%']);
-			{% endif %}
+	<a href="{{ banner.link }}" class="banner-link" style="width:{{ width }}px; height:{{ height }}px"></a>
 
-			$('#{{ group }} .banner-link').click(function() {
-				{% if isProd %}
-				_gaq.push(['_trackEvent', '{{ group }}', 'click', '%клик по баннеру%']);
-				{% endif %}
-				$.get(Routing.generate('banner_clicked', {'bannerId': '{{ banner.id }}'}));
-			});
-
-			{% if isSwf and testing %}
-			swfobject.embedSWF("{{ banner.banner.path }}", "{{ group }}_swf", "{{ width }}", "{{ height }}", "9.0.0",
-				"/expressInstall.swf", null, {wmode: "opaque"});
-			{% endif %}
-		});
-	</script>
-
-	{% if group == 'banner_top' %}
-		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/banner_top.css') }}"/>
+	{# админам карандашик редактирования #}
+	{% if is_granted('ROLE_ADMIN') %}
+		<a class="admin-edit fade" target="_blank"
+		   href="{{ path('admin_vidal_main_banner_edit', {'id':banner.id}) }}">
+			<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+		</a>
 	{% endif %}
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		{% if isProd %}
+		_gaq.push(['_trackEvent', ' {{ group }}', 'show', '%показ баннера%']);
+		{% endif %}
+
+		$('#{{ group }} .banner-link').click(function() {
+			{% if isProd %}
+			_gaq.push(['_trackEvent', '{{ group }}', 'click', '%клик по баннеру%']);
+			{% endif %}
+			$.get(Routing.generate('banner_clicked', {'bannerId': '{{ banner.id }}'}));
+		});
+
+		{% if isSwf %}
+		if (!/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
+			swfobject.embedSWF("{{ banner.banner.path }}", "{{ group }}_swf", "{{ width }}", "{{ height }}",
+				"9.0.0", "/expressInstall.swf", null, {wmode: "opaque"});
+		}
+		{% endif %}
+	});
+</script>
+
+{% if group == 'banner_top' %}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/banner_top.css') }}"/>
+{% endif %}
 {% endif %}

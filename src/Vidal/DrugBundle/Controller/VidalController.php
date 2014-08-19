@@ -19,140 +19,6 @@ class VidalController extends Controller
 		return $this->redirect($this->generateUrl('searche'), 301);
 	}
 
-	private function r2($url)
-	{
-		$em = $this->getDoctrine()->getManager('drug');
-
-		# редирект препарата
-		if ($pos = strpos($url, '__')) {
-			$sub     = substr($url, $pos);
-			$id      = preg_replace('/[^0-9]/', '', $sub);
-			$product = $em->getRepository('VidalDrugBundle:Product')->findByProductID($id);
-			if (!$product) {
-				throw $this->createNotFoundException();
-			}
-
-			return $this->redirect($this->generateUrl('product', array(
-				'EngName'   => $product->getName(),
-				'ProductID' => $product->getProductID(),
-			)), 301);
-		}
-
-		# редирект документа
-		if ($pos = strpos($url, '~')) {
-			$sub      = substr($url, $pos);
-			$id       = preg_replace('/[^0-9]/', '', $sub);
-			$document = $em->getRepository('VidalDrugBundle:Document')->findOneByDocumentID($id);
-			if (!$document) {
-				throw $this->createNotFoundException();
-			}
-
-			return $this->redirect($this->generateUrl('document', array(
-				'EngName'    => $document->getName(),
-				'DocumentID' => $document->getDocumentID(),
-			)), 301);
-		}
-
-		# редирект компании
-		if (($pos = strpos($url, 'fir_')) !== false) {
-			$sub     = substr($url, $pos);
-			$id      = preg_replace('/[^0-9]/', '', $sub);
-			$company = $em->getRepository('VidalDrugBundle:Company')->findOneByCompanyID($id);
-			if (!$company) {
-				throw $this->createNotFoundException();
-			}
-
-			return $this->redirect($this->generateUrl('firm_item', array(
-				'CompanyID' => $company->getCompanyID(),
-			)), 301);
-		}
-
-		# редирект молекулы в препаратах
-		if (($pos = strpos($url, 'lact_')) !== false) {
-			$sub      = substr($url, $pos);
-			$id       = preg_replace('/[^0-9]/', '', $sub);
-			$molecule = $em->getRepository('VidalDrugBundle:Molecule')->findOneByMoleculeID($id);
-			if (!$molecule) {
-				throw $this->createNotFoundException();
-			}
-
-			return $this->redirect($this->generateUrl('molecule_included', array(
-				'MoleculeID' => $molecule->getMoleculeID(),
-			)), 301);
-		}
-
-		# редирект молекулы описания
-		if (($pos = strpos($url, 'act_')) !== false) {
-			$sub      = substr($url, $pos);
-			$id       = preg_replace('/[^0-9]/', '', $sub);
-			$molecule = $em->getRepository('VidalDrugBundle:Molecule')->findOneByMoleculeID($id);
-			if (!$molecule) {
-				throw $this->createNotFoundException();
-			}
-
-			return $this->redirect($this->generateUrl('molecule', array(
-				'MoleculeID' => $molecule->getMoleculeID(),
-			)), 301);
-		}
-
-		# редирект ATC
-		if (($pos = strpos($url, 'at_')) !== false) {
-			$sub  = substr($url, $pos);
-			$code = substr($sub, strpos($sub, '_') + 1);
-			$code = substr($code, 0, strrpos($code, '.'));
-			$atc  = $em->getRepository('VidalDrugBundle:ATC')->findOneByATCCode($code);
-			if (!$atc) {
-				throw $this->createNotFoundException();
-			}
-
-			return $this->redirect($this->generateUrl('atc_item', array(
-				'ATCCode' => $atc->getATCCode(),
-			)), 301);
-		}
-
-		# редирект представительства
-		if (($pos = strpos($url, 'inf_')) !== false) {
-			$sub      = substr($url, $pos);
-			$id       = preg_replace('/[^0-9]/', '', $sub);
-			$infoPage = $em->getRepository('VidalDrugBundle:InfoPage')->findOneByInfoPageID($id);
-			if (!$infoPage) {
-				throw $this->createNotFoundException();
-			}
-
-			return $this->redirect($this->generateUrl('inf_item', array(
-				'InfoPageID' => $infoPage->getInfoPageID(),
-			)), 301);
-		}
-
-		# редирект клинико-фармакологического указателя
-		if (($pos = strpos($url, 'lkf_')) !== false) {
-			$sub  = substr($url, $pos);
-			$code = str_replace('lkf_', '', $sub);
-			$code = str_replace('.htm', '', $code);
-			$kfu  = $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->findOneByCode($code);
-			if (!$kfu) {
-				throw $this->createNotFoundException();
-			}
-
-			return $this->redirect($this->generateUrl('kfu_item', array(
-				'code' => $code,
-			)), 301);
-		}
-
-		# иначе это документ без идентификатора
-		$sub      = substr($url, 0, strrpos($url, '.'));
-		$name     = substr($sub, strrpos($sub, '/') + 1);
-		$document = $em->getRepository('VidalDrugBundle:Document')->findOneByName($name);
-		if (!$document) {
-			throw $this->createNotFoundException();
-		}
-
-		return $this->redirect($this->generateUrl('document', array(
-			'EngName'    => $document->getName(),
-			'DocumentID' => $document->getDocumentID(),
-		)), 301);
-	}
-
 	/** @Route("/BAD/opisanie/") */
 	public function r3()
 	{
@@ -502,7 +368,7 @@ class VidalController extends Controller
 		return $this->redirect($this->generateUrl('product', array(
 			'ProductID' => $ProductID,
 			'EngName'   => $product->getName(),
-		)));
+		)), 301);
 	}
 
 	/**
@@ -564,13 +430,13 @@ class VidalController extends Controller
 		# БАДы выводятся по-другому
 		if ($product->isBAD() || ($document && $document->isBAD())) {
 			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds);
-			$params['title']    = $this->strip($product->getRusName()) . ' | БАДы';
+			$params['title']    = $this->strip($product->getRusName()) . ' - ' . $product->getZipInfo() . ' | БАДы';
 
 			return $this->render("VidalDrugBundle:Vidal:bad_document.html.twig", $params);
 		}
 		else {
 			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds, date('Y'));
-			$params['title']    = $this->strip($product->getRusName()) . ' | Препараты';
+			$params['title']    = $this->strip($product->getRusName()) . ' - ' . $product->getZipInfo() . ' | Препараты';
 		}
 
 		return $params;
@@ -586,7 +452,7 @@ class VidalController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		return $this->redirect($this->generateUrl('molecule', array('MoleculeID' => $molecule['MoleculeID'])));
+		return $this->redirect($this->generateUrl('molecule', array('MoleculeID' => $molecule['MoleculeID'])), 301);
 		//		return $this->forward('VidalDrugBundle:Vidal:molecule', array('MoleculeID'  => $molecule['MoleculeID']));
 	}
 
@@ -620,7 +486,7 @@ class VidalController extends Controller
 		return $this->redirect($this->generateUrl('product', array(
 			'EngName'   => $products[0]->getName(),
 			'ProductID' => $products[0]->getProductID(),
-		)));
+		)), 301);
 	}
 
 	/** Получить массив идентификаторов продуктов */

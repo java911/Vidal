@@ -56,6 +56,21 @@ class ProductRepository extends EntityRepository
 			->getOneOrNullresult();
 	}
 
+	public function findOneByDocumentID($DocumentID)
+	{
+		return $this->_em->createQuery('
+			SELECT p
+			FROM VidalVeterinarBundle:Product p
+			LEFT JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.ProductID = p
+			LEFT JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d
+			WHERE d = :DocumentID AND
+				p.CountryEditionCode = \'RUS\' AND
+				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
+		')->setParameter('DocumentID', $DocumentID)
+			->setMaxResults(1)
+			->getOneOrNullResult();
+	}
+
 	public function findByDocumentID($DocumentID)
 	{
 		return $this->_em->createQuery('
