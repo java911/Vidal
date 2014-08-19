@@ -1208,15 +1208,10 @@ tr.bold td {
 /* banners */
 .banner {
 	position: relative;
-}
-#banner_top {
-	position:      relative;
-	margin-bottom: -2px;
-	z-index:       10;
+	margin:   0 auto;
 }
 #banner_top img {
-	border:        none;
-	border-bottom: 2px solid #b9033c;
+	border: none;
 }
 #banner_bottom {
 	clear:  both;

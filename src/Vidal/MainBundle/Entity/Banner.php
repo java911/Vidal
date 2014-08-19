@@ -59,9 +59,9 @@ class Banner extends BaseEntity
 	protected $clicks;
 
 	/**
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="integer", nullable=true)
 	 */
-	protected $limitDay = 0;
+	protected $limitDay;
 
 	/**
 	 * @ORM\Column(type="datetime", nullable=true)
@@ -69,9 +69,9 @@ class Banner extends BaseEntity
 	protected $dateDay;
 
 	/**
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="integer", nullable=true)
 	 */
-	protected $clickDay = 0;
+	protected $clickDay;
 
 	/**
 	 * @ORM\Column(type="integer", nullable=true)
