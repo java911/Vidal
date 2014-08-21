@@ -56,7 +56,6 @@ class ArticleRepository extends EntityRepository
 				AND (a.title LIKE :l1 OR a.title LIKE :l2 OR a.synonym LIKE :l3 OR a.synonym LIKE :l4)
 				AND a.title NOT LIKE :l5
 				AND a.synonym NOT LIKE :l6
-				AND r.id NOT IN (19,24)
 			ORDER BY a.title ASC
 		')->setParameters(array(
 				'now' => new \DateTime(),
@@ -79,7 +78,6 @@ class ArticleRepository extends EntityRepository
 			->leftJoin('a.rubrique', 'r')
 			->where('a.enabled = TRUE')
 			->andWhere('r.enabled = TRUE')
-			->andWhere('r.id NOT IN (19,24)')
 			->andWhere('a.date < :now')
 			->setParameter('now', new \DateTime())
 			->orderBy('a.title', 'ASC');
@@ -122,7 +120,6 @@ class ArticleRepository extends EntityRepository
 				->andWhere('a.enabled = TRUE')
 				->andWhere('r.enabled = TRUE')
 				->andWhere('a.date < :now')
-				->andWhere('r.id != 19')
 				->setParameter('now', new \DateTime());
 			$articles = $qb->getQuery()->getResult();
 		}
