@@ -56,7 +56,7 @@ class Art extends BaseEntity
 	/**
 	 * @ORM\ManyToMany(targetEntity="Product", inversedBy="arts")
 	 * @ORM\JoinTable(name="art_product",
-	 *        joinColumns={@ORM\JoinColumn(name="id", referencedColumnName="id")},
+	 *        joinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")})
 	 */
 	protected $products;
