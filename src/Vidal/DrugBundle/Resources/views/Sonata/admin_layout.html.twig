@@ -109,7 +109,7 @@ file that was distributed with this source code.
 							url:      "http://www.vidal.ru:9200/website/autocomplete_product/_search",
 							type:     "POST",
 							dataType: "JSON",
-							data:     '{ "query":{"query_string":{"query":"*' + request.term + '*"}}, "fields":["name"], "size":20, "highlight":{"fields":{"name":{}}} }',
+							data:     '{ "query":{"query_string":{"query":"*' + request.term + '*","default_operator":"AND"}}, "fields":["name"], "size":20, "highlight":{"fields":{"name":{}}} }',
 							success:  function(data) {
 								var hits = data.hits.hits;
 								var values = $.map(hits, function(item) {
