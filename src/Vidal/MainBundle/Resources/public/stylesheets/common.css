@@ -880,7 +880,7 @@ tr.bold td {
 	background:     transparent;
 	border:         none;
 	font-style:     italic;
-	width:          180px;
+	width:          175px;
 	font-size:      15px;
 }
 #search_form .search-inputs {
@@ -894,7 +894,11 @@ tr.bold td {
 	width: 261px;
 }
 #search_form .st {
-	padding-top: 4px;
+	padding: 5px 0 0 2px;
+}
+#search_form .row1 td {
+	border:     1px solid #ccc;
+	background: #F6F6F6;
 }
 .search td {
 	padding: 0;
@@ -907,7 +911,7 @@ tr.bold td {
 }
 .search .search-query {
 	display:        inline-block;
-	width:          196px;
+	width:          195px;
 	margin:         0 0 0 2px;
 	padding:        0 6px;
 	border:         none;
@@ -1028,12 +1032,27 @@ tr.bold td {
 	margin-bottom: 24px;
 }
 .menu a {
+	position:          relative;
 	display:           block;
 	float:             left;
 	width:             130px;
 	height:            99px;
 	background-image:  url(../images/bg/menu-small.png);
 	background-repeat: no-repeat;
+	z-index:           10;
+}
+.menu a span {
+	display:     block;
+	position:    absolute;
+	z-index:     5;
+	text-align:  center;
+	left:        0;
+	right:       0;
+	bottom:      10px;
+	color:       #EFEFEF;
+	font-style:  italic;
+	font-size:   16px;
+	line-height: 16px;
 }
 .menu-drugs {
 	background-position: 0 0;
@@ -1051,16 +1070,16 @@ tr.bold td {
 	background-position: -390px 0;
 }
 .menu-drugs:hover, .menu-drugs.active {
-	background-position: 0 -100px;
+	background-position: 0 -101px;
 }
 .menu-symptoms:hover, .menu-symptoms.active {
-	background-position: -130px -100px;
+	background-position: -130px -101px;
 }
 .menu-doctors:hover, .menu-doctors.active {
-	background-position: -260px -100px;
+	background-position: -260px -101px;
 }
 .menu-pharmacy:hover, .menu-pharmacy.active {
-	background-position: -390px -100px;
+	background-position: -390px -101px;
 }
 .menu-big a {
 	background-image: url(../images/bg/menu-big.png);
@@ -1177,6 +1196,7 @@ tr.bold td {
 .banner {
 	position: relative;
 	margin:   0 auto;
+	border:   1px solid #ddd;
 }
 #banner_top img {
 	border: none;

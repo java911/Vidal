@@ -3,17 +3,12 @@
 {# блок основных боковых меню #}
 <ul class="sidebar-menu ul">
 	<li>
-		<a href="{{ path('articles') }}"
-		   class="{{ menu_left is defined and menu_left == 'articles' ? 'active' : 'dotted' }}">Медицинская
-			энциклопедия</a>
+		<a href="{{ path('news') }}"
+		   class="{{ menu_left is defined and menu_left == 'news' ? 'active' : 'dotted' }}">Новости</a>
 	</li>
 	<li>
 		<a href="{{ path('qa') }}"
 		   class="{{ menu_left is defined and menu_left == 'qa' ? 'active' : 'dotted' }}">Ответы специалистов</a>
-	</li>
-	<li>
-		<a href="{{ path('news') }}"
-		   class="{{ menu_left is defined and menu_left == 'news' ? 'active' : 'dotted' }}">Новости</a>
 	</li>
 	<li>
 		<a href="{{ path('services') }}"

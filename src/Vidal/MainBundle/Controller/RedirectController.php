@@ -7,10 +7,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class RedirectController extends Controller
 {
-	/**
-	 * @Route("/reckittbenckiser/{url}", requirements={"url"=".+"})
-	 */
-	public function redirectIndex()
+	/** @Route("/reckittbenckiser/{url}", requirements={"url"=".+"}) */
+	public function redirectreckitt()
+	{
+		return $this->redirect($this->generateUrl('index'), 301);
+	}
+
+	/** @Route("/symptom{url}", requirements={"url"=".+"}) */
+	public function redirectSymptom()
 	{
 		return $this->redirect($this->generateUrl('index'), 301);
 	}
@@ -94,6 +98,6 @@ class RedirectController extends Controller
 	/** @Route("/astrazeneca/map") */
 	public function r13()
 	{
-		 return $this->redirect($this->generateUrl('astrazeneca_map'), 301);
+		return $this->redirect($this->generateUrl('astrazeneca_map'), 301);
 	}
 }

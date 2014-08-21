@@ -32,10 +32,10 @@ class ArticleController extends Controller
 		}
 
 		$params = array(
-			'title'     => $this->strip($article . '') . ' | ' . $rubrique,
-			'menu_left' => 'articles',
-			'rubrique'  => $rubrique,
-			'article'   => $article,
+			'title'    => $this->strip($article . '') . ' | ' . $rubrique,
+			'menu'     => 'articles',
+			'rubrique' => $rubrique,
+			'article'  => $article,
 		);
 
 		$articleId = $article->getId();
@@ -100,10 +100,10 @@ class ArticleController extends Controller
 		$articles = $em->getRepository('VidalDrugBundle:Article')->ofRubrique($rubrique);
 
 		return array(
-			'title'     => $rubrique . ' | Энциклопедия',
-			'menu_left' => 'articles',
-			'rubrique'  => $rubrique,
-			'articles'  => $articles,
+			'title'    => $rubrique . ' | Энциклопедия',
+			'menu'     => 'articles',
+			'rubrique' => $rubrique,
+			'articles' => $articles,
 		);
 	}
 
@@ -178,7 +178,7 @@ class ArticleController extends Controller
 
 		return array(
 			'title'     => 'Энциклопедия',
-			'menu_left' => 'articles',
+			'menu'      => 'articles',
 			'rubriques' => $em->getRepository('VidalDrugBundle:ArticleRubrique')->findEnabled()
 		);
 	}
