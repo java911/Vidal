@@ -485,7 +485,7 @@ class VidalController extends Controller
 		return $this->redirect($this->generateUrl('product', array(
 			'EngName'   => $products[0]->getName(),
 			'ProductID' => $products[0]->getProductID(),
-		)));
+		)), 301);
 	}
 
 	/** Получить массив идентификаторов продуктов */

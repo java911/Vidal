@@ -880,7 +880,7 @@ tr.bold td {
 	background:     transparent;
 	border:         none;
 	font-style:     italic;
-	width:          175px;
+	width:          180px;
 	font-size:      15px;
 }
 #search_form .search-inputs {
@@ -894,11 +894,7 @@ tr.bold td {
 	width: 261px;
 }
 #search_form .st {
-	padding: 5px 0 0 2px;
-}
-#search_form .row1 td {
-	border:     1px solid #bbb;
-	background: #F6F6F6;
+	padding-top: 4px;
 }
 .search td {
 	padding: 0;
@@ -911,7 +907,7 @@ tr.bold td {
 }
 .search .search-query {
 	display:        inline-block;
-	width:          195px;
+	width:          196px;
 	margin:         0 0 0 2px;
 	padding:        0 6px;
 	border:         none;
@@ -1182,9 +1178,6 @@ tr.bold td {
 	position: relative;
 	margin:   0 auto;
 }
-#banner_top {
-	z-index: 10;
-}
 #banner_top img {
 	border: none;
 }
@@ -1197,6 +1190,7 @@ tr.bold td {
 	position: absolute;
 	top:      0;
 	left:     0;
+	z-index:  5;
 }
 .banner a {
 	position: absolute;

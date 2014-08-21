@@ -1,3 +1,7 @@
 .header-link {
 	background: url(../images/header-noline.jpg) no-repeat top left !important;
 }
+#banner_top {
+	margin: 10px auto -10px;
+	border: none;
+}

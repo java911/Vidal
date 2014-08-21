@@ -33,14 +33,14 @@ class BannerAdmin extends Admin
 			->add('link', null, array('label' => 'Ссылка', 'required' => true))
 			->add('group', null, array('label' => 'Баннерное место', 'required' => true))
 			->add('expires', null, array('label' => 'Осталось показов', 'help' => 'Оставьте пустым, чтоб не учитывать'))
-            //->add('countries', null, array('label' => 'Страны', 'required' => false))
-            //->add('cities', null, array('label' => 'города', 'required' => false))
-            ->add('limitDay', null, array('label' => 'Лимит показов в день'))
-            ->add('clickDay', null, array('label' => 'Осталось показов в день'))
-			->add('presence', null, array('label' => 'Приоритет', 'help' => 'Как часто появляется: 1-100%. Оставьте пустым, если без приоритета'))
+			//->add('countries', null, array('label' => 'Страны', 'required' => false))
+			//->add('cities', null, array('label' => 'города', 'required' => false))
+			->add('limitDay', null, array('label' => 'Лимит показов в день', 'required' => false))
+			->add('clickDay', null, array('label' => 'Осталось показов в день', 'required' => false))
+			->add('presence', null, array('label' => 'Приоритет', 'required' => false, 'help' => 'Как часто появляется: 1-100%. Оставьте пустым, если без приоритета'))
 			->add('enabled', null, array('label' => 'Активен', 'required' => false))
 			->add('starts', null, array('label' => 'Дата начала'))
-			->add('ends', null, array('label' => 'Дата окончания', 'help' => 'Оставьте пустым, чтоб не учитывать'))
+			->add('ends', null, array('label' => 'Дата окончания', 'required' => false, 'help' => 'Оставьте пустым, чтоб не учитывать'))
 			->add('reference', null, array('label' => 'Заменяется баннером', 'required' => false, 'help' => 'Будет заменяться этим баннером'));
 	}
 

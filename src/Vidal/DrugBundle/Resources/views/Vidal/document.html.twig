@@ -89,40 +89,9 @@
 	{% endif %}
 
 	{% if document is defined %}
-		{# Объявление, описание чего пойдет ниже #}
-		<div class="anons relative">
-			{% if document.ArticleId == 1 or document.ArticleId == 4 %}
-				<div class="anons-head">
-					<span>Описание активных компонентов препарата</span>
-					{% if product is defined %}
-						<span class="anons-product">{{ product.RusName|raw }}</span>
-						<span>({{ product.EngName|raw }})</span>
-					{% else %}
-						<span class="anons-product">{{ document.RusName|raw }}</span>
-						<span>({{ document.EngName|raw }})</span>
-					{% endif %}
-				</div>
-				<div class="anons-content">
-					Приведенная научная информация является обобщающей и не может быть использована для принятия
-					решения о возможности применения конкретного лекарственного препарата.
-				</div>
-			{% else %}
-				<div class="anons-head">
-					<span>Описание лекарственного препарата</span>
-					<span class="anons-product">{{ document.RusName|raw }}</span>
-					<span>({{ document.EngName|raw }})</span>
-				</div>
-				<div class="anons-content">
-					Основано на официально утвержденной инструкции по применению препарата
-					и сделано в {{ document.YearEdition }} году.
-				</div>
-			{% endif %}
-		</div>
-
+		{% include 'VidalDrugBundle:Vidal:document_about.html.twig' %}
 		{% include 'VidalDrugBundle:Vidal:document_navigation.html.twig' %}
 	{% endif %}
-
-
 
 	{# Блок регистратора/владельца/представительства #}
 	{% if owners is defined or distributors is defined or infoPages is defined %}
