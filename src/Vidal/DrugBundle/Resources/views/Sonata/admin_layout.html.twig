@@ -109,15 +109,20 @@ file that was distributed with this source code.
 							url:      "http://www.vidal.ru:9200/website/autocomplete_product/_search",
 							type:     "POST",
 							dataType: "JSON",
-							data:     '{ "query":{"query_string":{"query":"*' + request.term + '*"}}, "fields":["name"], "size":15, "highlight":{"fields":{"name":{}}} }',
+							data:     '{ "query":{"query_string":{"query":"*' + request.term + '*"}}, "fields":["name"], "size":20, "highlight":{"fields":{"name":{}}}, "sort":["name"] }',
 							success:  function(data) {
-								response($.map(data.hits.hits, function(item) {
+								var hits = data.hits.hits;
+								var values = $.map(hits, function(item) {
 									return {
 										label: item.highlight.name,
 										value: item.fields.name,
 										id:    item._id
 									}
-								}));
+								});
+								values.sort(function(a, b) {
+									return (a.value == b.value) ? 0 : ((a.value > b.value) ? 1 : -1);
+								});
+								response(values);
 							}
 						})
 					},
