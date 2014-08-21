@@ -40,7 +40,7 @@ body {
 .header-search {
 	position:   absolute;
 	top:        53px;
-	left:       487px;
+	left:       479px;
 	width:      63px;
 	height:     16px;
 	background: url(../images/header-search.jpg) no-repeat top left;
@@ -117,6 +117,9 @@ sup {
 }
 a {
 	color: #d71344;
+}
+img {
+	border: none;
 }
 input[type=text], input[type=number], input[type=password], input[type=email], input[type=url] {
 	width:                 308px;
@@ -877,7 +880,7 @@ tr.bold td {
 	background:     transparent;
 	border:         none;
 	font-style:     italic;
-	width:          180px;
+	width:          175px;
 	font-size:      15px;
 }
 #search_form .search-inputs {
@@ -891,7 +894,11 @@ tr.bold td {
 	width: 261px;
 }
 #search_form .st {
-	padding-top: 4px;
+	padding: 5px 0 0 2px;
+}
+#search_form .row1 td {
+	border:     1px solid #bbb;
+	background: #F6F6F6;
 }
 .search td {
 	padding: 0;
@@ -904,7 +911,7 @@ tr.bold td {
 }
 .search .search-query {
 	display:        inline-block;
-	width:          196px;
+	width:          195px;
 	margin:         0 0 0 2px;
 	padding:        0 6px;
 	border:         none;
@@ -1170,53 +1177,16 @@ tr.bold td {
 	color: #333;
 }
 
-/* letters */
-.letters {
-	margin: 10px 0;
-}
-.letters > div {
-	overflow: hidden;
-}
-.letters input {
-	display:         inline-block;
-	width:           15px;
-	text-align:      center;
-	text-decoration: none;
-	color:           #62768A;
-	float:           left;
-	margin-right:    2px;
-	font-size:       14px;
-	outline:         none;
-	cursor:          pointer;
-	padding:         0;
-	background:      #F5F5F5;
-	border:          none;
-	line-height:     18px;
-}
-.letters input.en {
-	color: #434EA0;
-}
-.letters input.active, .letters input:hover {
-	background: #d71344;
-	color:      white;
-}
-.letters input:active {
-	position: relative;
-	top:      1px;
-}
-
 /* banners */
 .banner {
 	position: relative;
+	margin:   0 auto;
 }
 #banner_top {
-	position:      relative;
-	margin-bottom: -2px;
-	z-index:       10;
+	z-index: 10;
 }
 #banner_top img {
-	border:        none;
-	border-bottom: 2px solid #b9033c;
+	border: none;
 }
 #banner_bottom {
 	clear:  both;

@@ -1,29 +1,46 @@
-.letter {
-	display:               inline-block;
-	width:                 24px;
-	text-align:            center;
-	text-decoration:       none;
-	background-color:      #F1F1F1;
-	border:                1px solid #DCDCDC;
-	color:                 #2e3f51;
-	border-radius:         4px;
-	-moz-border-radius:    4px;
-	-webkit-border-radius: 4px;
-	float:                 left;
-	padding:               3px;
-	margin-right:          3px;
-	font-size:             14px;
-	outline:               none;
-	cursor:                pointer;
+.letters {
+	margin: 10px 0;
+}
+.letters > div {
+	overflow: hidden;
+}
+.letters input.en {
+	color: #434EA0;
+}
+.letters input.active, .letters input:hover {
+	background: #d71344;
+	color:      white;
+}
+.letters input:active {
+	position: relative;
+	top:      1px;
+}
+
+.letters input {
+	display:            inline-block;
+	width:              16px;
+	text-align:         center;
+	text-decoration:    none;
+	color:              #62768A;
+	float:              left;
+	margin-right:       2px;
+	font-size:          12px;
+	outline:            none;
+	cursor:             pointer;
+	padding:            0;
+	background:         #F5F5F5;
+	box-shadow:         1px 1px 3px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow:    1px 1px 3px rgba(0, 0, 0, 0.5);
+	-webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+	border:             none;
+	line-height:        18px;
 }
 .letter.active {
 	border:      1px solid #d71344;
-	font-weight: bold;
 	color:       #d71344;
 }
 .letter:hover {
 	border:      1px solid #d71344;
-	font-weight: bold;
 	color:       #d71344;
 }
 .letter:active {

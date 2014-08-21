@@ -3,15 +3,16 @@
 	{% set width = banner.group.width %}
 	{% set height = banner.group.height %}
 	{% set isSwf = banner.isSwf() %}
+	{% set isProd = app.environment == 'prod' %}
 
 	<div id="{{ group }}" class="banner" style="width:{{ width }}px; height:{{ height }}px">
-		<a href="{{ banner.link }}" class="banner-link"
-		   style="width:{{ width }}px; height:{{ height }}px">
+		<a href="{{ banner.link }}" class="banner-link" style="width:{{ width }}px; height:{{ height }}px">
 			{% if isSwf %}
 				{% if testing %}
 					<div id="{{ group }}_swf">
 						{% if banner.fallback %}
-							<img src="{{ banner.fallback.path }}" style="width:{{ width }}px; height:{{ height }}px"/>
+							<img src="{{ banner.fallback.path }}"
+								 style="width:{{ width }}px; height:{{ height }}px"/>
 						{% endif %}
 					</div>
 				{% else %}
@@ -21,19 +22,45 @@
 				<img src="{{ banner.banner.path }}" style="width:{{ width }}px; height:{{ height }}px"/>
 			{% endif %}
 		</a>
+
+		{# необходимо сверху накладывать прозрачную ссылку #}
+		{% if isSwf %}
+			<a href="{{ banner.link }}" class="banner-link" style="width:{{ width }}px; height:{{ height }}px"></a>
+		{% endif %}
+
+		{# админу - карандашик на редактирование #}
+		{% if is_granted('ROLE_ADMIN') %}
+			<a class="admin-edit fade" target="_blank"
+			   href="{{ path('admin_vidal_main_banner_edit', {'id':banner.id}) }}">
+				<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+			</a>
+		{% endif %}
 	</div>
+
 
 	<script type="text/javascript">
 		$(document).ready(function() {
+			{% if isProd %}
 			_gaq.push(['_trackEvent', ' {{ group }}', 'show', '%показ баннера%']);
-			$('#{{ group }} > a').click(function() {
+			{% endif %}
+
+			$('#{{ group }} .banner-link').click(function() {
+				{% if isProd %}
 				_gaq.push(['_trackEvent', '{{ group }}', 'click', '%клик по баннеру%']);
+				{% endif %}
 				$.get(Routing.generate('banner_clicked', {'bannerId': '{{ banner.id }}'}));
 			});
+
 			{% if isSwf and testing %}
 			swfobject.embedSWF("{{ banner.banner.path }}", "{{ group }}_swf", "{{ width }}", "{{ height }}", "9.0.0",
-				"/expressInstall.swf", null, {wmode: "opaque"});
+				"/expressInstall.swf", null, {wmode: "transparent"});
 			{% endif %}
 		});
 	</script>
+
+	{# если верхний баннер - меняем стили #}
+	{% if group == 'banner_top' %}
+		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/banner_top.css') }}"/>
+	{% endif %}
+
 {% endif %}

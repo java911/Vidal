@@ -17,16 +17,16 @@ class ArticleRepository extends EntityRepository
 			->getResult();
 	}
 
-	public function findLast($top)
+	public function findLast()
 	{
 		return $this->_em->createQuery('
 			SELECT a
 			FROM VidalDrugBundle:Article a
 			WHERE a.enabled = TRUE
 				AND a.date < :now
-			ORDER BY a.priority DESC, a.date DESC
+				AND a.anons = TRUE
+			ORDER BY a.anonsPriority DESC, a.date DESC
 		')->setParameter('now', new \DateTime())
-			->setMaxResults($top)
 			->getResult();
 	}
 
@@ -51,10 +51,12 @@ class ArticleRepository extends EntityRepository
 			FROM VidalDrugBundle:Article a
 			LEFT JOIN a.rubrique r
 			WHERE a.enabled = TRUE
+				AND r.enabled = TRUE
 				AND a.date < :now
 				AND (a.title LIKE :l1 OR a.title LIKE :l2 OR a.synonym LIKE :l3 OR a.synonym LIKE :l4)
 				AND a.title NOT LIKE :l5
 				AND a.synonym NOT LIKE :l6
+				AND r.id != 19
 			ORDER BY a.title ASC
 		')->setParameters(array(
 				'now' => new \DateTime(),

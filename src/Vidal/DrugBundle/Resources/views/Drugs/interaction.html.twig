@@ -3,7 +3,11 @@
 
 {% block vidal %}
 	{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' with {'menu_drugs':'interaction'} %}
-	{% include 'VidalDrugBundle:Drugs:interaction_description.html.twig' %}
+
+	{% if l is empty %}
+		{% include 'VidalDrugBundle:Drugs:interaction_description.html.twig' %}
+	{% endif %}
+
 	{% include 'VidalDrugBundle:Drugs:interaction_form.html.twig' %}
 
 	{% if interactions is null %}
@@ -38,6 +42,7 @@
 
 {% block stylesheets %}
 	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/letters.css') }}"/>
 	<style type="text/css">
 		.interactions {
 			margin-bottom: 20px;

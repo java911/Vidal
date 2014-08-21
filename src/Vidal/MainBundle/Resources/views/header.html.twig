@@ -7,9 +7,8 @@
 
 <form id="search_form" class="search" method="get" action="{{ path('search') }}">
 	<table>
-		<tr>
+		<tr class="row1">
 			<td class="bg-gray">
-			<span>
 				<select class="search-type" name="t">
 					<option value="all" {{ type == 'all' ? 'selected="selected"' }}>
 						ВЕЗДЕ
@@ -30,7 +29,7 @@
 						ПО ЗАБОЛЕВАНИЮ
 					</option>
 				</select>
-			</span>
+
 			</td>
 			<td class="sf">
 				<input type="submit" value="" class="search-submit"/>

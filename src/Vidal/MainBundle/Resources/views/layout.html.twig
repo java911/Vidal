@@ -30,7 +30,8 @@
 	{% endblock %}
 
 	{% block stylesheets %}
-		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/common.min.css') }}"/>
+		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/common.css') }}"/>
+		{#<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/common.min.css') }}"/>#}
 		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/jquery-chosen/chosen.min.css') }}"/>
 		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/checkbox/checkbox.css') }}"/>
 		<link rel="stylesheet" type="text/css"
@@ -98,11 +99,13 @@
 </a>
 
 {# счетчики аналитики #}
-{% include 'VidalMainBundle:Metrika:omniture.html.twig' %}
-{% include 'VidalMainBundle:Metrika:google_analytics.html.twig' %}
-{% include 'VidalMainBundle:Metrika:live_internet.html.twig' %}
-{% include 'VidalMainBundle:Metrika:tns.html.twig' %}
-{% include 'VidalMainBundle:Metrika:yandex_metrika.html.twig' %}
+{% if app.environment == 'prod' %}
+	{% include 'VidalMainBundle:Metrika:omniture.html.twig' %}
+	{% include 'VidalMainBundle:Metrika:google_analytics.html.twig' %}
+	{% include 'VidalMainBundle:Metrika:live_internet.html.twig' %}
+	{% include 'VidalMainBundle:Metrika:tns.html.twig' %}
+	{% include 'VidalMainBundle:Metrika:yandex_metrika.html.twig' %}
+{% endif %}
 
 </body>
 </html>

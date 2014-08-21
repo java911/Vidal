@@ -165,9 +165,9 @@ class ArtAdmin extends Admin
 			->add('type', null, array('label' => 'Категория'))
 			->add('category', null, array('label' => 'Подкатегория'))
 			->add('tags', null, array('label' => 'Теги', 'template' => 'VidalDrugBundle:Sonata:tags.html.twig'))
-			->add('priority', null, array('label' => 'Приоритет'))
 			->add('atIndex', null, array('label' => 'на главной', 'template' => 'VidalDrugBundle:Sonata:swap_atIndex.html.twig'))
 			->add('anons', null, array('label' => 'в анонсе', 'template' => 'VidalDrugBundle:Sonata:swap_anons.html.twig'))
+			->add('anonsPriority', null, array('label' => 'Приоритет в анонсе'))
 			->add('date', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
 			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
 			->add('_action', 'actions', array(

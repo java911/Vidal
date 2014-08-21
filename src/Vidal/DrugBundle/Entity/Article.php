@@ -65,6 +65,14 @@ class Article extends BaseEntity
 	protected $documents;
 
 	/**
+	 * @ORM\ManyToMany(targetEntity="Product", inversedBy="articles")
+	 * @ORM\JoinTable(name="article_product",
+	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")})
+	 */
+	protected $products;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="articles")
 	 * @ORM\JoinTable(name="article_atc",
 	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
@@ -139,11 +147,18 @@ class Article extends BaseEntity
 	/** @ORM\OneToMany(targetEntity="ArticleLink", mappedBy="article", fetch="EXTRA_LAZY", cascade = {"persist", "remove"}, orphanRemoval=true) */
 	protected $links;
 
+	/** @ORM\Column(type="boolean") */
+	protected $anons = false;
+
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $anonsPriority;
+
 	public function __construct()
 	{
 		$this->nozologies = new ArrayCollection();
 		$this->molecules  = new ArrayCollection();
 		$this->documents  = new ArrayCollection();
+		$this->products   = new ArrayCollection();
 		$this->atcCodes   = new ArrayCollection();
 		$this->tags       = new ArrayCollection();
 		$this->states     = new ArrayCollection();
@@ -678,5 +693,65 @@ class Article extends BaseEntity
 		$this->links->removeElement($link);
 
 		return $this;
+	}
+
+	/**
+	 * @param mixed $products
+	 */
+	public function setProducts($products)
+	{
+		$this->products = $products;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getProducts()
+	{
+		return $this->products;
+	}
+
+	public function addProduct(Product $product)
+	{
+		if (!$this->products->contains($product)) {
+			$this->products[] = $product;
+		}
+	}
+
+	public function removeProduct(Product $product)
+	{
+		$this->products->removeElement($product);
+	}
+
+	/**
+	 * @param mixed $anons
+	 */
+	public function setAnons($anons)
+	{
+		$this->anons = $anons;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getAnons()
+	{
+		return $this->anons;
+	}
+
+	/**
+	 * @param mixed $anonsPriority
+	 */
+	public function setAnonsPriority($anonsPriority)
+	{
+		$this->anonsPriority = $anonsPriority;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getAnonsPriority()
+	{
+		return $this->anonsPriority;
 	}
 }

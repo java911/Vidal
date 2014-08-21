@@ -138,6 +138,8 @@ class ArticleAdmin extends Admin
 					'inline' => 'table'
 				)
 			)
+			->add('anons', null, array('label' => 'Отображать в анонсе', 'required' => false))
+			->add('anonsPriority', null, array('label' => 'Приоритет в анонсе'))
 			->add('enabled', null, array('label' => 'Активна', 'required' => false));
 	}
 
@@ -156,6 +158,8 @@ class ArticleAdmin extends Admin
 			))
 			->add('type', null, array('label' => 'Категория'))
 			->add('priority', null, array('label' => 'Приоритет'))
+			->add('anons', null, array('label' => 'Отображать в анонсе', 'help' => 'В разделе специалистам'))
+			->add('anonsPriority', null, array('label' => 'Приоритет в анонсе'))
 			->add('enabled', null, array('label' => 'Активна'));
 	}
 
@@ -168,7 +172,8 @@ class ArticleAdmin extends Admin
 			->add('rubrique', null, array('label' => 'Рубрика'))
 			->add('type', null, array('label' => 'Категория'))
 			->add('tags', null, array('label' => 'Теги', 'template' => 'VidalDrugBundle:Sonata:tags.html.twig'))
-			->add('priority', null, array('label' => 'Приоритет'))
+			->add('anons', null, array('label' => 'в анонсе', 'template' => 'VidalDrugBundle:Sonata:swap_anons.html.twig'))
+			->add('anonsPriority', null, array('label' => 'Приоритет в анонсе'))
 			->add('date', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
 			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
 			->add('_action', 'actions', array(

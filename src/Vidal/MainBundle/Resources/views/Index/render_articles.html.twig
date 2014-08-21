@@ -23,8 +23,6 @@
 						<span>Рубрика:</span>
 						<a href="{{ path('rubrique', {'rubrique':article.rubrique.rubrique}) }}"
 							>{{ article.rubrique.title }}</a>
-
-						<div class="article-date">{{ article.date|date('d.m.Y') }}</div>
 					</div>
 				</div>
 			{% else %}
@@ -49,8 +47,6 @@
 					<div class="article-footer">
 						<span>Рубрика:</span>
 						<a href="{{ path('vracham') }}">Статьи специалистам</a>
-
-						<div class="article-date">{{ article.date|date('d.m.Y') }}</div>
 					</div>
 				</div>
 			{% endif %}
