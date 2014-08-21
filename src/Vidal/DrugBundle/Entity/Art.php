@@ -640,7 +640,7 @@ class Art extends BaseEntity
 
 	public function addProduct(Product $product)
 	{
-		if ($this->products->contains($product)) {
+		if (!$this->products->contains($product)) {
 			$this->products[] = $product;
 		}
 	}
