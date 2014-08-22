@@ -721,7 +721,6 @@ class DrugsController extends Controller
 	}
 
 	/**
-	 * @Route("/drugs", name="drugs")
 	 * @Route("/drugs/products", name="products", options={"expose":true})
 	 * @Template("VidalDrugBundle:Drugs:products.html.twig")
 	 */

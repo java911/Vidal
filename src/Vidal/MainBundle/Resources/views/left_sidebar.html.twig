@@ -7,16 +7,16 @@
 		   class="{{ menu_left is defined and menu_left == 'news' ? 'active' : 'dotted' }}">Новости</a>
 	</li>
 	<li>
-		<a href="{{ path('qa') }}"
-		   class="{{ menu_left is defined and menu_left == 'qa' ? 'active' : 'dotted' }}">Ответы специалистов</a>
-	</li>
-	<li>
 		<a href="{{ path('services') }}"
 		   class="{{ menu_left is defined and menu_left == 'services' ? 'active' : 'dotted' }}">Наши услуги</a>
 	</li>
 	<li>
 		<a href="{{ path('about') }}"
 		   class="{{ menu_left is defined and menu_left == 'about' ? 'active' : 'dotted' }}">О компании</a>
+	</li>
+	<li>
+		<a href="{{ path('qa') }}"
+		   class="{{ menu_left is defined and menu_left == 'qa' ? 'active' : 'dotted' }}">Ответы специалистов</a>
 	</li>
 	<li>
 		<a href="{{ path('veterinar') }}"
@@ -26,7 +26,6 @@
 		<a href="{{ path('astrazeneca_index') }}"
 		   class="{{ menu_left is defined and menu_left == 'shkola' ? 'active' : 'dotted' }}">Школа гастрита</a>
 	</li>
-
 	<li>
 		<a href="/reckittbenckiser/index.html?medi" target="_blank">
 			<button class="btn-red">Без боли</button>

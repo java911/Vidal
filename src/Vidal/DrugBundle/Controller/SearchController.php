@@ -21,8 +21,8 @@ class SearchController extends Controller
 	 */
 	public function searchAction(Request $request)
 	{
-		$em = $this->getDoctrine()->getManager('drug');
-		$q  = $request->query->get('q', ''); # поисковый запрос
+		$em     = $this->getDoctrine()->getManager('drug');
+		$q      = $request->query->get('q', ''); # поисковый запрос
 		$q      = trim($q);
 		$t      = $request->query->get('t', 'all'); # тип запроса из селект-бокса
 		$p      = $request->query->get('p', 1); # номер страницы
@@ -126,8 +126,15 @@ class SearchController extends Controller
 		return $params;
 	}
 
+	/** @Route("/searche") */
+	public function redirectSearche()
+	{
+		return $this->redirect($this->generateUrl('searche'), 301);
+	}
+
 	/**
-	 * @Route("/searche", name="searche", options={"expose"=true})
+	 * @Route("/drugs", name="drugs")
+	 * @Route("/drugs/search", name="searche", options={"expose"=true})
 	 *
 	 * @Template("VidalDrugBundle:Search:searche.html.twig")
 	 */
@@ -142,11 +149,12 @@ class SearchController extends Controller
 		$o   = $request->query->get('o', null); # опция на поиск по группе из списка
 
 		$params = array(
-			'q'     => $q,
-			't'     => $t,
-			'o'     => $o,
-			'p'     => $p,
-			'title' => 'Расширенный поиск',
+			'q'          => $q,
+			't'          => $t,
+			'o'          => $o,
+			'p'          => $p,
+			'title'      => 'Расширенный поиск',
+			'menu_drugs' => 'searche',
 		);
 
 		# поисковый запрос не может быть меньше 2
