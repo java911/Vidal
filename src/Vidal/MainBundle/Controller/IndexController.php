@@ -93,14 +93,15 @@ class IndexController extends Controller
 			}
 		}
 		$qus = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByEnabled(1);
+		$perPage = 10;
 		//		krsort($qus);
 
-		$p = ceil(count($qus) / 5);
+		$p = ceil(count($qus) / $perPage);
 
 		$qaPagination = $this->get('knp_paginator')->paginate(
 			$qus,
 			$request->query->get('p', $p),
-			5
+			$perPage
 		);
 
 		return array(
