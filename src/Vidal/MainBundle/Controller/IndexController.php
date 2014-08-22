@@ -92,17 +92,8 @@ class IndexController extends Controller
 				);
 			}
 		}
-		$qus = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByEnabled(1);
-		$perPage = 10;
-		//		krsort($qus);
-
-		$p = ceil(count($qus) / $perPage);
-
-		$qaPagination = $this->get('knp_paginator')->paginate(
-			$qus,
-			$request->query->get('p', $p),
-			$perPage
-		);
+		$qus          = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByEnabled();
+		$qaPagination = $this->get('knp_paginator')->paginate($qus, $request->query->get('p', 1), 10);
 
 		return array(
 			'title'           => 'Ответы специалистов',
