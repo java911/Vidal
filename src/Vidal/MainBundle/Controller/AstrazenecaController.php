@@ -16,7 +16,7 @@ use Lsw\SecureControllerBundle\Annotation\Secure;
 class AstrazenecaController extends Controller
 {
 	/**
-	 * @Route("shkola-gastrita", name="shkola")
+	 * @Route("shkola-gastrita2", name="shkola")
 	 * @Template("VidalMainBundle:Astrazeneca:shkola.html.twig")
 	 */
 	public function shkolaAction()
@@ -34,7 +34,7 @@ class AstrazenecaController extends Controller
 	}
 
 	/**
-	 * @Route("/shkola-gastrita2", name="astrazeneca_index")
+	 * @Route("/shkola-gastrita", name="astrazeneca_index")
 	 * @Template("VidalMainBundle:Astrazeneca:index.html.twig")
 	 */
 	public function indexAction()
