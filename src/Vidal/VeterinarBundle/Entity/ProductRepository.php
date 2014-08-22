@@ -56,6 +56,34 @@ class ProductRepository extends EntityRepository
 			->getOneOrNullresult();
 	}
 
+	public function findOneByName($Name)
+	{
+		return $this->_em->createQuery('
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.Composition
+			FROM VidalVeterinarBundle:Product p
+			LEFT JOIN VidalVeterinarBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
+			WHERE p.Name = :Name
+		')->setParameter('Name', $Name)
+			->setMaxResults(1)
+			->getOneOrNullresult();
+	}
+
+	public function findOneByDocumentID($DocumentID)
+	{
+		return $this->_em->createQuery('
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.Composition
+			FROM VidalVeterinarBundle:Product p
+			JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.ProductID = p.ProductID
+			JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d.DocumentID
+			LEFT JOIN VidalVeterinarBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
+			WHERE d = :DocumentID
+		')->setParameter('DocumentID', $DocumentID)
+			->setMaxResults(1)
+			->getOneOrNullresult();
+	}
+
 	public function findByDocumentID($DocumentID)
 	{
 		return $this->_em->createQuery('

@@ -155,6 +155,38 @@ class Product
 	/** @ORM\Column(type="boolean") */
 	protected $inactive = false;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="Article", mappedBy="products")
+	 * @ORM\JoinTable(name="article_product",
+	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
+	 */
+	protected $articles;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Art", mappedBy="products")
+	 * @ORM\JoinTable(name="art_product",
+	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")})
+	 */
+	protected $arts;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Publication", mappedBy="products")
+	 * @ORM\JoinTable(name="publication_product",
+	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")})
+	 */
+	protected $publications;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="PharmArticle", mappedBy="products")
+	 * @ORM\JoinTable(name="pharm_article_product",
+	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="pharm_article_id", referencedColumnName="id")})
+	 */
+	protected $pharmArticles;
+
 	public function __construct()
 	{
 		$this->atcCodes        = new ArrayCollection();
@@ -163,6 +195,10 @@ class Product
 		$this->productCompany  = new ArrayCollection();
 		$this->moleculeNames   = new ArrayCollection();
 		$this->phthgroups      = new ArrayCollection();
+		$this->articles        = new ArrayCollection();
+		$this->arts            = new ArrayCollection();
+		$this->publications    = new ArrayCollection();
+		$this->pharmArticles   = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -802,5 +838,69 @@ class Product
 	public function getInactive()
 	{
 		return $this->inactive;
+	}
+
+	/**
+	 * @param mixed $publications
+	 */
+	public function setPublications($publications)
+	{
+		$this->publications = $publications;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPublications()
+	{
+		return $this->publications;
+	}
+
+	/**
+	 * @param mixed $articles
+	 */
+	public function setArticles($articles)
+	{
+		$this->articles = $articles;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getArticles()
+	{
+		return $this->articles;
+	}
+
+	/**
+	 * @param mixed $arts
+	 */
+	public function setArts($arts)
+	{
+		$this->arts = $arts;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getArts()
+	{
+		return $this->arts;
+	}
+
+	/**
+	 * @param mixed $pharmArticles
+	 */
+	public function setPharmArticles($pharmArticles)
+	{
+		$this->pharmArticles = $pharmArticles;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPharmArticles()
+	{
+		return $this->pharmArticles;
 	}
 }

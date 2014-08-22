@@ -1,12 +1,15 @@
 <div class="menu-drugs">
 	<a href="{{ path('interaction') }}" class="linke">Проверка лекарственного взаимодействия</a>
+
 	<div class="tabs">
-		<a href="{{ path('products') }}" {{ menu_drugs == 'products' ? 'class="active"' }}
-		   title="Поиск препаратов и БАДов по алфавиту">По алфавиту</a><a
+		<a href="{{ path('searche') }}" {{ menu_drugs == 'searche' ? 'class="active"' }}
+		   title="Поиск по категориям">Поиск</a><a
+			href="{{ path('products') }}" {{ menu_drugs == 'products' ? 'class="active"' }}
+			title="Поиск препаратов и БАДов по алфавиту">По алфавиту</a><a
 			href="{{ path('atc') }}" {{ menu_drugs == 'atc' ? 'class="active"' }}
 			title="Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)">АТХ</a><a
 			href="{{ path('nosology') }}" {{ menu_drugs == 'nosology' ? 'class="active"' }}
-			>Нозологический указатель</a><a
+			title="Нозологический указатель">Нозология</a><a
 			href="{{ path('kfu') }}" {{ menu_drugs == 'kfu' ? 'class="active"' }}
 			title="Клинико-фармакологические указатели">КФУ</a><a
 			href="{{ path('pharm') }}" {{ menu_drugs == 'pharm' ? 'class="active"' }}

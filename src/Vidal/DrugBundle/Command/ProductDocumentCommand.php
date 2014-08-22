@@ -33,7 +33,7 @@ class ProductDocumentCommand extends ContainerAwareCommand
 			FROM VidalDrugBundle:ProductDocument pd
 			JOIN VidalDrugBundle:Product p WITH p.ProductID = pd.ProductID
 			JOIN VidalDrugBundle:Document d WITH d.DocumentID = pd.DocumentID
-			WHERE d.ArticleID NOT IN (1,6)
+			WHERE d.ArticleID NOT IN (1,6,3)
 				AND p.ProductTypeCode NOT IN ('BAD','SUBS','SRED')
 			ORDER BY pd.ProductID ASC
 		")->getResult();
@@ -51,7 +51,7 @@ class ProductDocumentCommand extends ContainerAwareCommand
 					WHERE p.ProductID = :ProductID
 				');
 
-		$articlePriority = array(2, 5, 4, 3, 1);
+		$articlePriority = array(2, 5, 4);
 		$i               = 0;
 		$count           = count($grouped);
 

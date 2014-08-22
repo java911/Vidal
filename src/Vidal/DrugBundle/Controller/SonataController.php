@@ -116,20 +116,31 @@ class SonataController extends Controller
 		return new JsonResponse($results);
 	}
 
-	/**
-	 * @Route("/admin/document-remove/{type}/{id}/{DocumentID}", name="document_remove")
-	 */
-	public function documentRemoveAction($type, $id, $DocumentID)
+	/** @Route("/admin/product-add/{type}/{id}/{ProductID}", name="product_add", options={"expose":true}) */
+	public function productAddAction($type, $id, $ProductID)
 	{
-		$em       = $this->getDoctrine()->getManager('drug');
-		$entity   = $em->getRepository("VidalDrugBundle:$type")->findOneById($id);
-		$document = $em->getRepository('VidalDrugBundle:Document')->findById($DocumentID);
+		$em      = $this->getDoctrine()->getManager('drug');
+		$entity  = $em->getRepository("VidalDrugBundle:$type")->findOneById($id);
+		$product = $em->getRepository("VidalDrugBundle:Product")->findOneByProductID($ProductID);
 
-		if (!$entity || !$document) {
+		$entity->addProduct($product);
+		$em->flush();
+
+		return new JsonResponse('OK');
+	}
+
+	/** @Route("/admin/product-remove/{type}/{id}/{ProductID}", name="product_remove", options={"expose":true}) */
+	public function productRemoveAction($type, $id, $ProductID)
+	{
+		$em      = $this->getDoctrine()->getManager('drug');
+		$entity  = $em->getRepository("VidalDrugBundle:$type")->findOneById($id);
+		$product = $em->getRepository('VidalDrugBundle:Product')->findOneByProductID($ProductID);
+
+		if (!$entity || !$product) {
 			return new JsonResponse('FAIL');
 		}
 
-		$entity->removeDocument($document);
+		$entity->removeProduct($product);
 		$em->flush();
 
 		return new JsonResponse('OK');

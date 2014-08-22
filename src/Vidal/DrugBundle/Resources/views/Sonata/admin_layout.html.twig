@@ -101,24 +101,56 @@ file that was distributed with this source code.
 	{% if route in ['admin_vidal_drug_art_edit','admin_vidal_drug_art_create','admin_vidal_drug_article_edit','admin_vidal_drug_article_create','admin_vidal_drug_publication_edit','admin_vidal_drug_publication_create','admin_vidal_drug_pharmarticle_edit','admin_vidal_drug_pharmarticle_create'] %}
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('.doc').attr('placeholder', 'Начните вводить препарат или ID документа')
+			$('.doc').attr('placeholder', 'Начните вводить препарат или ID препарата')
 				.autocomplete({
 					minLength: 1,
 					source:    function(request, response) {
 						$.ajax({
-							url:      "http://twiga.vidal.ru:9200/website/autocomplete_document/_search",
+							url:      "http://www.vidal.ru:9200/website/autocomplete_product/_search",
 							type:     "POST",
 							dataType: "JSON",
-							data:     '{ "query":{"query_string":{"query":"*' + request.term + '*"}}, "fields":["name"], "size":15, "highlight":{"fields":{"name":{}}} }',
+							data:     '{ "query":{"query_string":{"query":"*' + request.term + '*","default_operator":"AND"}}, "fields":["name"], "size":20, "highlight":{"fields":{"name":{}}} }',
 							success:  function(data) {
-								response($.map(data.hits.hits, function(item) {
-									return {
-										label: item.highlight.name,
-										value: item.fields.name
+								var hits = data.hits.hits;
+								var ids = $('.ul-remove li').map(function(element) {
+									return $(this).attr("data");
+								});
+								var values = [];
+
+								for (var i = 0; i < hits.length; i++) {
+									var item = hits[i];
+									if (jQuery.inArray(item._id, ids) == -1) {
+										values.push({
+											'label': item.highlight.name,
+											'value': item.fields.name,
+											'id':    item._id
+										});
 									}
-								}));
+								}
+								values.sort(function(a, b) {
+									return (a.value == b.value) ? 0 : ((a.value > b.value) ? 1 : -1);
+								});
+								response(values);
 							}
 						})
+					},
+					select:    function(event, ui) {
+						if (ui.item) {
+							$.getJSON(Routing.generate('product_add', {'type': '{{ object|type }}', 'id': '{{ object.id }}', 'ProductID': ui.item.id}), function() {
+								var li = '<li data="' + ui.item.id + '"><b><a href="' + Routing.generate('product_remove', {'type': '{{ object|type }}', 'id': '{{ object.id }}', 'ProductID': ui.item.id}) + '">X</a></b>' + ui.item.value + '</li>';
+								var $li = $(li);
+								var $ul = $('.ul-remove');
+								if (!$ul.length) {
+									$('.doc').parent().append($('<ul class="ul-remove"></ul>'));
+									$ul = $('.ul-remove');
+								}
+								$ul.append($li);
+							});
+						}
+
+						$(this).val('');
+
+						return false;
 					}
 				})
 				.data("ui-autocomplete")._renderItem =
@@ -126,8 +158,8 @@ file that was distributed with this source code.
 					return $("<li></li>").data("item.autocomplete", item).append("<a>" + item.label + "</a>").appendTo(ul);
 				};
 
-			{% if object.documents and object.documents.count %}
-			var ul = $('<ul class="ul-remove">{% for document in object.documents %}<li><b><a href="{{ path('document_remove', {'type':object|type, 'id':object.id, 'DocumentID':document.DocumentID}) }}">X</a></b>{{ document|raw }}</li>{% endfor %}</ul>');
+			{% if object.products and object.products.count %}
+			var ul = $('<ul class="ul-remove">{% for product in object.products %}<li data="{{ product.ProductID }}"><b><a href="{{ path('product_remove', {'type':object|type, 'id':object.id, 'ProductID':product.ProductID}) }}">X</a></b>' + "{{ product.RusName|raw }} {{ product.ProductID }}" + '</li>{% endfor %}</ul>');
 			$('.doc').parent().append(ul);
 			{% endif %}
 
@@ -149,8 +181,8 @@ file that was distributed with this source code.
 	<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/jquery.jeditable.mini.js') }}"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('.tag-text').editable(Routing.generate('admin_tag_editable'), {submit:'OK',width:'300px'});
-			$('.tag-search').editable(Routing.generate('admin_tag_search'), {submit:'OK',width:'300px','placeholder':''});
+			$('.tag-text').editable(Routing.generate('admin_tag_editable'), {submit: 'OK', width: '300px'});
+			$('.tag-search').editable(Routing.generate('admin_tag_search'), {submit: 'OK', width: '300px', 'placeholder': ''});
 			$('.tag-set').click(function() {
 				$.getJSON(this.href);
 				return false;

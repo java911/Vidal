@@ -18,7 +18,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 class IndexController extends Controller
 {
 	const PUBLICATIONS_SHOW = 5;
-	const ARTICLES_SHOW     = 4;
 
 	/**
 	 * @Route("/", name="index")
@@ -27,11 +26,10 @@ class IndexController extends Controller
 	public function indexAction()
 	{
 		$em       = $this->getDoctrine()->getManager('drug');
-		$articles = $em->getRepository('VidalDrugBundle:Article')->findLast(self::ARTICLES_SHOW);
+		$articles = $em->getRepository('VidalDrugBundle:Article')->findLast();
 
 		if ($art = $em->getRepository('VidalDrugBundle:Art')->atIndex()) {
 			$articles[] = $art;
-			usort($articles, array($this, 'sortArticles'));
 		}
 
 		$params = array(
@@ -94,16 +92,8 @@ class IndexController extends Controller
 				);
 			}
 		}
-		$qus = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByEnabled(1);
-		//		krsort($qus);
-
-		$p = ceil(count($qus) / 5);
-
-		$qaPagination = $this->get('knp_paginator')->paginate(
-			$qus,
-			$request->query->get('p', $p),
-			5
-		);
+		$qus          = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByEnabled();
+		$qaPagination = $this->get('knp_paginator')->paginate($qus, $request->query->get('p', 1), 10);
 
 		return array(
 			'title'           => 'Ответы специалистов',
@@ -202,22 +192,6 @@ class IndexController extends Controller
 			}
 		}
 		return array('form' => $form->createView(), 'question' => $question);
-	}
-
-	/** @Route("/Vidal/vidal-russia/Novosti-pharmatsevticheskih-kompanii/") */
-	public function r10()
-	{
-		return $this->redirect($this->generateUrl('pharma_news'), 301);
-	}
-
-	/**
-	 * @Route("/Vidal/vidal-russia/{url}", name="vidal_russia_item", requirements={"url"=".+"})
-	 */
-	public function r11($url)
-	{
-		$url = trim($url, '/');
-
-		return $this->redirect($this->generateUrl('about', array('url' => $url)), 301);
 	}
 
 	/**
@@ -361,60 +335,6 @@ class IndexController extends Controller
 		);
 
 		return $params;
-	}
-
-	/** @Route("/Vidal/partneram/podpisnaya-kompaniya-SV/", name="r1") */
-	public function r1()
-	{
-		return $this->redirect($this->generateUrl('about', array('url' => 'spravochnik-vidal')), 301);
-	}
-
-	/** @Route("/Vidal/partneram/marketing-Vidal-Specialist/", name="r2") */
-	public function r2()
-	{
-		return $this->redirect($this->generateUrl('about', array('url' => 'vidal-specialist')), 301);
-	}
-
-	/** @Route("/Vidal/partneram/email-mailing/", name="r3") */
-	public function r3()
-	{
-		return $this->redirect($this->generateUrl('about', array('url' => 'email-mailing')), 301);
-	}
-
-	/** @Route("/Vidal/partneram/basi-dannih-vrachi-sng/", name="r4") */
-	public function r4()
-	{
-		return $this->redirect($this->generateUrl('about', array('url' => 'vrachi-sng')), 301);
-	}
-
-	/** @Route("/Vrachi-Rossii/", name="r5") */
-	public function r5()
-	{
-		return $this->redirect($this->generateUrl('about', array('url' => 'vrachi-rossii')), 301);
-	}
-
-	/** @Route("/Vidal/partneram/Vidal-Vizit/", name="r6") */
-	public function r6()
-	{
-		return $this->redirect($this->generateUrl('about', array('url' => 'vidal-vizit')), 301);
-	}
-
-	/** @Route("/Vidal/partneram/Vidal-Vizit/", name="r7") */
-	public function r7()
-	{
-		return $this->redirect($this->generateUrl('about', array('url' => 'cd-versiya')), 301);
-	}
-
-	/** @Route("/Vidal/partneram/Kontakti-kommercheskii-otdel/", name="r8") */
-	public function r8()
-	{
-		return $this->redirect($this->generateUrl('about', array('url' => 'kommercheskii-otdel')), 301);
-	}
-
-	/** @Route("/Vidal/partneram/Krames-obucheniye-patients/", name="r9") */
-	public function r9()
-	{
-		return $this->redirect($this->generateUrl('about', array('url' => 'obucheniye')), 301);
 	}
 
 	/**

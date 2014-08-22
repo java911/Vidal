@@ -1,13 +1,6 @@
 <div class="navigation">
 	<i></i>
-
 	<div class="navigation-items">
-		{% if products is defined and products|length %}
-			<div>
-				<a href="#products">{{ products|length == 1 ? 'Лекарственная форма' : 'Лекарственные формы' }}</a>
-			</div>
-		{% endif %}
-
 		{% if Composition is defined and Composition is not empty %}
 			<div><a href="#composition">Форма выпуска, состав и упаковка</a></div>
 		{% endif %}

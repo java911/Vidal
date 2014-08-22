@@ -24,10 +24,11 @@ class BannerController extends Controller
 		return new Response();
 	}
 
-	public function renderAction($groupId)
+	public function renderAction($groupId, $testing = false)
 	{
 		return $this->render('VidalMainBundle:Banner:render.html.twig', array(
-			'banner' => $this->getDoctrine()->getRepository('VidalMainBundle:Banner')->findByGroup($groupId)
+			'banner'  => $this->getDoctrine()->getRepository('VidalMainBundle:Banner')->findByGroup($groupId),
+			'testing' => $testing,
 		));
 	}
 }

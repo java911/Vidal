@@ -32,10 +32,10 @@ class ArticleController extends Controller
 		}
 
 		$params = array(
-			'title'     => $this->strip($article . '') . ' | ' . $rubrique,
-			'menu_left' => 'articles',
-			'rubrique'  => $rubrique,
-			'article'   => $article,
+			'title'    => $this->strip($article . '') . ' | ' . $rubrique,
+			'menu'     => 'articles',
+			'rubrique' => $rubrique,
+			'article'  => $article,
 		);
 
 		$articleId = $article->getId();
@@ -100,10 +100,10 @@ class ArticleController extends Controller
 		$articles = $em->getRepository('VidalDrugBundle:Article')->ofRubrique($rubrique);
 
 		return array(
-			'title'     => $rubrique . ' | Энциклопедия',
-			'menu_left' => 'articles',
-			'rubrique'  => $rubrique,
-			'articles'  => $articles,
+			'title'    => $rubrique . ' | Энциклопедия',
+			'menu'     => 'articles',
+			'rubrique' => $rubrique,
+			'articles' => $articles,
 		);
 	}
 
@@ -111,19 +111,19 @@ class ArticleController extends Controller
 	 * @Route("/patsientam/entsiklopediya/")
 	 * @Route("/patsientam/entsiklopediya")
 	 */
-	public function r1()
+	public function r11()
 	{
 		return $this->redirect($this->generateUrl('articles'), 301);
 	}
 
 	/** @Route("/poisk_preparatov/") */
-	public function r2()
+	public function r12()
 	{
 		return $this->redirect($this->generateUrl('searche'), 301);
 	}
 
 	/** @Route("/patsientam/entsiklopediya/{url}", requirements={"url"=".+"}) */
-	public function r3($url)
+	public function r13($url)
 	{
 		$em = $this->getDoctrine()->getManager('drug');
 
@@ -148,7 +148,7 @@ class ArticleController extends Controller
 		}
 
 		if (!$article) {
-			throw $this->createNotFoundException();
+			return $this->redirect($this->generateUrl('index'), 301);
 		}
 
 		return $this->redirect($this->generateUrl('article', array(
@@ -178,7 +178,7 @@ class ArticleController extends Controller
 
 		return array(
 			'title'     => 'Энциклопедия',
-			'menu_left' => 'articles',
+			'menu'      => 'articles',
 			'rubriques' => $em->getRepository('VidalDrugBundle:ArticleRubrique')->findEnabled()
 		);
 	}

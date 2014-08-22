@@ -40,7 +40,7 @@ body {
 .header-search {
 	position:   absolute;
 	top:        53px;
-	left:       487px;
+	left:       479px;
 	width:      63px;
 	height:     16px;
 	background: url(../images/header-search.jpg) no-repeat top left;
@@ -117,6 +117,9 @@ sup {
 }
 a {
 	color: #d71344;
+}
+img {
+	border: none;
 }
 input[type=text], input[type=number], input[type=password], input[type=email], input[type=url] {
 	width:                 308px;
@@ -877,7 +880,7 @@ tr.bold td {
 	background:     transparent;
 	border:         none;
 	font-style:     italic;
-	width:          180px;
+	width:          175px;
 	font-size:      15px;
 }
 #search_form .search-inputs {
@@ -891,7 +894,11 @@ tr.bold td {
 	width: 261px;
 }
 #search_form .st {
-	padding-top: 4px;
+	padding: 5px 0 0 2px;
+}
+#search_form .row1 td {
+	border:     1px solid #ccc;
+	background: #F6F6F6;
 }
 .search td {
 	padding: 0;
@@ -904,7 +911,7 @@ tr.bold td {
 }
 .search .search-query {
 	display:        inline-block;
-	width:          196px;
+	width:          195px;
 	margin:         0 0 0 2px;
 	padding:        0 6px;
 	border:         none;
@@ -1025,12 +1032,21 @@ tr.bold td {
 	margin-bottom: 24px;
 }
 .menu a {
+	position:          relative;
 	display:           block;
 	float:             left;
 	width:             130px;
 	height:            99px;
 	background-image:  url(../images/bg/menu-small.png);
 	background-repeat: no-repeat;
+	z-index:           10;
+}
+.menu a img {
+	display:  inline-block;
+	position: absolute;
+	bottom:   12px;
+	left:     12px;
+	z-index:  5;
 }
 .menu-drugs {
 	background-position: 0 0;
@@ -1048,15 +1064,27 @@ tr.bold td {
 	background-position: -390px 0;
 }
 .menu-drugs:hover, .menu-drugs.active {
-	background-position: 0 -100px;
+	background-position: 0 -101px;
 }
 .menu-symptoms:hover, .menu-symptoms.active {
-	background-position: -130px -100px;
+	background-position: -130px -101px;
 }
 .menu-doctors:hover, .menu-doctors.active {
-	background-position: -260px -100px;
+	background-position: -260px -101px;
 }
 .menu-pharmacy:hover, .menu-pharmacy.active {
+	background-position: -390px -101px;
+}
+.menu-small .menu-drugs:hover, .menu-small .menu-drugs.active {
+	background-position: 0 -100px;
+}
+.menu-small .menu-symptoms:hover, .menu-small .menu-symptoms.active {
+	background-position: -130px -100px;
+}
+.menu-small .menu-doctors:hover, .menu-small .menu-doctors.active {
+	background-position: -260px -100px;
+}
+.menu-small .menu-pharmacy:hover, .menu-small .menu-pharmacy.active {
 	background-position: -390px -100px;
 }
 .menu-big a {
@@ -1170,53 +1198,14 @@ tr.bold td {
 	color: #333;
 }
 
-/* letters */
-.letters {
-	margin: 10px 0;
-}
-.letters > div {
-	overflow: hidden;
-}
-.letters input {
-	display:         inline-block;
-	width:           15px;
-	text-align:      center;
-	text-decoration: none;
-	color:           #62768A;
-	float:           left;
-	margin-right:    2px;
-	font-size:       14px;
-	outline:         none;
-	cursor:          pointer;
-	padding:         0;
-	background:      #F5F5F5;
-	border:          none;
-	line-height:     18px;
-}
-.letters input.en {
-	color: #434EA0;
-}
-.letters input.active, .letters input:hover {
-	background: #d71344;
-	color:      white;
-}
-.letters input:active {
-	position: relative;
-	top:      1px;
-}
-
 /* banners */
 .banner {
 	position: relative;
-}
-#banner_top {
-	position:      relative;
-	margin-bottom: -2px;
-	z-index:       10;
+	margin:   0 auto;
+	border:   1px solid #ddd;
 }
 #banner_top img {
-	border:        none;
-	border-bottom: 2px solid #b9033c;
+	border: none;
 }
 #banner_bottom {
 	clear:  both;
@@ -1227,6 +1216,7 @@ tr.bold td {
 	position: absolute;
 	top:      0;
 	left:     0;
+	z-index:  5;
 }
 .banner a {
 	position: absolute;

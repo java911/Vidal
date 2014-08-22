@@ -160,7 +160,7 @@ class DrugsController extends Controller
 		$kfu = $em->getRepository('VidalDrugBundle:ClinicoPhPointers')->findOneByCode($code);
 
 		if (!$kfu) {
-			throw $this->createNotFoundException();
+			return $this->redirect($this->generateUrl('index'), 301);
 		}
 
 		return $this->redirect($this->generateUrl('kfu_item', array(
@@ -721,7 +721,6 @@ class DrugsController extends Controller
 	}
 
 	/**
-	 * @Route("/drugs", name="drugs")
 	 * @Route("/drugs/products", name="products", options={"expose":true})
 	 * @Template("VidalDrugBundle:Drugs:products.html.twig")
 	 */

@@ -22,17 +22,17 @@
 			</div>
 
 			{#<div class="searche-contraindications">#}
-				{#<div class="label">Исключая противопоказания</div>#}
-				{#<div class="items">#}
-					{#<input id="searche_contraindication" type="text" placeholder="добавить..."/>#}
-					{#<ul class="removable">#}
-						{#{% if contraindications is defined %}#}
-							{#{% for contra in contraindications %}#}
-								{#<li><i></i><span>{{ contra.RusName }}</span><b>{{ contra.ContraIndicCode }}</b></li>#}
-							{#{% endfor %}#}
-						{#{% endif %}#}
-					{#</ul>#}
-				{#</div>#}
+			{#<div class="label">Исключая противопоказания</div>#}
+			{#<div class="items">#}
+			{#<input id="searche_contraindication" type="text" placeholder="добавить..."/>#}
+			{#<ul class="removable">#}
+			{#{% if contraindications is defined %}#}
+			{#{% for contra in contraindications %}#}
+			{#<li><i></i><span>{{ contra.RusName }}</span><b>{{ contra.ContraIndicCode }}</b></li>#}
+			{#{% endfor %}#}
+			{#{% endif %}#}
+			{#</ul>#}
+			{#</div>#}
 			{#</div>#}
 
 			<div class="right">
@@ -92,6 +92,7 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/searche.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/letters.css') }}"/>
 {% endblock %}
 
 

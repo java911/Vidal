@@ -48,6 +48,14 @@ class PharmArticle extends BaseEntity
 	protected $documents;
 
 	/**
+	 * @ORM\ManyToMany(targetEntity="Product", inversedBy="pharmArticles")
+	 * @ORM\JoinTable(name="pharm_article_product",
+	 *        joinColumns={@ORM\JoinColumn(name="pharm_article_id", referencedColumnName="id")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")})
+	 */
+	protected $products;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="pharmArticles")
 	 * @ORM\JoinTable(name="pharm_article_atc",
 	 *        joinColumns={@ORM\JoinColumn(name="pharm_article_id", referencedColumnName="id")},
@@ -71,6 +79,7 @@ class PharmArticle extends BaseEntity
 		$this->nozologies = new ArrayCollection();
 		$this->molecules  = new ArrayCollection();
 		$this->documents  = new ArrayCollection();
+		$this->products   = new ArrayCollection();
 		$this->atcCodes   = new ArrayCollection();
 		$this->infoPages  = new ArrayCollection();
 		$this->tags       = new ArrayCollection();
@@ -291,5 +300,33 @@ class PharmArticle extends BaseEntity
 	public function getT()
 	{
 		return 'PharmArticle';
+	}
+
+	/**
+	 * @param mixed $products
+	 */
+	public function setProducts($products)
+	{
+		$this->products = $products;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getProducts()
+	{
+		return $this->products;
+	}
+
+	public function addProduct(Product $product)
+	{
+		if (!$this->products->contains($product)) {
+			$this->products[] = $product;
+		}
+	}
+
+	public function removeProduct(Product $product)
+	{
+		$this->products->removeElement($product);
 	}
 }

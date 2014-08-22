@@ -251,35 +251,16 @@ class VidalController extends Controller
 		$em         = $this->getDoctrine()->getManager('veterinar');
 		$params     = array();
 		$DocumentID = intval(substr($name, strrpos($name, '_') + 1));
+		$product    = $em->getRepository('VidalVeterinarBundle:Product')->findOneByDocumentID($DocumentID);
 
-		$document = $em->getRepository('VidalVeterinarBundle:Document')->findById($DocumentID);
-
-		if (!$document) {
+		if (!$product) {
 			throw $this->createNotFoundException();
 		}
 
-		$params['title']      = $this->strip($document->getRusName()) . ' | Видаль-Ветеринар';
-		$params['documentId'] = $document->getDocumentID();
-		$molecules            = $em->getRepository('VidalVeterinarBundle:Molecule')->findByDocumentID($DocumentID);
-
-		$products = $em->getRepository('VidalVeterinarBundle:Product')->findByDocumentID($DocumentID);
-
-		if (!empty($products)) {
-			$productIds             = $this->getProductIds($products);
-			$params['owners']       = $em->getRepository('VidalVeterinarBundle:Company')->findOwnersByProducts($productIds);
-			$params['distributors'] = $em->getRepository('VidalVeterinarBundle:Company')->findDistributorsByProducts($productIds);
-			$params['pictures']     = $em->getRepository('VidalVeterinarBundle:Picture')->findAllByProductIds($productIds);
-		}
-		else {
-			$params['pictures'] = array();
-		}
-
-		$params['document']  = $document;
-		$params['molecules'] = $molecules;
-		$params['products']  = $products;
-		$params['infoPages'] = $em->getRepository('VidalVeterinarBundle:InfoPage')->findByDocumentID($DocumentID);
-
-		return $params;
+		return $this->redirect($this->generateUrl('v_product', array(
+			'ProductID' => $product['ProductID'],
+			'EngName'   => $product['Name'],
+		)));
 	}
 
 	/**
@@ -299,7 +280,7 @@ class VidalController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		$params['title'] = $this->strip($product['RusName']) . ' | Видаль-Ветеринар';
+		$params['title'] = $this->strip($product['RusName']) . ' - ' . $product['ZipInfo'] .' | Видаль-Ветеринар';
 		$document        = $em->getRepository('VidalVeterinarBundle:Document')->findByProductDocument($ProductID);
 		$molecules       = $em->getRepository('VidalVeterinarBundle:Molecule')->findByProductID($ProductID);
 

@@ -15,7 +15,7 @@ class SearchController extends Controller
 	const PRODUCTS_PER_PAGE = 40;
 
 	/**
-	 * @Route("/search", name="search")
+	 * @Route("/search", name="search", options={"expose":true})
 	 *
 	 * @Template("VidalDrugBundle:Search:search.html.twig")
 	 */
@@ -126,8 +126,15 @@ class SearchController extends Controller
 		return $params;
 	}
 
+	/** @Route("/searche") */
+	public function redirectSearche()
+	{
+		return $this->redirect($this->generateUrl('searche'), 301);
+	}
+
 	/**
-	 * @Route("/searche", name="searche", options={"expose"=true})
+	 * @Route("/drugs", name="drugs")
+	 * @Route("/drugs/search", name="searche", options={"expose"=true})
 	 *
 	 * @Template("VidalDrugBundle:Search:searche.html.twig")
 	 */
@@ -142,11 +149,12 @@ class SearchController extends Controller
 		$o   = $request->query->get('o', null); # опция на поиск по группе из списка
 
 		$params = array(
-			'q'     => $q,
-			't'     => $t,
-			'o'     => $o,
-			'p'     => $p,
-			'title' => 'Расширенный поиск',
+			'q'          => $q,
+			't'          => $t,
+			'o'          => $o,
+			'p'          => $p,
+			'title'      => 'Расширенный поиск',
+			'menu_drugs' => 'searche',
 		);
 
 		# поисковый запрос не может быть меньше 2

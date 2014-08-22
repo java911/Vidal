@@ -60,6 +60,14 @@ class Publication extends BaseEntity
 	protected $documents;
 
 	/**
+	 * @ORM\ManyToMany(targetEntity="Product", inversedBy="publications")
+	 * @ORM\JoinTable(name="publication_product",
+	 *        joinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")})
+	 */
+	protected $products;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="publications")
 	 * @ORM\JoinTable(name="publication_atc",
 	 *        joinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")},
@@ -82,9 +90,9 @@ class Publication extends BaseEntity
 	 * @ORM\Column(type="array", nullable=true)
 	 * @FileStore\UploadableField(mapping="video")
 	 * @Assert\File(
-	 * 		maxSize="100M",
-	 * 		maxSizeMessage="Видео не может быть больше 100Мб",
-	 * 		mimeTypesMessage="Видео должно быть в формате .flv"
+	 *        maxSize="100M",
+	 *        maxSizeMessage="Видео не может быть больше 100Мб",
+	 *        mimeTypesMessage="Видео должно быть в формате .flv"
 	 * )
 	 */
 	protected $video;
@@ -113,6 +121,7 @@ class Publication extends BaseEntity
 		$this->nozologies = new ArrayCollection();
 		$this->molecules  = new ArrayCollection();
 		$this->documents  = new ArrayCollection();
+		$this->products   = new ArrayCollection();
 		$this->atcCodes   = new ArrayCollection();
 		$this->infoPages  = new ArrayCollection();
 		$this->tags       = new ArrayCollection();
@@ -442,5 +451,33 @@ class Publication extends BaseEntity
 	public function getT()
 	{
 		return 'Publication';
+	}
+
+	public function addProduct(Product $product)
+	{
+		if (!$this->products->contains($product)) {
+			$this->products[] = $product;
+		}
+	}
+
+	public function removeProduct(Product $product)
+	{
+		$this->products->removeElement($product);
+	}
+
+	/**
+	 * @param mixed $products
+	 */
+	public function setProducts($products)
+	{
+		$this->products = $products;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getProducts()
+	{
+		return $this->products;
 	}
 }

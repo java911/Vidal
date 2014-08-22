@@ -54,6 +54,14 @@ class Art extends BaseEntity
 	protected $documents;
 
 	/**
+	 * @ORM\ManyToMany(targetEntity="Product", inversedBy="arts")
+	 * @ORM\JoinTable(name="art_product",
+	 *        joinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")})
+	 */
+	protected $products;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity="ATC", inversedBy="arts")
 	 * @ORM\JoinTable(name="art_atc",
 	 *        joinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")},
@@ -136,6 +144,7 @@ class Art extends BaseEntity
 		$this->nozologies = new ArrayCollection();
 		$this->molecules  = new ArrayCollection();
 		$this->documents  = new ArrayCollection();
+		$this->products   = new ArrayCollection();
 		$this->atcCodes   = new ArrayCollection();
 		$this->infoPages  = new ArrayCollection();
 		$this->tags       = new ArrayCollection();
@@ -267,20 +276,6 @@ class Art extends BaseEntity
 	public function getType()
 	{
 		return $this->type;
-	}
-
-	public function addDocument(Document $document)
-	{
-		if (!$this->documents->contains($document)) {
-			$this->documents[] = $document;
-		}
-
-		return $this;
-	}
-
-	public function removeDocument(Document $document)
-	{
-		$this->documents->removeElement($document);
 	}
 
 	/**
@@ -625,5 +620,33 @@ class Art extends BaseEntity
 	public function getT()
 	{
 		return 'Art';
+	}
+
+	/**
+	 * @param mixed $products
+	 */
+	public function setProducts($products)
+	{
+		$this->products = $products;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getProducts()
+	{
+		return $this->products;
+	}
+
+	public function addProduct(Product $product)
+	{
+		if (!$this->products->contains($product)) {
+			$this->products[] = $product;
+		}
+	}
+
+	public function removeProduct(Product $product)
+	{
+		$this->products->removeElement($product);
 	}
 }

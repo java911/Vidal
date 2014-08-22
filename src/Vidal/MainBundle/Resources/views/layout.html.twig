@@ -42,7 +42,7 @@
 
 	{% block javascripts %}
 		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/jquery-1.11.0.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/ready.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/ready.min.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('bundles/vidalmain/checkbox/jquery.checkbox.js') }}"></script>
 		<script type="text/javascript"
@@ -51,6 +51,7 @@
 				src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 		<script type="text/javascript"
 				src="{{ asset('bundles/vidalmain/jquery-ui/jquery-ui-1.10.4.custom.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/swfobject2.js') }}"></script>
 	{% endblock %}
 </head>
 
@@ -64,24 +65,26 @@
 
 	<table class="middle">
 		<tr>
-			<td class="left-sidebar">
-				{% include 'VidalMainBundle::left_sidebar.html.twig' %}
-			</td>
-			<td class="main">
-				{% block main %}
-					{% block menu %}
-						{% include 'VidalMainBundle::menu_small.html.twig' %}
+			{% block middle %}
+				<td class="left-sidebar">
+					{% include 'VidalMainBundle::left_sidebar.html.twig' %}
+				</td>
+				<td class="main">
+					{% block main %}
+						{% block menu %}
+							{% include 'VidalMainBundle::menu_small.html.twig' %}
+						{% endblock %}
+						{% block nav %}{% endblock %}
+						{% block title %}{% endblock %}
+						<div class="content">
+							{% block content %}{% endblock %}
+						</div>
 					{% endblock %}
-					{% block nav %}{% endblock %}
-					{% block title %}{% endblock %}
-					<div class="content">
-						{% block content %}{% endblock %}
-					</div>
-				{% endblock %}
-			</td>
-			<td class="right-sidebar">
-				{% include 'VidalMainBundle::right_sidebar.html.twig' %}
-			</td>
+				</td>
+				<td class="right-sidebar">
+					{% include 'VidalMainBundle::right_sidebar.html.twig' %}
+				</td>
+			{% endblock %}
 		</tr>
 	</table>
     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
@@ -100,11 +103,13 @@
 
 
 {# счетчики аналитики #}
-{% include 'VidalMainBundle:Metrika:omniture.html.twig' %}
-{% include 'VidalMainBundle:Metrika:google_analytics.html.twig' %}
-{% include 'VidalMainBundle:Metrika:live_internet.html.twig' %}
-{% include 'VidalMainBundle:Metrika:tns.html.twig' %}
-{% include 'VidalMainBundle:Metrika:yandex_metrika.html.twig' %}
+{% if app.environment == 'prod' %}
+	{% include 'VidalMainBundle:Metrika:omniture.html.twig' %}
+	{% include 'VidalMainBundle:Metrika:google_analytics.html.twig' %}
+	{% include 'VidalMainBundle:Metrika:live_internet.html.twig' %}
+	{% include 'VidalMainBundle:Metrika:tns.html.twig' %}
+	{% include 'VidalMainBundle:Metrika:yandex_metrika.html.twig' %}
+{% endif %}
 
 </body>
 </html>

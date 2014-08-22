@@ -16,6 +16,24 @@ use Lsw\SecureControllerBundle\Annotation\Secure;
 class AstrazenecaController extends Controller
 {
 	/**
+	 * @Route("/sg", name="shkola_gastrita")
+	 * @Template("VidalMainBundle:Astrazeneca:shkola.html.twig")
+	 */
+	public function shkolaAction()
+	{
+		$params = array(
+			'noYad'     => true,
+			'title'     => 'Школа гастрита',
+			'menu_left' => 'shkola',
+		);
+
+		$em              = $this->getDoctrine()->getManager();
+		$params['blogs'] = $em->getRepository('VidalMainBundle:AstrazenecaBlog')->findActive();
+
+		return $params;
+	}
+
+	/**
 	 * @Route("/shkola-gastrita", name="astrazeneca_index")
 	 * @Template("VidalMainBundle:Astrazeneca:index.html.twig")
 	 */
