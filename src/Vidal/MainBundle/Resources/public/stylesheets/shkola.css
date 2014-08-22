@@ -1,0 +1,27 @@
+.page-main {
+	background: url(../images/shkola/page-main.png) no-repeat top left;
+}
+
+/* slider */
+.slider {
+	text-align: center;
+	position:   absolute;
+	left:       0;
+	right:      0;
+	bottom:     0;
+}
+.slider a {
+	display:    inline-block;
+	width:      16px;
+	height:     16px;
+	background: url(../images/shkola/circle10.png) no-repeat 3px 3px;
+	float:      left;
+}
+.slider a.active {
+	background: url(../images/shkola/circle-filled10.png) no-repeat 3px 3px;
+}
+.slider div {
+	display:  inline-block;
+	margin:   0 auto;
+	overflow: hidden;
+}

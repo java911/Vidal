@@ -1,21 +1,185 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
-{% block title %}
-	<h1>Школа гастрита</h1>
-{% endblock %}
+{% block middle %}
+	<div class="pages">
+		<div class="page-main">
+			<div class="content left top">
+				<div class="main-title">
+					ШКОЛА<br/>ГАСТРИТА
+				</div>
 
+				<div class="main-about">
+					Для профилактики гастрита, рекомендуем Вам проконсультироваться со специалистом.
+					Найти специалиста рядом с Вами Вы можете с помощью нашей карты <a href="#">нашей карты</a>
+				</div>
 
-{% block content %}
+				<div class="main-links">
+					<a href="#">СТАТЬИ</a>
+					<a href="#">ВИДЕО</a>
+					<a href="#">ТЕСТ</a>
+					<a href="#">ВОПРОС-ОТВЕТ</a>
+					<a href="#">КАРТА</a>
+				</div>
+
+				<div class="texts">
+					{% for blog in blogs %}
+						<div class="text-{{ blog.id }} {{ loop.first ? 'active' }}">
+							{{ blog.text|raw }}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+
+			<div class="blogs">
+				<div class="images">
+					{% for blog in blogs %}
+						<div class="image-{{ blog.id }} {{ loop.first ? 'active' }}">
+							<img src="{{ blog.photo.path }}"/>
+						</div>
+					{% endfor %}
+				</div>
+				<div class="slider">
+					<div>
+						{% for blog in blogs %}
+							<a href="#" data="{{ blog.id }}" {{ loop.first ? 'class="active"' }}></a>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 {% endblock %}
 
 
 {% block stylesheets %}
 	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/shkola.css') }}"/>
+	<style type="text/css">
+		.pages {
+			font-size: 12px;
+		}
+		.pages a {
+			text-decoration: none;
+			border-bottom:   2px solid rgba(204, 204, 204, 0.5);
+			color:           white;
+			line-height:     12px;
+			display:         inline-block;
+		}
+		.pages a:hover {
+			border-bottom-color: white;
+		}
+
+		.page-main {
+			position: relative;
+			height:   497px;
+		}
+		.page-main > div {
+			position: absolute;
+		}
+
+		.texts {
+			position:  absolute;
+			bottom:    0;
+			left:      0;
+			right:     0;
+			height:    120px;
+			font-size: 12px;
+		}
+		.texts * {
+			color: white !important;
+		}
+		.texts div {
+			display: none;
+		}
+		.texts div.active {
+			display: block;
+		}
+
+		.blogs {
+			width:      420px;
+			height:     420px;
+			background: transparent;
+			right:      100px;
+			bottom:     28px;
+			border:     1px solid #000;
+		}
+		.page-main .content {
+			width:      364px;
+			height:     420px;
+			background: transparent;
+			border:     1px solid #000;
+		}
+		.left {
+			left: 100px;
+		}
+		.top {
+			top: 58px;
+		}
+
+		.images > div {
+			display:    none;
+			text-align: center;
+		}
+		.images > div.active {
+			display: block;
+		}
+		.images img {
+			max-width:  350px;
+			max-height: 350px;
+		}
+		.main-about {
+			font-size: 11px;
+			color:     white;
+		}
+		.main-links {
+
+		}
+		.main-links a {
+			text-decoration: none;
+			color:           white;
+			font-weight:     bold;
+			font-size:       13px;
+			margin-right:    8px;
+		}
+	</style>
 {% endblock %}
 
 
 {% block javascripts %}
 	{{ parent() }}
+	<script type="text/javascript">
+		jQuery.fn.nextOrFirst = function(selector) {
+			var next = this.next(selector);
+			return (next.length) ? next : this.prevAll(selector).last();
+		};
+
+		function slider() {
+			$('.slider a.active').removeClass('active').nextOrFirst().addClass('active');
+			$('.images div.active').removeClass('active').nextOrFirst().addClass('active');
+			$('.texts div.active').removeClass('active').nextOrFirst().addClass('active');
+		}
+
+		var sliderTimeout = 10000;
+
+		$(document).ready(function() {
+			var sliderInterval = setInterval(slider, sliderTimeout);
+
+			$('.slider a').click(function(e) {
+				var $this = $(this);
+				var id = $this.attr('data');
+
+				$('.slider a.active, .images div.active, .texts div.active').removeClass('active');
+				$this.addClass('active');
+				$('.image-' + id).addClass('active');
+				$('.text-' + id).addClass('active');
+
+				clearInterval(sliderInterval);
+				sliderInterval = setInterval(slider, sliderTimeout);
+
+				return false;
+			});
+		});
+	</script>
 {% endblock %}
