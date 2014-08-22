@@ -55,7 +55,7 @@
 </head>
 
 <body>
-<div id="wrapper" class="wrapper">
+<div id="wrapper" class="wrapper" style="position: relative;">
 	{{ render(controller('VidalMainBundle:Banner:render', {'groupId':2})) }}
 
 	<div class="header">
@@ -84,7 +84,9 @@
 			</td>
 		</tr>
 	</table>
-
+    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+        {% include 'VidalMainBundle::popup.html.twig' %}
+    {% endif %}
 	<div class="footer">
 		{% include 'VidalMainBundle::footer.html.twig' %}
 	</div>
@@ -95,6 +97,7 @@
 <a id="top-link" href="#">
 	<img src="{{ asset('bundles/vidalmain/images/icon_top.png') }}"/>
 </a>
+
 
 {# счетчики аналитики #}
 {% include 'VidalMainBundle:Metrika:omniture.html.twig' %}
