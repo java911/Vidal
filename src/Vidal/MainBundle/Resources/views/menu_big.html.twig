@@ -1,7 +1,9 @@
 <div class="menu menu-big">
 	<a href="{{ path('drugs') }}" class="menu-drugs{{ menu is defined and menu == 'drugs' ? ' active' }}"></a>
 	<a href="{{ path('articles') }}"
-	   class="menu-symptoms{{ menu is defined and menu == 'articles' ? ' active' }}"></a>
+	   class="menu-symptoms{{ menu is defined and menu == 'articles' ? ' active' }}">
+		<img src="{{ asset('bundles/vidalmain/images/bg/enc.png') }}"/>
+	   </a>
 	<a href="{{ path('vracham') }}" class="menu-doctors{{ menu is defined and menu == 'vracham' ? ' active' }}"></a>
 	<a href="{{ path('pharmacies_map') }}"
 	   class="menu-pharmacy{{ menu is defined and menu == 'pharmacies_map' ? ' active' }}"></a>
