@@ -1,14 +1,119 @@
-.page-main {
-	background: url(../images/shkola/page-main.png) no-repeat top left;
+/* pages */
+.pages {
+	font-size: 12px;
+}
+.pages a.link {
+	text-decoration: none;
+	border-bottom:   2px solid rgba(204, 204, 204, 0.5);
+	color:           white;
+	line-height:     12px;
+	display:         inline-block;
+}
+.pages a.link:hover {
+	border-bottom-color: white;
+}
+.page {
+	position: relative;
+	height:   496px;
+}
+
+/* articles */
+.page-articles {
+	background: url(../images/shkola/page-articles.png) no-repeat top left;
+}
+
+/* main */
+.page-main .page-main-bg {
+	position: absolute;
+	top:      0;
+	left:     0;
+	display:  block;
+	width:    995px;
+	height:   496px;
+	z-index:  10;
+}
+.page-main > div {
+	position: absolute;
+}
+.page-main .context {
+	width:      364px;
+	height:     420px;
+	background: transparent;
+	border:     1px solid #000;
+}
+.images > div {
+	display:    none;
+	text-align: center;
+}
+.images > div.active {
+	display: block;
+}
+.images img {
+	max-width:  418px;
+	max-height: 350px;
+}
+.main-about {
+	font-size: 11px;
+	color:     white;
+	z-index:   20;
+	position:  absolute;
+	top:       132px;
+}
+.main-links {
+	z-index:  20;
+	position: absolute;
+	top:      0;
+	left:     442px;
+	width:    390px;
+}
+.main-links a {
+	text-decoration: none;
+	color:           white;
+	font-weight:     bold;
+	font-size:       12px;
+	margin-right:    8px;
+}
+.blogs {
+	width:      406px;
+	height:     392px;
+	background: transparent;
+	right:      100px;
+	border:     1px solid #000;
+	top:        103px;
+}
+.left {
+	left: 100px;
+}
+.top {
+	top: 58px;
+}
+
+/* texts */
+.texts {
+	display:    block;
+	position:   absolute;
+	bottom:     0;
+	min-height: 10px;
+	z-index:    20;
+}
+.texts * {
+	color: white !important;
+}
+.texts div {
+	display: none;
+}
+.texts div.active {
+	display: block;
 }
 
 /* slider */
 .slider {
-	text-align: center;
-	position:   absolute;
-	left:       0;
-	right:      0;
-	bottom:     0;
+	text-align:  center;
+	position:    absolute;
+	left:        0;
+	right:       0;
+	padding-top: 16px;
+	z-index:     20;
 }
 .slider a {
 	display:    inline-block;
@@ -21,6 +126,33 @@
 	background: url(../images/shkola/circle-filled10.png) no-repeat 3px 3px;
 }
 .slider div {
+	display:  inline-block;
+	margin:   0 auto;
+	overflow: hidden;
+}
+
+/* roller */
+.roller {
+	text-align:  center;
+	position:    absolute;
+	left:        0;
+	right:       0;
+	padding-top: 16px;
+	z-index:     20;
+	bottom:      30px;
+}
+.roller a {
+	display:      inline-block;
+	width:        17px;
+	height:       17px;
+	background:   url(../images/shkola/square.png) no-repeat top left;
+	float:        left;
+	margin-right: 6px;
+}
+.roller a.active {
+	background: url(../images/shkola/square-filled.png) no-repeat top left;
+}
+.roller div {
 	display:  inline-block;
 	margin:   0 auto;
 	overflow: hidden;

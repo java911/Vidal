@@ -4,11 +4,9 @@ namespace Vidal\MainBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Iphp\FileStoreBundle\Mapping\Annotation as FileStore;
 
-/**
- * @ORM\Entity()
- * @ORM\Table()
- */
+/** @ORM\Entity(repositoryClass="AstrazenecaNewRepository") @ORM\Table() @FileStore\Uploadable */
 class AstrazenecaNew extends BaseEntity
 {
     /**
@@ -25,6 +23,16 @@ class AstrazenecaNew extends BaseEntity
      * @ORM\Column(type="text", nullable=true)
      */
     protected $body;
+
+	/**
+	 * @ORM\Column(type="array", nullable=true)
+	 * @FileStore\UploadableField(mapping="photo")
+	 * @Assert\Image(
+	 *      maxSize="4M",
+	 *    	maxSizeMessage="Принимаются фотографии размером до 4 Мб"
+	 * )
+	 */
+	protected $photo;
 
     /**
      * @param mixed $body
@@ -74,6 +82,19 @@ class AstrazenecaNew extends BaseEntity
         return $this->anons;
     }
 
+	/**
+	 * @param mixed $photo
+	 */
+	public function setPhoto($photo)
+	{
+		$this->photo = $photo;
+	}
 
-
+	/**
+	 * @return mixed
+	 */
+	public function getPhoto()
+	{
+		return $this->photo;
+	}
 }
