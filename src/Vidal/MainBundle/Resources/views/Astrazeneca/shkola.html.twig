@@ -3,6 +3,7 @@
 
 {% block middle %}
 	<div class="pages">
+		{# Школа гастрита #}
 		<div class="page-main">
 			<div class="content left top">
 				<div class="main-title">
@@ -15,11 +16,11 @@
 				</div>
 
 				<div class="main-links">
-					<a href="#">СТАТЬИ</a>
-					<a href="#">ВИДЕО</a>
-					<a href="#">ТЕСТ</a>
-					<a href="#">ВОПРОС-ОТВЕТ</a>
-					<a href="#">КАРТА</a>
+					<a href="#" class="link">СТАТЬИ</a>
+					<a href="#" class="link">ВИДЕО</a>
+					<a href="#" class="link">ТЕСТ</a>
+					<a href="#" class="link">ВОПРОС-ОТВЕТ</a>
+					<a href="#" class="link">КАРТА</a>
 				</div>
 
 				<div class="texts">
@@ -48,6 +49,13 @@
 				</div>
 			</div>
 		</div>
+
+		{# Статьи #}
+		<div class="page-articles page">
+			<div class="content">
+
+			</div>
+		</div>
 	</div>
 
 {% endblock %}
@@ -57,20 +65,24 @@
 	{{ parent() }}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/shkola.css') }}"/>
 	<style type="text/css">
+
+
+		/* pages */
 		.pages {
 			font-size: 12px;
 		}
-		.pages a {
+		.pages a.link {
 			text-decoration: none;
 			border-bottom:   2px solid rgba(204, 204, 204, 0.5);
 			color:           white;
 			line-height:     12px;
 			display:         inline-block;
 		}
-		.pages a:hover {
+		.pages a.link:hover {
 			border-bottom-color: white;
 		}
 
+		/* main */
 		.page-main {
 			position: relative;
 			height:   497px;
@@ -78,46 +90,12 @@
 		.page-main > div {
 			position: absolute;
 		}
-
-		.texts {
-			position:  absolute;
-			bottom:    0;
-			left:      0;
-			right:     0;
-			height:    120px;
-			font-size: 12px;
-		}
-		.texts * {
-			color: white !important;
-		}
-		.texts div {
-			display: none;
-		}
-		.texts div.active {
-			display: block;
-		}
-
-		.blogs {
-			width:      420px;
-			height:     420px;
-			background: transparent;
-			right:      100px;
-			bottom:     28px;
-			border:     1px solid #000;
-		}
 		.page-main .content {
 			width:      364px;
 			height:     420px;
 			background: transparent;
 			border:     1px solid #000;
 		}
-		.left {
-			left: 100px;
-		}
-		.top {
-			top: 58px;
-		}
-
 		.images > div {
 			display:    none;
 			text-align: center;
@@ -140,8 +118,41 @@
 			text-decoration: none;
 			color:           white;
 			font-weight:     bold;
-			font-size:       13px;
+			font-size:       12px;
 			margin-right:    8px;
+		}
+		.blogs {
+			width:      420px;
+			height:     420px;
+			background: transparent;
+			right:      100px;
+			bottom:     28px;
+			border:     1px solid #000;
+		}
+		.left {
+			left: 100px;
+		}
+		.top {
+			top: 58px;
+		}
+
+		/* texts */
+		.texts {
+			position:  absolute;
+			bottom:    0;
+			left:      0;
+			right:     0;
+			height:    120px;
+			font-size: 12px;
+		}
+		.texts * {
+			color: white !important;
+		}
+		.texts div {
+			display: none;
+		}
+		.texts div.active {
+			display: block;
 		}
 	</style>
 {% endblock %}
