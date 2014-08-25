@@ -26,7 +26,7 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 		////////////////////////////////////////////
 		$urlset  = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" /><!--?xml version="1.0" encoding="UTF-8"?-->');
 		$date    = new \DateTime();
-		$lastMod = $date->format('Y-m-d H:i:s');
+		$lastMod = $date->format('Y-m-d');
 
 		# главная
 		$url = $urlset->addChild('url');
