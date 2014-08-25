@@ -459,14 +459,27 @@ class IndexController extends Controller
      */
     public function firstSetAction(){
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository('VidalMainBundle:User')->find($this->getUser()->getId());
-        if ($user==null || $user->getFirstset() == false){
-            $firstset = false;
-        }else{
-            $user->setFirstset(true);
-            $em->flush($user);
-            $firstset = true;
+        $firstset = false;
+        if ($this->getUser()){
+            $user = $em->getRepository('VidalMainBundle:User')->find($this->getUser()->getId());
+            if ($user==null || $user->getFirstset() == false){
+                $firstset = false;
+            }else{
+                $user->setFirstset(true);
+                $em->flush($user);
+                $firstset = true;
+            }
         }
         return array('firstset' => $firstset);
+    }
+
+    /**
+     * @Route("/profile/{userId}", name="profile_user")
+     * @Template()
+     */
+    public function profileAction($userId){
+        $user = $this->getDoctrine()->getRepository('VidalMainBundle:User')->find($userId);
+
+        return array('user' => $user);
     }
 }

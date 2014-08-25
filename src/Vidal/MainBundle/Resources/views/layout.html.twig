@@ -87,9 +87,7 @@
 			{% endblock %}
 		</tr>
 	</table>
-    {#{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}#}
         {{ render(controller('VidalMainBundle:Index:firstSet')) }}
-    {#{% endif %}#}
 	<div class="footer">
 		{% include 'VidalMainBundle::footer.html.twig' %}
 	</div>
@@ -103,13 +101,13 @@
 
 
 {# счетчики аналитики #}
-{% if app.environment == 'prod' %}
+{#{% if app.environment == 'prod' %}#}
 	{% include 'VidalMainBundle:Metrika:omniture.html.twig' %}
 	{% include 'VidalMainBundle:Metrika:google_analytics.html.twig' %}
 	{% include 'VidalMainBundle:Metrika:live_internet.html.twig' %}
 	{% include 'VidalMainBundle:Metrika:tns.html.twig' %}
 	{% include 'VidalMainBundle:Metrika:yandex_metrika.html.twig' %}
-{% endif %}
+{#{% endif %}#}
 
 </body>
 </html>
