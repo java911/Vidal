@@ -11,7 +11,7 @@
         z-index: 999;
     }
     body{
-        overflow: hidden;
+
     }
     .popup-btn{
         position: absolute;
@@ -21,6 +21,7 @@
         width: 141px;
         background: #FFFFFF;
         z-index: 999;
+        display: none;
 
     }
     .popup, .popup2{
@@ -78,6 +79,8 @@
             $('.popup-btn').fadeIn();
             $('.popup').fadeIn();
             $('#qanswer a').css('fontSize','25px');
+            $('body').css('overflow', 'hidden');
+            $('.popup-btn').css('display', 'block');
         {% endif %}
 
         if ( location.hash == '#work' ){
