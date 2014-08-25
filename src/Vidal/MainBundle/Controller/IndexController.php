@@ -452,4 +452,21 @@ class IndexController extends Controller
 			return 0;
 		}
 	}
+
+    /**
+     * @Route("/first-set", name="first_set")
+     * @Template()
+     */
+    public function firstSetAction(){
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('VidalMainBundle:User')->find($this->getUser()->getId());
+        if ($user==null || $user->getFirstset() == false){
+            $firstset = false;
+        }else{
+            $user->setFirstset(true);
+            $em->flush($user);
+            $firstset = true;
+        }
+        return array('firstset' => $firstset);
+    }
 }

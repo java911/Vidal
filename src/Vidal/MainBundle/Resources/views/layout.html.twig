@@ -87,9 +87,9 @@
 			{% endblock %}
 		</tr>
 	</table>
-    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-        {% include 'VidalMainBundle::popup.html.twig' %}
-    {% endif %}
+    {#{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}#}
+        {{ render(controller('VidalMainBundle:Index:firstSet')) }}
+    {#{% endif %}#}
 	<div class="footer">
 		{% include 'VidalMainBundle::footer.html.twig' %}
 	</div>
