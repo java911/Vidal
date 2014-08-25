@@ -184,6 +184,9 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	/** @ORM\Column(type="boolean") */
 	protected $unsibscribed = false;
 
+    /** @ORM\Column(type="boolean") */
+    protected $firstset = false;
+
 	public function __construct()
 	{
 		$this->confirmationScan = array();
@@ -1006,6 +1009,38 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
     public function getUnsubscribed()
     {
         return $this->unsubscribed;
+    }
+
+    /**
+     * @param mixed $firstset
+     */
+    public function setFirstset($firstset = false)
+    {
+        $this->firstset = $firstset;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFirstset()
+    {
+        return $this->firstset;
+    }
+
+    /**
+     * @param mixed $unsibscribed
+     */
+    public function setUnsibscribed($unsibscribed)
+    {
+        $this->unsibscribed = $unsibscribed;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUnsibscribed()
+    {
+        return $this->unsibscribed;
     }
 
 
