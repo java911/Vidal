@@ -61,14 +61,6 @@
 			<argument />
 		</service>
 
-		<service id="sonata.admin.astrazenecablog" class="Vidal\MainBundle\Admin\AstrazenecaBlogAdmin">
-			<tag name="sonata.admin" manager_type="orm" group="Содержимое" label="Школа гастрита"/>
-			<argument />
-			<argument>Vidal\MainBundle\Entity\AstrazenecaBlog</argument>
-			<argument>SonataAdminBundle:CRUD</argument>
-			<argument />
-		</service>
-
 		<!-- Энциклопедия -->
 		<service id="sonata.admin.article" class="Vidal\DrugBundle\Admin\ArticleAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="Энциклопедия" label="Статьи"/>
@@ -231,6 +223,14 @@
 			<tag name="sonata.admin" manager_type="orm" group="Не используется" label="-" show_in_dashboard="false"/>
 			<argument />
 			<argument>Vidal\DrugBundle\Entity\ArticleLink</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.astrazenecablog" class="Vidal\MainBundle\Admin\AstrazenecaBlogAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Школа гастрита" label="Блоги"/>
+			<argument />
+			<argument>Vidal\MainBundle\Entity\AstrazenecaBlog</argument>
 			<argument>SonataAdminBundle:CRUD</argument>
 			<argument />
 		</service>

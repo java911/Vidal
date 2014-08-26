@@ -4,19 +4,22 @@
 {% block middle %}
 	<div class="pages">
 		{# Школа гастрита #}
-		<div class="page-main">
-			<div class="content left top">
+		<div class="page page-main">
+			<img src="{{ asset('bundles/vidalmain/images/shkola/page-main.png') }}" class="page-main-bg"/>
+
+			<div class="context left top">
 				<div class="main-title">
 					ШКОЛА<br/>ГАСТРИТА
 				</div>
 
 				<div class="main-about">
 					Для профилактики гастрита, рекомендуем Вам проконсультироваться со специалистом.
-					Найти специалиста рядом с Вами Вы можете с помощью нашей карты <a href="#">нашей карты</a>
+					Найти специалиста рядом с Вами Вы можете с помощью нашей карты
+					<a href="#" class="link">нашей карты</a>
 				</div>
 
 				<div class="main-links">
-					<a href="#" class="link">СТАТЬИ</a>
+					<a href="#articles" class="link">СТАТЬИ</a>
 					<a href="#" class="link">ВИДЕО</a>
 					<a href="#" class="link">ТЕСТ</a>
 					<a href="#" class="link">ВОПРОС-ОТВЕТ</a>
@@ -51,11 +54,43 @@
 		</div>
 
 		{# Статьи #}
-		<div class="page-articles page">
+		<div class="page page-articles" id="articles">
 			<div class="content">
-
+				<div class="articles">
+					{% for article in articles %}
+						<div class="article article-{{ article.id }} {{ loop.index == 1 ? 'active' }}"
+							 data="{{ article.id }}">
+							<div class="article-img">
+								{% if article.photo and is_file(article.photo.path) %}
+									<img src="{{ article.photo.path }}"/>
+								{% endif %}
+							</div>
+							<div class="article-text">
+								<div class="article-title">
+									{{ article.title|upper }}
+								</div>
+								<div class="article-anons">{{ article.anons|raw }}</div>
+							</div>
+							<div class="article-body">
+								{{ article.body|raw }}
+							</div>
+						</div>
+					{% endfor %}
+				</div>
 			</div>
+
+			<div class="roller">
+				<div>
+					{% for article in articles %}
+						<a href="#" data="{{ article.id }}" {{ loop.first ? 'class="active"' }}></a>
+					{% endfor %}
+				</div>
+			</div>
+
+			<a class="p-left" href="#"><img src="{{ asset('bundles/vidalmain/images/shkola/p-left.png') }}"/></a>
+			<a class="p-right" href="#"><img src="{{ asset('bundles/vidalmain/images/shkola/p-right.png') }}"/></a>
 		</div>
+
 	</div>
 
 {% endblock %}
@@ -65,94 +100,71 @@
 	{{ parent() }}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/shkola.css') }}"/>
 	<style type="text/css">
-
-
-		/* pages */
-		.pages {
-			font-size: 12px;
+		/* page-articles */
+		.page .content {
+			width:       778px;
+			height:      307px;
+			position:    absolute;
+			left:        50%;
+			top:         50%;
+			margin-left: -391px;
+			margin-top:  -158px;
 		}
-		.pages a.link {
-			text-decoration: none;
-			border-bottom:   2px solid rgba(204, 204, 204, 0.5);
-			color:           white;
-			line-height:     12px;
-			display:         inline-block;
+		.articles {
+			padding: 80px 10px 10px 78px;
 		}
-		.pages a.link:hover {
-			border-bottom-color: white;
+		.article img {
+			max-width:  235px;
+			border:     2px solid white;
+			box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
 		}
-
-		/* main */
-		.page-main {
-			position: relative;
-			height:   497px;
+		.article {
+			overflow: hidden;
+			display:  none;
+			cursor:   pointer;
 		}
-		.page-main > div {
+		.article.active {
+			display: block;
+		}
+		.article-img {
+			width: 290px;
+			float: left;
+		}
+		.article-text {
+			margin-left: 290px;
+		}
+		.article-title {
+			font-size: 20px;
+		}
+		.article-anons {
+			padding-top: 10px;
+		}
+		.p-left, .p-right {
+			display:  inline-block;
 			position: absolute;
+			top:      229px;
 		}
-		.page-main .content {
-			width:      364px;
-			height:     420px;
-			background: transparent;
-			border:     1px solid #000;
+		.p-left {
+			left: 58px;
 		}
-		.images > div {
+		.p-right {
+			right: 58px;
+		}
+
+		.article-body {
+			position:   absolute;
 			display:    none;
-			text-align: center;
+			overflow-y: scroll;
+			top:        5px;
+			left:       7px;
+			right:      0;
+			height:     300px;
 		}
-		.images > div.active {
-			display: block;
+		.article-body p:first-child {
+			margin-top: 0;
 		}
-		.images img {
-			max-width:  350px;
-			max-height: 350px;
-		}
-		.main-about {
-			font-size: 11px;
-			color:     white;
-		}
-		.main-links {
-
-		}
-		.main-links a {
-			text-decoration: none;
-			color:           white;
-			font-weight:     bold;
-			font-size:       12px;
-			margin-right:    8px;
-		}
-		.blogs {
-			width:      420px;
-			height:     420px;
-			background: transparent;
-			right:      100px;
-			bottom:     28px;
-			border:     1px solid #000;
-		}
-		.left {
-			left: 100px;
-		}
-		.top {
-			top: 58px;
-		}
-
-		/* texts */
-		.texts {
-			position:  absolute;
-			bottom:    0;
-			left:      0;
-			right:     0;
-			height:    120px;
-			font-size: 12px;
-		}
-		.texts * {
-			color: white !important;
-		}
-		.texts div {
-			display: none;
-		}
-		.texts div.active {
-			display: block;
+		.article-body * {
+			background: transparent !important;
 		}
 	</style>
 {% endblock %}
@@ -165,6 +177,15 @@
 			var next = this.next(selector);
 			return (next.length) ? next : this.prevAll(selector).last();
 		};
+		jQuery.fn.prevOrLast = function(selector) {
+			var prev = this.prev(selector);
+			return (prev.length) ? prev : this.nextAll(selector).last();
+		};
+
+		function resetArticles() {
+			$('.article-body').hide();
+			$('.article-img, .article-text').show();
+		}
 
 		function slider() {
 			$('.slider a.active').removeClass('active').nextOrFirst().addClass('active');
@@ -177,7 +198,9 @@
 		$(document).ready(function() {
 			var sliderInterval = setInterval(slider, sliderTimeout);
 
+			// slider
 			$('.slider a').click(function(e) {
+				e.preventDefault();
 				var $this = $(this);
 				var id = $this.attr('data');
 
@@ -191,6 +214,52 @@
 
 				return false;
 			});
+
+			// articles
+			$('.p-left').click(function(e) {
+				e.preventDefault();
+				$('.articles .active').removeClass('active').prevOrLast().addClass('active');
+				$('.roller .active').removeClass('active').prevOrLast().addClass('active');
+				resetArticles();
+
+				return false;
+			});
+
+			$('.p-right').click(function(e) {
+				e.preventDefault();
+				$('.articles .active').removeClass('active').nextOrFirst().addClass('active');
+				$('.roller .active').removeClass('active').nextOrFirst().addClass('active');
+				resetArticles();
+
+				return false;
+			});
+
+			$('.roller a').click(function(e) {
+				e.preventDefault();
+				var $this = $(this);
+				var id = $this.attr('data');
+				$('.articles .active, .roller .active').removeClass('active');
+				$this.addClass('active');
+				$('.article-' + id).addClass('active');
+				resetArticles();
+
+				return false;
+			});
+
+			$('.article').click(function() {
+				var $this = $(this);
+				$this.find('.article-text, .article-img').hide();
+				$this.find('.article-body').show();
+			});
+
+			$('.article-body').click(function(e) {
+				e.stopPropagation();
+				var $this = $(this);
+				var $article = $this.closest('.article');
+				$article.find('.article-body').hide();
+				$article.find('.article-text, .article-img').show();
+			});
 		});
+
 	</script>
 {% endblock %}

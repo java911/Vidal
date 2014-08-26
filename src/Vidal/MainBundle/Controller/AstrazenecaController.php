@@ -27,8 +27,9 @@ class AstrazenecaController extends Controller
 			'menu_left' => 'shkola',
 		);
 
-		$em              = $this->getDoctrine()->getManager();
-		$params['blogs'] = $em->getRepository('VidalMainBundle:AstrazenecaBlog')->findActive();
+		$em                 = $this->getDoctrine()->getManager();
+		$params['blogs']    = $em->getRepository('VidalMainBundle:AstrazenecaBlog')->findActive();
+		$params['articles'] = $em->getRepository('VidalMainBundle:AstrazenecaNew')->findActive();
 
 		return $params;
 	}
