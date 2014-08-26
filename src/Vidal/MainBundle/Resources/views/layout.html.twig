@@ -57,7 +57,9 @@
 
 <body>
 <div id="wrapper" class="wrapper" style="position: relative;">
-	{{ render(controller('VidalMainBundle:Banner:render', {'groupId':2})) }}
+	{% if noYad is not defined %}
+		{{ render(controller('VidalMainBundle:Banner:render', {'groupId':2})) }}
+	{% endif %}
 
 	<div class="header">
 		{% include 'VidalMainBundle::header.html.twig' %}

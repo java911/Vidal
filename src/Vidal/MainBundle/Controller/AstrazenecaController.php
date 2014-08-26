@@ -16,7 +16,7 @@ use Lsw\SecureControllerBundle\Annotation\Secure;
 class AstrazenecaController extends Controller
 {
 	/**
-	 * @Route("/sg", name="shkola_gastrita")
+	 * @Route("/shkola-gastrita", name="shkola_gastrita")
 	 * @Template("VidalMainBundle:Astrazeneca:shkola.html.twig")
 	 */
 	public function shkolaAction(Request $request)
@@ -60,95 +60,33 @@ class AstrazenecaController extends Controller
 			}
 		}
 
-		$params['form']      = $form->createView();
-		$params['errors'] = count($form->getErrors());
-
-		//var_dump($params['errors']);exit;
+		$params['form'] = $form->createView();
 
 		return $params;
 	}
 
-	/**
-	 * @Route("/shkola-gastrita", name="astrazeneca_index")
-	 * @Template("VidalMainBundle:Astrazeneca:index.html.twig")
-	 */
-	public function indexAction()
-	{
-		$em    = $this->getDoctrine()->getManager();
-		$blogs = $em->getRepository('VidalMainBundle:AstrazenecaBlog')->findActive();
-
-		return array(
-			'noYad'     => true,
-			'title'     => 'Школа гастрита',
-			'menu_left' => 'shkola',
-			'blogs'     => $blogs,
-		);
-	}
-
-	/**
-	 * @Route("/shkola-gastrita/video", name="astrazeneca_video")
-	 * @Template("VidalMainBundle:Astrazeneca:video.html.twig")
-	 */
+	/** @Route("/shkola-gastrita/video", name="astrazeneca_video") */
 	public function videoAction()
 	{
-		return array(
-			'noYad'     => true,
-			'title'     => 'Видео | Школа гастрита',
-			'menu_left' => 'shkola',
-		);
+		return $this->redirect($this->generateUrl('shkola_gastrita'), 301);
 	}
 
-	/**
-	 * @Route("/shkola-gastrita/articles", name="astrazeneca_news")
-	 * @Template("VidalMainBundle:Astrazeneca:news.html.twig")
-	 */
+	/** @Route("/shkola-gastrita/articles", name="astrazeneca_news") */
 	public function newsAction(Request $request)
 	{
-		$em = $this->getDoctrine()->getManager();
-
-		$params = array(
-			'indexPage'    => true,
-			'publications' => $em->getRepository('VidalMainBundle:AstrazenecaNew')->findAll(),
-			'noYad'        => true,
-			'title'        => 'Статьи | Школа гастрита',
-			'menu_left'    => 'shkola',
-		);
-
-		return $params;
+		return $this->redirect($this->generateUrl('shkola_gastrita'), 301);
 	}
 
-	/**
-	 * @Route("/shkola-gastrita/article/{newId}", name="astrazeneca_new")
-	 * @Template("VidalMainBundle:Astrazeneca:new.html.twig")
-	 */
+	/** @Route("/shkola-gastrita/article/{newId}", name="astrazeneca_new") */
 	public function showNewAction($newId)
 	{
-		$em          = $this->getDoctrine()->getManager();
-		$publication = $em->getRepository('VidalMainBundle:AstrazenecaNew')->findOneById($newId);
-
-		if (!$publication) {
-			throw $this->createNotFoundException();
-		}
-
-		return array(
-			'publication' => $publication,
-			'title'       => $this->strip($publication->getTitle()) . 'Статьи | Школа гастрита',
-			'noYad'       => true,
-			'menu_left'   => 'shkola',
-		);
+		return $this->redirect($this->generateUrl('shkola_gastrita'), 301);
 	}
 
-	/**
-	 * @Route("/shkola-gastrita/map", name="astrazeneca_map")
-	 * @Template("VidalMainBundle:Astrazeneca:map.html.twig")
-	 */
+	/** @Route("/shkola-gastrita/map", name="astrazeneca_map") */
 	public function mapAction()
 	{
-		return array(
-			'noYad'     => true,
-			'title'     => 'Карта | Школа гастрита',
-			'menu_left' => 'shkola',
-		);
+		return $this->redirect($this->generateUrl('shkola_gastrita'), 301);
 	}
 
 	/**
