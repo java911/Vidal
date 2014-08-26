@@ -1,3 +1,12 @@
+/* global */
+body {
+	background-color: #eee;
+}
+.wrapper {
+	background-color: white;
+	padding:          0 2px;
+}
+
 /* pages */
 .pages {
 	font-size: 12px;
@@ -186,7 +195,7 @@
 	margin-right: 6px;
 }
 .scroller a.active {
-	background:   url(../images/shkola/sq.png) no-repeat top left;
+	background: url(../images/shkola/sq.png) no-repeat top left;
 }
 .scroller div {
 	display:  inline-block;
@@ -204,7 +213,6 @@
 .s-right {
 	right: 58px;
 }
-
 
 /* articles */
 .articles {
