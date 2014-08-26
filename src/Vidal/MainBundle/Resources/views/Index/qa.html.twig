@@ -35,7 +35,11 @@
 						<div class="qa-question">{{ qa.question|raw }}</div>
 						<div class="qa-expand">ответ</div>
 						<div class="qa-answer">
-                            <b>Ответ: </b>
+                            {% if qa.answerUser != null %}
+                                <b>Ответил:</b> <a href="{{ path('profile',{'userId': qa.answerUser.id }) }}">{{ qa.answerUser }}</a><br />
+                            {% else %}
+                                <b>Ответ:</b>
+                            {% endif %}
                             {{ qa.answer|raw }}
                             <div class="link"><b>Поделиться</b> <i>vidal.ru{{ path('qa') }}?p={{ app.request.get('p') }}#qa{{ qa.id }}</i></div>
                         </div>
@@ -47,7 +51,11 @@
 						<div class="qa-question">{{ qa.question|raw }}</div>
 						<div class="qa-expand">ответ</div>
 						<div class="qa-answer">
-                            <b>Ответ: </b>
+                            {% if qa.answerUser != null %}
+                            <b>Ответил:</b> <a href="{{ path('profile',{'userId': qa.answerUser.id }) }}">{{ qa.answerUser }}</a><br />
+                            {% else %}
+                            <b>Ответ:</b>
+                            {% endif %}
                             {{ qa.answer|raw }}
                             <div class="link"><b>Поделиться</b> <i>vidal.ru{{ path('qa') }}?p={{ app.request.get('p') }}#qa{{ qa.id }}</i></div>
                         </div>

@@ -178,6 +178,8 @@ class IndexController extends Controller
 			if ($form->isValid()) {
 				$faq = $form->getData();
 				$faq->setEnabled(1);
+				$faq->setAnswerUser($this->getUser());
+
 				if ($faq->getAnswer() != null) {
 					$em->flush($faq);
 
