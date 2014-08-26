@@ -9,7 +9,7 @@ body {
 
 /* pages */
 .pages {
-	font-size: 12px;
+	font-size: 13px;
 }
 .pages a.link {
 	text-decoration: none;
@@ -54,7 +54,7 @@ body {
 	position: absolute;
 }
 .page-main .context {
-	width:      364px;
+	width:      370px;
 	height:     420px;
 	background: transparent;
 	border:     1px solid #000;
@@ -71,7 +71,7 @@ body {
 	max-height: 350px;
 }
 .main-about {
-	font-size: 11px;
+	font-size: 12px;
 	color:     white;
 	z-index:   20;
 	position:  absolute;
