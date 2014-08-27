@@ -88,7 +88,7 @@ body {
 	text-decoration: none;
 	color:           white;
 	font-weight:     bold;
-	font-size:       12px;
+	font-size:       15px;
 	margin-right:    8px;
 }
 .blogs {
@@ -447,4 +447,27 @@ body {
 /* video */
 .page-video {
 	background: url(../images/shkola/page-video.png) no-repeat top left;
+}
+.video {
+	display:  none;
+	overflow: hidden;
+}
+.video.active {
+	display: block;
+}
+.video-title {
+	width:         275px;
+	float:         left;
+	padding-top:   50px;
+	padding-right: 20px;
+	color:         white;
+	font-size:     25px;
+}
+.video-title div {
+	margin-top: 24px;
+	font-size:  14px;
+}
+.video-flv {
+	width:       500px;
+	margin-left: 275px;
 }
