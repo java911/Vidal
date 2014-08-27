@@ -438,12 +438,6 @@ body {
 	left: -12px;
 }
 
-/* map */
-#map {
-	width:  995px;
-	height: 496px
-}
-
 /* video */
 .page-video {
 	background: url(../images/shkola/page-video.png) no-repeat top left;

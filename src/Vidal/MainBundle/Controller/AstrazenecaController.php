@@ -65,6 +65,15 @@ class AstrazenecaController extends Controller
 		return $params;
 	}
 
+	/**
+	 * @Route("/shkola-gastrita/frame-map", name="shkola_map")
+	 * @Template("VidalMainBundle:Astrazeneca:frame_map.html.twig")
+	 */
+	public function frameMapAction()
+	{
+		return array();
+	}
+
 	/** @Route("/shkola-gastrita/video", name="astrazeneca_video") */
 	public function videoAction()
 	{
@@ -107,6 +116,9 @@ class AstrazenecaController extends Controller
 		else {
 			$coords = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaMap')->findCoords($coords);
 		}
+
+//		var_dump(count($coords));
+//		exit;
 
 		return array(
 			'coords'    => $coords,
