@@ -57,15 +57,17 @@
 
 <body>
 <div id="wrapper" class="wrapper" style="position: relative;">
-	{{ render(controller('VidalMainBundle:Banner:render', {'groupId':2})) }}
+	{% if noYad is not defined %}
+		{{ render(controller('VidalMainBundle:Banner:render', {'groupId':2})) }}
+	{% endif %}
 
 	<div class="header">
 		{% include 'VidalMainBundle::header.html.twig' %}
 	</div>
 
-	<table class="middle">
-		<tr>
-			{% block middle %}
+	{% block middle %}
+		<table class="middle">
+			<tr>
 				<td class="left-sidebar">
 					{% include 'VidalMainBundle::left_sidebar.html.twig' %}
 				</td>
@@ -84,10 +86,11 @@
 				<td class="right-sidebar">
 					{% include 'VidalMainBundle::right_sidebar.html.twig' %}
 				</td>
-			{% endblock %}
-		</tr>
-	</table>
-        {{ render(controller('VidalMainBundle:Index:firstSet')) }}
+			</tr>
+		</table>
+	{% endblock %}
+
+	{{ render(controller('VidalMainBundle:Index:firstSet')) }}
 	<div class="footer">
 		{% include 'VidalMainBundle::footer.html.twig' %}
 	</div>
@@ -102,11 +105,11 @@
 
 {# счетчики аналитики #}
 {#{% if app.environment == 'prod' %}#}
-	{% include 'VidalMainBundle:Metrika:omniture.html.twig' %}
-	{% include 'VidalMainBundle:Metrika:google_analytics.html.twig' %}
-	{% include 'VidalMainBundle:Metrika:live_internet.html.twig' %}
-	{% include 'VidalMainBundle:Metrika:tns.html.twig' %}
-	{% include 'VidalMainBundle:Metrika:yandex_metrika.html.twig' %}
+{% include 'VidalMainBundle:Metrika:omniture.html.twig' %}
+{% include 'VidalMainBundle:Metrika:google_analytics.html.twig' %}
+{% include 'VidalMainBundle:Metrika:live_internet.html.twig' %}
+{% include 'VidalMainBundle:Metrika:tns.html.twig' %}
+{% include 'VidalMainBundle:Metrika:yandex_metrika.html.twig' %}
 {#{% endif %}#}
 
 </body>
