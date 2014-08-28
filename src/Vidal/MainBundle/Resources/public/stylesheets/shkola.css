@@ -406,7 +406,8 @@ body {
 	color:          yellow;
 }
 .ask-form {
-	display: none;
+	display:    none;
+	margin-top: 70px;
 }
 #form_captcha {
 	width:        100px;
