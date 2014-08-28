@@ -23,6 +23,7 @@
 	ymaps.ready(init);
 	var myMap;
 	var stores = [];
+	var max = 50;
 
 	function init() {
 
@@ -125,7 +126,7 @@
 			var urlb = 'y1=' + Bounds[0][0] + '&x1=' + Bounds[0][1] + '&y2=' + Bounds[1][0] + '&x2=' + Bounds[1][1] + '&z=' + myMap.getZoom();
 			xhr = $.post('{{ path('astrazeneca_map_xml') }}?' + urlb, tiles, function(storesJSON) {
 				stores = JSON.parse(storesJSON);
-				for (j = 0; j < Math.ceil(stores.length); j++) {
+				for (j = 0; j < Math.ceil(stores.length / max); j++) {
 					doSetTimeout(j);
 				}
 			});
@@ -133,7 +134,7 @@
 
 		function doSetTimeout(j) {
 			setTimeout(function() {
-				for (var i = j * 100; i < j * 100 + 100; i++) {
+				for (var i = j * max; i < j * max + max; i++) {
 					if (stores[i]) {
 						if (addedStores['store_id_' + stores[i].id] === 1) return;
 						addedStores['store_id_' + stores[i].id] = 1;
