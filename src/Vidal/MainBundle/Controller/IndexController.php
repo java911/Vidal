@@ -129,7 +129,6 @@ class IndexController extends Controller
 		else {
 			return $this->redirect($this->generateUrl('confirmation_doctor'));
 		}
-
 	}
 
 	/**

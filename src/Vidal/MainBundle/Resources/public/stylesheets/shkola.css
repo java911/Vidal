@@ -19,7 +19,7 @@ body {
 	display:         inline-block;
 }
 .pages a.link:hover {
-	border-bottom-color: yellow;
+	border-bottom: 2px solid yellow;
 }
 .page {
 	position: relative;
@@ -38,6 +38,10 @@ body {
 /* articles */
 .page-articles {
 	background: url(../images/shkola/page-articles.png) no-repeat top left;
+}
+.page-articles .content {
+	background: white;
+	height:     317px;
 }
 
 /* main */
@@ -80,16 +84,25 @@ body {
 .main-links {
 	z-index:  20;
 	position: absolute;
-	top:      0;
-	left:     442px;
-	width:    390px;
+	top:      -28px;
+	left:     396px;
+	width:    380px;
+	padding:  6px 8px 5px;
+	border:   1px solid white;
 }
 .main-links a {
 	text-decoration: none;
 	color:           white;
 	font-weight:     bold;
-	font-size:       12px;
-	margin-right:    8px;
+	font-size:       15px;
+	margin-left:     8px;
+	border:          none !important;
+}
+.main-links a:first-child {
+	margin-left: 0;
+}
+.main-links a:hover {
+	border-bottom: 2px solid yellow !important;
 }
 .blogs {
 	width:      406px;
@@ -334,35 +347,32 @@ body {
 /* question-answer */
 .page-qa {
 	background: url(../images/shkola/qa_bg.png) repeat top left;
-	padding:    55px 100px;
+	padding:    42px 60px 20px;
+	position:   relative;
 }
 .qas {
 	color: white;
 }
+.qas .rest {
+	display: none;
+}
 .qa-header {
 	margin-bottom: 28px;
+	position:      relative;
 }
 .qa-header img {
-	display: inline-block;
-	width:   160px;
+	display:       inline-block;
+	width:         160px;
+	margin-bottom: 16px;
 }
 .qa-answer {
-	display:  none;
-	position: absolute;
-	width:    377px;
-	z-index:  20;
-	top:      -19px;
+	display: none;
 }
 .qa-answer-text {
-	overflow-y: scroll;
+	overflow-y: auto;
 	box-shadow: inset 0 0 10px yellow;
 	padding:    5px 10px;
-}
-.qa.first .qa-answer {
-	right: -397px;
-}
-.qa.last .qa-answer {
-	left: -397px;
+	max-height: 300px;
 }
 .qa {
 	position:       relative;
@@ -372,10 +382,10 @@ body {
 	text-align:     justify;
 }
 .qa.first {
-	padding-right: 20px;
+	padding-right: 25px;
 }
 .qa.last {
-	padding-left: 20px;
+	padding-left: 25px;
 }
 .qa-question {
 	margin-bottom: 10px;
@@ -396,15 +406,13 @@ body {
 	color:          yellow;
 }
 .ask-form {
-	display: none;
+	display:    none;
+	margin-top: 70px;
 }
 #form_captcha {
 	width:        100px;
 	float:        left;
 	margin-right: 18px;
-}
-.qa-header button {
-	margin-left: 156px;
 }
 .form_button {
 	padding: 0 0 26px !important;
@@ -426,25 +434,39 @@ body {
 .form_table td.label label {
 	color: yellow;
 }
-.to-right, .to-left {
+.stat {
+	display:  inline-block;
 	position: absolute;
-	top:      0;
-	display:  none;
-}
-.qa.first .to-right {
-	right: -12px;
-}
-.qa.last .to-left {
-	left: -12px;
-}
-
-/* map */
-#map {
-	width:  995px;
-	height: 496px
+	top:      12px;
+	right:    345px;
+	height:   100px;
+	border:   1px solid #fff;
 }
 
 /* video */
 .page-video {
 	background: url(../images/shkola/page-video.png) no-repeat top left;
+}
+.video {
+	display:  none;
+	overflow: hidden;
+}
+.video.active {
+	display: block;
+}
+.video-title {
+	width:         275px;
+	float:         left;
+	padding-top:   50px;
+	padding-right: 20px;
+	color:         white;
+	font-size:     25px;
+}
+.video-title div {
+	margin-top: 24px;
+	font-size:  14px;
+}
+.video-flv {
+	width:       500px;
+	margin-left: 275px;
 }
