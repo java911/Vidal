@@ -31,7 +31,7 @@
 		<span class="article-date">{{ article.date|date('d.m.Y') }}</span>
 	</div>
 
-	{#{% if is_granted('ROLE_ADMIN') %}#}
-		{#{{ render(controller('VidalMainBundle:Tag:tags', {'object':article})) }}#}
-	{#{% endif %}#}
+	{% if is_granted('ROLE_ADMIN') %}
+		{{ render(controller('VidalMainBundle:Tag:tags', {'object':article})) }}
+	{% endif %}
 </div>

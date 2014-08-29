@@ -51,4 +51,8 @@
 		</div>
 	{% endif %}
 
+	{% if is_granted('ROLE_ADMIN') %}
+		{% include 'VidalMainBundle:Article:documents.html.twig' with {'object':atc, 'label':'коду АТХ', 'item':atc.ATCCode} %}
+	{% endif %}
+
 {% endblock %}

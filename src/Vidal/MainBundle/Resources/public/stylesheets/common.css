@@ -581,6 +581,17 @@ tr.bold td {
 .anons-product {
 	font-weight: bold;
 }
+.anons-footer {
+	background:  #f5f5f5;
+	padding:     3px 5px 5px;
+	color:       #476173;
+	margin:      13px 0 4px;
+	font-weight: bold;
+}
+.anons-footer span {
+	color:       black;
+	margin-left: 4px;
+}
 
 /* block */
 .block {

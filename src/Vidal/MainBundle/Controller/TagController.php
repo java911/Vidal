@@ -170,6 +170,8 @@ class TagController extends Controller
 			}
 		}
 
+		ksort($products);
+
 		return array(
 			'tags'          => $tags,
 			'productGroups' => $products,

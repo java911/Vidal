@@ -5,6 +5,23 @@ use Doctrine\ORM\EntityRepository;
 
 class ProductRepository extends EntityRepository
 {
+	public function findFieldsByProductID($ProductID)
+	{
+		return $this->_em->createQuery('
+			SELECT DISTINCT p.ProductID, p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo,
+				d.Indication, d.DocumentID, d.ClPhGrDescription
+			FROM VidalDrugBundle:Product p
+			LEFT JOIN p.document d
+			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
+			WHERE p.ProductID = :ProductID
+				AND p.MarketStatusID IN (1,2,7)
+				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.inactive = FALSE
+		')->setParameter('ProductID', $ProductID)
+			->getOneOrNullResult();
+	}
+
 	public function findByProductID($ProductID)
 	{
 		return $this->_em->createQuery("
@@ -353,7 +370,7 @@ class ProductRepository extends EntityRepository
 				return array(array(), null);
 			}
 
-			$where     = '';
+			$where = '';
 
 			for ($i = 0; $i < count($anyOfWord); $i++) {
 				$word = $anyOfWord[$i];
@@ -488,7 +505,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo,
 				d.Indication, d.DocumentID, d.ClPhGrDescription
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
