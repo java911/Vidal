@@ -1,0 +1,68 @@
+{% if tags is not empty %}
+	<div class="tags no-selection">
+		<div class="tags-title">Теги:</div>
+		{% for key, tag in tags %}
+			{% set type = tag|type %}
+			{# тег #}
+			{% if type == 'Tag' %}
+				{% if tag.publications.count > 1 %}
+					<a href="{{ path('tag_news', {'id':tag.id}) }}" target="_blank"
+					   title="новостей по теме «{{ tag.text }}»: {{ tag.publications.count }}">
+						{{ key }}
+					</a>
+				{% endif %}
+
+				{# атх #}
+			{% elseif type == 'ATC' %}
+				<a href="{{ path('atc_item', {'ATCCode':tag.ATCCode}) }}" target="_blank"
+				   title="анатомо-терапевтически-химическая (АТХ) система классификации (ATC)">
+					{{ key }}
+				</a>
+
+				{# вещество #}
+			{% elseif type == 'Molecule' %}
+				<a href="{{ path('molecule', {'MoleculeID':tag.MoleculeID}) }}" target="_blank"
+				   title="активное вещество">
+					{{ key }}
+				</a>
+
+				{# представительство #}
+			{% elseif type == 'InfoPage' %}
+				<a href="{{ path('inf_item', {'InfoPageID':tag.InfoPageID}) }}" target="_blank"
+				   title="представительство">
+					{{ key }}
+				</a>
+
+				{# нозология #}
+			{% elseif type == 'Nozology' %}
+				<a href="{{ path('nosology_item', {'Code':tag.Code}) }}" target="_blank"
+				   title="нозологический указатель">
+					{{ key }}
+				</a>
+
+			{% endif %}
+		{% endfor %}
+	</div>
+{% endif %}
+
+
+{% if productGroups is not empty %}
+	<div class="products">
+		<div class="products-title">Описания препаратов:</div>
+
+		<ul class="ul-style">
+			{% for key, products in productGroups %}
+				{% if products|length == 1 %}
+					<li><a href="{{ path('product', {'EngName':products[0].Name, 'ProductID':products[0].ProductID}) }}"
+					   target="blank">
+						{{ products[0].RusName|raw }}
+					</a></li>
+				{% else %}
+					{% for product in products %}
+						{{ dump(product.ProductID) }}
+					{% endfor %}
+				{% endif %}
+			{% endfor %}
+		</ul>
+	</div>
+{% endif %}

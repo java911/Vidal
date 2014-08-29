@@ -88,8 +88,8 @@ class UserAdmin extends Admin
 			->add('region', 'doctrine_orm_choice', array('label' => 'Область'), 'choice', array('choices' => $regionChoices))
 			->add('country', 'doctrine_orm_choice', array('label' => 'Страна'), 'choice', array('choices' => $countryChoices))
 			->add('emailConfirmed', null, array('label' => 'e-mail подтвержден'))
-			->add('oldUser', null, array('label' => 'Со старого сайта'));
-		;
+			->add('oldUser', null, array('label' => 'Со старого сайта'))
+			->add('confirmationHas', null, array('label' => 'Со сканами'));
 	}
 
 	protected function configureListFields(ListMapper $listMapper)
@@ -105,6 +105,8 @@ class UserAdmin extends Admin
 			->add('region', null, array('label' => 'Область'))
 			->add('created', null, array('label' => 'Зарегистрировался', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
 			->add('oldUser', null, array('label' => 'Со старого сайта'))
+			->add('confirmationScan', null, array('label' => 'Скан специалиста', 'template' => 'VidalDrugBundle:Sonata:user_confirmation_scan.html.twig'))
+			->add('confirmation', null, array('label' => 'Подтвердить скан', 'template' => 'VidalDrugBundle:Sonata:user_confirmation.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(

@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TagController extends Controller
 {
-	const NEWS_PER_PAGE = 12;
+	const NEWS_PER_PAGE  = 12;
 	const PHARM_PER_PAGE = 4;
 
 	/**
@@ -111,5 +111,76 @@ class TagController extends Controller
 		$params['pagination'] = $this->get('knp_paginator')->paginate($query, $page, self::PHARM_PER_PAGE);
 
 		return $params;
+	}
+
+	/**
+	 * @Template("VidalMainBundle:Tag:tags.html.twig")
+	 */
+	public function tagsAction($object)
+	{
+		$tags = array();
+
+		foreach ($object->getTags() as $tag) {
+			$key = $tag->getText();
+			if (!isset($tags[$key])) {
+				$tags[$key] = $tag;
+			}
+		}
+
+		foreach ($object->getAtcCodes() as $atc) {
+			$key = $atc->getATCCode() . ' - ' . $atc->getRusName();
+			if (!isset($tags[$key])) {
+				$tags[$key] = $atc;
+			}
+		}
+
+		foreach ($object->getMolecules() as $molecule) {
+			$rusName = $molecule->getRusName();
+			$key     = empty($rusName) ? $molecule->getLatName() : $rusName;
+			if (!isset($tags[$key])) {
+				$tags[$key] = $molecule;
+			}
+		}
+
+		foreach ($object->getInfoPages() as $ip) {
+			$key = $ip->getRusName();
+			if (!isset($tags[$key])) {
+				$tags[$key] = $ip;
+			}
+		}
+
+		foreach ($object->getNozologies() as $nozology) {
+			$key = $nozology->getNozologyCode() . ' - ' . $nozology->getName();
+			if (!isset($tags[$key])) {
+				$tags[$key] = $nozology;
+			}
+		}
+
+		ksort($tags);
+
+		$products    = array();
+		$productsRaw = $object->getProducts();
+
+		if (!empty($productsRaw)) {
+			foreach ($productsRaw as $product) {
+				$key = $this->strip($product->getRusName());
+				isset($products[$key])
+					? $products[$key][] = $product
+					: $products[$key] = array($product);
+			}
+		}
+
+		return array(
+			'tags'          => $tags,
+			'productGroups' => $products,
+		);
+	}
+
+	private function strip($string)
+	{
+		$pat = array(' /<sup>(.*?)<\/sup >/i', ' /<sub>(.*?)<\/sub >/i', ' /&amp;/');
+		$rep = array('', '', ' & ');
+
+		return preg_replace($pat, $rep, $string);
 	}
 }
