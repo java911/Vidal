@@ -16,7 +16,7 @@ class DigestLogger
 	public function __construct(Container $container)
 	{
 		$this->container = $container;
-		$this->dir = $this->container->gevt('kernel')->getRootDir() . '/logs/';
+		$this->dir = $this->container->get('kernel')->getRootDir() . '/logs/';
 	}
 
 	public function close()
