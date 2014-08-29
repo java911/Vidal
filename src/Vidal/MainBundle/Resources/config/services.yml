@@ -5,6 +5,10 @@ services:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
 
+    vidal.digest_logger:
+        class: Vidal\MainBundle\Service\DigestLogger
+        arguments: [@service_container]
+
     drug.subscriber:
         class: Vidal\DrugBundle\Service\DoctrineEventSubscriber
         arguments: [@service_container]
