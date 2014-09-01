@@ -92,6 +92,8 @@ $(document).ready(function() {
 	});
 
 	$('.anons-footer').click(function(e) {
-		$(this).toggleClass('expanded').closest('.announcement').find('ul').slideToggle('fast');
+		var $announcement = $(this).toggleClass('expanded').closest('.announcement');
+		$announcement.find('ul').slideToggle('fast');
+		$announcement.find('.products').slideToggle('fast');
 	});
 });

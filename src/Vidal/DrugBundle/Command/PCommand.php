@@ -21,67 +21,70 @@ class PCommand extends ContainerAwareCommand
 
 		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
-		######################################
+		$pdo = $em->getConnection();
+
+		# publication
+		$publications = $em->createQuery('
+			SELECT p
+			FROM VidalDrugBundle:Publication p
+			WHERE p.atcCodes IS NOT EMPTY
+		')->getResult();
+
+		$stmt = $pdo->prepare('INSERT IGNORE INTO publication_product (ProductID, publication_id) VALUES (?, ?)');
+
+		foreach ($publications as $publication) {
+			foreach ($publication->getAtcCodes() as $atc) {
+				foreach ($atc->getProducts() as $product) {
+					$ProductID     = $product->getProductID();
+					$publicationId = $publication->getId();
+					$stmt->bindParam(1, $ProductID);
+					$stmt->bindParam(2, $publicationId);
+					$stmt->execute();
+				}
+			}
+		}
+
+		# art
 		$arts = $em->createQuery('
 			SELECT a
 			FROM VidalDrugBundle:Art a
-			WHERE SIZE(a.documents) > 0
+			WHERE a.atcCodes IS NOT EMPTY
 		')->getResult();
 
+		$stmt = $pdo->prepare('INSERT IGNORE INTO art_product (ProductID, art_id) VALUES (?, ?)');
+
 		foreach ($arts as $art) {
-			foreach ($art->getDocuments() as $document) {
-				foreach ($document->getProducts() as $product) {
-					$art->addProduct($product);
+			foreach ($art->getAtcCodes() as $atc) {
+				foreach ($atc->getProducts() as $product) {
+					$ProductID = $product->getProductID();
+					$id        = $art->getId();
+					$stmt->bindParam(1, $ProductID);
+					$stmt->bindParam(2, $id);
+					$stmt->execute();
 				}
 			}
 		}
 
-		######################################
+		# article
 		$arts = $em->createQuery('
 			SELECT a
 			FROM VidalDrugBundle:Article a
-			WHERE SIZE(a.documents) > 0
+			WHERE a.atcCodes IS NOT EMPTY
 		')->getResult();
 
+		$stmt = $pdo->prepare('INSERT IGNORE INTO article_product (ProductID, article_id) VALUES (?, ?)');
+
 		foreach ($arts as $art) {
-			foreach ($art->getDocuments() as $document) {
-				foreach ($document->getProducts() as $product) {
-					$art->addProduct($product);
+			foreach ($art->getAtcCodes() as $atc) {
+				foreach ($atc->getProducts() as $product) {
+					$ProductID = $product->getProductID();
+					$id        = $art->getId();
+					$stmt->bindParam(1, $ProductID);
+					$stmt->bindParam(2, $id);
+					$stmt->execute();
 				}
 			}
 		}
-
-		######################################
-		$arts = $em->createQuery('
-			SELECT a
-			FROM VidalDrugBundle:PharmArticle a
-			WHERE SIZE(a.documents) > 0
-		')->getResult();
-
-		foreach ($arts as $art) {
-			foreach ($art->getDocuments() as $document) {
-				foreach ($document->getProducts() as $product) {
-					$art->addProduct($product);
-				}
-			}
-		}
-
-		######################################
-		$arts = $em->createQuery('
-			SELECT a
-			FROM VidalDrugBundle:Publication a
-			WHERE SIZE(a.documents) > 0
-		')->getResult();
-
-		foreach ($arts as $art) {
-			foreach ($art->getDocuments() as $document) {
-				foreach ($document->getProducts() as $product) {
-					$art->addProduct($product);
-				}
-			}
-		}
-
-		$em->flush();
 
 		$output->writeln("+++ vidal:p completed!");
 	}

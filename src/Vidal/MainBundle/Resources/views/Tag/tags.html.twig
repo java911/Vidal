@@ -4,12 +4,10 @@
 			{% set type = tag|type %}
 			{# тег #}
 			{% if type == 'Tag' %}
-				{#{% if tag.publications.count > 1 %}#}
-					<a href="{{ path('tag_news', {'id':tag.id}) }}" target="_blank"
-					   title="новостей по теме «{{ tag.text }}»: {{ tag.publications.count }}">
-						{{ key }}
-					</a>
-				{#{% endif %}#}
+				<a href="{{ path('tag_news', {'id':tag.id}) }}" target="_blank"
+				   title="новостей по теме «{{ tag.text }}»: {{ tag.publications.count }}">
+					{{ key }}
+				</a>
 
 				{# атх #}
 			{% elseif type == 'ATC' %}
@@ -46,29 +44,25 @@
 
 
 {% if productGroups is not empty %}
-	<div class="products announcement">
-		<div class="anons-footer expanded no-selection">Описания препаратов</div>
-
-		<ul class="ul-style" style="display: block;">
-			{% for key, products in productGroups %}
-				<li>
-					{% if products|length == 1 %}
-						<a href="{{ path('product', {'EngName':products[0].Name, 'ProductID':products[0].ProductID}) }}"
-						   target="blank" class="no-underline">
-							{{ products[0].RusName|raw }}
-						</a>
-					{% else %}
-						{% set ids = [] %}
-						{% for product in products %}
-							{% set ids = ids|merge([product.ProductID]) %}
-						{% endfor %}
-						<a href="{{ path('product-group', {'ids':ids|join('-')}) }}" target="blank"
-							class="">
-							{{ products[0].RusName|raw }}
-						</a>
-					{% endif %}
-				</li>
-			{% endfor %}
-		</ul>
+	<div class="block">
+		<span class="block-head">Описания препаратов:</span>
+		{% for key, products in productGroups %}
+			{% if products|length == 1 %}
+				<a href="{{ path('product', {'EngName':products[0].Name, 'ProductID':products[0].ProductID}) }}"
+				   target="blank" class="no-underline">
+					{{ products[0].RusName|raw }}
+				</a>
+			{% else %}
+				{% set ids = [] %}
+				{% for product in products %}
+					{% set ids = ids|merge([product.ProductID]) %}
+				{% endfor %}
+				<a href="{{ path('product-group', {'ids':ids|join('-')}) }}" target="blank"
+				   class="no-underline">
+					{{ products[0].RusName|raw }}
+				</a>
+			{% endif %}
+			{% if not loop.last %}, {% endif %}
+		{% endfor %}
 	</div>
 {% endif %}

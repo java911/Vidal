@@ -237,4 +237,15 @@ class InfoPageRepository extends EntityRepository
 
 		return array_unique($words);
 	}
+
+	public function findByCompanyName($name)
+	{
+		return $this->_em->createQuery('
+		 	SELECT i
+		 	FROM VidalDrugBundle:InfoPage i
+		 	WHERE i.RusName LIKE :name
+		')->setParameter('name', '%' . $name . '%')
+			->setMaxResults(1)
+			->getOneOrNullResult();
+	}
 }

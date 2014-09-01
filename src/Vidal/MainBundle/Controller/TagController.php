@@ -118,52 +118,96 @@ class TagController extends Controller
 	 */
 	public function tagsAction($object)
 	{
-		$tags    = array();
-		$tagsStr = '';
+		$tags        = array();
+		$infoPageIds = array();
+		$em          = $this->getDoctrine()->getManager('drug');
 
-
+		# теги
 		foreach ($object->getTags() as $tag) {
 			$key = $tag->getText();
-			if (!isset($tags[$key])) {
+			# проверка, что это представительство
+			if (preg_match('/[A-Z]/', $key) || preg_match('/[А-Я]/u', $key)) {
+				$infoPage = $em->getRepository('VidalDrugBundle:InfoPage')->findByCompanyName($key);
+				if ($infoPage) {
+					$infoPageIds[] = $infoPage->getInfoPageID();
+					$tags[$key]    = $infoPage;
+					break;
+				}
+			}
+
+			$hasPublication = false;
+			foreach ($tag->getPublications() as $publication) {
+				if ($publication->getEnabled()) {
+					$hasPublication = true;
+					break;
+				}
+			}
+			if (!isset($tags[$key]) && $hasPublication) {
 				$tags[$key] = $tag;
 			}
-			$tagsStr .= mb_strtolower($key, 'utf-8') . ' ';
 		}
+		uksort($tags, array($this, 'casecmp'));
 
-		foreach ($object->getAtcCodes() as $atc) {
-			$key = $atc->getATCCode() . ' - ' . $atc->getRusName();
-			if (!isset($tags[$key])) {
-				$tags[$key] = $atc;
-			}
-		}
+		# активные вещества
+		$tagsMolecules = array();
 
 		foreach ($object->getMolecules() as $molecule) {
 			$rusName = $molecule->getRusName();
 			$key     = empty($rusName) ? $molecule->getLatName() : $rusName;
-			if (!isset($tags[$key])) {
-				$tags[$key] = $molecule;
+			if (!isset($tagsMolecules[$key])) {
+				$tagsMolecules[$key] = $molecule;
 			}
 		}
+
+		if (count($tagsMolecules)) {
+			uksort($tagsMolecules, array($this, 'casecmp'));
+			$tags = array_merge($tags, $tagsMolecules);
+		}
+
+		#АТХ
+		$tagsAtc = array();
+
+		foreach ($object->getAtcCodes() as $atc) {
+			$key = $atc->getATCCode() . ' - ' . $atc->getRusName();
+			if (!isset($tagsAtc[$key])) {
+				$tagsAtc[$key] = $atc;
+			}
+		}
+
+		if (count($tagsAtc)) {
+			uksort($tagsAtc, array($this, 'casecmp'));
+			$tags = array_merge($tags, $tagsAtc);
+		}
+
+		# Нозология МКБ-10
+		$tagsNozologies = array();
+
+		foreach ($object->getNozologies() as $nozology) {
+			$key = $nozology->getCode() . ' - ' . $nozology->getName();
+			if (!isset($tagsNozologies[$key])) {
+				$tagsNozologies[$key] = $nozology;
+			}
+		}
+
+		if (count($tagsNozologies)) {
+			uksort($tagsNozologies, array($this, 'casecmp'));
+			$tags = array_merge($tags, $tagsNozologies);
+		}
+
+		# Представительства
+		$tagsInfopages = array();
 
 		foreach ($object->getInfoPages() as $ip) {
 			$key = $ip->getRusName();
-			if (strpos($tagsStr, mb_strtolower($key, 'utf-8')) !== false) {
-				$tags[$key] = $ip;
+			if (!in_array($ip->getInfoPageID(), $infoPageIds)) {
+				$tagsInfopages[$key] = $ip;
 			}
 		}
 
-		foreach ($object->getNozologies() as $nozology) {
-			$key = $nozology->getNozologyCode() . ' - ' . $nozology->getName();
-			if (!isset($tags[$key])) {
-				$tags[$key] = $nozology;
-			}
+		if (count($tagsInfopages)) {
+			uksort($tagsInfopages, array($this, 'casecmp'));
+			$tags = array_merge($tags, $tagsInfopages);
 		}
-
-		uksort($tags, function($a, $b) {
-			$a = mb_strtolower($a, 'utf-8');
-			$b = mb_strtolower($b, 'utf-8');
-			return $a == $b ? 0 : ($a > $b ? 1 : -1);
-		});
 
 		$products    = array();
 		$productsRaw = $object->getProducts();
@@ -191,5 +235,13 @@ class TagController extends Controller
 		$rep = array('', '', ' & ');
 
 		return preg_replace($pat, $rep, $string);
+	}
+
+	private function casecmp($a, $b)
+	{
+		$a = mb_strtolower($a, 'utf-8');
+		$b = mb_strtolower($b, 'utf-8');
+
+		return $a == $b ? 0 : ($a > $b ? 1 : -1);
 	}
 }

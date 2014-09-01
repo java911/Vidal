@@ -19,6 +19,10 @@
 
 
 {% block vidal %}
+	{% if is_granted('ROLE_ADMIN') %}
+		{% include 'VidalMainBundle:Article:documents.html.twig' with {'object':nozology, 'label':'нозологическому указателю', 'item':nozology.Code} %}
+	{% endif %}
+
 	{# Препараты #}
 	{% if products is defined and products is not empty %}
 		<div class="block">
@@ -37,10 +41,6 @@
 			<div class="block-head">Описания активных веществ под международным непатентованным наименованием</div>
 			{% include 'VidalDrugBundle:Vidal:render_molecules.html.twig' %}
 		</div>
-	{% endif %}
-
-	{% if is_granted('ROLE_ADMIN') %}
-		{% include 'VidalMainBundle:Article:documents.html.twig' with {'object':nozology, 'label':'нозологическому указателю', 'item':nozology.Code} %}
 	{% endif %}
 
 {% endblock %}
