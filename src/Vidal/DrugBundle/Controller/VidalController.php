@@ -174,7 +174,7 @@ class VidalController extends Controller
 	public function infItemAction($InfoPageID)
 	{
 		$em       = $this->getDoctrine()->getManager('drug');
-		$infoPage = $em->getRepository('VidalDrugBundle:InfoPage')->findByInfoPageID($InfoPageID);
+		$infoPage = $em->getRepository('VidalDrugBundle:InfoPage')->findOneByInfoPageID($InfoPageID);
 
 		if (!$infoPage) {
 			throw $this->createNotFoundException();
@@ -185,7 +185,7 @@ class VidalController extends Controller
 		$params      = array(
 			'infoPage'   => $infoPage,
 			'picture'    => $picture,
-			'title'      => $this->strip($infoPage['RusName']) . ' | Представительства фирм',
+			'title'      => $this->strip($infoPage->getRusName()) . ' | Представительства фирм',
 			'portfolios' => $em->getRepository('VidalDrugBundle:InfoPage')->findPortfolios($InfoPageID),
 		);
 

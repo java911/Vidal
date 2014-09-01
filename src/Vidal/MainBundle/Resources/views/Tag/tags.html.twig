@@ -1,6 +1,5 @@
 {% if tags is not empty %}
 	<div class="tags no-selection">
-		<div class="anons-footer">Теги</div>
 		{% for key, tag in tags %}
 			{% set type = tag|type %}
 			{# тег #}
@@ -47,15 +46,15 @@
 
 
 {% if productGroups is not empty %}
-	<div class="products">
-		<div class="anons-footer">Описания препаратов</div>
+	<div class="products announcement">
+		<div class="anons-footer expanded no-selection">Описания препаратов</div>
 
-		<ul class="ul-style">
+		<ul class="ul-style" style="display: block;">
 			{% for key, products in productGroups %}
 				<li>
 					{% if products|length == 1 %}
 						<a href="{{ path('product', {'EngName':products[0].Name, 'ProductID':products[0].ProductID}) }}"
-						   target="blank">
+						   target="blank" class="no-underline">
 							{{ products[0].RusName|raw }}
 						</a>
 					{% else %}
@@ -63,7 +62,8 @@
 						{% for product in products %}
 							{% set ids = ids|merge([product.ProductID]) %}
 						{% endfor %}
-						<a href="{{ path('product-group', {'ids':ids|join('-')}) }}" target="blank">
+						<a href="{{ path('product-group', {'ids':ids|join('-')}) }}" target="blank"
+						   class="no-underline">
 							{{ products[0].RusName|raw }}
 						</a>
 					{% endif %}

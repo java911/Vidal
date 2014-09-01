@@ -39,4 +39,8 @@
 		</div>
 	{% endif %}
 
+	{% if is_granted('ROLE_ADMIN') %}
+		{% include 'VidalMainBundle:Article:documents.html.twig' with {'object':nozology, 'label':'нозологическому указателю', 'item':nozology.Code} %}
+	{% endif %}
+
 {% endblock %}

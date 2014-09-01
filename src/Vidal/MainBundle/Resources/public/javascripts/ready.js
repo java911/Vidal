@@ -40,7 +40,7 @@ $(document).ready(function() {
 			},
 			select:    function(event, ui) {
 				if (ui.item) {
-					window.location = Routing.generate('search', {'q':ui.item.value[0]});
+					window.location = Routing.generate('search', {'q': ui.item.value[0]});
 				}
 			}
 		}).data("ui-autocomplete")._renderItem = function(ul, item) {
@@ -89,5 +89,9 @@ $(document).ready(function() {
 
 	$('body').click(function() {
 		$('.tags ul').hide();
+	});
+
+	$('.anons-footer').click(function(e) {
+		$(this).toggleClass('expanded').closest('.announcement').find('ul').slideToggle('fast');
 	});
 });
