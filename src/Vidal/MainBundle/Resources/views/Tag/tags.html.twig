@@ -4,12 +4,12 @@
 			{% set type = tag|type %}
 			{# тег #}
 			{% if type == 'Tag' %}
-				{% if tag.publications.count > 1 %}
+				{#{% if tag.publications.count > 1 %}#}
 					<a href="{{ path('tag_news', {'id':tag.id}) }}" target="_blank"
 					   title="новостей по теме «{{ tag.text }}»: {{ tag.publications.count }}">
 						{{ key }}
 					</a>
-				{% endif %}
+				{#{% endif %}#}
 
 				{# атх #}
 			{% elseif type == 'ATC' %}
@@ -63,7 +63,7 @@
 							{% set ids = ids|merge([product.ProductID]) %}
 						{% endfor %}
 						<a href="{{ path('product-group', {'ids':ids|join('-')}) }}" target="blank"
-						   class="no-underline">
+							class="">
 							{{ products[0].RusName|raw }}
 						</a>
 					{% endif %}

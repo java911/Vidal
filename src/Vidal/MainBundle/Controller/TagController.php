@@ -118,13 +118,16 @@ class TagController extends Controller
 	 */
 	public function tagsAction($object)
 	{
-		$tags = array();
+		$tags    = array();
+		$tagsStr = '';
+
 
 		foreach ($object->getTags() as $tag) {
 			$key = $tag->getText();
 			if (!isset($tags[$key])) {
 				$tags[$key] = $tag;
 			}
+			$tagsStr .= mb_strtolower($key, 'utf-8') . ' ';
 		}
 
 		foreach ($object->getAtcCodes() as $atc) {
@@ -144,7 +147,7 @@ class TagController extends Controller
 
 		foreach ($object->getInfoPages() as $ip) {
 			$key = $ip->getRusName();
-			if (!isset($tags[$key])) {
+			if (strpos($tagsStr, mb_strtolower($key, 'utf-8')) !== false) {
 				$tags[$key] = $ip;
 			}
 		}
