@@ -159,7 +159,11 @@ class TagController extends Controller
 			}
 		}
 
-		ksort($tags);
+		uksort($tags, function($a, $b) {
+			$a = mb_strtolower($a, 'utf-8');
+			$b = mb_strtolower($b, 'utf-8');
+			return $a == $b ? 0 : ($a > $b ? 1 : -1);
+		});
 
 		$products    = array();
 		$productsRaw = $object->getProducts();
