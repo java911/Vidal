@@ -103,6 +103,9 @@ class Banner extends BaseEntity
 	 */
 	protected $reference;
 
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $code;
+
 	public function __construct()
 	{
 		$this->starts    = new \DateTime();
@@ -414,5 +417,21 @@ class Banner extends BaseEntity
 	public function getFallback()
 	{
 		return $this->fallback;
+	}
+
+	/**
+	 * @param mixed $code
+	 */
+	public function setCode($code)
+	{
+		$this->code = $code;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCode()
+	{
+		return $this->code;
 	}
 }
