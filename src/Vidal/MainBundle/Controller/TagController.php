@@ -214,10 +214,12 @@ class TagController extends Controller
 
 		if (!empty($productsRaw)) {
 			foreach ($productsRaw as $product) {
-				$key = $this->strip($product->getRusName());
-				isset($products[$key])
-					? $products[$key][] = $product
-					: $products[$key] = array($product);
+				if ($product->isValid()) {
+					$key = $this->strip($product->getRusName());
+					isset($products[$key])
+						? $products[$key][] = $product
+						: $products[$key] = array($product);
+				}
 			}
 		}
 

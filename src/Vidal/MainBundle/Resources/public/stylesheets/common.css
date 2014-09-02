@@ -269,6 +269,13 @@ tr.bold td {
 	background:    url('../images/bullets.gif') no-repeat -13px -13px;
 	margin-bottom: 2px;
 }
+.ul-style.black li {
+	margin-top: 8px;
+}
+.ul-style.black a {
+	color:     #333;
+	font-size: 12px !important;
+}
 .border-line {
 	border: 1px solid #aaa;
 }

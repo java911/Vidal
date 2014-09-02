@@ -108,6 +108,12 @@ class InfoPage
 	 */
 	protected $photo;
 
+	/**
+	 * @ORM\OneToOne(targetEntity="Tag")
+	 * @ORM\JoinColumn(name="tag_id", referencedColumnName="id")
+	 */
+	protected $tag;
+
 	public function __construct()
 	{
 		$this->pictures      = new ArrayCollection();
@@ -474,5 +480,21 @@ class InfoPage
 	public function getPhoto()
 	{
 		return $this->photo;
+	}
+
+	/**
+	 * @param mixed $tag
+	 */
+	public function setTag($tag)
+	{
+		$this->tag = $tag;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTag()
+	{
+		return $this->tag;
 	}
 }

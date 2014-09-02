@@ -903,4 +903,23 @@ class Product
 	{
 		return $this->pharmArticles;
 	}
+
+	public function isValid()
+	{
+		if ($ms = $this->getMarketStatusID()) {
+			if (!in_array($ms->getMarketStatusID(), array(1, 2, 7))) {
+				return false;
+			}
+		}
+
+		if (!in_array($this->getProductTypeCode(), array('DRUG', 'GOME'))) {
+			return false;
+		}
+
+		if ($this->inactive) {
+			return false;
+		}
+
+		return true;
+	}
 }

@@ -172,6 +172,7 @@ class InfoPageRepository extends EntityRepository
 			JOIN p.DocumentID d
 			JOIN d.infoPages i
 			WHERE i.InfoPageID = :InfoPageID
+			ORDER BY p.title ASC
 		')->setParameter('InfoPageID', $InfoPageID)
 			->getResult();
 	}

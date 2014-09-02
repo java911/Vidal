@@ -2,7 +2,9 @@
 
 
 {% block title %}
-	<h1>{{ products[0].RusName|raw }}</h1>
+	{% if products[0] and products[0].RusName is not empty %}
+		<h1>{{ products[0].RusName|raw }}</h1>
+	{% endif %}
 {% endblock %}
 
 

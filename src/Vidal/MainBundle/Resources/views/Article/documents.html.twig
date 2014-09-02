@@ -1,11 +1,10 @@
 {# новости #}
 {% if object.publications|length %}
-	<div class="announcement">
-		<div class="anons-footer no-selection">
-			Новости по {{ label }} <span>«{{ item }}»</span>
-			<i>{{ object.publications|length }}</i>
+	<div class="block">
+		<div class="block-head">
+			Новости по {{ label }} <span>«{{ item|raw }}»</span>
 		</div>
-		<ul class="ul-style">
+		<ul class="ul-style black">
 			{% for publication in object.publications %}
 				<li>
 					<a href="{{ path('publication', {'id':publication.id}) }}" target="_blank" class="no-underline">
@@ -19,12 +18,11 @@
 
 {# энциклопедия #}
 {% if object.articles|length %}
-	<div class="announcement">
-		<div class="anons-footer no-selection">
-			Материалы медицинской энциклопедии по {{ label }} <span>«{{ item }}»</span>
-			<i>{{ object.articles|length }}</i>
+	<div class="block">
+		<div class="block-head">
+			Материалы медицинской энциклопедии по {{ label }} <span>«{{ item|raw  }}»</span>
 		</div>
-		<ul class="ul-style">
+		<ul class="ul-style black">
 			{% for article in object.articles %}
 				<li>
 					<a href="{{ path('article', {'rubrique':article.rubrique.rubrique, 'link':article.link}) }}"
@@ -39,12 +37,11 @@
 
 {# специалистам #}
 {% if object.arts|length %}
-	<div class="announcement">
-		<div class="anons-footer no-selection">
-			Материалы для специалистов по {{ label }} <span>«{{ item }}»</span>
-			<i>{{ object.arts|length }}</i>
+	<div class="block">
+		<div class="block-head">
+			Материалы для специалистов по {{ label }} <span>«{{ item|raw  }}»</span>
 		</div>
-		<ul class="ul-style">
+		<ul class="ul-style black">
 			{% for art in object.arts %}
 				<li>
 					<a class="no-underline" target="_blank"
