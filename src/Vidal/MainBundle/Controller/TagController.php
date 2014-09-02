@@ -126,13 +126,10 @@ class TagController extends Controller
 		foreach ($object->getTags() as $tag) {
 			$key = $tag->getText();
 			# проверка, что это представительство
-			if (preg_match('/[A-Z]/', $key) || preg_match('/[А-Я]/u', $key)) {
-				$infoPage = $em->getRepository('VidalDrugBundle:InfoPage')->findByCompanyName($key);
-				if ($infoPage) {
-					$infoPageIds[] = $infoPage->getInfoPageID();
-					$tags[$key]    = $infoPage;
-					break;
-				}
+			if ($infoPage = $tag->getInfoPage()) {
+				$infoPageIds[] = $infoPage->getInfoPageID();
+				$tags[$key]    = $infoPage;
+				break;
 			}
 
 			$hasPublication = false;

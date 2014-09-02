@@ -4,9 +4,6 @@
 			{% set type = tag|type %}
 			{# тег #}
 			{% if type == 'Tag' %}
-				{% if tag.infoPage %}
-					<hr><hr><hr>
-				{% endif %}
 				<a href="{{ path('tag_news', {'id':tag.id}) }}" target="_blank"
 				   title="новостей по теме «{{ tag.text }}»: {{ tag.publications.count }}">
 					{{ key }}
