@@ -480,4 +480,11 @@ class Publication extends BaseEntity
 	{
 		return $this->products;
 	}
+
+	public function addInfoPage($infoPage)
+	{
+		if (!$this->infoPages->contains($infoPage)) {
+			$this->infoPages[] = $infoPage;
+		}
+	}
 }

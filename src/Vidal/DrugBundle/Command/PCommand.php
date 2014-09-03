@@ -24,15 +24,22 @@ class PCommand extends ContainerAwareCommand
 		$tags = $em->createQuery('
 			SELECT t
 			FROM VidalDrugBundle:Tag t
+			JOIN t.infoPage
 		')->getResult();
 
 		foreach ($tags as $tag) {
-			$key = $tag->getText();
-			if (preg_match('/[A-Z]/', $key) || preg_match('/[А-Я]/u', $key)) {
-				$infoPage = $em->getRepository('VidalDrugBundle:InfoPage')->findByCompanyName($key);
-				if ($infoPage) {
-					$infoPage->setTag($tag);
-				}
+			$infoPage = $tag->getInfoPage();
+
+			foreach ($tag->getArts() as $art) {
+				$art->addInfoPage($infoPage);
+			}
+
+			foreach ($tag->getArticles() as $article) {
+				$article->addInfoPage($infoPage);
+			}
+
+			foreach ($tag->getPublications() as $publication) {
+				$publication->addInfoPage($infoPage);
 			}
 		}
 

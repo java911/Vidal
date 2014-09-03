@@ -25,16 +25,19 @@ class InfoTagCommand extends ContainerAwareCommand
 		$pdo->prepare('SET foreign_key_checks = 0')->execute();
 		$pdo->prepare('UPDATE infopage SET tag_id = NULL')->execute();
 
-		$tags = $pdo->prepare('SELECT id, InfoPageID FROM tag')->execute()->fetchAll();
+		$stmt = $pdo->prepare('SELECT id, InfoPageID FROM tag WHERE InfoPageID IS NOT NULL');
+		$stmt->execute();
+		$tags = $stmt->fetchAll();
 
-		var_dump($tags);
-		exit;
+		$stmt = $pdo->prepare('UPDATE infopage SET tag_id = :tagId WHERE InfoPageID = :InfoPageID');
 
-		$em->createQuery("
-			UPDATE VidalDrugBundle:InfoPage i
-			SET i.CountryCode = NULL
-			WHERE i.CountryCode = ''
-		")->execute();
+		foreach ($tags as $tag) {
+			$tagId      = $tag['id'];
+			$InfoPageID = $tag['InfoPageID'];
+			$stmt->bindParam(':tagId', $tagId);
+			$stmt->bindParam(':InfoPageID', $InfoPageID);
+			$stmt->execute();
+		}
 
 		$output->writeln('+++ vidal:info_tag completed');
 	}
