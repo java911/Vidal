@@ -15,4 +15,3 @@ bin/
 mysql-connector-*
 .gitconfig
 node_modules/
-web/app_dev.php
