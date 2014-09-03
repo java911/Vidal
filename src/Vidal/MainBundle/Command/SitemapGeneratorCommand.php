@@ -22,6 +22,7 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 		$container = $this->getContainer();
 		$em        = $container->get('doctrine')->getManager('drug');
 		$emDefault = $container->get('doctrine')->getManager();
+		$webRoot   = $container->get('kernel')->getRootDir() . "/../web";
 
 		////////////////////////////////////////////
 		$urlset  = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" /><!--?xml version="1.0" encoding="UTF-8"?-->');
@@ -42,7 +43,7 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
  </sitemap>
 </sitemapindex>');
 
-		$xmlMain->asXML('web/sitemap.xml');
+		$xmlMain->asXML("{$webRoot}/sitemap.xml");
 
 		# главная
 		$url = $urlset->addChild('url');
@@ -195,8 +196,8 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 		}
 
 		# запись в файл
-		$urlset->asXML('web/sitemap1.xml');
-		$urlset2->asXML('web/sitemap2.xml');
+		$urlset->asXML("{$webRoot}/sitemap1.xml");
+		$urlset2->asXML("{$webRoot}/sitemap2.xml");
 
 		///////////////////////////////////////////
 
