@@ -173,9 +173,9 @@ class ParserXmlCommand extends ContainerAwareCommand
 
 
     protected function uploadFiles(){
-//        $this->cacheFile_1 = simplexml_load_file($this->url_file_1);
-//        $this->cacheFile_2 = simplexml_load_file($this->url_file_2);
-//        $this->cacheFile_3 = simplexml_load_file($this->url_file_3);
+        $this->cacheFile_1 = simplexml_load_file($this->url_file_1);
+        $this->cacheFile_2 = simplexml_load_file($this->url_file_2);
+        $this->cacheFile_3 = simplexml_load_file($this->url_file_3);
         $data = file_get_contents($this->url_file_4);
         $data = str_replace('&','%25',$data);
         $this->cacheFile_4 = simplexml_load_string($data);
@@ -184,10 +184,12 @@ class ParserXmlCommand extends ContainerAwareCommand
     }
 
     protected function findShop_1($title){
-        #$elems = $this->cacheFile_1->xpath("product[contains(concat(' ', name, ' '), ' $title ')]");
+//        $elems = $this->cacheFile_1->xpath("product[contains(concat(' ', name, ' '), ' $title ')]");
         $elems =  $this->cacheFile_1;
         $arr = array();
         $drugUrl = 'http://www.eapteka.ru/goods/drugs/otolaryngology/rhinitis/?id=';
+//        print_r($elems);
+//        exit;
         foreach ($elems as $elem){
             $arr[] = array(
                 'code' => $elem->code,
