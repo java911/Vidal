@@ -25,14 +25,30 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 
 		////////////////////////////////////////////
 		$urlset  = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" /><!--?xml version="1.0" encoding="UTF-8"?-->');
+		$urlset2 = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" /><!--?xml version="1.0" encoding="UTF-8"?-->');
+
 		$date    = new \DateTime();
 		$lastMod = $date->format('Y-m-d');
+
+		$xmlMain = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.google.com/schemas/sitemap/0.84">
+ <sitemap>
+    <loc>http://www.vidal.ru/sitemap1.xml</loc>
+    <lastmod>' . $lastMod . '</lastmod>
+ </sitemap>
+ <sitemap>
+    <loc>http://www.vidal.ru/sitemap2.xml</loc>
+    <lastmod>' . $lastMod . '</lastmod>
+ </sitemap>
+</sitemapindex>');
+
+		$xmlMain->asXML('web/sitemap.xml');
 
 		# главная
 		$url = $urlset->addChild('url');
 		$url->addChild('loc', 'http://www.vidal.ru');
 		$url->addChild('lastmod', $lastMod);
-		$url->addChild('changefreq', 'weekly');
+		$url->addChild('changefreq', 'monthly');
 		$url->addChild('priority', '1');
 
 		# картинка-1
@@ -61,7 +77,7 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 			$loc = "http://www.vidal.ru/drugs/{$product['Name']}__{$product['ProductID']}";
 			$url->addChild('loc', $loc);
 			$url->addChild('lastmod', $lastMod);
-			$url->addChild('changefreq', 'weekly');
+			$url->addChild('changefreq', 'monthly');
 			$url->addChild('priority', '0.8');
 		}
 
@@ -78,7 +94,7 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 			$loc = "http://www.vidal.ru/drugs/molecule/{$molecule['MoleculeID']}";
 			$url->addChild('loc', $loc);
 			$url->addChild('lastmod', $lastMod);
-			$url->addChild('changefreq', 'weekly');
+			$url->addChild('changefreq', 'monthly');
 			$url->addChild('priority', '0.8');
 		}
 
@@ -91,11 +107,11 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 				')->getResult();
 
 		foreach ($articles as $article) {
-			$url = $urlset->addChild('url');
+			$url = $urlset2->addChild('url');
 			$loc = "http://www.vidal.ru/encyclopedia/{$article['rubrique']}/{$article['link']}";
 			$url->addChild('loc', $loc);
 			$url->addChild('lastmod', $lastMod);
-			$url->addChild('changefreq', 'weekly');
+			$url->addChild('changefreq', 'daily');
 			$url->addChild('priority', '0.8');
 		}
 
@@ -107,11 +123,11 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 				')->getResult();
 
 		foreach ($publications as $publication) {
-			$url = $urlset->addChild('url');
+			$url = $urlset2->addChild('url');
 			$loc = "http://www.vidal.ru/novosti/{$publication['id']}";
 			$url->addChild('loc', $loc);
 			$url->addChild('lastmod', $lastMod);
-			$url->addChild('changefreq', 'weekly');
+			$url->addChild('changefreq', 'daily');
 			$url->addChild('priority', '0.8');
 		}
 
@@ -126,7 +142,7 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 			$loc = "http://www.vidal.ru/drugs/firm/{$company['CompanyID']}";
 			$url->addChild('loc', $loc);
 			$url->addChild('lastmod', $lastMod);
-			$url->addChild('changefreq', 'weekly');
+			$url->addChild('changefreq', 'monthly');
 			$url->addChild('priority', '0.8');
 		}
 
@@ -142,7 +158,7 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 			$loc = "http://www.vidal.ru/drugs/company/{$infoPage['InfoPageID']}";
 			$url->addChild('loc', $loc);
 			$url->addChild('lastmod', $lastMod);
-			$url->addChild('changefreq', 'weekly');
+			$url->addChild('changefreq', 'monthly');
 			$url->addChild('priority', '0.8');
 		}
 
@@ -179,7 +195,8 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 		}
 
 		# запись в файл
-		$urlset->asXML('web/sitemap.xml');
+		$urlset->asXML('web/sitemap1.xml');
+		$urlset2->asXML('web/sitemap2.xml');
 
 		///////////////////////////////////////////
 
