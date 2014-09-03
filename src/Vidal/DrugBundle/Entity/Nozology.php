@@ -36,6 +36,7 @@ class Nozology
 	 * @ORM\JoinTable(name="article_n",
 	 *        joinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"date" = "DESC"})
 	 */
 	protected $articles;
 
@@ -44,6 +45,7 @@ class Nozology
 	 * @ORM\JoinTable(name="art_n",
 	 *        joinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"date" = "DESC"})
 	 */
 	protected $arts;
 
@@ -52,6 +54,7 @@ class Nozology
 	 * @ORM\JoinTable(name="publication_n",
 	 *        joinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"created" = "DESC"})
 	 */
 	protected $publications;
 
@@ -60,6 +63,7 @@ class Nozology
 	 * @ORM\JoinTable(name="pharm_article_n",
 	 *        joinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="pharm_article_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"created" = "DESC"})
 	 */
 	protected $pharmArticles;
 

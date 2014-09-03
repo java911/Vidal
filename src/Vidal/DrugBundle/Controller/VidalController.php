@@ -174,7 +174,7 @@ class VidalController extends Controller
 	public function infItemAction($InfoPageID)
 	{
 		$em       = $this->getDoctrine()->getManager('drug');
-		$infoPage = $em->getRepository('VidalDrugBundle:InfoPage')->findByInfoPageID($InfoPageID);
+		$infoPage = $em->getRepository('VidalDrugBundle:InfoPage')->findOneByInfoPageID($InfoPageID);
 
 		if (!$infoPage) {
 			throw $this->createNotFoundException();
@@ -185,7 +185,7 @@ class VidalController extends Controller
 		$params      = array(
 			'infoPage'   => $infoPage,
 			'picture'    => $picture,
-			'title'      => $this->strip($infoPage['RusName']) . ' | Представительства фирм',
+			'title'      => $this->strip($infoPage->getRusName()) . ' | Представительства фирм',
 			'portfolios' => $em->getRepository('VidalDrugBundle:InfoPage')->findPortfolios($InfoPageID),
 		);
 
@@ -372,8 +372,35 @@ class VidalController extends Controller
 	}
 
 	/**
+	 * @Route("/drugs/product-group/{ids}", name="product-group")
+	 * @Template("VidalDrugBundle:Vidal:product_group.html.twig")
+	 */
+	public function productGroupAction($ids)
+	{
+		$em         = $this->getDoctrine()->getManager('drug');
+		$ids        = explode('-', $ids);
+		$products   = array();
+		$productIds = array();
+
+		$params = array();
+
+		foreach ($ids as $id) {
+			$id           = intval($id);
+			$productIds[] = $id;
+			$products[]   = $em->getRepository('VidalDrugBundle:Product')->findFieldsByProductID($id);
+		}
+
+		$params['products']  = $products;
+		$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
+		$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+		$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
+
+		return $params;
+	}
+
+	/**
 	 * Описание препарата
-	 * @Route("/drugs/{EngName}__{ProductID}.{ext}", name="product", requirements={"ProductID":"\d+", "EngName"=".+"}, defaults={"ext"="htm"})
+	 * @Route("/drugs/{EngName}__{ProductID}", name="product", requirements={"ProductID":"\d+", "EngName"=".+"})
 	 * @Template("VidalDrugBundle:Vidal:document.html.twig")
 	 */
 	public function productAction($EngName, $ProductID)

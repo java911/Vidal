@@ -1,0 +1,99 @@
+{% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
+
+
+{% block vidal %}
+	{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' %}
+
+	<form id="form" method="GET" action="{{ path('disease') }}">
+		<div id="form_controls">
+			<input id="form_submit" type="submit" value="Найти" class="btn-red">
+			<input id="form_input" type="text" name="q" placeholder="Введите слово для поиска..."
+				   value="{{ q is defined and q is not empty and not l ? q }}"/>
+		</div>
+
+		<div class="letters">
+			<div>
+				<input type="submit" value="А" name="l" {{ l == 'А' ? ' class="active"' }}/>
+				<input type="submit" value="Б" name="l" {{ l == 'Б' ? ' class="active"' }}/>
+				<input type="submit" value="В" name="l" {{ l == 'В' ? ' class="active"' }}/>
+				<input type="submit" value="Г" name="l" {{ l == 'Г' ? ' class="active"' }}/>
+				<input type="submit" value="Д" name="l" {{ l == 'Д' ? ' class="active"' }}/>
+				<input type="submit" value="Ж" name="l" {{ l == 'Ж' ? ' class="active"' }}/>
+				<input type="submit" value="З" name="l" {{ l == 'З' ? ' class="active"' }}/>
+				<input type="submit" value="И" name="l" {{ l == 'И' ? ' class="active"' }}/>
+				<input type="submit" value="К" name="l" {{ l == 'К' ? ' class="active"' }}/>
+				<input type="submit" value="Л" name="l" {{ l == 'Л' ? ' class="active"' }}/>
+				<input type="submit" value="М" name="l" {{ l == 'М' ? ' class="active"' }}/>
+				<input type="submit" value="Н" name="l" {{ l == 'Н' ? ' class="active"' }}/>
+				<input type="submit" value="О" name="l" {{ l == 'О' ? ' class="active"' }}/>
+				<input type="submit" value="П" name="l" {{ l == 'П' ? ' class="active"' }}/>
+				<input type="submit" value="Р" name="l" {{ l == 'Р' ? ' class="active"' }}/>
+				<input type="submit" value="С" name="l" {{ l == 'С' ? ' class="active"' }}/>
+				<input type="submit" value="Т" name="l" {{ l == 'Т' ? ' class="active"' }}/>
+				<input type="submit" value="У" name="l" {{ l == 'У' ? ' class="active"' }}/>
+				<input type="submit" value="Ф" name="l" {{ l == 'Ф' ? ' class="active"' }}/>
+				<input type="submit" value="Х" name="l" {{ l == 'Х' ? ' class="active"' }}/>
+				<input type="submit" value="Ц" name="l" {{ l == 'Ц' ? ' class="active"' }}/>
+				<input type="submit" value="Ч" name="l" {{ l == 'Ч' ? ' class="active"' }}/>
+				<input type="submit" value="Ш" name="l" {{ l == 'Ш' ? ' class="active"' }}/>
+				<input type="submit" value="Щ" name="l" {{ l == 'Щ' ? ' class="active"' }}/>
+				<input type="submit" value="Э" name="l" {{ l == 'Э' ? ' class="active"' }}/>
+				<input type="submit" value="Я" name="l" {{ l == 'Я' ? ' class="active"' }}/>
+			</div>
+		</div>
+	</form>
+
+	{% if articles is defined %}
+		{% if articles is not empty %}
+			<div class="block">
+				<div class="block-anons">
+					<div class="block-head">
+						Найдено результатов по заболеваниям: <span>{{ articles|length }}</span>
+					</div>
+				</div>
+			</div>
+			{% include 'VidalDrugBundle:Vidal:render_articles.html.twig' %}
+		{% else %}
+			<div class="no-results">
+				{% if l %}
+					Не найдено заболеваний на букву <span>{{ l }}</span>
+				{% else %}
+					Не найдено результатов по заболеванию <span>{{ q }}</span>
+				{% endif %}
+			</div>
+		{% endif %}
+	{% endif %}
+
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/letters.css') }}"/>
+	<style type="text/css">
+		#form > * {
+			vertical-align: top;
+		}
+		#form_controls {
+			clear: both;
+		}
+		#form_submit {
+			float: right;
+		}
+		#form_input {
+			width: 408px;
+		}
+	</style>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.letters input').click(function() {
+				$('#form_input').attr('disabled', 'disabled');
+			});
+		});
+	</script>
+{% endblock %}

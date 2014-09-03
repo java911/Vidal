@@ -3,8 +3,8 @@
 
 {% block title %}
 	<h1>{{ infoPage.RusName|upper|raw }}
-		<span>(представительство{% if infoPage.Country is not empty and infoPage.Country != 'Unknown' %},
-			{{ infoPage.Country }}{% endif %})</span>
+		<span>(представительство{% if infoPage.CountryCode is not empty and infoPage.CountryCode.RusName != 'Unknown' %},
+			{{ infoPage.CountryCode.RusName }}{% endif %})</span>
 	</h1>
 {% endblock %}
 
@@ -62,6 +62,10 @@
 		</div>
 	{% endif %}
 
+	{% if is_granted('ROLE_ADMIN') %}
+		{% include 'VidalMainBundle:Article:documents.html.twig' with {'object':infoPage, 'label':'представительству', 'item':infoPage.RusName} %}
+	{% endif %}
+
 	{# препараты #}
 	{% if products is defined and products is not empty %}
 		<div class="block">
@@ -69,6 +73,7 @@
 			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' %}
 		</div>
 	{% endif %}
+
 {% endblock %}
 
 

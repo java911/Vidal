@@ -181,6 +181,11 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	 */
 	protected $confirmationScan;
 
+	/**
+	 * @ORM\Column(type="boolean")
+	 */
+	protected $confirmationHas = 0;
+
 	/** @ORM\Column(type="boolean") */
 	protected $unsibscribed = false;
 
@@ -1043,6 +1048,19 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
         return $this->unsibscribed;
     }
 
+	/**
+	 * @param mixed $confirmationHas
+	 */
+	public function setConfirmationHas($confirmationHas)
+	{
+		$this->confirmationHas = $confirmationHas;
+	}
 
-
+	/**
+	 * @return mixed
+	 */
+	public function getConfirmationHas()
+	{
+		return $this->confirmationHas;
+	}
 }

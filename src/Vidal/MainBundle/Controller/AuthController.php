@@ -133,6 +133,9 @@ class AuthController extends Controller
 
 		if ($form->isValid()) {
 			$em->persist($user);
+			if ($user->getConfirmationScan()) {
+				$user->setConfirmationHas(true);
+			}
 			$em->flush();
 			$this->get('session')->getFlashBag()->add('saved', '');
 

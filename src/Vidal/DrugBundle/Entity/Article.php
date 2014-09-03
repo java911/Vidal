@@ -754,4 +754,11 @@ class Article extends BaseEntity
 	{
 		return $this->anonsPriority;
 	}
+
+	public function addInfoPage($infoPage)
+	{
+		if (!$this->infoPages->contains($infoPage)) {
+			$this->infoPages[] = $infoPage;
+		}
+	}
 }

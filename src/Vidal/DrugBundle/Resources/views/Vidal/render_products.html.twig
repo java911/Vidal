@@ -11,7 +11,7 @@
 			<td title="Владелец регистрационного удостоверения">Владелец рег/уд</td>
 		</tr>
 
-		{% for id, product in products %}
+		{% for id, product in products if product %}
 			{% set id = product.ProductID %}
 			<tr>
 				<td class="products-table-loz">

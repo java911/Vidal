@@ -1,0 +1,56 @@
+{# новости #}
+{% if object.publications|length %}
+	<div class="announcement">
+		<div class="anons-footer no-selection">
+			Новости по {{ label }} <span>«{{ item }}»</span>
+			<i>{{ object.publications|length }}</i>
+		</div>
+		<ul class="ul-style black" style="display:none">
+			{% for publication in object.publications %}
+				<li>
+					<a href="{{ path('publication', {'id':publication.id}) }}" target="_blank" class="no-underline">
+						{{ publication.title|raw }}
+					</a>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endif %}
+
+{# энциклопедия #}
+{% if object.articles|length %}
+	<div class="announcement">
+		<div class="anons-footer no-selection">
+			Материалы медицинской энциклопедии по {{ label }} <span>«{{ item }}»</span>
+			<i>{{ object.articles|length }}</i>
+		</div>
+		<ul class="ul-style black" style="display:none">
+			{% for article in object.articles %}
+				<li>
+					<a href="{{ path('article', {'rubrique':article.rubrique.rubrique, 'link':article.link}) }}"
+					   target="_blank" class="no-underline">
+						{{ article.title|raw }}
+					</a>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endif %}
+
+{# специалистам #}
+{% if object.arts|length %}
+	<div class="announcement">
+		<div class="anons-footer no-selection">
+			Материалы для специалистов по {{ label }} <span>«{{ item }}»</span>
+			<i>{{ object.arts|length }}</i>
+		</div>
+		<ul class="ul-style black" style="display:none">
+			{% for art in object.arts %}
+				<li>
+					<a class="no-underline" target="_blank"
+					   href="{{ path('art', {'url':art.rubrique.url ~ '/' ~ (art.type ? art.type.url ~ '/') ~ (art.category ? art.category.url ~ '/') ~ art.link ~ '~' ~ art.id }) }}">{{ art.title|raw }}</a>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endif %}

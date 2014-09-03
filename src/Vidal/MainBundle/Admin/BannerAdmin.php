@@ -41,6 +41,7 @@ class BannerAdmin extends Admin
 			->add('enabled', null, array('label' => 'Активен', 'required' => false))
 			->add('starts', null, array('label' => 'Дата начала'))
 			->add('ends', null, array('label' => 'Дата окончания', 'required' => false, 'help' => 'Оставьте пустым, чтоб не учитывать'))
+			->add('code', null, array('label' => 'Дополнительный код', 'required' => false))
 			->add('reference', null, array('label' => 'Заменяется баннером', 'required' => false, 'help' => 'Будет заменяться этим баннером'));
 	}
 

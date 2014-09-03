@@ -6,7 +6,12 @@
 		Новости фарм. компаний по теме <span>"{{ tag.text }}"</span>
 	</div>
 
-	{% include 'VidalMainBundle:Index:render_pharm_articles.html.twig' with {'articles':pagination} %}
+	{% if pagination.getTotalItemCount %}
+		{% include 'VidalMainBundle:Index:render_pharm_articles.html.twig' with {'articles':pagination} %}
+	{% else %}
+		<div class="anons">Извините, новостей фарм. компаний по этой теме не найдено</div>
+	{% endif %}
+
 {% endblock %}
 
 

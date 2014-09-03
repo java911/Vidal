@@ -64,6 +64,7 @@ class InfoPage
 	 * @ORM\JoinTable(name="article_infopage",
 	 *        joinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"date" = "DESC"})
 	 */
 	protected $articles;
 
@@ -72,6 +73,7 @@ class InfoPage
 	 * @ORM\JoinTable(name="art_infopage",
 	 *        joinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"date" = "DESC"})
 	 */
 	protected $arts;
 
@@ -80,6 +82,7 @@ class InfoPage
 	 * @ORM\JoinTable(name="publication_infopage",
 	 *        joinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"created" = "DESC"})
 	 */
 	protected $publications;
 
@@ -88,6 +91,7 @@ class InfoPage
 	 * @ORM\JoinTable(name="pharm_article_infopage",
 	 *        joinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="pharm_article_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"created" = "DESC"})
 	 */
 	protected $pharmArticles;
 
@@ -107,6 +111,12 @@ class InfoPage
 	 * @FileStore\UploadableField(mapping="infopage_photo")
 	 */
 	protected $photo;
+
+	/**
+	 * @ORM\OneToOne(targetEntity="Tag")
+	 * @ORM\JoinColumn(name="tag_id", referencedColumnName="id")
+	 */
+	protected $tag;
 
 	public function __construct()
 	{
@@ -474,5 +484,21 @@ class InfoPage
 	public function getPhoto()
 	{
 		return $this->photo;
+	}
+
+	/**
+	 * @param mixed $tag
+	 */
+	public function setTag($tag)
+	{
+		$this->tag = $tag;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTag()
+	{
+		return $this->tag;
 	}
 }

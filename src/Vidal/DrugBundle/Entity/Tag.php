@@ -29,6 +29,12 @@ class Tag
 	/** @ORM\ManyToMany(targetEntity="PharmArticle", mappedBy="tags", fetch="EXTRA_LAZY") */
 	protected $pharmArticles;
 
+	/**
+	 * @ORM\OneToOne(targetEntity="InfoPage")
+	 * @ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")
+	 */
+	protected $infoPage;
+
 	public function __construct()
 	{
 		$this->articles      = new ArrayCollection();
@@ -152,5 +158,21 @@ class Tag
 	public function getSearch()
 	{
 		return $this->search;
+	}
+
+	/**
+	 * @param mixed $infoPage
+	 */
+	public function setInfoPage($infoPage)
+	{
+		$this->infoPage = $infoPage;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getInfoPage()
+	{
+		return $this->infoPage;
 	}
 }
