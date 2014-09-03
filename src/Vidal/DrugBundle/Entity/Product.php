@@ -160,6 +160,7 @@ class Product
 	 * @ORM\JoinTable(name="article_product",
 	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"date" = "DESC"})
 	 */
 	protected $articles;
 
@@ -168,6 +169,7 @@ class Product
 	 * @ORM\JoinTable(name="art_product",
 	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"date" = "DESC"})
 	 */
 	protected $arts;
 
@@ -176,6 +178,7 @@ class Product
 	 * @ORM\JoinTable(name="publication_product",
 	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"created" = "DESC"})
 	 */
 	protected $publications;
 
@@ -184,6 +187,7 @@ class Product
 	 * @ORM\JoinTable(name="pharm_article_product",
 	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="pharm_article_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"created" = "DESC"})
 	 */
 	protected $pharmArticles;
 

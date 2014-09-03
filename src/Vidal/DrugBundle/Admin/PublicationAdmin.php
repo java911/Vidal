@@ -37,7 +37,7 @@ class PublicationAdmin extends Admin
 			->add('announce', null, array('label' => 'Анонс'))
 			->add('body', null, array('label' => 'Основное содержимое'))
 			->add('enabled', null, array('label' => 'Активна'))
-			->add('date', null, array(
+			->add('created', null, array(
 				'label'  => 'Дата создания',
 				'widget' => 'single_text',
 				'format' => 'd.m.Y в H:i'
@@ -127,7 +127,7 @@ class PublicationAdmin extends Admin
 					'attr'         => array('class' => 'doc'),
 				))->addModelTransformer($documentTransformer)
 			)
-			->add('date', null, array('label' => 'Дата создания', 'required' => true, 'years' => range(2000, date('Y'))))
+			->add('created', null, array('label' => 'Дата создания', 'required' => true, 'years' => range(2000, date('Y'))))
 			->add('video', 'iphp_file', array('label' => 'Видео', 'required' => false, 'help' => 'Загрузить флеш-видео в формате .flv'))
 			->add('enabled', null, array('label' => 'Активна', 'required' => false));
 	}

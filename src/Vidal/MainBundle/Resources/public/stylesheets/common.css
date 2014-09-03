@@ -1325,6 +1325,7 @@ tr.bold td {
 .text {
 	overflow:  hidden;
 	max-width: 520px;
+	font-size: 14px;
 }
 .article .text, .publication .text {
 	padding: 0;
@@ -1356,10 +1357,6 @@ tr.bold td {
 }
 .text td p {
 	margin: 0 !important;
-}
-.text * {
-	font-family: sans-serif !important;
-	font-size:   14px;
 }
 .text sup,
 .text sup * {
