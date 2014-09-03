@@ -40,11 +40,11 @@
 {# специалистам #}
 {% if object.arts|length %}
 	<div class="announcement">
-		<div class="anons-footer no-selection" style="display:none">
+		<div class="anons-footer no-selection">
 			Материалы для специалистов по {{ label }} <span>«{{ item }}»</span>
 			<i>{{ object.arts|length }}</i>
 		</div>
-		<ul class="ul-style black">
+		<ul class="ul-style black" style="display:none">
 			{% for art in object.arts %}
 				<li>
 					<a class="no-underline" target="_blank"

@@ -273,6 +273,7 @@ tr.bold td {
 	margin-top: 8px;
 }
 .ul-style.black a {
+	display:   inline-block;
 	color:     #333;
 	font-size: 12px !important;
 }
