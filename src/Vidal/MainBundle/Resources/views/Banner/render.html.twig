@@ -6,17 +6,11 @@
 	{% set isProd = app.environment == 'prod' %}
 
 	<div id="{{ group }}" class="banner" style="width:{{ width }}px; height:{{ height }}px">
-		<a href="{{ banner.link }}" class="banner-link" style="width:{{ width }}px; height:{{ height }}px">
-			{% if isSwf %}
-				<div id="{{ group }}_swf">
-					{% if banner.fallback %}
-						<img src="{{ banner.fallback.path }}" style="width:{{ width }}px; height:{{ height }}px"/>
-					{% endif %}
-				</div>
-			{% else %}
-				<img src="{{ banner.banner.path }}" style="width:{{ width }}px; height:{{ height }}px"/>
-			{% endif %}
-		</a>
+		{% if banner.code is not empty %}
+			{{ banner.code|raw }}
+		{% else %}
+
+		{% endif %}
 
 		<a href="{{ banner.link }}" class="banner-link" style="width:{{ width }}px; height:{{ height }}px"></a>
 
@@ -42,7 +36,7 @@
 				$.get(Routing.generate('banner_clicked', {'bannerId': '{{ banner.id }}'}));
 			});
 
-			{% if isSwf %}
+			{% if isSwf and banner.code is empty %}
 			if (!/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
 				swfobject.embedSWF("{{ banner.banner.path }}", "{{ group }}_swf", "{{ width }}", "{{ height }}",
 					"9.0.0", "/expressInstall.swf", null, {wmode: "opaque"});
@@ -50,10 +44,6 @@
 			{% endif %}
 		});
 	</script>
-
-	{% if banner.code is not empty %}
-		{{ banner.code|raw }}
-	{% endif %}
 
 	{% if group == 'banner_top' %}
 		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/banner_top.css') }}"/>

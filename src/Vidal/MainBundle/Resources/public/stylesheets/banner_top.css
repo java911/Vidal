@@ -5,3 +5,6 @@
 	margin: 10px auto -10px;
 	border: none;
 }
+.header {
+	margin-top: 10px !important;
+}
