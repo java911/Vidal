@@ -1,12 +1,13 @@
 {% extends 'VidalDrugBundle::vidal_layout.html.twig' %}
 
 
-{% block title %}
-	<h1>Поиск Google по открытым разделам сайта</h1>
-{% endblock %}
-
-
 {% block vidal %}
+	{% include 'VidalDrugBundle:Drugs:menu_drugs.html.twig' %}
+
+	<div class="description">
+		<span>Поиск Google по открытым разделам сайта</span>
+	</div>
+
 	{# поиск Google custom search #}
 	<script>
 		(function() {
@@ -38,6 +39,9 @@
 		}
 		.gsc-orderby-container * {
 			display: none !important;
+		}
+		.description span {
+			border-bottom: none !important;
 		}
 	</style>
 {% endblock %}

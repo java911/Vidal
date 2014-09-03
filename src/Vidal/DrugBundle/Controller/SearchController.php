@@ -270,9 +270,23 @@ class SearchController extends Controller
 	}
 
 	/**
-	 * @Route("/search/indic", name="searche_indic", options={"expose":true})
-	 *
-	 * @Template("VidalDrugBundle:Search:searche_indic.html.twig")
+	 * @Route("/searche/indic")
+	 */
+	public function indicRedirectAction()
+	{
+		return $this->redirect($this->generateUrl('drugs'), 301);
+	}
+
+	/**
+	 * @Route("/search/disease")
+	 */
+	public function diseaseRedirectAction()
+	{
+		return $this->redirect($this->generateUrl('drugs_disease'), 301);
+	}
+
+	/**
+	 * @Template("VidalDrugBundle:Drug:drugs_indic.html.twig")
 	 */
 	public function searcheIndicAction(Request $request)
 	{
@@ -345,49 +359,6 @@ class SearchController extends Controller
 			'letters' => $letters,
 		);
 
-		//		$pdo  = $em->getConnection();
-		//		$sql  = "
-		//			SELECT DISTINCT LEFT(RusName, 2) as r
-		//			FROM product
-		//			WHERE MarketStatusID IN (1,2,7)
-		//				AND ProductTypeCode IN ('DRUG', 'GOME')
-		//				AND (
-		//				RusName LIKE 'А%'
-		//				OR RusName LIKE 'Б%'
-		//				OR RusName LIKE 'В%'
-		//				OR RusName LIKE 'Г%'
-		//				OR RusName LIKE 'Д%'
-		//				OR RusName LIKE 'Е%'
-		//				OR RusName LIKE 'Ж%'
-		//				OR RusName LIKE 'З%'
-		//				OR RusName LIKE 'И%'
-		//				OR RusName LIKE 'Й%'
-		//				OR RusName LIKE 'К%'
-		//				OR RusName LIKE 'Л%'
-		//				OR RusName LIKE 'М%'
-		//				OR RusName LIKE 'Н%'
-		//				OR RusName LIKE 'О%'
-		//				OR RusName LIKE 'П%'
-		//				OR RusName LIKE 'Р%'
-		//				OR RusName LIKE 'С%'
-		//				OR RusName LIKE 'Т%'
-		//				OR RusName LIKE 'У%'
-		//				OR RusName LIKE 'Ф%'
-		//				OR RusName LIKE 'Х%'
-		//				OR RusName LIKE 'Ц%'
-		//				OR RusName LIKE 'Ч%'
-		//				OR RusName LIKE 'Ш%'
-		//				OR RusName LIKE 'Э%'
-		//				OR RusName LIKE 'Ю%'
-		//				OR RusName LIKE 'Я%'
-		//			)
-		//			ORDER BY r ASC
-		//		";
-		//		$stmt = $pdo->prepare($sql);
-		//		$stmt->execute();
-		//		$subs = $stmt->fetchAll(\PDO::FETCH_COLUMN, 0);
-		//		$params['subs'] = $subs;
-
 		# БАДы только безрецептурные
 		if ($t == 'b') {
 			$n = false;
@@ -428,36 +399,9 @@ class SearchController extends Controller
 	public function googleAction()
 	{
 		$params = array(
-			'title' => 'Поиск Google по открытым разделам сайта',
+			'title'      => 'Поиск Google по открытым разделам сайта',
+			'menu_drugs' => 'google',
 		);
-
-		return $params;
-	}
-
-	/**
-	 * @Route("/search/disease", name="searche_disease")
-	 * @Template("VidalDrugBundle:Search:searche_disease.html.twig")
-	 */
-	public function diseaseAction(Request $request)
-	{
-		$l  = $request->query->get('l', null);
-		$q  = $request->query->get('q', null);
-		$em = $this->getDoctrine()->getManager('drug');
-
-		$params = array(
-			'title' => 'Список болезней по алфавиту',
-			'l'     => $l,
-			'q'     => $q,
-		);
-
-		if ($l) {
-			$articles           = $em->getRepository('VidalDrugBundle:Article')->findDisease($l);
-			$params['articles'] = $this->highlight($articles, $l);
-		}
-		elseif ($q) {
-			$q                  = trim($q);
-			$params['articles'] = $em->getRepository('VidalDrugBundle:Article')->findByQuery($q);
-		}
 
 		return $params;
 	}
@@ -505,31 +449,6 @@ class SearchController extends Controller
 		}
 
 		return $productIds;
-	}
-
-	private function highlight($articles, $l)
-	{
-		foreach ($articles as &$article) {
-			# подсвечиваем заголовок статьи
-			$words = explode(' ', $article['title']);
-			$title = '';
-			foreach ($words as $word) {
-				$firstLetter = mb_strtoupper(mb_substr($word, 0, 1, 'utf-8'), 'utf-8');
-				$title[]     = $firstLetter == $l ? '<b>' . $word . '</b>' : $word;
-			}
-			$article['title'] = implode(' ', $title);
-
-			# подсвечиваем синонимы
-			$words = explode(' ', $article['synonym']);
-			$title = '';
-			foreach ($words as $word) {
-				$firstLetter = mb_strtoupper(mb_substr($word, 0, 1, 'utf-8'), 'utf-8');
-				$title[]     = $firstLetter == $l ? '<b>' . $word . '</b>' : $word;
-			}
-			$article['synonym'] = implode(' ', $title);
-		}
-
-		return $articles;
 	}
 
 	private function excludeBads($articlesRaw, $bads)

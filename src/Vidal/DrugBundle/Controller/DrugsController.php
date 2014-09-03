@@ -829,6 +829,60 @@ class DrugsController extends Controller
 		return $params;
 	}
 
+	/**
+	 * @Route("/drugs/disease", name="disease")
+	 * @Template("VidalDrugBundle:Drugs:disease.html.twig")
+	 */
+	public function diseaseAction(Request $request)
+	{
+		$l  = $request->query->get('l', null);
+		$q  = $request->query->get('q', null);
+		$em = $this->getDoctrine()->getManager('drug');
+
+		$params = array(
+			'title'      => 'Список болезней по алфавиту',
+			'l'          => $l,
+			'q'          => $q,
+			'menu_drugs' => 'disease',
+		);
+
+		if ($l) {
+			$articles           = $em->getRepository('VidalDrugBundle:Article')->findDisease($l);
+			$params['articles'] = $this->highlight($articles, $l);
+		}
+		elseif ($q) {
+			$q                  = trim($q);
+			$params['articles'] = $em->getRepository('VidalDrugBundle:Article')->findByQuery($q);
+		}
+
+		return $params;
+	}
+
+	private function highlight($articles, $l)
+	{
+		foreach ($articles as &$article) {
+			# подсвечиваем заголовок статьи
+			$words = explode(' ', $article['title']);
+			$title = '';
+			foreach ($words as $word) {
+				$firstLetter = mb_strtoupper(mb_substr($word, 0, 1, 'utf-8'), 'utf-8');
+				$title[]     = $firstLetter == $l ? '<b>' . $word . '</b>' : $word;
+			}
+			$article['title'] = implode(' ', $title);
+
+			# подсвечиваем синонимы
+			$words = explode(' ', $article['synonym']);
+			$title = '';
+			foreach ($words as $word) {
+				$firstLetter = mb_strtoupper(mb_substr($word, 0, 1, 'utf-8'), 'utf-8');
+				$title[]     = $firstLetter == $l ? '<b>' . $word . '</b>' : $word;
+			}
+			$article['synonym'] = implode(' ', $title);
+		}
+
+		return $articles;
+	}
+
 	/** Получить массив идентификаторов продуктов */
 	private function getProductIds($products)
 	{
@@ -839,20 +893,6 @@ class DrugsController extends Controller
 		}
 
 		return $productIds;
-	}
-
-	private function getDocumentIds($products)
-	{
-		$documentIds = array();
-
-		foreach ($products as $product) {
-			$key = $product['DocumentID'];
-			if (!isset($documentIds[$key])) {
-				$documentIds[$key] = true;
-			}
-		}
-
-		return array_keys($documentIds);
 	}
 
 	private function strip($string)

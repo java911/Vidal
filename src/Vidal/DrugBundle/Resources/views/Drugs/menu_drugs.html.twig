@@ -1,5 +1,13 @@
 <div class="menu-drugs">
-	<a href="{{ path('interaction') }}" class="linke">Проверка лекарственного взаимодействия</a>
+	<div class="links">
+		<a href="{{ path('interaction') }}" class="link first{{ menu_drugs == 'interaction' ? ' active' }}">
+			Проверка лекарственного взаимодействия
+		</a>
+		<a href="{{ path('searche_google') }}" class="link last{{ menu_drugs == 'google' ? ' active' }}"
+		   title="Поиск Google по открытым разделам сайта">
+			Поиск Google по сайту
+		</a>
+	</div>
 
 	<div class="tabs">
 		<a href="{{ path('searche') }}" {{ menu_drugs == 'searche' ? 'class="active"' }}
@@ -15,6 +23,8 @@
 			href="{{ path('pharm') }}" {{ menu_drugs == 'pharm' ? 'class="active"' }}
 			title="Фармако-терапевтические группы ГосРеестра МинЗдрава РФ">ФТГ</a><a
 			href="{{ path('companies') }}" {{ menu_drugs == 'companies' ? 'class="active"' }}
-			title="Представительства и фирмы-производители">Компании</a>
+			title="Представительства и фирмы-производители">Компании</a><a
+			href="{{ path('disease') }}" {{ menu_drugs == 'disease' ? 'class="active"' }}
+			title="Представительства и фирмы-производители">Заболевания</a>
 	</div>
 </div>
