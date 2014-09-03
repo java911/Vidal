@@ -9,7 +9,15 @@
 		{% if banner.code is not empty %}
 			{{ banner.code|raw }}
 		{% else %}
-
+			{% if isSwf %}
+				<div id="{{ group }}_swf">
+					{% if banner.fallback %}
+						<img src="{{ banner.fallback.path }}" style="width:{{ width }}px; height:{{ height }}px"/>
+					{% endif %}
+				</div>
+			{% else %}
+				<img src="{{ banner.banner.path }}" style="width:{{ width }}px; height:{{ height }}px"/>
+			{% endif %}
 		{% endif %}
 
 		<a href="{{ banner.link }}" class="banner-link" style="width:{{ width }}px; height:{{ height }}px"></a>

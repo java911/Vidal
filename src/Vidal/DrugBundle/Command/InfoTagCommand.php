@@ -19,11 +19,16 @@ class InfoTagCommand extends ContainerAwareCommand
 		ini_set('memory_limit', -1);
 		$output->writeln('--- vidal:info_tag started');
 
-		$em = $this->getContainer()->get('doctrine')->getManager('drug');
+		$em  = $this->getContainer()->get('doctrine')->getManager('drug');
 		$pdo = $em->getConnection();
 
 		$pdo->prepare('SET foreign_key_checks = 0')->execute();
 		$pdo->prepare('UPDATE infopage SET tag_id = NULL')->execute();
+
+		$tags = $pdo->prepare('SELECT id, InfoPageID FROM tag')->execute()->fetchAll();
+
+		var_dump($tags);
+		exit;
 
 		$em->createQuery("
 			UPDATE VidalDrugBundle:InfoPage i
