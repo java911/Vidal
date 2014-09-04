@@ -109,8 +109,10 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 
 		foreach ($articles as $article) {
 			if ($article->getRubrique() && $article->getRubrique()->getEnabled() && $article->getEnabled()) {
-				$url = $urlset2->addChild('url');
-				$loc = "http://www.vidal.ru/encyclopedia/{$article['rubrique']}/{$article['link']}";
+				$url      = $urlset2->addChild('url');
+				$rubrique = $article->getRubrique()->getRubrique();
+				$link     = $article->getLink();
+				$loc      = "http://www.vidal.ru/encyclopedia/{$rubrique}/{$link}";
 				$url->addChild('loc', $loc);
 				$url->addChild('lastmod', $lastMod);
 				$url->addChild('changefreq', 'daily');
