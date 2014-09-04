@@ -280,6 +280,8 @@ class MarketController extends Controller{
             $array = $this->shippingTitlePiluli;
         }elseif($group == 'eapteka'){
             $array = $this->shippingTitleEapteka;
+        }elseif($group == 'wer'){
+            $array = $this->shippingTitleWer;
         }else{
             $array = $this->shippingTitle;
         }
@@ -331,7 +333,7 @@ class MarketController extends Controller{
                 $sum = $basket->getSumma();
                 $order->setSum($sum[$group]);
                 $succes = false;
-                if ($group == 'zdravzona'){
+                if ($group == 'zdravzona' || $group == 'wer'){
                     $succes = $this->mailSend($group, $order, $basket);
                     $succes = true;
                 }else{
@@ -462,11 +464,16 @@ class MarketController extends Controller{
         $basket = $basket->getAll();
         $basket = $basket[$group];
 
+        if ($group == 'zdravzona'){
+            $email = array('zakaz@zdravzona.ru');
+        }else{
+            $email = array('admin@wer.ru','wer.marketing@ya.ru ');
+        }
 
         # уведомление магазина о покупке
         $this->get('email.service')->send(
 //            "tulupov.m@gmail.com",
-            array('zakaz@zdravzona.ru'),
+            $email,
             array('VidalMainBundle:Email:market_notice.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa, 'ship' => $this->shippingTitle[$order->getShipping()] )),
             'Заказ с сайта Vidal.ru'
         );
@@ -521,6 +528,8 @@ class MarketController extends Controller{
                 $array = $this->shippingTitlePiluli;
             }elseif($group == 'eapteka'){
                 $array = $this->shippingTitleEapteka;
+            }elseif($group == 'wer'){
+                $array = $this->shippingTitleWer;
             }else{
                 $array = $this->shippingTitle;
             }
