@@ -74,7 +74,7 @@
 					   href="{{ path('art', {'url':art.rubrique.url ~ '/' ~ (art.type ? art.type.url ~ '/') ~ (art.category ? art.category.url ~ '/') ~ art.link ~ '~' ~ art.id }) }}">{{ art.title|raw }}</a>
 
 					<div class="anons-info">
-						Рубрика: <a target="_blank" href="{{ path('vracham') }}">Статьи специалистам</a>
+						Рубрика: <a target="_blank" href="{{ path('art', {'url':art.rubrique.url}) }}">{{ art.rubrique.title }}</a>
 					</div>
 				</li>
 			{% endfor %}
