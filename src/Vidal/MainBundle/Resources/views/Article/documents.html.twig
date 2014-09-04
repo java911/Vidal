@@ -16,6 +16,8 @@
 					<a href="{{ path('publication', {'id':publication.id}) }}" target="_blank" class="no-underline">
 						{{ publication.title|raw }}
 					</a>
+
+					<div class="anons-info">{{ publication.date|date('d.m.Y') }}</div>
 				</li>
 			{% endfor %}
 		</ul>
@@ -41,6 +43,12 @@
 					   target="_blank" class="no-underline">
 						{{ article.title|raw }}
 					</a>
+
+					<div class="anons-info">
+						Рубрика:
+						<a target="_blank"
+						   href="{{ path('rubrique', {'rubrique':article.rubrique.rubrique}) }}">{{ article.rubrique }}</a>
+					</div>
 				</li>
 			{% endfor %}
 		</ul>
@@ -64,6 +72,10 @@
 				<li>
 					<a class="no-underline" target="_blank"
 					   href="{{ path('art', {'url':art.rubrique.url ~ '/' ~ (art.type ? art.type.url ~ '/') ~ (art.category ? art.category.url ~ '/') ~ art.link ~ '~' ~ art.id }) }}">{{ art.title|raw }}</a>
+
+					<div class="anons-info">
+						Рубрика: <a target="_blank" href="{{ path('vracham') }}">Статьи специалистам</a>
+					</div>
 				</li>
 			{% endfor %}
 		</ul>

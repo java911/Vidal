@@ -644,6 +644,13 @@ tr.bold td {
 	color:       black;
 	margin-left: 4px;
 }
+.anons-info {
+	font-size:  12px;
+	margin-top: 2px;
+}
+.anons-info, .anons-info * {
+	color: #999 !important;
+}
 .announcement ul {
 	display:   none;
 	font-size: 13px;
