@@ -1220,7 +1220,7 @@ tr.bold td {
 }
 .tabs a {
 	display:         inline-block;
-	padding:         5px 6px 6px 6px;
+	padding:         5px 5px 6px 6px;
 	text-decoration: none;
 	color:           #2e3f51;
 	font-weight:     bold;
