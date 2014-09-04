@@ -2,7 +2,7 @@
 {% if object.publications|length %}
 	<div class="announcement">
 		<div class="anons-footer no-selection">
-			Новости по {{ label }} <span>«{{ item }}»</span>
+			Новости по {{ label }} <span>«{{ item|raw }}»</span>
 			<i>{{ object.publications|length }}</i>
 		</div>
 		<ul class="ul-style black" style="display:none">
@@ -21,7 +21,7 @@
 {% if object.articles|length %}
 	<div class="announcement">
 		<div class="anons-footer no-selection">
-			Материалы медицинской энциклопедии по {{ label }} <span>«{{ item }}»</span>
+			Материалы медицинской энциклопедии по {{ label }} <span>«{{ item|raw }}»</span>
 			<i>{{ object.articles|length }}</i>
 		</div>
 		<ul class="ul-style black" style="display:none">
@@ -41,7 +41,7 @@
 {% if object.arts|length %}
 	<div class="announcement">
 		<div class="anons-footer no-selection">
-			Материалы для специалистов по {{ label }} <span>«{{ item }}»</span>
+			Материалы для специалистов по {{ label }} <span>«{{ item|raw }}»</span>
 			<i>{{ object.arts|length }}</i>
 		</div>
 		<ul class="ul-style black" style="display:none">
