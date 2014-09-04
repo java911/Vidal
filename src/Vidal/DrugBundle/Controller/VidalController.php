@@ -409,7 +409,7 @@ class VidalController extends Controller
 
 		$product = $em->getRepository('VidalDrugBundle:Product')->findByProductID($ProductID);
 
-		if (!$product) {
+		if (!$product || $product->getInactive()) {
 			throw $this->createNotFoundException();
 		}
 
