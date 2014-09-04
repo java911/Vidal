@@ -108,12 +108,14 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 				')->getResult();
 
 		foreach ($articles as $article) {
-			$url = $urlset2->addChild('url');
-			$loc = "http://www.vidal.ru/encyclopedia/{$article['rubrique']}/{$article['link']}";
-			$url->addChild('loc', $loc);
-			$url->addChild('lastmod', $lastMod);
-			$url->addChild('changefreq', 'daily');
-			$url->addChild('priority', '0.8');
+			if ($article->getEnabled()) {
+				$url = $urlset2->addChild('url');
+				$loc = "http://www.vidal.ru/encyclopedia/{$article['rubrique']}/{$article['link']}";
+				$url->addChild('loc', $loc);
+				$url->addChild('lastmod', $lastMod);
+				$url->addChild('changefreq', 'daily');
+				$url->addChild('priority', '0.8');
+			}
 		}
 
 		# новости
@@ -124,12 +126,14 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 				')->getResult();
 
 		foreach ($publications as $publication) {
-			$url = $urlset2->addChild('url');
-			$loc = "http://www.vidal.ru/novosti/{$publication['id']}";
-			$url->addChild('loc', $loc);
-			$url->addChild('lastmod', $lastMod);
-			$url->addChild('changefreq', 'daily');
-			$url->addChild('priority', '0.8');
+			if ($publication->getEnabled()) {
+				$url = $urlset2->addChild('url');
+				$loc = "http://www.vidal.ru/novosti/{$publication['id']}";
+				$url->addChild('loc', $loc);
+				$url->addChild('lastmod', $lastMod);
+				$url->addChild('changefreq', 'daily');
+				$url->addChild('priority', '0.8');
+			}
 		}
 
 		# компании

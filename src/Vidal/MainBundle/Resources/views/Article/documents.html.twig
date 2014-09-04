@@ -1,5 +1,10 @@
 {# новости #}
-{% if object.publications|length %}
+{% set hasItems = false %}
+{% for publication in object.publications if publication.enabled %}
+	{% set hasItems = true %}
+{% endfor %}
+
+{% if hasItems %}
 	<div class="announcement">
 		<div class="anons-footer no-selection">
 			Новости по {{ label }} <span>«{{ item|raw }}»</span>
@@ -18,7 +23,12 @@
 {% endif %}
 
 {# энциклопедия #}
-{% if object.articles|length %}
+{% set hasItems = false %}
+{% for article in object.articles if article.enabled %}
+	{% set hasItems = true %}
+{% endfor %}
+
+{% if hasItems %}
 	<div class="announcement">
 		<div class="anons-footer no-selection">
 			Материалы медицинской энциклопедии по {{ label }} <span>«{{ item|raw }}»</span>
@@ -38,6 +48,11 @@
 {% endif %}
 
 {# специалистам #}
+{% set hasItems = false %}
+{% for art in object.arts if art.enabled %}
+	{% set hasItems = true %}
+{% endfor %}
+
 {% if object.arts|length %}
 	<div class="announcement">
 		<div class="anons-footer no-selection">
