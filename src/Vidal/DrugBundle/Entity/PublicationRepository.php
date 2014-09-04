@@ -73,4 +73,32 @@ class PublicationRepository extends EntityRepository
 		')->setParameter('now', new \DateTime())
 			->setParameter('tagId', $tagId);
 	}
+
+	public function findByTagWord($tag)
+	{
+		$tagSearch = $tag->getSearch();
+		$text      = empty($tagSearch) ? $tag->getText() : $tagSearch;
+
+		$pdo  = $this->_em->getConnection();
+		$stmt = $pdo->prepare("SELECT id FROM publication WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
+		$stmt->execute();
+
+		$ids = array();
+		$raw = $stmt->fetchAll();
+
+		foreach ($raw as $r) {
+			$ids[] = $r['id'];
+		}
+
+		if (empty($ids)) {
+			return null;
+		}
+
+		return $this->_em->createQuery('
+			SELECT a
+			FROM VidalDrugBundle:Publication a
+			WHERE a.id IN (:ids)
+		')->setParameter('ids', $ids)
+			->getResult();
+	}
 }

@@ -14,6 +14,35 @@ class TagController extends Controller
 	const PHARM_PER_PAGE = 4;
 
 	/**
+	 * @Route("/tag/list/{tagId}", name="tag_list")
+	 * @Template("VidalMainBundle:Tag:tag_list.html.twig")
+	 */
+	public function tagListAction($tagId)
+	{
+		$em  = $this->getDoctrine()->getManager('drug');
+		$tag = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
+
+		if (!$tag) {
+			throw $this->createNotFoundException();
+		}
+
+		$params = array(
+			'tag'   => $tag,
+			'title' => 'Материалы по слову в теге',
+		);
+
+		$tagSearch = $tag->getSearch();
+		$text      = empty($tagSearch) ? $tag->getText() : $tagSearch;
+
+		$params['articles']     = $em->getRepository('VidalDrugBundle:Article')->findByTagWord($tag);
+		$params['publications'] = $em->getRepository('VidalDrugBundle:Publication')->findByTagWord($tag);
+		$params['arts']         = $em->getRepository('VidalDrugBundle:Art')->findByTagWord($tag);
+		$params['text']         = $text;
+
+		return $params;
+	}
+
+	/**
 	 * @Route("/tag/news/{id}", name="tag_news")
 	 * @Template("VidalMainBundle:Tag:tag_news.html.twig")
 	 */

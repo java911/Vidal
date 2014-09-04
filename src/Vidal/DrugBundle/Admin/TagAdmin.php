@@ -56,13 +56,19 @@ class TagAdmin extends Admin
 					'delete'   => array(),
 					'tagClean' => array('template' => 'VidalDrugBundle:Sonata:tag_clean.html.twig'),
 					'tagSet'   => array('template' => 'VidalDrugBundle:Sonata:tag_set.html.twig'),
+					'tagUnset' => array('template' => 'VidalDrugBundle:Sonata:tag_unset.html.twig'),
+					'tagList'  => array('template' => 'VidalDrugBundle:Sonata:tag_list.html.twig'),
 				)
 			));
 	}
 
 	protected function configureRoutes(RouteCollection $collection)
 	{
-		$collection->add('tagSet')->add('tagClean');
-
+		$collection
+			->add('tagSet')
+			->add('tagClean')
+			->add('tagUnset')
+			->add('tagList')
+		;
 	}
 }

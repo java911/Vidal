@@ -94,4 +94,32 @@ class ArtRepository extends EntityRepository
 			->setParameter('tagId', $tagId)
 			->getResult();
 	}
+
+	public function findByTagWord($tag)
+	{
+		$tagSearch = $tag->getSearch();
+		$text      = empty($tagSearch) ? $tag->getText() : $tagSearch;
+
+		$pdo  = $this->_em->getConnection();
+		$stmt = $pdo->prepare("SELECT id FROM art WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
+		$stmt->execute();
+
+		$articleIds = array();
+		$raw = $stmt->fetchAll();
+
+		foreach ($raw as $a) {
+			$articleIds[] = $a['id'];
+		}
+
+		if (empty($articleIds)) {
+			return null;
+		}
+
+		return $this->_em->createQuery('
+			SELECT a
+			FROM VidalDrugBundle:Art a
+			WHERE a.id IN (:ids)
+		')->setParameter('ids', $articleIds)
+			->getResult();
+	}
 }

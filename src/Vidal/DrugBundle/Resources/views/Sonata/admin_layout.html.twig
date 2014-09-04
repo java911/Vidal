@@ -183,16 +183,33 @@ file that was distributed with this source code.
 		$(document).ready(function() {
 			$('.tag-text').editable(Routing.generate('admin_tag_editable'), {submit: 'OK', width: '300px'});
 			$('.tag-search').editable(Routing.generate('admin_tag_search'), {submit: 'OK', width: '300px', 'placeholder': ''});
-			$('.tag-set').click(function() {
-				$.getJSON(this.href);
-				return false;
+			$('.tag-set').click(function(e) {
+				e.preventDefault();
+				var question = confirm('Выставляем по всему слову целиком?');
+				var href = question ? this.href : this.href + '?partly';
+				$.getJSON(href, function() {
+					alert('Тег по слову выставлен');
+				});
 			});
-			$('.tag-clean').click(function() {
-				$.getJSON(this.href);
-				return false;
+			$('.tag-clean').click(function(e) {
+				e.preventDefault();
+				$.getJSON(this.href, function() {
+					alert('Были очищены все связи этого тега с материалами');
+				});
+			});
+			$('.tag-unset').click(function(e) {
+				e.preventDefault();
+				$.getJSON(this.href, function() {
+					alert('Были очищены взязи с материалами по слову');
+				});
 			});
 		});
 	</script>
+	<style type="text/css">
+		.btn-group {
+			width: 220px !important;
+		}
+	</style>
 	{% endif %}
 
 	{# если редактируем админку со стотьями специалистам - подключаем обработчик смены списка категорий/подкатегорий #}

@@ -1,0 +1,32 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block content %}
+	{% if articles is not empty %}
+		<div class="title">Новости по теме <span>"{{ text }}"</span></div>
+		{% include 'VidalMainBundle:Index:render_news.html.twig' with {'news':publications} %}
+	{% else %}
+		<div class="title">Не найдено новостей по теме <span>"{{ text }}"</span></div>
+	{% endif %}
+
+	{% if articles is not empty %}
+		<div class="title">Статьи медицинской энциклопедии по теме <span>"{{ text }}"</span></div>
+		{% include 'VidalMainBundle:Index:render_articles.html.twig' with {'articles':articles} %}
+	{% else %}
+		<div class="title">Не найдено статей медицинской энциклопедии по теме <span>"{{ text }}"</span></div>
+	{% endif %}
+
+	{% if arts is not empty %}
+		<div class="title">Статьи для специалистов по теме <span>"{{ text }}"</span></div>
+		{% include 'VidalMainBundle:Index:render_articles.html.twig' with {'articles':arts} %}
+	{% else  %}
+		<div class="title">Не найдено статей для специалистов по теме <span>"{{ text }}"</span></div>
+	{% endif %}
+
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/publication.css') }}"/>
+{% endblock %}
