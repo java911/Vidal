@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Lsw\SecureControllerBundle\Annotation\Secure;
 
 class TagController extends Controller
 {
@@ -16,6 +17,7 @@ class TagController extends Controller
 	/**
 	 * @Route("/tag/list/{tagId}", name="tag_list")
 	 * @Template("VidalMainBundle:Tag:tag_list.html.twig")
+	 * @Secure(roles="ROLE_ADMIN")
 	 */
 	public function tagListAction($tagId)
 	{
