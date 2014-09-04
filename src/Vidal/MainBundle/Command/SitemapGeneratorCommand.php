@@ -101,14 +101,14 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 
 		# статьи энциклопедии
 		$articles = $em->createQuery('
-					SELECT a.link, r.rubrique, a.enabled
+					SELECT a
 					FROM VidalDrugBundle:Article a
 					JOIN a.rubrique r
 					WHERE a.enabled = TRUE
 				')->getResult();
 
 		foreach ($articles as $article) {
-			if ($article['enabled']) {
+			if ($article->getRubrique() && $article->getRubrique()->getEnabled() && $article->getEnabled()) {
 				$url = $urlset2->addChild('url');
 				$loc = "http://www.vidal.ru/encyclopedia/{$article['rubrique']}/{$article['link']}";
 				$url->addChild('loc', $loc);

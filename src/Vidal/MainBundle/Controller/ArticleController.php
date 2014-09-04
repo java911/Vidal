@@ -27,7 +27,7 @@ class ArticleController extends Controller
 		$rubrique = $em->getRepository('VidalDrugBundle:ArticleRubrique')->findOneByRubrique($rubrique);
 		$article  = $em->getRepository('VidalDrugBundle:Article')->findOneByLink($link);
 
-		if (!$rubrique || !$article || $article->getEnabled() === false) {
+		if (!$rubrique || !$rubrique->getEnabled() || !$article || $article->getEnabled() === false) {
 			throw $this->createNotFoundException();
 		}
 
@@ -417,7 +417,10 @@ class ArticleController extends Controller
 			);
 		}
 		elseif ($count == 2) {
-			$type                 = $em->getRepository('VidalDrugBundle:ArtType')->rubriqueUrl($rubrique, $parts[1]);
+			$type = $em->getRepository('VidalDrugBundle:ArtType')->rubriqueUrl($rubrique, $parts[1]);
+			if (!$type || !$type->getEnabled()) {
+				throw $this->createNotFoundException();
+			}
 			$params['type']       = $type;
 			$params['categories'] = $em->getRepository('VidalDrugBundle:ArtCategory')->findByType($type);
 			$params['pagination'] = $this->get('knp_paginator')->paginate(
@@ -427,9 +430,13 @@ class ArticleController extends Controller
 			);
 		}
 		elseif ($count == 3) {
-			$type                 = $em->getRepository('VidalDrugBundle:ArtType')->rubriqueUrl($rubrique, $parts[1]);
-			$params['type']       = $type;
-			$params['category']   = $em->getRepository('VidalDrugBundle:ArtCategory')->typeUrl($type, $parts[2]);
+			$type               = $em->getRepository('VidalDrugBundle:ArtType')->rubriqueUrl($rubrique, $parts[1]);
+			$params['type']     = $type;
+			$category           = $em->getRepository('VidalDrugBundle:ArtCategory')->typeUrl($type, $parts[2]);
+			$params['category'] = $category;
+			if (!$type || !$type->getEnabled() || !$category || !$category->getEnabled()) {
+				throw $this->createNotFoundException();
+			}
 			$params['pagination'] = $this->get('knp_paginator')->paginate(
 				$em->getRepository('VidalDrugBundle:Art')->getQueryByCategory($params['category']),
 				$request->query->get('p', 1),
@@ -453,7 +460,13 @@ class ArticleController extends Controller
 
 		# отображение отдельной статьи своим шаблоном
 		if (isset($params['article'])) {
-			if ($params['article']->getEnabled() === false) {
+			if (!$params['article']->getEnabled() || !$params['article']->getRubrique()->getEnabled()) {
+				throw $this->createNotFoundException();
+			}
+			if ($params['article']->getType() && !$params['article']->getType()->getEnabled()) {
+				throw $this->createNotFoundException();
+			}
+			if ($params['article']->getCategory() && !$params['article']->getCategory()->getEnabled()) {
 				throw $this->createNotFoundException();
 			}
 

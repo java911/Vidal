@@ -22,6 +22,10 @@ class ArtRepository extends EntityRepository
 
 	public function getQueryByType($type)
 	{
+		if (!$type) {
+			return null;
+		}
+
 		return $this->_em->createQuery('
 			SELECT a
 			FROM VidalDrugBundle:Art a
@@ -36,6 +40,10 @@ class ArtRepository extends EntityRepository
 
 	public function getQueryByCategory($category)
 	{
+		if (!$category) {
+			return null;
+		}
+
 		return $this->_em->createQuery('
 			SELECT a
 			FROM VidalDrugBundle:Art a
