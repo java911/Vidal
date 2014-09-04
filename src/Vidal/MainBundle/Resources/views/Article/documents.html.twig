@@ -1,8 +1,13 @@
 {# новости #}
-{% if object.publications|length %}
+{% set hasItems = false %}
+{% for publication in object.publications if publication.enabled %}
+	{% set hasItems = true %}
+{% endfor %}
+
+{% if hasItems %}
 	<div class="announcement">
 		<div class="anons-footer no-selection">
-			Новости по {{ label }} <span>«{{ item }}»</span>
+			Новости по {{ label }} <span>«{{ item|raw }}»</span>
 			<i>{{ object.publications|length }}</i>
 		</div>
 		<ul class="ul-style black" style="display:none">
@@ -11,6 +16,8 @@
 					<a href="{{ path('publication', {'id':publication.id}) }}" target="_blank" class="no-underline">
 						{{ publication.title|raw }}
 					</a>
+
+					<div class="anons-info">{{ publication.date|date('d.m.Y') }}</div>
 				</li>
 			{% endfor %}
 		</ul>
@@ -18,10 +25,15 @@
 {% endif %}
 
 {# энциклопедия #}
-{% if object.articles|length %}
+{% set hasItems = false %}
+{% for article in object.articles if article.enabled %}
+	{% set hasItems = true %}
+{% endfor %}
+
+{% if hasItems %}
 	<div class="announcement">
 		<div class="anons-footer no-selection">
-			Материалы медицинской энциклопедии по {{ label }} <span>«{{ item }}»</span>
+			Материалы медицинской энциклопедии по {{ label }} <span>«{{ item|raw }}»</span>
 			<i>{{ object.articles|length }}</i>
 		</div>
 		<ul class="ul-style black" style="display:none">
@@ -31,6 +43,12 @@
 					   target="_blank" class="no-underline">
 						{{ article.title|raw }}
 					</a>
+
+					<div class="anons-info">
+						Рубрика:
+						<a target="_blank"
+						   href="{{ path('rubrique', {'rubrique':article.rubrique.rubrique}) }}">{{ article.rubrique }}</a>
+					</div>
 				</li>
 			{% endfor %}
 		</ul>
@@ -38,10 +56,15 @@
 {% endif %}
 
 {# специалистам #}
+{% set hasItems = false %}
+{% for art in object.arts if art.enabled %}
+	{% set hasItems = true %}
+{% endfor %}
+
 {% if object.arts|length %}
 	<div class="announcement">
 		<div class="anons-footer no-selection">
-			Материалы для специалистов по {{ label }} <span>«{{ item }}»</span>
+			Материалы для специалистов по {{ label }} <span>«{{ item|raw }}»</span>
 			<i>{{ object.arts|length }}</i>
 		</div>
 		<ul class="ul-style black" style="display:none">
@@ -49,6 +72,10 @@
 				<li>
 					<a class="no-underline" target="_blank"
 					   href="{{ path('art', {'url':art.rubrique.url ~ '/' ~ (art.type ? art.type.url ~ '/') ~ (art.category ? art.category.url ~ '/') ~ art.link ~ '~' ~ art.id }) }}">{{ art.title|raw }}</a>
+
+					<div class="anons-info">
+						Рубрика: <a target="_blank" href="{{ path('vracham') }}">Статьи специалистам</a>
+					</div>
 				</li>
 			{% endfor %}
 		</ul>

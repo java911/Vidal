@@ -27,7 +27,7 @@ class ArticleController extends Controller
 		$rubrique = $em->getRepository('VidalDrugBundle:ArticleRubrique')->findOneByRubrique($rubrique);
 		$article  = $em->getRepository('VidalDrugBundle:Article')->findOneByLink($link);
 
-		if (!$rubrique || !$article) {
+		if (!$rubrique || !$article || $article->getEnabled() === false) {
 			throw $this->createNotFoundException();
 		}
 
@@ -453,6 +453,10 @@ class ArticleController extends Controller
 
 		# отображение отдельной статьи своим шаблоном
 		if (isset($params['article'])) {
+			if ($params['article']->getEnabled() === false) {
+				throw $this->createNotFoundException();
+			}
+
 			return $this->render('VidalMainBundle:Article:art_item.html.twig', $params);
 		}
 

@@ -178,7 +178,7 @@ class Product
 	 * @ORM\JoinTable(name="publication_product",
 	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")})
-	 * @ORM\OrderBy({"created" = "DESC"})
+	 * @ORM\OrderBy({"date" = "DESC"})
 	 */
 	protected $publications;
 

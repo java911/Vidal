@@ -28,7 +28,7 @@ class NewsController extends Controller
 		$em = $this->getDoctrine()->getManager('drug');
 		$publication = $em->getRepository('VidalDrugBundle:Publication')->findOneById($id);
 
-		if (!$publication) {
+		if (!$publication || $publication->getEnabled() === false) {
 			throw $this->createNotFoundException();
 		}
 

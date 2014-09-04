@@ -208,10 +208,10 @@ h1 span {
 .linke:hover {
 	color: #d71344;
 }
-.links {
+.menu-buttons {
 	margin-bottom: 13px;
 }
-.link {
+.btn-blue {
 	display:             inline-block;
 	padding:             6px 16px;
 	border:              0;
@@ -222,17 +222,17 @@ h1 span {
 	color:               #FFF;
 	text-decoration:     none;
 }
-.link.active {
+.btn-blue.active {
 	box-shadow: inset 0 0 10px #333;
 }
-.link.last {
+.btn-blue.last {
 	float: right;
 }
-.link:hover {
+.btn-blue:hover {
 	background-position: 0 -5px;
 	border-bottom-color: #4e7199;
 }
-.link:active {
+.btn-blue:active {
 	position: relative;
 	top:      1px;
 }
@@ -643,6 +643,13 @@ tr.bold td {
 .anons-footer span {
 	color:       black;
 	margin-left: 4px;
+}
+.anons-info {
+	font-size:  12px;
+	margin-top: 2px;
+}
+.anons-info, .anons-info * {
+	color: #999 !important;
 }
 .announcement ul {
 	display:   none;
@@ -1220,7 +1227,7 @@ tr.bold td {
 }
 .tabs a {
 	display:         inline-block;
-	padding:         5px 6px 6px 6px;
+	padding:         5px 5px 6px 6px;
 	text-decoration: none;
 	color:           #2e3f51;
 	font-weight:     bold;
@@ -1355,6 +1362,9 @@ tr.bold td {
 	overflow:  hidden;
 	max-width: 520px;
 	font-size: 14px;
+}
+.text * {
+	font-family: inherit !important;
 }
 .article .text, .publication .text {
 	padding: 0;
