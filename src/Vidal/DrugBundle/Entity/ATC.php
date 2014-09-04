@@ -61,7 +61,7 @@ class ATC
 	 * @ORM\JoinTable(name="publication_atc",
 	 *        joinColumns={@ORM\JoinColumn(name="ATCCode", referencedColumnName="ATCCode")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")})
-	 * @ORM\OrderBy({"created" = "DESC"})
+	 * @ORM\OrderBy({"date" = "DESC"})
 	 */
 	protected $publications;
 

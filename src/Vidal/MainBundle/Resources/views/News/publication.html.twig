@@ -64,7 +64,7 @@
 		</div>
 
 		<div class="publication-footer">
-			<span class="publication-date">{{ publication.created|date('d.m.Y') }}</span>
+			<span class="publication-date">{{ publication.date|date('d.m.Y') }}</span>
 		</div>
 
 		{% if is_granted('ROLE_ADMIN') %}

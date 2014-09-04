@@ -54,7 +54,7 @@ class Nozology
 	 * @ORM\JoinTable(name="publication_n",
 	 *        joinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")})
-	 * @ORM\OrderBy({"created" = "DESC"})
+	 * @ORM\OrderBy({"date" = "DESC"})
 	 */
 	protected $publications;
 

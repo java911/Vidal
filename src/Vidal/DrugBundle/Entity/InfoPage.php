@@ -82,7 +82,7 @@ class InfoPage
 	 * @ORM\JoinTable(name="publication_infopage",
 	 *        joinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")})
-	 * @ORM\OrderBy({"created" = "DESC"})
+	 * @ORM\OrderBy({"date" = "DESC"})
 	 */
 	protected $publications;
 

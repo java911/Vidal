@@ -60,7 +60,7 @@ class Molecule
 	 * @ORM\JoinTable(name="publication_molecule",
 	 *        joinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")})
-	 * @ORM\OrderBy({"created" = "DESC"})
+	 * @ORM\OrderBy({"date" = "DESC"})
 	 */
 	protected $publications;
 
