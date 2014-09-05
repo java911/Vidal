@@ -15,11 +15,11 @@ class TagController extends Controller
 	const PHARM_PER_PAGE = 4;
 
 	/**
-	 * @Route("/tag/list/{tagId}", name="tag_list")
+	 * @Route("/tag/list/{tagId}/{partly}", name="tag_list")
 	 * @Template("VidalMainBundle:Tag:tag_list.html.twig")
 	 * @Secure(roles="ROLE_ADMIN")
 	 */
-	public function tagListAction($tagId)
+	public function tagListAction($tagId, $partly = false)
 	{
 		$em  = $this->getDoctrine()->getManager('drug');
 		$tag = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
@@ -36,10 +36,11 @@ class TagController extends Controller
 		$tagSearch = $tag->getSearch();
 		$text      = empty($tagSearch) ? $tag->getText() : $tagSearch;
 
-		$params['articles']     = $em->getRepository('VidalDrugBundle:Article')->findByTagWord($tag);
-		$params['publications'] = $em->getRepository('VidalDrugBundle:Publication')->findByTagWord($tag);
-		$params['arts']         = $em->getRepository('VidalDrugBundle:Art')->findByTagWord($tag);
+		$params['articles']     = $em->getRepository('VidalDrugBundle:Article')->findByTagWord($tag, $partly);
+		$params['publications'] = $em->getRepository('VidalDrugBundle:Publication')->findByTagWord($tag, $partly);
+		$params['arts']         = $em->getRepository('VidalDrugBundle:Art')->findByTagWord($tag, $partly);
 		$params['text']         = $text;
+		$params['partly']       = $partly;
 
 		return $params;
 	}

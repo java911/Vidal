@@ -54,14 +54,15 @@ class TagAdmin extends Admin
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(
-					'edit'         => array(),
-					'delete'       => array(),
-					'tagClean'     => array('template' => 'VidalDrugBundle:Sonata:tag_clean.html.twig'),
-					'tagSet'       => array('template' => 'VidalDrugBundle:Sonata:tag_set.html.twig'),
-					'tagSetPartly' => array('template' => 'VidalDrugBundle:Sonata:tag_set_partly.html.twig'),
-					'tagUnset'     => array('template' => 'VidalDrugBundle:Sonata:tag_unset.html.twig'),
+					'edit'           => array(),
+					'delete'         => array(),
+					'tagClean'       => array('template' => 'VidalDrugBundle:Sonata:tag_clean.html.twig'),
+					'tagSet'         => array('template' => 'VidalDrugBundle:Sonata:tag_set.html.twig'),
+					'tagSetPartly'   => array('template' => 'VidalDrugBundle:Sonata:tag_set_partly.html.twig'),
+					'tagUnset'       => array('template' => 'VidalDrugBundle:Sonata:tag_unset.html.twig'),
 					'tagUnsetPartly' => array('template' => 'VidalDrugBundle:Sonata:tag_unset_partly.html.twig'),
-					'tagList'      => array('template' => 'VidalDrugBundle:Sonata:tag_list.html.twig'),
+					'tagList'        => array('template' => 'VidalDrugBundle:Sonata:tag_list_partly.html.twig'),
+					'tagListAll'     => array('template' => 'VidalDrugBundle:Sonata:tag_list.html.twig'),
 				)
 			));
 	}
@@ -74,6 +75,7 @@ class TagAdmin extends Admin
 			->add('tagClean')
 			->add('tagUnset')
 			->add('tagUnsetPartly')
-			->add('tagList');
+			->add('tagList')
+			->add('tagListAll');
 	}
 }

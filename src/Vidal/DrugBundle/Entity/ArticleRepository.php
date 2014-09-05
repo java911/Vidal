@@ -156,17 +156,30 @@ class ArticleRepository extends EntityRepository
 			->getResult();
 	}
 
-	public function findByTagWord($tag)
+	public function findByTagWord($tag, $partly)
 	{
 		$tagSearch = $tag->getSearch();
 		$text      = empty($tagSearch) ? $tag->getText() : $tagSearch;
+		$tagId     = $tag->getId();
 
 		$pdo  = $this->_em->getConnection();
-		$stmt = $pdo->prepare("SELECT id FROM article WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
+		$stmt = $partly
+			? $pdo->prepare("
+				SELECT id
+				FROM article a
+				JOIN article_tag a_t ON a_t.article_id = a.id
+				WHERE a_t.tag_id = $tagId
+				 	AND (a.title REGEXP '[[:<:]]{$text}[[:>:]]' OR a.body REGEXP '[[:<:]]{$text}[[:>:]]' OR a.announce REGEXP '[[:<:]]{$text}[[:>:]]')")
+			: $pdo->prepare("
+				SELECT id
+				FROM article a
+				JOIN article_tag a_t ON a_t.article_id = a.id
+				WHERE a_t.tag_id = $tagId");
+
 		$stmt->execute();
 
 		$articleIds = array();
-		$raw = $stmt->fetchAll();
+		$raw        = $stmt->fetchAll();
 
 		foreach ($raw as $a) {
 			$articleIds[] = $a['id'];

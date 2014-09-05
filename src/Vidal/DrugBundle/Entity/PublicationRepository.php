@@ -74,13 +74,25 @@ class PublicationRepository extends EntityRepository
 			->setParameter('tagId', $tagId);
 	}
 
-	public function findByTagWord($tag)
+	public function findByTagWord($tag, $partly)
 	{
 		$tagSearch = $tag->getSearch();
 		$text      = empty($tagSearch) ? $tag->getText() : $tagSearch;
+		$tagId     = $tag->getId();
 
 		$pdo  = $this->_em->getConnection();
-		$stmt = $pdo->prepare("SELECT id FROM publication WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
+		$stmt = $partly
+			? $pdo->prepare("
+				SELECT id
+				FROM publication p
+				JOIN publication_tag pt ON pt.publication_id = p.id
+				WHERE pt.tag_id = $tagId
+					AND (p.title REGEXP '[[:<:]]{$text}[[:>:]]' OR p.body REGEXP '[[:<:]]{$text}[[:>:]]' OR p.announce REGEXP '[[:<:]]{$text}[[:>:]]')")
+			: $pdo->prepare("
+				SELECT id
+				FROM publication p
+				JOIN publication_tag pt ON pt.publication_id = p.id
+				WHERE pt.tag_id = $tagId");
 		$stmt->execute();
 
 		$ids = array();
