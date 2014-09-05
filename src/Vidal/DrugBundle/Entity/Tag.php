@@ -35,6 +35,9 @@ class Tag
 	 */
 	protected $infoPage;
 
+	/** @ORM\Column(type="boolean") */
+	protected $enabled = true;
+
 	public function __construct()
 	{
 		$this->articles      = new ArrayCollection();
@@ -174,5 +177,29 @@ class Tag
 	public function getInfoPage()
 	{
 		return $this->infoPage;
+	}
+
+	/**
+	 * @param mixed $enabled
+	 */
+	public function setEnabled($enabled)
+	{
+		$this->enabled = $enabled;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getEnabled()
+	{
+		return $this->enabled;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function isEnabled()
+	{
+		return $this->enabled;
 	}
 }

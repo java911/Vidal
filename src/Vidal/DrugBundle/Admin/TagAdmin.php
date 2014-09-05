@@ -32,7 +32,9 @@ class TagAdmin extends Admin
 		$formMapper
 			->add('text', null, array('label' => 'Тег', 'required' => true))
 			->add('search', null, array('label' => 'Выставляется по слову', 'required' => false, 'help' => 'Оставьте пустым, чтоб выставлять по тегу'))
-			->add('infoPage', null, array('label' => 'Представительство', 'required' => false));
+			->add('infoPage', null, array('label' => 'Представительство', 'required' => false))
+			->add('enabled', null, array('label' => 'Активнен', 'required' => false))
+		;
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -49,6 +51,7 @@ class TagAdmin extends Admin
 			->add('search', null, array('label' => 'Выставляется по слову', 'template' => 'VidalDrugBundle:Sonata:tag_search.html.twig'))
 			->add('id')
 			->add('infoPage', null, array('label' => 'Представительство'))
+			->add('enabled', null, array('label' => 'Активен', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(
@@ -68,7 +71,6 @@ class TagAdmin extends Admin
 			->add('tagSet')
 			->add('tagClean')
 			->add('tagUnset')
-			->add('tagList')
-		;
+			->add('tagList');
 	}
 }

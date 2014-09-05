@@ -54,7 +54,7 @@ class TagController extends Controller
 		$tag  = $em->getRepository('VidalDrugBundle:Tag')->findOneById($id);
 		$page = $request->query->get('p', 1);
 
-		if (!$tag) {
+		if (!$tag || $tag->getEnabled() == false) {
 			throw $this->createNotFoundException();
 		}
 
@@ -79,7 +79,7 @@ class TagController extends Controller
 		$tag  = $em->getRepository('VidalDrugBundle:Tag')->findOneById($id);
 		$page = $request->query->get('p', 1);
 
-		if (!$tag) {
+		if (!$tag || $tag->getEnabled() == false) {
 			throw $this->createNotFoundException();
 		}
 
@@ -104,7 +104,7 @@ class TagController extends Controller
 		$tag  = $em->getRepository('VidalDrugBundle:Tag')->findOneById($id);
 		$page = $request->query->get('p', 1);
 
-		if (!$tag) {
+		if (!$tag || $tag->getEnabled() == false) {
 			throw $this->createNotFoundException();
 		}
 
@@ -129,7 +129,7 @@ class TagController extends Controller
 		$tag  = $em->getRepository('VidalDrugBundle:Tag')->findOneById($id);
 		$page = $request->query->get('p', 1);
 
-		if (!$tag) {
+		if (!$tag || $tag->getEnabled() == false) {
 			throw $this->createNotFoundException();
 		}
 
@@ -151,27 +151,28 @@ class TagController extends Controller
 	{
 		$tags        = array();
 		$infoPageIds = array();
-		$em          = $this->getDoctrine()->getManager('drug');
 
 		# теги
 		foreach ($object->getTags() as $tag) {
-			$key = $tag->getText();
-			# проверка, что это представительство
-			if ($infoPage = $tag->getInfoPage()) {
-				$infoPageIds[] = $infoPage->getInfoPageID();
-				$tags[$key]    = $infoPage;
-				break;
-			}
-
-			$hasPublication = false;
-			foreach ($tag->getPublications() as $publication) {
-				if ($publication->getEnabled()) {
-					$hasPublication = true;
+			if ($tag->getEnabled()) {
+				$key = $tag->getText();
+				# проверка, что это представительство
+				if ($infoPage = $tag->getInfoPage()) {
+					$infoPageIds[] = $infoPage->getInfoPageID();
+					$tags[$key]    = $infoPage;
 					break;
 				}
-			}
-			if (!isset($tags[$key]) && $hasPublication) {
-				$tags[$key] = $tag;
+
+				$hasPublication = false;
+				foreach ($tag->getPublications() as $publication) {
+					if ($publication->getEnabled()) {
+						$hasPublication = true;
+						break;
+					}
+				}
+				if (!isset($tags[$key]) && $hasPublication) {
+					$tags[$key] = $tag;
+				}
 			}
 		}
 		uksort($tags, array($this, 'casecmp'));
