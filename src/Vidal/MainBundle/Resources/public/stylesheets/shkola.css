@@ -82,20 +82,18 @@ body {
 	top:       132px;
 }
 .main-links {
-	z-index:  20;
-	position: absolute;
-	top:      -28px;
-	left:     396px;
-	width:    380px;
-	padding:  6px 8px 5px;
-	border:   1px solid white;
+	z-index: 20;
+	top:     28px;
+	right:   62px;
+	padding: 8px 8px 5px;
+	border:  1px solid white;
 }
 .main-links a {
 	text-decoration: none;
 	color:           white;
 	font-weight:     bold;
-	font-size:       15px;
-	margin-left:     8px;
+	font-size:       18px;
+	margin-left:     10px;
 	border:          none !important;
 }
 .main-links a:first-child {
@@ -229,7 +227,7 @@ body {
 
 /* articles */
 .articles {
-	padding: 80px 10px 10px 78px;
+	padding: 80px 30px 10px 78px;
 }
 .article img {
 	max-width:  235px;
@@ -277,6 +275,7 @@ body {
 	left:       7px;
 	right:      0;
 	height:     300px;
+	padding:    8px 12px;
 }
 .article-body p:first-child {
 	margin-top: 0;
@@ -350,6 +349,11 @@ body {
 	padding:    42px 60px 20px;
 	position:   relative;
 }
+.page-qa form {
+	width:   500px;
+	margin:  0 auto;
+	display: block;
+}
 .qas {
 	color: white;
 }
@@ -406,7 +410,6 @@ body {
 	color:          yellow;
 }
 .ask-form {
-	display:    none;
 	margin-top: 70px;
 }
 #form_captcha {
@@ -437,8 +440,8 @@ body {
 .stat {
 	display:  inline-block;
 	position: absolute;
-	top:      12px;
-	right:    345px;
+	top:      15px;
+	right:    61px;
 	height:   100px;
 	border:   1px solid #fff;
 }

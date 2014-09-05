@@ -7,6 +7,14 @@
 <div class="page page-main">
 	<img src="{{ asset('bundles/vidalmain/images/shkola/page-main.png') }}" class="page-main-bg"/>
 
+	<div class="main-links">
+		<a href="#articles" class="link">СТАТЬИ</a>
+		<a href="#video" class="link">ВИДЕО</a>
+		<a href="#test" class="link">ТЕСТ</a>
+		<a href="#qa" class="link">КОНСУЛЬТАЦИИ</a>
+		<a href="#map" class="link">КАРТА</a>
+	</div>
+
 	<div class="context left top">
 		<div class="main-title">
 			ШКОЛА<br/>ГАСТРИТА
@@ -16,14 +24,6 @@
 			Для профилактики гастрита рекомендуем Вам проконсультироваться со специалистом.
 			Найти специалиста рядом с Вами Вы можете с помощью
 			<a href="#map" class="link">нашей карты</a>
-		</div>
-
-		<div class="main-links">
-			<a href="#articles" class="link">СТАТЬИ</a>
-			<a href="#video" class="link">ВИДЕО</a>
-			<a href="#test" class="link">ТЕСТ</a>
-			<a href="#qa" class="link">КОНСУЛЬТАЦИИ</a>
-			<a href="#map" class="link">КАРТА</a>
 		</div>
 
 		<div class="texts">
@@ -278,9 +278,6 @@
 		<div>
 			<img src="{{ asset('bundles/vidalmain/images/shkola/qa_title.png') }}"/>
 		</div>
-		<div>
-			<button id="ask" class="btn-red">ЗАДАТЬ ВОПРОС</button>
-		</div>
 	</div>
 
 	{% if app.session.flashbag.get('questioned')|length %}
@@ -445,13 +442,6 @@
 			var $qa = $this.closest('.qa');
 			$this.closest('.qa-answer').hide();
 			$qa.find('> a').show();
-		});
-
-		$('#ask').click(function(e) {
-			e.preventDefault();
-			$('.ask-form').slideDown();
-			$(this).hide();
-			$('.questioned').hide();
 		});
 
 		if ($('.form_error ul').length) {
