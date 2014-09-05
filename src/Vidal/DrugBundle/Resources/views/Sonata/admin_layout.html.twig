@@ -185,9 +185,7 @@ file that was distributed with this source code.
 			$('.tag-search').editable(Routing.generate('admin_tag_search'), {submit: 'OK', width: '300px', 'placeholder': ''});
 			$('.tag-set').click(function(e) {
 				e.preventDefault();
-				var question = confirm('Выставляем по всему слову целиком?');
-				var href = question ? this.href : this.href + '?partly';
-				$.getJSON(href, function() {
+				$.getJSON(this.href, function() {
 					alert('Тег по слову выставлен');
 				});
 			});
@@ -207,7 +205,7 @@ file that was distributed with this source code.
 	</script>
 	<style type="text/css">
 		.btn-group {
-			width: 220px !important;
+			width: 280px !important;
 		}
 	</style>
 	{% endif %}

@@ -33,8 +33,7 @@ class TagAdmin extends Admin
 			->add('text', null, array('label' => 'Тег', 'required' => true))
 			->add('search', null, array('label' => 'Выставляется по слову', 'required' => false, 'help' => 'Оставьте пустым, чтоб выставлять по тегу'))
 			->add('infoPage', null, array('label' => 'Представительство', 'required' => false))
-			->add('enabled', null, array('label' => 'Активнен', 'required' => false))
-		;
+			->add('enabled', null, array('label' => 'Активнен', 'required' => false));
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -55,12 +54,14 @@ class TagAdmin extends Admin
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(
-					'edit'     => array(),
-					'delete'   => array(),
-					'tagClean' => array('template' => 'VidalDrugBundle:Sonata:tag_clean.html.twig'),
-					'tagSet'   => array('template' => 'VidalDrugBundle:Sonata:tag_set.html.twig'),
-					'tagUnset' => array('template' => 'VidalDrugBundle:Sonata:tag_unset.html.twig'),
-					'tagList'  => array('template' => 'VidalDrugBundle:Sonata:tag_list.html.twig'),
+					'edit'         => array(),
+					'delete'       => array(),
+					'tagClean'     => array('template' => 'VidalDrugBundle:Sonata:tag_clean.html.twig'),
+					'tagSet'       => array('template' => 'VidalDrugBundle:Sonata:tag_set.html.twig'),
+					'tagSetPartly' => array('template' => 'VidalDrugBundle:Sonata:tag_set_partly.html.twig'),
+					'tagUnset'     => array('template' => 'VidalDrugBundle:Sonata:tag_unset.html.twig'),
+					'tagUnsetPartly' => array('template' => 'VidalDrugBundle:Sonata:tag_unset_partly.html.twig'),
+					'tagList'      => array('template' => 'VidalDrugBundle:Sonata:tag_list.html.twig'),
 				)
 			));
 	}
@@ -69,8 +70,10 @@ class TagAdmin extends Admin
 	{
 		$collection
 			->add('tagSet')
+			->add('tagSetPartly')
 			->add('tagClean')
 			->add('tagUnset')
+			->add('tagUnsetPartly')
 			->add('tagList');
 	}
 }
