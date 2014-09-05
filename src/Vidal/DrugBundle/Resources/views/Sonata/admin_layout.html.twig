@@ -212,6 +212,29 @@ file that was distributed with this source code.
 	</style>
 	{% endif %}
 
+	{% if route == 'admin_vidal_main_user_list' %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.btn-confirm').click(function(e) {
+				var $link = $(this);
+				e.preventDefault();
+				$.getJSON(this.href, function(data) {
+					$link.closest('td').find('.counter.confirm').text(data);
+					alert('Письмо с подтверждение отослано');
+				});
+			});
+			$('.btn-restrict').click(function(e) {
+				var $link = $(this);
+				e.preventDefault();
+				$.getJSON(this.href, function(data) {
+					$link.closest('td').find('.counter.restrict').text(data);
+					alert('Письмо с отказом отослано');
+				});
+			});
+		});
+	</script>
+	{% endif %}
+
 	{# если редактируем админку со стотьями специалистам - подключаем обработчик смены списка категорий/подкатегорий #}
 	{% if route in ['admin_vidal_drug_art_edit', 'admin_vidal_drug_art_create', 'admin_vidal_drug_art_list', 'admin_vidal_drug_artcategory_create'] %}
 	<script type="text/javascript">

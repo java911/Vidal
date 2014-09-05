@@ -15,7 +15,7 @@ class EmailService
 		$this->templating = $templating;
 	}
 
-	public function send($emails, $template, $subject = 'Уведомление')
+	public function send($emails, $template, $subject = 'Уведомление', $from = 'maillist@vidal.ru')
 	{
 		$mail = new \PHPMailer();
 
@@ -30,7 +30,7 @@ class EmailService
 		# prod - оптравка через Exim, dev/test - отправка через Gmail
 		if ($this->container->getParameter('kernel.environment') == 'prod') {
 			$mail->Host = '127.0.0.1';
-			$mail->From = 'maillist@vidal.ru';
+			$mail->From = $from;
 		}
 		else {
 			$mail->Host       = 'smtp.mail.ru';

@@ -189,8 +189,14 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	/** @ORM\Column(type="boolean") */
 	protected $unsibscribed = false;
 
-    /** @ORM\Column(type="boolean") */
-    protected $firstset = false;
+	/** @ORM\Column(type="boolean") */
+	protected $firstset = false;
+
+	/** @ORM\Column(type="integer") */
+	protected $countConfirmationSent = 0;
+
+	/** @ORM\Column(type="integer") */
+	protected $countRestrictedSent = 0;
 
 	public function __construct()
 	{
@@ -1000,53 +1006,53 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 		return $this;
 	}
 
-    /**
-     * @param boolean $unsubscribed
-     */
-    public function setUnsubscribed($unsubscribed = false)
-    {
-        $this->unsubscribed = $unsubscribed;
-    }
+	/**
+	 * @param boolean $unsubscribed
+	 */
+	public function setUnsubscribed($unsubscribed = false)
+	{
+		$this->unsubscribed = $unsubscribed;
+	}
 
-    /**
-     * @return boolean
-     */
-    public function getUnsubscribed()
-    {
-        return $this->unsubscribed;
-    }
+	/**
+	 * @return boolean
+	 */
+	public function getUnsubscribed()
+	{
+		return $this->unsubscribed;
+	}
 
-    /**
-     * @param mixed $firstset
-     */
-    public function setFirstset($firstset = false)
-    {
-        $this->firstset = $firstset;
-    }
+	/**
+	 * @param mixed $firstset
+	 */
+	public function setFirstset($firstset = false)
+	{
+		$this->firstset = $firstset;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getFirstset()
-    {
-        return $this->firstset;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getFirstset()
+	{
+		return $this->firstset;
+	}
 
-    /**
-     * @param mixed $unsibscribed
-     */
-    public function setUnsibscribed($unsibscribed)
-    {
-        $this->unsibscribed = $unsibscribed;
-    }
+	/**
+	 * @param mixed $unsibscribed
+	 */
+	public function setUnsibscribed($unsibscribed)
+	{
+		$this->unsibscribed = $unsibscribed;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getUnsibscribed()
-    {
-        return $this->unsibscribed;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getUnsibscribed()
+	{
+		return $this->unsibscribed;
+	}
 
 	/**
 	 * @param mixed $confirmationHas
@@ -1062,5 +1068,47 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	public function getConfirmationHas()
 	{
 		return $this->confirmationHas;
+	}
+
+	/**
+	 * @param mixed $countConfirmationSent
+	 */
+	public function setCountConfirmationSent($countConfirmationSent)
+	{
+		$this->countConfirmationSent = $countConfirmationSent;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCountConfirmationSent()
+	{
+		return $this->countConfirmationSent;
+	}
+
+	/**
+	 * @param mixed $countRestrictedSent
+	 */
+	public function setCountRestrictedSent($countRestrictedSent)
+	{
+		$this->countRestrictedSent = $countRestrictedSent;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCountRestrictedSent()
+	{
+		return $this->countRestrictedSent;
+	}
+
+	public function addCountRestrictedSent()
+	{
+		$this->countRestrictedSent++;
+	}
+
+	public function addCountConfirmationSent()
+	{
+		$this->countConfirmationSent++;
 	}
 }

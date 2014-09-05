@@ -1,0 +1,11 @@
+{% extends 'VidalMainBundle:Email:email.html.twig' %}
+
+{% block content %}
+	<p style="font-style:italic;">
+		Уважаемый {{ user.getPoliteReference() }},<br/>
+		Спасибо за загруженный документ, теперь Вы можете
+		<a href="http://www.vidal.ru/otvety_specialistov_doctor">отвечать на вопросы пользователей!</a></p>
+
+	<p style="font-style:italic;">
+		Спасибо!</p>
+{% endblock %}

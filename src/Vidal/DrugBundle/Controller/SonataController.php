@@ -655,4 +655,50 @@ class SonataController extends Controller
 
 		return new Response($search);
 	}
+
+	/** @Route("/admin-user-restrict/{userId}", name="admin_user_restrict", options={"expose":true}) */
+	public function userRestrictAction($userId)
+	{
+		$em   = $this->getDoctrine()->getManager();
+		$user = $em->getRepository('VidalMainBundle:User')->findOneById($userId);
+
+		if (!$user) {
+			return $this->createNotFoundException();
+		}
+
+		$this->get('email.service')->send(
+			$user->getUsername(),
+			array('VidalMainBundle:Email:admin_user_restrict.html.twig', array('user' => $user, 'adminEmail' => 'support@vidal.ru')),
+			'Сертификат специалиста не действителен',
+			'support@vidal.ru'
+		);
+
+		$user->addCountRestrictedSent();
+		$em->flush($user);
+
+		return new JsonResponse($user->getCountRestrictedSent());
+	}
+
+	/** @Route("/admin-user-confirm/{userId}", name="admin_user_confirm", options={"expose":true}) */
+	public function userConfirmAction($userId)
+	{
+		$em   = $this->getDoctrine()->getManager();
+		$user = $em->getRepository('VidalMainBundle:User')->findOneById($userId);
+
+		if (!$user) {
+			return $this->createNotFoundException();
+		}
+
+		$this->get('email.service')->send(
+			$user->getUsername(),
+			array('VidalMainBundle:Email:admin_user_confirm.html.twig', array('user' => $user, 'adminEmail' => 'support@vidal.ru')),
+			'Сертификат специалиста подтвержден',
+			'support@vidal.ru'
+		);
+
+		$user->addCountConfirmationSent();
+		$em->flush($user);
+
+		return new JsonResponse($user->getCountConfirmationSent());
+	}
 }
