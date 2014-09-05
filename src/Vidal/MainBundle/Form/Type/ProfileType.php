@@ -96,7 +96,7 @@ class ProfileType extends AbstractType
 			->add('jobAchievements', null, array('label' => 'Достижения', 'required' => false))
 			->add('about', null, array('label' => 'О себе', 'required' => false))
 			->add('jobPublications', null, array('label' => 'Публикации', 'required' => false))
-            ->add('ConfirmationScan', 'iphp_file', array('label' => 'Скан документа, подтверждающий профессию', 'required' => false))
+            ->add('ConfirmationScan', 'iphp_file', array('label' => 'Скан действующего сертификата', 'required' => false))
 			->add('submit3', 'submit', array('label' => 'Сохранить'));
 
 	}
