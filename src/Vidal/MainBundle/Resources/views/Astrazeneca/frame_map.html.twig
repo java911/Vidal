@@ -16,7 +16,7 @@
 			src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 
 
-	<div class="map" id="map" style="width:975px;height:476px"></div>
+	<div class="map_frame" id="map_frame" style="width:975px;height:476px"></div>
 
 	<script type="text/javascript">
 	var eee;
@@ -27,7 +27,7 @@
 
 	function init() {
 
-		myMap = new ymaps.Map("map", {
+		myMap = new ymaps.Map("map_frame", {
 			center: [55.76, 37.64],
 			zoom:   7
 		});

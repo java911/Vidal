@@ -176,6 +176,21 @@ class TagController extends Controller
 				}
 			}
 		}
+
+		# Представительства
+		$tagsInfopages = array();
+
+		foreach ($object->getInfoPages() as $ip) {
+			$key = $ip->getRusName();
+			if (!in_array($ip->getInfoPageID(), $infoPageIds)) {
+				$tagsInfopages[$key] = $ip;
+			}
+		}
+
+		if (count($tagsInfopages)) {
+			$tags = array_merge($tags, $tagsInfopages);
+		}
+
 		uksort($tags, array($this, 'casecmp'));
 
 		# активные вещества
@@ -222,21 +237,6 @@ class TagController extends Controller
 		if (count($tagsNozologies)) {
 			uksort($tagsNozologies, array($this, 'casecmp'));
 			$tags = array_merge($tags, $tagsNozologies);
-		}
-
-		# Представительства
-		$tagsInfopages = array();
-
-		foreach ($object->getInfoPages() as $ip) {
-			$key = $ip->getRusName();
-			if (!in_array($ip->getInfoPageID(), $infoPageIds)) {
-				$tagsInfopages[$key] = $ip;
-			}
-		}
-
-		if (count($tagsInfopages)) {
-			uksort($tagsInfopages, array($this, 'casecmp'));
-			$tags = array_merge($tags, $tagsInfopages);
 		}
 
 		$products    = array();
