@@ -1201,6 +1201,7 @@ tr.bold td {
 	font-size:   14px;
 	color:       #2f4053;
 	line-height: 17px;
+	max-width:   520px;
 }
 .breadcrumbs > * {
 	display:        inline-block;
@@ -1360,7 +1361,7 @@ tr.bold td {
 /* text */
 .text {
 	overflow:  hidden;
-	max-width: 520px;
+	/*max-width: 520px;*/
 	font-size: 14px;
 }
 .text * {

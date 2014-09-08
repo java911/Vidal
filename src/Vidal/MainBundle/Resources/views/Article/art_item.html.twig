@@ -40,9 +40,11 @@
 		<div class="article-body text">
 			{{ article.body|raw }}
 		</div>
-		<div class="article-footer">
-			<span class="article-date">{{ article.date|date('d.m.Y') }}</span>
-		</div>
+		{% if not article.hideDate %}
+			<div class="article-footer">
+				<span class="article-date">{{ article.date|date('d.m.Y') }}</span>
+			</div>
+		{% endif %}
 
 		{% if is_granted('ROLE_ADMIN') %}
 			{{ render(controller('VidalMainBundle:Tag:tags', {'object':article})) }}

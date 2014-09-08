@@ -100,10 +100,11 @@ class ArticleController extends Controller
 		$articles = $em->getRepository('VidalDrugBundle:Article')->ofRubrique($rubrique);
 
 		return array(
-			'title'    => $rubrique . ' | Энциклопедия',
-			'menu'     => 'articles',
-			'rubrique' => $rubrique,
-			'articles' => $articles,
+			'title'        => $rubrique . ' | Энциклопедия',
+			'menu'         => 'articles',
+			'rubrique'     => $rubrique,
+			'articles'     => $articles,
+			'hideRubrique' => true,
 		);
 	}
 

@@ -19,11 +19,13 @@
 					<div class="article-announce text">
 						{{ article.announce|raw }}
 					</div>
-					<div class="article-footer">
-						<span>Рубрика:</span>
-						<a href="{{ path('rubrique', {'rubrique':article.rubrique.rubrique}) }}"
-							>{{ article.rubrique.title }}</a>
-					</div>
+					{% if hideRubrique is not defined or not hideRubrique %}
+						<div class="article-footer">
+							<span>Рубрика:</span>
+							<a href="{{ path('rubrique', {'rubrique':article.rubrique.rubrique}) }}"
+								>{{ article.rubrique.title }}</a>
+						</div>
+					{% endif %}
 				</div>
 			{% else %}
 				{# отдельная статья специалистам - Art #}
@@ -44,10 +46,12 @@
 					<div class="article-announce text">
 						{{ article.announce|raw }}
 					</div>
-					<div class="article-footer">
-						<span>Рубрика:</span>
-						<a href="{{ path('vracham') }}">Статьи специалистам</a>
-					</div>
+					{% if not article.hideDate %}
+						<div class="article-footer">
+							<span>Рубрика:</span>
+							<a href="{{ path('vracham') }}">Статьи специалистам</a>
+						</div>
+					{% endif %}
 				</div>
 			{% endif %}
 		{% endfor %}

@@ -153,6 +153,9 @@ class Article extends BaseEntity
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $anonsPriority;
 
+	/** @ORM\Column(type="boolean") */
+	protected $hideDate = false;
+
 	public function __construct()
 	{
 		$this->nozologies = new ArrayCollection();
@@ -760,5 +763,21 @@ class Article extends BaseEntity
 		if (!$this->infoPages->contains($infoPage)) {
 			$this->infoPages[] = $infoPage;
 		}
+	}
+
+	/**
+	 * @param mixed $hideDate
+	 */
+	public function setHideDate($hideDate)
+	{
+		$this->hideDate = $hideDate;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getHideDate()
+	{
+		return $this->hideDate;
 	}
 }
