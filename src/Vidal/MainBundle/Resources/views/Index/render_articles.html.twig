@@ -46,12 +46,10 @@
 					<div class="article-announce text">
 						{{ article.announce|raw }}
 					</div>
-					{% if not article.hideDate %}
-						<div class="article-footer">
-							<span>Рубрика:</span>
-							<a href="{{ path('vracham') }}">Статьи специалистам</a>
-						</div>
-					{% endif %}
+					<div class="article-footer">
+						<span>Рубрика:</span>
+						<a href="{{ path('vracham') }}">Статьи специалистам</a>
+					</div>
 				</div>
 			{% endif %}
 		{% endfor %}
