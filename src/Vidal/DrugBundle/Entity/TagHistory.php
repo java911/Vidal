@@ -8,7 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /** @ORM\Entity(repositoryClass="TagHistoryRepository") @ORM\Table(name="tag_history") */
 class TagHistory extends BaseEntity
 {
-	/** @ORM\Column(length=255, unique=true) */
+	/** @ORM\Column(length=255) */
 	protected $text;
 
 	/** @ORM\ManyToOne(targetEntity="Tag", inversedBy="history") */
@@ -19,7 +19,7 @@ class TagHistory extends BaseEntity
 
 	public function __toString()
 	{
-		return $this->any ? '%' . $this->text . '%' : $this->text;
+		return $this->text;
 	}
 
 	/**

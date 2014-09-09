@@ -15,11 +15,11 @@ class TagController extends Controller
 	const PHARM_PER_PAGE = 4;
 
 	/**
-	 * @Route("/tag/list/{tagId}/{partly}", name="tag_list")
+	 * @Route("/tag/list/{tagId}/{text}", name="tag_list", options={"expose":true})
 	 * @Template("VidalMainBundle:Tag:tag_list.html.twig")
 	 * @Secure(roles="ROLE_ADMIN")
 	 */
-	public function tagListAction($tagId, $partly = false)
+	public function tagListAction($tagId, $text = null)
 	{
 		$em  = $this->getDoctrine()->getManager('drug');
 		$tag = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
@@ -28,19 +28,33 @@ class TagController extends Controller
 			throw $this->createNotFoundException();
 		}
 
+		if (empty($text)) {
+			$tagSearch = $tag->getSearch();
+			$text      = empty($tagSearch) ? $tag->getText() : $tagSearch;
+			$partly    = null;
+			$word      = null;
+		}
+		else {
+			$word = $text;
+			if ($text[0] == '*') {
+				$partly = true;
+				$text   = str_replace('*', '', $text);
+			}
+			else {
+				$partly = false;
+			}
+		}
+
 		$params = array(
 			'tag'   => $tag,
 			'title' => 'Материалы по слову в теге',
 		);
 
-		$tagSearch = $tag->getSearch();
-		$text      = empty($tagSearch) ? $tag->getText() : $tagSearch;
-
-		$params['articles']     = $em->getRepository('VidalDrugBundle:Article')->findByTagWord($tag, $partly);
-		$params['publications'] = $em->getRepository('VidalDrugBundle:Publication')->findByTagWord($tag, $partly);
-		$params['arts']         = $em->getRepository('VidalDrugBundle:Art')->findByTagWord($tag, $partly);
+		$params['articles']     = $em->getRepository('VidalDrugBundle:Article')->findByTagWord($tag, $text, $partly);
+		$params['publications'] = $em->getRepository('VidalDrugBundle:Publication')->findByTagWord($tag, $text, $partly);
+		$params['arts']         = $em->getRepository('VidalDrugBundle:Art')->findByTagWord($tag, $text, $partly);
 		$params['text']         = $text;
-		$params['partly']       = $partly;
+		$params['word']         = $word;
 
 		return $params;
 	}

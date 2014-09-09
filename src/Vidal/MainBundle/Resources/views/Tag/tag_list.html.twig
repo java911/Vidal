@@ -4,8 +4,8 @@
 {% block content %}
 	{% if articles is not empty %}
 		<div class="title">Новости по
-			{% if partly %}
-				теме <span>"{{ text }}"</span>
+			{% if word %}
+				теме <span>"{{ word }}"</span>
 			{% else %}
 				всему тегу
 			{% endif %}
@@ -13,8 +13,8 @@
 		{% include 'VidalMainBundle:Index:render_news.html.twig' with {'news':publications} %}
 	{% else %}
 		<div class="title">Не найдено новостей по
-			{% if partly %}
-				теме <span>"{{ text }}"</span>
+			{% if word %}
+				теме <span>"{{ word }}"</span>
 			{% else %}
 				всему тегу
 			{% endif %}
@@ -23,8 +23,8 @@
 
 	{% if articles is not empty %}
 		<div class="title">Статьи медицинской энциклопедии по
-			{% if partly %}
-				теме <span>"{{ text }}"</span>
+			{% if word %}
+				теме <span>"{{ word }}"</span>
 			{% else %}
 				всему тегу
 			{% endif %}
@@ -32,8 +32,8 @@
 		{% include 'VidalMainBundle:Index:render_articles.html.twig' with {'articles':articles} %}
 	{% else %}
 		<div class="title">Не найдено статей медицинской энциклопедии по
-			{% if partly %}
-				теме <span>"{{ text }}"</span>
+			{% if word %}
+				теме <span>"{{ word }}"</span>
 			{% else %}
 				всему тегу
 			{% endif %}
@@ -42,8 +42,8 @@
 
 	{% if arts is not empty %}
 		<div class="title">Статьи для специалистов по
-			{% if partly %}
-				теме <span>"{{ text }}"</span>
+			{% if word %}
+				теме <span>"{{ word }}"</span>
 			{% else %}
 				всему тегу
 			{% endif %}
@@ -51,8 +51,8 @@
 		{% include 'VidalMainBundle:Index:render_articles.html.twig' with {'articles':arts} %}
 	{% else %}
 		<div class="title">Не найдено статей для специалистов по
-			{% if partly %}
-				теме <span>"{{ text }}"</span>
+			{% if word %}
+				теме <span>"{{ word }}"</span>
 			{% else %}
 				всему тегу
 			{% endif %}

@@ -95,25 +95,35 @@ class ArtRepository extends EntityRepository
 			->getResult();
 	}
 
-	public function findByTagWord($tag, $partly)
+	public function findByTagWord($tag, $text, $partly)
 	{
-		$tagSearch = $tag->getSearch();
-		$text      = empty($tagSearch) ? $tag->getText() : $tagSearch;
-		$tagId     = $tag->getId();
+		$tagId = $tag->getId();
+		$pdo   = $this->_em->getConnection();
 
-		$pdo  = $this->_em->getConnection();
-		$stmt = $partly
-			? $pdo->prepare("
-				SELECT id
-				FROM art a
-				JOIN art_tag a_t ON a_t.art_id = a.id
-				WHERE a_t.tag_id = $tagId
-					AND (a.title REGEXP '[[:<:]]{$text}[[:>:]]' OR a.body REGEXP '[[:<:]]{$text}[[:>:]]' OR a.announce REGEXP '[[:<:]]{$text}[[:>:]]')")
-			: $pdo->prepare("
+		if ($partly === null) {
+			$stmt = $pdo->prepare("
 				SELECT id
 				FROM art a
 				JOIN art_tag a_t ON a_t.art_id = a.id
 				WHERE a_t.tag_id = $tagId");
+		}
+		elseif ($partly) {
+			$stmt = $pdo->prepare("
+				SELECT id
+				FROM art a
+				JOIN art_tag a_t ON a_t.art_id = a.id
+				WHERE a_t.tag_id = $tagId
+				 	AND (a.title LIKE '%{$text}%' OR a.body LIKE '%{$text}%' OR a.announce LIKE '%{$text}%')");
+		}
+		else {
+			$stmt = $pdo->prepare("
+				SELECT id
+				FROM art a
+				JOIN art_tag a_t ON a_t.art_id = a.id
+				WHERE a_t.tag_id = $tagId
+				 	AND (a.title REGEXP '[[:<:]]{$text}[[:>:]]' OR a.body REGEXP '[[:<:]]{$text}[[:>:]]' OR a.announce REGEXP '[[:<:]]{$text}[[:>:]]')");
+		}
+
 		$stmt->execute();
 
 		$articleIds = array();

@@ -74,25 +74,36 @@ class PublicationRepository extends EntityRepository
 			->setParameter('tagId', $tagId);
 	}
 
-	public function findByTagWord($tag, $partly)
+	public function findByTagWord($tag, $text, $partly)
 	{
-		$tagSearch = $tag->getSearch();
-		$text      = empty($tagSearch) ? $tag->getText() : $tagSearch;
-		$tagId     = $tag->getId();
+		$tagId = $tag->getId();
 
-		$pdo  = $this->_em->getConnection();
-		$stmt = $partly
-			? $pdo->prepare("
-				SELECT id
-				FROM publication p
-				JOIN publication_tag pt ON pt.publication_id = p.id
-				WHERE pt.tag_id = $tagId
-					AND (p.title REGEXP '[[:<:]]{$text}[[:>:]]' OR p.body REGEXP '[[:<:]]{$text}[[:>:]]' OR p.announce REGEXP '[[:<:]]{$text}[[:>:]]')")
-			: $pdo->prepare("
+		$pdo = $this->_em->getConnection();
+
+		if ($partly === null) {
+			$stmt = $pdo->prepare("
 				SELECT id
 				FROM publication p
 				JOIN publication_tag pt ON pt.publication_id = p.id
 				WHERE pt.tag_id = $tagId");
+		}
+		elseif ($partly) {
+			$stmt = $pdo->prepare("
+				SELECT id
+				FROM publication p
+				JOIN publication_tag pt ON pt.publication_id = p.id
+				WHERE pt.tag_id = $tagId
+					AND (p.title LIKE '%{$text}%' OR p.body LIKE '%{$text}%' OR p.announce LIKE '%{$text}%')");
+		}
+		else {
+			$stmt = $pdo->prepare("
+				SELECT id
+				FROM publication p
+				JOIN publication_tag pt ON pt.publication_id = p.id
+				WHERE pt.tag_id = $tagId
+					AND (p.title REGEXP '[[:<:]]{$text}[[:>:]]' OR p.body REGEXP '[[:<:]]{$text}[[:>:]]' OR p.announce REGEXP '[[:<:]]{$text}[[:>:]]')");
+		}
+
 		$stmt->execute();
 
 		$ids = array();

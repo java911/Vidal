@@ -222,4 +222,12 @@ class Tag
 	{
 		return $this->history;
 	}
+
+	public function addTagHistory($history)
+	{
+		if (!$this->history->contains($history)) {
+			$history->setTag($this);
+			$this->history[] = $history;
+		}
+	}
 }

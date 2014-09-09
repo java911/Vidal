@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Lsw\SecureControllerBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Vidal\DrugBundle\Entity\TagHistory;
+use Vidal\DrugBundle\Entity\Tag;
 
 /**
  * Класс для выполнения ассинхронных операций из админки Сонаты
@@ -391,8 +393,8 @@ class SonataController extends Controller
 		return $this->redirect($this->generateUrl('admin_vidal_drug_product_edit', array('id' => $newProductID)));
 	}
 
-	/** @Route("/tag-clean/{tagId}/{ajax}", name="tag_clean", options={"expose":true}) */
-	public function tagCleanAction($tagId, $ajax = false)
+	/** @Route("/tag-clean/{tagId}", name="tag_clean", options={"expose":true}) */
+	public function tagCleanAction($tagId)
 	{
 		$em  = $this->getDoctrine()->getManager('drug');
 		$tag = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
@@ -410,12 +412,10 @@ class SonataController extends Controller
 			$stmt->execute();
 		}
 
-		if ($ajax) {
-			return new JsonResponse('OK');
-		}
+		$pdo->prepare("DELETE FROM tag_history WHERE tag_id = $tagId")->execute();
 
 		# добавляем для админки сонаты оповещение
-		$this->get('session')->getFlashbag()->add('tag_clean', '');
+		$this->get('session')->getFlashbag()->add('msg', 'Все связи данного тега с материалами очищены');
 
 		return $this->redirect($this->generateUrl('admin_vidal_drug_tag_edit', array('id' => $tagId)));
 	}
@@ -472,20 +472,22 @@ class SonataController extends Controller
 		return $this->redirect($this->generateUrl('admin_vidal_drug_tag_edit', array('id' => $tagId)));
 	}
 
-	/** @Route("/tag-set/{tagId}/{ajax}", name="tag_set", options={"expose":true}) */
-	public function tagSetAction(Request $request, $tagId, $ajax = false)
+	/** @Route("/tag-set/{tagId}/{text}", name="tag_set", options={"expose":true}) */
+	public function tagSetAction(Request $request, $tagId, $text = null)
 	{
 		$em       = $this->getDoctrine()->getManager('drug');
 		$tag      = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
+		$pdo      = $em->getConnection();
 		$isPartly = $request->query->has('partly');
 
 		if (!$tag) {
 			throw $this->createNotFoundException();
 		}
 
-		$tagSearch = $tag->getSearch();
-		$text      = empty($tagSearch) ? $tag->getText() : $tagSearch;
-		$pdo       = $em->getConnection();
+		if (empty($text)) {
+			$tagSearch = $tag->getSearch();
+			$text      = empty($tagSearch) ? $tag->getText() : $tagSearch;
+		}
 
 		# проставляем тег у статей энкициклопедии
 		$stmt = $isPartly
@@ -538,30 +540,48 @@ class SonataController extends Controller
 			$stmt->execute();
 		}
 
-		if ($ajax) {
-			return new JsonResponse('OK');
+		if ($isPartly) {
+			$text = '*' . $text . '*';
 		}
 
-		# добавляем для админки сонаты оповещение
-		$this->get('session')->getFlashbag()->add('tag_set', '');
+		$tagHistory = $em->getRepository('VidalDrugBundle:TagHistory')->findOneByTagText($tagId, $text);
+
+		if (!$tagHistory) {
+			$tagHistory = new TagHistory();
+
+			if ($isPartly) {
+				$tagHistory->setAny(true);
+			}
+
+			$tagHistory->setText($text);
+
+			$em->persist($tagHistory);
+			$tag->addTagHistory($tagHistory);
+			$em->flush();
+		}
+
+		$this->get('session')->getFlashbag()->add('msg', 'Выставлены теги в материалах по слову <b>' . $tagHistory . '</b>');
 
 		return $this->redirect($this->generateUrl('admin_vidal_drug_tag_edit', array('id' => $tagId)));
 	}
 
-	/** @Route("/tag-unset/{tagId}/{ajax}", name="tag_unset", options={"expose":true}) */
-	public function tagUnsetAction(Request $request, $tagId, $ajax = false)
+	/** @Route("/tag-unset/{tagId}/{text}", name="tag_unset", options={"expose":true}) */
+	public function tagUnsetAction(Request $request, $tagId, $text = null)
 	{
-		$em       = $this->getDoctrine()->getManager('drug');
-		$tag      = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
-		$isPartly = $request->query->has('partly');
+		$em  = $this->getDoctrine()->getManager('drug');
+		$tag = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
+		$pdo = $em->getConnection();
 
 		if (!$tag) {
 			throw $this->createNotFoundException();
 		}
 
-		$tagSearch = $tag->getSearch();
-		$text      = empty($tagSearch) ? $tag->getText() : $tagSearch;
-		$pdo       = $em->getConnection();
+		if (empty($text)) {
+			$tagSearch = $tag->getSearch();
+			$text      = empty($tagSearch) ? $tag->getText() : $tagSearch;
+		}
+
+		$isPartly = $text[0] == '*';
 
 		# снимаем тег у статей энкициклопедии
 		$stmt = $isPartly
@@ -615,12 +635,13 @@ class SonataController extends Controller
 			$stmt->execute();
 		}
 
-		if ($ajax) {
-			return new JsonResponse('OK');
+		if ($tagHistory = $em->getRepository('VidalDrugBundle:TagHistory')->findOneByTagText($tagId, $text)) {
+			$em->remove($tagHistory);
+			$em->flush();
 		}
 
 		# добавляем для админки сонаты оповещение
-		$this->get('session')->getFlashbag()->add('tag_set', '');
+		$this->get('session')->getFlashbag()->add('msg', 'Очищены связи с материалами по слову <b>' . $text . '</b>');
 
 		return $this->redirect($this->generateUrl('admin_vidal_drug_tag_edit', array('id' => $tagId)));
 	}
