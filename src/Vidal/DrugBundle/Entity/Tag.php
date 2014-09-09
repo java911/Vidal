@@ -38,12 +38,16 @@ class Tag
 	/** @ORM\Column(type="boolean") */
 	protected $enabled = true;
 
+	/** @ORM\OneToMany(targetEntity="TagHistory", mappedBy="tag") */
+	protected $history;
+
 	public function __construct()
 	{
 		$this->articles      = new ArrayCollection();
 		$this->arts          = new ArrayCollection();
 		$this->publications  = new ArrayCollection();
 		$this->pharmArticles = new ArrayCollection();
+		$this->history       = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -201,5 +205,21 @@ class Tag
 	public function isEnabled()
 	{
 		return $this->enabled;
+	}
+
+	/**
+	 * @param mixed $history
+	 */
+	public function setHistory($history)
+	{
+		$this->history = $history;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getHistory()
+	{
+		return $this->history;
 	}
 }

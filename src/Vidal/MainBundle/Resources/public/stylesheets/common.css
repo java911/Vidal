@@ -892,7 +892,8 @@ tr.bold td {
 }
 .products-table-zip {
 	margin-left: 10px;
-	font-size:   13px;
+	font-size:   12px;
+	max-width:   115px;
 }
 .products-table-zip > span {
 	display:   block;
