@@ -173,6 +173,14 @@
 						$('#B01 > span').addClass('highlight');
 					}, 2000);
 				});
+
+				{% if atcCode is not empty %}
+				var selector = '#{{ atcCode }}';
+				var $atc = $(selector);
+				$atc.find('>span').addClass('highlight');
+				$atc.parents('ul').show();
+				location.hash = '#' + $atc.parents('li').last().attr('id');
+				{% endif %}
 			});
 		</script>
 	{% endif %}

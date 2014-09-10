@@ -87,15 +87,17 @@ class DrugsController extends Controller
 	 */
 	public function atcAction(Request $request)
 	{
-		$em = $this->getDoctrine()->getManager('drug');
-		$q  = $request->query->get('q', null);
-		$l  = $request->query->get('l', null);
+		$em      = $this->getDoctrine()->getManager('drug');
+		$q       = $request->query->get('q', null);
+		$l       = $request->query->get('l', null);
+		$atcCode = $request->query->get('ATCCode', '');
 
 		$params = array(
 			'menu_drugs' => 'atc',
 			'title'      => 'АТХ',
 			'l'          => $l,
 			'q'          => $q,
+			'atcCode'    => $atcCode,
 		);
 
 		if ($l) {
