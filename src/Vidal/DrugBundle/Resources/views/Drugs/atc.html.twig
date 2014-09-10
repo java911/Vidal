@@ -178,7 +178,7 @@
 				var selector = '#{{ atcCode }}';
 				var $atc = $(selector);
 				$atc.find('>span').addClass('highlight');
-				$atc.parents('ul').show();
+				$atc.parents('ul').show().siblings('div.hitarea').removeClass('expandable-hitarea').addClass('collapsable-hitarea');
 				location.hash = '#' + $atc.parents('li').last().attr('id');
 				{% endif %}
 			});
