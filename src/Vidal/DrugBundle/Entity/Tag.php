@@ -38,7 +38,10 @@ class Tag
 	/** @ORM\Column(type="boolean") */
 	protected $enabled = true;
 
-	/** @ORM\OneToMany(targetEntity="TagHistory", mappedBy="tag") */
+	/**
+	 * @ORM\OneToMany(targetEntity="TagHistory", mappedBy="tag")
+	 * @ORM\OrderBy({"text" = "ASC"})
+	 */
 	protected $history;
 
 	public function __construct()

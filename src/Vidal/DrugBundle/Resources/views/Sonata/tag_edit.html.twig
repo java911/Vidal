@@ -40,12 +40,14 @@
 
 		$('.tag-set-partly').click(function(e) {
 			e.preventDefault();
-			window.location = Routing.generate('tag_set', {'tagId': tagId, 'partly': 1, 'text': $history.val()});
+			var text = prompt('Укажите слово', '{{ object.search is empty ? object.text : object.search }}');
+			window.location = Routing.generate('tag_set', {'tagId': tagId, 'partly': 1, 'text': text});
 		});
 
 		$('.tag-set').click(function(e) {
 			e.preventDefault();
-			window.location = Routing.generate('tag_set', {'tagId': tagId, 'text': $history.val()});
+			var text = prompt('Укажите слово', '{{ object.search is empty ? object.text : object.search }}');
+			window.location = Routing.generate('tag_set', {'tagId': tagId, 'text':text});
 		});
 
 		$('.tag-unset-partly').click(function(e) {
