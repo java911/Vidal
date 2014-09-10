@@ -309,6 +309,7 @@ class ProductRepository extends EntityRepository
 			}
 		}
 
+		$productNames = array_unique($productNames);
 		usort($productNames, 'strcasecmp');
 
 		return $productNames;
