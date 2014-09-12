@@ -816,7 +816,7 @@ class ProductRepository extends EntityRepository
 			->getResult();
 
 		$ids          = array();
-		$publications = [];
+		$publications = array();
 
 		foreach ($publicationsByProduct as $p) {
 			$ids[]          = $p->getId();
@@ -878,7 +878,7 @@ class ProductRepository extends EntityRepository
 			->getResult();
 
 		$ids      = array();
-		$articles = [];
+		$articles = array();
 
 		foreach ($articlesByProduct as $a) {
 			$ids[]      = $a->getId();
@@ -950,7 +950,7 @@ class ProductRepository extends EntityRepository
 			->getResult();
 
 		$ids      = array();
-		$articles = [];
+		$articles = array();
 
 		foreach ($articlesByProduct as $a) {
 			$ids[]      = $a->getId();
