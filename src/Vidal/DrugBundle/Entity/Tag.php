@@ -44,6 +44,9 @@ class Tag
 	 */
 	protected $history;
 
+	/** @ORM\Column(type="boolean") */
+	protected $forCompany = false;
+
 	public function __construct()
 	{
 		$this->articles      = new ArrayCollection();
@@ -232,5 +235,21 @@ class Tag
 			$history->setTag($this);
 			$this->history[] = $history;
 		}
+	}
+
+	/**
+	 * @param mixed $forCompany
+	 */
+	public function setForCompany($forCompany)
+	{
+		$this->forCompany = $forCompany;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getForCompany()
+	{
+		return $this->forCompany;
 	}
 }
