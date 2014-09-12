@@ -785,6 +785,136 @@ class ProductRepository extends EntityRepository
 		return array($syllables, $table);
 	}
 
+	public function findPublications($ProductID)
+	{
+		$publicationsByProduct = $this->_em->createQuery('
+			SELECT p
+			FROM VidalDrugBundle:Publication p
+			JOIN p.products product WITH product.ProductID = :ProductID
+			WHERE p.enabled = TRUE
+		')->setParameter('ProductID', $ProductID)
+			->getResult();
+
+		$publicationsByAtc = $this->_em->createQuery('
+			SELECT DISTINCT p
+			FROM VidalDrugBundle:Publication p
+			JOIN p.atcCodes atc
+			JOIN atc.products product WITH product.ProductID = :ProductID
+			WHERE p.enabled = TRUE
+		')->setParameter('ProductID', $ProductID)
+			->getResult();
+
+		$ids          = array();
+		$publications = [];
+
+		foreach ($publicationsByProduct as $p) {
+			$ids[]          = $p->getId();
+			$publications[] = $p;
+		}
+
+		foreach ($publicationsByAtc as $p) {
+			if (!in_array($p->getId(), $ids)) {
+				$publications[] = $p;
+			}
+		}
+
+		usort($publications, array($this, 'sortByDate'));
+
+		return $publications;
+	}
+
+	public function findArticles($ProductID)
+	{
+		$articlesByProduct = $this->_em->createQuery('
+			SELECT a
+			FROM VidalDrugBundle:Article a
+			JOIN a.products product WITH product.ProductID = :ProductID
+			JOIN a.rubrique r
+			WHERE a.enabled = TRUE
+				AND r.enabled = TRUE
+		')->setParameter('ProductID', $ProductID)
+			->getResult();
+
+		$articlesByAtc = $this->_em->createQuery('
+			SELECT DISTINCT a
+			FROM VidalDrugBundle:Article a
+			JOIN a.atcCodes atc
+			JOIN atc.products product WITH product.ProductID = :ProductID
+			JOIN a.rubrique r
+			WHERE a.enabled = TRUE
+				AND r.enabled = TRUE
+		')->setParameter('ProductID', $ProductID)
+			->getResult();
+
+		$ids      = array();
+		$articles = [];
+
+		foreach ($articlesByProduct as $a) {
+			$ids[]      = $a->getId();
+			$articles[] = $a;
+		}
+
+		foreach ($articlesByAtc as $a) {
+			if (!in_array($a->getId(), $ids)) {
+				$articles[] = $a;
+			}
+		}
+
+		usort($articles, array($this, 'sortByDate'));
+
+		return $articles;
+	}
+
+	public function findArts($ProductID)
+	{
+		$articlesByProduct = $this->_em->createQuery('
+			SELECT a
+			FROM VidalDrugBundle:Art a
+			JOIN a.products product WITH product.ProductID = :ProductID
+			JOIN a.rubrique r
+			LEFT JOIN a.category c
+			LEFT JOIN a.type t
+			WHERE a.enabled = TRUE
+				AND r.enabled = TRUE
+				AND (t IS NULL OR t.enabled = TRUE)
+				AND (c IS NULL OR c.enabled = TRUE)
+		')->setParameter('ProductID', $ProductID)
+			->getResult();
+
+		$articlesByAtc = $this->_em->createQuery('
+			SELECT DISTINCT a
+			FROM VidalDrugBundle:Art a
+			JOIN a.atcCodes atc
+			JOIN atc.products product WITH product.ProductID = :ProductID
+			JOIN a.rubrique r
+			LEFT JOIN a.category c
+			LEFT JOIN a.type t
+			WHERE a.enabled = TRUE
+				AND r.enabled = TRUE
+				AND (t IS NULL OR t.enabled = TRUE)
+				AND (c IS NULL OR c.enabled = TRUE)
+		')->setParameter('ProductID', $ProductID)
+			->getResult();
+
+		$ids      = array();
+		$articles = [];
+
+		foreach ($articlesByProduct as $a) {
+			$ids[]      = $a->getId();
+			$articles[] = $a;
+		}
+
+		foreach ($articlesByAtc as $a) {
+			if (!in_array($a->getId(), $ids)) {
+				$articles[] = $a;
+			}
+		}
+
+		usort($articles, array($this, 'sortByDate'));
+
+		return $articles;
+	}
+
 	/**
 	 * Функция возвращает слово с заглавной первой буквой (c поддержкой кирилицы)
 	 *
@@ -799,5 +929,13 @@ class ProductRepository extends EntityRepository
 		$then      = mb_substr($string, 1, $strlen - 1, $encoding);
 
 		return mb_strtoupper($firstChar, $encoding) . $then;
+	}
+
+	private function sortByDate($a, $b)
+	{
+		$dateA = $a->getDate();
+		$dateB = $b->getDate();
+
+		return $dateA == $dateB ? 0 : ($dateA < $dateB ? 1 : -1);
 	}
 }

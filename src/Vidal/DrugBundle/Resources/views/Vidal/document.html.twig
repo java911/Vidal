@@ -311,7 +311,7 @@
 
 	{# прикрепленные материалы #}
 	{% if is_granted('ROLE_ADMIN') %}
-		{% include 'VidalMainBundle:Article:documents.html.twig' with {'object':product, 'label':'препарату', 'item':product.RusName} %}
+		{% include 'VidalMainBundle:Article:documents_of_product.html.twig' with {'object':product, 'label':'препарату', 'item':product.RusName} %}
 	{% endif %}
 
 	{# цены Он-лайн аптек #}

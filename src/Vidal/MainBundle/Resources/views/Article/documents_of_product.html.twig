@@ -1,0 +1,68 @@
+{# новости #}
+{% if publications is not empty %}
+	<div class="announcement">
+		<div class="anons-footer no-selection">
+			Новости по {{ label }} <span>«{{ item|raw }}»</span>
+			<i>{{ publications|length }}</i>
+		</div>
+		<ul class="ul-style black" style="display:none">
+			{% for publication in publications %}
+				<li>
+					<a href="{{ path('publication', {'id':publication.id}) }}" target="_blank" class="no-underline">
+						{{ publication.title|raw }}
+					</a>
+
+					<div class="anons-info">{{ publication.date|date('d.m.Y') }}</div>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endif %}
+
+{# энциклопедия #}
+{% if articles is not empty %}
+	<div class="announcement">
+		<div class="anons-footer no-selection">
+			Материалы медицинской энциклопедии по {{ label }} <span>«{{ item|raw }}»</span>
+			<i>{{ articles|length }}</i>
+		</div>
+		<ul class="ul-style black" style="display:none">
+			{% for article in articles %}
+				<li>
+					<a href="{{ path('article', {'rubrique':article.rubrique.rubrique, 'link':article.link}) }}"
+					   target="_blank" class="no-underline">
+						{{ article.title|raw }}
+					</a>
+
+					<div class="anons-info">
+						Рубрика:
+						<a target="_blank"
+						   href="{{ path('rubrique', {'rubrique':article.rubrique.rubrique}) }}">{{ article.rubrique }}</a>
+					</div>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endif %}
+
+{# специалистам #}
+{% if arts is not empty %}
+	<div class="announcement">
+		<div class="anons-footer no-selection">
+			Материалы для специалистов по {{ label }} <span>«{{ item|raw }}»</span>
+			<i>{{ arts|length }}</i>
+		</div>
+		<ul class="ul-style black" style="display:none">
+			{% for art in arts %}
+				<li>
+					<a class="no-underline" target="_blank"
+					   href="{{ path('art', {'url':art.rubrique.url ~ '/' ~ (art.type ? art.type.url ~ '/') ~ (art.category ? art.category.url ~ '/') ~ art.link ~ '~' ~ art.id }) }}">{{ art.title|raw }}</a>
+
+					<div class="anons-info">
+						Рубрика: <a target="_blank" href="{{ path('art', {'url':art.rubrique.url}) }}">{{ art.rubrique.title }}</a>
+					</div>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endif %}
