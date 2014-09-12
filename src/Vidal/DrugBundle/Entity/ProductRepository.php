@@ -804,6 +804,17 @@ class ProductRepository extends EntityRepository
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
 
+		$publicationsByMolecule = $this->_em->createQuery('
+			SELECT DISTINCT p
+			FROM VidalDrugBundle:Publication p
+			JOIN p.molecules m
+			JOIN m.moleculeNames mn
+			JOIN mn.products product WITH product.ProductID = :ProductID
+			WHERE p.enabled = TRUE
+				AND SIZE(product.moleculeNames) = 1
+		')->setParameter('ProductID', $ProductID)
+			->getResult();
+
 		$ids          = array();
 		$publications = [];
 
@@ -815,6 +826,14 @@ class ProductRepository extends EntityRepository
 		foreach ($publicationsByAtc as $p) {
 			if (!in_array($p->getId(), $ids)) {
 				$publications[] = $p;
+				$ids[] = $p->getId();
+			}
+		}
+
+		foreach ($publicationsByMolecule as $p) {
+			if (!in_array($p->getId(), $ids)) {
+				$publications[] = $p;
+				$ids[] = $p->getId();
 			}
 		}
 
@@ -846,6 +865,18 @@ class ProductRepository extends EntityRepository
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
 
+		$articlesByMolecule = $this->_em->createQuery('
+			SELECT DISTINCT a
+			FROM VidalDrugBundle:Article a
+			JOIN a.molecules m
+			JOIN m.moleculeNames mn
+			JOIN mn.products product WITH product.ProductID = :ProductID
+			JOIN a.rubrique r
+			WHERE a.enabled = TRUE
+				AND r.enabled = TRUE
+		')->setParameter('ProductID', $ProductID)
+			->getResult();
+
 		$ids      = array();
 		$articles = [];
 
@@ -855,6 +886,12 @@ class ProductRepository extends EntityRepository
 		}
 
 		foreach ($articlesByAtc as $a) {
+			if (!in_array($a->getId(), $ids)) {
+				$articles[] = $a;
+			}
+		}
+
+		foreach ($articlesByMolecule as $a) {
 			if (!in_array($a->getId(), $ids)) {
 				$articles[] = $a;
 			}
@@ -896,6 +933,22 @@ class ProductRepository extends EntityRepository
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
 
+		$articlesByMolecule = $this->_em->createQuery('
+			SELECT DISTINCT a
+			FROM VidalDrugBundle:Art a
+			JOIN a.molecules m
+			JOIN m.moleculeNames mn
+			JOIN mn.products product WITH product.ProductID = :ProductID
+			JOIN a.rubrique r
+			LEFT JOIN a.category c
+			LEFT JOIN a.type t
+			WHERE a.enabled = TRUE
+				AND r.enabled = TRUE
+				AND (t IS NULL OR t.enabled = TRUE)
+				AND (c IS NULL OR c.enabled = TRUE)
+		')->setParameter('ProductID', $ProductID)
+			->getResult();
+
 		$ids      = array();
 		$articles = [];
 
@@ -905,6 +958,12 @@ class ProductRepository extends EntityRepository
 		}
 
 		foreach ($articlesByAtc as $a) {
+			if (!in_array($a->getId(), $ids)) {
+				$articles[] = $a;
+			}
+		}
+
+		foreach ($articlesByMolecule as $a) {
 			if (!in_array($a->getId(), $ids)) {
 				$articles[] = $a;
 			}
