@@ -118,9 +118,9 @@ class PublicationRepository extends EntityRepository
 		}
 
 		return $this->_em->createQuery('
-			SELECT a
-			FROM VidalDrugBundle:Publication a
-			WHERE a.id IN (:ids)
+			SELECT p
+			FROM VidalDrugBundle:Publication p
+			WHERE p.id IN (:ids)
 		')->setParameter('ids', $ids)
 			->getResult();
 	}
