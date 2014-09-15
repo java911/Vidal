@@ -826,14 +826,14 @@ class ProductRepository extends EntityRepository
 		foreach ($publicationsByAtc as $p) {
 			if (!in_array($p->getId(), $ids)) {
 				$publications[] = $p;
-				$ids[] = $p->getId();
+				$ids[]          = $p->getId();
 			}
 		}
 
 		foreach ($publicationsByMolecule as $p) {
 			if (!in_array($p->getId(), $ids)) {
 				$publications[] = $p;
-				$ids[] = $p->getId();
+				$ids[]          = $p->getId();
 			}
 		}
 
@@ -881,19 +881,21 @@ class ProductRepository extends EntityRepository
 		$articles = array();
 
 		foreach ($articlesByProduct as $a) {
-			$ids[]      = $a->getId();
 			$articles[] = $a;
+			$ids[]      = $a->getId();
 		}
 
 		foreach ($articlesByAtc as $a) {
 			if (!in_array($a->getId(), $ids)) {
 				$articles[] = $a;
+				$ids[]      = $a->getId();
 			}
 		}
 
 		foreach ($articlesByMolecule as $a) {
 			if (!in_array($a->getId(), $ids)) {
 				$articles[] = $a;
+				$ids[]      = $a->getId();
 			}
 		}
 
@@ -960,12 +962,14 @@ class ProductRepository extends EntityRepository
 		foreach ($articlesByAtc as $a) {
 			if (!in_array($a->getId(), $ids)) {
 				$articles[] = $a;
+				$ids[]      = $a->getId();
 			}
 		}
 
 		foreach ($articlesByMolecule as $a) {
 			if (!in_array($a->getId(), $ids)) {
 				$articles[] = $a;
+				$ids[]      = $a->getId();g
 			}
 		}
 
