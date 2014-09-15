@@ -969,7 +969,7 @@ class ProductRepository extends EntityRepository
 		foreach ($articlesByMolecule as $a) {
 			if (!in_array($a->getId(), $ids)) {
 				$articles[] = $a;
-				$ids[]      = $a->getId();g
+				$ids[]      = $a->getId();
 			}
 		}
 
