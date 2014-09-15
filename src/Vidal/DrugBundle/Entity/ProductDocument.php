@@ -9,10 +9,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 /** @ORM\Entity @ORM\Table(name="product_document") */
 class ProductDocument
 {
-	/** @ORM\Column(type="integer") */
+	/** @ORM\Id @ORM\Column(type="integer") */
 	protected $DocumentID;
 
-	/** @ORM\Column(type="integer") */
+	/** @ORM\Id @ORM\Column(type="integer") */
 	protected $ProductID;
 
 	/** @ORM\Column(type="smallint", nullable=true) */
