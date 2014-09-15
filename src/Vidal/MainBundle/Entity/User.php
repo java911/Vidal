@@ -68,15 +68,6 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	/** @ORM\Column(type="string") */
 	protected $roles;
 
-	/** @ORM\ManyToOne(targetEntity="Specialization", inversedBy="doctors") */
-	protected $specialization;
-
-	/** @ORM\ManyToOne(targetEntity="Specialty", inversedBy="primaryDoctors") */
-	protected $primarySpecialty;
-
-	/** @ORM\ManyToOne(targetEntity="Specialty", inversedBy="secondaryDoctors") */
-	protected $secondarySpecialty;
-
 	/** @ORM\ManyToOne(targetEntity="City", inversedBy="doctors") */
 	protected $city;
 
@@ -197,6 +188,12 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 
 	/** @ORM\Column(type="integer") */
 	protected $countRestrictedSent = 0;
+
+	/** @ORM\ManyToOne(targetEntity="Specialty", inversedBy="primarySpecialties") */
+	protected $primarySpecialty;
+
+	/** @ORM\ManyToOne(targetEntity="Specialty", inversedBy="secondarySpecialties") */
+	protected $secondarySpecialty;
 
 	public function __construct()
 	{
@@ -478,38 +475,6 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	public function getCity()
 	{
 		return $this->city;
-	}
-
-	/**
-	 * @param mixed $primarySpecialty
-	 */
-	public function setPrimarySpecialty($primarySpecialty)
-	{
-		$this->primarySpecialty = $primarySpecialty;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getPrimarySpecialty()
-	{
-		return $this->primarySpecialty;
-	}
-
-	/**
-	 * @param mixed $secondarySpecialty
-	 */
-	public function setSecondarySpecialty($secondarySpecialty)
-	{
-		$this->secondarySpecialty = $secondarySpecialty;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getSecondarySpecialty()
-	{
-		return $this->secondarySpecialty;
 	}
 
 	/**
@@ -1110,5 +1075,37 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	public function addCountConfirmationSent()
 	{
 		$this->countConfirmationSent++;
+	}
+
+	/**
+	 * @param mixed $primarySpecialty
+	 */
+	public function setPrimarySpecialty($primarySpecialty)
+	{
+		$this->primarySpecialty = $primarySpecialty;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPrimarySpecialty()
+	{
+		return $this->primarySpecialty;
+	}
+
+	/**
+	 * @param mixed $secondarySpecialty
+	 */
+	public function setSecondarySpecialty($secondarySpecialty)
+	{
+		$this->secondarySpecialty = $secondarySpecialty;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSecondarySpecialty()
+	{
+		return $this->secondarySpecialty;
 	}
 }

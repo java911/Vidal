@@ -40,11 +40,15 @@ class Country
      */
     protected $shortTitle;
 
+	/** @ORM\OneToMany(targetEntity="University", mappedBy="country") */
+	protected $universities;
+
 	public function __construct()
 	{
 		$this->cities  = new ArrayCollection();
 		$this->regions = new ArrayCollection();
 		$this->doctors = new ArrayCollection();
+		$this->universities = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -129,5 +133,35 @@ class Country
         return $this->banners;
     }
 
+	/**
+	 * @param mixed $shortTitle
+	 */
+	public function setShortTitle($shortTitle)
+	{
+		$this->shortTitle = $shortTitle;
+	}
 
+	/**
+	 * @return mixed
+	 */
+	public function getShortTitle()
+	{
+		return $this->shortTitle;
+	}
+
+	/**
+	 * @param mixed $universities
+	 */
+	public function setUniversities($universities)
+	{
+		$this->universities = $universities;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getUniversities()
+	{
+		return $this->universities;
+	}
 }

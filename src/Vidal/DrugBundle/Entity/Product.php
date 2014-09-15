@@ -110,9 +110,6 @@ class Product
 	 */
 	protected $atcCodes;
 
-	/** @ORM\OneToMany(targetEntity="ProductDocument", mappedBy="ProductID") */
-	protected $productDocument;
-
 	/**
 	 * @ORM\ManyToMany(targetEntity="ClPhGroups", inversedBy="products", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="product_clphgroups",
@@ -194,7 +191,6 @@ class Product
 	public function __construct()
 	{
 		$this->atcCodes        = new ArrayCollection();
-		$this->productDocument = new ArrayCollection();
 		$this->clphGroups      = new ArrayCollection();
 		$this->productCompany  = new ArrayCollection();
 		$this->moleculeNames   = new ArrayCollection();
@@ -677,22 +673,6 @@ class Product
 	public function getAtcCodes()
 	{
 		return $this->atcCodes;
-	}
-
-	/**
-	 * @param mixed $productDocument
-	 */
-	public function setProductDocument(ArrayCollection $productDocument)
-	{
-		$this->productDocument = $productDocument;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getProductDocument()
-	{
-		return $this->productDocument;
 	}
 
 	/**

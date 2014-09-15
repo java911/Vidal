@@ -146,9 +146,6 @@ class Document
 	 */
 	protected $atcCodes;
 
-	/** @ORM\OneToMany(targetEntity="ProductDocument", mappedBy="DocumentID") */
-	protected $productDocument;
-
 	/**
 	 * @ORM\ManyToMany(targetEntity="Nozology", inversedBy="documents", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="document_indicnozology",
@@ -221,18 +218,17 @@ class Document
 
 	public function __construct()
 	{
-		$this->atcCodes          = new ArrayCollection();
-		$this->productDocument   = new ArrayCollection();
-		$this->nozologies        = new ArrayCollection();
-		$this->clphPointers      = new ArrayCollection();
-		$this->articles          = new ArrayCollection();
-		$this->arts              = new ArrayCollection();
-		$this->publications      = new ArrayCollection();
-		$this->pharmArticles     = new ArrayCollection();
-		$this->portfolios        = new ArrayCollection();
-		$this->products          = new ArrayCollection();
-		$this->infoPages         = new ArrayCollection();
-		$this->YearEdition       = date('Y') . '';
+		$this->atcCodes        = new ArrayCollection();
+		$this->nozologies      = new ArrayCollection();
+		$this->clphPointers    = new ArrayCollection();
+		$this->articles        = new ArrayCollection();
+		$this->arts            = new ArrayCollection();
+		$this->publications    = new ArrayCollection();
+		$this->pharmArticles   = new ArrayCollection();
+		$this->portfolios      = new ArrayCollection();
+		$this->products        = new ArrayCollection();
+		$this->infoPages       = new ArrayCollection();
+		$this->YearEdition     = date('Y') . '';
 	}
 
 	public function __toString()
@@ -910,22 +906,6 @@ class Document
 	public function getNozologies()
 	{
 		return $this->nozologies;
-	}
-
-	/**
-	 * @param mixed $productDocument
-	 */
-	public function setProductDocument(ArrayCollection $productDocument)
-	{
-		$this->productDocument = $productDocument;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getProductDocument()
-	{
-		return $this->productDocument;
 	}
 
 	/**
