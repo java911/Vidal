@@ -746,6 +746,7 @@ tr.bold td {
 }
 .navigation-items div {
 	display:       inline-block;
+	vertical-align: top;
 	width:         46%;
 	margin-bottom: 5px;
 	padding-left:  13px;
