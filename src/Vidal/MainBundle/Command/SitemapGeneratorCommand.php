@@ -47,9 +47,16 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 
 		# главная
 		$url = $urlset->addChild('url');
-		$url->addChild('loc', 'http://www.vidal.ru');
+		$url->addChild('loc', 'http://www.vidal.ru/sitemap1.xml');
 		$url->addChild('lastmod', $lastMod);
 		$url->addChild('changefreq', 'monthly');
+		$url->addChild('priority', '1');
+
+		# материалы
+		$url = $urlset->addChild('url');
+		$url->addChild('loc', 'http://www.vidal.ru/sitemap2.xml');
+		$url->addChild('lastmod', $lastMod);
+		$url->addChild('changefreq', 'daily');
 		$url->addChild('priority', '1');
 
 		# картинка-1
