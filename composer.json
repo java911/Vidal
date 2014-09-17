@@ -40,7 +40,8 @@
 		"iphp/filestore-bundle": "dev-master",
 		"gregwar/captcha-bundle": "dev-master",
 		"ornicar/apc-bundle": "1.0.*",
-		"liuggio/excelbundle": "~2.0"
+		"liuggio/excelbundle": "~2.0",
+		"coresphere/console-bundle": "dev-master"
 	},
 
 	"scripts": {
