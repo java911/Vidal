@@ -20,7 +20,7 @@ class AtcAdmin extends Admin
 			$this->datagridValues = array(
 				'_page'       => 1,
 				'_per_page'   => 25,
-				'_sort_order' => 'DESC',
+				'_sort_order' => 'ASC',
 				'_sort_by'    => 'ATCCode',
 			);
 		}
@@ -29,18 +29,28 @@ class AtcAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('title', null, array('label' => 'Заголовок', 'required' => true));
+			->add('ATCCode', null, array('label' => 'Код АТХ', 'required' => true))
+			->add('RusName', null, array('label' => 'Название русское', 'required' => true))
+			->add('EngName', null, array('label' => 'Название латинское', 'required' => false))
+			->add('ParentATCCode', null, array('label' => 'Родительский код АТХ'));
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
-			->add('title', null, array('label' => 'Заголовок'));
+			->add('ATCCode', null, array('label' => 'Код АТХ'))
+			->add('RusName', null, array('label' => 'Название русское'))
+			->add('EngName', null, array('label' => 'Название латинское'))
+			->add('ParentATCCode', null, array('label' => 'Родительский код АТХ'));
 	}
 
 	protected function configureListFields(ListMapper $listMapper)
 	{
 		$listMapper
+			->add('ATCCode', null, array('label' => 'Код АТХ'))
+			->add('RusName', null, array('label' => 'Название русское'))
+			->add('EngName', null, array('label' => 'Название латинское'))
+			->add('ParentATCCode', null, array('label' => 'Родительский код АТХ'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(

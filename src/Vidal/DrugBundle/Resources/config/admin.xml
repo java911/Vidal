@@ -202,6 +202,14 @@
 			<argument />
 		</service>
 
+		<service id="sonata.admin.atc" class="Vidal\DrugBundle\Admin\AtcAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Справочник" label="Коды АТХ"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\ATC</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
 		<!-- Не используется -->
 		<service id="sonata.admin.productcompany" class="Vidal\DrugBundle\Admin\ProductCompanyAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="Не используется" label="-" show_in_dashboard="false"/>
