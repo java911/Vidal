@@ -581,12 +581,14 @@ class SonataController extends Controller
 			$text      = empty($tagSearch) ? $tag->getText() : $tagSearch;
 		}
 
+		$t = str_replace('*', '', $text);
+
 		$isPartly = $text[0] == '*';
 
 		# снимаем тег у статей энкициклопедии
 		$stmt = $isPartly
-			? $pdo->prepare("SELECT id FROM article WHERE title LIKE '%{$text}%' OR body LIKE '%{$text}%' OR announce REGEXP '%{$text}%'")
-			: $pdo->prepare("SELECT id FROM article WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
+			? $pdo->prepare("SELECT id FROM article WHERE title LIKE '%{$t}%' OR body LIKE '%{$t}%' OR announce REGEXP '%{$t}%'")
+			: $pdo->prepare("SELECT id FROM article WHERE title REGEXP '[[:<:]]{$t}[[:>:]]' OR body REGEXP '[[:<:]]{$t}[[:>:]]' OR announce REGEXP '[[:<:]]{$t}[[:>:]]'");
 
 		$stmt->execute();
 		$articles = $stmt->fetchAll();
@@ -598,8 +600,8 @@ class SonataController extends Controller
 
 		# снимаем тег у статей специалистам
 		$stmt = $isPartly
-			? $pdo->prepare("SELECT id FROM art WHERE title LIKE '%{$text}%' OR body LIKE '%{$text}%' OR announce REGEXP '%{$text}%'")
-			: $pdo->prepare("SELECT id FROM art WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
+			? $pdo->prepare("SELECT id FROM art WHERE title LIKE '%{$t}%' OR body LIKE '%{$t}%' OR announce REGEXP '%{$t}%'")
+			: $pdo->prepare("SELECT id FROM art WHERE title REGEXP '[[:<:]]{$t}[[:>:]]' OR body REGEXP '[[:<:]]{$t}[[:>:]]' OR announce REGEXP '[[:<:]]{$t}[[:>:]]'");
 
 		$stmt->execute();
 		$articles = $stmt->fetchAll();
@@ -611,7 +613,7 @@ class SonataController extends Controller
 
 		# снимаем тег у новостей
 		$stmt = $isPartly
-			? $pdo->prepare("SELECT id FROM publication WHERE title LIKE '%{$text}%' OR body LIKE '%{$text}%' OR announce LIKE '%{$text}%'")
+			? $pdo->prepare("SELECT id FROM publication WHERE title LIKE '%{$t}%' OR body LIKE '%{$t}%' OR announce LIKE '%{$t}%'")
 			: $pdo->prepare("SELECT id FROM publication WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
 
 		$stmt->execute();
@@ -624,8 +626,8 @@ class SonataController extends Controller
 
 		# снимаем тег у новостей фарм-компаний
 		$stmt = $isPartly
-			? $pdo->prepare("SELECT id FROM pharm_article WHERE text LIKE '%{$text}%'")
-			: $pdo->prepare("SELECT id FROM pharm_article WHERE text REGEXP '[[:<:]]{$text}[[:>:]]'");
+			? $pdo->prepare("SELECT id FROM pharm_article WHERE text LIKE '%{$t}%'")
+			: $pdo->prepare("SELECT id FROM pharm_article WHERE text REGEXP '[[:<:]]{$t}[[:>:]]'");
 
 		$stmt->execute();
 		$articles = $stmt->fetchAll();

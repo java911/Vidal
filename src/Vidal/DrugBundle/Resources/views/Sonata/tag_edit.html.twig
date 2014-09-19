@@ -50,11 +50,6 @@
 			window.location = Routing.generate('tag_set', {'tagId': tagId, 'text':text});
 		});
 
-		$('.tag-unset-partly').click(function(e) {
-			e.preventDefault();
-			window.location = Routing.generate('tag_unset', {'tagId': tagId, 'partly': 1, 'text': $history.val()});
-		});
-
 		$('.tag-unset').click(function(e) {
 			e.preventDefault();
 			window.location = Routing.generate('tag_unset', {'tagId': tagId, 'text': $history.val()});
