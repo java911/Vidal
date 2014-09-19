@@ -52,7 +52,9 @@
 
 		$('.tag-unset').click(function(e) {
 			e.preventDefault();
-			window.location = Routing.generate('tag_unset', {'tagId': tagId, 'text': $history.val()});
+
+			var text = prompt('Укажите слово', $history.val() ? $history.val() : '{{ object.search is empty ? object.text : object.search }}');
+			window.location = Routing.generate('tag_unset', {'tagId': tagId, 'text': text});
 		});
 
 		$('.tag-list').click(function(e) {
