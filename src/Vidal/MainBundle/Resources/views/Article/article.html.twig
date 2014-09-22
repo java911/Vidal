@@ -104,6 +104,8 @@
 
 {% block javascripts %}
 	{{ parent() }}
+	<script type="text/javascript" src="{{ asset('bundles/vidalmain/ckeditor/spoiler.js') }}"></script>
+
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('.btn-red').click(function(e) {
