@@ -96,4 +96,6 @@ $(document).ready(function() {
 		$announcement.find('ul').slideToggle('fast');
 		$announcement.find('.products').slideToggle('fast');
 	});
+
+	$('.text a').breakLink();
 });

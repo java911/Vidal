@@ -79,4 +79,10 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/publication.css') }}"/>
+	<style>
+		.wbr {
+			display: inline-block;
+			width: 0px;
+		}
+	</style>
 {% endblock %}
