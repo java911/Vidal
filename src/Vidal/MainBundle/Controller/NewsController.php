@@ -65,7 +65,28 @@ class NewsController extends Controller
 		return $params;
 	}
 
-	private function strip($string)
+
+    /**
+     * @Route("/novost-test", name="novost-test")
+     * @Template("VidalMainBundle:News:test.html.twig")
+     */
+    public function testAction()
+    {
+//        $em = $this->getDoctrine()->getManager('drug');
+//        $publication = $em->getRepository('VidalDrugBundle:Publication')->findOneById($id);
+
+//        if (!$publication || $publication->getEnabled() === false) {
+//            throw $this->createNotFoundException();
+//        }
+
+        return array(
+//            'publication' => $publication,
+            'menu_left'   => 'news',
+//            'title'       => $this->strip($publication->getTitle()) . ' | Новости',
+        );
+    }
+
+    private function strip($string)
 	{
 		$pat = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/&amp;/');
 		$rep = array('', '', '&');
