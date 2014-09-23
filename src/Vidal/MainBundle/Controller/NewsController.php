@@ -72,18 +72,7 @@ class NewsController extends Controller
      */
     public function testAction()
     {
-//        $em = $this->getDoctrine()->getManager('drug');
-//        $publication = $em->getRepository('VidalDrugBundle:Publication')->findOneById($id);
-
-//        if (!$publication || $publication->getEnabled() === false) {
-//            throw $this->createNotFoundException();
-//        }
-
-        return array(
-//            'publication' => $publication,
-            'menu_left'   => 'news',
-//            'title'       => $this->strip($publication->getTitle()) . ' | Новости',
-        );
+		return $this->redirect($this->generateUrl('publication', array('id' => 4618)));
     }
 
     private function strip($string)

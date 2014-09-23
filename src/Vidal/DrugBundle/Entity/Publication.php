@@ -112,6 +112,9 @@ class Publication extends BaseEntity
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $priority;
 
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $code;
+
 	public function __construct()
 	{
 		$now              = new \DateTime('now');
@@ -486,5 +489,21 @@ class Publication extends BaseEntity
 		if (!$this->infoPages->contains($infoPage)) {
 			$this->infoPages[] = $infoPage;
 		}
+	}
+
+	/**
+	 * @param mixed $code
+	 */
+	public function setCode($code)
+	{
+		$this->code = $code;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCode()
+	{
+		return $this->code;
 	}
 }

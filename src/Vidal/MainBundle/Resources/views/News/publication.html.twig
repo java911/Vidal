@@ -61,6 +61,10 @@
 
 		<div class="publication-body text">
 			{{ publication.body|raw }}
+
+			{% if publication.code is not empty %}
+				{{ publication.code|raw }}
+			{% endif %}
 		</div>
 
 		<div class="publication-footer">

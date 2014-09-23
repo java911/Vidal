@@ -129,6 +129,7 @@ class PublicationAdmin extends Admin
 			)
 			->add('date', null, array('label' => 'Дата создания', 'required' => true, 'years' => range(2000, date('Y'))))
 			->add('video', 'iphp_file', array('label' => 'Видео', 'required' => false, 'help' => 'Загрузить флеш-видео в формате .flv'))
+			->add('code', null, array('label' => 'Дополнительный код', 'required' => false))
 			->add('enabled', null, array('label' => 'Активна', 'required' => false));
 	}
 
