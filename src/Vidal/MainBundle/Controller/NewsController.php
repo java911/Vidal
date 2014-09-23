@@ -23,12 +23,12 @@ class NewsController extends Controller
 	 * @Route("/novosti/{id}", name="publication")
 	 * @Template("VidalMainBundle:News:publication.html.twig")
 	 */
-	public function publicationAction($id)
+	public function publicationAction(Request $request, $id)
 	{
-		$em = $this->getDoctrine()->getManager('drug');
+		$em          = $this->getDoctrine()->getManager('drug');
 		$publication = $em->getRepository('VidalDrugBundle:Publication')->findOneById($id);
 
-		if (!$publication || $publication->getEnabled() === false) {
+		if ((!$publication || $publication->getEnabled() === false) && !$request->query->has('test')) {
 			throw $this->createNotFoundException();
 		}
 
@@ -46,7 +46,7 @@ class NewsController extends Controller
 	public function newsAction(Request $request)
 	{
 		$em     = $this->getDoctrine()->getManager('drug');
-		$page = $request->query->get('p', 1);
+		$page   = $request->query->get('p', 1);
 		$params = array(
 			'menu_left' => 'news',
 			'title'     => 'Новости',
@@ -65,17 +65,13 @@ class NewsController extends Controller
 		return $params;
 	}
 
+	/** @Route("/novost-test", name="novost-test") */
+	public function novostTestAction()
+	{
+		return $this->redirect($this->generateUrl('publication', array('id' => 4618, 'test' => '')));
+	}
 
-    /**
-     * @Route("/novost-test", name="novost-test")
-     * @Template("VidalMainBundle:News:test.html.twig")
-     */
-    public function testAction()
-    {
-		return $this->redirect($this->generateUrl('publication', array('id' => 4618)));
-    }
-
-    private function strip($string)
+	private function strip($string)
 	{
 		$pat = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/&amp;/');
 		$rep = array('', '', '&');
