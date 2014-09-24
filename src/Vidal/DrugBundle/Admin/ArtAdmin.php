@@ -130,6 +130,7 @@ class ArtAdmin extends Admin
 			->add('anons', null, array('label' => 'Отображать в анонсе', 'required' => false))
 			->add('anonsPriority', null, array('label' => 'Приоритет в анонсе'))
 			->add('hideDate', null, array('label' => 'Скрывать дату', 'required' => false))
+			->add('code', null, array('label' => 'Дополнительный код', 'required' => false))
 			->add('testMode', null, array('label' => 'В режиме тестирования', 'required' => false, 'help' => 'видно только если в конец url-адреса дописать ?test'))
 			->add('enabled', null, array('label' => 'Активна', 'required' => false));
 	}

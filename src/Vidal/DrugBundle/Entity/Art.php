@@ -145,6 +145,9 @@ class Art extends BaseEntity
 	/** @ORM\Column(type="boolean") */
 	protected $testMode = false;
 
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $code;
+
 	public function __construct()
 	{
 		$this->nozologies = new ArrayCollection();
@@ -698,5 +701,21 @@ class Art extends BaseEntity
 	public function getTestMode()
 	{
 		return $this->testMode;
+	}
+
+	/**
+	 * @param mixed $code
+	 */
+	public function setCode($code)
+	{
+		$this->code = $code;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCode()
+	{
+		return $this->code;
 	}
 }
