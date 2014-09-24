@@ -768,6 +768,11 @@ class Article extends BaseEntity
 		}
 	}
 
+	public function removeInfoPage($infoPage)
+	{
+		$this->infoPages->remove($infoPage);
+	}
+
 	/**
 	 * @param mixed $hideDate
 	 */
