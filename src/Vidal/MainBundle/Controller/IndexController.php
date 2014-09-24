@@ -23,10 +23,11 @@ class IndexController extends Controller
 	 * @Route("/", name="index")
 	 * @Template("VidalMainBundle:Index:index.html.twig")
 	 */
-	public function indexAction()
+	public function indexAction(Request $request)
 	{
 		$em       = $this->getDoctrine()->getManager('drug');
-		$articles = $em->getRepository('VidalDrugBundle:Article')->findLast();
+		$testMode = $request->query->has('test');
+		$articles = $em->getRepository('VidalDrugBundle:Article')->findLast($testMode);
 
 		if ($art = $em->getRepository('VidalDrugBundle:Art')->atIndex()) {
 			$articles[] = $art;
@@ -35,7 +36,7 @@ class IndexController extends Controller
 		$params = array(
 			'indexPage'            => true,
 			'seotitle'             => 'Справочник лекарственных препаратов Видаль. Описание лекарственных средств',
-			'publications'         => $em->getRepository('VidalDrugBundle:Publication')->findLast(self::PUBLICATIONS_SHOW),
+			'publications'         => $em->getRepository('VidalDrugBundle:Publication')->findLast(self::PUBLICATIONS_SHOW, $testMode),
 			'publicationsPriority' => $em->getRepository('VidalDrugBundle:Publication')->findLastPriority(),
 			'articles'             => $articles,
 		);

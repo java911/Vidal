@@ -6,28 +6,40 @@ use Doctrine\ORM\EntityRepository;
 
 class ArticleRepository extends EntityRepository
 {
-	public function ofRubrique($rubrique)
+	public function ofRubrique($rubrique, $testMode = false)
 	{
-		return $this->_em->createQuery('
-			SELECT a
-			FROM VidalDrugBundle:Article a
-			WHERE a.rubrique = :rubriqueId
-			ORDER BY a.title ASC
-		')->setParameter('rubriqueId', $rubrique->getId())
-			->getResult();
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select('a')
+			->from('VidalDrugBundle:Article', 'a')
+			->where('a.rubrique = :rubriqueId')
+			->orderBy('a.title', 'ASC')
+			->setParameter('rubriqueId', $rubrique->getId());
+
+		$testMode
+			? $qb->andWhere('a.enabled = TRUE OR a.testMode = TRUE')
+			: $qb->andWhere('a.enabled = TRUE');
+
+		return $qb->getQuery()->getResult();
 	}
 
-	public function findLast()
+	public function findLast($testMode = false)
 	{
-		return $this->_em->createQuery('
-			SELECT a
-			FROM VidalDrugBundle:Article a
-			WHERE a.enabled = TRUE
-				AND a.date < :now
-				AND a.anons = TRUE
-			ORDER BY a.anonsPriority DESC, a.date DESC
-		')->setParameter('now', new \DateTime())
-			->getResult();
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select('a')
+			->from('VidalDrugBundle:Article', 'a')
+			->andWhere('a.date < :now')
+			->andWhere('a.anons = TRUE')
+			->orderBy('a.anonsPriority', 'DESC')
+			->addOrderBy('a.date', 'DESC')
+			->setParameter('now', new \DateTime());
+
+		$testMode
+			? $qb->andWhere('a.enabled = TRUE OR a.testMode = TRUE')
+			: $qb->andWhere('a.enabled = TRUE');
+
+		return $qb->getQuery()->getResult();
 	}
 
 	public function findFrom($from, $max)

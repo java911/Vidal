@@ -115,6 +115,9 @@ class Publication extends BaseEntity
 	/** @ORM\Column(type="text", nullable=true) */
 	protected $code;
 
+	/** @ORM\Column(type="boolean") */
+	protected $testMode = false;
+
 	public function __construct()
 	{
 		$now              = new \DateTime('now');
@@ -505,5 +508,21 @@ class Publication extends BaseEntity
 	public function getCode()
 	{
 		return $this->code;
+	}
+
+	/**
+	 * @param mixed $testMode
+	 */
+	public function setTestMode($testMode)
+	{
+		$this->testMode = $testMode;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTestMode()
+	{
+		return $this->testMode;
 	}
 }

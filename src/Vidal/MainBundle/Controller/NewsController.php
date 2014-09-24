@@ -45,19 +45,21 @@ class NewsController extends Controller
 	 */
 	public function newsAction(Request $request)
 	{
-		$em     = $this->getDoctrine()->getManager('drug');
-		$page   = $request->query->get('p', 1);
+		$em       = $this->getDoctrine()->getManager('drug');
+		$page     = $request->query->get('p', 1);
+		$testMode = $request->query->has('test');
+
 		$params = array(
 			'menu_left' => 'news',
 			'title'     => 'Новости',
 		);
 
 		if ($page == 1) {
-			$params['publicationsPriority'] = $em->getRepository('VidalDrugBundle:Publication')->findLastPriority();
+			$params['publicationsPriority'] = $em->getRepository('VidalDrugBundle:Publication')->findLastPriority($testMode);
 		}
 
 		$params['publicationsPagination'] = $this->get('knp_paginator')->paginate(
-			$em->getRepository('VidalDrugBundle:Publication')->getQueryEnabled(),
+			$em->getRepository('VidalDrugBundle:Publication')->getQueryEnabled($testMode),
 			$page,
 			self::PUBLICATIONS_PER_PAGE
 		);

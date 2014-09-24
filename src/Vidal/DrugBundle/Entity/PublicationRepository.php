@@ -6,32 +6,43 @@ use Doctrine\ORM\EntityRepository;
 
 class PublicationRepository extends EntityRepository
 {
-	public function findLast($top = 5)
+	public function findLast($top = 5, $testMode = false)
 	{
-		return $this->_em->createQuery('
-			SELECT p
-			FROM VidalDrugBundle:Publication p
-			WHERE p.enabled = TRUE
-				AND p.date < :now
-				AND p.priority IS NULL
-			ORDER BY p.date DESC
-		')->setParameter('now', new \DateTime())
-			->setMaxResults($top)
-			->getResult();
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select('p')
+			->from('VidalDrugBundle:Publication', 'p')
+			->andWhere('p.date < :now')
+			->andWhere('p.priority IS NULL')
+			->orderBy('p.date', 'DESC')
+			->setParameter('now', new \DateTime())
+			->setMaxResults($top);
+
+		$testMode
+			? $qb->andWhere('p.enabled = TRUE OR p.testMode = TRUE')
+			: $qb->andWhere('p.enabled = TRUE');
+
+		return $qb->getQuery()->getResult();
 	}
 
-	public function findLastPriority($top = 3)
+	public function findLastPriority($top = 3, $testMode = false)
 	{
-		return $this->_em->createQuery('
-			SELECT p
-			FROM VidalDrugBundle:Publication p
-			WHERE p.enabled = TRUE
-				AND p.date < :now
-				AND p.priority IS NOT NULL
-			ORDER BY p.priority DESC, p.date DESC
-		')->setParameter('now', new \DateTime())
-			->setMaxResults($top)
-			->getResult();
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select('p')
+			->from('VidalDrugBundle:Publication', 'p')
+			->andWhere('p.date < :now')
+			->andWhere('p.priority IS NOT NULL')
+			->orderBy('p.priority', 'DESC')
+			->addOrderBy('p.date', 'DESC')
+			->setParameter('now', new \DateTime())
+			->setMaxResults($top);
+
+		$testMode
+			? $qb->andWhere('p.enabled = TRUE OR p.testMode = TRUE')
+			: $qb->andWhere('p.enabled = TRUE');
+
+		return $qb->getQuery()->getResult();
 	}
 
 	public function findFrom($from, $max)
@@ -48,16 +59,22 @@ class PublicationRepository extends EntityRepository
 			->getResult();
 	}
 
-	public function getQueryEnabled()
+	public function getQueryEnabled($testMode = false)
 	{
-		return $this->_em->createQuery('
-			SELECT p
-			FROM VidalDrugBundle:Publication p
-			WHERE p.enabled = TRUE
-				AND p.date < :now
-				AND p.priority IS NULL
-			ORDER BY p.date DESC
-		')->setParameter('now', new \DateTime());
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select('p')
+			->from('VidalDrugBundle:Publication', 'p')
+			->andWhere('p.date < :now')
+			->andWhere('p.priority IS NULL')
+			->orderBy('p.date', 'DESC')
+			->setParameter('now', new \DateTime());
+
+		$testMode
+			? $qb->andWhere('p.enabled = TRUE OR p.testMode = TRUE')
+			: $qb->andWhere('p.enabled = TRUE');
+
+		return $qb->getQuery();
 	}
 
 	public function getQueryByTag($tagId)

@@ -130,6 +130,7 @@ class PublicationAdmin extends Admin
 			->add('date', null, array('label' => 'Дата создания', 'required' => true, 'years' => range(2000, date('Y'))))
 			->add('video', 'iphp_file', array('label' => 'Видео', 'required' => false, 'help' => 'Загрузить флеш-видео в формате .flv'))
 			->add('code', null, array('label' => 'Дополнительный код', 'required' => false))
+			->add('testMode', null, array('label' => 'В режиме тестирования', 'required' => false, 'help' => 'видно только если в конец url-адреса дописать ?test'))
 			->add('enabled', null, array('label' => 'Активна', 'required' => false));
 	}
 
@@ -139,6 +140,7 @@ class PublicationAdmin extends Admin
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
 			->add('priority', null, array('label' => 'Приоритет'))
+			->add('testMode', null, array('label' => 'В режиме тестирования'))
 			->add('enabled', null, array('label' => 'Активна'));
 	}
 

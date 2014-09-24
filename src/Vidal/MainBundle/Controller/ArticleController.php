@@ -21,13 +21,14 @@ class ArticleController extends Controller
 	 * @Route("/encyclopedia/{rubrique}/{link}", name="article")
 	 * @Template("VidalMainBundle:Article:article.html.twig")
 	 */
-	public function articleAction($rubrique, $link)
+	public function articleAction(Request $request, $rubrique, $link)
 	{
 		$em       = $this->getDoctrine()->getManager('drug');
 		$rubrique = $em->getRepository('VidalDrugBundle:ArticleRubrique')->findOneByRubrique($rubrique);
 		$article  = $em->getRepository('VidalDrugBundle:Article')->findOneByLink($link);
+		$testMode = $request->query->has('test');
 
-		if (!$rubrique || !$rubrique->getEnabled() || !$article || $article->getEnabled() === false) {
+		if (!$testMode && (!$rubrique || !$rubrique->getEnabled() || !$article || $article->getEnabled() === false)) {
 			throw $this->createNotFoundException();
 		}
 
@@ -88,16 +89,17 @@ class ArticleController extends Controller
 	 *
 	 * @Template("VidalMainBundle:Article:rubrique.html.twig")
 	 */
-	public function rubriqueAction($rubrique)
+	public function rubriqueAction(Request $request, $rubrique)
 	{
 		$em       = $this->getDoctrine()->getManager('drug');
+		$testMode = $request->query->has('test');
 		$rubrique = $em->getRepository('VidalDrugBundle:ArticleRubrique')->findEnabledByRubrique($rubrique);
 
 		if (!$rubrique) {
 			throw $this->createNotFoundException();
 		}
 
-		$articles = $em->getRepository('VidalDrugBundle:Article')->ofRubrique($rubrique);
+		$articles = $em->getRepository('VidalDrugBundle:Article')->ofRubrique($rubrique, $testMode);
 
 		return array(
 			'title'        => $rubrique . ' | Энциклопедия',

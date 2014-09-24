@@ -142,6 +142,9 @@ class Art extends BaseEntity
 	/** @ORM\Column(type="boolean") */
 	protected $hideDate = false;
 
+	/** @ORM\Column(type="boolean") */
+	protected $testMode = false;
+
 	public function __construct()
 	{
 		$this->nozologies = new ArrayCollection();
@@ -674,5 +677,21 @@ class Art extends BaseEntity
 	public function getHideDate()
 	{
 		return $this->hideDate;
+	}
+
+	/**
+	 * @param mixed $testMode
+	 */
+	public function setTestMode($testMode)
+	{
+		$this->testMode = $testMode;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTestMode()
+	{
+		return $this->testMode;
 	}
 }
