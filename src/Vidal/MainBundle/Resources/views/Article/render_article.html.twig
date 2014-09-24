@@ -27,8 +27,8 @@
 	<div class="article-body text">
 		{{ article.body|raw }}
 
-		{% if publication.code is not empty %}
-			{{ publication.code|raw }}
+		{% if article.code is not empty %}
+			{{ article.code|raw }}
 		{% endif %}
 	</div>
 	<div class="article-footer">
