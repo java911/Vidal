@@ -159,9 +159,7 @@ class TagController extends Controller
 		return $params;
 	}
 
-	/**
-	 * @Template("VidalMainBundle:Tag:tags.html.twig")
-	 */
+	/** @Template("VidalMainBundle:Tag:tags.html.twig") */
 	public function tagsAction($object)
 	{
 		$tags        = array();
@@ -169,7 +167,6 @@ class TagController extends Controller
 
 		# теги
 		foreach ($object->getTags() as $tag) {
-			echo $tag->getId() . ' ';
 			if ($tag->getEnabled()) {
 				$key = $tag->getText();
 				# проверка, что это представительство
