@@ -176,6 +176,7 @@ class TagController extends Controller
 					continue;
 				}
 
+				# включаем только тот тег, по которому есть хотя бы одна активная публикация
 				$hasPublication = false;
 				foreach ($tag->getPublications() as $publication) {
 					if ($publication->getEnabled()) {
@@ -183,6 +184,7 @@ class TagController extends Controller
 						break;
 					}
 				}
+
 				if (!isset($tags[$key]) && $hasPublication) {
 					$tags[$key] = $tag;
 				}
