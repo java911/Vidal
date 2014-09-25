@@ -8,29 +8,30 @@ use Symfony\Component\Validator\Constraints as Assert;
 /** @ORM\Entity(repositoryClass="QuestionAnswerRepository") @ORM\Table(name="question_answer") */
 class QuestionAnswer extends BaseEntity
 {
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Пожалуйста, укажите Имя")
-     */
-    protected $authorFirstName;
+	/**
+	 * @ORM\Column(type="string")
+	 * @Assert\NotBlank(message="Пожалуйста, укажите Имя")
+	 */
+	protected $authorFirstName;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Пожалуйста, укажите E-mail")
-     */
-    protected $authorEmail;
+	/**
+	 * @ORM\Column(type="string")
+	 * @Assert\NotBlank(message="Пожалуйста, укажите E-mail")
+	 * @Assert\Email(message="Некорректный e-mail")
+	 */
+	protected $authorEmail;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="user", inversedBy="answers")
-     */
-    protected $answerUser;
+	/**
+	 * @ORM\ManyToOne(targetEntity="user", inversedBy="answers")
+	 */
+	protected $answerUser;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="QuestionAnswerPlace", inversedBy="qas")
-     */
-    protected $place = 0;
+	/**
+	 * @ORM\ManyToOne(targetEntity="QuestionAnswerPlace", inversedBy="qas")
+	 */
+	protected $place = 0;
 
-    /**
+	/**
 	 * @ORM\Column(type="text")
 	 * @Assert\NotBlank(message="Пожалуйста, укажите вопрос")
 	 */
@@ -88,53 +89,53 @@ class QuestionAnswer extends BaseEntity
 		return $this->question;
 	}
 
-    /**
-     * @param mixed $authorEmail
-     */
-    public function setAuthorEmail($authorEmail)
-    {
-        $this->authorEmail = $authorEmail;
-    }
+	/**
+	 * @param mixed $authorEmail
+	 */
+	public function setAuthorEmail($authorEmail)
+	{
+		$this->authorEmail = $authorEmail;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getAuthorEmail()
-    {
-        return $this->authorEmail;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getAuthorEmail()
+	{
+		return $this->authorEmail;
+	}
 
-    /**
-     * @param mixed $authorFirstName
-     */
-    public function setAuthorFirstName($authorFirstName)
-    {
-        $this->authorFirstName = $authorFirstName;
-    }
+	/**
+	 * @param mixed $authorFirstName
+	 */
+	public function setAuthorFirstName($authorFirstName)
+	{
+		$this->authorFirstName = $authorFirstName;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getAuthorFirstName()
-    {
-        return $this->authorFirstName;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getAuthorFirstName()
+	{
+		return $this->authorFirstName;
+	}
 
-    /**
-     * @param mixed $answerUser
-     */
-    public function setAnswerUser($answerUser)
-    {
-        $this->answerUser = $answerUser;
-    }
+	/**
+	 * @param mixed $answerUser
+	 */
+	public function setAnswerUser($answerUser)
+	{
+		$this->answerUser = $answerUser;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getAnswerUser()
-    {
-        return $this->answerUser;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getAnswerUser()
+	{
+		return $this->answerUser;
+	}
 
 	/**
 	 * @param mixed $emailSent
@@ -152,21 +153,20 @@ class QuestionAnswer extends BaseEntity
 		return $this->emailSent;
 	}
 
-    /**
-     * @param mixed $place
-     */
-    public function setPlace($place)
-    {
-        $this->place = $place;
-    }
+	/**
+	 * @param mixed $place
+	 */
+	public function setPlace($place)
+	{
+		$this->place = $place;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getPlace()
-    {
-        return $this->place;
-    }
-
+	/**
+	 * @return mixed
+	 */
+	public function getPlace()
+	{
+		return $this->place;
+	}
 
 }
