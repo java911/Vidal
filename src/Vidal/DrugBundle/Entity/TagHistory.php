@@ -14,28 +14,21 @@ class TagHistory extends BaseEntity
 	/** @ORM\ManyToOne(targetEntity="Tag", inversedBy="history") */
 	protected $tag;
 
-	/** @ORM\Column(type="boolean") */
-	protected $any = false;
+	/** @ORM\Column(type="array") */
+	protected $articleIds;
+
+	/** @ORM\Column(type="array") */
+	protected $artIds;
+
+	/** @ORM\Column(type="array") */
+	protected $publicationIds;
+
+	/** @ORM\Column(type="array") */
+	protected $pharmIds;
 
 	public function __toString()
 	{
 		return $this->text;
-	}
-
-	/**
-	 * @param mixed $any
-	 */
-	public function setAny($any)
-	{
-		$this->any = $any;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getAny()
-	{
-		return $this->any;
 	}
 
 	/**
@@ -68,5 +61,98 @@ class TagHistory extends BaseEntity
 	public function getText()
 	{
 		return $this->text;
+	}
+
+	public function addArticleId($id)
+	{
+		$this->articleIds[] = $id;
+	}
+
+	public function addArtId($id)
+	{
+		$this->artIds[] = $id;
+	}
+
+	public function addPublicationId($id)
+	{
+		$this->publicationIds[] = $id;
+	}
+
+	public function addPharmId($id)
+	{
+		$this->pharmIds[] = $id;
+	}
+
+	/**
+	 * @param mixed $artIds
+	 */
+	public function setArtIds($artIds)
+	{
+		$this->artIds = $artIds;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getArtIds()
+	{
+		return $this->artIds;
+	}
+
+	/**
+	 * @param mixed $articleIds
+	 */
+	public function setArticleIds($articleIds)
+	{
+		$this->articleIds = $articleIds;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getArticleIds()
+	{
+		return $this->articleIds;
+	}
+
+	/**
+	 * @param mixed $publicationIds
+	 */
+	public function setPublicationIds($publicationIds)
+	{
+		$this->publicationIds = $publicationIds;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPublicationIds()
+	{
+		return $this->publicationIds;
+	}
+
+	/**
+	 * @param mixed $pharmIds
+	 */
+	public function setPharmIds($pharmIds)
+	{
+		$this->pharmIds = $pharmIds;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPharmIds()
+	{
+		return $this->pharmIds;
+	}
+
+	public function preview()
+	{
+		$articleIds = count($this->articleIds);
+		$artIds = count($this->artIds);
+		$publicationIds = count($this->publicationIds);
+
+		return "(новостей: $publicationIds | статей энциклопедии: $articleIds | статей специалистам: $artIds )";
 	}
 }

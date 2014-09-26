@@ -168,54 +168,30 @@ class ArticleRepository extends EntityRepository
 			->getResult();
 	}
 
-	public function findByTagWord($tag, $text, $partly)
+	public function findByTagWord($tagId, $text)
 	{
-		$tagId = $tag->getId();
-
-		$pdo = $this->_em->getConnection();
-
-		if ($partly === null) {
-			$stmt = $pdo->prepare("
-				SELECT id
-				FROM article a
-				JOIN article_tag a_t ON a_t.article_id = a.id
-				WHERE a_t.tag_id = $tagId");
-		}
-		elseif ($partly) {
-			$stmt = $pdo->prepare("
-				SELECT id
-				FROM article a
-				JOIN article_tag a_t ON a_t.article_id = a.id
-				WHERE a_t.tag_id = $tagId
-				 	AND (a.title LIKE '%{$text}%' OR a.body LIKE '%{$text}%' OR a.announce LIKE '%{$text}%')");
+		if (empty($text)) {
+			return $this->_em->createQuery('
+				SELECT a
+				FROM VidalDrugBundle:Article a
+				JOIN a.tags t WITH t = :tagId
+			')->setParameter('tagId', $tagId)
+				->getResult();
 		}
 		else {
-			$stmt = $pdo->prepare("
-				SELECT id
-				FROM article a
-				JOIN article_tag a_t ON a_t.article_id = a.id
-				WHERE a_t.tag_id = $tagId
-				 	AND (a.title REGEXP '[[:<:]]{$text}[[:>:]]' OR a.body REGEXP '[[:<:]]{$text}[[:>:]]' OR a.announce REGEXP '[[:<:]]{$text}[[:>:]]')");
+			$tagHistory = $this->_em->getRepository('VidalDrugBundle:TagHistory')->findOneByTagText($tagId, $text);
+			$ids        = $tagHistory->getArticleIds();
+
+			if (empty($ids)) {
+				return array();
+			}
+
+			return $this->_em->createQuery('
+				SELECT a
+				FROM VidalDrugBundle:Article a
+				WHERE a.id IN (:ids)
+			')->setParameter('ids', $ids)
+				->getResult();
 		}
-
-		$stmt->execute();
-
-		$articleIds = array();
-		$raw        = $stmt->fetchAll();
-
-		foreach ($raw as $a) {
-			$articleIds[] = $a['id'];
-		}
-
-		if (empty($articleIds)) {
-			return null;
-		}
-
-		return $this->_em->createQuery('
-			SELECT a
-			FROM VidalDrugBundle:Article a
-			WHERE a.id IN (:ids)
-		')->setParameter('ids', $articleIds)
-			->getResult();
 	}
 }

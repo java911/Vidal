@@ -2,7 +2,7 @@
 <select id="history">
 	<option value="">----- ИСТОРИЯ -----</option>
 	{% for history in object.history %}
-		<option value="{{ history }}">{{ history }}</option>
+		<option value="{{ history }}">{{ history }} {{ history.preview }}</option>
 	{% endfor %}
 </select>
 
@@ -40,21 +40,19 @@
 
 		$('.tag-set-partly').click(function(e) {
 			e.preventDefault();
-			var text = prompt('Укажите слово', '{{ object.search is empty ? object.text : object.search }}');
+			var text = prompt('Укажите слово частично', '{{ object.search is empty ? object.text : object.search }}');
 			window.location = Routing.generate('tag_set', {'tagId': tagId, 'partly': 1, 'text': text});
 		});
 
 		$('.tag-set').click(function(e) {
 			e.preventDefault();
-			var text = prompt('Укажите слово', '{{ object.search is empty ? object.text : object.search }}');
+			var text = prompt('Укажите слово полностью', '{{ object.search is empty ? object.text : object.search }}');
 			window.location = Routing.generate('tag_set', {'tagId': tagId, 'text':text});
 		});
 
 		$('.tag-unset').click(function(e) {
 			e.preventDefault();
-
-			var text = prompt('Укажите слово', $history.val() ? $history.val() : '{{ object.search is empty ? object.text : object.search }}');
-			window.location = Routing.generate('tag_unset', {'tagId': tagId, 'text': text});
+			window.location = Routing.generate('tag_unset', {'tagId': tagId, 'text': $history.val()});
 		});
 
 		$('.tag-list').click(function(e) {

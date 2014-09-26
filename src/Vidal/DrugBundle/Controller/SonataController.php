@@ -479,6 +479,7 @@ class SonataController extends Controller
 		$tag      = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
 		$pdo      = $em->getConnection();
 		$isPartly = $request->query->has('partly');
+		$total    = 0;
 
 		if (!$tag) {
 			throw $this->createNotFoundException();
@@ -487,6 +488,19 @@ class SonataController extends Controller
 		if (empty($text)) {
 			$tagSearch = $tag->getSearch();
 			$text      = empty($tagSearch) ? $tag->getText() : $tagSearch;
+		}
+
+		$tagHistoryText = $isPartly ? $text = '*' . $text . '*' : $text;
+		$tagHistory     = $em->getRepository('VidalDrugBundle:TagHistory')->findOneByTagText($tagId, $tagHistoryText);
+
+		if (!$tagHistory) {
+			$tagHistory = new TagHistory();
+			$tagHistory->setText($text);
+
+			$em->persist($tagHistory);
+			$tag->addTagHistory($tagHistory);
+			$em->flush($tagHistory);
+			$em->refresh($tagHistory);
 		}
 
 		# проставляем тег у статей энкициклопедии
@@ -500,6 +514,10 @@ class SonataController extends Controller
 			$id   = $a['id'];
 			$stmt = $pdo->prepare("INSERT IGNORE INTO article_tag (tag_id, article_id) VALUES ($tagId, $id)");
 			$stmt->execute();
+			if ($stmt->rowCount()) {
+				$tagHistory->addArticleId($id);
+				$total++;
+			}
 		}
 
 		# проставляем тег у статей специалистам
@@ -513,6 +531,10 @@ class SonataController extends Controller
 			$id   = $a['id'];
 			$stmt = $pdo->prepare("INSERT IGNORE INTO art_tag (tag_id, art_id) VALUES ($tagId, $id)");
 			$stmt->execute();
+			if ($stmt->rowCount()) {
+				$tagHistory->addArtId($id);
+				$total++;
+			}
 		}
 
 		# проставляем тег у новостей
@@ -526,121 +548,57 @@ class SonataController extends Controller
 			$id   = $a['id'];
 			$stmt = $pdo->prepare("INSERT IGNORE INTO publication_tag (tag_id, publication_id) VALUES ($tagId, $id)");
 			$stmt->execute();
-		}
-
-		# проставляем тег у новостей фарм-компаний
-		$stmt = $isPartly
-			? $pdo->prepare("SELECT id FROM pharm_article WHERE text LIKE '%{$text}%'")
-			: $pdo->prepare("SELECT id FROM pharm_article WHERE text REGEXP '[[:<:]]{$text}[[:>:]]'");
-		$stmt->execute();
-		$articles = $stmt->fetchAll();
-		foreach ($articles as $a) {
-			$id   = $a['id'];
-			$stmt = $pdo->prepare("INSERT IGNORE INTO pharmarticle_tag (tag_id, pharmarticle_id) VALUES ($tagId, $id)");
-			$stmt->execute();
-		}
-
-		if ($isPartly) {
-			$text = '*' . $text . '*';
-		}
-
-		$tagHistory = $em->getRepository('VidalDrugBundle:TagHistory')->findOneByTagText($tagId, $text);
-
-		if (!$tagHistory) {
-			$tagHistory = new TagHistory();
-
-			if ($isPartly) {
-				$tagHistory->setAny(true);
+			if ($stmt->rowCount()) {
+				$tagHistory->addPublicationId($id);
+				$total++;
 			}
-
-			$tagHistory->setText($text);
-
-			$em->persist($tagHistory);
-			$tag->addTagHistory($tagHistory);
-			$em->flush();
 		}
 
-		$this->get('session')->getFlashbag()->add('msg', 'Выставлены теги в материалах по слову <b>' . $tagHistory . '</b>');
+		$em->flush();
+
+		$this->get('session')->getFlashbag()->add('msg', "Выставлены теги в материалах по слову <b>$tagHistory</b>: $total");
 
 		return $this->redirect($this->generateUrl('admin_vidal_drug_tag_edit', array('id' => $tagId)));
 	}
 
 	/** @Route("/tag-unset/{tagId}/{text}", name="tag_unset", options={"expose":true}) */
-	public function tagUnsetAction(Request $request, $tagId, $text = null)
+	public function tagUnsetAction(Request $request, $tagId, $text)
 	{
-		$em  = $this->getDoctrine()->getManager('drug');
-		$tag = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
-		$pdo = $em->getConnection();
+		$em         = $this->getDoctrine()->getManager('drug');
+		$tag        = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
+		$tagHistory = $em->getRepository('VidalDrugBundle:TagHistory')->findOneByTagText($tagId, $text);
+		$pdo        = $em->getConnection();
 
-		if (!$tag) {
+		if (!$tag || !$tagHistory) {
 			throw $this->createNotFoundException();
 		}
 
-		if (empty($text)) {
-			$tagSearch = $tag->getSearch();
-			$text      = empty($tagSearch) ? $tag->getText() : $tagSearch;
-		}
-
-		$t = str_replace('*', '', $text);
-
-		$isPartly = $text[0] == '*';
-
-		# снимаем тег у статей энкициклопедии
-		$stmt = $isPartly
-			? $pdo->prepare("SELECT id FROM article WHERE title LIKE '%{$t}%' OR body LIKE '%{$t}%' OR announce REGEXP '%{$t}%'")
-			: $pdo->prepare("SELECT id FROM article WHERE title REGEXP '[[:<:]]{$t}[[:>:]]' OR body REGEXP '[[:<:]]{$t}[[:>:]]' OR announce REGEXP '[[:<:]]{$t}[[:>:]]'");
-
-		$stmt->execute();
-		$articles = $stmt->fetchAll();
-		foreach ($articles as $a) {
-			$id   = $a['id'];
-			$stmt = $pdo->prepare("DELETE FROM article_tag WHERE tag_id = $tagId AND article_id = $id");
+		# удаляем tag-article
+		$ids = $tagHistory->getArticleIds();
+		if (!empty($ids)) {
+			$ids  = implode(',', $tagHistory->getArticleIds());
+			$stmt = $pdo->prepare("DELETE FROM article_tag WHERE tag_id = $tagId AND article_id IN ($ids)");
 			$stmt->execute();
 		}
 
-		# снимаем тег у статей специалистам
-		$stmt = $isPartly
-			? $pdo->prepare("SELECT id FROM art WHERE title LIKE '%{$t}%' OR body LIKE '%{$t}%' OR announce REGEXP '%{$t}%'")
-			: $pdo->prepare("SELECT id FROM art WHERE title REGEXP '[[:<:]]{$t}[[:>:]]' OR body REGEXP '[[:<:]]{$t}[[:>:]]' OR announce REGEXP '[[:<:]]{$t}[[:>:]]'");
-
-		$stmt->execute();
-		$articles = $stmt->fetchAll();
-		foreach ($articles as $a) {
-			$id   = $a['id'];
-			$stmt = $pdo->prepare("DELETE FROM art_tag WHERE tag_id = $tagId AND art_id = $id");
+		# удаляем tag-art
+		$ids = $tagHistory->getArtIds();
+		if (!empty($ids)) {
+			$ids  = implode(',', $tagHistory->getArtIds());
+			$stmt = $pdo->prepare("DELETE FROM art_tag WHERE tag_id = $tagId AND art_id IN ($ids)");
 			$stmt->execute();
 		}
 
-		# снимаем тег у новостей
-		$stmt = $isPartly
-			? $pdo->prepare("SELECT id FROM publication WHERE title LIKE '%{$t}%' OR body LIKE '%{$t}%' OR announce LIKE '%{$t}%'")
-			: $pdo->prepare("SELECT id FROM publication WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
-
-		$stmt->execute();
-		$articles = $stmt->fetchAll();
-		foreach ($articles as $a) {
-			$id   = $a['id'];
-			$stmt = $pdo->prepare("DELETE FROM publication_tag WHERE tag_id = $tagId AND publication_id = $id");
+		# удаляем tag-publication
+		$ids = $tagHistory->getPublicationIds();
+		if (!empty($ids)) {
+			$ids  = implode(',', $tagHistory->getPublicationIds());
+			$stmt = $pdo->prepare("DELETE FROM publication_tag WHERE tag_id = $tagId AND publication_id IN ($ids)");
 			$stmt->execute();
 		}
 
-		# снимаем тег у новостей фарм-компаний
-		$stmt = $isPartly
-			? $pdo->prepare("SELECT id FROM pharm_article WHERE text LIKE '%{$t}%'")
-			: $pdo->prepare("SELECT id FROM pharm_article WHERE text REGEXP '[[:<:]]{$t}[[:>:]]'");
-
-		$stmt->execute();
-		$articles = $stmt->fetchAll();
-		foreach ($articles as $a) {
-			$id   = $a['id'];
-			$stmt = $pdo->prepare("DELETE FROM pharmarticle_tag WHERE tag_id = $tagId AND pharmarticle_id = $id");
-			$stmt->execute();
-		}
-
-		if ($tagHistory = $em->getRepository('VidalDrugBundle:TagHistory')->findOneByTagText($tagId, $text)) {
-			$em->remove($tagHistory);
-			$em->flush();
-		}
+		$em->remove($tagHistory);
+		$em->flush();
 
 		# добавляем для админки сонаты оповещение
 		$this->get('session')->getFlashbag()->add('msg', 'Очищены связи с материалами по слову <b>' . $text . '</b>');

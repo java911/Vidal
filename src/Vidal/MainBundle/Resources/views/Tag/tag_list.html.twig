@@ -7,7 +7,7 @@
 			{% if word %}
 				теме <span>"{{ word }}"</span>
 			{% else %}
-				всему тегу
+				всему тегу <span>"{{ tag }}"</span>
 			{% endif %}
 		</div>
 		{% include 'VidalMainBundle:Index:render_news.html.twig' with {'news':publications} %}
@@ -16,7 +16,7 @@
 			{% if word %}
 				теме <span>"{{ word }}"</span>
 			{% else %}
-				всему тегу
+				всему тегу <span>"{{ tag }}"</span>
 			{% endif %}
 		</div>
 	{% endif %}
@@ -26,7 +26,7 @@
 			{% if word %}
 				теме <span>"{{ word }}"</span>
 			{% else %}
-				всему тегу
+				всему тегу <span>"{{ tag }}"</span>
 			{% endif %}
 		</div>
 		{% include 'VidalMainBundle:Index:render_articles.html.twig' with {'articles':articles} %}
@@ -35,7 +35,7 @@
 			{% if word %}
 				теме <span>"{{ word }}"</span>
 			{% else %}
-				всему тегу
+				всему тегу <span>"{{ tag }}"</span>
 			{% endif %}
 		</div>
 	{% endif %}
@@ -45,7 +45,7 @@
 			{% if word %}
 				теме <span>"{{ word }}"</span>
 			{% else %}
-				всему тегу
+				всему тегу <span>"{{ tag }}"</span>
 			{% endif %}
 		</div>
 		{% include 'VidalMainBundle:Index:render_articles.html.twig' with {'articles':arts} %}
@@ -54,7 +54,7 @@
 			{% if word %}
 				теме <span>"{{ word }}"</span>
 			{% else %}
-				всему тегу
+				всему тегу <span>"{{ tag }}"</span>
 			{% endif %}
 		</div>
 	{% endif %}

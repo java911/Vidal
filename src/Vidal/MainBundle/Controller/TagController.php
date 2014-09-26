@@ -28,33 +28,11 @@ class TagController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		if (empty($text)) {
-			$tagSearch = $tag->getSearch();
-			$text      = empty($tagSearch) ? $tag->getText() : $tagSearch;
-			$partly    = null;
-			$word      = null;
-		}
-		else {
-			$word = $text;
-			if ($text[0] == '*') {
-				$partly = true;
-				$text   = str_replace('*', '', $text);
-			}
-			else {
-				$partly = false;
-			}
-		}
-
-		$params = array(
-			'tag'   => $tag,
-			'title' => 'Материалы по слову в теге',
-		);
-
-		$params['articles']     = $em->getRepository('VidalDrugBundle:Article')->findByTagWord($tag, $text, $partly);
-		$params['publications'] = $em->getRepository('VidalDrugBundle:Publication')->findByTagWord($tag, $text, $partly);
-		$params['arts']         = $em->getRepository('VidalDrugBundle:Art')->findByTagWord($tag, $text, $partly);
-		$params['text']         = $text;
-		$params['word']         = $word;
+		$params['articles']     = $em->getRepository('VidalDrugBundle:Article')->findByTagWord($tagId, $text);
+		$params['publications'] = $em->getRepository('VidalDrugBundle:Publication')->findByTagWord($tagId, $text);
+		$params['arts']         = $em->getRepository('VidalDrugBundle:Art')->findByTagWord($tagId, $text);
+		$params['text']         = $params['word'] = $text;
+		$params['tag']          = $tag;
 
 		return $params;
 	}
