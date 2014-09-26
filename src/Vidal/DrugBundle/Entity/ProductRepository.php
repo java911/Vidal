@@ -9,7 +9,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT DISTINCT p.ProductID, p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo, p.hidePhoto,
 				d.Indication, d.DocumentID, d.ClPhGrDescription
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
@@ -61,7 +61,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatusID, p.ProductID,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo, p.hidePhoto
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
@@ -78,7 +78,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatusID, p.ProductID,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo, p.hidePhoto
 			FROM VidalDrugBundle:Product p
 			JOIN p.document d
 			JOIN d.portfolios portfolio WITH portfolio.id = :portfolioId
@@ -94,7 +94,7 @@ class ProductRepository extends EntityRepository
 	public function findByDocumentIDs($documentIds)
 	{
 		$raw = $this->_em->createQuery('
-			SELECT p.ProductID, p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.photo,
+			SELECT p.ProductID, p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.photo, p.hidePhoto,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, d.ArticleID, d.Indication, d.DocumentID
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
@@ -128,7 +128,7 @@ class ProductRepository extends EntityRepository
 
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatusID, p.ProductID,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo, p.hidePhoto
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.moleculeNames mn
 			LEFT JOIN VidalDrugBundle:Molecule m WITH m = mn.MoleculeID
@@ -146,7 +146,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ProductID, p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.NonPrescriptionDrug,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo, p.hidePhoto,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
 				d.Name DocumentName
 			FROM VidalDrugBundle:Product p
@@ -165,7 +165,7 @@ class ProductRepository extends EntityRepository
 		$qb = $this->_em->createQueryBuilder();
 
 		$qb->select('p.ProductID, p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.NonPrescriptionDrug,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo, p.hidePhoto,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
 				d.Name DocumentName')
 			->from('VidalDrugBundle:Product', 'p')
@@ -190,7 +190,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ProductID, p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.NonPrescriptionDrug,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo, p.hidePhoto,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
 				d.Name DocumentName
 			FROM VidalDrugBundle:Product p
@@ -209,7 +209,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
-				p.RegistrationNumber, p.RegistrationDate, p.photo,
+				p.RegistrationNumber, p.RegistrationDate, p.photo, p.hidePhoto,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
 				d.Name DocumentName
 			FROM VidalDrugBundle:Product p
@@ -228,7 +228,7 @@ class ProductRepository extends EntityRepository
 	{
 		$productsRaw = $this->_em->createQuery('
 			SELECT p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.ZipInfo,
-				p.RegistrationNumber, p.RegistrationDate, p.photo,
+				p.RegistrationNumber, p.RegistrationDate, p.photo, p.hidePhoto,
 				country.RusName CompanyCountry,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
 				d.Name DocumentName,
@@ -265,7 +265,7 @@ class ProductRepository extends EntityRepository
 	public function findByInfoPageID($InfoPageID)
 	{
 		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
+			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.hidePhoto,
 				p.RegistrationNumber, p.RegistrationDate
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
@@ -321,7 +321,7 @@ class ProductRepository extends EntityRepository
 		$qb         = $this->_em->createQueryBuilder();
 		$anyOfWord  = null;
 
-		$qb->select('p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.ProductID, p.photo,
+		$qb->select('p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.ProductID, p.photo, p.hidePhoto,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, pt.ProductTypeCode,
 				d.Indication, d.ArticleID, d.DocumentID')
 			->from('VidalDrugBundle:Product', 'p')
@@ -475,7 +475,7 @@ class ProductRepository extends EntityRepository
 		}
 
 		$productsRaw = $this->_em->createQuery('
-			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID, p.photo,
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID, p.photo, p.hidePhoto,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, d.Indication, d.DocumentID
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
@@ -506,7 +506,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo, p.hidePhoto,
 				d.Indication, d.DocumentID, d.ClPhGrDescription
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
@@ -524,7 +524,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo, p.hidePhoto,
 				d.Indication, d.DocumentID
 			FROM VidalDrugBundle:Product p
 			JOIN p.phthgroups g WITH g.id = :id
@@ -650,7 +650,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
-				p.RegistrationNumber, p.RegistrationDate, p.photo,
+				p.RegistrationNumber, p.RegistrationDate, p.photo, p.hidePhoto,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
 				d.Name DocumentName
 			FROM VidalDrugBundle:Product p

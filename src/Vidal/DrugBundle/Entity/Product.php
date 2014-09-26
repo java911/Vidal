@@ -188,6 +188,9 @@ class Product
 	 */
 	protected $pharmArticles;
 
+	/** @ORM\Column(type="boolean") */
+	protected $hidePhoto = false;
+
 	public function __construct()
 	{
 		$this->atcCodes        = new ArrayCollection();
@@ -905,5 +908,21 @@ class Product
 		}
 
 		return true;
+	}
+
+	/**
+	 * @param mixed $hidePhoto
+	 */
+	public function setHidePhoto($hidePhoto)
+	{
+		$this->hidePhoto = $hidePhoto;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getHidePhoto()
+	{
+		return $this->hidePhoto;
 	}
 }

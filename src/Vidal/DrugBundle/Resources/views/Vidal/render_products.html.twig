@@ -44,16 +44,18 @@
 					{% endif %}
 				</td>
 				<td class="products-table-picture">
-					{% if product.photo %}
-						<a class="no-underline"
-						   href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"
-							><img src="{{ product.photo.path }}"/></a>
-					{% elseif pictures[id] is defined %}
-						{% set path = '/upload/products/' ~ pictures[id] %}
-						{% if is_file(path) %}
+					{% if not product.hidePhoto %}
+						{% if product.photo %}
 							<a class="no-underline"
 							   href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"
-								><img src="{{ path }}"/></a>
+								><img src="{{ product.photo.path }}"/></a>
+						{% elseif pictures[id] is defined %}
+							{% set path = '/upload/products/' ~ pictures[id] %}
+							{% if is_file(path) %}
+								<a class="no-underline"
+								   href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"
+									><img src="{{ path }}"/></a>
+							{% endif %}
 						{% endif %}
 					{% endif %}
 				</td>

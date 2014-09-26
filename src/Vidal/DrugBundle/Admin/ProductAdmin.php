@@ -71,6 +71,7 @@ class ProductAdmin extends Admin
 					'allow_delete' => true
 				)
 			)
+			->add('hidePhoto', null, array('label' => 'Скрывать фотографию', 'required' => false))
 			->add('inactive', null, array('label' => 'Отключить', 'required' => false, 'help' => 'Исключить препарат из списков выдачи'));
 	}
 

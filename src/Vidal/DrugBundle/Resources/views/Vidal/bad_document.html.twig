@@ -23,7 +23,7 @@
 	<div class="breadcrumbs">
 		<a href="{{ path('index') }}">Видаль</a>
 		<i></i>
-		<a href="{{ path('products', {'t':'b'}) }}">{{ isMI is defined ? 'Медицинские изделия' : 'БАДы'}}</a>
+		<a href="{{ path('products', {'t':'b'}) }}">{{ isMI is defined ? 'Медицинские изделия' : 'БАДы' }}</a>
 	</div>
 {% endblock %}
 
@@ -40,23 +40,25 @@
 	{% endif %}
 
 	{# Изображения препарата #}
-	{% if product is defined and product.photo %}
-		<div class="pictures block">
-			<a href="{{ product.photo.path }}" target="_blank">
-				<img src="{{ product.photo.path }}"/>
-			</a>
-		</div>
-	{% elseif pictures is defined and pictures is not empty %}
-		<div class="pictures block">
-			{% for picture in pictures %}
-				{% set path = '/upload/products/' ~ picture %}
-				{% if is_file(path) %}
-					<a href="{{ path }}" target="_blank">
-						<img src="{{ path }}"/>
-					</a>
-				{% endif %}
-			{% endfor %}
-		</div>
+	{% if not product.hidePhoto %}
+		{% if product.photo %}
+			<div class="pictures block">
+				<a href="{{ product.photo.path }}" target="_blank">
+					<img src="{{ product.photo.path }}"/>
+				</a>
+			</div>
+		{% elseif pictures is defined and pictures is not empty %}
+			<div class="pictures block">
+				{% for picture in pictures %}
+					{% set path = '/upload/products/' ~ picture %}
+					{% if is_file(path) %}
+						<a href="{{ path }}" target="_blank">
+							<img src="{{ path }}"/>
+						</a>
+					{% endif %}
+				{% endfor %}
+			</div>
+		{% endif %}
 	{% endif %}
 
 	{% if document is defined %}
@@ -142,7 +144,7 @@
 			{% if distributors is defined and distributors is not empty %}
 				{% for distributor in distributors %}
 					<div class="distributor">
-						<span class="block-head">{{ distributor.CompanyRusNote|upperFirst  }}:</span>
+						<span class="block-head">{{ distributor.CompanyRusNote|upperFirst }}:</span>
 						<a href="{{ path('firm_item', {'CompanyID':distributor.CompanyID}) }}" class="no-underline">
 							{{ distributor.LocalName|raw }}{{ distributor.Property is not empty ? ', ' ~ distributor.Property|raw|replace({'&amp;':'&'}) }}</a>
 						{% if distributor.Country is not empty and distributor.Country != 'Unknown' %}
@@ -339,11 +341,11 @@
 			display: none;
 		}
 		.portfolio-link {
-			display:       inline-block;
-			background:    #eee;
-			font-weight:   bold;
-			padding:       1px 1px 0 10px;
-			border:        2px solid #ddd;
+			display:     inline-block;
+			background:  #eee;
+			font-weight: bold;
+			padding:     1px 1px 0 10px;
+			border:      2px solid #ddd;
 		}
 		.portfolio-link > span {
 			display:        inline-block;
