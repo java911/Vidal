@@ -15,16 +15,16 @@ class TagHistory extends BaseEntity
 	protected $tag;
 
 	/** @ORM\Column(type="array") */
-	protected $articleIds;
+	protected $articleIds = array();
 
 	/** @ORM\Column(type="array") */
-	protected $artIds;
+	protected $artIds = array();
 
 	/** @ORM\Column(type="array") */
-	protected $publicationIds;
+	protected $publicationIds = array();
 
 	/** @ORM\Column(type="array") */
-	protected $pharmIds;
+	protected $pharmIds = array();
 
 	public function __toString()
 	{
@@ -149,8 +149,8 @@ class TagHistory extends BaseEntity
 
 	public function preview()
 	{
-		$articleIds = count($this->articleIds);
-		$artIds = count($this->artIds);
+		$articleIds     = count($this->articleIds);
+		$artIds         = count($this->artIds);
 		$publicationIds = count($this->publicationIds);
 
 		return "(новостей: $publicationIds | статей энциклопедии: $articleIds | статей специалистам: $artIds )";

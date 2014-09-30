@@ -490,12 +490,12 @@ class SonataController extends Controller
 			$text      = empty($tagSearch) ? $tag->getText() : $tagSearch;
 		}
 
-		$tagHistoryText = $isPartly ? $text = '*' . $text . '*' : $text;
+		$tagHistoryText = $isPartly ? '*' . $text . '*' : $text;
 		$tagHistory     = $em->getRepository('VidalDrugBundle:TagHistory')->findOneByTagText($tagId, $tagHistoryText);
 
 		if (!$tagHistory) {
 			$tagHistory = new TagHistory();
-			$tagHistory->setText($text);
+			$tagHistory->setText($tagHistoryText);
 
 			$em->persist($tagHistory);
 			$tag->addTagHistory($tagHistory);
@@ -510,6 +510,7 @@ class SonataController extends Controller
 
 		$stmt->execute();
 		$articles = $stmt->fetchAll();
+
 		foreach ($articles as $a) {
 			$id   = $a['id'];
 			$stmt = $pdo->prepare("INSERT IGNORE INTO article_tag (tag_id, article_id) VALUES ($tagId, $id)");
