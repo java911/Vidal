@@ -100,7 +100,7 @@ $(document).ready(function() {
 	$('.text a').each(function() {
 		var $link = $(this);
 		var text = $link.text();
-		if (text.length > 70) {
+		if (text.length > 70 && text.indexOf(' ') === -1) {
 			var parts = text.split('/');
 			text = parts.join('<span style="display:inline-block;width:0"></span>/');
 			$link.html(text);
