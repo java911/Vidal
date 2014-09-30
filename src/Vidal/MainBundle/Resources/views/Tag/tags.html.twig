@@ -68,7 +68,7 @@
 
 {% if badGroups is not empty %}
 	<div class="block">
-		<span class="block-head">Описания БАД:</span>
+		<span class="block-head">Биологически Активные Добавки:</span>
 		{% for key, products in badGroups %}
 			{% if products|length == 1 %}
 				<a href="{{ path('product', {'EngName':products[0].Name, 'ProductID':products[0].ProductID}) }}"
