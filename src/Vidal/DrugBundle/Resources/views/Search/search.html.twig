@@ -28,7 +28,8 @@ and (articles is not defined or articles is empty) %}
 			<div class="block" id="search_molecules">
 				<div class="block-anons">
 					<div class="block-head">
-						Найдено активных веществ: <span>{{ molecules|length }}</span>
+						Найдено {% if molecules|length == 1 %}активное вещество{% else %}активных веществ{% endif %}:
+						<span>{{ molecules|length }}</span>
 					</div>
 				</div>
 			</div>
@@ -45,7 +46,11 @@ and (articles is not defined or articles is empty) %}
 		<div class="block" id="search_atc">
 			<div class="block-head anons"
 				 title="Анатомо-Терапевтически-Химическая (АТХ) система классификации (ATC)">
-				Найдено кодов АТХ: <span>{{ atcCodes|length }}</span>
+				{% if atcCodes|length == 1 %}
+					Найден код АТХ: <span>{{ atcCodes|length }}</span>
+				{% else %}
+					Найдено кодов АТХ: <span>{{ atcCodes|length }}</span>
+				{% endif %}
 			</div>
 
 			<table class="products-table">
@@ -88,7 +93,9 @@ and (articles is not defined or articles is empty) %}
 			<div class="block" id="search_articles">
 				<div class="block-anons">
 					<div class="block-head">
-						Найдено результатов по заболеваниям: <span>{{ articles|length }}</span>
+						{% if articles|length == 1 %}Найден результат{% else %}Найдено результатов{% endif %} по
+						заболеваниям:
+						<span>{{ articles|length }}</span>
 					</div>
 				</div>
 			</div>
