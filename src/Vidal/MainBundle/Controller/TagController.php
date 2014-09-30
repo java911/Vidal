@@ -232,24 +232,34 @@ class TagController extends Controller
 		}
 
 		$products    = array();
+		$bads        = array();
 		$productsRaw = $object->getProducts();
 
 		if (!empty($productsRaw)) {
 			foreach ($productsRaw as $product) {
 				if ($product->isValid()) {
 					$key = $this->strip($product->getRusName());
-					isset($products[$key])
-						? $products[$key][] = $product
-						: $products[$key] = array($product);
+					if ($product->isBAD()) {
+						isset($bads[$key])
+							? $bads[$key][] = $product
+							: $bads[$key] = array($product);
+					}
+					else {
+						isset($products[$key])
+							? $products[$key][] = $product
+							: $products[$key] = array($product);
+					}
 				}
 			}
 		}
 
 		ksort($products);
+		ksort($bads);
 
 		return array(
 			'tags'          => $tags,
 			'productGroups' => $products,
+			'badGroups'     => $bads,
 		);
 	}
 

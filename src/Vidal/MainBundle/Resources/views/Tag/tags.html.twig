@@ -65,3 +65,27 @@
 		{% endfor %}
 	</div>
 {% endif %}
+
+{% if badGroups is not empty %}
+	<div class="block">
+		<span class="block-head">Описания БАД:</span>
+		{% for key, products in badGroups %}
+			{% if products|length == 1 %}
+				<a href="{{ path('product', {'EngName':products[0].Name, 'ProductID':products[0].ProductID}) }}"
+				   target="blank" class="no-underline">
+					{{ products[0].RusName|raw }}
+				</a>
+			{% else %}
+				{% set ids = [] %}
+				{% for product in products %}
+					{% set ids = ids|merge([product.ProductID]) %}
+				{% endfor %}
+				<a href="{{ path('product-group', {'ids':ids|join('-')}) }}" target="blank"
+				   class="no-underline">
+					{{ products[0].RusName|raw }}
+				</a>
+			{% endif %}
+			{% if not loop.last %}, {% endif %}
+		{% endfor %}
+	</div>
+{% endif %}
