@@ -899,7 +899,7 @@ class Product
 			}
 		}
 
-		if (!in_array($this->getProductTypeCode(), array('DRUG', 'GOME'))) {
+		if (!in_array($this->getProductTypeCode(), array('DRUG', 'GOME', 'BAD'))) {
 			return false;
 		}
 

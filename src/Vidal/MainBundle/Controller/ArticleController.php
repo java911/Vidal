@@ -237,7 +237,7 @@ class ArticleController extends Controller
 		$params['pagination'] = $this->get('knp_paginator')->paginate(
 			$em->getRepository('VidalDrugBundle:PharmArticle')->getQuery(),
 			$request->query->get('p', 1),
-			4
+			7
 		);
 
 		return $params;

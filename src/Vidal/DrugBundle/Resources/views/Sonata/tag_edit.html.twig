@@ -1,9 +1,11 @@
 {# выбор истории #}
 <select id="history">
 	<option value="">----- ИСТОРИЯ -----</option>
-	{% for history in object.history %}
-		<option value="{{ history }}">{{ history }} {{ history.preview }}</option>
-	{% endfor %}
+	{% if object.history is not empty %}
+		{% for history in object.history %}
+			<option value="{{ history }}">{{ history }} {{ history.preview }}</option>
+		{% endfor %}
+	{% endif %}
 </select>
 
 
@@ -47,7 +49,7 @@
 		$('.tag-set').click(function(e) {
 			e.preventDefault();
 			var text = prompt('Укажите слово полностью', '{{ object.search is empty ? object.text : object.search }}');
-			window.location = Routing.generate('tag_set', {'tagId': tagId, 'text':text});
+			window.location = Routing.generate('tag_set', {'tagId': tagId, 'text': text});
 		});
 
 		$('.tag-unset').click(function(e) {
