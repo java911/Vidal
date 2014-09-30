@@ -23,7 +23,7 @@
 	<div class="breadcrumbs">
 		<a href="{{ path('index') }}">Видаль</a>
 		<i></i>
-		<a href="{{ path('products', {'t':'b'}) }}">{{ isMI is defined ? 'Медицинские изделия' : 'БАДы' }}</a>
+		<a href="{{ path('products', {'t':'b'}) }}">{{ isMI is defined ? 'Медицинские изделия' : 'Биологически Активные Добавки' }}</a>
 	</div>
 {% endblock %}
 
@@ -88,7 +88,7 @@
 								<span>Разрешено к применению в России</span><br/>
 								<span>
 									<i style="color:#476173;font-size: 12px;">Свидетельство о государственной
-										регистрации БАД к
+										регистрации Биологически Активных Добавок к
 										пище:</i><br/>
 									{{ p.RegistrationNumber }}
 									{% if p.RegistrationDate is not empty %}

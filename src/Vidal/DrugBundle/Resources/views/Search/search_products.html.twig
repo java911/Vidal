@@ -91,16 +91,13 @@
 			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':mis, 'pictures':mi_pictures, 'companies':mi_companies, 'infoPages':mi_infoPages} %}
 		{% endif %}
 
-		{# Найдено БАДов #}
+		{# Найдено Биологически Активных Добавок #}
 		{% if bads is defined %}
 			<div class="block">
 				<div class="block-anons" id="search_bads">
 					<div class="block-head">
-						{% if bads|length == 1 %}
-							Найден БАД{{ anyOfWord ? ' по любому из слов' }}: <span>{{ bads|length }}</span>
-						{% else %}
-							Найдено БАДов{{ anyOfWord ? ' по любому из слов' }}: <span>{{ bads|length }}</span>
-						{% endif %}
+						Найдено Биологически Активных Добавок{{ anyOfWord ? ' по любому из слов' }}:
+						<span>{{ bads|length }}</span>
 					</div>
 				</div>
 			</div>
