@@ -70,7 +70,7 @@
 				</td>
 				<td class="products-table-zip">
 					<div>{{ product.ZipInfo|raw }}</div>
-				<span>рег. №: {{ product.RegistrationNumber }}
+				<span>рег. №: {{ product.RegistrationNumber|regNumber }}
 					{% if product.RegistrationDate is not empty %}
 						от {{ product.RegistrationDate }}
 					{% endif %}

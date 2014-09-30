@@ -37,6 +37,7 @@ class TwigExtension extends \Twig_Extension
 			new \Twig_SimpleFilter('ucwords', array($this, 'ucwords')),
 			new \Twig_SimpleFilter('type', array($this, 'type')),
 			new \Twig_SimpleFilter('values', array($this, 'values')),
+			new \Twig_SimpleFilter('regNumber', array($this, 'regNumber')),
 		);
 	}
 
@@ -170,5 +171,14 @@ class TwigExtension extends \Twig_Extension
 	public function values($array)
 	{
 		return array_values($array);
+	}
+
+	public function regNumber($str)
+	{
+		if (strlen($str) <= 18) {
+			return $str;
+		}
+
+		return substr($str, 0, 18) . ' ' . substr($str, 18);
 	}
 }
