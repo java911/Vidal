@@ -36,6 +36,13 @@
 	</div>
 
 	<div class="blogs">
+		<div class="r-left">
+			<img src="{{ asset('bundles/vidalmain/images/bg/r-left.png') }}"/>
+		</div>
+		<div class="r-right">
+			<img src="{{ asset('bundles/vidalmain/images/bg/r-right.png') }}"/>
+		</div>
+
 		<div class="images">
 			{% for blog in blogs %}
 				<div class="image-{{ blog.id }} {{ loop.first ? 'active' }}">
@@ -362,6 +369,20 @@
 			sliderInterval = setInterval(slider, sliderTimeout);
 
 			return false;
+		});
+		$('.r-left').click(function() {
+			$('.slider a.active').removeClass('active').prevOrLast().addClass('active');
+			$('.images div.active').removeClass('active').prevOrLast().addClass('active');
+			$('.texts div.active').removeClass('active').prevOrLast().addClass('active');
+			clearInterval(sliderInterval);
+			sliderInterval = setInterval(slider, sliderTimeout);
+		});
+		$('.r-right').click(function() {
+			$('.slider a.active').removeClass('active').nextOrFirst().addClass('active');
+			$('.images div.active').removeClass('active').nextOrFirst().addClass('active');
+			$('.texts div.active').removeClass('active').nextOrFirst().addClass('active');
+			clearInterval(sliderInterval);
+			sliderInterval = setInterval(slider, sliderTimeout);
 		});
 
 		// articles

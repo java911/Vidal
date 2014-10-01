@@ -159,6 +159,36 @@ body {
 	margin:   0 auto;
 	overflow: hidden;
 }
+.r-left, .r-right {
+	position: absolute;
+	width:    170px;
+	height:   300px;
+	top:      0;
+	bottom:   0;
+	z-index:  1000;
+	cursor:   pointer;
+}
+.r-left {
+	left: 0;
+}
+.r-right {
+	right: 0;
+}
+.r-left img, .r-right img {
+	display:  inline-block;
+	position: absolute;
+	top:      120px;
+	opacity:  0.3;
+}
+.r-left:hover img, .r-right:hover img {
+	opacity: 0.8;
+}
+.r-left img {
+	left: 10px;
+}
+.r-right img {
+	right: 10px;
+}
 
 /* roller */
 .roller {
