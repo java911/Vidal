@@ -571,7 +571,7 @@ class SonataController extends Controller
 		$pdo        = $em->getConnection();
 
 		if (!$tag || !$tagHistory) {
-			throw $this->createNotFoundException();
+			return $this->redirect($this->generateUrl('admin_vidal_drug_tag_edit', array('id' => $tagId)));
 		}
 
 		# удаляем tag-article
