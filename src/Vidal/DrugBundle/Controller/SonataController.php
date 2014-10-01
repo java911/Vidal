@@ -563,14 +563,14 @@ class SonataController extends Controller
 	}
 
 	/** @Route("/tag-unset/{tagId}/{text}", name="tag_unset", options={"expose":true}) */
-	public function tagUnsetAction(Request $request, $tagId, $text)
+	public function tagUnsetAction(Request $request, $tagId, $text = null)
 	{
 		$em         = $this->getDoctrine()->getManager('drug');
 		$tag        = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
 		$tagHistory = $em->getRepository('VidalDrugBundle:TagHistory')->findOneByTagText($tagId, $text);
 		$pdo        = $em->getConnection();
 
-		if (!$tag || !$tagHistory) {
+		if (!$tag || !$tagHistory || !$text) {
 			return $this->redirect($this->generateUrl('admin_vidal_drug_tag_edit', array('id' => $tagId)));
 		}
 
