@@ -98,12 +98,22 @@ class ArtRepository extends EntityRepository
 	public function findByTagWord($tagId, $text)
 	{
 		if (empty($text)) {
-			return $this->_em->createQuery('
+			$results1 = $this->_em->createQuery('
 				SELECT a
 				FROM VidalDrugBundle:Art a
 				JOIN a.tags t WITH t = :tagId
 			')->setParameter('tagId', $tagId)
 				->getResult();
+
+			$results2 = $this->_em->createQuery('
+				SELECT a
+				FROM VidalDrugBundle:Art a
+				JOIN a.infoPages i
+				JOIN i.tag t WITH t = :tagId
+			')->setParameter('tagId', $tagId)
+				->getResult();
+
+			return array_merge($results1, $results2);
 		}
 		else {
 			$tagHistory = $this->_em->getRepository('VidalDrugBundle:TagHistory')->findOneByTagText($tagId, $text);
