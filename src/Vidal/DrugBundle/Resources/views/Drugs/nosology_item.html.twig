@@ -19,7 +19,9 @@
 
 
 {% block vidal %}
-	{% include 'VidalMainBundle:Article:documents.html.twig' with {'object':nozology, 'label':'нозологическому указателю', 'item':nozology.Code} %}
+	{% if is_granted('ROLE_ADMIN') %}
+		{% include 'VidalMainBundle:Article:documents.html.twig' with {'object':nozology, 'label':'нозологическому указателю', 'item':nozology.Code} %}
+	{% endif %}
 
 	{# Препараты #}
 	{% if products is defined and products is not empty %}

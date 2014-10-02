@@ -71,7 +71,9 @@
 			<span class="publication-date">{{ publication.date|date('d.m.Y') }}</span>
 		</div>
 
-		{{ render(controller('VidalMainBundle:Tag:tags', {'object':publication})) }}
+		{% if is_granted('ROLE_ADMIN') %}
+			{{ render(controller('VidalMainBundle:Tag:tags', {'object':publication})) }}
+		{% if is_granted('ROLE_ADMIN') %}
 	</div>
 
 	{% include 'VidalMainBundle::yad_horizontal.html.twig' %}

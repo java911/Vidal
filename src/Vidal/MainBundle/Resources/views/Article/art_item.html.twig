@@ -46,7 +46,9 @@
 			</div>
 		{% endif %}
 
-		{{ render(controller('VidalMainBundle:Tag:tags', {'object':article})) }}
+		{% if is_granted('ROLE_ADMIN') %}
+			{{ render(controller('VidalMainBundle:Tag:tags', {'object':article})) }}
+		{% endif %}
 	</div>
 
 	{% include 'VidalMainBundle::yad_horizontal.html.twig' %}
