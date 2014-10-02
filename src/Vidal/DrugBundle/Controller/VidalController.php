@@ -431,10 +431,11 @@ class VidalController extends Controller
 		}
 
 		if ($document) {
-			$documentId           = $document->getDocumentID();
-			$params['document']   = $document;
-			$params['infoPages']  = $em->getRepository('VidalDrugBundle:InfoPage')->findByDocumentID($documentId);
-			$params['nozologies'] = $em->getRepository('VidalDrugBundle:Nozology')->findByDocumentID($documentId);
+			$documentId              = $document->getDocumentID();
+			$params['document']      = $document;
+			$params['infoPages']     = $em->getRepository('VidalDrugBundle:InfoPage')->findByDocumentID($documentId);
+			$params['nozologies']    = $em->getRepository('VidalDrugBundle:Nozology')->findByDocumentID($documentId);
+			$params['parentATCCode'] = $em->getRepository('VidalDrugBundle:ATC')->getParent($product);
 		}
 
 		$productId              = $product->getProductID();

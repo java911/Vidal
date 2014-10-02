@@ -235,4 +235,32 @@ class ATCRepository extends EntityRepository
 
 		return $items;
 	}
+
+	public function getParent($products)
+	{
+		$atcCodes = $products->getAtcCodes();
+
+		if (empty($atcCodes)) {
+			return null;
+		}
+
+		foreach ($atcCodes as $atc) {
+			$parentCode = $atc->getParentATCCode();
+
+			if (!empty($parentCode)) {
+				$parentAtc = $this->_em->createQuery('
+					SELECT a
+					FROM VidalDrugBundle:ATC a
+					WHERE a.ATCCode = :atc
+				')->setParameter('atc', $parentCode)
+					->getOneOrNullResult();
+
+				if (!empty($parentAtc)) {
+					return $parentAtc;
+				}
+			}
+		}
+
+		return null;
+	}
 }

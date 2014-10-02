@@ -1,0 +1,76 @@
+{% if document is defined and document.ArticleID in [2,5] and (app.request.query.has('t') or is_granted('ROLE_ADMIN')) %}
+	{% set full = asset('bundles/vidalmain/images/bg/star-full.png') %}
+	{% set empty = asset('bundles/vidalmain/images/bg/star-empty.png') %}
+
+	<div class="stars">
+		<div class="images">
+			{% if document.yearEdition == 2014 %}
+				<img src="{{ full }}"/>
+				<img src="{{ full }}"/>
+				<img src="{{ full }}"/>
+				<img src="{{ full }}"/>
+				<img src="{{ full }}"/>
+			{% elseif document.yearEdition in [2013,2012] %}
+				<img src="{{ full }}"/>
+				<img src="{{ full }}"/>
+				<img src="{{ full }}"/>
+				<img src="{{ full }}"/>
+				<img src="{{ empty }}"/>
+			{% elseif document.yearEdition in [2011,2010] %}
+				<img src="{{ full }}"/>
+				<img src="{{ full }}"/>
+				<img src="{{ full }}"/>
+				<img src="{{ empty }}"/>
+				<img src="{{ empty }}"/>
+			{% elseif document.yearEdition in [2009,2008] %}
+				<img src="{{ full }}"/>
+				<img src="{{ full }}"/>
+				<img src="{{ empty }}"/>
+				<img src="{{ empty }}"/>
+				<img src="{{ empty }}"/>
+			{% else %}
+				<img src="{{ full }}"/>
+				<img src="{{ empty }}"/>
+				<img src="{{ empty }}"/>
+				<img src="{{ empty }}"/>
+				<img src="{{ empty }}"/>
+			{% endif %}
+		</div>
+
+		<div class="group">
+			{% if parentATCCode is defined and parentATCCode %}
+				<span>
+				Рейтинг популярности <b>{{ product.RusName|raw }}</b> в группе
+				<a href="{{ path('atc_item', {'ATCCode':parentATCCode.ATCCode}) }}" class="no-underline"
+				   title="{{ parentATCCode.ATCCode }}">{{ parentATCCode.RusName|raw }}</a>
+			</span>
+			{% endif %}
+		</div>
+	</div>
+{% endif %}
+
+<style>
+	.stars {
+		margin:           -12px 0 20px;
+		background-color: beige;
+		padding:          5px 8px;
+		overflow:         hidden;
+	}
+	.stars .images {
+		float: left;
+		width: 105px;
+	}
+	.stars .group {
+		margin-left: 110px;
+	}
+	.stars > * {
+		vertical-align: top;
+	}
+	.stars span {
+		color: #2e3f51;
+	}
+	.stars img {
+		width:   16px;
+		display: inline-block;
+	}
+</style>
