@@ -140,8 +140,9 @@ class TagController extends Controller
 	/** @Template("VidalMainBundle:Tag:tags.html.twig") */
 	public function tagsAction($object)
 	{
-		$tags        = array();
-		$infoPageIds = array();
+		$tags          = array();
+		$tagsInfopages = array();
+		$infoPageIds   = array();
 
 		# теги
 		foreach ($object->getTags() as $tag) {
@@ -149,8 +150,8 @@ class TagController extends Controller
 				$key = $tag->getText();
 				# проверка, что это представительство
 				if ($infoPage = $tag->getInfoPage()) {
-					$infoPageIds[] = $infoPage->getInfoPageID();
-					$tags[$key]    = $infoPage;
+					$infoPageIds[]       = $infoPage->getInfoPageID();
+					$tagsInfopages[$key] = $infoPage;
 					continue;
 				}
 
@@ -169,9 +170,11 @@ class TagController extends Controller
 			}
 		}
 
-		# Представительства
-		$tagsInfopages = array();
+		if (count($tags)) {
+			uksort($tags, array($this, 'casecmp'));
+		}
 
+		# Представительства
 		foreach ($object->getInfoPages() as $ip) {
 			$key = $ip->getRusName();
 			if (!in_array($ip->getInfoPageID(), $infoPageIds)) {
@@ -180,10 +183,9 @@ class TagController extends Controller
 		}
 
 		if (count($tagsInfopages)) {
-			$tags = array_merge($tags, $tagsInfopages);
+			uksort($tagsInfopages, array($this, 'casecmp'));
+			$tags = array_merge($tagsInfopages, $tags);
 		}
-
-		uksort($tags, array($this, 'casecmp'));
 
 		# активные вещества
 		$tagsMolecules = array();
@@ -198,7 +200,7 @@ class TagController extends Controller
 
 		if (count($tagsMolecules)) {
 			uksort($tagsMolecules, array($this, 'casecmp'));
-			$tags = array_merge($tags, $tagsMolecules);
+			//$tags = array_merge($tags, $tagsMolecules);
 		}
 
 		#АТХ
@@ -213,7 +215,7 @@ class TagController extends Controller
 
 		if (count($tagsAtc)) {
 			uksort($tagsAtc, array($this, 'casecmp'));
-			$tags = array_merge($tags, $tagsAtc);
+			//$tags = array_merge($tags, $tagsAtc);
 		}
 
 		# Нозология МКБ-10
@@ -228,7 +230,7 @@ class TagController extends Controller
 
 		if (count($tagsNozologies)) {
 			uksort($tagsNozologies, array($this, 'casecmp'));
-			$tags = array_merge($tags, $tagsNozologies);
+			//$tags = array_merge($tags, $tagsNozologies);
 		}
 
 		$products    = array();
