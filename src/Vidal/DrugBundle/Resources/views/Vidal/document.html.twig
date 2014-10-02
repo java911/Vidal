@@ -274,9 +274,7 @@
 	{% endif %}
 
 	{# прикрепленные материалы #}
-	{% if is_granted('ROLE_ADMIN') %}
-		{% include 'VidalMainBundle:Article:documents_of_product.html.twig' with {'object':product, 'label':'препарату', 'item':product.RusName} %}
-	{% endif %}
+	{% include 'VidalMainBundle:Article:documents_of_product.html.twig' with {'object':product, 'label':'препарату', 'item':product.RusName} %}
 
 	{# цены Он-лайн аптек #}
 	{{ render( controller('VidalMainBundle:Market:productList', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}
@@ -371,6 +369,31 @@
 			display: none;
 		}
 		.pictures a {
+			display: inline-block;
+		}
+
+		/* stars */
+		.stars {
+			margin:           -12px 0 20px;
+			background-color: beige;
+			padding:          7px 8px 4px;
+			overflow:         hidden;
+		}
+		.stars .images {
+			float: left;
+			width: 105px;
+		}
+		.stars .group {
+			margin-left: 110px;
+		}
+		.stars > * {
+			vertical-align: top;
+		}
+		.stars span {
+			color: #2e3f51;
+		}
+		.stars img {
+			width:   16px;
 			display: inline-block;
 		}
 	</style>

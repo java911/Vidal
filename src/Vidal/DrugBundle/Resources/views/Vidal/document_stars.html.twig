@@ -41,36 +41,10 @@
 			{% if parentATCCode is defined and parentATCCode %}
 				<span>
 				Рейтинг популярности <b>{{ product.RusName|raw }}</b> в группе
-				<a href="{{ path('atc_item', {'ATCCode':parentATCCode.ATCCode}) }}" class="no-underline"
+				<a href="{{ path('atc', {'ATCCode':parentATCCode.ATCCode}) }}" class="no-underline"
 				   title="{{ parentATCCode.ATCCode }}">{{ parentATCCode.RusName|raw }}</a>
-			</span>
+				</span>
 			{% endif %}
 		</div>
 	</div>
 {% endif %}
-
-<style>
-	.stars {
-		margin:           -12px 0 20px;
-		background-color: beige;
-		padding:          5px 8px;
-		overflow:         hidden;
-	}
-	.stars .images {
-		float: left;
-		width: 105px;
-	}
-	.stars .group {
-		margin-left: 110px;
-	}
-	.stars > * {
-		vertical-align: top;
-	}
-	.stars span {
-		color: #2e3f51;
-	}
-	.stars img {
-		width:   16px;
-		display: inline-block;
-	}
-</style>
