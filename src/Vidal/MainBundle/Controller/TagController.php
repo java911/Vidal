@@ -200,7 +200,7 @@ class TagController extends Controller
 
 		if (count($tagsMolecules)) {
 			uksort($tagsMolecules, array($this, 'casecmp'));
-			//$tags = array_merge($tags, $tagsMolecules);
+			$tags = array_merge($tags, $tagsMolecules);
 		}
 
 		#АТХ
@@ -215,7 +215,7 @@ class TagController extends Controller
 
 		if (count($tagsAtc)) {
 			uksort($tagsAtc, array($this, 'casecmp'));
-			//$tags = array_merge($tags, $tagsAtc);
+			$tags = array_merge($tags, $tagsAtc);
 		}
 
 		# Нозология МКБ-10
@@ -230,7 +230,7 @@ class TagController extends Controller
 
 		if (count($tagsNozologies)) {
 			uksort($tagsNozologies, array($this, 'casecmp'));
-			//$tags = array_merge($tags, $tagsNozologies);
+			$tags = array_merge($tags, $tagsNozologies);
 		}
 
 		$products    = array();
