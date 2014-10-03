@@ -15,6 +15,11 @@ body {
 	max-width:    630px;
 	padding-left: 30px;
 }
+.footer-copyright.caption {
+	font-weight: bold;
+	text-align:  left;
+	margin:      24px 30px 0;
+}
 
 /* pages */
 .pages {
@@ -52,13 +57,6 @@ body {
 	background: white;
 	height:     317px;
 	border:     5px solid #40a0a3;
-}
-.page-articles .content > img {
-	position: absolute;
-	display:  inline-block;
-	left:     0;
-	top:      -34px;
-	width:    320px;
 }
 
 /* main */
@@ -109,9 +107,10 @@ body {
 	text-decoration: none;
 	color:           white;
 	font-weight:     bold;
-	font-size:       18px;
+	font-size:       17px;
 	margin-left:     10px;
 	border:          none !important;
+	font-family:     "Trebuchet MS", Helvetica, sans-serif;
 }
 .main-links a:first-child {
 	margin-left: 0;
@@ -332,14 +331,18 @@ body {
 }
 
 /* test */
+.page-test .content {
+	border: 5px solid #c86881;
+}
+.page-test .content-title {
+	color: #c86881;
+}
 .page-test-bg {
 	display:  block;
 	position: absolute;
-	top:      0;
-	left:     0;
+	top:      58px;
+	left:     47px;
 	z-index:  10;
-	width:    995px;
-	height:   494px;
 }
 .test-images {
 	position: absolute;
@@ -388,6 +391,7 @@ body {
 .test-buttons a {
 	margin-right: 5px;
 	display:      inline-block;
+	box-shadow:   3px 3px 3px #ccc;
 }
 
 /* question-answer */
@@ -410,11 +414,6 @@ body {
 .qa-header {
 	margin-bottom: 28px;
 	position:      relative;
-}
-.qa-header img {
-	display:       inline-block;
-	width:         160px;
-	margin-bottom: 16px;
 }
 .qa-answer {
 	display: none;
@@ -519,4 +518,28 @@ body {
 .video-flv {
 	width:       500px;
 	margin-left: 275px;
+}
+
+/* content-title */
+.content-title {
+	font-size:    18px;
+	font-weight:  bold;
+	word-spacing: 4px;
+	font-family:  "Trebuchet MS", Helvetica, sans-serif;
+}
+.page .content .content-title {
+	position: absolute;
+	display:  inline-block;
+	left:     0;
+	top:      -34px;
+}
+.page-articles .content-title {
+	color: #40a0a3;
+}
+.page-qa .content-title, .page-video .content-title {
+	color: white;
+}
+#map .content-title {
+	color:  #c86881;
+	margin: 16px 60px 5px;
 }

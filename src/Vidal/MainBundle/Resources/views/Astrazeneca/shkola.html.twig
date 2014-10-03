@@ -63,7 +63,7 @@
 {# Статьи #}
 <div class="page page-articles" id="articles">
 	<div class="content">
-		<img src="{{ asset('bundles/vidalmain/images/shkola/title-articles.png') }}"/>
+		<div class="content-title">СПРАВОЧНАЯ ИНФОРМАЦИЯ</div>
 		<div class="articles">
 			{% for article in articles %}
 				<div class="article article-{{ article.id }} {{ loop.index == 1 ? 'active' }}"
@@ -115,6 +115,7 @@
 	<a class="s-right" href="#"><img src="{{ asset('bundles/vidalmain/images/shkola/r.png') }}"/></a>
 
 	<div class="content">
+		<div class="content-title">ВИДЕО</div>
 		<div class="videos">
 			<div class="video video-1 active">
 				<div class="video-title">
@@ -241,9 +242,11 @@
 
 {# Тестирование #}
 <div class="page page-test" id="test">
-	<img src="{{ asset('bundles/vidalmain/images/shkola/page-test.png') }}" class="page-test-bg"/>
-
 	<div class="content">
+		<div class="content-title">ТЕСТИРОВАНИЕ</div>
+
+		<img src="{{ asset('bundles/vidalmain/images/shkola/bg-test.png') }}" class="page-test-bg"/>
+
 		<div class="test-images">
 			{% for test in tests %}
 				<img src="{{ asset('bundles/vidalmain/images/test' ~test.id~ '.jpg') }}"
@@ -282,11 +285,7 @@
 <div class="page-qa" id="qa">
 	<img src="{{ asset('bundles/vidalmain/images/shkola/stat.jpg') }}" class="stat"/>
 
-	<div class="qa-header">
-		<div>
-			<img src="{{ asset('bundles/vidalmain/images/shkola/qa_title.png') }}"/>
-		</div>
-	</div>
+	<div class="content-title">КОНСУЛЬТАЦИИ</div>
 
 	{% if app.session.flashbag.get('questioned')|length %}
 		<div class="questioned">
@@ -332,7 +331,8 @@
 
 {# Карта аптек #}
 <div id="map">
-	<iframe src="{{ path('shkola_map') }}" style="width:995px; height:496px;"></iframe>
+	<div class="content-title">КАРТА АПТЕК</div>
+	<iframe src="{{ path('shkola_map') }}" style="width:995px; height:496px; border:none;"></iframe>
 </div>
 
 {% endblock %}

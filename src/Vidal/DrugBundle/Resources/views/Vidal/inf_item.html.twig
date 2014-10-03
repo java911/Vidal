@@ -62,9 +62,7 @@
 		</div>
 	{% endif %}
 
-	{% if is_granted('ROLE_ADMIN') %}
-		{% include 'VidalMainBundle:Article:documents.html.twig' with {'object':infoPage, 'label':'представительству', 'item':infoPage.RusName} %}
-	{% endif %}
+	{% include 'VidalMainBundle:Article:documents.html.twig' with {'object':infoPage, 'label':'представительству', 'item':infoPage.RusName} %}
 
 	{# препараты #}
 	{% if products is defined and products is not empty %}

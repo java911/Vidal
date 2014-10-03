@@ -432,7 +432,7 @@ class ProductRepository extends EntityRepository
 
 		$productsRaw = $this->_em->createQuery('
 			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, d.Indication, d.DocumentID, p.photo
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, d.Indication, d.DocumentID, p.photo, p.hidePhoto
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID

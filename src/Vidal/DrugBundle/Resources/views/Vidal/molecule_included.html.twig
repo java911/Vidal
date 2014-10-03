@@ -31,9 +31,7 @@
 		<a href="{{ path('gnp') }}">{{ molecule.GNParent }}</a>
 	</div>
 
-	{% if is_granted('ROLE_ADMIN') %}
-		{% include 'VidalMainBundle:Article:documents.html.twig' with {'object':molecule, 'label':'автивному веществу', 'item':molecule.RusName is empty ? molecule.LatName : molecule.RusName} %}
-	{% endif %}
+	{% include 'VidalMainBundle:Article:documents.html.twig' with {'object':molecule, 'label':'автивному веществу', 'item':molecule.RusName is empty ? molecule.LatName : molecule.RusName} %}
 
 	{% if products1 is defined and products2 is defined %}
 		{# одномкопонентные #}

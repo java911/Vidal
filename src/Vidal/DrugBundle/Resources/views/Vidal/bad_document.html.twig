@@ -112,9 +112,7 @@
 	{% endif %}
 
 	{# прикрепленные материалы #}
-	{% if is_granted('ROLE_ADMIN') %}
-		{% include 'VidalMainBundle:Article:documents_of_product.html.twig' with {'object':product, 'label':'препарату', 'item':product.RusName} %}
-	{% endif %}
+	{% include 'VidalMainBundle:Article:documents_of_product.html.twig' with {'object':product, 'label':'препарату', 'item':product.RusName} %}
 
 	{# Блок регистратора/владельца/представительства #}
 	{% if owners is defined or distributors is defined or infoPages is defined %}

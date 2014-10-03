@@ -274,9 +274,7 @@
 	{% endif %}
 
 	{# прикрепленные материалы #}
-	{% if is_granted('ROLE_ADMIN') %}
-		{% include 'VidalMainBundle:Article:documents_of_product.html.twig' with {'object':product, 'label':'препарату', 'item':product.RusName} %}
-	{% endif %}
+	{% include 'VidalMainBundle:Article:documents_of_product.html.twig' with {'object':product, 'label':'препарату', 'item':product.RusName} %}
 
 	{# цены Он-лайн аптек #}
 	{{ render( controller('VidalMainBundle:Market:productList', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}

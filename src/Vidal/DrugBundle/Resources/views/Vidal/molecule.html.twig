@@ -46,9 +46,7 @@
 		{% include 'VidalDrugBundle:Vidal:document_info.html.twig' %}
 	{% endif %}
 
-	{% if is_granted('ROLE_ADMIN') %}
-		{% include 'VidalMainBundle:Article:documents.html.twig' with {'object':molecule, 'label':'автивному веществу', 'item':molecule.RusName is empty ? molecule.LatName : molecule.RusName} %}
-	{% endif %}
+	{% include 'VidalMainBundle:Article:documents.html.twig' with {'object':molecule, 'label':'автивному веществу', 'item':molecule.RusName is empty ? molecule.LatName : molecule.RusName} %}
 
 {% endblock %}
 
