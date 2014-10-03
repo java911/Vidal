@@ -1,4 +1,6 @@
-{{ render(controller('VidalMainBundle:Banner:render', {'groupId':1})) }}
+{% if noYad is not defined %}
+	{{ render(controller('VidalMainBundle:Banner:render', {'groupId':1})) }}
+{% endif %}
 
 <div class="footer-info">
 	Информация о препаратах, отпускаемых по рецепту, размещенная на сайте, предназначена только для специалистов.

@@ -91,9 +91,12 @@
 	{% endblock %}
 
 	{{ render(controller('VidalMainBundle:Index:firstSet')) }}
-	<div class="footer">
-		{% include 'VidalMainBundle::footer.html.twig' %}
-	</div>
+
+	{% block footer %}
+		<div class="footer">
+			{% include 'VidalMainBundle::footer.html.twig' %}
+		</div>
+	{% endblock %}
 </div>
 
 <div id="overlay"></div>

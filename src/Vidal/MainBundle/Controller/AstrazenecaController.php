@@ -15,6 +15,12 @@ use Lsw\SecureControllerBundle\Annotation\Secure;
 
 class AstrazenecaController extends Controller
 {
+	/** @Route("/shkola-gastrita/{any}", requirements={"any":".*"}) */
+	public function shkolaRedirect()
+	{
+		return $this->redirect($this->generateUrl('shkola_gastrita'), 301);
+	}
+
 	/**
 	 * @Route("/shkola-gastrita", name="shkola_gastrita")
 	 * @Template("VidalMainBundle:Astrazeneca:shkola.html.twig")
@@ -66,7 +72,7 @@ class AstrazenecaController extends Controller
 	}
 
 	/**
-	 * @Route("/shkola-gastrita/frame-map", name="shkola_map")
+	 * @Route("/shkola-gastrita-map", name="shkola_map")
 	 * @Template("VidalMainBundle:Astrazeneca:frame_map.html.twig")
 	 */
 	public function frameMapAction()
@@ -117,8 +123,8 @@ class AstrazenecaController extends Controller
 			$coords = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaMap')->findCoords($coords);
 		}
 
-//		var_dump(count($coords));
-//		exit;
+		//		var_dump(count($coords));
+		//		exit;
 
 		return array(
 			'coords'    => $coords,
@@ -324,14 +330,6 @@ class AstrazenecaController extends Controller
 		$em->flush();
 
 		return $this->redirect($this->generateUrl('astrazeneca_faq'));
-	}
-
-	private function strip($string)
-	{
-		$pat = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/&amp;/');
-		$rep = array('', '', '&');
-
-		return preg_replace($pat, $rep, $string);
 	}
 
 	/**

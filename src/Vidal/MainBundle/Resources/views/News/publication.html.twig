@@ -73,7 +73,7 @@
 
 		{% if is_granted('ROLE_ADMIN') %}
 			{{ render(controller('VidalMainBundle:Tag:tags', {'object':publication})) }}
-		{% if is_granted('ROLE_ADMIN') %}
+		{% endif %}
 	</div>
 
 	{% include 'VidalMainBundle::yad_horizontal.html.twig' %}

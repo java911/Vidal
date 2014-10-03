@@ -63,6 +63,7 @@
 {# Статьи #}
 <div class="page page-articles" id="articles">
 	<div class="content">
+		<img src="{{ asset('bundles/vidalmain/images/shkola/title-articles.png') }}"/>
 		<div class="articles">
 			{% for article in articles %}
 				<div class="article article-{{ article.id }} {{ loop.index == 1 ? 'active' }}"
@@ -337,9 +338,30 @@
 {% endblock %}
 
 
+{% block footer %}
+	<div class="footer">
+		<noindex>
+			<div class="footer-info">
+				Информация о препаратах, отпускаемых по рецепту, размещенная на сайте, предназначена только для
+				специалистов.
+				Информация, содержащаяся на сайте, не должна использоваться пациентами для принятия самостоятельного
+				решения о применении представленных лекарственных препаратов и не может служить заменой очной
+				консультации врача.
+			</div>
+		</noindex>
+
+		<div class="footer-copyright caption">
+			© 2014 «Школа Гастрита» - Справочная информация по язве желудка и гастрите
+		</div>
+
+		<img class="footer-logo" src="{{ asset('bundles/vidalmain/images/vidal-group.jpg') }}"/>
+	</div>
+{% endblock %}
+
+
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/shkola.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/shkola_gastrita.css') }}"/>
 {% endblock %}
 
 
