@@ -16,6 +16,12 @@ class Product
 	/** @ORM\Column(length=500) */
 	protected $RusName;
 
+	/**
+	 * Колонка с именами препаратов БЕЗ лишних символов
+	 * @ORM\Column(length=500, nullable=true)
+	 */
+	protected $RusName2;
+
 	/** @ORM\Column(length=500) */
 	protected $EngName;
 
@@ -924,5 +930,21 @@ class Product
 	public function getHidePhoto()
 	{
 		return $this->hidePhoto;
+	}
+
+	/**
+	 * @param mixed $RusName2
+	 */
+	public function setRusName2($RusName2)
+	{
+		$this->RusName2 = $RusName2;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getRusName2()
+	{
+		return $this->RusName2;
 	}
 }

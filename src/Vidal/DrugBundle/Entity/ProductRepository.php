@@ -352,7 +352,7 @@ class ProductRepository extends EntityRepository
 			if ($i > 0) {
 				$where .= ' AND ';
 			}
-			$where .= "(p.RusName LIKE '$word%' OR p.EngName LIKE '$word%' OR p.RusName LIKE '% $word%' OR p.EngName LIKE '% $word%' OR p.RusName LIKE '%-$word' OR p.EngName LIKE '%-$word')";
+			$where .= "(p.RusName2 LIKE '$word%' OR p.EngName LIKE '$word%' OR p.RusName2 LIKE '% $word%' OR p.EngName LIKE '% $word%' OR p.RusName2 LIKE '%-$word' OR p.EngName LIKE '%-$word')";
 		}
 
 		$qb->andWhere($where);
@@ -378,7 +378,7 @@ class ProductRepository extends EntityRepository
 				if ($i > 0) {
 					$where .= ' OR ';
 				}
-				$where .= "(p.RusName LIKE '$word%' OR p.EngName LIKE '$word%' OR p.RusName LIKE '% $word%' OR p.EngName LIKE '% $word%' OR p.RusName LIKE '%-$word' OR p.EngName LIKE '%-$word')";
+				$where .= "(p.RusName2 LIKE '$word%' OR p.EngName LIKE '$word%' OR p.RusName2 LIKE '% $word%' OR p.EngName LIKE '% $word%' OR p.RusName2 LIKE '%-$word' OR p.EngName LIKE '%-$word')";
 			}
 
 			# включать ли бады
