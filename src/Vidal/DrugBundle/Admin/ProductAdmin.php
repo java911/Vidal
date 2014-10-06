@@ -32,8 +32,8 @@ class ProductAdmin extends Admin
 		}
 
 		$formMapper
-			->add('RusName', 'text', array('label' => 'Название', 'required' => true))
-			->add('EngName', 'text', array('label' => 'Латинское', 'required' => true))
+			->add('RusName', 'textarea', array('label' => 'Название', 'required' => true, 'attr' => array('class' => 'ckeditormini')))
+			->add('EngName', 'textarea', array('label' => 'Латинское', 'required' => true, 'attr' => array('class' => 'ckeditormini')))
 			->add('Name', 'text', array('label' => 'URL адрес', 'required' => true))
 			->add($formMapper->create('document', 'text', array(
 				'label'        => 'ID документа',

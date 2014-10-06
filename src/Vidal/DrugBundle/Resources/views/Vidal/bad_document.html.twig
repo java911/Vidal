@@ -334,6 +334,13 @@
 				$(this).hide();
 				return false;
 			});
+
+			{% if not isDoctor %}
+			$('.closed-link').click(function() {
+				$('.closed-info').slideDown();
+				return false;
+			});
+			{% endif %}
 		});
 	</script>
 {% endblock %}
