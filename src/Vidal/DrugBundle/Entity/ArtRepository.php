@@ -113,7 +113,20 @@ class ArtRepository extends EntityRepository
 			')->setParameter('tagId', $tagId)
 				->getResult();
 
-			return array_merge($results1, $results2);
+			$results = array();
+
+			foreach ($results1 as $r) {
+				$key           = $r->getId();
+				$results[$key] = $r;
+			}
+			foreach ($results2 as $r) {
+				$key = $r->getId();
+				if (!isset($results[$key])) {
+					$results[$key] = $r;
+				}
+			}
+
+			return array_values($results);
 		}
 		else {
 			$tagHistory = $this->_em->getRepository('VidalDrugBundle:TagHistory')->findOneByTagText($tagId, $text);

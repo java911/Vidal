@@ -94,6 +94,8 @@ class PublicationRepository extends EntityRepository
 	public function findByTagWord($tagId, $text)
 	{
 		if (empty($text)) {
+			$results = array();
+
 			$results1 = $this->_em->createQuery('
 				SELECT p
 				FROM VidalDrugBundle:publication p
@@ -109,7 +111,18 @@ class PublicationRepository extends EntityRepository
 			')->setParameter('tagId', $tagId)
 				->getResult();
 
-			return array_merge($results1, $results2);
+			foreach ($results1 as $r) {
+				$key           = $r->getId();
+				$results[$key] = $r;
+			}
+			foreach ($results2 as $r) {
+				$key = $r->getId();
+				if (!isset($results[$key])) {
+					$results[$key] = $r;
+				}
+			}
+
+			return array_values($results);
 		}
 		else {
 			$tagHistory = $this->_em->getRepository('VidalDrugBundle:TagHistory')->findOneByTagText($tagId, $text);
