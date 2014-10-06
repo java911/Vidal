@@ -15,17 +15,61 @@ use Lsw\SecureControllerBundle\Annotation\Secure;
 
 class AstrazenecaController extends Controller
 {
-	/** @Route("/shkola-gastrita/{any}", requirements={"any":".*"}) */
-	public function shkolaRedirect()
-	{
-		return $this->redirect($this->generateUrl('shkola_gastrita'), 301);
-	}
-
 	/**
 	 * @Route("/shkola-gastrita", name="shkola_gastrita")
 	 * @Template("VidalMainBundle:Astrazeneca:shkola.html.twig")
 	 */
 	public function shkolaAction(Request $request)
+	{
+		$params = array(
+			'noYad'     => true,
+			'title'     => 'Школа гастрита',
+			'menu_left' => 'shkola',
+		);
+
+		$em                        = $this->getDoctrine()->getManager();
+		$params['blogs']           = $em->getRepository('VidalMainBundle:AstrazenecaBlog')->findActive();
+		$params['articles']        = $em->getRepository('VidalMainBundle:AstrazenecaNew')->findActive();
+		$params['tests']           = $em->getRepository('VidalMainBundle:AstrazenecaTest')->findAll();
+		$params['questionAnswers'] = $em->getRepository('VidalMainBundle:AstrazenecaFaq')->findByEnabled(1);
+
+		# форма задать вопрос
+		$faq = new AstrazenecaFaq();
+
+		$builder = $this->createFormBuilder($faq);
+		$builder
+			->add('authorFirstName', null, array('label' => 'Ваше имя', 'required' => true, 'constraints' => new NotBlank(array('message' => "Пожалуйста, укажите Имя"))))
+			->add('authorEmail', null, array('label' => 'Ваш e-mail', 'required' => true, 'constraints' => new NotBlank(array('message' => "Пожалуйста, укажите Email"))))
+			->add('question', null, array('label' => 'Вопрос', 'attr' => array('class' => 'ckeditor')))
+			->add('captcha', 'captcha', array('label' => 'Введите код с картинки'))
+			->add('submit', 'submit', array('label' => 'ОТПРАВИТЬ', 'attr' => array('class' => 'btn')));
+
+		$form = $builder->getForm();
+		$form->handleRequest($request);
+
+		if ($request->isMethod('POST')) {
+			if ($form->isValid()) {
+				$faq = $form->getData();
+				$faq->setEnabled(0);
+				$em->persist($faq);
+				$em->flush();
+
+				$this->get('session')->getFlashBag()->add('questioned', '');
+
+				return $this->redirect($this->generateUrl('shkola_gastrita') . '#qa');
+			}
+		}
+
+		$params['form'] = $form->createView();
+
+		return $params;
+	}
+
+	/**
+	 * @Route("/shkola-gastrita2", name="shkola_gastrita2")
+	 * @Template("VidalMainBundle:Astrazeneca:shkola.html.twig")
+	 */
+	public function shkola2Action(Request $request)
 	{
 		$params = array(
 			'noYad'     => true,
