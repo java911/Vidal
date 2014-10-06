@@ -15,6 +15,10 @@ services:
         tags:
             - { name: doctrine.event_subscriber, connection: drug }
 
+    drug.tag_total:
+         class: Vidal\DrugBundle\Service\TagTotalService
+         arguments: [@service_container]
+
     default.timestampable:
         class: Gedmo\Timestampable\TimestampableListener
         tags:

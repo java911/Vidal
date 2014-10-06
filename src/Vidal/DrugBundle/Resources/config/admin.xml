@@ -270,7 +270,7 @@
 		</service>
 
 		<service id="sonata.admin.shkolaCategory" class="Vidal\MainBundle\Admin\ShkolaCategoryAdmin">
-			<tag name="sonata.admin" manager_type="orm" group="Школа гастрита 2" label="Категория"/>
+			<tag name="sonata.admin" manager_type="orm" group="Школа гастрита 2" label="Категории"/>
 			<argument />
 			<argument>Vidal\MainBundle\Entity\ShkolaCategory</argument>
 			<argument>SonataAdminBundle:CRUD</argument>

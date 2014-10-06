@@ -5,9 +5,9 @@
 	{% if publications is not empty %}
 		<div class="title">Новости по
 			{% if word %}
-				теме <span>"{{ word }}"</span>
+				теме <span>"{{ word }}"</span>: {{ publications|length }}
 			{% else %}
-				всему тегу <span>"{{ tag }}"</span>
+				всему тегу <span>"{{ tag }}"</span>: {{ publications|length }}
 			{% endif %}
 		</div>
 		{% include 'VidalMainBundle:Index:render_news.html.twig' with {'news':publications} %}
@@ -24,9 +24,9 @@
 	{% if articles is not empty %}
 		<div class="title">Статьи медицинской энциклопедии по
 			{% if word %}
-				теме <span>"{{ word }}"</span>
+				теме <span>"{{ word }}"</span>: {{ articles|length }}
 			{% else %}
-				всему тегу <span>"{{ tag }}"</span>
+				всему тегу <span>"{{ tag }}"</span>: {{ articles|length }}
 			{% endif %}
 		</div>
 		{% include 'VidalMainBundle:Index:render_articles.html.twig' with {'articles':articles} %}
@@ -43,9 +43,9 @@
 	{% if arts is not empty %}
 		<div class="title">Статьи для специалистов по
 			{% if word %}
-				теме <span>"{{ word }}"</span>
+				теме <span>"{{ word }}"</span>: {{ arts|length }}
 			{% else %}
-				всему тегу <span>"{{ tag }}"</span>
+				всему тегу <span>"{{ tag }}"</span>: {{ arts|length }}
 			{% endif %}
 		</div>
 		{% include 'VidalMainBundle:Index:render_articles.html.twig' with {'articles':arts} %}

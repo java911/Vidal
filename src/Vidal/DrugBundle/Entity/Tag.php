@@ -47,6 +47,9 @@ class Tag
 	/** @ORM\Column(type="boolean") */
 	protected $forCompany = false;
 
+	/** @ORM\Column(type="integer") */
+	protected $total = 0;
+
 	public function __construct()
 	{
 		$this->articles      = new ArrayCollection();
@@ -251,5 +254,26 @@ class Tag
 	public function getForCompany()
 	{
 		return $this->forCompany;
+	}
+
+	/**
+	 * @param mixed $total
+	 */
+	public function setTotal($total)
+	{
+		$this->total = $total;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTotal()
+	{
+		return $this->total;
+	}
+
+	public function countTotal()
+	{
+		$this->total++;
 	}
 }

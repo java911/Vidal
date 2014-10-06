@@ -455,14 +455,14 @@ file that was distributed with this source code.
 									{% if not loop.last %}
 										<li>
 											{% if menu.uri is not empty %}
-												<a href="{{ menu.uri }}">{{ menu.label == 'Dashboard' ? 'Панель' : menu.label }}</a>
+												<a href="{{ menu.uri }}">{{ menu.label == 'Dashboard' ? 'Панель' : menu.label|raw }}</a>
 											{% else %}
-												{{ menu.label }}
+												{{ menu.label|raw }}
 											{% endif %}
 											<span class="divider">/</span>
 										</li>
 									{% else %}
-										<li class="active">{{ menu.label }}</li>
+										<li class="active">{{ menu.label|raw }}</li>
 									{% endif %}
 								{% endfor %}
 							{% endif %}

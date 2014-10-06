@@ -199,15 +199,15 @@ class Product
 
 	public function __construct()
 	{
-		$this->atcCodes        = new ArrayCollection();
-		$this->clphGroups      = new ArrayCollection();
-		$this->productCompany  = new ArrayCollection();
-		$this->moleculeNames   = new ArrayCollection();
-		$this->phthgroups      = new ArrayCollection();
-		$this->articles        = new ArrayCollection();
-		$this->arts            = new ArrayCollection();
-		$this->publications    = new ArrayCollection();
-		$this->pharmArticles   = new ArrayCollection();
+		$this->atcCodes       = new ArrayCollection();
+		$this->clphGroups     = new ArrayCollection();
+		$this->productCompany = new ArrayCollection();
+		$this->moleculeNames  = new ArrayCollection();
+		$this->phthgroups     = new ArrayCollection();
+		$this->articles       = new ArrayCollection();
+		$this->arts           = new ArrayCollection();
+		$this->publications   = new ArrayCollection();
+		$this->pharmArticles  = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -337,7 +337,9 @@ class Product
 	 */
 	public function setEngName($EngName)
 	{
-		$this->EngName = $EngName;
+		$pat           = array('#<p>#', '#</p>#', '#&nbsp;#', '#<br />#');
+		$rep           = array('', '', '', '');
+		$this->RusName = preg_replace($pat, $rep, $EngName);
 	}
 
 	/**
@@ -577,7 +579,9 @@ class Product
 	 */
 	public function setRusName($RusName)
 	{
-		$this->RusName = $RusName;
+		$pat           = array('#<p>#', '#</p>#', '#&nbsp;#', '#<br />#');
+		$rep           = array('', '', '', '');
+		$this->RusName = preg_replace($pat, $rep, $RusName);
 	}
 
 	/**

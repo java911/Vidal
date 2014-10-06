@@ -60,7 +60,7 @@ class InfoPage
 	protected $pictures;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Article", mappedBy="infoPages")
+	 * @ORM\ManyToMany(targetEntity="Article", mappedBy="infoPages", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="article_infopage",
 	 *        joinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
@@ -69,7 +69,7 @@ class InfoPage
 	protected $articles;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Art", mappedBy="infoPages")
+	 * @ORM\ManyToMany(targetEntity="Art", mappedBy="infoPages", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="art_infopage",
 	 *        joinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")})
@@ -78,7 +78,7 @@ class InfoPage
 	protected $arts;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Publication", mappedBy="infoPages")
+	 * @ORM\ManyToMany(targetEntity="Publication", mappedBy="infoPages", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="publication_infopage",
 	 *        joinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")})

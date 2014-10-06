@@ -118,6 +118,19 @@ class DoctrineEventSubscriber implements EventSubscriber
 		if ($entity instanceof Article || $entity instanceof Art || $entity instanceof Publication || $entity instanceof PharmPortfolio) {
 			$this->setVideoMeta($entity);
 		}
+
+		# проставляем сколько всего связей у тегов (Tag.total)
+		if ($entity instanceof Article || $entity instanceof Art || $entity instanceof Publication) {
+			$tagService = $this->container->get('drug.tag_total');
+			foreach ($entity->getTags() as $tag) {
+				$tagService->count($tag->getId());
+			}
+			foreach ($entity->getInfoPages() as $ip) {
+				if ($tag = $ip->getTag()) {
+					$tagService->count($tag->getId());
+				}
+			}
+		}
 	}
 
 	public function preRemove(LifecycleEventArgs $args)

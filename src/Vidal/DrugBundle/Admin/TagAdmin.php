@@ -34,6 +34,7 @@ class TagAdmin extends Admin
 			->add('search', null, array('label' => 'Выставляется по слову', 'required' => false, 'help' => 'Оставьте пустым, чтоб выставлять по тегу'))
 			->add('infoPage', null, array('label' => 'Представительство', 'required' => false))
 			->add('forCompany', null, array('label' => 'Тег компании', 'required' => false))
+			->add('total', null, array('label' => 'Материалов', 'required' => false, 'disabled' => true))
 			->add('enabled', null, array('label' => 'Активнен', 'required' => false));
 	}
 
@@ -53,6 +54,7 @@ class TagAdmin extends Admin
 			->add('id')
 			->add('infoPage', null, array('label' => 'Представительство'))
 			->add('forCompany', null, array('label' => 'Тег компании', 'template' => 'VidalDrugBundle:Sonata:swap_forCompany.html.twig'))
+			->add('total', null, array('label' => 'Материалов'))
 			->add('enabled', null, array('label' => 'Активен', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
