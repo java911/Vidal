@@ -9,7 +9,7 @@ use Iphp\FileStoreBundle\Mapping\Annotation as FileStore;
 class ShkolaArticle extends BaseEntity
 {
 	/** @ORM\Column(length=255) */
-	protected $title;
+	protected $label;
 
 	/** @ORM\Column(type="text") */
 	protected $text;
@@ -30,14 +30,17 @@ class ShkolaArticle extends BaseEntity
 	protected $url;
 
 	/** @ORM\Column(length=255, nullable=true) */
-	protected $description;
+	protected $title;
 
 	/** @ORM\Column(length=255, nullable=true) */
 	protected $keywords;
 
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $description;
+
 	public function __toString()
 	{
-		return empty($this->title) ? '' : $this->title;
+		return empty($this->label) ? '' : $this->label;
 	}
 
 	/**
@@ -166,5 +169,21 @@ class ShkolaArticle extends BaseEntity
 	public function getTitle()
 	{
 		return $this->title;
+	}
+
+	/**
+	 * @param mixed $label
+	 */
+	public function setLabel($label)
+	{
+		$this->label = $label;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getLabel()
+	{
+		return $this->label;
 	}
 }

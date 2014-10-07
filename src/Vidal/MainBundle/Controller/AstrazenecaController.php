@@ -67,7 +67,7 @@ class AstrazenecaController extends Controller
 
 	/**
 	 * @Route("/shkola-gastrita2", name="shkola_gastrita2")
-	 * @Template("VidalMainBundle:Astrazeneca:shkola.html.twig")
+	 * @Template("VidalMainBundle:Astrazeneca:shkola2.html.twig")
 	 */
 	public function shkola2Action(Request $request)
 	{

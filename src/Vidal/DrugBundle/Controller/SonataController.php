@@ -562,6 +562,14 @@ class SonataController extends Controller
 		return $this->redirect($this->generateUrl('admin_vidal_drug_tag_edit', array('id' => $tagId)));
 	}
 
+	/** @Route("/admin-tag-total/{tagId}", name="admin_tag_total", options={"expose":true}) */
+	public function tagTotalAction($tagId)
+	{
+		$total = $this->get('drug.tag_total')->count($tagId);
+
+		return new JsonResponse($total);
+	}
+
 	/** @Route("/admin-tag-editable", name="admin_tag_editable", options={"expose":true}) */
 	public function tagEditableAction(Request $request)
 	{

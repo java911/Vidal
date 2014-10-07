@@ -61,6 +61,10 @@
 			e.preventDefault();
 			window.open(Routing.generate('tag_list', {'tagId': tagId, 'text': $history.val()}), "_blank");
 		});
+
+		$.getJSON(Routing.generate('admin_tag_total', {'tagId': tagId}), function(data) {
+			$('.tagTotal').text(data).attr('value', data);
+		});
 	});
 </script>
 

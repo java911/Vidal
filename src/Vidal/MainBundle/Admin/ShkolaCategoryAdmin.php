@@ -28,10 +28,13 @@ class ShkolaCategoryAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('title', null, array('label' => 'Заголовок'))
+			->add('label', null, array('label' => 'Заголовок'))
 			->add('url', null, array('label' => 'Адрес url'))
 			->add('text', null, array('label' => 'Текст', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('priority', null, array('label' => 'Приоритет', 'required' => false, 'help' => 'Поставьте повыше, если надо, чтоб была на первом месте'))
+			->add('title', null, array('label' => 'Meta-title', 'required' => false))
+			->add('keywords', null, array('label' => 'Meta-keywords', 'required' => false))
+			->add('description', null, array('label' => 'Meta-description', 'required' => false))
 			->add('enabled', null, array('label' => 'Активна', 'required' => false));
 	}
 
@@ -45,6 +48,7 @@ class ShkolaCategoryAdmin extends Admin
 	{
 		$listMapper
 			->add('id')
+			->add('label', null, array('label' => 'Заголовок'))
 			->add('url', null, array('label' => 'Адрес url'))
 			->add('enabled', null, array('label' => 'Активен', 'template' => 'VidalDrugBundle:Sonata:swap_enabled_main.html.twig'))
 			->add('priority', null, array('label' => 'Приоритет'))

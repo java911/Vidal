@@ -28,15 +28,16 @@ class ShkolaArticleAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('title', null, array('label' => 'Заголовок'))
+			->add('label', null, array('label' => 'Заголовок'))
 			->add('url', null, array('label' => 'Адрес url'))
+			->add('category', null, array('label' => 'Категория', 'required' => true))
 			->add('text', null, array('label' => 'Текст', 'attr' => array('class' => 'ckeditorfull')))
-			->add('category', null, array('label' => 'Категория'))
-			->add('keywords', null, array('label' => 'Meta-keywords', 'required' => false))
-			->add('description', null, array('label' => 'Meta-description', 'required' => false))
 			->add('photo', 'iphp_file', array('label' => 'Изображение', 'required' => false))
 			->add('priority', null, array('label' => 'Приоритет', 'required' => false, 'help' => 'Поставьте повыше, если надо, чтоб была на первом месте'))
 			->add('created', null, array('label' => 'Дата создания', 'required' => false))
+			->add('title', null, array('label' => 'Meta-title', 'required' => false))
+			->add('keywords', null, array('label' => 'Meta-keywords', 'required' => false))
+			->add('description', null, array('label' => 'Meta-description', 'required' => false))
 			->add('enabled', null, array('label' => 'Активна', 'required' => false));
 	}
 
@@ -50,9 +51,9 @@ class ShkolaArticleAdmin extends Admin
 	{
 		$listMapper
 			->add('id')
-			->add('title', null, array('label' => 'Заголовок'))
-			->add('category', null, array('label' => 'Категория'))
+			->add('label', null, array('label' => 'Заголовок'))
 			->add('url', null, array('label' => 'Адрес url'))
+			->add('category', null, array('label' => 'Категория'))
 			->add('photo', null, array('label' => 'Изображение', 'template' => 'VidalDrugBundle:Sonata:photo.html.twig'))
 			->add('priority', null, array('label' => 'Приоритет'))
 			->add('enabled', null, array('label' => 'Активен', 'template' => 'VidalDrugBundle:Sonata:swap_enabled_main.html.twig'))

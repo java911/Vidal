@@ -20,7 +20,7 @@ class TagTotalService
 		$pdo = $em->getConnection();
 
 		if ($tag === null) {
-			return false;
+			return 0;
 		}
 
 		$artIds         = array();
@@ -86,6 +86,6 @@ class TagTotalService
 		# приходится через PDO, так как в PostUpdate событии нельзя обновлять записи в базе данных
 		$pdo->prepare("UPDATE tag SET total = $total WHERE id = $tagId")->execute();
 
-		return true;
+		return $total;
 	}
 }

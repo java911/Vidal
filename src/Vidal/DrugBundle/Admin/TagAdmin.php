@@ -34,7 +34,7 @@ class TagAdmin extends Admin
 			->add('search', null, array('label' => 'Выставляется по слову', 'required' => false, 'help' => 'Оставьте пустым, чтоб выставлять по тегу'))
 			->add('infoPage', null, array('label' => 'Представительство', 'required' => false))
 			->add('forCompany', null, array('label' => 'Тег компании', 'required' => false))
-			->add('total', null, array('label' => 'Материалов', 'required' => false, 'disabled' => true))
+			->add('total', null, array('label' => 'Материалов', 'required' => false, 'disabled' => true, 'attr' => array('class' => 'tagTotal')))
 			->add('enabled', null, array('label' => 'Активнен', 'required' => false));
 	}
 
@@ -59,8 +59,8 @@ class TagAdmin extends Admin
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(
-					'edit'           => array(),
-					'delete'         => array(),
+					'edit'   => array(),
+					'delete' => array(),
 				)
 			));
 	}

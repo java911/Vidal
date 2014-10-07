@@ -10,11 +10,11 @@ class ShkolaCategory
 	/** @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue */
 	protected $id;
 
+	/** @ORM\Column(length=255) */
+	protected $label;
+
 	/** @ORM\Column(type = "boolean") */
 	protected $enabled = true;
-
-	/** @ORM\Column(length=255) */
-	protected $title;
 
 	/** @ORM\Column(length=255) */
 	protected $url;
@@ -28,9 +28,18 @@ class ShkolaCategory
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $priority;
 
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $title;
+
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $description;
+
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $keywords;
+
 	public function __toString()
 	{
-		return empty($this->title) ? '' : $this->title;
+		return empty($this->label) ? '' : $this->label;
 	}
 
 	public function __construct()
@@ -140,5 +149,53 @@ class ShkolaCategory
 	public function getPriority()
 	{
 		return $this->priority;
+	}
+
+	/**
+	 * @param mixed $description
+	 */
+	public function setDescription($description)
+	{
+		$this->description = $description;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDescription()
+	{
+		return $this->description;
+	}
+
+	/**
+	 * @param mixed $keywords
+	 */
+	public function setKeywords($keywords)
+	{
+		$this->keywords = $keywords;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getKeywords()
+	{
+		return $this->keywords;
+	}
+
+	/**
+	 * @param mixed $label
+	 */
+	public function setLabel($label)
+	{
+		$this->label = $label;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getLabel()
+	{
+		return $this->label;
 	}
 }
