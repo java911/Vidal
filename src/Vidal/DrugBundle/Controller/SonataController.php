@@ -570,6 +570,20 @@ class SonataController extends Controller
 		return new JsonResponse($total);
 	}
 
+	/** @Route("/admin-tag-recalc", name="admin_tag_recalc", options={"expose":true}) */
+	public function tagRecalcAction()
+	{
+		$em         = $this->getDoctrine()->getManager('drug');
+		$tags       = $em->getRepository('VidalDrugBundle:Tag')->findAll();
+		$tagService = $this->get('drug.tag_total');
+
+		foreach ($tags as $tag) {
+			$tagService->count($tag->getId());
+		}
+
+		return $this->redirect($this->generateUrl('admin_vidal_drug_tag_list'));
+	}
+
 	/** @Route("/admin-tag-editable", name="admin_tag_editable", options={"expose":true}) */
 	public function tagEditableAction(Request $request)
 	{

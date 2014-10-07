@@ -38,6 +38,10 @@ file that was distributed with this source code.
 				});
 			</script>
 		{% endif %}
+
+		{% if route == 'admin_vidal_drug_tag_list' %}
+			<a href="{{ path('admin_tag_recalc') }}" class="btn sonata-action-element">Пересчитать материалы</a>
+		{% endif %}
 	</div>
 {% endblock %}
 
