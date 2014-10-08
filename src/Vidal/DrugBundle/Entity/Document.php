@@ -499,7 +499,7 @@ class Document
 	{
 		$pat           = array('#<p>#', '#</p>#', '#&nbsp;#', '#<br />#');
 		$rep           = array('', '', '', '');
-		$this->RusName = preg_replace($pat, $rep, $EngName);
+		$this->EngName = preg_replace($pat, $rep, $EngName);
 	}
 
 	/**
