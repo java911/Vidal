@@ -66,6 +66,29 @@ class AstrazenecaController extends Controller
 	}
 
 	/**
+	 * @Route("/shkola-gastrita/{category}", name="shkola_category")
+	 * @Template("VidalMainBundle:Astrazeneca:shkola_category.html.twig")
+	 */
+	public function categoryAction($category)
+	{
+		$em       = $this->getDoctrine()->getManager();
+		$category = $em->getRepository('VidalMainBundle:ShkolaCategory')->findOneByUrl($category);
+
+		if (!$category) {
+			throw $this->createNotFoundException();
+		}
+
+		$params = array(
+			'seotitle'    => $category->getTitle(),
+			'description' => $category->getDescription(),
+			'keywords'    => $category->getKeywords(),
+			'category'    => $category,
+		);
+
+		return $params;
+	}
+
+	/**
 	 * @Route("/shkola-gastrita2", name="shkola_gastrita2")
 	 * @Template("VidalMainBundle:Astrazeneca:shkola2.html.twig")
 	 */

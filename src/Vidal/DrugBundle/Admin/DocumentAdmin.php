@@ -34,8 +34,8 @@ class DocumentAdmin extends Admin
 		}
 
 		$formMapper
-			->add('RusName', 'textarea', array('label' => 'Название', 'required' => true, 'attr' => array('class' => 'ckeditormini')))
-			->add('EngName', 'textarea', array('label' => 'Латинское', 'required' => true, 'attr' => array('class' => 'ckeditormini')))
+			->add('RusName', null, array('label' => 'Название', 'required' => true))
+			->add('EngName', null, array('label' => 'Латинское', 'required' => true))
 			->add('Name', 'text', array('label' => 'URL адрес', 'required' => true))
 			->add('ArticleID', 'choice', array('label' => 'Тип документа', 'help' => 'ArticleID', 'required' => true, 'choices' => $articleChoices))
 			->add('YearEdition', null, array('label' => 'Год выпуска', 'required' => true))

@@ -497,9 +497,7 @@ class Document
 	 */
 	public function setEngName($EngName)
 	{
-		$pat           = array('#<p>#', '#</p>#', '#&nbsp;#', '#<br />#');
-		$rep           = array('', '', '', '');
-		$this->RusName = preg_replace($pat, $rep, $EngName);
+		$this->EngName = $EngName;
 	}
 
 	/**
@@ -739,9 +737,7 @@ class Document
 	 */
 	public function setRusName($RusName)
 	{
-		$pat           = array('#<p>#', '#</p>#', '#&nbsp;#', '#<br />#');
-		$rep           = array('', '', '', '');
-		$this->RusName = preg_replace($pat, $rep, $RusName);
+		$this->RusName = $RusName;
 	}
 
 	/**
