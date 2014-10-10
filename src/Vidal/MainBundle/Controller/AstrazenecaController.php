@@ -138,6 +138,15 @@ class AstrazenecaController extends Controller
 		return $params;
 	}
 
+	/** @Template("VidalMainBundle:Astrazeneca:menu.html.twig") */
+	public function menuAction()
+	{
+		$em         = $this->getDoctrine()->getManager();
+		$categories = $em->getRepository('VidalMainBundle:ShkolaCategory')->findAll();
+
+		return array('categories' => $categories);
+	}
+
 	/**
 	 * @Route("/shkola-gastrita-map", name="shkola_map")
 	 * @Template("VidalMainBundle:Astrazeneca:frame_map.html.twig")

@@ -4,7 +4,7 @@ namespace Vidal\MainBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/** @ORM\Entity @ORM\Table(name="shkola_category") */
+/** @ORM\Entity(repositoryClass="ShkolaCategoryRepository") @ORM\Table(name="shkola_category") */
 class ShkolaCategory
 {
 	/** @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue */

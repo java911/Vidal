@@ -1,0 +1,15 @@
+<ul class="menu">
+	<li>
+		<a href="{{ path('shkola_gastrita') }}">Главная</a>
+	</li>
+
+	{% for category in categories %}
+		<li>
+			<ul>
+				{% for article in category.articles %}
+					<a href="#">{{ article.title }}</a>
+				{% endfor %}
+			</ul>
+		</li>
+	{% endfor %}
+</ul>

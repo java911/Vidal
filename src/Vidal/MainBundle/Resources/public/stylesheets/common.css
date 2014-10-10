@@ -911,6 +911,9 @@ tr.bold td {
 .products-table tr:last-child td {
 	border-bottom: 0;
 }
+.molecule-name span {
+	color: gray;
+}
 
 /* admin-edit icon */
 .admin-edit {
