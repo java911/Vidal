@@ -1377,6 +1377,13 @@ tr.bold td {
 	font-family: inherit !important;
 	max-width: 520px !important;
 }
+.text pre {
+	white-space: -moz-pre-wrap;
+	white-space: -pre-wrap;
+	white-space: -o-pre-wrap;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
 .article .text, .publication .text {
 	padding: 0;
 	margin:  0;
