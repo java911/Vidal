@@ -1371,11 +1371,18 @@ tr.bold td {
 /* text */
 .text {
 	overflow:  hidden;
-	/*max-width: 520px;*/
 	font-size: 14px;
 }
 .text * {
 	font-family: inherit !important;
+	max-width: 520px !important;
+}
+.text pre {
+	white-space: -moz-pre-wrap;
+	white-space: -pre-wrap;
+	white-space: -o-pre-wrap;
+	white-space: pre-wrap;
+	word-wrap: break-word;
 }
 .article .text, .publication .text {
 	padding: 0;
