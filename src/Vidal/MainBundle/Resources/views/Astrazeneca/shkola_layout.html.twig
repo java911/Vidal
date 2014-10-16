@@ -2,9 +2,12 @@
 
 
 {% block middle %}
-	{% render 'VidalMainBundle:Astrazeneca:menu' %}
+	{{ render(controller('VidalMainBundle:Astrazeneca:menu', {'request':app.request})) }}
+	{% block navigation %}{% endblock %}
 
-	{% block info %}{% endblock %}
+	<div class="info">
+		{% block info %}{% endblock %}
+	</div>
 {% endblock %}
 
 
@@ -31,21 +34,5 @@
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/shkola_gastrita.css') }}"/>
-	<style type="text/css">
-		.footer-logo {
-			top:   22px;
-			right: 42px;
-		}
-		.footer-info {
-			margin:       0;
-			max-width:    630px;
-			padding-left: 30px;
-		}
-		.footer-copyright.caption {
-			font-weight: bold;
-			text-align:  left;
-			margin:      24px 30px 0;
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/shkola_gastrita2.css') }}"/>
 {% endblock %}

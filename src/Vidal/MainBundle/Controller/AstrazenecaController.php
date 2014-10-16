@@ -66,29 +66,6 @@ class AstrazenecaController extends Controller
 	}
 
 	/**
-	 * @Route("/shkola-gastrita/{category}", name="shkola_category")
-	 * @Template("VidalMainBundle:Astrazeneca:shkola_category.html.twig")
-	 */
-	public function categoryAction($category)
-	{
-		$em       = $this->getDoctrine()->getManager();
-		$category = $em->getRepository('VidalMainBundle:ShkolaCategory')->findOneByUrl($category);
-
-		if (!$category) {
-			throw $this->createNotFoundException();
-		}
-
-		$params = array(
-			'seotitle'    => $category->getTitle(),
-			'description' => $category->getDescription(),
-			'keywords'    => $category->getKeywords(),
-			'category'    => $category,
-		);
-
-		return $params;
-	}
-
-	/**
 	 * @Route("/shkola-gastrita2", name="shkola_gastrita2")
 	 * @Template("VidalMainBundle:Astrazeneca:shkola2.html.twig")
 	 */
@@ -102,9 +79,9 @@ class AstrazenecaController extends Controller
 
 		$em                        = $this->getDoctrine()->getManager();
 		$params['blogs']           = $em->getRepository('VidalMainBundle:AstrazenecaBlog')->findActive();
-		$params['articles']        = $em->getRepository('VidalMainBundle:AstrazenecaNew')->findActive();
 		$params['tests']           = $em->getRepository('VidalMainBundle:AstrazenecaTest')->findAll();
 		$params['questionAnswers'] = $em->getRepository('VidalMainBundle:AstrazenecaFaq')->findByEnabled(1);
+		$params['categories']      = $em->getRepository('VidalMainBundle:ShkolaCategory')->findAll();
 
 		# форма задать вопрос
 		$faq = new AstrazenecaFaq();
@@ -129,7 +106,7 @@ class AstrazenecaController extends Controller
 
 				$this->get('session')->getFlashBag()->add('questioned', '');
 
-				return $this->redirect($this->generateUrl('shkola_gastrita') . '#qa');
+				return $this->redirect($this->generateUrl('shkola_gastrita2') . '#qa');
 			}
 		}
 
@@ -139,12 +116,107 @@ class AstrazenecaController extends Controller
 	}
 
 	/** @Template("VidalMainBundle:Astrazeneca:menu.html.twig") */
-	public function menuAction()
+	public function menuAction($request)
 	{
 		$em         = $this->getDoctrine()->getManager();
 		$categories = $em->getRepository('VidalMainBundle:ShkolaCategory')->findAll();
 
-		return array('categories' => $categories);
+		return array(
+			'categories' => $categories,
+			'request'    => $request
+		);
+	}
+
+	/**
+	 * @Route("/shkola-gastrita/online-test", name="shkola_test")
+	 * @Template("VidalMainBundle:Astrazeneca:shkola_test.html.twig")
+	 */
+	public function testAction()
+	{
+		$params = array(
+			'seotitle'    => 'Онлайн тест на наличие язвы желудка или гастрита | Vidal.ru/shkola-gastrita',
+			'description' => 'Пройти онлайн тестирование на наличие язвы желудка или гастрита.',
+			'keywords'    => 'онлайн тест язва гастрит',
+			'tests'       => $this->getDoctrine()->getManager()->getRepository('VidalMainBundle:AstrazenecaTest')->findAll(),
+		);
+
+		return $params;
+	}
+
+	/**
+	 * @Route("/shkola-gastrita/besplatnaya-konsultaciya-gastroenterologa", name="shkola_consult")
+	 * @Template("VidalMainBundle:Astrazeneca:shkola_consult.html.twig")
+	 */
+	public function consultAction(Request $request)
+	{
+		$params = array(
+			'seotitle'    => 'Бесплатная консультация гастроэнтеролога | Vidal.ru/shkola-gastrita',
+			'description' => 'Бесплатные консультации врача гастроэнтеролога по вопросам язвы желудка и гастрита.',
+			'keywords'    => 'бесплатная консультация гастроэнтеролог',
+		);
+
+		# форма задать вопрос
+		$em  = $this->getDoctrine()->getManager();
+		$faq = new AstrazenecaFaq();
+
+		$builder = $this->createFormBuilder($faq);
+		$builder
+			->add('authorFirstName', null, array('label' => 'Ваше имя', 'required' => true, 'constraints' => new NotBlank(array('message' => "Пожалуйста, укажите Имя"))))
+			->add('authorEmail', null, array('label' => 'Ваш e-mail', 'required' => true, 'constraints' => new NotBlank(array('message' => "Пожалуйста, укажите Email"))))
+			->add('question', null, array('label' => 'Вопрос', 'attr' => array('class' => 'ckeditor')))
+			->add('captcha', 'captcha', array('label' => 'Введите код с картинки'))
+			->add('submit', 'submit', array('label' => 'ОТПРАВИТЬ', 'attr' => array('class' => 'btn')));
+
+		$form = $builder->getForm();
+		$form->handleRequest($request);
+
+		if ($request->isMethod('POST')) {
+			if ($form->isValid()) {
+				$faq = $form->getData();
+				$faq->setEnabled(0);
+				$em->persist($faq);
+				$em->flush();
+
+				$this->get('session')->getFlashBag()->add('questioned', '');
+
+				return $this->redirect($this->generateUrl('shkola_consult'));
+			}
+		}
+
+		$params['form']            = $form->createView();
+		$params['questionAnswers'] = $em->getRepository('VidalMainBundle:AstrazenecaFaq')->findByEnabled(1);
+
+		return $params;
+	}
+
+	/**
+	 * @Route("/shkola-gastrita/video", name="shkola_video")
+	 * @Template("VidalMainBundle:Astrazeneca:shkola_video.html.twig")
+	 */
+	public function videoAction()
+	{
+		$params = array(
+			'seotitle'    => 'Видео по гастриту и язве желудка | Vidal.ru/shkola-gastrita',
+			'description' => 'Полезные видео по гастриту и язве желудка.',
+			'keywords'    => 'видео гастрит язва',
+		);
+
+		return $params;
+	}
+
+	/**
+	 * @Route("/shkola-gastrita/blizhajshie-polikliniki", name="shkola_maps")
+	 * @Template("VidalMainBundle:Astrazeneca:shkola_maps.html.twig")
+	 */
+	public function mapsAction()
+	{
+		$params = array(
+			'seotitle'    => 'Карта ближайших поликлиник | Vidal.ru/shkola-gastrita',
+			'description' => 'Интерактивная карта ближайших поликлиник в Москве.',
+			'keywords'    => 'карта поликлиник москва',
+		);
+
+		return $params;
 	}
 
 	/**
@@ -157,25 +229,25 @@ class AstrazenecaController extends Controller
 	}
 
 	/** @Route("/shkola-gastrita/video", name="astrazeneca_video") */
-	public function videoAction()
+	public function videoRedirectAction()
 	{
 		return $this->redirect($this->generateUrl('shkola_gastrita'), 301);
 	}
 
 	/** @Route("/shkola-gastrita/articles", name="astrazeneca_news") */
-	public function newsAction(Request $request)
+	public function newsRedirectAction(Request $request)
 	{
 		return $this->redirect($this->generateUrl('shkola_gastrita'), 301);
 	}
 
 	/** @Route("/shkola-gastrita/article/{newId}", name="astrazeneca_new") */
-	public function showNewAction($newId)
+	public function showRedirectNewAction($newId)
 	{
 		return $this->redirect($this->generateUrl('shkola_gastrita'), 301);
 	}
 
 	/** @Route("/shkola-gastrita/map", name="astrazeneca_map") */
-	public function mapAction()
+	public function mapRedirectAction()
 	{
 		return $this->redirect($this->generateUrl('shkola_gastrita'), 301);
 	}
@@ -198,9 +270,6 @@ class AstrazenecaController extends Controller
 		else {
 			$coords = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaMap')->findCoords($coords);
 		}
-
-		//		var_dump(count($coords));
-		//		exit;
 
 		return array(
 			'coords'    => $coords,
@@ -263,7 +332,6 @@ class AstrazenecaController extends Controller
 		$form = $builder->getForm();
 		$form->handleRequest($request);
 
-		//@Assert\NotBlank(message="Пожалуйста, укажите Имя")
 		$builder = $this->createFormBuilder($faq);
 		$builder
 			->add('authorFirstName', null, array('label' => 'Ваше имя', 'required' => true, 'constraints' => new NotBlank(array('message' => "Пожалуйста, укажите Имя"))))
@@ -297,9 +365,6 @@ class AstrazenecaController extends Controller
 	 */
 	public function adminFaqListAction()
 	{
-		//        if ($this->getUser()->isGranted('ROLE_ZENECA') == false){
-		//            $this->redirect($this->generateUrl('index'));
-		//        }
 		$faqs = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaFaq')->findAll();
 		return array(
 			'faqs'      => $faqs,
@@ -316,11 +381,6 @@ class AstrazenecaController extends Controller
 	 */
 	public function adminFaqAddAction(Request $request)
 	{
-
-		//        if ($this->getUser()->isGranted('ROLE_ZENECA') == false){
-		//            $this->redirect($this->generateUrl('index'));
-		//        }
-
 		$em  = $this->getDoctrine()->getManager();
 		$faq = new AstrazenecaFaq();
 
@@ -356,11 +416,6 @@ class AstrazenecaController extends Controller
 	 */
 	public function adminFaqEditAction(Request $request, $faqId)
 	{
-
-		//        if ($this->getUser()->isGranted('ROLE_ZENECA') == false){
-		//            $this->redirect($this->generateUrl('index'));
-		//        }
-
 		$em  = $this->getDoctrine()->getManager();
 		$faq = $em->getRepository('VidalMainBundle:AstrazenecaFaq')->findOneById($faqId);
 
@@ -394,11 +449,6 @@ class AstrazenecaController extends Controller
 	 */
 	public function adminFaqDeleteAction(Request $request, $faqId)
 	{
-
-		//        if ($this->getUser()->isGranted('ROLE_ZENECA') == false){
-		//            $this->redirect($this->generateUrl('index'));
-		//        }
-
 		$em  = $this->getDoctrine()->getManager();
 		$faq = $em->getRepository('VidalMainBundle:AstrazenecaFaq')->findOneById($faqId);
 
@@ -413,7 +463,6 @@ class AstrazenecaController extends Controller
 	 */
 	public function getMapHintContentaction($id)
 	{
-		$em    = $this->getDoctrine()->getManager();
 		$coord = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaMap')->findOneById($id);
 		$html  = $coord->getTitle();
 		return new Response($html);
@@ -430,4 +479,51 @@ class AstrazenecaController extends Controller
 		return new Response($html);
 	}
 
+	/**
+	 * @Route("/shkola-gastrita/{category}", name="shkola_category")
+	 * @Template("VidalMainBundle:Astrazeneca:shkola_category.html.twig")
+	 */
+	public function categoryAction($category)
+	{
+		$em       = $this->getDoctrine()->getManager();
+		$category = $em->getRepository('VidalMainBundle:ShkolaCategory')->findOneByUrl($category);
+
+		if (!$category || !$category->getEnabled()) {
+			throw $this->createNotFoundException();
+		}
+
+		$params = array(
+			'seotitle'    => $category->getTitle(),
+			'description' => $category->getDescription(),
+			'keywords'    => $category->getKeywords(),
+			'category'    => $category,
+		);
+
+		return $params;
+	}
+
+	/**
+	 * @Route("/shkola-gastrita/{category}/{article}", name="shkola_category_article")
+	 * @Template("VidalMainBundle:Astrazeneca:shkola_category_article.html.twig")
+	 */
+	public function articleAction($category, $article)
+	{
+		$em       = $this->getDoctrine()->getManager();
+		$category = $em->getRepository('VidalMainBundle:ShkolaCategory')->findOneByUrl($category);
+		$article  = $em->getRepository('VidalMainBundle:ShkolaArticle')->findOneByUrl($article);
+
+		if (!$category || !$category->getEnabled() || !$article || !$article->getEnabled()) {
+			throw $this->createNotFoundException();
+		}
+
+		$params = array(
+			'category'    => $category,
+			'article'     => $article,
+			'seotitle'    => $article->getTitle(),
+			'description' => $article->getDescription(),
+			'keywords'    => $article->getKeywords(),
+		);
+
+		return $params;
+	}
 }

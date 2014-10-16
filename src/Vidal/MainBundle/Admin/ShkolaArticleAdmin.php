@@ -38,6 +38,7 @@ class ShkolaArticleAdmin extends Admin
 			->add('title', null, array('label' => 'Meta-title', 'required' => false))
 			->add('keywords', null, array('label' => 'Meta-keywords', 'required' => false))
 			->add('description', null, array('label' => 'Meta-description', 'required' => false))
+			->add('categoryPage', null, array('label' => 'Это ссылка на категорию', 'required' => false))
 			->add('enabled', null, array('label' => 'Активна', 'required' => false));
 	}
 

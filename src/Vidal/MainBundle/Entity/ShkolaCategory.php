@@ -37,6 +37,9 @@ class ShkolaCategory
 	/** @ORM\Column(length=255, nullable=true) */
 	protected $keywords;
 
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $about;
+
 	public function __toString()
 	{
 		return empty($this->label) ? '' : $this->label;
@@ -197,5 +200,21 @@ class ShkolaCategory
 	public function getLabel()
 	{
 		return $this->label;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getAbout()
+	{
+		return $this->about;
+	}
+
+	/**
+	 * @param mixed $about
+	 */
+	public function setAbout($about)
+	{
+		$this->about = $about;
 	}
 }

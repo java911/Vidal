@@ -275,7 +275,7 @@
 					со специалистом.</p>
 
 				<p>Найти специалистов Вы можете с помощью
-					<a href="{{ path('shkola_gastrita') }}#map">нашей карты</a></p>
+				s assets:install --symlink	<a href="{{ path('shkola_gastrita') }}#map">нашей карты</a></p>
 			</div>
 		</div>
 	</div>
@@ -287,17 +287,18 @@
 
 	<div class="content-title">КОНСУЛЬТАЦИИ</div>
 
+
 	{% if app.session.flashbag.get('questioned')|length %}
 		<div class="questioned">
 			Спасибо за ваш вопрос! В ближайшее время наш специалист на него ответит.
 		</div>
+	{% else %}
+		<div class="ask-form">
+			<form method="POST" action="{{ path('shkola_gastrita') }}#qa">
+				{{ form_widget(form) }}
+			</form>
+		</div>
 	{% endif %}
-
-	<div class="ask-form">
-		<form method="POST" action="{{ path('shkola_gastrita') }}#qa">
-			{{ form_widget(form) }}
-		</form>
-	</div>
 
 	<table class="qas">
 		{% for row in questionAnswers|batch(2) %}

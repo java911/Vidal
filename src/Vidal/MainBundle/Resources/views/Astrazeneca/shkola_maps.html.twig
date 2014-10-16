@@ -5,26 +5,15 @@
 	<div class="breadcrumbs">
 		<a href="{{ path('shkola_gastrita2') }}">Школа гастрита</a>
 		<i></i>
-		<span>{{ category.label }}</span>
+		<span>Карта ближайших поликлиник</span>
 	</div>
 {% endblock %}
 
 
 {% block info %}
-	<h1>{{ category }}</h1>
-
-	<div class="text">
-		{{ category.text|raw }}
+	{# Карта аптек #}
+	<div id="map">
+		<div class="content-title">КАРТА АПТЕК</div>
+		<iframe src="{{ path('shkola_map') }}" style="width:995px; height:496px; border:none;"></iframe>
 	</div>
-{% endblock %}
-
-
-{% block stylesheets %}
-	{{ parent() }}
-	<style type="text/css">
-		.info {
-			margin: 20px auto;
-			width:  90%;
-		}
-	</style>
 {% endblock %}
