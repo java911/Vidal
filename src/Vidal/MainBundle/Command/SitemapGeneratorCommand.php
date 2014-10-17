@@ -27,21 +27,27 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 		////////////////////////////////////////////
 		$urlset  = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" /><!--?xml version="1.0" encoding="UTF-8"?-->');
 		$urlset2 = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" /><!--?xml version="1.0" encoding="UTF-8"?-->');
+		$urlset3 = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" /><!--?xml version="1.0" encoding="UTF-8"?-->');
 
 		$date    = new \DateTime();
 		$lastMod = $date->format('Y-m-d');
 
 		$xmlMain = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?>
-<sitemapindex xmlns="http://www.google.com/schemas/sitemap/0.84">
- <sitemap>
-    <loc>http://www.vidal.ru/sitemap1.xml</loc>
-    <lastmod>' . $lastMod . '</lastmod>
- </sitemap>
- <sitemap>
-    <loc>http://www.vidal.ru/sitemap2.xml</loc>
-    <lastmod>' . $lastMod . '</lastmod>
- </sitemap>
-</sitemapindex>');
+			<sitemapindex xmlns="http://www.google.com/schemas/sitemap/0.84">
+			 <sitemap>
+				<loc>http://www.vidal.ru/sitemap1.xml</loc>
+				<lastmod>' . $lastMod . '</lastmod>
+			 </sitemap>
+			 <sitemap>
+				<loc>http://www.vidal.ru/sitemap2.xml</loc>
+				<lastmod>' . $lastMod . '</lastmod>
+			 </sitemap>
+			 <sitemap>
+				<loc>http://www.vidal.ru/shkola-gastrita/sitemap.xml</loc>
+				<lastmod>' . $lastMod . '</lastmod>
+			 </sitemap>
+			</sitemapindex>
+		');
 
 		$xmlMain->asXML("{$webRoot}/sitemap.xml");
 
@@ -208,9 +214,47 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 			$url->addChild('priority', '0.9');
 		}
 
+		# школа гастрита
+		$url = $urlset3->addChild('url');
+		$loc = "http://www.vidal.ru/shkola-gastrita";
+		$url->addChild('loc', $loc);
+		$url->addChild('lastmod', $lastMod);
+		$url->addChild('changefreq', 'daily');
+		$url->addChild('priority', '1');
+
+		$locs = array('online-test', 'besplatnaya-konsultaciya-gastroenterologa', 'video', 'blizhajshie-polikliniki');
+		foreach ($locs as $loc) {
+			$url = $urlset3->addChild('url');
+			$url->addChild('loc', "http://www.vidal.ru/shkola-gastrita/$loc");
+			$url->addChild('lastmod', $lastMod);
+			$url->addChild('changefreq', 'weekly');
+			$url->addChild('priority', '0.9');
+		}
+
+		$categories = $emDefault->getRepository('VidalMainBundle:ShkolaCategory')->findAll();
+		foreach ($categories as $category) {
+			$categoryUrl = $category->getUrl();
+			$url = $urlset3->addChild('url');
+			$url->addChild('loc', "http://www.vidal.ru/shkola-gastrita/$categoryUrl");
+			$url->addChild('lastmod', $lastMod);
+			$url->addChild('changefreq', 'weekly');
+			$url->addChild('priority', '0.9');
+
+			foreach ($category->getArticles() as $article) {
+				if (!$article->getCategoryPage()) {
+					$url = $urlset3->addChild('url');
+					$url->addChild('loc', "http://www.vidal.ru/shkola-gastrita/$categoryUrl/{$article->getUrl()}");
+					$url->addChild('lastmod', $lastMod);
+					$url->addChild('changefreq', 'weekly');
+					$url->addChild('priority', '0.9');
+				}
+			}
+		}
+
 		# запись в файл
 		$urlset->asXML("{$webRoot}/sitemap1.xml");
 		$urlset2->asXML("{$webRoot}/sitemap2.xml");
+		$urlset3->asXML("{$webRoot}/shkola-gastrita/sitemap.xml");
 
 		///////////////////////////////////////////
 

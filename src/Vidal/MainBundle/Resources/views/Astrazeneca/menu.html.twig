@@ -10,9 +10,15 @@
 			<ul>
 				{% for article in category.articles if article.enabled %}
 					<li>
-						<a href="{{ path('shkola_category_article', {'category':category.url, 'article':article.url}) }}" {{ request.get('article') == article.url ? 'class="active"' }}>
-							{{ article.label }}
-						</a>
+						{% if article.categoryPage %}
+							<a href="{{ path('shkola_category', {'category':category.url}) }}">
+								{{ article.label }}
+							</a>
+						{% else %}
+							<a href="{{ path('shkola_category_article', {'category':category.url, 'article':article.url}) }}" {{ request.get('article') == article.url ? 'class="active"' }}>
+								{{ article.label }}
+							</a>
+						{% endif %}
 					</li>
 				{% endfor %}
 			</ul>
