@@ -43,7 +43,7 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 				<lastmod>' . $lastMod . '</lastmod>
 			 </sitemap>
 			 <sitemap>
-				<loc>http://www.vidal.ru/shkola-gastrita/sitemap.xml</loc>
+				<loc>http://www.vidal.ru/sitemap3.xml</loc>
 				<lastmod>' . $lastMod . '</lastmod>
 			 </sitemap>
 			</sitemapindex>
@@ -254,7 +254,7 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 		# запись в файл
 		$urlset->asXML("{$webRoot}/sitemap1.xml");
 		$urlset2->asXML("{$webRoot}/sitemap2.xml");
-		$urlset3->asXML("{$webRoot}/shkola-gastrita/sitemap.xml");
+		$urlset3->asXML("{$webRoot}/sitemap3.xml");
 
 		///////////////////////////////////////////
 

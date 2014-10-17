@@ -295,6 +295,18 @@ class AstrazenecaController extends Controller
 		);
 	}
 
+	/** @Route("/shkola-gastrita/sitemap.xml", name="shkola_sitemap") */
+	public function sitemapAction()
+	{
+		$file = $this->get('kernel')->getRootDir() . '/../web/sitemap3.xml';
+		$xml  = file_get_contents($file);
+
+		$response = new Response($xml);
+		$response->headers->set('Content-Type', 'xml');
+
+		return $response;
+	}
+
 	/**
 	 * @Route("/shkola-gastrita/testing-ajax/{step}", name="astrazeneca_testing_ajax", options={"expose"=true})
 	 */
