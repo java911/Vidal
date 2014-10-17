@@ -11,6 +11,7 @@ class ShkolaCategoryRepository extends EntityRepository
 		return $this->_em->createQuery('
 			SELECT c
 			FROM VidalMainBundle:ShkolaCategory c
+			WHERE c.enabled = TRUE
 			ORDER BY c.priority ASC
 		')->getResult();
 	}

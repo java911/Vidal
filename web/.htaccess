@@ -26,6 +26,9 @@ RewriteRule /BAD/(.*)$ /drugs [R=301,L]
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # redirect last slash to non-slash
+    RewriteRule ^(.+[^/])/$ http://%{HTTP_HOST}/$1 [R=301,L]
+
 	# old subdomains
 	RewriteCond %{HTTP_HOST} ^(twiga.vidal.ru|mailserver.vidal.ru|vidal.ru)
     RewriteRule ^(.*)$ http://www.vidal.ru/$1 [R=301,L]

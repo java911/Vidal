@@ -8,7 +8,7 @@
 	<img src="{{ asset('bundles/vidalmain/images/shkola/page-main.png') }}" class="page-main-bg"/>
 
 	<div class="main-links">
-		<a href="#articles" class="link">СТАТЬИ</a>
+		<a href="#articles" class="link">ЯЗВА И ГАСТРИТ</a>
 		<a href="#video" class="link">ВИДЕО</a>
 		<a href="#test" class="link">ТЕСТ</a>
 		<a href="#qa" class="link">КОНСУЛЬТАЦИИ</a>
@@ -21,9 +21,10 @@
 		</div>
 
 		<div class="main-about">
-			Для профилактики гастрита рекомендуем Вам проконсультироваться со специалистом.
-			Найти специалиста рядом с Вами Вы можете с помощью
-			<a href="#map" class="link">нашей карты</a>
+			Справочная информация о гастрите и язве желудка и двенадцатиперстной кишки.
+			<div>
+				<a href="#articles" class="link">Подробнее</a>
+			</div>
 		</div>
 
 		<div class="texts">
@@ -35,7 +36,7 @@
 		</div>
 	</div>
 
-	<div class="blogs">
+	<div class="blogs no-selection">
 		<div class="r-left">
 			<img src="{{ asset('bundles/vidalmain/images/bg/r-left.png') }}"/>
 		</div>
@@ -65,38 +66,34 @@
 	<div class="content">
 		<div class="content-title">СПРАВОЧНАЯ ИНФОРМАЦИЯ</div>
 		<div class="articles">
-			{% for article in articles %}
-				<div class="article article-{{ article.id }} {{ loop.index == 1 ? 'active' }}"
-					 data="{{ article.id }}">
-					<div class="article-img">
-						{% if article.photo and is_file(article.photo.path) %}
-							<img src="{{ article.photo.path }}"/>
-						{% endif %}
+			{% for category in categories if category.enabled %}
+				<div class="category">
+					<div class="category-title">
+						<a href="{{ path('shkola_category', {'category':category.url}) }}">{{ category.label }}</a>
 					</div>
-					<div class="article-text">
-						<div class="article-title">
-							{{ article.title|upper }}
-						</div>
-						<div class="article-anons">{{ article.anons|raw }}</div>
-					</div>
-					<div class="article-body">
-						{{ article.body|raw }}
-					</div>
+					<div class="category-about">{{ category.about|raw }}</div>
+					<div class="category-choose">Выберите раздел:</div>
+					<table>
+						{% for row in category.articles|batch(2) %}
+							<tr>
+								{% for article in row %}
+									<td>
+										{% if article.categoryPage %}
+											<a href="{{ path('shkola_category', {'category':category.url}) }}">{{ article.label }}</a>
+										{% else %}
+											<a href="{{ path('shkola_category_article', {'category':category.url, 'article':article.url}) }}">
+												{{ article.label }}
+											</a>
+										{% endif %}
+									</td>
+								{% endfor %}
+							</tr>
+						{% endfor %}
+					</table>
 				</div>
 			{% endfor %}
 		</div>
 	</div>
-
-	<div class="roller">
-		<div>
-			{% for article in articles %}
-				<a href="#" data="{{ article.id }}" {{ loop.first ? 'class="active"' }}></a>
-			{% endfor %}
-		</div>
-	</div>
-
-	<a class="p-left" href="#"><img src="{{ asset('bundles/vidalmain/images/shkola/p-left.png') }}"/></a>
-	<a class="p-right" href="#"><img src="{{ asset('bundles/vidalmain/images/shkola/p-right.png') }}"/></a>
 </div>
 
 {# Видео #}
@@ -241,7 +238,7 @@
 </div>
 
 {# Тестирование #}
-<div class="page page-test" id="test">
+<div class="page page-test no-selection" id="test">
 	<div class="content">
 		<div class="content-title">ТЕСТИРОВАНИЕ</div>
 
@@ -268,14 +265,14 @@
 					врача-гастроэнтеролога.</p>
 
 				<p>Найти специалистов Вы можете с помощью
-					<a href="{{ path('shkola_gastrita') }}#map">нашей карты</a></p>
+					<a href="{{ path('shkola_maps') }}">нашей карты</a></p>
 			</div>
 			<div class="result negative">
 				<p>Скорее всего, у Вас нет гастрита, но, для его профилактики проконсультируйтесь
 					со специалистом.</p>
 
 				<p>Найти специалистов Вы можете с помощью
-					<a href="{{ path('shkola_gastrita') }}#map">нашей карты</a></p>
+					<a href="{{ path('shkola_maps') }}">нашей карты</a></p>
 			</div>
 		</div>
 	</div>
@@ -291,13 +288,14 @@
 		<div class="questioned">
 			Спасибо за ваш вопрос! В ближайшее время наш специалист на него ответит.
 		</div>
+	{% else %}
+		<div class="ask-form">
+			<form method="POST" action="{{ path('shkola_gastrita2') }}#qa">
+				{{ form_widget(form) }}
+			</form>
+		</div>
 	{% endif %}
 
-	<div class="ask-form">
-		<form method="POST" action="{{ path('shkola_gastrita') }}#qa">
-			{{ form_widget(form) }}
-		</form>
-	</div>
 
 	<table class="qas">
 		{% for row in questionAnswers|batch(2) %}
@@ -361,7 +359,7 @@
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/shkola_gastrita.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/shkola_gastrita2.css') }}"/>
 {% endblock %}
 
 
@@ -405,51 +403,6 @@
 			$('.texts div.active').removeClass('active').nextOrFirst().addClass('active');
 			clearInterval(sliderInterval);
 			sliderInterval = setInterval(slider, sliderTimeout);
-		});
-
-		// articles
-		$('.p-left').click(function(e) {
-			e.preventDefault();
-			$('.articles .active').removeClass('active').prevOrLast().addClass('active');
-			$('.roller .active').removeClass('active').prevOrLast().addClass('active');
-			resetArticles();
-
-			return false;
-		});
-
-		$('.p-right').click(function(e) {
-			e.preventDefault();
-			$('.articles .active').removeClass('active').nextOrFirst().addClass('active');
-			$('.roller .active').removeClass('active').nextOrFirst().addClass('active');
-			resetArticles();
-
-			return false;
-		});
-
-		$('.roller a').click(function(e) {
-			e.preventDefault();
-			var $this = $(this);
-			var id = $this.attr('data');
-			$('.articles .active, .roller .active').removeClass('active');
-			$this.addClass('active');
-			$('.article-' + id).addClass('active');
-			resetArticles();
-
-			return false;
-		});
-
-		$('.article').click(function() {
-			var $this = $(this);
-			$this.find('.article-text, .article-img').hide();
-			$this.find('.article-body').show();
-		});
-
-		$('.article-body').click(function(e) {
-			e.stopPropagation();
-			var $this = $(this);
-			var $article = $this.closest('.article');
-			$article.find('.article-body').hide();
-			$article.find('.article-text, .article-img').show();
 		});
 
 		// test

@@ -5,16 +5,18 @@
 	<div class="breadcrumbs">
 		<a href="{{ path('shkola_gastrita2') }}">Школа гастрита</a>
 		<i></i>
-		<span>{{ category.label }}</span>
+		<a href="{{ path('shkola_category', {'category':category.url}) }}">{{ category.label }}</a>
+		<i></i>
+		<span>{{ article.label }}</span>
 	</div>
 {% endblock %}
 
 
 {% block info %}
-	<h1>{{ category }}</h1>
+	<h1>{{ article.label }}</h1>
 
 	<div class="text">
-		{{ category.text|raw }}
+		{{ article.text|raw }}
 	</div>
 {% endblock %}
 

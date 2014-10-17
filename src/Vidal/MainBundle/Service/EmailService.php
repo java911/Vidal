@@ -27,7 +27,7 @@ class EmailService
 		$mail->FromName = 'Портал ' . $portal;
 		$mail->Subject  = $subject;
 
-		# prod - оптравка через Exim, dev/test - отправка через Gmail
+		# prod - оптравка через почтовый сервер на серваке, dev/test - отправка через Mail.ru
 		if ($this->container->getParameter('kernel.environment') == 'prod') {
 			$mail->Host = '127.0.0.1';
 			$mail->From = $from;

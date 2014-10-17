@@ -28,9 +28,10 @@ class ShkolaCategoryAdmin extends Admin
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$formMapper
-			->add('label', null, array('label' => 'Заголовок'))
-			->add('url', null, array('label' => 'Адрес url'))
-			->add('text', null, array('label' => 'Текст', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
+			->add('label', null, array('label' => 'Заголовок', 'required' => true))
+			->add('url', null, array('label' => 'Адрес url', 'required' => true))
+			->add('text', null, array('label' => 'Текст', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
+			->add('about', null, array('label' => 'Анонс на главной', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('priority', null, array('label' => 'Приоритет', 'required' => false, 'help' => 'Поставьте повыше, если надо, чтоб была на первом месте'))
 			->add('title', null, array('label' => 'Meta-title', 'required' => false))
 			->add('keywords', null, array('label' => 'Meta-keywords', 'required' => false))

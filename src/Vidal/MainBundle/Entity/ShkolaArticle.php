@@ -38,6 +38,9 @@ class ShkolaArticle extends BaseEntity
 	/** @ORM\Column(length=255, nullable=true) */
 	protected $description;
 
+	/** @ORM\Column(type="boolean") */
+	protected $categoryPage = false;
+
 	public function __toString()
 	{
 		return empty($this->label) ? '' : $this->label;
@@ -185,5 +188,21 @@ class ShkolaArticle extends BaseEntity
 	public function getLabel()
 	{
 		return $this->label;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCategoryPage()
+	{
+		return $this->categoryPage;
+	}
+
+	/**
+	 * @param mixed $categoryPage
+	 */
+	public function setCategoryPage($categoryPage)
+	{
+		$this->categoryPage = $categoryPage;
 	}
 }

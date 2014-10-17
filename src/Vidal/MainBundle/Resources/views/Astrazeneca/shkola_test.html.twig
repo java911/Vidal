@@ -1,0 +1,100 @@
+{% extends 'VidalMainBundle:Astrazeneca:shkola_layout.html.twig' %}
+
+
+{% block navigation %}
+	<div class="breadcrumbs">
+		<a href="{{ path('shkola_gastrita2') }}">Школа гастрита</a>
+		<i></i>
+		<span>Онлайн тест</span>
+	</div>
+{% endblock %}
+
+
+{% block info %}
+	{# Тестирование #}
+	<div class="page page-test no-selection" id="test">
+		<div class="content">
+			<div class="content-title">ТЕСТИРОВАНИЕ</div>
+
+			<img src="{{ asset('bundles/vidalmain/images/shkola/bg-test.png') }}" class="page-test-bg"/>
+
+			<div class="test-images">
+				{% for test in tests %}
+					<img src="{{ asset('bundles/vidalmain/images/test' ~test.id~ '.jpg') }}"
+						{{ loop.first ? 'class="active"' }} />
+				{% endfor %}
+			</div>
+			<div class="test-content">
+				{% for test in tests %}
+					<div class="question {{ loop.first ? 'active' }} {{ loop.last ? 'last' }}">
+						{{ test.title|upper }}
+					</div>
+				{% endfor %}
+				<div class="test-buttons">
+					<a class="btn-red no" href="#">Нет</a>
+					<a class="btn-red yes" href="#">Да</a>
+				</div>
+				<div class="result positive">
+					<p>У Вас высока вероятность гастрита, рекомендуем Вам пройти консультацию у
+						врача-гастроэнтеролога.</p>
+
+					<p>Найти специалистов Вы можете с помощью
+						<a href="{{ path('shkola_maps') }}">нашей карты</a></p>
+				</div>
+				<div class="result negative">
+					<p>Скорее всего, у Вас нет гастрита, но, для его профилактики проконсультируйтесь
+						со специалистом.</p>
+
+					<p>Найти специалистов Вы можете с помощью
+						<a href="{{ path('shkola_maps') }}">нашей карты</a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.page {
+			height: 380px;
+		}
+	</style>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript">
+		var next = 1;
+		var t = 0;
+
+		$(document).ready(function() {
+			$('.test-buttons a').click(function(e) {
+				e.preventDefault();
+				next++;
+				var $question = $('.question.active');
+
+				if ($question.hasClass('last')) {
+					showResult();
+					return false;
+				}
+
+				$question.removeClass('active').next().addClass('active');
+				$('.test-images .active').removeClass('active').next().addClass('active');
+
+				if ($(this).hasClass('yes')) {
+					t++;
+				}
+			});
+		});
+
+		function showResult() {
+			$('.question, .test-buttons').hide();
+			t > 3
+				? $('.result.positive').addClass('active')
+				: $('.result.negative').addClass('active');
+		}
+	</script>
+{% endblock %}
