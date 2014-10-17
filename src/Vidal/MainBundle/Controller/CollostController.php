@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CollostController extends Controller
 {
+
     /**
      * @Route("/collost" ,name="collost")
      * @template()
