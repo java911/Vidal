@@ -314,7 +314,14 @@ class MarketController extends Controller{
         if ($request->isMethod('POST')) {
             if ($form->isValid()){
                 $order = $form->getData();
-                $order->setShippingPrice($this->shipping[$order->getShipping()]);
+                if ($order->getGroupApt() == 'piluli'){
+                    $array = $this->shippingPiluli;
+                }else{
+                    $array = $this->shippingEapteka;
+                }
+
+                $order->setShippingPrice($array[$order->getShipping()]);
+
                 $order->setGroupApt($group);
                 $em->persist($order);
                 $em->flush($order);
@@ -423,6 +430,16 @@ class MarketController extends Controller{
         $summa = $basket->getAmounts();
         $summa = $summa[$group];
 
+        if ($group == 'piluli'){
+            $array = $this->shippingTitlePiluli;
+        }elseif($group == 'eapteka'){
+            $array = $this->shippingTitleEapteka;
+        }elseif($group == 'wer'){
+            $array = $this->shippingTitleWer;
+        }else{
+            $array = $this->shippingTitle;
+        }
+
         $header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
                     <orders>
                         <order>
@@ -433,7 +450,7 @@ class MarketController extends Controller{
                             <address>".      $order->getAdress()."</address>
                             <comment>".      $order->getComment()."</comment>
                             <shipping_id>".  $order->getShipping()."</shipping_id>
-                            <shipping_cost>".$this->shipping[$order->getShipping()]."</shipping_cost>
+                            <shipping_cost>".$array[$order->getShipping()]."</shipping_cost>
                             <payment_id>1</payment_id>
                             <discount>0</discount>
                             <total_cost>".   $summa."</total_cost>
@@ -465,15 +482,15 @@ class MarketController extends Controller{
         $basket = $basket[$group];
 
 
-	if ($group == 'piluli'){
-                $array = $this->shippingTitlePiluli;
-            }elseif($group == 'eapteka'){
-                $array = $this->shippingTitleEapteka;
-            }elseif($group == 'wer'){
-                $array = $this->shippingTitleWer;
-            }else{
-                $array = $this->shippingTitle;
-            }
+        if ($group == 'piluli'){
+                    $array = $this->shippingTitlePiluli;
+        }elseif($group == 'eapteka'){
+            $array = $this->shippingTitleEapteka;
+        }elseif($group == 'wer'){
+            $array = $this->shippingTitleWer;
+        }else{
+            $array = $this->shippingTitle;
+        }
 	
 	
         if ($group == 'zdravzona'){
