@@ -17,6 +17,6 @@ class CollostController extends Controller
      * @template()
      */
     public function indexAction(Request $request){
-        return array();
+        return array('noYad' => true );
     }
 }
