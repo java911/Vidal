@@ -65,7 +65,7 @@ $(document).ready(function() {
 	});
 
 	$('#top-link').click(function() {
-		$("html, body").animate({ scrollTop: 0 }, 600);
+		$("html, body").animate({scrollTop: 0}, 600);
 		return false;
 	});
 
@@ -100,10 +100,18 @@ $(document).ready(function() {
 	$('.text a').each(function() {
 		var $link = $(this);
 		var text = $link.text();
+		var href = this.href;
+
 		if (text.length > 70 && text.indexOf(' ') === -1) {
 			var parts = text.split('/');
 			text = parts.join('<span style="display:inline-block;width:0"></span>/');
 			$link.html(text);
+		}
+
+		var index = href.indexOf('#_');
+		if (index !== -1) {
+			href = href.substring(index);
+			this.href = href;
 		}
 	});
 });
