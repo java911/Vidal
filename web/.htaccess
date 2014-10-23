@@ -14,6 +14,7 @@ php_flag magic_quotes_gpc Off
 php_value allow_url_fopen 1
 php_value date.timezone Europe/Moscow
 
+Redirect 301 /novosti/4611 http://www.vidal.ru/novosti/4618
 
 # Use the front controller as index file. It serves as fallback solution when
 # every other rewrite/redirect fails (e.g. in an aliased environment without

@@ -11,11 +11,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CollostController extends Controller
 {
+
     /**
      * @Route("/collost" ,name="collost")
      * @template()
      */
     public function indexAction(Request $request){
-        return array();
+        return array('noYad' => true );
     }
 }
