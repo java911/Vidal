@@ -38,11 +38,12 @@ class BannerAdmin extends Admin
 			->add('limitDay', null, array('label' => 'Лимит показов в день', 'required' => false))
 			->add('clickDay', null, array('label' => 'Осталось показов в день', 'required' => false))
 			->add('presence', null, array('label' => 'Приоритет', 'required' => false, 'help' => 'Как часто появляется: 1-100%. Оставьте пустым, если без приоритета'))
-			->add('enabled', null, array('label' => 'Активен', 'required' => false))
 			->add('starts', null, array('label' => 'Дата начала'))
 			->add('ends', null, array('label' => 'Дата окончания', 'required' => false, 'help' => 'Оставьте пустым, чтоб не учитывать'))
 			->add('code', null, array('label' => 'Дополнительный код', 'required' => false))
-			->add('reference', null, array('label' => 'Заменяется баннером', 'required' => false, 'help' => 'Будет заменяться этим баннером'));
+			->add('reference', null, array('label' => 'Заменяется баннером', 'required' => false, 'help' => 'Будет заменяться этим баннером'))
+			->add('noStretch', null, array('label' => 'Не растягивать', 'required' => false, 'help' => 'Только для изображений. В этом случае размер баннера определяется размером самого изображения'))
+			->add('enabled', null, array('label' => 'Активен', 'required' => false));
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
