@@ -171,3 +171,10 @@ input[type="text"], textarea {
 .tag-text, .tag-search {
 	width: 35%;
 }
+
+/* dialog bg */
+.cke_dialog_background_cover {
+	z-index:    -1 !important;
+	display:    none !important;
+	visibility: hidden !important;
+}
