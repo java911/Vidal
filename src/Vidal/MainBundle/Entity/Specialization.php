@@ -11,11 +11,11 @@ class Specialization
 	/** @ORM\Id @ORM\Column(type = "integer") @ORM\GeneratedValue */
 	protected $id;
 
-	/** @ORM\OneToMany(targetEntity="User", mappedBy = "specialization") */
-	protected $doctors;
+	/** @ORM\OneToMany(targetEntity="User", mappedBy="specialization") */
+	protected $users;
 	
 	/**
-	 * @ORM\Column(type = "string")
+	 * @ORM\Column(type="string")
 	 * @Assert\NotBlank(message = "Укажите название специализации.")
 	 * @Assert\Length(max = 127, maxMessage = "Название специализации не может быть длиннее {{limit}} знаков.")
 	 */
@@ -23,7 +23,7 @@ class Specialization
 	
 	public function __construct()
 	{
-		$this->doctors = new ArrayCollection();
+		$this->users = new ArrayCollection();
 	}
 	
 	public function __toString()
@@ -35,17 +35,21 @@ class Specialization
 	{
 		return $this->id;
 	}
-	
-	public function getDoctors()
+
+	/**
+	 * @return mixed
+	 */
+	public function getUsers()
 	{
-		return $this->doctors;
+		return $this->users;
 	}
-	
-	public function setDoctors(ArrayCollection $doctors)
+
+	/**
+	 * @param mixed $users
+	 */
+	public function setUsers($users)
 	{
-		$this->doctors = $doctors;
-		
-		return $this;
+		$this->users = $users;
 	}
 	
 	public function getTitle()

@@ -1,9 +1,15 @@
 {% if banner and is_file(banner.banner.path) %}
 	{% set group = 'banner_' ~ banner.group.name %}
-	{% set width = banner.group.width %}
-	{% set height = banner.group.height %}
 	{% set isSwf = banner.isSwf() %}
 	{% set isProd = app.environment == 'prod' %}
+
+	{% if banner.noStretch and not banner.isSwf %}
+		{% set width = banner.banner.width %}
+		{% set height = banner.banner.height %}
+	{% else %}
+		{% set width = banner.group.width %}
+		{% set height = banner.group.height %}
+	{% endif %}
 
 	<div id="{{ group }}" class="banner" style="width:{{ width }}px; height:{{ height }}px">
 		{% if banner.code is not empty %}

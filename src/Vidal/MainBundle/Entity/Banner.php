@@ -106,6 +106,9 @@ class Banner extends BaseEntity
 	/** @ORM\Column(type="text", nullable=true) */
 	protected $code;
 
+	/** @ORM\Column(type="boolean") */
+	protected $noStretch = false;
+
 	public function __construct()
 	{
 		$this->starts    = new \DateTime();
@@ -433,5 +436,21 @@ class Banner extends BaseEntity
 	public function getCode()
 	{
 		return $this->code;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getNoStretch()
+	{
+		return $this->noStretch;
+	}
+
+	/**
+	 * @param mixed $noStretch
+	 */
+	public function setNoStretch($noStretch)
+	{
+		$this->noStretch = $noStretch;
 	}
 }

@@ -114,4 +114,9 @@ $(document).ready(function() {
 			this.href = href;
 		}
 	});
+
+	$('.text a').click(function() {
+		var id = this.getAttribute('href').substring(2);
+		$('#' + id).closest('.spoiler-content').show();
+	});
 });

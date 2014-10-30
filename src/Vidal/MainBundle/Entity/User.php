@@ -195,6 +195,9 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	/** @ORM\ManyToOne(targetEntity="Specialty", inversedBy="secondarySpecialties") */
 	protected $secondarySpecialty;
 
+	/** @ORM\ManyToOne(targetEntity="Specialization", inversedBy="users") */
+	protected $specialization;
+
 	public function __construct()
 	{
 		$this->confirmationScan = array();
