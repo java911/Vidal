@@ -1375,7 +1375,6 @@ tr.bold td {
 }
 .text * {
 	font-family: inherit !important;
-	max-width: 520px !important;
 }
 .text pre {
 	white-space: -moz-pre-wrap;
