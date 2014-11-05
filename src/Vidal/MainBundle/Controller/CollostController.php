@@ -8,15 +8,20 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-
 class CollostController extends Controller
 {
 
-    /**
-     * @Route("/collost" ,name="collost")
-     * @template()
-     */
-    public function indexAction(Request $request){
-        return array('noYad' => true );
-    }
+	/**
+	 * @Route("/collost" ,name="collost")
+	 * @Template("VidalMainBundle:Collost:index.html.twig")
+	 */
+	public function indexAction(Request $request)
+	{
+		return array(
+			'title'       => 'Коллост - инновационный стерильный биопластический коллагеновый материал',
+			'description' => 'Коллост - инновационный стерильный биопластический коллагеновый материал, обеспечивающий регенерацию пораженных тканей',
+			'keywords'    => 'инновационный стерильный биопластический коллагеновый материал регенерация пораженных тканей',
+			'noYad'       => true,
+		);
+	}
 }
