@@ -40,7 +40,7 @@ body {
 .header-search {
 	position:   absolute;
 	top:        53px;
-	left:       479px;
+	right:      450px;
 	width:      63px;
 	height:     16px;
 	background: url(../images/header-search.jpg) no-repeat top left;
@@ -110,7 +110,6 @@ body {
 	font-size:    15px;
 	font-weight:  bold;
 }
-
 /* глобальные теги */
 sup {
 	line-height: 5px;
@@ -161,7 +160,6 @@ h1 span {
 #main h1:first-of-type {
 	margin-top: 0;
 }
-
 /* глобальные классы */
 .caption {
 	color: #d71344;
@@ -392,7 +390,6 @@ tr.bold td {
 	background-color: #eee;
 	border-color:     #bbb;
 }
-
 /* боковое меню */
 .sidebar-menu .active {
 	color: #6c7580;
@@ -405,7 +402,6 @@ tr.bold td {
 	font-size:       16px;
 	text-decoration: none;
 }
-
 /* блок авторизации */
 .auth {
 	margin:  30px 0 12px;
@@ -459,7 +455,6 @@ tr.bold td {
 	font-size:       16px;
 	text-decoration: none;
 }
-
 /* guest links */
 .go-registration {
 	margin-bottom: 20px;
@@ -474,7 +469,6 @@ tr.bold td {
 	color:     #919191;
 	font-size: 12px;
 }
-
 /* auth-popup */
 .auth-popup {
 	display:            none;
@@ -519,7 +513,6 @@ tr.bold td {
 .closed-info span {
 	margin-right: 6px;
 }
-
 /* форма */
 .form_table {
 	width: 100%;
@@ -573,7 +566,6 @@ tr.bold td {
 .form_errors {
 	color: #d00;
 }
-
 /* drug */
 #vidal {
 	position: relative;
@@ -596,7 +588,6 @@ tr.bold td {
 #vidal h1 a:hover {
 	text-decoration: underline;
 }
-
 /* anons */
 .anons {
 	margin:     13px 0;
@@ -655,7 +646,6 @@ tr.bold td {
 	display:   none;
 	font-size: 13px;
 }
-
 /* block */
 .block {
 	margin-top: 17px;
@@ -708,13 +698,11 @@ tr.bold td {
 	display: inline-block;
 	width:   145px;
 }
-
 /* atc */
 .atc-name {
 	margin-left:  2px;
 	margin-right: 5px;
 }
-
 /* conditions */
 .conditions {
 	overflow: hidden;
@@ -724,7 +712,6 @@ tr.bold td {
 	float:        left;
 	margin-right: 5px;
 }
-
 /* navigation */
 .navigation {
 	margin-top: 20px;
@@ -767,7 +754,6 @@ tr.bold td {
 .navigation-items a span {
 	color: #333;
 }
-
 /* copy */
 .copy {
 	margin-top: 20px;
@@ -791,7 +777,6 @@ tr.bold td {
 .copy textarea:hover {
 	opacity: 1;
 }
-
 /* vidal */
 .vidal .pictures img {
 	display:      inline-block;
@@ -806,7 +791,6 @@ tr.bold td {
 .vidal a {
 	font-size: 14px;
 }
-
 /* products-table */
 .products-table {
 	width:           100%;
@@ -914,7 +898,6 @@ tr.bold td {
 .molecule-name span {
 	color: gray;
 }
-
 /* admin-edit icon */
 .admin-edit {
 	display:  inline-block;
@@ -934,7 +917,6 @@ tr.bold td {
 .admin-edit.fade:hover {
 	opacity: 1;
 }
-
 /* no-results */
 .no-results {
 	padding:    6px 10px 7px;
@@ -945,7 +927,6 @@ tr.bold td {
 .no-results span {
 	color: steelblue;
 }
-
 /* search */
 #search_form {
 	position: absolute;
@@ -1072,7 +1053,6 @@ tr.bold td {
 	font-size: 12px;
 	color:     #666;
 }
-
 /* search-info */
 .search-info {
 	margin-left:  5px;
@@ -1084,7 +1064,6 @@ tr.bold td {
 .search-info b {
 	color: #333;
 }
-
 /* pagination */
 .pagination {
 	overflow:  hidden;
@@ -1114,7 +1093,6 @@ tr.bold td {
 .pagination .next a, .pagination .previous a, .pagination .next, .pagination .previous {
 	width: 51px;
 }
-
 /* menu */
 .menu {
 	overflow:      hidden;
@@ -1204,7 +1182,6 @@ tr.bold td {
 .menu-big .menu-pharmacy:hover, .menu-big .menu-pharmacy.active {
 	background-position: -390px -249px;
 }
-
 /* breadcrumbs */
 .breadcrumbs {
 	margin:      -10px 0 20px;
@@ -1225,7 +1202,6 @@ tr.bold td {
 .breadcrumbs a {
 	color: #2f4053;
 }
-
 /* tabs */
 .tabs {
 	margin-bottom: 22px;
@@ -1267,7 +1243,6 @@ tr.bold td {
 .tabs-more a {
 	display: block;
 }
-
 /* info-line */
 .info-line {
 	margin-top:    17px;
@@ -1287,7 +1262,6 @@ tr.bold td {
 .info-line span {
 	color: #333;
 }
-
 /* banners */
 .banner {
 	position: relative;
@@ -1321,7 +1295,6 @@ tr.bold td {
 	display:    inline-block;
 	margin-top: 20px;
 }
-
 /* description */
 .description {
 	border:        3px solid #eee;
@@ -1339,7 +1312,6 @@ tr.bold td {
 .description > div {
 	padding: 6px 7px 8px;
 }
-
 /* module */
 .module {
 	position: relative;
@@ -1367,7 +1339,6 @@ tr.bold td {
 .module-1 .module-body {
 	padding: 5px 10px 7px;
 }
-
 /* text */
 .text {
 	overflow:  hidden;
@@ -1381,7 +1352,7 @@ tr.bold td {
 	white-space: -pre-wrap;
 	white-space: -o-pre-wrap;
 	white-space: pre-wrap;
-	word-wrap: break-word;
+	word-wrap:   break-word;
 }
 .article .text, .publication .text {
 	padding: 0;
@@ -1420,7 +1391,6 @@ tr.bold td {
 	font-size:      11px !important;
 	line-height:    9px !important;
 }
-
 /* ck editor */
 .u1 li {
 	margin: 1px 0 !important;
@@ -1482,7 +1452,6 @@ tr.bold td {
 .u20 li {
 	margin: 20px 0 !important;
 }
-
 .p1 *, .p1 {
 	line-height: 1px !important;
 }
@@ -1576,7 +1545,6 @@ tr.bold td {
 .font20 *, .font20 {
 	font-size: 20px !important;
 }
-
 /* overlay */
 #overlay {
 	position:       fixed;
@@ -1592,7 +1560,6 @@ tr.bold td {
 	opacity:        0.3;
 	z-index:        1000;
 }
-
 /* кнопка прокрутки наверх */
 #top-link {
 	display:     none;
@@ -1607,7 +1574,6 @@ tr.bold td {
 #top-link:hover {
 	opacity: 1;
 }
-
 /* jquery-ui-autocomplete */
 .ui-menu {
 	width: 300px !important;
@@ -1634,7 +1600,6 @@ tr.bold td {
 	font-size:    12px;
 	color:        #999;
 }
-
 /* реклама вакансий */
 #phrpAd {
 	background: #FAFAFA;

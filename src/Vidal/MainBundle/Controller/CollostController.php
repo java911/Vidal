@@ -15,13 +15,14 @@ class CollostController extends Controller
 	 * @Route("/collost" ,name="collost")
 	 * @Template("VidalMainBundle:Collost:index.html.twig")
 	 */
-	public function indexAction(Request $request)
+	public function indexAction()
 	{
 		return array(
 			'title'       => 'Коллост - инновационный стерильный биопластический коллагеновый материал',
 			'description' => 'Коллост - инновационный стерильный биопластический коллагеновый материал, обеспечивающий регенерацию пораженных тканей',
 			'keywords'    => 'инновационный стерильный биопластический коллагеновый материал регенерация пораженных тканей',
 			'noYad'       => true,
+			'menu_left'   => 'collost',
 		);
 	}
 }
