@@ -178,11 +178,11 @@ class SonataController extends Controller
 					a.category = :categoryId
 				WHERE a.id IN (:articleIds)
 			')->setParameters(array(
-					'articleIds' => $articleIds,
-					'rubriqueId' => $rubriqueId,
-					'typeId'     => $typeId,
-					'categoryId' => $categoryId,
-				))->execute();
+				'articleIds' => $articleIds,
+				'rubriqueId' => $rubriqueId,
+				'typeId'     => $typeId,
+				'categoryId' => $categoryId,
+			))->execute();
 
 			$this->get('session')->getFlashBag()->add('notice', '');
 
@@ -431,6 +431,7 @@ class SonataController extends Controller
 		$pdo      = $em->getConnection();
 		$isPartly = $request->query->has('partly');
 		$total    = 0;
+		$min      = 2;
 
 		if (!$tag) {
 			throw $this->createNotFoundException();
@@ -456,53 +457,67 @@ class SonataController extends Controller
 
 		# проставляем тег у статей энкициклопедии
 		$stmt = $isPartly
-			? $pdo->prepare("SELECT id FROM article WHERE title LIKE '%{$text}%' OR body LIKE '%{$text}%' OR announce LIKE '%{$text}%'")
-			: $pdo->prepare("SELECT id FROM article WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
+			? $pdo->prepare("SELECT id,body FROM article WHERE title LIKE '%{$text}%' OR body LIKE '%{$text}%' OR announce LIKE '%{$text}%'")
+			: $pdo->prepare("SELECT id,body FROM article WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
 
 		$stmt->execute();
 		$articles = $stmt->fetchAll();
 
 		foreach ($articles as $a) {
-			$id   = $a['id'];
-			$stmt = $pdo->prepare("INSERT IGNORE INTO article_tag (tag_id, article_id) VALUES ($tagId, $id)");
-			$stmt->execute();
-			if ($stmt->rowCount()) {
-				$tagHistory->addArticleId($id);
-				$total++;
+			$matched = mb_substr_count(mb_strtolower($a['body'], 'utf-8'), mb_strtolower($text, 'utf-8'), 'utf-8');
+
+			if ($tag->getForCompany() || $matched >= $min) {
+				$id   = $a['id'];
+				$stmt = $pdo->prepare("INSERT IGNORE INTO article_tag (tag_id, article_id) VALUES ($tagId, $id)");
+				$stmt->execute();
+				if ($stmt->rowCount()) {
+					$tagHistory->addArticleId($id);
+					$total++;
+				}
 			}
 		}
 
 		# проставляем тег у статей специалистам
 		$stmt = $isPartly
-			? $pdo->prepare("SELECT id FROM art WHERE title LIKE '%{$text}%' OR body LIKE '%{$text}%' OR announce LIKE '%{$text}%'")
-			: $pdo->prepare("SELECT id FROM art WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
+			? $pdo->prepare("SELECT id,body FROM art WHERE title LIKE '%{$text}%' OR body LIKE '%{$text}%' OR announce LIKE '%{$text}%'")
+			: $pdo->prepare("SELECT id,body FROM art WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
 
 		$stmt->execute();
 		$articles = $stmt->fetchAll();
+
 		foreach ($articles as $a) {
-			$id   = $a['id'];
-			$stmt = $pdo->prepare("INSERT IGNORE INTO art_tag (tag_id, art_id) VALUES ($tagId, $id)");
-			$stmt->execute();
-			if ($stmt->rowCount()) {
-				$tagHistory->addArtId($id);
-				$total++;
+			$matched = mb_substr_count(mb_strtolower($a['body'], 'utf-8'), mb_strtolower($text, 'utf-8'), 'utf-8');
+
+			if ($tag->getForCompany() || $matched >= $min) {
+				$id   = $a['id'];
+				$stmt = $pdo->prepare("INSERT IGNORE INTO art_tag (tag_id, art_id) VALUES ($tagId, $id)");
+				$stmt->execute();
+				if ($stmt->rowCount()) {
+					$tagHistory->addArtId($id);
+					$total++;
+				}
 			}
 		}
 
 		# проставляем тег у новостей
 		$stmt = $isPartly
-			? $pdo->prepare("SELECT id FROM publication WHERE title LIKE '%{$text}%' OR body LIKE '%{$text}%' OR announce LIKE '%{$text}%'")
-			: $pdo->prepare("SELECT id FROM publication WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
+			? $pdo->prepare("SELECT id,body FROM publication WHERE title LIKE '%{$text}%' OR body LIKE '%{$text}%' OR announce LIKE '%{$text}%'")
+			: $pdo->prepare("SELECT id,body FROM publication WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
 
 		$stmt->execute();
 		$articles = $stmt->fetchAll();
+
 		foreach ($articles as $a) {
-			$id   = $a['id'];
-			$stmt = $pdo->prepare("INSERT IGNORE INTO publication_tag (tag_id, publication_id) VALUES ($tagId, $id)");
-			$stmt->execute();
-			if ($stmt->rowCount()) {
-				$tagHistory->addPublicationId($id);
-				$total++;
+			$matched = mb_substr_count(mb_strtolower($a['body'], 'utf-8'), mb_strtolower($text, 'utf-8'), 'utf-8');
+
+			if ($tag->getForCompany() || $matched >= $min) {
+				$id   = $a['id'];
+				$stmt = $pdo->prepare("INSERT IGNORE INTO publication_tag (tag_id, publication_id) VALUES ($tagId, $id)");
+				$stmt->execute();
+				if ($stmt->rowCount()) {
+					$tagHistory->addPublicationId($id);
+					$total++;
+				}
 			}
 		}
 
