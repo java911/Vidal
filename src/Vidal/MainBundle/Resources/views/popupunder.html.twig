@@ -1,0 +1,10 @@
+
+<script>
+    $(document).ready(function(){
+        var popup = getCookie('popupvidal');
+        if (popup == undefined ){
+            setCookie('popupvidal','1',{expires: 86400});
+            $('.gray').fadeIn();
+        }
+    });
+</script>
