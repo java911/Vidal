@@ -1,10 +1,34 @@
-
+<style>
+    #popupvidal{
+        position: fixed;
+        left: 50%;
+        margin-left: -120px;
+        top: 300px;
+        z-index: 999999;
+        display: none;
+    }
+    #closepopupvidal{
+        border-radius: 3px;
+    }
+</style>
+<div id="popupvidal" class="popup" style="width: auto; background: none; padding: 0">
+    <img  id="closepopupvidal" src="{{ asset('bundles/vidalmain/images/cross_red.png') }}" style="z-index: 9999999; position: absolute; right: 10px; top: 10px; cursor: pointer"/>
+    <a href="http://www.vidal.ru/shkola-gastrita" target="_blank">
+        <img  src="{{ asset('bundles/vidalmain/images/banner-gastrit2.jpg') }}"/>
+    </a>
+</div>
 <script>
     $(document).ready(function(){
         var popup = getCookie('popupvidal');
         if (popup == undefined ){
             setCookie('popupvidal','1',{expires: 86400});
             $('.gray').fadeIn();
+            $('#popupvidal').fadeIn();
         }
+
+        $('#closepopupvidal').click(function(){
+            $('.gray').fadeOut();
+            $('#popupvidal').fadeOut();
+        });
     });
 </script>
