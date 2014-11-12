@@ -42,6 +42,7 @@
 
 	{% block javascripts %}
 		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/jquery-1.11.0.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/coockie.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('bundles/vidalmain/checkbox/jquery.checkbox.js') }}"></script>
 		<script type="text/javascript"
@@ -105,9 +106,10 @@
 	<img src="{{ asset('bundles/vidalmain/images/icon_top.png') }}"/>
 </a>
 
-
+{% include 'VidalMainBundle::popupunder.html.twig' %}
 {# счетчики аналитики #}
 {#{% if app.environment == 'prod' %}#}
+
 {% include 'VidalMainBundle:Metrika:google_analytics.html.twig' %}
 {% include 'VidalMainBundle:Metrika:live_internet.html.twig' %}
 {% include 'VidalMainBundle:Metrika:tns.html.twig' %}
