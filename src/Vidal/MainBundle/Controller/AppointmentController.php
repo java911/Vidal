@@ -38,7 +38,10 @@ class AppointmentController extends Controller
 	 */
 	public function appointmentAction()
 	{
-		return array();
+		return array(
+			'title' => 'Запись на прием к врачу',
+			'noYad' => true,
+		);
 	}
 
 	/**
