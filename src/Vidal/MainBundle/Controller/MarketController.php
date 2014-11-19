@@ -504,7 +504,8 @@ class MarketController extends Controller{
 //            "tulupov.m@gmail.com",
             $email,
             array('VidalMainBundle:Email:market_notice.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa, 'ship' => $array[$order->getShipping()] )),
-            'Заказ с сайта Vidal.ru'
+            'Заказ с сайта Vidal.ru',
+			'apteka@vidal.ru'
         );
 
         $this->get('email.service')->send(
@@ -512,7 +513,8 @@ class MarketController extends Controller{
 //            "tulupov.m@gmail.com",
             array($order->getEmail()),
             array('VidalMainBundle:Email:market_notice_user.html.twig', array('group' => $group, 'order' => $order, 'basket' => $basket, 'summa' => $summa, 'ship' => $array[$order->getShipping()] )),
-            'Заказ с сайта Vidal.ru'
+            'Заказ с сайта Vidal.ru',
+			'apteka@vidal.ru'
         );
         return true;
     }
@@ -573,7 +575,8 @@ class MarketController extends Controller{
                         'summa' => $summa,
                         'ship' => $array[$order->getShipping()]
                     )),
-                'Заказ с сайта Vidal.ru'
+                'Заказ с сайта Vidal.ru',
+				'apteka@vidal.ru'
             );
             return true;
         }else{
