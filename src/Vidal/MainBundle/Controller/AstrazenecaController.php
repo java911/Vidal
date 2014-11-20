@@ -65,56 +65,6 @@ class AstrazenecaController extends Controller
 		return $params;
 	}
 
-	/**
-	 * @Route("/shkola-gastrita2", name="shkola_gastrita2")
-	 * @Template("VidalMainBundle:Astrazeneca:shkola2.html.twig")
-	 */
-	public function shkola2Action(Request $request)
-	{
-		$params = array(
-			'noYad'     => true,
-			'title'     => 'Школа гастрита',
-			'menu_left' => 'shkola',
-		);
-
-		$em                        = $this->getDoctrine()->getManager();
-		$params['blogs']           = $em->getRepository('VidalMainBundle:AstrazenecaBlog')->findActive();
-		$params['tests']           = $em->getRepository('VidalMainBundle:AstrazenecaTest')->findAll();
-		$params['questionAnswers'] = $em->getRepository('VidalMainBundle:AstrazenecaFaq')->findByEnabled(1);
-		$params['categories']      = $em->getRepository('VidalMainBundle:ShkolaCategory')->findAll();
-
-		# форма задать вопрос
-		$faq = new AstrazenecaFaq();
-
-		$builder = $this->createFormBuilder($faq);
-		$builder
-			->add('authorFirstName', null, array('label' => 'Ваше имя', 'required' => true, 'constraints' => new NotBlank(array('message' => "Пожалуйста, укажите Имя"))))
-			->add('authorEmail', null, array('label' => 'Ваш e-mail', 'required' => true, 'constraints' => new NotBlank(array('message' => "Пожалуйста, укажите Email"))))
-			->add('question', null, array('label' => 'Вопрос', 'attr' => array('class' => 'ckeditor')))
-			->add('captcha', 'captcha', array('label' => 'Введите код с картинки'))
-			->add('submit', 'submit', array('label' => 'ОТПРАВИТЬ', 'attr' => array('class' => 'btn')));
-
-		$form = $builder->getForm();
-		$form->handleRequest($request);
-
-		if ($request->isMethod('POST')) {
-			if ($form->isValid()) {
-				$faq = $form->getData();
-				$faq->setEnabled(0);
-				$em->persist($faq);
-				$em->flush();
-
-				$this->get('session')->getFlashBag()->add('questioned', '');
-
-				return $this->redirect($this->generateUrl('shkola_gastrita2') . '#qa');
-			}
-		}
-
-		$params['form'] = $form->createView();
-
-		return $params;
-	}
-
 	/** @Template("VidalMainBundle:Astrazeneca:menu.html.twig") */
 	public function menuAction($request)
 	{
@@ -369,66 +319,40 @@ class AstrazenecaController extends Controller
 		);
 	}
 
+
 	/**
-	 * @Secure(roles="ROLE_ADMIN")
-	 * @Route("/shkola-gastrita/admin/faq", name="admin_astrazeneca_faq")
-	 * @Template("VidalMainBundle:Astrazeneca:admin_faq.html.twig")
+	 * @Route("/shkola-gastrita-admin", name="shkola_faq_list")
+	 * @Secure(roles="ROLE_SHKOLA")
+	 * @Template("VidalMainBundle:Astrazeneca:shkola_faq_list.html.twig")
 	 */
-	public function adminFaqListAction()
+	public function shkolaFaqListAction(Request $request)
 	{
-		$faqs = $this->getDoctrine()->getRepository('VidalMainBundle:AstrazenecaFaq')->findAll();
-		return array(
-			'faqs'      => $faqs,
+		$em      = $this->getDoctrine()->getManager();
+		$perPage = 20;
+		$params  = array(
 			'noYad'     => true,
 			'title'     => 'Вопрос-ответ | Школа гастрита',
 			'menu_left' => 'shkola',
 		);
-	}
 
-	/**
-	 * @Secure(roles="ROLE_ADMIN")
-	 * @Route("/shkola-gastrita/admin/faq/add", name="admin_astrazeneca_faq_add")
-	 * @Template("VidalMainBundle:Astrazeneca:admin_faq_edit.html.twig")
-	 */
-	public function adminFaqAddAction(Request $request)
-	{
-		$em  = $this->getDoctrine()->getManager();
-		$faq = new AstrazenecaFaq();
-
-		$builder = $this->createFormBuilder($faq);
-		$builder
-			->add('question', null, array('label' => 'Вопрос', 'attr' => array('class' => 'ckeditor')))
-			->add('answer', null, array('label' => 'Ответ', 'attr' => array('class' => 'ckeditor')))
-			->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn')));
-
-		$form = $builder->getForm();
-		$form->handleRequest($request);
-
-		if ($request->isMethod('POST')) {
-			if ($form->isValid()) {
-				$faq = $form->getData();
-				$em->persist($faq);
-				$em->flush();
-			}
-		}
-
-		return array(
-			'form'      => $form->createView(),
-			'noYad'     => true,
-			'title'     => 'Добавить Вопрос-ответ | Школа гастрита',
-			'menu_left' => 'shkola',
+		$params['pagination'] = $this->get('knp_paginator')->paginate(
+			$em->getRepository('VidalMainBundle:AstrazenecaFaq')->findAll(),
+			$request->query->get('p', 1),
+			$perPage
 		);
+
+		return $params;
 	}
 
 	/**
-	 * @Secure(roles="ROLE_ADMIN")
-	 * @Route("/shkola-gastrita/admin/faq/{faqId}", name="admin_astrazeneca_faq_edit")
-	 * @Template("VidalMainBundle:Astrazeneca:admin_faq_edit.html.twig")
+	 * @Secure(roles="ROLE_SHKOLA")
+	 * @Route("/shkola-gastrita-admin/faq/{id}", name="shkola_faq_edit")
+	 * @Template("VidalMainBundle:Astrazeneca:shkola_faq_edit.html.twig")
 	 */
-	public function adminFaqEditAction(Request $request, $faqId)
+	public function shkolaFaqEditAction(Request $request, $id)
 	{
 		$em  = $this->getDoctrine()->getManager();
-		$faq = $em->getRepository('VidalMainBundle:AstrazenecaFaq')->findOneById($faqId);
+		$faq = $em->getRepository('VidalMainBundle:AstrazenecaFaq')->findOneById($id);
 
 		$builder = $this->createFormBuilder($faq);
 		$builder
@@ -454,19 +378,18 @@ class AstrazenecaController extends Controller
 	}
 
 	/**
-	 * @Secure(roles="ROLE_ADMIN")
-	 * @Route("/shkola-gastrita/admin/faq/delete/{faqId}", name="admin_astrazeneca_faq_delete")
-	 * @Template("VidalMainBundle:Astrazeneca:admin_faq_edit.html.twig")
+	 * @Secure(roles="ROLE_SHKOLA")
+	 * @Route("/shkola-gastrita-admin/faq/delete/{id}", name="shkola_faq_delete")
 	 */
-	public function adminFaqDeleteAction(Request $request, $faqId)
+	public function shkolaFaqDeleteAction($id)
 	{
 		$em  = $this->getDoctrine()->getManager();
-		$faq = $em->getRepository('VidalMainBundle:AstrazenecaFaq')->findOneById($faqId);
+		$faq = $em->getRepository('VidalMainBundle:AstrazenecaFaq')->findOneById($id);
 
 		$em->remove($faq);
 		$em->flush();
 
-		return $this->redirect($this->generateUrl('astrazeneca_faq'));
+		return $this->redirect($this->generateUrl('shkola_faq_list'));
 	}
 
 	/**

@@ -52,9 +52,14 @@
 					<a href="{{ path('sonata_admin_dashboard') }}" class="dotted">Панель администратора</a>
 				</li>
 			{% endif %}
-			{% if app.user and app.user.id in [7,8,31,13,16307,16324,19347,21866] %}
+			{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_QA') %}
 				<li id="qanswer">
 					<a href="{{ path('qa_admin') }}" class="dotted">Ответы</a>
+				</li>
+			{% endif %}
+			{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SHKOLA') %}
+				<li>
+					<a href="{{ path('shkola_faq_list') }}" class="dotted">Ответы в Школе Гастрита</a>
 				</li>
 			{% endif %}
 			<li>
