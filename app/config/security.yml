@@ -4,7 +4,7 @@ security:
 
     role_hierarchy:
         ROLE_DOCTOR: ~
-        ROLE_ADMIN: [ROLE_DOCTOR, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_ADMIN: [ROLE_DOCTOR, ROLE_ALLOWED_TO_SWITCH, ROLE_QA, ROLE_SHKOLA]
 
     providers:
         local_database:

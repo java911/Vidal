@@ -108,7 +108,6 @@ class IndexController extends Controller
 
 	/**
 	 * @Route("/otvety_specialistov_doctor/{party}", name="qa_admin", defaults={"party"="0"}, options={"expose"=true})
-	 * @Secure(roles="ROLE_ADMIN;ROLE_QA")
 	 * @Template()
 	 */
 	public function doctorAnswerListAction(Request $request, $party = 0)
@@ -152,7 +151,6 @@ class IndexController extends Controller
 
 	/**
 	 * @Route("/otvety_specialistov_doctor_edit/{faqId}", name="qa_admin_edit")
-	 * @Secure(roles="ROLE_ADMIN,ROLE_QA")
 	 * @Template()
 	 */
 	public function doctorAnswerEditAction(Request $request, $faqId)
