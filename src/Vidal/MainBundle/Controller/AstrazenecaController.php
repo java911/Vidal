@@ -319,8 +319,8 @@ class AstrazenecaController extends Controller
 		);
 	}
 
-
 	/**
+	 * @Secure(roles="ROLE_SHKOLA")
 	 * @Route("/shkola-gastrita-admin", name="shkola_faq_list")
 	 * @Template("VidalMainBundle:Astrazeneca:shkola_faq_list.html.twig")
 	 */
@@ -344,6 +344,7 @@ class AstrazenecaController extends Controller
 	}
 
 	/**
+	 * @Secure(roles="ROLE_SHKOLA")
 	 * @Route("/shkola-gastrita-admin/faq/{id}", name="shkola_faq_edit")
 	 * @Template("VidalMainBundle:Astrazeneca:shkola_faq_edit.html.twig")
 	 */
@@ -376,6 +377,7 @@ class AstrazenecaController extends Controller
 	}
 
 	/**
+	 * @Secure(roles="ROLE_SHKOLA")
 	 * @Route("/shkola-gastrita-admin/faq/delete/{id}", name="shkola_faq_delete")
 	 */
 	public function shkolaFaqDeleteAction($id)

@@ -107,6 +107,7 @@ class IndexController extends Controller
 	}
 
 	/**
+	 * @Secure(roles="ROLE_QA")
 	 * @Route("/otvety_specialistov_doctor/{party}", name="qa_admin", defaults={"party"="0"}, options={"expose"=true})
 	 * @Template()
 	 */
@@ -150,6 +151,7 @@ class IndexController extends Controller
 	}
 
 	/**
+	 * @Secure(roles="ROLE_QA")
 	 * @Route("/otvety_specialistov_doctor_edit/{faqId}", name="qa_admin_edit")
 	 * @Template()
 	 */
