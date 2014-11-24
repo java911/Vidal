@@ -22,7 +22,7 @@
 		{% for faq in pagination %}
 			<tr>
 				<td>
-					{{ faq.question }}
+					{{ faq.question|raw }}
 				</td>
 				<td style="text-align:center;">{{ faq.enabled ? 'да' : 'нет' }}</td>
 				<td style="text-align:right;">

@@ -31,8 +31,8 @@ class AstrazenecaFaqAdmin extends Admin
 		$formMapper
 			->add('authorFirstName', null, array('label' => 'Имя автора', 'required' => false))
 			->add('authorEmail', null, array('label' => 'Email автора', 'required' => false))
-			->add('question', null, array('label' => 'Вопрос', 'required' => true))
-			->add('answer', null, array('label' => 'Ответ', 'required' => false))
+			->add('question', null, array('label' => 'Вопрос', 'required' => true, 'attr' => array('style' => 'height:120px;')))
+			->add('answer', null, array('label' => 'Ответ', 'required' => false, 'attr' => array('style' => 'height:120px;')))
 			->add('enabled', null, array('label' => 'Активен', 'required' => false))
 			->add('created', null, array(
 				'label'    => 'Дата создания',
