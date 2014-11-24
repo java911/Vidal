@@ -10,65 +10,60 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 class AstrazenecaFaqAdmin extends Admin
 {
-    protected $datagridValues;
+	protected $datagridValues;
 
-    public function __construct($code, $class, $baseControllerName)
-    {
-        parent::__construct($code, $class, $baseControllerName);
+	public function __construct($code, $class, $baseControllerName)
+	{
+		parent::__construct($code, $class, $baseControllerName);
 
-        if (!$this->hasRequest()) {
-            $this->datagridValues = array(
-                '_page'       => 1,
-                '_per_page'   => 25,
-                '_sort_order' => 'DESC',
-                '_sort_by'    => 'created'
-            );
-        }
-    }
+		if (!$this->hasRequest()) {
+			$this->datagridValues = array(
+				'_page'       => 1,
+				'_per_page'   => 25,
+				'_sort_order' => 'DESC',
+				'_sort_by'    => 'created'
+			);
+		}
+	}
 
-    protected function configureFormFields(FormMapper $formMapper)
-    {
-        $formMapper
-            ->add('authorFirstName', null, array('label' => 'Имя автора', 'required' => false))
-            ->add('authorEmail', null, array('label' => 'Email автора', 'required' => false))
-            ->add('question', null, array('label' => 'Вопрос', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
-            ->add('answer', null, array('label' => 'Ответ', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
+	protected function configureFormFields(FormMapper $formMapper)
+	{
+		$formMapper
+			->add('authorFirstName', null, array('label' => 'Имя автора', 'required' => false))
+			->add('authorEmail', null, array('label' => 'Email автора', 'required' => false))
+			->add('question', null, array('label' => 'Вопрос', 'required' => true))
+			->add('answer', null, array('label' => 'Ответ', 'required' => false))
+			->add('enabled', null, array('label' => 'Активен', 'required' => false))
+			->add('created', null, array(
+				'label'    => 'Дата создания',
+				'data'     => new \DateTime('now'),
+				'required' => true,
+			));
+	}
 
-            ->add('enabled', null, array('label' => 'Активен', 'required' => false))
-            ->add('created', null, array(
-                'label'    => 'Дата создания',
-                'data'     => new \DateTime('now'),
-                'required' => true,
-            ));
-    }
+	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+	{
+		$datagridMapper
+			->add('id')
+			->add('authorFirstName', null, array('label' => 'Имя автора'))
+			->add('authorEmail', null, array('label' => 'Email Автора'))
+			->add('enabled', null, array('label' => 'Активнен'));
+	}
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-    {
-        $datagridMapper
-            ->add('id')
-            ->add('authorFirstName', null, array('label' => 'Имя автора'))
-            ->add('authorEmail', null, array('label' => 'Email Автора'))
-            ->add('enabled', null, array('label' => 'Активнен'));
-    }
-
-    protected function configureListFields(ListMapper $listMapper)
-    {
-        $listMapper
-            ->add('id')
-            ->add('authorFirstName', null, array('label' => 'Имя автора', 'required' => false))
-            ->add('authorEmail', null, array('label' => 'Email автора', 'required' => false))
-            ->add('enabled', null, array('label' => 'Активен', 'required' => false))
-            ->add('created', null, array(
-                'label'    => 'Дата создания',
-                'data'     => new \DateTime('now'),
-                'required' => true,
-            ))
-            ->add('_action', 'actions', array(
-                'label'   => 'Действия',
-                'actions' => array(
-                    'edit'   => array(),
-                    'delete' => array(),
-                )
-            ));
-    }
+	protected function configureListFields(ListMapper $listMapper)
+	{
+		$listMapper
+			->add('id')
+			->add('authorFirstName', null, array('label' => 'Имя автора', 'required' => false))
+			->add('authorEmail', null, array('label' => 'Email автора', 'required' => false))
+			->add('enabled', null, array('label' => 'Активен', 'required' => false))
+			->add('created', null, array('label' => 'Дата создания'))
+			->add('_action', 'actions', array(
+				'label'   => 'Действия',
+				'actions' => array(
+					'edit'   => array(),
+					'delete' => array(),
+				)
+			));
+	}
 }

@@ -260,22 +260,5 @@
             <argument />
         </service>
 
-		<!-- Школа гастрита 2 -->
-		<service id="sonata.admin.shkolaArticle" class="Vidal\MainBundle\Admin\ShkolaArticleAdmin">
-			<tag name="sonata.admin" manager_type="orm" group="Школа гастрита 2" label="Статьи"/>
-			<argument />
-			<argument>Vidal\MainBundle\Entity\ShkolaArticle</argument>
-			<argument>SonataAdminBundle:CRUD</argument>
-			<argument />
-		</service>
-
-		<service id="sonata.admin.shkolaCategory" class="Vidal\MainBundle\Admin\ShkolaCategoryAdmin">
-			<tag name="sonata.admin" manager_type="orm" group="Школа гастрита 2" label="Категории"/>
-			<argument />
-			<argument>Vidal\MainBundle\Entity\ShkolaCategory</argument>
-			<argument>SonataAdminBundle:CRUD</argument>
-			<argument />
-		</service>
-
     </services>
 </container>
