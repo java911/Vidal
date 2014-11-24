@@ -31,7 +31,7 @@ class AstrazenecaController extends Controller
 		$params['blogs']           = $em->getRepository('VidalMainBundle:AstrazenecaBlog')->findActive();
 		$params['articles']        = $em->getRepository('VidalMainBundle:AstrazenecaNew')->findActive();
 		$params['tests']           = $em->getRepository('VidalMainBundle:AstrazenecaTest')->findAll();
-		$params['questionAnswers'] = $em->getRepository('VidalMainBundle:AstrazenecaFaq')->findByEnabled(1);
+		$params['questionAnswers'] = $em->getRepository('VidalMainBundle:AstrazenecaFaq')->findActive();
 
 		# форма задать вопрос
 		$faq = new AstrazenecaFaq();
@@ -327,7 +327,7 @@ class AstrazenecaController extends Controller
 	public function shkolaFaqListAction(Request $request)
 	{
 		$em      = $this->getDoctrine()->getManager();
-		$perPage = 20;
+		$perPage = 10;
 		$params  = array(
 			'noYad'     => true,
 			'title'     => 'Вопрос-ответ | Школа гастрита',
@@ -368,6 +368,7 @@ class AstrazenecaController extends Controller
 				$em->flush($faq);
 			}
 		}
+
 		return array(
 			'form'      => $form->createView(),
 			'noYad'     => true,

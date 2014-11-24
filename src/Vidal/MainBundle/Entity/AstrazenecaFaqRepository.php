@@ -11,7 +11,18 @@ class AstrazenecaFaqRepository extends EntityRepository
 		return $this->_em->createQuery('
 		 	SELECT f
 		 	FROM VidalMainBundle:AstrazenecaFaq f
-		 	ORDER BY f.created DESC
+		 	ORDER BY f.enabled DESC, f.created DESC
 		');
+	}
+
+	public function findActive()
+	{
+		return $this->_em->createQuery('
+			SELECT f
+			FROM VidalMainBundle:AstrazenecaFaq f
+			WHERE f.enabled = TRUE
+				AND f.answer IS NOT NULL
+				AND LENGTH(f.answer) > 0
+		')->getResult();
 	}
 }

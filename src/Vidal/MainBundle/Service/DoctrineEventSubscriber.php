@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Vidal\MainBundle\Entity\User;
+use Vidal\MainBundle\Entity\AstrazenecaFaq;
 
 class DoctrineEventSubscriber implements EventSubscriber
 {
@@ -56,6 +57,10 @@ class DoctrineEventSubscriber implements EventSubscriber
 					$entity->setCountry($country);
 				}
 			}
+		}
+		elseif ($entity instanceof AstrazenecaFaq) {
+			$answer = $entity->getAnswer();
+			empty($answer) ? $entity->setEnabled(0) : $entity->setEnabled(1);
 		}
 	}
 }
