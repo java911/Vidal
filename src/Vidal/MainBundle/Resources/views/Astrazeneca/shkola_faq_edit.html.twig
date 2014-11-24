@@ -32,8 +32,17 @@
 			vertical-align: top;
 		}
 		.form_table textarea {
-			width:  96%;
-			height: 170px;
+			width:       96%;
+			height:      170px;
+			font-family: sans-serif;
 		}
 	</style>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script src="{{ asset('bundles/vidalmain/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('bundles/vidalmain/ckeditor/adapters/jquery.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('bundles/vidalmain/javascripts/ckeditor-config.js') }}"></script>
 {% endblock %}

@@ -32,7 +32,7 @@ class AstrazenecaFaqAdmin extends Admin
 			->add('authorFirstName', null, array('label' => 'Имя автора', 'required' => false))
 			->add('authorEmail', null, array('label' => 'Email автора', 'required' => false))
 			->add('question', null, array('label' => 'Вопрос', 'required' => true, 'attr' => array('style' => 'height:120px;')))
-			->add('answer', null, array('label' => 'Ответ', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
+			->add('answer', null, array('label' => 'Ответ', 'required' => false, 'attr' => array('class' => 'ckeditorfull', 'style' => 'height:120px;')))
 			->add('enabled', null, array('label' => 'Активен', 'required' => false))
 			->add('created', null, array(
 				'label'    => 'Дата создания',

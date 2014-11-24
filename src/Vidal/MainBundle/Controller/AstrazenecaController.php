@@ -356,7 +356,7 @@ class AstrazenecaController extends Controller
 		$builder = $this->createFormBuilder($faq);
 		$builder
 			->add('question', null, array('label' => 'Вопрос'))
-			->add('answer', null, array('label' => 'Ответ'))
+			->add('answer', null, array('label' => 'Ответ', 'attr' => array('class' => 'ckeditormini')))
 			->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn')));
 
 		$form = $builder->getForm();
