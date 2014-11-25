@@ -1636,6 +1636,8 @@ tr.bold td {
 	border-bottom:  1px dashed #CED2D5;
 	padding-bottom: 6px;
 }
+
+/* popups */
 .popupMarket {
 	position:      fixed;
 	background:    #FFF0F0;
@@ -1650,4 +1652,27 @@ tr.bold td {
 	border-radius: 5px;
 	z-index:       999999;
 	display:       none;
+}
+#popupvidal {
+	position:    fixed;
+	left:        50%;
+	margin-left: -160px;
+	top:         200px;
+	z-index:     999999;
+	display:     none;
+	width:       auto;
+	background:  none;
+	padding:     0
+}
+#closepopupvidal {
+	border-radius: 3px;
+	z-index:       9999999;
+	position:      absolute;
+	left:          0;
+	top:           0;
+	cursor:        pointer;
+	opacity:       0.7;
+}
+#closepopupvidal:hover {
+	opacity: 1;
 }
