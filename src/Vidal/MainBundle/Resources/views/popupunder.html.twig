@@ -1,23 +1,25 @@
-<div id="popupvidal" class="popup">
-	<img id="closepopupvidal" src="{{ asset('bundles/vidalmain/images/cross_red_big.png') }}"/>
-	<a href="http://www.vidal.ru/shkola-gastrita" target="_blank">
-		<img src="{{ asset('bundles/vidalmain/images/banner-gastrit2.jpg') }}"/>
-	</a>
-</div>
+{% if not app.user %}
+	<div id="popupvidal" class="popup">
+		<img id="closepopupvidal" src="{{ asset('bundles/vidalmain/images/cross_red_big.png') }}"/>
+		<a href="http://www.vidal.ru/shkola-gastrita" target="_blank">
+			<img src="{{ asset('bundles/vidalmain/images/banner-gastrit2.jpg') }}"/>
+		</a>
+	</div>
 
-<script type="text/javascript">
-	$(document).ready(function() {
-		var popup = getCookie('popupvidal');
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var popup = getCookie('popupvidal');
 
-		if (popup == undefined) {
-			setCookie('popupvidal', '1', {expires: 21600});
-			$('.gray').fadeIn();
-			$('#popupvidal').fadeIn();
-		}
+			//if (popup == undefined) {
+				setCookie('popupvidal', '1', {expires: 28800});
+				$('.gray').fadeIn();
+				$('#popupvidal').fadeIn();
+			//}
 
-		$('#closepopupvidal').click(function() {
-			$('.gray').fadeOut();
-			$('#popupvidal').fadeOut();
+			$('#closepopupvidal').click(function() {
+				$('.gray').fadeOut();
+				$('#popupvidal').fadeOut();
+			});
 		});
-	});
-</script>
+	</script>
+{% endif %}
