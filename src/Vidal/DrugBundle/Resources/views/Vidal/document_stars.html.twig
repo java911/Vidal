@@ -1,28 +1,28 @@
-{% if document is defined and document.ArticleID in [2,5] and (app.request.query.has('t') or is_granted('ROLE_ADMIN')) %}
+{% if document is defined and document.ArticleID in [2,5] %}
 	{% set full = asset('bundles/vidalmain/images/bg/star-full.png') %}
 	{% set empty = asset('bundles/vidalmain/images/bg/star-empty.png') %}
 
 	<div class="stars">
 		<div class="images">
-			{% if document.yearEdition == 2014 %}
+			{% if document.yearEdition == 2015 %}
 				<img src="{{ full }}"/>
 				<img src="{{ full }}"/>
 				<img src="{{ full }}"/>
 				<img src="{{ full }}"/>
 				<img src="{{ full }}"/>
-			{% elseif document.yearEdition in [2013,2012] %}
+			{% elseif document.yearEdition in [2014,2013] %}
 				<img src="{{ full }}"/>
 				<img src="{{ full }}"/>
 				<img src="{{ full }}"/>
 				<img src="{{ full }}"/>
 				<img src="{{ empty }}"/>
-			{% elseif document.yearEdition in [2011,2010] %}
+			{% elseif document.yearEdition in [2012,2011] %}
 				<img src="{{ full }}"/>
 				<img src="{{ full }}"/>
 				<img src="{{ full }}"/>
 				<img src="{{ empty }}"/>
 				<img src="{{ empty }}"/>
-			{% elseif document.yearEdition in [2009,2008] %}
+			{% elseif document.yearEdition in [2010,2009] %}
 				<img src="{{ full }}"/>
 				<img src="{{ full }}"/>
 				<img src="{{ empty }}"/>
