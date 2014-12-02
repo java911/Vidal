@@ -737,7 +737,7 @@ class ProductRepository extends EntityRepository
 			FROM product
 			WHERE LEFT(RusName, 1) NOT IN ('1','2','3','5','9','_','D','H','L','N','Q','S')
 				AND MarketStatusID IN (1,2,7)
-				ANProductTypeCode IN D {$where}
+				AND ProductTypeCode IN {$where}
 			ORDER BY letters
 		";
 
