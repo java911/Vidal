@@ -60,6 +60,8 @@ class PictureRepository extends EntityRepository
 
 	public function findByProductIds($productIds, $year = null)
 	{
+		$year = 2015;
+
 		if ($year) {
 			$picturesRaw = $this->_em->createQuery('
 				SELECT pict.PathForElectronicEdition path, prod.ProductID
