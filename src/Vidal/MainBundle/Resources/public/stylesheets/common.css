@@ -828,7 +828,7 @@ tr.bold td {
 	font-weight: bold;
 }
 .products-table-name {
-	font-size:     14px;
+	font-size:     13px;
 	line-height:   17px;
 	position:      relative;
 	padding-left:  4px !important;
@@ -884,8 +884,8 @@ tr.bold td {
 	padding-right: 4px !important;
 }
 .products-table-picture img {
-	max-width:  70px;
-	max-height: 70px;
+	max-width:  60px;
+	max-height: 80px;
 }
 .products-table-zip {
 	margin-left: 10px;
