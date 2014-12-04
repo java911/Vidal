@@ -834,6 +834,9 @@ tr.bold td {
 	padding-left:  4px !important;
 	padding-right: 1px !important;
 }
+.products-table-name > a {
+	font-size:     13px !important;
+}
 .products-table-name img.m {
 	display:  inline-block;
 	position: absolute;
