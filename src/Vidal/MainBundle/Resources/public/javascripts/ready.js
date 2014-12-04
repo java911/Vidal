@@ -119,4 +119,26 @@ $(document).ready(function() {
 		var id = this.getAttribute('href').substring(2);
 		$('#' + id).closest('.spoiler-content').show();
 	});
+
+	$('.block table, .text table').not('.products-table').each(function() {
+		var $this = $(this);
+
+		if ($this.width() > 520) {
+			$this.wrap('<div class="table-wrap"><div>');
+		}
+	});
+
+	$('.products-table-name .m').click(function(e) {
+		e.stopPropagation();
+		var $exclude = $(this).children('div');
+		$('.products-table-name > div').not($exclude).hide();
+		var $indication = $(this).siblings('div');
+		$indication.css('display') == 'block'
+			? $indication.hide()
+			: $indication.show();
+	});
+
+	$('body').click(function() {
+		$('.products-table-name > div').hide();
+	});
 });
