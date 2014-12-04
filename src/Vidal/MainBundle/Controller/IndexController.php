@@ -484,4 +484,12 @@ class IndexController extends Controller
 
         return array('user' => $user);
     }
+
+    /**
+     * @Route("/vebinar-pulmo", name="vebinar-pulmo")
+     * @Template()
+     */
+    public function vebinarAction(){
+        return Array();
+    }
 }
