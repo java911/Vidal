@@ -24,6 +24,9 @@
 	<div class="block">
 		<span class="block-head">АТХ код:</span>
 		<span><b>{{ atc.ATCCode }}</b></span>
+		<a href="{{ path('atc', {'ATCCode':atc.ATCCode}) }}" class="show-tree no-underline" target="_blank">
+			Показать в иерархии кодов
+		</a>
 	</div>
 
 	<div class="block">
@@ -53,4 +56,14 @@
 		</div>
 	{% endif %}
 
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.show-tree {
+			margin-left: 20px;
+		}
+	</style>
 {% endblock %}
