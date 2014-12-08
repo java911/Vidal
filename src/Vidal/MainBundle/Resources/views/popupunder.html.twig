@@ -1,9 +1,15 @@
 {% if not app.user %}
 	<div id="popupvidal" class="popup">
 		<img id="closepopupvidal" src="{{ asset('bundles/vidalmain/images/cross_red_big.png') }}"/>
-		<a href="http://www.vidal.ru/shkola-gastrita" target="_blank">
-			<img src="{{ asset('bundles/vidalmain/images/banner-gastrit2.jpg') }}"/>
-		</a>
+        {% if random(1) == 0 %}
+            <a href="http://www.vidal.ru/shkola-gastrita?banner-pop-up" target="_blank">
+                <img src="{{ asset('bundles/vidalmain/images/banner-gastrit2.jpg') }}"/>
+            </a>
+        {% else %}
+            <a href="http://www.vidal.ru/collost?banner-pop-up" target="_blank">
+                <img src="{{ asset('bundles/vidalmain/images/banner-popup2.jpeg') }}"/>
+            </a>
+        {% endif %}
 	</div>
 
 	<script type="text/javascript">
