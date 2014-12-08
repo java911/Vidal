@@ -368,6 +368,10 @@ tr.bold td {
 	font-size: 9px;
 	color:     #2f4053;
 }
+.table-wrap {
+	max-width:  522px;
+	overflow-x: auto;
+}
 #wrapper .tags {
 	overflow:   hidden;
 	margin-top: 20px;
@@ -679,6 +683,7 @@ tr.bold td {
 	margin:          5px 0;
 	border-collapse: collapse;
 	font-size:       13px;
+	max-width:       520px;
 }
 .block-content td {
 	padding: 3px 5px;
@@ -773,6 +778,7 @@ tr.bold td {
 	border-radius:         0;
 	-webkit-border-radius: 0;
 	-moz-border-radius:    0;
+	max-width:             520px;
 }
 .copy textarea:hover {
 	opacity: 1;
@@ -803,7 +809,7 @@ tr.bold td {
 .products-table td {
 	border:         0;
 	border-bottom:  1px solid #D4D4D4;
-	padding:        4px 5px;
+	padding:        4px 2px;
 	vertical-align: middle;
 }
 .products-table-loz {
@@ -822,41 +828,25 @@ tr.bold td {
 	font-weight: bold;
 }
 .products-table-name {
-	font-size:   14px;
-	line-height: 17px;
+	font-size:     13px;
+	line-height:   17px;
+	position:      relative;
+	padding-left:  4px !important;
+	padding-right: 1px !important;
 }
-.products-table-name.admin {
-	position: relative;
+.products-table-name > a {
+	font-size:     13px !important;
 }
-.products-table-name.admin:hover .admin-edit {
-	opacity: 1;
-}
-.products-table-company {
-	width:       30%;
-	font-size:   14px;
-	line-height: 14px;
-}
-.products-table-company a {
-	font-size: 12px;
-}
-.products-table-picture {
-	text-align: center;
-}
-.products-table-picture img {
-	max-width:  70px;
-	max-height: 70px;
-}
-.products-table-indication {
-	position: relative;
-	padding:  0 5px 0 0 !important;
+.products-table-name img.m {
+	display:  inline-block;
+	position: absolute;
+	width:    16px;
+	opacity:  0.6;
 	cursor:   pointer;
+	top:      5px;
+	right:    12px;
 }
-.products-table-indication img {
-	display: inline-block;
-	width:   12px;
-	opacity: 0.8;
-}
-.products-table-indication > div {
+.products-table-name > div {
 	position:              absolute;
 	left:                  0;
 	top:                   28px;
@@ -872,8 +862,33 @@ tr.bold td {
 	z-index:               999;
 	font-size:             13px;
 }
-.products-table-indication > div p {
+.products-table-name > div p {
 	margin: 3px;
+}
+.products-table-name.admin {
+	position: relative;
+}
+.products-table-name.admin:hover .admin-edit {
+	opacity: 1;
+}
+.products-table-company {
+	width:         30%;
+	font-size:     14px;
+	line-height:   14px;
+	padding-left:  0;
+	padding-right: 0;
+}
+.products-table-company a {
+	font-size: 12px;
+}
+.products-table-picture {
+	text-align:    center;
+	padding-left:  0 !important;
+	padding-right: 4px !important;
+}
+.products-table-picture img {
+	max-width:  60px;
+	max-height: 80px;
 }
 .products-table-zip {
 	margin-left: 10px;
@@ -1636,7 +1651,6 @@ tr.bold td {
 	border-bottom:  1px dashed #CED2D5;
 	padding-bottom: 6px;
 }
-
 /* popups */
 .popupMarket {
 	position:      fixed;

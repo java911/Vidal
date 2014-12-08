@@ -6,7 +6,6 @@
 			<td class="products-table-loz"></td>
 			<td>Название</td>
 			<td></td>
-			<td title="Показания к применению"></td>
 			<td>Форма выпуска</td>
 			<td title="Владелец регистрационного удостоверения">Владелец рег/уд</td>
 		</tr>
@@ -42,6 +41,14 @@
 						   href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}">
 							{{ product.RusName|raw }}</a>
 					{% endif %}
+
+					{% if product.Indication is defined and product.Indication is not empty %}
+						<img class="m" src="{{ asset('bundles/vidalmain/images/more.png') }}" title="Показания к применению"/>
+						<div>{{ product.Indication|raw }}</div>
+					{% elseif indications is defined and indications[product.ProductID] is not empty %}
+						<img class="m" src="{{ asset('bundles/vidalmain/images/more.png') }}" title="Показания к применению"/>
+						<div>{{ indications[product.ProductID]|raw }}</div>
+					{% endif %}
 				</td>
 				<td class="products-table-picture">
 					{% if not product.hidePhoto %}
@@ -57,15 +64,6 @@
 									><img src="{{ path }}"/></a>
 							{% endif %}
 						{% endif %}
-					{% endif %}
-				</td>
-				<td class="products-table-indication" title="Показания к применению">
-					{% if product.Indication is defined and product.Indication is not empty %}
-						<img src="{{ asset('bundles/vidalmain/images/more.png') }}"/>
-						<div>{{ product.Indication|raw }}</div>
-					{% elseif indications is defined and indications[product.ProductID] is not empty %}
-						<img src="{{ asset('bundles/vidalmain/images/more.png') }}"/>
-						<div>{{ indications[product.ProductID]|raw }}</div>
 					{% endif %}
 				</td>
 				<td class="products-table-zip">
