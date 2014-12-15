@@ -32,6 +32,7 @@ class BannerAdmin extends Admin
 			->add('fallback', 'iphp_file', array('label' => 'Изображение, если флэш не поддерживается', 'required' => false))
             ->add('width', null, array('label' => 'Ширина', 'required' => false ))
             ->add('height', null, array('label' => 'Высота', 'required' => false ))
+            ->add('onlyDoctor', null, array('label' => 'Только для зарегестрированных', 'required' => false))
 			->add('link', null, array('label' => 'Ссылка', 'required' => true))
 			->add('group', null, array('label' => 'Баннерное место', 'required' => true))
 			->add('expires', null, array('label' => 'Осталось показов', 'help' => 'Оставьте пустым, чтоб не учитывать'))

@@ -115,6 +115,9 @@ class Banner extends BaseEntity
 	/** @ORM\Column(type="boolean") */
 	protected $noStretch = false;
 
+    /** @ORM\Column(type="boolean") */
+    protected $onlyDoctor = false;
+
 	public function __construct()
 	{
 		$this->starts    = new \DateTime();
@@ -492,6 +495,22 @@ class Banner extends BaseEntity
     public function setWidth($width)
     {
         $this->width = $width;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOnlyDoctor()
+    {
+        return $this->onlyDoctor;
+    }
+
+    /**
+     * @param mixed $onlyDoctor
+     */
+    public function setOnlyDoctor($onlyDoctor = false)
+    {
+        $this->onlyDoctor = $onlyDoctor;
     }
 
 
