@@ -4,9 +4,18 @@
 
     <h2 style="width: 600px;">
         <div style="background: #D71344 !important; color: #FFF !important; padding: 5px 10px; font-size: 16px;">
-            <b>Здравствуйте. Ваш заказ принят. Ваши данные по заказу:</b>
+            <a style="color:white; font-weight:bold; text-decoration:none;" href="{{ apteka.link }}">
+				Ваш заказ в интернет-аптеке {{ apteka.title }} принят.
+			</a>
         </div>
+		<div style="background: #eee8aa; padding: 5px 10px; font-size: 16px;">
+			<b>Подробную информацию по заказу в интернет-аптеке <a href="{{ apteka.link }}">{{ apteka.title }}</a>
+				уточняйте по телефону: {{ apteka.phone }}</b>
+		</div>
     </h2>
+
+
+
     <table>
         <tr>
             <td>Код заказа:</td>
