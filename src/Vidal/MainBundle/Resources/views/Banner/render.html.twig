@@ -7,8 +7,8 @@
 		{% set width = banner.banner.width %}
 		{% set height = banner.banner.height %}
 	{% else %}
-		{% set width = banner.group.width %}
-		{% set height = banner.group.height %}
+		{% set width = (banner.width != null ? banner.width : banner.group.width ) %}
+		{% set height = (banner.height != null ? banner.height : banner.group.height ) %}
 	{% endif %}
 
 	<div id="{{ group }}" class="banner" style="width:{{ width }}px; height:{{ height }}px">
