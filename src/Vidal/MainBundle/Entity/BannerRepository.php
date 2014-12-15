@@ -17,7 +17,7 @@ class BannerRepository extends EntityRepository
 
 	}
 
-	public function findByGroup($groupId)
+	public function findByGroup($groupId,$user = null)
 	{
 		$qb = $this->createQueryBuilder('b');
 		$qb->select('b')
@@ -30,6 +30,9 @@ class BannerRepository extends EntityRepository
 			->andWhere('b.expires IS NULL OR b.expires > 0')
 			->setParameter('groupId', $groupId)
 			->setParameter('now', new \DateTime());
+        if ($user == null){
+            $qb->andWhere('b.onlyDoctor = 0');
+        }
 
 		$banners = $qb->getQuery()->getResult();
 
