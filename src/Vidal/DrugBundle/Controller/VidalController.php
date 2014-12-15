@@ -112,7 +112,7 @@ class VidalController extends Controller
 		if (!empty($products)) {
 			$productIds          = $this->getProductIds($products);
 			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
 			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 		}
 
@@ -138,7 +138,7 @@ class VidalController extends Controller
 		if (!empty($products)) {
 			$productIds          = $this->getProductIds($products);
 			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
 			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 		}
 
@@ -196,7 +196,7 @@ class VidalController extends Controller
 				$productIds          = $this->getProductIds($products);
 				$params['products']  = $products;
 				$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-				$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+				$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
 				$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 			}
 		}
@@ -333,7 +333,7 @@ class VidalController extends Controller
 			'products1' => $products1,
 			'products2' => $products2,
 			'companies' => $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds),
-			'pictures'  => $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y')),
+			'pictures'  => $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds),
 			'infoPages' => $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($productsRaw),
 			'title'     => mb_strtoupper($molecule->getTitle(), 'utf-8') . ' | Активные вещества в препаратах',
 		);
@@ -392,7 +392,7 @@ class VidalController extends Controller
 
 		$params['products']  = $products;
 		$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-		$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+		$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
 		$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 
 		return $params;
@@ -466,7 +466,7 @@ class VidalController extends Controller
 			return $this->render("VidalDrugBundle:Vidal:bad_document.html.twig", $params);
 		}
 		else {
-			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds, date('Y'));
+			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds);
 			$params['title']    = $this->strip($product->getRusName()) . ' - ' . $product->getZipInfo() . ' | Препараты';
 		}
 
