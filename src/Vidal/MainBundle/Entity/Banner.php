@@ -106,6 +106,12 @@ class Banner extends BaseEntity
 	/** @ORM\Column(type="text", nullable=true) */
 	protected $code;
 
+    /** @ORM\Column(type="integer", nullable=true) */
+    protected $width;
+
+    /** @ORM\Column(type="integer", nullable=true) */
+    protected $height;
+
 	/** @ORM\Column(type="boolean") */
 	protected $noStretch = false;
 
@@ -453,4 +459,38 @@ class Banner extends BaseEntity
 	{
 		$this->noStretch = $noStretch;
 	}
+
+    /**
+     * @return mixed
+     */
+    public function getHeight()
+    {
+        return $this->height;
+    }
+
+    /**
+     * @param mixed $height
+     */
+    public function setHeight($height)
+    {
+        $this->height = $height;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+    /**
+     * @param mixed $width
+     */
+    public function setWidth($width)
+    {
+        $this->width = $width;
+    }
+
+
 }
