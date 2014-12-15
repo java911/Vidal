@@ -309,7 +309,9 @@ class Banner extends BaseEntity
 
 	public function isSwf()
 	{
-		return $this->banner['mimeType'] == 'application/x-shockwave-flash';
+		$ext = pathinfo($this->banner['path'], PATHINFO_EXTENSION);
+
+		return $ext == 'swf' || $ext == 'fla';
 	}
 
 	/**
