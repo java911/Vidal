@@ -23,6 +23,7 @@ class AstrazenecaFaqRepository extends EntityRepository
 			WHERE f.enabled = TRUE
 				AND f.answer IS NOT NULL
 				AND LENGTH(f.answer) > 0
+			ORDER BY f.created DESC
 		')->getResult();
 	}
 }
