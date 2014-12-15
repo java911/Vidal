@@ -27,9 +27,9 @@ class BannerController extends Controller
 	public function renderAction($groupId, $testing = false)
 	{
         if ($this->getUser()){
-            $banners = $this->getDoctrine()->getRepository('VidalMainBundle:Banner')->findByGroup($groupId);
+            $banners = $this->getDoctrine()->getRepository('VidalMainBundle:Banner')->findByGroup($groupId,$this->getUser());
         }else{
-            $banners = $this->getDoctrine()->getRepository('VidalMainBundle:Banner')->findBy(array('group' => $groupId, 'onlyDoctor' => false ));
+            $banners = $this->getDoctrine()->getRepository('VidalMainBundle:Banner')->findByGroup($groupId,$this->getUser());
         }
         return $this->render('VidalMainBundle:Banner:render.html.twig', array(
             'banner'  => $banners,
