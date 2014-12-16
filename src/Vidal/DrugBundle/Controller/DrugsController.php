@@ -12,8 +12,8 @@ use Lsw\SecureControllerBundle\Annotation\Secure;
 
 class DrugsController extends Controller
 {
-	const PHARM_PER_PAGE    = 150;
-	const KFG_PER_PAGE      = 150;
+	const PHARM_PER_PAGE = 150;
+	const KFG_PER_PAGE = 150;
 	const PRODUCTS_PER_PAGE = 50;
 
 	private $nozologies;
@@ -421,8 +421,11 @@ class DrugsController extends Controller
 		}
 
 		$params = array(
-			'nozology' => $nozology,
-			'title'    => $nozology->getName() . ' | ' . 'Нозологический указатель',
+			'nozology'     => $nozology,
+			'title'        => $nozology->getName() . ' | ' . 'Нозологический указатель',
+			'articles'     => $em->getRepository('VidalDrugBundle:Article')->findByNozology($nozology),
+			'arts'         => $em->getRepository('VidalDrugBundle:Art')->findByNozology($nozology),
+			'publications' => $em->getRepository('VidalDrugBundle:Publication')->findByNozology($nozology),
 		);
 
 		$params['molecules'] = $em->getRepository('VidalDrugBundle:Molecule')->findByNozologyCode($Code);

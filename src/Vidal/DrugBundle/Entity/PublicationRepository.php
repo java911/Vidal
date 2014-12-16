@@ -140,4 +140,20 @@ class PublicationRepository extends EntityRepository
 				->getResult();
 		}
 	}
+
+	public function findByNozology($nozology)
+	{
+		$Code     = $nozology->getNozologyCode();
+		$MainCode = substr($Code, 0, 3);
+
+		return $this->_em->createQuery('
+			SELECT p
+			FROM VidalDrugBundle:Publication p
+			JOIN p.nozologies n
+			WHERE (n.NozologyCode = :Code OR n.NozologyCode = :MainCode)
+				AND p.enabled = TRUE
+		')->setParameter('Code', $Code)
+			->setParameter('MainCode', $MainCode)
+			->getResult();
+	}
 }
