@@ -17,6 +17,11 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
     exit('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
 }
 
+# память, необходимая админке Сонаты
+if (strpos($_SERVER['REQUEST_URI'], '/admin/vidal/') !== false) {
+	ini_set('memory_limit', -1);
+}
+
 $loader = require_once __DIR__.'/../app/bootstrap.php.cache';
 Debug::enable();
 

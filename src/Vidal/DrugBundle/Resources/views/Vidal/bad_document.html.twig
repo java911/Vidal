@@ -241,7 +241,7 @@
 	{% endif %}
 
 	{# цены Он-лайн аптек #}
-	{{ render( controller('VidalMainBundle:Market:productList', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}
+	{#{{ render( controller('VidalMainBundle:Market:productList', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}#}
 
 	{# блок горизонтального яндекс-директа #}
 	{% include 'VidalMainBundle::yad_horizontal.html.twig' %}

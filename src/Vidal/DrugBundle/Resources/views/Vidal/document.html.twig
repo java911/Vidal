@@ -39,10 +39,11 @@
 	{# Иконки использования при состояниях #}
 	{% if document is defined %}
 		{% include 'VidalDrugBundle:Vidal:document_conditions.html.twig' %}
-	{% else %}
-		<div class="conditions">
-			{{ render(controller('VidalMainBundle:Market:button', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}
-		</div>
+
+	{#{% else %}#}
+		{#<div class="conditions">#}
+			{#{{ render(controller('VidalMainBundle:Market:button', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}#}
+		{#</div>#}
 	{% endif %}
 
 	{# подробнее о препарате #}
@@ -277,7 +278,7 @@
 	{% include 'VidalMainBundle:Article:documents_of_product.html.twig' with {'object':product, 'label':'препарату', 'item':product.RusName} %}
 
 	{# цены Он-лайн аптек #}
-	{{ render( controller('VidalMainBundle:Market:productList', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}
+	{#{{ render( controller('VidalMainBundle:Market:productList', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}#}
 
 	{# блок горизонтального яндекс-директа #}
 	{% include 'VidalMainBundle::yad_horizontal.html.twig' %}
