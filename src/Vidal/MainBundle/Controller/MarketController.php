@@ -257,10 +257,15 @@ class MarketController extends Controller
 	 */
 	public function basketListAction(Request $request)
 	{
-		$basket = new Basket($request);
-		//        $basket->removeAll();
+		$basket   = new Basket($request);
 		$products = $basket->getAll();
 		$amounts  = $basket->getAmounts();
+		$count    = $basket->getCount();
+
+		if ($count == 0) {
+			return $this->redirect($this->generateUrl('index'));
+		}
+
 		return array(
 			'products' => $products,
 			'amounts'  => $amounts,

@@ -11,7 +11,7 @@
 		{% set height = (banner.height != null ? banner.height : banner.group.height ) %}
 	{% endif %}
 
-	<div id="{{ group }}" class="banner" style="width:{{ width }}px; height:{{ height }}px">
+	<div id="{{ group }}" class="banner banner-{{ banner.group.name }}" style="width:{{ width }}px; height:{{ height }}px">
 		{% if banner.code is not empty %}
 			{{ banner.code|raw }}
 		{% else %}

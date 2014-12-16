@@ -1283,10 +1283,13 @@ tr.bold td {
 	margin:   0 auto;
 	border:   1px solid #ddd;
 }
-#banner_top img {
+.banner-top {
+	margin-bottom: 15px;
+}
+.banner-top img {
 	border: none;
 }
-#banner_bottom {
+.banner-bottom {
 	clear:  both;
 	margin: 0 auto 20px;
 }

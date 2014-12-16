@@ -9,7 +9,7 @@ $(document).ready(function() {
 			source:    function(request, response) {
 				type = $selectType.val();
 				var query = '{' +
-					' "query":{"query_string":{"query":"' + request.term.trim() + '*"}}' +
+					' "query":{"query_string":{"query":"' + request.term.trim() + '*", "default_operator":"OR"}}' +
 					', "fields":["name","type"]' +
 					', "size":40' +
 					', "highlight":{"fields":{"name":{}}}';
