@@ -14,6 +14,15 @@
 
 	<script type="text/javascript">
 		$(document).ready(function() {
+
+            $.ajax({
+                type: "GET",
+                url: "{{ path('get-popup') }}",
+                success: function(msg){
+
+                }
+            });
+
             if (typeof(noBanner)=='undefined' || noBanner != true){
                 var popup = getCookie('popupvidal');
 

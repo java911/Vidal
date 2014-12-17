@@ -7,7 +7,7 @@ use Iphp\FileStoreBundle\Mapping\Annotation as FileStore;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="PopupRepository")
  * @ORM\Table(name="Popup")
  * @Filestore\Uploadable
  */
