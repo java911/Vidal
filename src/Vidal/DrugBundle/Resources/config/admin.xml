@@ -161,6 +161,14 @@
 			<argument />
 		</service>
 
+        <service id="sonata.admin.popup" class="Vidal\MainBundle\Admin\PopupAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Баннеры" label="Всплывающий баннер"/>
+            <argument />
+            <argument>Vidal\MainBundle\Entity\Popup</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+            <argument />
+        </service>
+
 		<!-- Справочник -->
 		<service id="sonata.admin.document" class="Vidal\DrugBundle\Admin\DocumentAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="Справочник" label="Документы"/>
