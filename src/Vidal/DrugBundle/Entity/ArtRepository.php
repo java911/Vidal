@@ -145,18 +145,16 @@ class ArtRepository extends EntityRepository
 		}
 	}
 
-	public function findByNozology($NozologyCode, $MainCode)
+	public function findByNozology($nozologyCodes)
 	{
 		return $this->_em->createQuery('
 			SELECT a
 			FROM VidalDrugBundle:Art a
-			JOIN a.nozologies n
+			JOIN a.nozologies n WITH n.NozologyCode IN (:codes)
 			JOIN a.rubrique r
-			WHERE (n.NozologyCode = :NozologyCode OR (n.Code LIKE :MainCode AND n.Level = 0))
-				AND a.enabled = TRUE
-				AND r.enabled = TRUE
-		')->setParameter('NozologyCode', $NozologyCode)
-			->setParameter('MainCode', $MainCode . '%')
+			WHERE a.enabled = TRUE AND r.enabled = TRUE
+			ORDER BY a.date DESC
+		')->setParameter('codes', $nozologyCodes)
 			->getResult();
 	}
 }

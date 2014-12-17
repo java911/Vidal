@@ -141,16 +141,15 @@ class PublicationRepository extends EntityRepository
 		}
 	}
 
-	public function findByNozology($NozologyCode, $MainCode)
+	public function findByNozology($nozologyCodes)
 	{
 		return $this->_em->createQuery('
-			SELECT p
-			FROM VidalDrugBundle:Publication p
-			JOIN p.nozologies n
-			WHERE (n.NozologyCode = :NozologyCode OR (n.Code LIKE :MainCode AND n.Level = 0))
-				AND p.enabled = TRUE
-		')->setParameter('NozologyCode', $NozologyCode)
-			->setParameter('MainCode', $MainCode . '%')
+			SELECT a
+			FROM VidalDrugBundle:Publication a
+			JOIN a.nozologies n WITH n.NozologyCode IN (:codes)
+			WHERE a.enabled = TRUE
+			ORDER BY a.date DESC
+		')->setParameter('codes', $nozologyCodes)
 			->getResult();
 	}
 }

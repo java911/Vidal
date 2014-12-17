@@ -420,15 +420,25 @@ class DrugsController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		$NozologyCode = $nozology->getNozologyCode();
-		$MainCode     = substr($Code, 0, 1);
+		# надо найти нозологический код у этой назологии и родительской
+		$nozologyCodes = array($nozology->getNozologyCode());
+		if ($parent = $nozology->getParent()) {
+			if ($parent->getLevel()) {
+				$nozologyCodes[] = $parent->getNozologyCode();
+				if ($grandparent = $parent->getParent()) {
+					if ($grandparent->getLevel()) {
+						$nozologyCodes[] = $grandparent->getNozologyCode();
+					}
+				}
+			}
+		}
 
 		$params = array(
 			'nozology'     => $nozology,
 			'title'        => $nozology->getName() . ' | ' . 'Нозологический указатель',
-			'articles'     => $em->getRepository('VidalDrugBundle:Article')->findByNozology($NozologyCode, $MainCode),
-			'arts'         => $em->getRepository('VidalDrugBundle:Art')->findByNozology($NozologyCode, $MainCode),
-			'publications' => $em->getRepository('VidalDrugBundle:Publication')->findByNozology($NozologyCode, $MainCode),
+			'articles'     => $em->getRepository('VidalDrugBundle:Article')->findByNozology($nozologyCodes),
+			'arts'         => $em->getRepository('VidalDrugBundle:Art')->findByNozology($nozologyCodes),
+			'publications' => $em->getRepository('VidalDrugBundle:Publication')->findByNozology($nozologyCodes),
 		);
 
 		$params['molecules'] = $em->getRepository('VidalDrugBundle:Molecule')->findByNozologyCode($Code);

@@ -166,7 +166,7 @@ class NozologyRepository extends EntityRepository
 	public function jsonForTree()
 	{
 		$raw = $this->_em->createQuery('
-			SELECT n.Code id, n.Name text, n.Level, n.countProducts
+			SELECT n.Code id, n.Name text, n.Level, n.countProducts, n.NozologyCode nc
 			FROM VidalDrugBundle:Nozology n
 			ORDER BY n.NozologyCode
 		')->getResult();
