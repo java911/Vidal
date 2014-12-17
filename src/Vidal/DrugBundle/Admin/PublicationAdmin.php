@@ -13,20 +13,15 @@ use Vidal\DrugBundle\Transformer\TagTransformer;
 
 class PublicationAdmin extends Admin
 {
-	protected $datagridValues;
-
-	public function __construct($code, $class, $baseControllerName)
+	public function createQuery($context = 'list')
 	{
-		parent::__construct($code, $class, $baseControllerName);
+		$queryBuilder = $this->getModelManager()->getEntityManager($this->getClass())->createQueryBuilder();
+		$queryBuilder->select('p')
+			->from($this->getClass(), 'p')
+			->orderby('p.date DESC, p.id');
 
-		if (!$this->hasRequest()) {
-			$this->datagridValues = array(
-				'_page'       => 1,
-				'_per_page'   => 25,
-				'_sort_order' => 'DESC',
-				'_sort_by'    => 'date'
-			);
-		}
+		$proxyQuery = new \Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery($queryBuilder);
+		return $proxyQuery;
 	}
 
 	protected function configureShowField(ShowMapper $showMapper)

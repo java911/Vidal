@@ -7,26 +7,22 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Doctrine\ORM\EntityRepository;
 use Vidal\DrugBundle\Transformer\DocumentTransformer;
 use Vidal\DrugBundle\Transformer\TagTransformer;
 
 class ArtAdmin extends Admin
 {
-	protected $datagridValues;
-
-	public function __construct($code, $class, $baseControllerName)
+	public function createQuery($context = 'list')
 	{
-		parent::__construct($code, $class, $baseControllerName);
+		$queryBuilder = $this->getModelManager()->getEntityManager($this->getClass())->createQueryBuilder();
+		$queryBuilder->select('a')
+			->from($this->getClass(), 'a')
+			->orderby('a.date DESC, a.id');
 
-		if (!$this->hasRequest()) {
-			$this->datagridValues = array(
-				'_page'       => 1,
-				'_per_page'   => 25,
-				'_sort_order' => 'DESC',
-				'_sort_by'    => 'date',
-			);
-		}
+		$proxyQuery = new \Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery($queryBuilder);
+		return $proxyQuery;
 	}
 
 	protected function configureFormFields(FormMapper $formMapper)
