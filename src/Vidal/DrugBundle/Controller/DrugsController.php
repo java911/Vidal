@@ -420,12 +420,15 @@ class DrugsController extends Controller
 			throw $this->createNotFoundException();
 		}
 
+		$NozologyCode = $nozology->getNozologyCode();
+		$MainCode     = substr($Code, 0, 1);
+
 		$params = array(
 			'nozology'     => $nozology,
 			'title'        => $nozology->getName() . ' | ' . 'Нозологический указатель',
-			'articles'     => $em->getRepository('VidalDrugBundle:Article')->findByNozology($nozology),
-			'arts'         => $em->getRepository('VidalDrugBundle:Art')->findByNozology($nozology),
-			'publications' => $em->getRepository('VidalDrugBundle:Publication')->findByNozology($nozology),
+			'articles'     => $em->getRepository('VidalDrugBundle:Article')->findByNozology($NozologyCode, $MainCode),
+			'arts'         => $em->getRepository('VidalDrugBundle:Art')->findByNozology($NozologyCode, $MainCode),
+			'publications' => $em->getRepository('VidalDrugBundle:Publication')->findByNozology($NozologyCode, $MainCode),
 		);
 
 		$params['molecules'] = $em->getRepository('VidalDrugBundle:Molecule')->findByNozologyCode($Code);
