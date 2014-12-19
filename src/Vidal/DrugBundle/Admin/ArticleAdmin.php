@@ -15,12 +15,16 @@ class ArticleAdmin extends Admin
 {
 	public function createQuery($context = 'list')
 	{
-		$queryBuilder = $this->getModelManager()->getEntityManager($this->getClass())->createQueryBuilder();
-		$queryBuilder->select('a')
-			->from($this->getClass(), 'a')
-			->orderby('a.date DESC, a.id');
+		$qb = $this->getModelManager()->getEntityManager($this->getClass())->createQueryBuilder();
+		$qb->select('a')->from($this->getClass(), 'a');
 
-		$proxyQuery = new \Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery($queryBuilder);
+		if (!isset($_GET['filter']['_sort_by']) || $_GET['filter']['_sort_by'] == 'created') {
+			$order = isset($_GET['filter']['_sort_order']) ? $_GET['filter']['_sort_order'] : 'DESC';
+			$qb->orderBy('a.date', $order)->addOrderBy('a.id', 'ASC');
+		}
+
+		$proxyQuery = new \Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery($qb);
+
 		return $proxyQuery;
 	}
 
