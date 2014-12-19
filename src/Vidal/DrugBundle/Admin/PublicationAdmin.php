@@ -165,11 +165,8 @@ class PublicationAdmin extends Admin
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
 			->add('tags', null, array('label' => 'Теги', 'template' => 'VidalDrugBundle:Sonata:tags.html.twig'))
-			->add('date', null, array(
-				'label'  => 'Дата создания',
-				'widget' => 'single_text',
-				'format' => 'd.m.Y в H:i'
-			))
+			->add('date', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
+			->add('updated', null, array('label' => 'Дата изменения', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
 			->add('priority', null, array('label' => 'Приоритет'))
 			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
 			->add('_action', 'actions', array(
