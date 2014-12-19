@@ -1,0 +1,85 @@
+{% extends 'VidalMainBundle::layout.html.twig' %}
+
+
+{% block title %}
+	<h1>КАРТА АПТЕК</h1>
+{% endblock %}
+
+
+{% block content %}
+	<div class="anons">Выберите ближайшую к Вам аптеку</div>
+
+	<div class="iption">
+		<select class="select">
+			{% for r in regions %}
+				<option value="{{ r.id }}" {{ r.id == regionId ? 'selected="selected"' : '' }}>{{ r.title }}</option>
+			{% endfor %}
+		</select>
+	</div>
+
+	<div class="map" id="map"></div>
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		#map {
+			margin-top: 20px;
+			width:      520px;
+			height:     400px
+		}
+	</style>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+	<script type="text/javascript">
+		ymaps.ready(function() {
+			$.getJSON(Routing.generate('pharmacies_data', {'regionId':$('.select').val()}), init);
+		});
+
+		function init(data) {
+			var map = new ymaps.Map('map', {
+				center: [data.region.latitude, data.region.longitude],
+				zoom: data.region.zoom
+			});
+
+			// Создадим массив геообъектов.
+			var myGeoObjects = [];
+
+			for (var i=0; i<data.coords.length; i++) {
+				myGeoObjects.push(new ymaps.GeoObject({
+					geometry: {type:"Point", coordinates:[data.coords[i].latitude, data.coords[i].longitude]}
+				}));
+			}
+
+//			myGeoObjects[1] = new ymaps.GeoObject({
+//				geometry:   {type: "Point", coordinates: [56.021, 36.983]},
+//				properties: {
+//					clusterCaption:     'Геообъект №2',
+//					balloonContentBody: 'Содержимое балуна геообъекта №2.'
+//				}
+//			});
+
+			// Создадим кластеризатор и запретим приближать карту при клике на кластеры.
+			var clusterer = new ymaps.Clusterer({clusterDisableClickZoom: true});
+			clusterer.add(myGeoObjects);
+			map.geoObjects.add(clusterer);
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+
+		$(document).ready(function() {
+			$('.select').chosen({
+				disable_search:  true,
+				no_results_text: "не найдено"
+			}).change(function() {
+				location.href = Routing.generate('pharmacies_map', {'id': $(this).val()});
+			});
+
+		});
+	</script>
+{% endblock %}
