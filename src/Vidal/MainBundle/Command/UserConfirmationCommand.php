@@ -45,6 +45,8 @@ class UserConfirmationCommand extends ContainerAwareCommand
 				$output->writeln("... $i / $total");
 				sleep(60);
 			}
+
+			$i++;
 		}
 
 		$output->writeln('+++ vidal:user:confirmation completed!');
