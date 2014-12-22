@@ -36,4 +36,25 @@ class BannerController extends Controller
             'testing' => $testing,
         ));
 	}
+
+    /**
+     * @Route("/get-popup", name="get-popup", options={"expose"=true})
+     * @Template()
+     */
+    public function getPopupAction(){
+        $popup = $this->getDoctrine()->getRepository('VidalMainBundle:Popup')->findPopup();
+        if ($popup){
+            $img = $popup->getImage();
+            $array = array('data'=>array(
+                'img'  => $img['path'],
+                'link' => $popup->getLink()
+            ));
+            $array = json_encode($array);
+        }else{
+            $array = 'no';
+        }
+        echo $array;
+        exit;
+
+    }
 }
