@@ -6,30 +6,30 @@
                 {#<img src="{{ asset('bundles/vidalmain/images/banner-gastrit2.jpg') }}"/>#}
             {#</a>#}
         {#{% else %}#}
-            <a href="http://www.vidal.ru/collost?banner-pop-up" target="_blank">
-                <img src="{{ asset('bundles/vidalmain/images/banner-popup2.jpeg') }}"/>
+            <a href="#" target="_blank" id="popup-link">
+                <img src="" id="popup-img" style="width: 400px; max-height: 400px"/>
             </a>
         {#{% endif %}#}
 	</div>
 
 	<script type="text/javascript">
 		$(document).ready(function() {
-
-            $.ajax({
-                type: "GET",
-                url: "{{ path('get-popup') }}",
-                success: function(msg){
-
-                }
-            });
-
             if (typeof(noBanner)=='undefined' || noBanner != true){
                 var popup = getCookie('popupvidal');
-
                 if (popup == undefined) {
-                    setCookie('popupvidal', '1', {expires: 28800});
-                    $('.gray').fadeIn();
-                    $('#popupvidal').fadeIn();
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ path('get-popup') }}",
+                        success: function(msg){
+                            msg = $.parseJSON(msg);
+                            msg = msg.data;
+                            $('#popup-img').attr('src',msg.img);
+                            $('#popup-link').attr('href',msg.link);
+                            setCookie('popupvidal', '1', {expires: 28800});
+                            $('.gray').fadeIn();
+                            $('#popupvidal').fadeIn();
+                        }
+                    });
                 }
 
                 $('#closepopupvidal').click(function() {
