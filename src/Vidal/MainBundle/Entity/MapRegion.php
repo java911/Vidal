@@ -7,153 +7,151 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="MapRegionRepository")
  * @ORM\Table(name="mapregion")
  */
 class MapRegion
 {
+	/**
+	 * @ORM\Column(type = "string")
+	 */
+	protected $latitude;
 
-    /**
-     * @ORM\Column(type = "string")
-     */
-    protected $latitude;
+	/**
+	 * @ORM\Column(type = "string")
+	 */
+	protected $longitude;
 
-    /**
-     * @ORM\Column(type = "string")
-     */
-    protected $longitude;
+	/**
+	 * @ORM\Column(type = "integer")
+	 */
+	protected $zoom;
 
-    /**
-     * @ORM\Column(type = "integer")
-     */
-    protected $zoom;
+	/**
+	 * @ORM\Id
+	 * @ORM\Column(type = "integer")
+	 * @ORM\GeneratedValue
+	 */
+	protected $id;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type = "integer")
-     * @ORM\GeneratedValue
-     */
-    protected $id;
+	/**
+	 * @ORM\Column(type = "string")
+	 */
+	protected $title;
 
-    /**
-     * @ORM\Column(type = "string")
-     */
-    protected $title;
+	/**
+	 * @ORM\OneToMany(targetEntity="MapCoord", mappedBy="region")
+	 */
+	protected $coords;
 
-    /**
-     * @ORM\OneToMany(targetEntity="MapCoord", mappedBy="region")
-     */
-    protected $coords;
+	public function __construct()
+	{
+		$this->coords = new ArrayCollection();
+	}
 
-    public function __construct(){
-        $this->coords = new ArrayCollection();
-    }
+	/**
+	 * @param mixed $id
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
+	}
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+	/**
+	 * @param mixed $title
+	 */
+	public function setTitle($title)
+	{
+		$this->title = $title;
+	}
 
-    /**
-     * @param mixed $title
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getTitle()
+	{
+		return $this->title;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
+	/**
+	 * @param mixed $coords
+	 */
+	public function setCoords($coords)
+	{
+		$this->coords = $coords;
+	}
 
-    /**
-     * @param mixed $coords
-     */
-    public function setCoords($coords)
-    {
-        $this->coords = $coords;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getCoords()
+	{
+		return $this->coords;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getCoords()
-    {
-        return $this->coords;
-    }
+	public function addCoord($coord)
+	{
+		$this->coords[] = $coord;
+	}
 
+	public function removeCoord($coord)
+	{
+		$this->coords->removeElement($coord);
+	}
 
-    public function addCoord($coord){
-        $this->coords[] = $coord;
-    }
+	/**
+	 * @param mixed $latitude
+	 */
+	public function setLatitude($latitude)
+	{
+		$this->latitude = $latitude;
+	}
 
-    public function removeCoord($coord){
-        $this->coords->removeElement($coord);
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getLatitude()
+	{
+		return $this->latitude;
+	}
 
-    /**
-     * @param mixed $latitude
-     */
-    public function setLatitude($latitude)
-    {
-        $this->latitude = $latitude;
-    }
+	/**
+	 * @param mixed $longitude
+	 */
+	public function setLongitude($longitude)
+	{
+		$this->longitude = $longitude;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getLatitude()
-    {
-        return $this->latitude;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getLongitude()
+	{
+		return $this->longitude;
+	}
 
-    /**
-     * @param mixed $longitude
-     */
-    public function setLongitude($longitude)
-    {
-        $this->longitude = $longitude;
-    }
+	/**
+	 * @param mixed $zoom
+	 */
+	public function setZoom($zoom)
+	{
+		$this->zoom = $zoom;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getLongitude()
-    {
-        return $this->longitude;
-    }
-
-    /**
-     * @param mixed $zoom
-     */
-    public function setZoom($zoom)
-    {
-        $this->zoom = $zoom;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getZoom()
-    {
-        return $this->zoom;
-    }
-
-
-
+	/**
+	 * @return mixed
+	 */
+	public function getZoom()
+	{
+		return $this->zoom;
+	}
 }

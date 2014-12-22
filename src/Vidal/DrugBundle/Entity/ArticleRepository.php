@@ -70,14 +70,14 @@ class ArticleRepository extends EntityRepository
 				AND a.synonym NOT LIKE :l6
 			ORDER BY a.title ASC
 		')->setParameters(array(
-				'now' => new \DateTime(),
-				'l1'  => $l . '%',
-				'l2'  => '% ' . $l . '%',
-				'l3'  => $l . '%',
-				'l4'  => '% ' . $l . '%',
-				'l5'  => '% ' . $l . ' %',
-				'l6'  => '% ' . $l . ' %',
-			))
+			'now' => new \DateTime(),
+			'l1'  => $l . '%',
+			'l2'  => '% ' . $l . '%',
+			'l3'  => $l . '%',
+			'l4'  => '% ' . $l . '%',
+			'l5'  => '% ' . $l . ' %',
+			'l6'  => '% ' . $l . ' %',
+		))
 			->getResult();
 	}
 
@@ -216,5 +216,18 @@ class ArticleRepository extends EntityRepository
 			')->setParameter('ids', $ids)
 				->getResult();
 		}
+	}
+
+	public function findByNozology($nozologyCodes)
+	{
+		return $this->_em->createQuery('
+			SELECT a
+			FROM VidalDrugBundle:Article a
+			JOIN a.nozologies n WITH n.NozologyCode IN (:codes)
+			JOIN a.rubrique r
+			WHERE a.enabled = TRUE AND r.enabled = TRUE
+			ORDER BY a.date DESC
+		')->setParameter('codes', $nozologyCodes)
+			->getResult();
 	}
 }

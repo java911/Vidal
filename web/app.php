@@ -5,6 +5,11 @@ error_reporting(0);
 use Symfony\Component\ClassLoader\ApcClassLoader;
 use Symfony\Component\HttpFoundation\Request;
 
+# память, необходимая админке Сонаты
+if (strpos($_SERVER['REQUEST_URI'], '/admin/vidal/') !== false) {
+	ini_set('memory_limit', -1);
+}
+
 $loader = require_once __DIR__.'/../app/bootstrap.php.cache';
 
 // Use APC for autoloading to improve performance.

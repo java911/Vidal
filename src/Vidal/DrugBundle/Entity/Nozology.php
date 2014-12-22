@@ -11,8 +11,17 @@ class Nozology
 	/** @ORM\Id @ORM\Column(length=8) */
 	protected $NozologyCode;
 
-	/** @ORM\Column(length=8, nullable=true) */
+	/** @ORM\Column(length=8) */
 	protected $Code;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="Nozology", inversedBy="children")
+	 * @ORM\JoinColumn(name="ParentNozologyCode", referencedColumnName="NozologyCode")
+	 */
+	protected $parent;
+
+	/** @ORM\OneToMany(targetEntity="Nozology", mappedBy="parent") */
+	protected $children;
 
 	/** @ORM\Column(length=500, nullable=true) */
 	protected $Name;
@@ -77,6 +86,7 @@ class Nozology
 		$this->arts          = new ArrayCollection();
 		$this->publications  = new ArrayCollection();
 		$this->pharmArticles = new ArrayCollection();
+		$this->children      = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -258,5 +268,37 @@ class Nozology
 	public function getCountProducts()
 	{
 		return $this->countProducts;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getChildren()
+	{
+		return $this->children;
+	}
+
+	/**
+	 * @param mixed $children
+	 */
+	public function setChildren($children)
+	{
+		$this->children = $children;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getParent()
+	{
+		return $this->parent;
+	}
+
+	/**
+	 * @param mixed $parent
+	 */
+	public function setParent($parent)
+	{
+		$this->parent = $parent;
 	}
 }

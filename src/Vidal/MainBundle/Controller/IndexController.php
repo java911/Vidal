@@ -52,10 +52,12 @@ class IndexController extends Controller
 	{
 		$em  = $this->getDoctrine()->getManager();
 		$faq = new QuestionAnswer();
-		if ($this->getUser()) {
-			$faq->setAuthorFirstName($this->getUser()->getFirstname());
-			$faq->setAuthorEmail($this->getUser()->getUsername());
+
+		if ($user = $this->getUser()) {
+			$faq->setAuthorFirstName($user->getFirstname());
+			$faq->setAuthorEmail($user->getUsername());
 		}
+
 		$builder = $this->createFormBuilder($faq);
 		$builder
 			->add('authorFirstName', null, array('label' => 'Ваше имя'))
@@ -66,8 +68,8 @@ class IndexController extends Controller
 				'required'      => true,
 				'class'         => 'VidalMainBundle:QuestionAnswerPlace',
 				'query_builder' => function (EntityRepository $er) {
-						return $er->createQueryBuilder('s')->orderBy('s.title', 'ASC');
-					}
+					return $er->createQueryBuilder('s')->orderBy('s.title', 'ASC');
+				}
 			))
 			->add('question', null, array('label' => 'Вопрос'))
 			->add('captcha', 'captcha', array('label' => 'Введите код с картинки'))
@@ -75,12 +77,19 @@ class IndexController extends Controller
 
 		$form = $builder->getForm();
 		$form->handleRequest($request);
+
 		$t = 0;
 		if ($request->isMethod('POST')) {
 			$t = 1;
 			if ($form->isValid()) {
 				$t   = 2;
 				$faq = $form->getData();
+
+				$checkFaq = $em->getRepository('VidalMainBundle:QuestionAnswer')->findOneByQuestion($faq->getQuestion());
+				if ($checkFaq) {
+					return $this->redirect($this->generateUrl('qa_asked', array('id' => $checkFaq->getId())));
+				}
+
 				$faq->setEnabled(0);
 				$em->persist($faq);
 				$em->flush();
@@ -91,6 +100,8 @@ class IndexController extends Controller
 					array('VidalMainBundle:Email:qa_question.html.twig', array('faq' => $faq)),
 					'Вопрос на сайте vidal.ru'
 				);
+
+				return $this->redirect($this->generateUrl('qa_asked', array('id' => $faq->getId())));
 			}
 		}
 		$qus          = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findByEnabled();
@@ -104,6 +115,21 @@ class IndexController extends Controller
 			't'               => $t,
 			'qaPagination'    => $qaPagination
 		);
+	}
+
+	/**
+	 * @Route("/otvety_specialistov/asked/{id}", name="qa_asked")
+	 * @Template("VidalMainBundle:Index:qa_asked.html.twig")
+	 */
+	public function qaAskedAction($id)
+	{
+		$qa = $this->getDoctrine()->getRepository('VidalMainBundle:QuestionAnswer')->findOneById($id);
+
+		if (!$qa) {
+			throw $this->createNotFoundException();
+		}
+
+		return array('qa' => $qa);
 	}
 
 	/**
@@ -172,27 +198,28 @@ class IndexController extends Controller
 		else {
 			return $this->redirect($this->generateUrl('qa_admin'));
 		}
+
 		$form->handleRequest($request);
 
-		if ($request->isMethod('POST')) {
-			if ($form->isValid()) {
-				$faq = $form->getData();
-				$faq->setEnabled(1);
-				$faq->setAnswerUser($this->getUser());
+		if ($form->isValid()) {
+			$faq->setEnabled(true);
+			$faq->setAnswerUser($this->getUser());
 
-				if ($faq->getAnswer() != null) {
-					$em->flush($faq);
+			if ($faq->getEmailSent() == false) {
+				$this->get('email.service')->send(
+					$faq->getAuthorEmail(),
+					array('VidalMainBundle:Email:qa_answer.html.twig', array('faq' => $faq)),
+					'Ответ специалиста на сайте vidal.ru'
+				);
 
-					$this->get('email.service')->send(
-						$faq->getAuthorEmail(),
-						array('VidalMainBundle:Email:qa_answer.html.twig', array('faq' => $faq)),
-						'Ответ на сайте vidal.ru'
-					);
-
-					return $this->redirect($this->generateUrl('qa_admin'));
-				}
+				$faq->setEmailSent(true);
 			}
+
+			$em->flush();
+
+			return $this->redirect($this->generateUrl('qa_admin'));
 		}
+
 		return array('form' => $form->createView(), 'question' => $question);
 	}
 
@@ -455,41 +482,45 @@ class IndexController extends Controller
 		}
 	}
 
-    /**
-     * @Route("/first-set", name="first_set")
-     * @Template()
-     */
-    public function firstSetAction(){
-        $em = $this->getDoctrine()->getManager();
-        $firstset = false;
-        if ($this->getUser()){
-            $user = $em->getRepository('VidalMainBundle:User')->find($this->getUser()->getId());
-            if ($user==null || $user->getFirstset() == false){
-                $firstset = false;
-            }else{
-                $user->setFirstset(true);
-                $em->flush($user);
-                $firstset = true;
-            }
-        }
-        return array('firstset' => $firstset);
-    }
+	/**
+	 * @Route("/first-set", name="first_set")
+	 * @Template()
+	 */
+	public function firstSetAction()
+	{
+		$em       = $this->getDoctrine()->getManager();
+		$firstset = false;
+		if ($this->getUser()) {
+			$user = $em->getRepository('VidalMainBundle:User')->find($this->getUser()->getId());
+			if ($user == null || $user->getFirstset() == false) {
+				$firstset = false;
+			}
+			else {
+				$user->setFirstset(true);
+				$em->flush($user);
+				$firstset = true;
+			}
+		}
+		return array('firstset' => $firstset);
+	}
 
-    /**
-     * @Route("/profile/{userId}", name="profile_user")
-     * @Template()
-     */
-    public function profileAction($userId){
-        $user = $this->getDoctrine()->getRepository('VidalMainBundle:User')->find($userId);
+	/**
+	 * @Route("/profile/{userId}", name="profile_user")
+	 * @Template()
+	 */
+	public function profileAction($userId)
+	{
+		$user = $this->getDoctrine()->getRepository('VidalMainBundle:User')->find($userId);
 
-        return array('user' => $user);
-    }
+		return array('user' => $user);
+	}
 
-    /**
-     * @Route("/vebinar-pulmo", name="vebinar-pulmo")
-     * @Template()
-     */
-    public function vebinarAction(){
-        return Array();
-    }
+	/**
+	 * @Route("/vebinar-pulmo", name="vebinar-pulmo")
+	 * @Template()
+	 */
+	public function vebinarAction()
+	{
+		return Array();
+	}
 }

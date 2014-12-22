@@ -12,8 +12,8 @@ use Lsw\SecureControllerBundle\Annotation\Secure;
 
 class DrugsController extends Controller
 {
-	const PHARM_PER_PAGE    = 150;
-	const KFG_PER_PAGE      = 150;
+	const PHARM_PER_PAGE = 150;
+	const KFG_PER_PAGE = 150;
 	const PRODUCTS_PER_PAGE = 50;
 
 	private $nozologies;
@@ -420,9 +420,25 @@ class DrugsController extends Controller
 			throw $this->createNotFoundException();
 		}
 
+		# надо найти нозологический код у этой назологии и родительской
+		$nozologyCodes = array($nozology->getNozologyCode());
+		if ($parent = $nozology->getParent()) {
+			if ($parent->getLevel()) {
+				$nozologyCodes[] = $parent->getNozologyCode();
+				if ($grandparent = $parent->getParent()) {
+					if ($grandparent->getLevel()) {
+						$nozologyCodes[] = $grandparent->getNozologyCode();
+					}
+				}
+			}
+		}
+
 		$params = array(
-			'nozology' => $nozology,
-			'title'    => $nozology->getName() . ' | ' . 'Нозологический указатель',
+			'nozology'     => $nozology,
+			'title'        => $nozology->getName() . ' | ' . 'Нозологический указатель',
+			'articles'     => $em->getRepository('VidalDrugBundle:Article')->findByNozology($nozologyCodes),
+			'arts'         => $em->getRepository('VidalDrugBundle:Art')->findByNozology($nozologyCodes),
+			'publications' => $em->getRepository('VidalDrugBundle:Publication')->findByNozology($nozologyCodes),
 		);
 
 		$params['molecules'] = $em->getRepository('VidalDrugBundle:Molecule')->findByNozologyCode($Code);

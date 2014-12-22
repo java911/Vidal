@@ -1,5 +1,6 @@
 {% if banner and is_file(banner.banner.path) %}
 	{% set group = 'banner_' ~ banner.id %}
+	{% set name = 'banner-' ~ banner.group.name %}
 	{% set isSwf = banner.isSwf() %}
 	{% set isProd = app.environment == 'prod' %}
 
@@ -11,7 +12,7 @@
 		{% set height = (banner.height != null ? banner.height : banner.group.height ) %}
 	{% endif %}
 
-	<div id="{{ group }}" class="banner" style="width:{{ width }}px; height:{{ height }}px">
+	<div id="{{ group }}" class="banner {{ name }}" style="width:{{ width }}px; height:{{ height }}px">
 		{% if banner.code is not empty %}
 			{{ banner.code|raw }}
 		{% else %}
@@ -59,7 +60,7 @@
 		});
 	</script>
 
-	{% if group == 'banner_top' %}
+	{% if name == 'banner-top' %}
 		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/banner_top.css') }}"/>
 	{% endif %}
 {% endif %}

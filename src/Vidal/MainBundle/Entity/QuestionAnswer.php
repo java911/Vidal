@@ -28,8 +28,9 @@ class QuestionAnswer extends BaseEntity
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="QuestionAnswerPlace", inversedBy="qas")
+	 * @Assert\NotBlank(message="Пожалуйста, укажите область заболевания")
 	 */
-	protected $place = 0;
+	protected $place;
 
 	/**
 	 * @ORM\Column(type="text")

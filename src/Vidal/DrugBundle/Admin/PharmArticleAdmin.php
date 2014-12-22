@@ -14,20 +14,19 @@ use Vidal\DrugBundle\Transformer\TagTransformer;
 
 class PharmArticleAdmin extends Admin
 {
-	protected $datagridValues;
-
-	public function __construct($code, $class, $baseControllerName)
+	public function createQuery($context = 'list')
 	{
-		parent::__construct($code, $class, $baseControllerName);
+		$qb = $this->getModelManager()->getEntityManager($this->getClass())->createQueryBuilder();
+		$qb->select('a')->from($this->getClass(), 'a');
 
-		if (!$this->hasRequest()) {
-			$this->datagridValues = array(
-				'_page'       => 1,
-				'_per_page'   => 25,
-				'_sort_order' => 'DESC',
-				'_sort_by'    => 'created'
-			);
+		if (!isset($_GET['filter']['_sort_by']) || $_GET['filter']['_sort_by'] == 'created') {
+			$order = isset($_GET['filter']['_sort_order']) ? $_GET['filter']['_sort_order'] : 'DESC';
+			$qb->orderBy('a.created', $order)->addOrderBy('a.id', 'ASC');
 		}
+
+		$proxyQuery = new \Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery($qb);
+
+		return $proxyQuery;
 	}
 
 	protected function configureShowField(ShowMapper $showMapper)
