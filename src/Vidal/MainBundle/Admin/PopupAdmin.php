@@ -31,7 +31,7 @@ class PopupAdmin extends Admin
             ->add('title', null, array('label' => 'Название', 'required' => true))
 			->add('image', 'iphp_file', array('label' => 'Баннер'))
 			->add('link', null, array('label' => 'Ссылка', 'required' => true))
-			->add('frequency', null, array('label' => 'частота показа в сутки', 'required' => true))
+			->add('frequency', null, array('label' => 'Приоритет', 'required' => true))
 			->add('enabled', null, array('label' => 'Активен', 'required' => false));
 	}
 
@@ -40,7 +40,7 @@ class PopupAdmin extends Admin
 		$datagridMapper
 			->add('id')
             ->add('title', null, array('label' => 'Название', 'required' => true))
-            ->add('frequency', null, array('label' => 'частота показа в сутки', 'required' => true))
+            ->add('frequency', null, array('label' => 'Приоритет', 'required' => true))
             ->add('counter', null, array('label' => 'Счетчик', 'required' => true))
             ->add('enabled', null, array('label' => 'Активен', 'required' => false));
 	}
@@ -50,7 +50,7 @@ class PopupAdmin extends Admin
 		$listMapper
 			->add('id')
             ->add('title', null, array('label' => 'Название', 'required' => true))
-            ->add('frequency', null, array('label' => 'частота показа в сутки', 'required' => true))
+            ->add('frequency', null, array('label' => 'Приоритет', 'required' => true))
 			->add('enabled', null, array('label' => 'Активен', 'template' => 'VidalDrugBundle:Sonata:swap_enabled_main.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',

@@ -21,13 +21,15 @@
                         type: "GET",
                         url: "{{ path('get-popup') }}",
                         success: function(msg){
-                            msg = $.parseJSON(msg);
-                            msg = msg.data;
-                            $('#popup-img').attr('src',msg.img);
-                            $('#popup-link').attr('href',msg.link);
-                            setCookie('popupvidal', '1', {expires: 28800});
-                            $('.gray').fadeIn();
-                            $('#popupvidal').fadeIn();
+                            if (msg != 'no'){
+                                msg = $.parseJSON(msg);
+                                msg = msg.data;
+                                $('#popup-img').attr('src',msg.img);
+                                $('#popup-link').attr('href',msg.link);
+                                setCookie('popupvidal', '1', {expires: 28800});
+                                $('.gray').fadeIn();
+                                $('#popupvidal').fadeIn();
+                            }
                         }
                     });
                 }

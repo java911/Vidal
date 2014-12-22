@@ -43,11 +43,15 @@ class BannerController extends Controller
      */
     public function getPopupAction(){
         $popup = $this->getDoctrine()->getRepository('VidalMainBundle:Popup')->findPopup();
-        $array = array('data'=>array(
-            'img'  => $popup->getImage()['path'],
-            'link' => $popup->getLink()
-        ));
-        $array = json_encode($array);
+        if ($popup){
+            $array = array('data'=>array(
+                'img'  => $popup->getImage()['path'],
+                'link' => $popup->getLink()
+            ));
+            $array = json_encode($array);
+        }else{
+            $array = 'no';
+        }
         echo $array;
         exit;
 
