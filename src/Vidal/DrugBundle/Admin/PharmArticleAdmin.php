@@ -14,6 +14,22 @@ use Vidal\DrugBundle\Transformer\TagTransformer;
 
 class PharmArticleAdmin extends Admin
 {
+	protected $datagridValues;
+
+	public function __construct($code, $class, $baseControllerName)
+	{
+		parent::__construct($code, $class, $baseControllerName);
+
+		if (!$this->hasRequest()) {
+			$this->datagridValues = array(
+				'_page'       => 1,
+				'_per_page'   => 25,
+				'_sort_order' => 'DESC',
+				'_sort_by'    => 'created'
+			);
+		}
+	}
+
 	public function createQuery($context = 'list')
 	{
 		$qb = $this->getModelManager()->getEntityManager($this->getClass())->createQueryBuilder();

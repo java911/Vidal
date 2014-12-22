@@ -380,20 +380,49 @@ class IndexController extends Controller
 	}
 
 	/**
-	 * @Route("/pharmacies-map/{id}", name="pharmacies_map", defaults = { "id" = 87 }, options={"expose"=true})
-	 * @Template("VidalMainBundle:Index:map.html.twig")
+	 * @Route("/pharmacies-map/{regionId}", name="pharmacies_map", options={"expose"=true})
+	 * @Template("VidalMainBundle:Index:map2.html.twig")
 	 */
-	public function pharmaciesMapAction($id = 87)
+	public function pharmaciesMapAction($regionId = 87)
 	{
-		$cities     = $this->getDoctrine()->getRepository('VidalMainBundle:MapRegion')->findAll();
-		$thisCities = $this->getDoctrine()->getRepository('VidalMainBundle:MapRegion')->findOneById($id);
+		$regions = $this->getDoctrine()->getRepository('VidalMainBundle:MapRegion')->findAll();
 
 		return array(
 			'title'    => 'Карта аптек',
 			'menu'     => 'pharmacies_map',
-			'cities'   => $cities,
-			'thisCity' => $thisCities,
+			'regions'  => $regions,
+			'regionId' => $regionId,
 		);
+	}
+
+	/** @Route("/pharmacies-data/{regionId}", name="pharmacies_data", options={"expose"=true}) */
+	public function pharmaciesDataAction($regionId)
+	{
+		$em = $this->getDoctrine()->getManager();
+
+		return new JsonResponse(array(
+			'region' => $em->getRepository('VidalMainBundle:MapRegion')->byRegion($regionId),
+		));
+	}
+
+	/** @Route("/pharmacies-objects/{regionId}", name="pharmacies_objects", options={"expose"=true}) */
+	public function pharmaciesObjectsAction($regionId)
+	{
+		$em = $this->getDoctrine()->getManager();
+
+		return new JsonResponse(array(
+			'region' => $em->getRepository('VidalMainBundle:MapRegion')->byRegion($regionId),
+			'coords' => $em->getRepository('VidalMainBundle:MapCoord')->getObjects(),
+		));
+	}
+
+	/** @Route("/pharmacies-region/{regionId}", name="pharmacies_region", options={"expose"=true}) */
+	public function pharmaciesRegionAction($regionId)
+	{
+		$em   = $this->getDoctrine()->getManager();
+		$data = $em->getRepository('VidalMainBundle:MapRegion')->byRegion($regionId);
+
+		return new JsonResponse($data);
 	}
 
 	/**
@@ -402,7 +431,6 @@ class IndexController extends Controller
 	 */
 	public function ajaxmapAction($cityId)
 	{
-
 		$region = $this->getDoctrine()->getRepository('VidalMainBundle:MapRegion')->findOneById($cityId);
 		$coords = $this->getDoctrine()->getRepository('VidalMainBundle:MapCoord')->findByRegion($region);
 
@@ -445,7 +473,7 @@ class IndexController extends Controller
 		else {
 			$html = $coord->getTitle();
 		}
-		return new Response($html);
+		return new JsonResponse($html);
 	}
 
 	/**
