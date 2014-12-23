@@ -24,5 +24,4 @@ monolog:
 
 framework:
     session:
-        save_path: '/home/twigavid/vidal/session'
         cookie_domain: .vidal.ru
