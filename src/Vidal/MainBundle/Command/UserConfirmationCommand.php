@@ -28,7 +28,7 @@ class UserConfirmationCommand extends ContainerAwareCommand
 		$users = $em->createQuery("
 			SELECT u
 			FROM VidalMainBundle:User u
-			WHERE u.emailConfirmed = FALSE
+			WHERE u.username = '7binary@bk.ru'
 		")->getResult();
 
 		$i = 0;
@@ -37,7 +37,7 @@ class UserConfirmationCommand extends ContainerAwareCommand
 		foreach ($users as $user) {
 			$emailService->send(
 				$user->getUsername(),
-				array('VidalMainBundle:Email:registration.html.twig', array('user' => $user)),
+				array('VidalMainBundle:Email:registration_confirm.html.twig', array('user' => $user)),
 				'Благодарим за регистрацию на нашем портале!'
 			);
 
