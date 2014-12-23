@@ -15,7 +15,7 @@ class EmailService
 		$this->templating = $templating;
 	}
 
-	public function send($emails, $template, $subject = 'Уведомление', $from = 'maillist@vidal.ru')
+	public function send($emails, $template, $subject = 'Уведомление', $from = 'maillist@vidal.ru', $localhost = false)
 	{
 		$mail = new \PHPMailer();
 
@@ -28,7 +28,7 @@ class EmailService
 		$mail->Subject  = $subject;
 
 		# prod - оптравка через почтовый сервер на серваке, dev/test - отправка через Mail.ru
-		if ($this->container->getParameter('kernel.environment') == 'prod') {
+		if ($this->container->getParameter('kernel.environment') == 'prod' || $localhost) {
 			$mail->Host = '127.0.0.1';
 			$mail->From = $from;
 		}

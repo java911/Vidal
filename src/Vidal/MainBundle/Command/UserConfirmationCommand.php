@@ -38,7 +38,9 @@ class UserConfirmationCommand extends ContainerAwareCommand
 			$emailService->send(
 				$user->getUsername(),
 				array('VidalMainBundle:Email:registration_confirm.html.twig', array('user' => $user)),
-				'Благодарим за регистрацию на нашем портале!'
+				'Благодарим за регистрацию на нашем портале!',
+				'maillist@vidal.ru',
+				true
 			);
 
 			$output->writeln("... $i / $total");
