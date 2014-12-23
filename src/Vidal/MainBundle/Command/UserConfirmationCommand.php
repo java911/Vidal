@@ -41,10 +41,8 @@ class UserConfirmationCommand extends ContainerAwareCommand
 				'Благодарим за регистрацию на нашем портале!'
 			);
 
-			if ($i && $i % 100 == 0) {
-				$output->writeln("... $i / $total");
-				sleep(60);
-			}
+			$output->writeln("... $i / $total");
+			sleep(5);
 
 			$i++;
 		}

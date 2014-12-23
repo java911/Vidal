@@ -315,7 +315,8 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 		$roles = explode(';', $this->roles);
 
 		if (array_search($role, $roles) === false) {
-			$this->roles .= ';' . $role;
+			$roles[] = $role;
+			$this->roles .= implode(';', $roles);
 		}
 
 		return $this;

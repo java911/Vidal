@@ -19,7 +19,7 @@
 
 	{# извещения #}
 	{% if app.session.flashBag.get('confirmed')|length %}
-		<div class="thanks">Благодарим за регистрацию на нашем портале!</div>
+		<div class="thanks">Почтовый адрес подтвержден. Благодарим за регистрацию на нашем портале!</div>
 	{% elseif app.session.flashBag.get('saved')|length %}
 		<div class="thanks">Сохранено!</div>
 	{% endif %}
