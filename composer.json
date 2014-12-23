@@ -20,7 +20,7 @@
 		"sensio/generator-bundle": "2.3.*",
 		"gedmo/doctrine-extensions": "dev-master",
 		"friendsofsymfony/jsrouting-bundle": "dev-master",
-		"friendsofsymfony/elastica-bundle": "3.0.*@dev",
+		"friendsofsymfony/elastica-bundle": "~3.0",
 		"jms/serializer-bundle": "dev-master",
 		"phpmailer/phpmailer": "dev-master",
 		"knplabs/knp-paginator-bundle": "dev-master",
