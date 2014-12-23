@@ -105,34 +105,36 @@ file that was distributed with this source code.
 				.autocomplete({
 					minLength: 1,
 					source:    function(request, response) {
-						$.ajax({
-							url:      "http://www.vidal.ru:9200/website/autocomplete_product/_search",
-							type:     "POST",
-							dataType: "JSON",
-							data:     '{ "query":{"query_string":{"query":"*' + request.term + '*","default_operator":"AND"}}, "fields":["name"], "size":20, "highlight":{"fields":{"name":{}}} }',
-							success:  function(data) {
-								var hits = data.hits.hits;
-								var ids = $('.ul-remove li').map(function(element) {
-									return $(this).attr("data");
-								});
-								var values = [];
+						var url = Routing.generate('elastic_autocomplete_product', {'term':request.term.trim()});
+						$.getJSON(url, function(data) {
+							var hits = data.hits.hits;
+							var ids = $('.ul-remove li').map(function(element) {
+								return $(this).attr("data");
+							});
+							var values = [];
 
-								for (var i = 0; i < hits.length; i++) {
-									var item = hits[i];
-									if (jQuery.inArray(item._id, ids) == -1) {
-										values.push({
-											'label': item.highlight.name,
-											'value': item.fields.name,
-											'id':    item._id
-										});
-									}
+							for (var i = 0; i < hits.length; i++) {
+								var item = hits[i];
+								if (jQuery.inArray(item._id, ids) == -1) {
+									values.push({
+										'label': item.highlight.name,
+										'value': item._source.name,
+										'id':    item._id
+									});
 								}
-								values.sort(function(a, b) {
-									return (a.value == b.value) ? 0 : ((a.value > b.value) ? 1 : -1);
-								});
-								response(values);
 							}
-						})
+							values.sort(function(a, b) {
+								return (a.value == b.value) ? 0 : ((a.value > b.value) ? 1 : -1);
+							});
+							response(values);
+
+//							response($.map(data.hits.hits, function(item) {
+//								return {
+//									label: item.highlight.name,
+//									value: item._source.name
+//								}
+//							}));
+						});
 					},
 					select:    function(event, ui) {
 						if (ui.item) {

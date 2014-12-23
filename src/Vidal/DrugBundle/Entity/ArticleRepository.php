@@ -225,9 +225,22 @@ class ArticleRepository extends EntityRepository
 			FROM VidalDrugBundle:Article a
 			JOIN a.nozologies n WITH n.NozologyCode IN (:codes)
 			JOIN a.rubrique r
-			WHERE a.enabled = TRUE AND r.enabled = TRUE
+			WHERE a.enabled = TRUE
+				AND r.enabled = TRUE
 			ORDER BY a.date DESC
 		')->setParameter('codes', $nozologyCodes)
 			->getResult();
+	}
+
+	public function findActive()
+	{
+		return $this->_em->createQuery('
+		 	SELECT a
+		 	FROM VidalDrugBundle:Article a
+		 	JOIN a.rubrique r
+		 	WHERE a.enabled = TRUE
+		 		AND r.enabled = TRUE
+			ORDER BY a.title ASC
+		')->getResult();
 	}
 }

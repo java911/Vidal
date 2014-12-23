@@ -26,7 +26,7 @@ class AutocompleteProductCommand extends ContainerAwareCommand
 			SELECT p.ProductID, p.RusName, p.ZipInfo
 			FROM VidalDrugBundle:Product p
 			WHERE p.MarketStatusID IN (1,2,7)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.ProductTypeCode IN ('DRUG','GOME')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		")->getResult();

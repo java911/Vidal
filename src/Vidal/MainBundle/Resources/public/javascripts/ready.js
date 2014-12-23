@@ -7,35 +7,18 @@ $(document).ready(function() {
 		.autocomplete({
 			minLength: 2,
 			source:    function(request, response) {
-				type = $selectType.val();
-				var query = '{' +
-					' "query":{"query_string":{"query":"' + request.term.trim() + '*", "default_operator":"OR"}}' +
-					', "fields":["name","type"]' +
-					', "size":40' +
-					', "highlight":{"fields":{"name":{}}}';
-				if (type != 'all') {
-					query += ', "filter":{"term" :{"type" : "' + type + '"}}';
-				}
-				query += ' }';
-				$.ajax({
-					url:      "http://www.vidal.ru:9200/website/autocomplete/_search",
-					type:     "POST",
-					dataType: "JSON",
-					data:     query,
-					success:  function(data) {
-						var hits = data.hits.hits;
-						var values = $.map(hits, function(item) {
-							return {
-								label: item.highlight && item.highlight.name ? item.highlight.name : '',
-								value: item.fields.name,
-								type:  item.fields.type
-							}
-						});
-						values.sort(function(a, b) {
-							return (a.type == b.type) ? 0 : ((a.type < b.type) ? 1 : -1);
-						});
-						response(values.slice(0, 15));
-					}
+				var url = Routing.generate('elastic_autocomplete', {
+					'type': $selectType.val(),
+					'term': request.term.trim()
+				});
+				$.getJSON(url, function(data) {
+					response($.map(data.hits.hits, function(item) {
+						return {
+							label: item.highlight.name,
+							value: item._source.name,
+							type:  item._source.type
+						}
+					}));
 				});
 			},
 			select:    function(event, ui) {
