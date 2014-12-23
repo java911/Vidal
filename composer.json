@@ -41,7 +41,6 @@
 		"gregwar/captcha-bundle": "dev-master",
 		"ornicar/apc-bundle": "1.0.*",
 		"liuggio/excelbundle": "~2.0",
-		"coresphere/console-bundle": "dev-master",
 		"elasticsearch/elasticsearch": "~1.0"
 	},
 
