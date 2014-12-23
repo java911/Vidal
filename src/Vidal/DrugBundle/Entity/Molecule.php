@@ -42,6 +42,7 @@ class Molecule
 	 * @ORM\JoinTable(name="article_molecule",
 	 *        joinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"date" = "DESC"})
 	 */
 	protected $articles;
 
@@ -50,6 +51,7 @@ class Molecule
 	 * @ORM\JoinTable(name="art_molecule",
 	 *        joinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"date" = "DESC"})
 	 */
 	protected $arts;
 
@@ -58,6 +60,7 @@ class Molecule
 	 * @ORM\JoinTable(name="publication_molecule",
 	 *        joinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"date" = "DESC"})
 	 */
 	protected $publications;
 
@@ -66,6 +69,7 @@ class Molecule
 	 * @ORM\JoinTable(name="pharm_article_molecule",
 	 *        joinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="pharm_article_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"created" = "DESC"})
 	 */
 	protected $pharmArticles;
 

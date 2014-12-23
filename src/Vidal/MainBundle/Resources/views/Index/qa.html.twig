@@ -11,12 +11,7 @@
         <b><a href="#" id="ask">Спросить у специалистов</a></b>
         <br/>
         <br/>
-        {% if t == 2 %}
-            <div class="green">
-                Ваш вопрос отправлен. Ожидайте ответ.
-            </div>
-        {% endif %}
-        <form method="POST">
+        <form method="POST" novalidate id="form_ask" style="display:{{ not form.vars.valid ? 'block' : 'none' }}">
             {{ form_widget(form) }}
         </form>
     </div>
@@ -117,14 +112,8 @@
             font-size: 15px;
             display:   none;
         }
-
-        #form{
-        {{  t != 2 ? 'display: none;' }}
-        }
-
         .qa-ask{
-            border-bottom: 3px solid #eee;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
         .tabs a{
             width: 100%;
@@ -173,10 +162,10 @@
             });
 
             $('#ask').click(function(){
-                if ( $('#form').css('display') == 'none' ){
-                    $('#form').fadeIn();
+                if ( $('#form_ask').css('display') == 'none' ){
+                    $('#form_ask').fadeIn();
                 }else{
-                    $('#form').fadeOut();
+                    $('#form_ask').fadeOut();
                 }
                 return false;
             });

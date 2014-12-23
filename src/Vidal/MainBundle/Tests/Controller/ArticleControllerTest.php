@@ -6,4 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ArticleControllerTest extends WebTestCase
 {
+	public function testIndex()
+	{
+//		$client  = static::createClient();
+//		$crawler = $client->request('GET', '/');
+//
+//		$this->assertTrue($crawler->filter('div.article')->count() > 0);
+//		$this->assertTrue($crawler->filter('div.publication')->count() > 0);
+	}
 }

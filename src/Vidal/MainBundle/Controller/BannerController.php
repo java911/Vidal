@@ -26,9 +26,35 @@ class BannerController extends Controller
 
 	public function renderAction($groupId, $testing = false)
 	{
-		return $this->render('VidalMainBundle:Banner:render.html.twig', array(
-			'banner'  => $this->getDoctrine()->getRepository('VidalMainBundle:Banner')->findByGroup($groupId),
-			'testing' => $testing,
-		));
+        if ($this->getUser()){
+            $banners = $this->getDoctrine()->getRepository('VidalMainBundle:Banner')->findByGroup($groupId,$this->getUser());
+        }else{
+            $banners = $this->getDoctrine()->getRepository('VidalMainBundle:Banner')->findByGroup($groupId,$this->getUser());
+        }
+        return $this->render('VidalMainBundle:Banner:render.html.twig', array(
+            'banner'  => $banners,
+            'testing' => $testing,
+        ));
 	}
+
+    /**
+     * @Route("/get-popup", name="get-popup", options={"expose"=true})
+     * @Template()
+     */
+    public function getPopupAction(){
+        $popup = $this->getDoctrine()->getRepository('VidalMainBundle:Popup')->findPopup();
+        if ($popup){
+            $img = $popup->getImage();
+            $array = array('data'=>array(
+                'img'  => $img['path'],
+                'link' => $popup->getLink()
+            ));
+            $array = json_encode($array);
+        }else{
+            $array = 'no';
+        }
+        echo $array;
+        exit;
+
+    }
 }

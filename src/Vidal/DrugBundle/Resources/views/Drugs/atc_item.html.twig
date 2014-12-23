@@ -24,6 +24,9 @@
 	<div class="block">
 		<span class="block-head">АТХ код:</span>
 		<span><b>{{ atc.ATCCode }}</b></span>
+		<a href="{{ path('atc', {'ATCCode':atc.ATCCode}) }}" class="show-tree no-underline" target="_blank">
+			Показать в иерархии кодов
+		</a>
 	</div>
 
 	<div class="block">
@@ -38,6 +41,8 @@
 		</div>
 	{% endif %}
 
+	{% include 'VidalMainBundle:Article:documents.html.twig' with {'object':atc, 'label':'коду АТХ', 'item':atc.ATCCode} %}
+
 	{% if products is not empty %}
 		<div class="block">
 			<div class="block-head">Препараты группы</div>
@@ -51,8 +56,14 @@
 		</div>
 	{% endif %}
 
-	{% if is_granted('ROLE_ADMIN') %}
-		{% include 'VidalMainBundle:Article:documents.html.twig' with {'object':atc, 'label':'коду АТХ', 'item':atc.ATCCode} %}
-	{% endif %}
+{% endblock %}
 
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.show-tree {
+			margin-left: 20px;
+		}
+	</style>
 {% endblock %}

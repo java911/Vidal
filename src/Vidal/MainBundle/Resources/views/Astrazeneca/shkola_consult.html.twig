@@ -1,0 +1,108 @@
+{% extends 'VidalMainBundle:Astrazeneca:shkola_layout.html.twig' %}
+
+
+{% block navigation %}
+	<div class="breadcrumbs">
+		<a href="{{ path('shkola_gastrita2') }}">Школа гастрита</a>
+		<i></i>
+		<span>Бесплатная консультация</span>
+	</div>
+{% endblock %}
+
+
+{% block info %}
+	<div class="page-qa pages" id="qa">
+		<img src="{{ asset('bundles/vidalmain/images/shkola/stat.jpg') }}" class="stat"/>
+
+		<div class="content-title">КОНСУЛЬТАЦИИ</div>
+
+		{% if app.session.flashbag.get('questioned')|length %}
+			<div class="questioned">
+				Спасибо за ваш вопрос! В ближайшее время наш специалист на него ответит.
+			</div>
+		{% endif %}
+
+		<div class="ask-form">
+			<form method="POST" action="{{ path('shkola_consult') }}">
+				{{ form_widget(form) }}
+			</form>
+		</div>
+
+		<table class="qas">
+			{% for row in questionAnswers|batch(2) %}
+				<tr {{ loop.index > 1 ? 'class="rest"' }}>
+					{% for qa in row %}
+						<td class="qa {{ loop.first ? 'first' : 'last' }}">
+							<div class="qa-question">{{ qa.question|raw }}</div>
+							<a href="#" class="link">ОТВЕТ</a>
+
+							<div class="qa-answer">
+								<div class="qa-answer-label">
+									<a href="#" class="qa-answer-close">
+										<img src="{{ asset('bundles/vidalmain/images/shkola/close.png') }}"/>
+									</a>
+									<span>ОТВЕТ:</span>
+								</div>
+								<div class="qa-answer-text">{{ qa.answer|raw }}</div>
+							</div>
+						</td>
+					{% endfor %}
+				</tr>
+			{% endfor %}
+		</table>
+
+		{% if questionAnswers|length > 2 %}
+			<div class="center">
+				<a class="link qa-rest" href="#">ПОКАЗАТЬ ЕЩЕ</a>
+			</div>
+		{% endif %}
+	</div>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			// question-answer
+			$('.qa > a').click(function(e) {
+				e.preventDefault();
+				var $this = $(this);
+				var $qa = $this.closest('.qa');
+				var $qaNext = $qa.nextOrFirst();
+				$this.hide();
+				$qa.find('.qa-answer').show();
+			});
+
+			$('.qa-answer-close').click(function(e) {
+				e.preventDefault();
+				var $this = $(this);
+				var $qa = $this.closest('.qa');
+				$this.closest('.qa-answer').hide();
+				$qa.find('> a').show();
+			});
+
+			if ($('.form_error ul').length) {
+				$('#ask').hide();
+				$('.ask-form').show();
+			}
+
+			$('.qa-rest').click(function(e) {
+				var $link = $(this);
+				e.preventDefault();
+				$('.qas .rest').slideDown('fast', function() {
+					$link.remove();
+				});
+			});
+		});
+
+		jQuery.fn.nextOrFirst = function(selector) {
+			var next = this.next(selector);
+			return (next.length) ? next : this.prevAll(selector).last();
+		};
+		jQuery.fn.prevOrLast = function(selector) {
+			var prev = this.prev(selector);
+			return (prev.length) ? prev : this.nextAll(selector).last();
+		};
+	</script>
+{% endblock %}

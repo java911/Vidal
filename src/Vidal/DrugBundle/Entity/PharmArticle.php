@@ -329,4 +329,16 @@ class PharmArticle extends BaseEntity
 	{
 		$this->products->removeElement($product);
 	}
+
+	public function addInfoPage($infoPage)
+	{
+		if (!$this->infoPages->contains($infoPage)) {
+			$this->infoPages[] = $infoPage;
+		}
+	}
+
+	public function removeInfoPage($infoPage)
+	{
+		$this->infoPages->remove($infoPage);
+	}
 }

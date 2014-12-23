@@ -3,7 +3,7 @@
 		<div class="block" id="search_infoPages">
 			<div class="block-anons">
 				<div class="block-head">
-					Найдено представительств: <span>{{ search_infoPages|length }}</span>
+					Найдено представительств{{ search_infoPages|length == 1 ? 'о' }}: <span>{{ search_infoPages|length }}</span>
 				</div>
 			</div>
 		</div>
@@ -35,7 +35,7 @@
 		<div class="block" id="search_companies">
 			<div class="block-anons">
 				<div class="block-head">
-					Найдено производителей: <span>{{ search_companies|length }}</span>
+					Найдено производител{{ search_companies|length == 1 ? 'ь' : 'ей' }}: <span>{{ search_companies|length }}</span>
 				</div>
 			</div>
 		</div>

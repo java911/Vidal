@@ -8,15 +8,7 @@
 
 {% block title %}
 	<div class="relative">
-		{% if product is defined %}
-			<h1>{{ product.RusName|raw }} <span>({{ product.EngName|raw }})</span></h1>
-		{% else %}
-			<h1>{{ document.RusName|raw }} <span>({{ document.EngName|raw }})</span>
-				{% if document.elaboration is not empty %}
-					<span class="elaboration">{{ document.elaboration }}</span>
-				{% endif %}
-			</h1>
-		{% endif %}
+		<h1>{{ product.RusName|raw }} <span>({{ product.EngName|raw }})</span></h1>
 
 		{# ссылка админу на редактирование #}
 		{% if isAdmin %}
@@ -27,6 +19,7 @@
 			</a>
 		{% endif %}
 	</div>
+	{% include 'VidalDrugBundle:Vidal:document_stars.html.twig' %}
 {% endblock %}
 
 
@@ -35,7 +28,7 @@
 		<a href="{{ path('index') }}">Видаль</a>
 		<i></i>
 		<a href="{{ path('products') }}">
-			{{ app.request.get('from') == 'bad' ? 'Препараты и БАДы' : 'Препараты' }}
+			{{ app.request.get('from') == 'bad' ? 'Препараты и БАД' : 'Препараты' }}
 		</a>
 	</div>
 {% endblock %}
@@ -46,10 +39,11 @@
 	{# Иконки использования при состояниях #}
 	{% if document is defined %}
 		{% include 'VidalDrugBundle:Vidal:document_conditions.html.twig' %}
-	{% else %}
-		<div class="conditions">
-			{{ render(controller('VidalMainBundle:Market:button', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}
-		</div>
+
+	{#{% else %}#}
+		{#<div class="conditions">#}
+			{#{{ render(controller('VidalMainBundle:Market:button', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}#}
+		{#</div>#}
 	{% endif %}
 
 	{# подробнее о препарате #}
@@ -69,23 +63,25 @@
 	{% endif %}
 
 	{# Изображения препарата #}
-	{% if product is defined and product.photo %}
-		<div class="pictures block">
-			<a href="{{ product.photo.path }}" target="_blank">
-				<img src="{{ product.photo.path }}"/>
-			</a>
-		</div>
-	{% elseif pictures is defined and pictures is not empty %}
-		<div class="pictures block">
-			{% for picture in pictures %}
-				{% set path = '/upload/products/' ~ picture %}
-				{% if is_file(path) %}
-					<a href="{{ path }}" target="_blank">
-						<img src="{{ path }}"/>
-					</a>
-				{% endif %}
-			{% endfor %}
-		</div>
+	{% if not product.hidePhoto %}
+		{% if product.photo %}
+			<div class="pictures block">
+				<a href="{{ product.photo.path }}" target="_blank">
+					<img src="{{ product.photo.path }}"/>
+				</a>
+			</div>
+		{% elseif pictures is defined and pictures is not empty %}
+			<div class="pictures block">
+				{% for picture in pictures %}
+					{% set path = '/upload/products/' ~ picture %}
+					{% if is_file(path) %}
+						<a href="{{ path }}" target="_blank">
+							<img src="{{ path }}"/>
+						</a>
+					{% endif %}
+				{% endfor %}
+			</div>
+		{% endif %}
 	{% endif %}
 
 	{% if document is defined %}
@@ -141,55 +137,24 @@
 	{% endif %}
 
 	{# Блок АТХ кодов #}
-	{% if product is defined %}
-		{% if product.atcCodes is not empty %}
-			{% if product.atcCodes|length == 1 %}
-				{% set atc = product.atcCodes[0] %}
-				<div class="block" id="atc_codes">
-					<span class="block-head">Код ATX:</span>
+	{% if product.atcCodes is not empty %}
+		{% if product.atcCodes|length == 1 %}
+			{% set atc = product.atcCodes[0] %}
+			<div class="block" id="atc_codes">
+				<span class="block-head">Код ATX:</span>
 					<span class="block-content">
 						<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}" class="no-underline">
 							{{ atc.ATCCode }}
 						</a>
 						<span class="atc-name small">({{ atc.RusName }})</span>
 					</span>
-				</div>
-			{% else %}
-				<div class="block">
-					<div class="block-head">Коды АТХ</div>
-					<div class="block-content">
-						<ul class="ul-style">
-							{% for atc in product.atcCodes %}
-								<li>
-									<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}" class="no-underline">
-										{{ atc.ATCCode }}
-									</a>
-									<span class="atc-name small">({{ atc.RusName }})</span>
-								</li>
-							{% endfor %}
-						</ul>
-					</div>
-				</div>
-			{% endif %}
-		{% endif %}
-	{% elseif document.atcCodes is not empty %}
-		{% if document.atcCodes|length == 1 %}
-			{% set atc = document.atcCodes[0] %}
-			<div class="block" id="atc_codes">
-				<span class="block-head">Код ATX:</span>
-				<span class="block-content">
-					<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}" class="no-underline">
-						{{ atc.ATCCode }}
-					</a>
-					<span class="atc-name small">({{ atc.RusName }})</span>
-				</span>
 			</div>
 		{% else %}
 			<div class="block">
 				<div class="block-head">Коды АТХ</div>
 				<div class="block-content">
 					<ul class="ul-style">
-						{% for atc in document.atcCodes %}
+						{% for atc in product.atcCodes %}
 							<li>
 								<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}" class="no-underline">
 									{{ atc.ATCCode }}
@@ -309,8 +274,11 @@
 		{% include 'VidalDrugBundle:Vidal:document_info.html.twig' %}
 	{% endif %}
 
+	{# прикрепленные материалы #}
+	{% include 'VidalMainBundle:Article:documents_of_product.html.twig' with {'object':product, 'label':'препарату', 'item':product.RusName} %}
+
 	{# цены Он-лайн аптек #}
-	{{ render( controller('VidalMainBundle:Market:productList', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}
+	{#{{ render( controller('VidalMainBundle:Market:productList', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}#}
 
 	{# блок горизонтального яндекс-директа #}
 	{% include 'VidalMainBundle::yad_horizontal.html.twig' %}
@@ -330,6 +298,7 @@
 
 {% block stylesheets %}
 	{{ parent() }}
+	<link type="text/css" rel="stylesheet" href="{{ asset('bundles/vidalmain/stylesheets/market.css') }}"/>
 	<style type="text/css">
 		.relative {
 			position: relative;
@@ -355,11 +324,6 @@
 		.market-basket {
 			width:      80px;
 			text-align: right;
-		}
-		.market-title {
-			text-transform: uppercase;
-			color:          #D71344;
-			padding:        5px 0;
 		}
 		.market-organization {
 			width: 180px;
@@ -402,6 +366,30 @@
 			display: none;
 		}
 		.pictures a {
+			display: inline-block;
+		}
+		/* stars */
+		.stars {
+			margin:           -12px 0 20px;
+			background-color: beige;
+			padding:          7px 8px 4px;
+			overflow:         hidden;
+		}
+		.stars .images {
+			float: left;
+			width: 105px;
+		}
+		.stars .group {
+			margin-left: 110px;
+		}
+		.stars > * {
+			vertical-align: top;
+		}
+		.stars span {
+			color: #2e3f51;
+		}
+		.stars img {
+			width:   16px;
 			display: inline-block;
 		}
 	</style>

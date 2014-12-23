@@ -11,8 +11,17 @@ class Nozology
 	/** @ORM\Id @ORM\Column(length=8) */
 	protected $NozologyCode;
 
-	/** @ORM\Column(length=8, nullable=true) */
+	/** @ORM\Column(length=8) */
 	protected $Code;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="Nozology", inversedBy="children")
+	 * @ORM\JoinColumn(name="ParentNozologyCode", referencedColumnName="NozologyCode")
+	 */
+	protected $parent;
+
+	/** @ORM\OneToMany(targetEntity="Nozology", mappedBy="parent") */
+	protected $children;
 
 	/** @ORM\Column(length=500, nullable=true) */
 	protected $Name;
@@ -36,6 +45,7 @@ class Nozology
 	 * @ORM\JoinTable(name="article_n",
 	 *        joinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"date" = "DESC"})
 	 */
 	protected $articles;
 
@@ -44,6 +54,7 @@ class Nozology
 	 * @ORM\JoinTable(name="art_n",
 	 *        joinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"date" = "DESC"})
 	 */
 	protected $arts;
 
@@ -52,6 +63,7 @@ class Nozology
 	 * @ORM\JoinTable(name="publication_n",
 	 *        joinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"date" = "DESC"})
 	 */
 	protected $publications;
 
@@ -60,6 +72,7 @@ class Nozology
 	 * @ORM\JoinTable(name="pharm_article_n",
 	 *        joinColumns={@ORM\JoinColumn(name="NozologyCode", referencedColumnName="NozologyCode")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="pharm_article_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"created" = "DESC"})
 	 */
 	protected $pharmArticles;
 
@@ -73,6 +86,7 @@ class Nozology
 		$this->arts          = new ArrayCollection();
 		$this->publications  = new ArrayCollection();
 		$this->pharmArticles = new ArrayCollection();
+		$this->children      = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -254,5 +268,37 @@ class Nozology
 	public function getCountProducts()
 	{
 		return $this->countProducts;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getChildren()
+	{
+		return $this->children;
+	}
+
+	/**
+	 * @param mixed $children
+	 */
+	public function setChildren($children)
+	{
+		$this->children = $children;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getParent()
+	{
+		return $this->parent;
+	}
+
+	/**
+	 * @param mixed $parent
+	 */
+	public function setParent($parent)
+	{
+		$this->parent = $parent;
 	}
 }

@@ -9,13 +9,18 @@ use Symfony\Component\Debug\Debug;
 
 // This check prevents access to debug front controllers that are deployed by accident to production servers.
 // Feel free to remove this, extend it, or make something more sophisticated.
-/*if (isset($_SERVER['HTTP_CLIENT_IP'])
+if (isset($_SERVER['HTTP_CLIENT_IP'])
     || isset($_SERVER['HTTP_X_FORWARDED_FOR'])
-    || !in_array(@$_SERVER['REMOTE_ADDR'], array('127.0.0.1', 'fe80::1', '::1'))
+    || !in_array(@$_SERVER['REMOTE_ADDR'], array('127.0.0.1', 'fe80::1', '::1', '84.253.73.126', '188.254.54.58'))
 ) {
     header('HTTP/1.0 403 Forbidden');
     exit('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
-}*/
+}
+
+# память, необходимая админке Сонаты
+if (strpos($_SERVER['REQUEST_URI'], '/admin/vidal/') !== false) {
+	ini_set('memory_limit', -1);
+}
 
 $loader = require_once __DIR__.'/../app/bootstrap.php.cache';
 Debug::enable();

@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Lsw\SecureControllerBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Vidal\DrugBundle\Entity\TagHistory;
+use Vidal\DrugBundle\Entity\Tag;
 
 /**
  * Класс для выполнения ассинхронных операций из админки Сонаты
@@ -176,11 +178,11 @@ class SonataController extends Controller
 					a.category = :categoryId
 				WHERE a.id IN (:articleIds)
 			')->setParameters(array(
-					'articleIds' => $articleIds,
-					'rubriqueId' => $rubriqueId,
-					'typeId'     => $typeId,
-					'categoryId' => $categoryId,
-				))->execute();
+				'articleIds' => $articleIds,
+				'rubriqueId' => $rubriqueId,
+				'typeId'     => $typeId,
+				'categoryId' => $categoryId,
+			))->execute();
 
 			$this->get('session')->getFlashBag()->add('notice', '');
 
@@ -391,8 +393,8 @@ class SonataController extends Controller
 		return $this->redirect($this->generateUrl('admin_vidal_drug_product_edit', array('id' => $newProductID)));
 	}
 
-	/** @Route("/tag-clean/{tagId}/{ajax}", name="tag_clean", options={"expose":true}) */
-	public function tagCleanAction($tagId, $ajax = false)
+	/** @Route("/tag-clean/{tagId}", name="tag_clean", options={"expose":true}) */
+	public function tagCleanAction($tagId)
 	{
 		$em  = $this->getDoctrine()->getManager('drug');
 		$tag = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
@@ -410,130 +412,191 @@ class SonataController extends Controller
 			$stmt->execute();
 		}
 
-		if ($ajax) {
-			return new JsonResponse('OK');
-		}
+		$tag->setTotal(0);
+		$em->flush($tag);
+
+		$pdo->prepare("DELETE FROM tag_history WHERE tag_id = $tagId")->execute();
 
 		# добавляем для админки сонаты оповещение
-		$this->get('session')->getFlashbag()->add('tag_clean', '');
+		$this->get('session')->getFlashbag()->add('msg', 'Все связи данного тега с материалами очищены');
 
 		return $this->redirect($this->generateUrl('admin_vidal_drug_tag_edit', array('id' => $tagId)));
 	}
 
-	/** @Route("/tag-clean-old/{tagId}", name="tag_clean_old", options={"expose":true}) */
-	public function tagCleanOldAction($tagId)
+	/** @Route("/tag-set/{tagId}/{text}", name="tag_set", options={"expose":true}) */
+	public function tagSetAction(Request $request, $tagId, $text = null)
 	{
-		$em  = $this->getDoctrine()->getManager('drug');
-		$tag = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
+		$em       = $this->getDoctrine()->getManager('drug');
+		$tag      = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
+		$pdo      = $em->getConnection();
+		$isPartly = $request->query->has('partly');
+		$total    = 0;
+		$min      = 2;
 
 		if (!$tag) {
 			throw $this->createNotFoundException();
 		}
 
-		$pdo     = $em->getConnection();
-		$tagId   = $tag->getId();
-		$oldDate = new \DateTime('2014-05-15');
-
-		foreach ($tag->getArticles() as $a) {
-			if ($a->getDate() < $oldDate) {
-				$id   = $a->getId();
-				$stmt = $pdo->prepare("DELETE FROM article_tag WHERE tag_id = $tagId AND article_id = $id");
-				$stmt->execute();
-			}
+		if (empty($text)) {
+			$tagSearch = $tag->getSearch();
+			$text      = empty($tagSearch) ? $tag->getText() : $tagSearch;
 		}
 
-		foreach ($tag->getArts() as $a) {
-			if ($a->getDate() < $oldDate) {
-				$id   = $a->getId();
-				$stmt = $pdo->prepare("DELETE FROM art_tag WHERE tag_id = $tagId AND art_id = $id");
-				$stmt->execute();
-			}
+		$tagHistoryText = $isPartly ? '*' . $text . '*' : $text;
+		$tagHistory     = $em->getRepository('VidalDrugBundle:TagHistory')->findOneByTagText($tagId, $tagHistoryText);
+
+		if (!$tagHistory) {
+			$tagHistory = new TagHistory();
+			$tagHistory->setText($tagHistoryText);
+
+			$em->persist($tagHistory);
+			$tag->addTagHistory($tagHistory);
+			$em->flush($tagHistory);
+			$em->refresh($tagHistory);
 		}
-
-		foreach ($tag->getPublications() as $a) {
-			if ($a->getDate() < $oldDate) {
-				$id   = $a->getId();
-				$stmt = $pdo->prepare("DELETE FROM publication_tag WHERE tag_id = $tagId AND publication_id = $id");
-				$stmt->execute();
-			}
-		}
-
-		foreach ($tag->getPharmArticles() as $a) {
-			if ($a->getCreated() > $oldDate) {
-				$id   = $a->getId();
-				$stmt = $pdo->prepare("DELETE FROM pharmarticle_tag WHERE tag_id = $tagId AND pharmarticle_id = $id");
-				$stmt->execute();
-			}
-		}
-
-		# добавляем для админки сонаты оповещение
-		$this->get('session')->getFlashbag()->add('tag_clean_old', '');
-
-		return $this->redirect($this->generateUrl('admin_vidal_drug_tag_edit', array('id' => $tagId)));
-	}
-
-	/** @Route("/tag-set/{tagId}/{ajax}", name="tag_set", options={"expose":true}) */
-	public function tagSetAction($tagId, $ajax = false)
-	{
-		$em  = $this->getDoctrine()->getManager('drug');
-		$tag = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
-
-		if (!$tag) {
-			throw $this->createNotFoundException();
-		}
-
-		$tagSearch = $tag->getSearch();
-		$text      = empty($tagSearch) ? $tag->getText() : $tagSearch;
-		$pdo       = $em->getConnection();
 
 		# проставляем тег у статей энкициклопедии
-		$stmt = $pdo->prepare("SELECT id FROM article WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
+		$stmt = $isPartly
+			? $pdo->prepare("SELECT id,body FROM article WHERE title LIKE '%{$text}%' OR body LIKE '%{$text}%' OR announce LIKE '%{$text}%'")
+			: $pdo->prepare("SELECT id,body FROM article WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
+
 		$stmt->execute();
 		$articles = $stmt->fetchAll();
+
 		foreach ($articles as $a) {
-			$id   = $a['id'];
-			$stmt = $pdo->prepare("INSERT IGNORE INTO article_tag (tag_id, article_id) VALUES ($tagId, $id)");
-			$stmt->execute();
+			$matched = mb_substr_count(mb_strtolower($a['body'], 'utf-8'), mb_strtolower($text, 'utf-8'), 'utf-8');
+
+			if ($tag->getForCompany() || $matched >= $min) {
+				$id   = $a['id'];
+				$stmt = $pdo->prepare("INSERT IGNORE INTO article_tag (tag_id, article_id) VALUES ($tagId, $id)");
+				$stmt->execute();
+				if ($stmt->rowCount()) {
+					$tagHistory->addArticleId($id);
+					$total++;
+				}
+			}
 		}
 
 		# проставляем тег у статей специалистам
-		$stmt = $pdo->prepare("SELECT id FROM art WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
+		$stmt = $isPartly
+			? $pdo->prepare("SELECT id,body FROM art WHERE title LIKE '%{$text}%' OR body LIKE '%{$text}%' OR announce LIKE '%{$text}%'")
+			: $pdo->prepare("SELECT id,body FROM art WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
+
 		$stmt->execute();
 		$articles = $stmt->fetchAll();
+
 		foreach ($articles as $a) {
-			$id   = $a['id'];
-			$stmt = $pdo->prepare("INSERT IGNORE INTO art_tag (tag_id, art_id) VALUES ($tagId, $id)");
-			$stmt->execute();
+			$matched = mb_substr_count(mb_strtolower($a['body'], 'utf-8'), mb_strtolower($text, 'utf-8'), 'utf-8');
+
+			if ($tag->getForCompany() || $matched >= $min) {
+				$id   = $a['id'];
+				$stmt = $pdo->prepare("INSERT IGNORE INTO art_tag (tag_id, art_id) VALUES ($tagId, $id)");
+				$stmt->execute();
+				if ($stmt->rowCount()) {
+					$tagHistory->addArtId($id);
+					$total++;
+				}
+			}
 		}
 
 		# проставляем тег у новостей
-		$stmt = $pdo->prepare("SELECT id FROM publication WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
+		$stmt = $isPartly
+			? $pdo->prepare("SELECT id,body FROM publication WHERE title LIKE '%{$text}%' OR body LIKE '%{$text}%' OR announce LIKE '%{$text}%'")
+			: $pdo->prepare("SELECT id,body FROM publication WHERE title REGEXP '[[:<:]]{$text}[[:>:]]' OR body REGEXP '[[:<:]]{$text}[[:>:]]' OR announce REGEXP '[[:<:]]{$text}[[:>:]]'");
+
 		$stmt->execute();
 		$articles = $stmt->fetchAll();
+
 		foreach ($articles as $a) {
-			$id   = $a['id'];
-			$stmt = $pdo->prepare("INSERT IGNORE INTO publication_tag (tag_id, publication_id) VALUES ($tagId, $id)");
-			$stmt->execute();
+			$matched = mb_substr_count(mb_strtolower($a['body'], 'utf-8'), mb_strtolower($text, 'utf-8'), 'utf-8');
+
+			if ($tag->getForCompany() || $matched >= $min) {
+				$id   = $a['id'];
+				$stmt = $pdo->prepare("INSERT IGNORE INTO publication_tag (tag_id, publication_id) VALUES ($tagId, $id)");
+				$stmt->execute();
+				if ($stmt->rowCount()) {
+					$tagHistory->addPublicationId($id);
+					$total++;
+				}
+			}
 		}
 
-		# проставляем тег у новостей фарм-компаний
-		$stmt = $pdo->prepare("SELECT id FROM pharm_article WHERE text REGEXP '[[:<:]]{$text}[[:>:]]'");
-		$stmt->execute();
-		$articles = $stmt->fetchAll();
-		foreach ($articles as $a) {
-			$id   = $a['id'];
-			$stmt = $pdo->prepare("INSERT IGNORE INTO pharmarticle_tag (tag_id, pharmarticle_id) VALUES ($tagId, $id)");
-			$stmt->execute();
-		}
+		$em->flush();
 
-		if ($ajax) {
-			return new JsonResponse('OK');
-		}
+		$this->get('drug.tag_total')->count($tagId);
 
-		# добавляем для админки сонаты оповещение
-		$this->get('session')->getFlashbag()->add('tag_set', '');
+		$this->get('session')->getFlashbag()->add('msg', "Выставлены теги в материалах по слову <b>$tagHistory</b>: $total");
 
 		return $this->redirect($this->generateUrl('admin_vidal_drug_tag_edit', array('id' => $tagId)));
+	}
+
+	/** @Route("/tag-unset/{tagId}/{text}", name="tag_unset", options={"expose":true}) */
+	public function tagUnsetAction(Request $request, $tagId, $text = null)
+	{
+		$em         = $this->getDoctrine()->getManager('drug');
+		$tag        = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
+		$tagHistory = $em->getRepository('VidalDrugBundle:TagHistory')->findOneByTagText($tagId, $text);
+		$pdo        = $em->getConnection();
+
+		if (!$tag || !$tagHistory || !$text) {
+			return $this->redirect($this->generateUrl('admin_vidal_drug_tag_edit', array('id' => $tagId)));
+		}
+
+		# удаляем tag-article
+		$ids = $tagHistory->getArticleIds();
+		if (!empty($ids)) {
+			$ids  = implode(',', $tagHistory->getArticleIds());
+			$stmt = $pdo->prepare("DELETE FROM article_tag WHERE tag_id = $tagId AND article_id IN ($ids)");
+			$stmt->execute();
+		}
+
+		# удаляем tag-art
+		$ids = $tagHistory->getArtIds();
+		if (!empty($ids)) {
+			$ids  = implode(',', $tagHistory->getArtIds());
+			$stmt = $pdo->prepare("DELETE FROM art_tag WHERE tag_id = $tagId AND art_id IN ($ids)");
+			$stmt->execute();
+		}
+
+		# удаляем tag-publication
+		$ids = $tagHistory->getPublicationIds();
+		if (!empty($ids)) {
+			$ids  = implode(',', $tagHistory->getPublicationIds());
+			$stmt = $pdo->prepare("DELETE FROM publication_tag WHERE tag_id = $tagId AND publication_id IN ($ids)");
+			$stmt->execute();
+		}
+
+		$em->remove($tagHistory);
+		$em->flush();
+
+		$this->get('drug.tag_total')->count($tagId);
+
+		# добавляем для админки сонаты оповещение
+		$this->get('session')->getFlashbag()->add('msg', 'Очищены связи с материалами по слову <b>' . $text . '</b>');
+
+		return $this->redirect($this->generateUrl('admin_vidal_drug_tag_edit', array('id' => $tagId)));
+	}
+
+	/** @Route("/admin-tag-total/{tagId}", name="admin_tag_total", options={"expose":true}) */
+	public function tagTotalAction($tagId)
+	{
+		$total = $this->get('drug.tag_total')->count($tagId);
+
+		return new JsonResponse($total);
+	}
+
+	/** @Route("/admin-tag-recalc", name="admin_tag_recalc", options={"expose":true}) */
+	public function tagRecalcAction()
+	{
+		$em         = $this->getDoctrine()->getManager('drug');
+		$tags       = $em->getRepository('VidalDrugBundle:Tag')->findAll();
+		$tagService = $this->get('drug.tag_total');
+
+		foreach ($tags as $tag) {
+			$tagService->count($tag->getId());
+		}
+
+		return $this->redirect($this->generateUrl('admin_vidal_drug_tag_list'));
 	}
 
 	/** @Route("/admin-tag-editable", name="admin_tag_editable", options={"expose":true}) */
@@ -578,5 +641,51 @@ class SonataController extends Controller
 		}
 
 		return new Response($search);
+	}
+
+	/** @Route("/admin-user-restrict/{userId}", name="admin_user_restrict", options={"expose":true}) */
+	public function userRestrictAction($userId)
+	{
+		$em   = $this->getDoctrine()->getManager();
+		$user = $em->getRepository('VidalMainBundle:User')->findOneById($userId);
+
+		if (!$user) {
+			return $this->createNotFoundException();
+		}
+
+		$this->get('email.service')->send(
+			$user->getUsername(),
+			array('VidalMainBundle:Email:admin_user_restrict.html.twig', array('user' => $user, 'adminEmail' => 'support@vidal.ru')),
+			'Сертификат специалиста не действителен',
+			'support@vidal.ru'
+		);
+
+		$user->addCountRestrictedSent();
+		$em->flush($user);
+
+		return new JsonResponse($user->getCountRestrictedSent());
+	}
+
+	/** @Route("/admin-user-confirm/{userId}", name="admin_user_confirm", options={"expose":true}) */
+	public function userConfirmAction($userId)
+	{
+		$em   = $this->getDoctrine()->getManager();
+		$user = $em->getRepository('VidalMainBundle:User')->findOneById($userId);
+
+		if (!$user) {
+			return $this->createNotFoundException();
+		}
+
+		$this->get('email.service')->send(
+			$user->getUsername(),
+			array('VidalMainBundle:Email:admin_user_confirm.html.twig', array('user' => $user, 'adminEmail' => 'support@vidal.ru')),
+			'Сертификат специалиста подтвержден',
+			'support@vidal.ru'
+		);
+
+		$user->addCountConfirmationSent();
+		$em->flush($user);
+
+		return new JsonResponse($user->getCountConfirmationSent());
 	}
 }

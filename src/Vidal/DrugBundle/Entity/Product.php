@@ -16,6 +16,12 @@ class Product
 	/** @ORM\Column(length=500) */
 	protected $RusName;
 
+	/**
+	 * Колонка с именами препаратов БЕЗ лишних символов
+	 * @ORM\Column(length=500, nullable=true)
+	 */
+	protected $RusName2;
+
 	/** @ORM\Column(length=500) */
 	protected $EngName;
 
@@ -110,9 +116,6 @@ class Product
 	 */
 	protected $atcCodes;
 
-	/** @ORM\OneToMany(targetEntity="ProductDocument", mappedBy="ProductID") */
-	protected $productDocument;
-
 	/**
 	 * @ORM\ManyToMany(targetEntity="ClPhGroups", inversedBy="products", fetch="EXTRA_LAZY")
 	 * @ORM\JoinTable(name="product_clphgroups",
@@ -160,6 +163,7 @@ class Product
 	 * @ORM\JoinTable(name="article_product",
 	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"date" = "DESC"})
 	 */
 	protected $articles;
 
@@ -168,6 +172,7 @@ class Product
 	 * @ORM\JoinTable(name="art_product",
 	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="art_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"date" = "DESC"})
 	 */
 	protected $arts;
 
@@ -176,6 +181,7 @@ class Product
 	 * @ORM\JoinTable(name="publication_product",
 	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="publication_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"date" = "DESC"})
 	 */
 	protected $publications;
 
@@ -184,21 +190,24 @@ class Product
 	 * @ORM\JoinTable(name="pharm_article_product",
 	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="pharm_article_id", referencedColumnName="id")})
+	 * @ORM\OrderBy({"created" = "DESC"})
 	 */
 	protected $pharmArticles;
 
+	/** @ORM\Column(type="boolean") */
+	protected $hidePhoto = false;
+
 	public function __construct()
 	{
-		$this->atcCodes        = new ArrayCollection();
-		$this->productDocument = new ArrayCollection();
-		$this->clphGroups      = new ArrayCollection();
-		$this->productCompany  = new ArrayCollection();
-		$this->moleculeNames   = new ArrayCollection();
-		$this->phthgroups      = new ArrayCollection();
-		$this->articles        = new ArrayCollection();
-		$this->arts            = new ArrayCollection();
-		$this->publications    = new ArrayCollection();
-		$this->pharmArticles   = new ArrayCollection();
+		$this->atcCodes       = new ArrayCollection();
+		$this->clphGroups     = new ArrayCollection();
+		$this->productCompany = new ArrayCollection();
+		$this->moleculeNames  = new ArrayCollection();
+		$this->phthgroups     = new ArrayCollection();
+		$this->articles       = new ArrayCollection();
+		$this->arts           = new ArrayCollection();
+		$this->publications   = new ArrayCollection();
+		$this->pharmArticles  = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -328,7 +337,7 @@ class Product
 	 */
 	public function setEngName($EngName)
 	{
-		$this->EngName = $EngName;
+		$this->RusName = $EngName;
 	}
 
 	/**
@@ -676,22 +685,6 @@ class Product
 	}
 
 	/**
-	 * @param mixed $productDocument
-	 */
-	public function setProductDocument(ArrayCollection $productDocument)
-	{
-		$this->productDocument = $productDocument;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getProductDocument()
-	{
-		return $this->productDocument;
-	}
-
-	/**
 	 * @param mixed $clphGroups
 	 */
 	public function setClphGroups(ArrayCollection $clphGroups)
@@ -902,5 +895,56 @@ class Product
 	public function getPharmArticles()
 	{
 		return $this->pharmArticles;
+	}
+
+	public function isValid()
+	{
+		if ($ms = $this->getMarketStatusID()) {
+			if (!in_array($ms->getMarketStatusID(), array(1, 2, 7))) {
+				return false;
+			}
+		}
+
+		if (!in_array($this->getProductTypeCode(), array('DRUG', 'GOME', 'BAD'))) {
+			return false;
+		}
+
+		if ($this->inactive) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param mixed $hidePhoto
+	 */
+	public function setHidePhoto($hidePhoto)
+	{
+		$this->hidePhoto = $hidePhoto;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getHidePhoto()
+	{
+		return $this->hidePhoto;
+	}
+
+	/**
+	 * @param mixed $RusName2
+	 */
+	public function setRusName2($RusName2)
+	{
+		$this->RusName2 = $RusName2;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getRusName2()
+	{
+		return $this->RusName2;
 	}
 }

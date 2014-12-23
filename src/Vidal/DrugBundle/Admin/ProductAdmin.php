@@ -32,8 +32,8 @@ class ProductAdmin extends Admin
 		}
 
 		$formMapper
-			->add('RusName', 'text', array('label' => 'Название', 'required' => true))
-			->add('EngName', 'text', array('label' => 'Латинское', 'required' => true))
+			->add('RusName', null, array('label' => 'Название', 'required' => true))
+			->add('EngName', null, array('label' => 'Латинское', 'required' => true))
 			->add('Name', 'text', array('label' => 'URL адрес', 'required' => true))
 			->add($formMapper->create('document', 'text', array(
 				'label'        => 'ID документа',
@@ -71,6 +71,7 @@ class ProductAdmin extends Admin
 					'allow_delete' => true
 				)
 			)
+			->add('hidePhoto', null, array('label' => 'Скрывать фотографию', 'required' => false))
 			->add('inactive', null, array('label' => 'Отключить', 'required' => false, 'help' => 'Исключить препарат из списков выдачи'));
 	}
 

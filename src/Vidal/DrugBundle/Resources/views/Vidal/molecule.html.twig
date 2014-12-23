@@ -45,6 +45,9 @@
 	{% if document %}
 		{% include 'VidalDrugBundle:Vidal:document_info.html.twig' %}
 	{% endif %}
+
+	{% include 'VidalMainBundle:Article:documents.html.twig' with {'object':molecule, 'label':'автивному веществу', 'item':molecule.RusName is empty ? molecule.LatName : molecule.RusName} %}
+
 {% endblock %}
 
 
@@ -59,7 +62,7 @@
 		}
 		#vidal .mnn.anons {
 			margin-left: 0;
-			font-size: 15px;
+			font-size:   15px;
 		}
 		#vidal .mnn.anons a {
 			font-weight: bold;

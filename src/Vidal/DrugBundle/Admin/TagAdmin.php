@@ -31,13 +31,18 @@ class TagAdmin extends Admin
 	{
 		$formMapper
 			->add('text', null, array('label' => 'Тег', 'required' => true))
-			->add('search', null, array('label' => 'Выставляется по слову', 'required' => false, 'help' => 'Оставьте пустым, чтоб выставлять по тегу'));
+			->add('search', null, array('label' => 'Выставляется по слову', 'required' => false, 'help' => 'Оставьте пустым, чтоб выставлять по тегу'))
+			->add('infoPage', null, array('label' => 'Представительство', 'required' => false))
+			->add('forCompany', null, array('label' => 'Тег компании', 'required' => false))
+			->add('total', null, array('label' => 'Материалов', 'required' => false, 'disabled' => true, 'attr' => array('class' => 'tagTotal')))
+			->add('enabled', null, array('label' => 'Активнен', 'required' => false));
 	}
 
 	protected function configureDatagridFilters(DatagridMapper $datagridMapper)
 	{
 		$datagridMapper
 			->add('id')
+			->add('forCompany', null, array('label' => 'Тег компании'))
 			->add('text', null, array('label' => 'Тег'));
 	}
 
@@ -47,20 +52,16 @@ class TagAdmin extends Admin
 			->add('text', null, array('label' => 'Тег', 'template' => 'VidalDrugBundle:Sonata:tag_text.html.twig'))
 			->add('search', null, array('label' => 'Выставляется по слову', 'template' => 'VidalDrugBundle:Sonata:tag_search.html.twig'))
 			->add('id')
+			->add('infoPage', null, array('label' => 'Представительство'))
+			->add('forCompany', null, array('label' => 'Тег компании', 'template' => 'VidalDrugBundle:Sonata:swap_forCompany.html.twig'))
+			->add('total', null, array('label' => 'Материалов'))
+			->add('enabled', null, array('label' => 'Активен', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',
 				'actions' => array(
-					'edit'     => array(),
-					'delete'   => array(),
-					'tagClean' => array('template' => 'VidalDrugBundle:Sonata:tag_clean.html.twig'),
-					'tagSet'   => array('template' => 'VidalDrugBundle:Sonata:tag_set.html.twig'),
+					'edit'   => array(),
+					'delete' => array(),
 				)
 			));
-	}
-
-	protected function configureRoutes(RouteCollection $collection)
-	{
-		$collection->add('tagSet')->add('tagClean');
-
 	}
 }

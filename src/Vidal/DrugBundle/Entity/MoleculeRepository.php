@@ -117,6 +117,7 @@ class MoleculeRepository extends EntityRepository
 			}
 		}
 
+		$moleculeNames = array_unique($moleculeNames);
 		usort($moleculeNames, 'strcasecmp');
 
 		return $moleculeNames;

@@ -201,6 +201,7 @@ class CompanyRepository extends EntityRepository
 		}
 
 		$names = array_merge($companyNames, $infoPageNames);
+		$names = array_unique($names);
 		usort($names, 'strcasecmp');
 
 		return $names;

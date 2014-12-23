@@ -30,6 +30,21 @@ class PharmArticleAdmin extends Admin
 		}
 	}
 
+	public function createQuery($context = 'list')
+	{
+		$qb = $this->getModelManager()->getEntityManager($this->getClass())->createQueryBuilder();
+		$qb->select('a')->from($this->getClass(), 'a');
+
+		if (!isset($_GET['filter']['_sort_by']) || $_GET['filter']['_sort_by'] == 'created') {
+			$order = isset($_GET['filter']['_sort_order']) ? $_GET['filter']['_sort_order'] : 'DESC';
+			$qb->orderBy('a.created', $order)->addOrderBy('a.id', 'ASC');
+		}
+
+		$proxyQuery = new \Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery($qb);
+
+		return $proxyQuery;
+	}
+
 	protected function configureShowField(ShowMapper $showMapper)
 	{
 		$showMapper

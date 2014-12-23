@@ -21,63 +21,25 @@ class PCommand extends ContainerAwareCommand
 
 		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 
-		######################################
-		$arts = $em->createQuery('
-			SELECT a
-			FROM VidalDrugBundle:Art a
-			WHERE SIZE(a.documents) > 0
+		$tags = $em->createQuery('
+			SELECT t
+			FROM VidalDrugBundle:Tag t
+			JOIN t.infoPage
 		')->getResult();
 
-		foreach ($arts as $art) {
-			foreach ($art->getDocuments() as $document) {
-				foreach ($document->getProducts() as $product) {
-					$art->addProduct($product);
-				}
+		foreach ($tags as $tag) {
+			$infoPage = $tag->getInfoPage();
+
+			foreach ($tag->getArts() as $art) {
+				$art->addInfoPage($infoPage);
 			}
-		}
 
-		######################################
-		$arts = $em->createQuery('
-			SELECT a
-			FROM VidalDrugBundle:Article a
-			WHERE SIZE(a.documents) > 0
-		')->getResult();
-
-		foreach ($arts as $art) {
-			foreach ($art->getDocuments() as $document) {
-				foreach ($document->getProducts() as $product) {
-					$art->addProduct($product);
-				}
+			foreach ($tag->getArticles() as $article) {
+				$article->addInfoPage($infoPage);
 			}
-		}
 
-		######################################
-		$arts = $em->createQuery('
-			SELECT a
-			FROM VidalDrugBundle:PharmArticle a
-			WHERE SIZE(a.documents) > 0
-		')->getResult();
-
-		foreach ($arts as $art) {
-			foreach ($art->getDocuments() as $document) {
-				foreach ($document->getProducts() as $product) {
-					$art->addProduct($product);
-				}
-			}
-		}
-
-		######################################
-		$arts = $em->createQuery('
-			SELECT a
-			FROM VidalDrugBundle:Publication a
-			WHERE SIZE(a.documents) > 0
-		')->getResult();
-
-		foreach ($arts as $art) {
-			foreach ($art->getDocuments() as $document) {
-				foreach ($document->getProducts() as $product) {
-					$art->addProduct($product);
-				}
+			foreach ($tag->getPublications() as $publication) {
+				$publication->addInfoPage($infoPage);
 			}
 		}
 

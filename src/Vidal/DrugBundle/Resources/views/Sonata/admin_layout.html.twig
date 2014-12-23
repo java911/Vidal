@@ -105,34 +105,36 @@ file that was distributed with this source code.
 				.autocomplete({
 					minLength: 1,
 					source:    function(request, response) {
-						$.ajax({
-							url:      "http://www.vidal.ru:9200/website/autocomplete_product/_search",
-							type:     "POST",
-							dataType: "JSON",
-							data:     '{ "query":{"query_string":{"query":"*' + request.term + '*","default_operator":"AND"}}, "fields":["name"], "size":20, "highlight":{"fields":{"name":{}}} }',
-							success:  function(data) {
-								var hits = data.hits.hits;
-								var ids = $('.ul-remove li').map(function(element) {
-									return $(this).attr("data");
-								});
-								var values = [];
+						var url = Routing.generate('elastic_autocomplete_product', {'term':request.term.trim()});
+						$.getJSON(url, function(data) {
+							var hits = data.hits.hits;
+							var ids = $('.ul-remove li').map(function(element) {
+								return $(this).attr("data");
+							});
+							var values = [];
 
-								for (var i = 0; i < hits.length; i++) {
-									var item = hits[i];
-									if (jQuery.inArray(item._id, ids) == -1) {
-										values.push({
-											'label': item.highlight.name,
-											'value': item.fields.name,
-											'id':    item._id
-										});
-									}
+							for (var i = 0; i < hits.length; i++) {
+								var item = hits[i];
+								if (jQuery.inArray(item._id, ids) == -1) {
+									values.push({
+										'label': item.highlight.name,
+										'value': item._source.name,
+										'id':    item._id
+									});
 								}
-								values.sort(function(a, b) {
-									return (a.value == b.value) ? 0 : ((a.value > b.value) ? 1 : -1);
-								});
-								response(values);
 							}
-						})
+							values.sort(function(a, b) {
+								return (a.value == b.value) ? 0 : ((a.value > b.value) ? 1 : -1);
+							});
+							response(values);
+
+//							response($.map(data.hits.hits, function(item) {
+//								return {
+//									label: item.highlight.name,
+//									value: item._source.name
+//								}
+//							}));
+						});
 					},
 					select:    function(event, ui) {
 						if (ui.item) {
@@ -183,13 +185,28 @@ file that was distributed with this source code.
 		$(document).ready(function() {
 			$('.tag-text').editable(Routing.generate('admin_tag_editable'), {submit: 'OK', width: '300px'});
 			$('.tag-search').editable(Routing.generate('admin_tag_search'), {submit: 'OK', width: '300px', 'placeholder': ''});
-			$('.tag-set').click(function() {
-				$.getJSON(this.href);
-				return false;
+		});
+	</script>
+	{% endif %}
+
+	{% if route == 'admin_vidal_main_user_list' %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.btn-confirm').click(function(e) {
+				var $link = $(this);
+				e.preventDefault();
+				$.getJSON(this.href, function(data) {
+					$link.closest('td').find('.counter.confirm').text(data);
+					alert('Письмо с подтверждение отослано');
+				});
 			});
-			$('.tag-clean').click(function() {
-				$.getJSON(this.href);
-				return false;
+			$('.btn-restrict').click(function(e) {
+				var $link = $(this);
+				e.preventDefault();
+				$.getJSON(this.href, function(data) {
+					$link.closest('td').find('.counter.restrict').text(data);
+					alert('Письмо с отказом отослано');
+				});
 			});
 		});
 	</script>
@@ -440,14 +457,14 @@ file that was distributed with this source code.
 									{% if not loop.last %}
 										<li>
 											{% if menu.uri is not empty %}
-												<a href="{{ menu.uri }}">{{ menu.label == 'Dashboard' ? 'Панель' : menu.label }}</a>
+												<a href="{{ menu.uri }}">{{ menu.label == 'Dashboard' ? 'Панель' : menu.label|raw }}</a>
 											{% else %}
-												{{ menu.label }}
+												{{ menu.label|raw }}
 											{% endif %}
 											<span class="divider">/</span>
 										</li>
 									{% else %}
-										<li class="active">{{ menu.label }}</li>
+										<li class="active">{{ menu.label|raw }}</li>
 									{% endif %}
 								{% endfor %}
 							{% endif %}

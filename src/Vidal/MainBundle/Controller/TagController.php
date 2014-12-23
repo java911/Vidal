@@ -7,11 +7,35 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Lsw\SecureControllerBundle\Annotation\Secure;
 
 class TagController extends Controller
 {
 	const NEWS_PER_PAGE  = 12;
 	const PHARM_PER_PAGE = 4;
+
+	/**
+	 * @Route("/tag/list/{tagId}/{text}", name="tag_list", options={"expose":true})
+	 * @Template("VidalMainBundle:Tag:tag_list.html.twig")
+	 * @Secure(roles="ROLE_ADMIN")
+	 */
+	public function tagListAction($tagId, $text = null)
+	{
+		$em  = $this->getDoctrine()->getManager('drug');
+		$tag = $em->getRepository('VidalDrugBundle:Tag')->findOneById($tagId);
+
+		if (!$tag) {
+			throw $this->createNotFoundException();
+		}
+
+		$params['articles']     = $em->getRepository('VidalDrugBundle:Article')->findByTagWord($tagId, $text);
+		$params['publications'] = $em->getRepository('VidalDrugBundle:Publication')->findByTagWord($tagId, $text);
+		$params['arts']         = $em->getRepository('VidalDrugBundle:Art')->findByTagWord($tagId, $text);
+		$params['text']         = $params['word'] = $text;
+		$params['tag']          = $tag;
+
+		return $params;
+	}
 
 	/**
 	 * @Route("/tag/news/{id}", name="tag_news")
@@ -23,7 +47,7 @@ class TagController extends Controller
 		$tag  = $em->getRepository('VidalDrugBundle:Tag')->findOneById($id);
 		$page = $request->query->get('p', 1);
 
-		if (!$tag) {
+		if (!$tag || $tag->getEnabled() == false) {
 			throw $this->createNotFoundException();
 		}
 
@@ -48,7 +72,7 @@ class TagController extends Controller
 		$tag  = $em->getRepository('VidalDrugBundle:Tag')->findOneById($id);
 		$page = $request->query->get('p', 1);
 
-		if (!$tag) {
+		if (!$tag || $tag->getEnabled() == false) {
 			throw $this->createNotFoundException();
 		}
 
@@ -73,7 +97,7 @@ class TagController extends Controller
 		$tag  = $em->getRepository('VidalDrugBundle:Tag')->findOneById($id);
 		$page = $request->query->get('p', 1);
 
-		if (!$tag) {
+		if (!$tag || $tag->getEnabled() == false) {
 			throw $this->createNotFoundException();
 		}
 
@@ -98,7 +122,7 @@ class TagController extends Controller
 		$tag  = $em->getRepository('VidalDrugBundle:Tag')->findOneById($id);
 		$page = $request->query->get('p', 1);
 
-		if (!$tag) {
+		if (!$tag || $tag->getEnabled() == false) {
 			throw $this->createNotFoundException();
 		}
 
@@ -113,68 +137,131 @@ class TagController extends Controller
 		return $params;
 	}
 
-	/**
-	 * @Template("VidalMainBundle:Tag:tags.html.twig")
-	 */
+	/** @Template("VidalMainBundle:Tag:tags.html.twig") */
 	public function tagsAction($object)
 	{
-		$tags = array();
+		$tags          = array();
+		$tagsInfopages = array();
+		$infoPageIds   = array();
 
+		# теги
 		foreach ($object->getTags() as $tag) {
-			$key = $tag->getText();
-			if (!isset($tags[$key])) {
-				$tags[$key] = $tag;
+			if ($tag->getEnabled()) {
+				$key = $tag->getText();
+				# проверка, что это представительство
+				if ($infoPage = $tag->getInfoPage()) {
+					$infoPageIds[]       = $infoPage->getInfoPageID();
+					$tagsInfopages[$key] = $infoPage;
+					continue;
+				}
+
+				# включаем только тот тег, по которому есть хотя бы одна активная публикация
+				$hasPublication = false;
+				foreach ($tag->getPublications() as $publication) {
+					if ($publication->getEnabled()) {
+						$hasPublication = true;
+						break;
+					}
+				}
+
+				if (!isset($tags[$key]) && $hasPublication) {
+					$tags[$key] = $tag;
+				}
 			}
 		}
 
-		foreach ($object->getAtcCodes() as $atc) {
-			$key = $atc->getATCCode() . ' - ' . $atc->getRusName();
-			if (!isset($tags[$key])) {
-				$tags[$key] = $atc;
+		if (count($tags)) {
+			uksort($tags, array($this, 'casecmp'));
+		}
+
+		# Представительства
+		foreach ($object->getInfoPages() as $ip) {
+			$key = $ip->getRusName();
+			if (!in_array($ip->getInfoPageID(), $infoPageIds)) {
+				$tagsInfopages[$key] = $ip;
 			}
 		}
+
+		if (count($tagsInfopages)) {
+			uksort($tagsInfopages, array($this, 'casecmp'));
+			$tags = array_merge($tagsInfopages, $tags);
+		}
+
+		# активные вещества
+		$tagsMolecules = array();
 
 		foreach ($object->getMolecules() as $molecule) {
 			$rusName = $molecule->getRusName();
 			$key     = empty($rusName) ? $molecule->getLatName() : $rusName;
-			if (!isset($tags[$key])) {
-				$tags[$key] = $molecule;
+			if (!isset($tagsMolecules[$key])) {
+				$tagsMolecules[$key] = $molecule;
 			}
 		}
 
-		foreach ($object->getInfoPages() as $ip) {
-			$key = $ip->getRusName();
-			if (!isset($tags[$key])) {
-				$tags[$key] = $ip;
+		if (count($tagsMolecules)) {
+			uksort($tagsMolecules, array($this, 'casecmp'));
+			$tags = array_merge($tags, $tagsMolecules);
+		}
+
+		#АТХ
+		$tagsAtc = array();
+
+		foreach ($object->getAtcCodes() as $atc) {
+			$key = $atc->getATCCode() . ' - ' . $atc->getRusName();
+			if (!isset($tagsAtc[$key])) {
+				$tagsAtc[$key] = $atc;
 			}
 		}
+
+		if (count($tagsAtc)) {
+			uksort($tagsAtc, array($this, 'casecmp'));
+			$tags = array_merge($tags, $tagsAtc);
+		}
+
+		# Нозология МКБ-10
+		$tagsNozologies = array();
 
 		foreach ($object->getNozologies() as $nozology) {
-			$key = $nozology->getNozologyCode() . ' - ' . $nozology->getName();
-			if (!isset($tags[$key])) {
-				$tags[$key] = $nozology;
+			$key = $nozology->getCode() . ' - ' . $nozology->getName();
+			if (!isset($tagsNozologies[$key])) {
+				$tagsNozologies[$key] = $nozology;
 			}
 		}
 
-		ksort($tags);
+		if (count($tagsNozologies)) {
+			uksort($tagsNozologies, array($this, 'casecmp'));
+			$tags = array_merge($tags, $tagsNozologies);
+		}
 
 		$products    = array();
+		$bads        = array();
 		$productsRaw = $object->getProducts();
 
 		if (!empty($productsRaw)) {
 			foreach ($productsRaw as $product) {
-				$key = $this->strip($product->getRusName());
-				isset($products[$key])
-					? $products[$key][] = $product
-					: $products[$key] = array($product);
+				if ($product->isValid()) {
+					$key = $this->strip($product->getRusName());
+					if ($product->isBAD()) {
+						isset($bads[$key])
+							? $bads[$key][] = $product
+							: $bads[$key] = array($product);
+					}
+					else {
+						isset($products[$key])
+							? $products[$key][] = $product
+							: $products[$key] = array($product);
+					}
+				}
 			}
 		}
 
 		ksort($products);
+		ksort($bads);
 
 		return array(
 			'tags'          => $tags,
 			'productGroups' => $products,
+			'badGroups'     => $bads,
 		);
 	}
 
@@ -184,5 +271,13 @@ class TagController extends Controller
 		$rep = array('', '', ' & ');
 
 		return preg_replace($pat, $rep, $string);
+	}
+
+	private function casecmp($a, $b)
+	{
+		$a = mb_strtolower($a, 'utf-8');
+		$b = mb_strtolower($b, 'utf-8');
+
+		return $a == $b ? 0 : ($a > $b ? 1 : -1);
 	}
 }

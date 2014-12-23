@@ -12,6 +12,8 @@ use Vidal\DrugBundle\Entity\Publication;
 use Vidal\DrugBundle\Entity\Product;
 use Vidal\DrugBundle\Entity\Document;
 use Vidal\DrugBundle\Entity\PharmPortfolio;
+use Vidal\DrugBundle\Entity\Tag;
+use Vidal\DrugBundle\Entity\InfoPage;
 
 class DoctrineEventSubscriber implements EventSubscriber
 {
@@ -90,6 +92,22 @@ class DoctrineEventSubscriber implements EventSubscriber
 		if ($entity instanceof Article || $entity instanceof Art) {
 			$this->setLink($entity);
 		}
+
+		if ($entity instanceof InfoPage) {
+			if ($tag = $entity->getTag()) {
+				$pdo = $args->getEntityManager()->getConnection();
+				$pdo->prepare("UPDATE tag SET InfoPageID = NULL WHERE InfoPageID = {$entity->getInfoPageID()}")->execute();
+				$pdo->prepare("UPDATE tag SET InfoPageID = {$entity->getInfoPageID()} WHERE id = {$tag->getId()}")->execute();
+			}
+		}
+
+		if ($entity instanceof Tag) {
+			if ($infoPage = $entity->getInfoPage()) {
+				$pdo = $args->getEntityManager()->getConnection();
+				$pdo->prepare("UPDATE infopage SET tag_id = NULL WHERE tag_id = {$entity->getId()}")->execute();
+				$pdo->prepare("UPDATE infopage SET tag_id = {$entity->getId()} WHERE InfoPageID = {$infoPage->getInfoPageID()}")->execute();
+			}
+		}
 	}
 
 	public function postUpdate(LifecycleEventArgs $args)
@@ -99,6 +117,19 @@ class DoctrineEventSubscriber implements EventSubscriber
 		# проставляем мета к видео, если его загрузили
 		if ($entity instanceof Article || $entity instanceof Art || $entity instanceof Publication || $entity instanceof PharmPortfolio) {
 			$this->setVideoMeta($entity);
+		}
+
+		# проставляем сколько всего связей у тегов (Tag.total)
+		if ($entity instanceof Article || $entity instanceof Art || $entity instanceof Publication) {
+			$tagService = $this->container->get('drug.tag_total');
+			foreach ($entity->getTags() as $tag) {
+				$tagService->count($tag->getId());
+			}
+			foreach ($entity->getInfoPages() as $ip) {
+				if ($tag = $ip->getTag()) {
+					$tagService->count($tag->getId());
+				}
+			}
 		}
 	}
 

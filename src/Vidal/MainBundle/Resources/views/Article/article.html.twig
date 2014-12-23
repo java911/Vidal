@@ -44,47 +44,27 @@
 	{% endif %}
 
 	{% if products is defined and products is not empty %}
-		<div class="documents-anons anons">
-			<b>{{ article.title|raw }}</b>: применяемые препараты безрецептурного отпуска
-		</div>
-		<div class="products non">
-			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' %}
-			{% if products|length > 20 %}
-				<div class="center">
-					<a href="#" class="btn-red">Показать все {{ products|length }}</a>
-				</div>
-			{% endif %}
+		<div class="announcement">
+			<div class="anons-footer">
+				<span>{{ article.title|raw }}</span>: применяемые препараты безрецептурного отпуска
+				<i>{{ products|length }}</i>
+			</div>
+			<div class="products">
+				{% include 'VidalDrugBundle:Vidal:render_products.html.twig' %}
+			</div>
 		</div>
 	{% endif %}
 
 	{% if pre_products is defined and pre_products is not empty %}
-		<div class="documents-anons anons">
-			<b>{{ article.title|raw }}</b>: применяемые рецептурные препараты
+		<div class="announcement">
+			<div class="anons-footer">
+				<span>{{ article.title|raw }}</span>: применяемые рецептурные препараты
+				<i>{{ pre_products|length }}</i>
+			</div>
+			<div class="products">
+				{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':pre_products, 'companies':pre_companies, 'pictures':pre_pictures, 'infoPages':pre_infoPages} %}
+			</div>
 		</div>
-		<div class="products pre">
-			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':pre_products, 'companies':pre_companies, 'pictures':pre_pictures, 'infoPages':pre_infoPages} %}
-			{% if pre_products|length > 20 %}
-				<div class="center">
-					<a href="#" class="btn-red">Показать все {{ pre_products|length }}</a>
-				</div>
-			{% endif %}
-		</div>
-	{% endif %}
-
-	{% if molecules is defined and molecules is not empty %}
-		<div class="documents-anons anons">
-			<b>{{ article.title|raw }}</b>: возможно также применение препаратов с активными веществами
-		</div>
-		<ul class="ul-style documents">
-			{% for molecule in molecules %}
-				<li>
-					<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
-					   class="no-underline">
-						{{ molecule.RusName|upper|raw }}
-					</a>
-				</li>
-			{% endfor %}
-		</ul>
 	{% endif %}
 
 	<div class="anons red-warning">
@@ -115,30 +95,19 @@
 			font-weight:   bold;
 			margin-bottom: 5px;
 		}
+		.products {
+			display: none;
+		}
 	</style>
 {% endblock %}
 
 
 {% block javascripts %}
 	{{ parent() }}
+	<script type="text/javascript" src="{{ asset('bundles/vidalmain/ckeditor/spoiler.js') }}"></script>
+
 	<script type="text/javascript">
 		$(document).ready(function() {
-			var maxRows = 20;
-
-			var $products = $('.products.non');
-			var rows = $products.find('tr').length;
-
-			if (rows > maxRows) {
-				$products.find('tr:gt(' + maxRows + ')').hide();
-			}
-
-			$products = $('.products.pre');
-			rows = $products.find('tr').length;
-
-			if (rows > maxRows) {
-				$products.find('tr:gt(' + maxRows + ')').hide();
-			}
-
 			$('.btn-red').click(function(e) {
 				e.preventDefault();
 				var $btn = $(e.target);

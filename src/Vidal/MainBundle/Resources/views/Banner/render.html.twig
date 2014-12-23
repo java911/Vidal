@@ -1,12 +1,21 @@
 {% if banner and is_file(banner.banner.path) %}
-	{% set group = 'banner_' ~ banner.group.name %}
-	{% set width = banner.group.width %}
-	{% set height = banner.group.height %}
+	{% set group = 'banner_' ~ banner.id %}
+	{% set name = 'banner-' ~ banner.group.name %}
 	{% set isSwf = banner.isSwf() %}
 	{% set isProd = app.environment == 'prod' %}
 
-	<div id="{{ group }}" class="banner" style="width:{{ width }}px; height:{{ height }}px">
-		<a href="{{ banner.link }}" class="banner-link" style="width:{{ width }}px; height:{{ height }}px">
+	{% if banner.noStretch and not banner.isSwf %}
+		{% set width = banner.banner.width %}
+		{% set height = banner.banner.height %}
+	{% else %}
+		{% set width = (banner.width != null ? banner.width : banner.group.width ) %}
+		{% set height = (banner.height != null ? banner.height : banner.group.height ) %}
+	{% endif %}
+
+	<div id="{{ group }}" class="banner {{ name }}" style="width:{{ width }}px; height:{{ height }}px">
+		{% if banner.code is not empty %}
+			{{ banner.code|raw }}
+		{% else %}
 			{% if isSwf %}
 				<div id="{{ group }}_swf">
 					{% if banner.fallback %}
@@ -16,7 +25,7 @@
 			{% else %}
 				<img src="{{ banner.banner.path }}" style="width:{{ width }}px; height:{{ height }}px"/>
 			{% endif %}
-		</a>
+		{% endif %}
 
 		<a href="{{ banner.link }}" class="banner-link" style="width:{{ width }}px; height:{{ height }}px"></a>
 
@@ -42,7 +51,7 @@
 				$.get(Routing.generate('banner_clicked', {'bannerId': '{{ banner.id }}'}));
 			});
 
-			{% if isSwf %}
+			{% if isSwf and banner.code is empty %}
 			if (!/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
 				swfobject.embedSWF("{{ banner.banner.path }}", "{{ group }}_swf", "{{ width }}", "{{ height }}",
 					"9.0.0", "/expressInstall.swf", null, {wmode: "opaque"});
@@ -51,7 +60,7 @@
 		});
 	</script>
 
-	{% if group == 'banner_top' %}
+	{% if name == 'banner-top' %}
 		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/banner_top.css') }}"/>
 	{% endif %}
 {% endif %}

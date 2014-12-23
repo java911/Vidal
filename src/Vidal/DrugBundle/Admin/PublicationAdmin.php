@@ -29,6 +29,21 @@ class PublicationAdmin extends Admin
 		}
 	}
 
+	public function createQuery($context = 'list')
+	{
+		$qb = $this->getModelManager()->getEntityManager($this->getClass())->createQueryBuilder();
+		$qb->select('a')->from($this->getClass(), 'a');
+
+		if (!isset($_GET['filter']['_sort_by']) || $_GET['filter']['_sort_by'] == 'created') {
+			$order = isset($_GET['filter']['_sort_order']) ? $_GET['filter']['_sort_order'] : 'DESC';
+			$qb->orderBy('a.date', $order)->addOrderBy('a.id', 'ASC');
+		}
+
+		$proxyQuery = new \Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery($qb);
+
+		return $proxyQuery;
+	}
+
 	protected function configureShowField(ShowMapper $showMapper)
 	{
 		$showMapper
@@ -129,6 +144,8 @@ class PublicationAdmin extends Admin
 			)
 			->add('date', null, array('label' => 'Дата создания', 'required' => true, 'years' => range(2000, date('Y'))))
 			->add('video', 'iphp_file', array('label' => 'Видео', 'required' => false, 'help' => 'Загрузить флеш-видео в формате .flv'))
+			->add('code', null, array('label' => 'Дополнительный код', 'required' => false))
+			->add('testMode', null, array('label' => 'В режиме тестирования', 'required' => false, 'help' => 'видно только если в конец url-адреса дописать ?test'))
 			->add('enabled', null, array('label' => 'Активна', 'required' => false));
 	}
 
@@ -138,6 +155,7 @@ class PublicationAdmin extends Admin
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
 			->add('priority', null, array('label' => 'Приоритет'))
+			->add('testMode', null, array('label' => 'В режиме тестирования'))
 			->add('enabled', null, array('label' => 'Активна'));
 	}
 
@@ -147,11 +165,8 @@ class PublicationAdmin extends Admin
 			->add('id')
 			->add('title', null, array('label' => 'Заголовок'))
 			->add('tags', null, array('label' => 'Теги', 'template' => 'VidalDrugBundle:Sonata:tags.html.twig'))
-			->add('date', null, array(
-				'label'  => 'Дата создания',
-				'widget' => 'single_text',
-				'format' => 'd.m.Y в H:i'
-			))
+			->add('date', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
+			->add('updated', null, array('label' => 'Дата изменения', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
 			->add('priority', null, array('label' => 'Приоритет'))
 			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
 			->add('_action', 'actions', array(

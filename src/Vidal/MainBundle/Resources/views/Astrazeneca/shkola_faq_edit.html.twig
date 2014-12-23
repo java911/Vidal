@@ -1,0 +1,48 @@
+{% extends 'VidalMainBundle::layout_promo.html.twig' %}
+
+
+{% block title %}
+	<h1>Ответ на вопрос</h1>
+{% endblock %}
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('shkola_gastrita') }}">Школа Гастрита</a>
+		<i></i>
+		<a href="{{ path('shkola_faq_list') }}">Вопрос-ответ</a>
+		<i></i>
+		<span>редактирование</span>
+	</div>
+{% endblock %}
+
+
+{% block content %}
+	<form id="register_form" method="post" {{ form_enctype(form) }}>
+		{{ form_widget(form) }}
+	</form>
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.form_table td.label {
+			width:          10%;
+			vertical-align: top;
+		}
+		.form_table textarea {
+			width:       96%;
+			height:      170px;
+			font-family: sans-serif;
+		}
+	</style>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script src="{{ asset('bundles/vidalmain/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('bundles/vidalmain/ckeditor/adapters/jquery.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('bundles/vidalmain/javascripts/ckeditor-config.js') }}"></script>
+{% endblock %}

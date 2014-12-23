@@ -112,7 +112,7 @@ class VidalController extends Controller
 		if (!empty($products)) {
 			$productIds          = $this->getProductIds($products);
 			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
 			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 		}
 
@@ -138,7 +138,7 @@ class VidalController extends Controller
 		if (!empty($products)) {
 			$productIds          = $this->getProductIds($products);
 			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
 			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 		}
 
@@ -174,7 +174,7 @@ class VidalController extends Controller
 	public function infItemAction($InfoPageID)
 	{
 		$em       = $this->getDoctrine()->getManager('drug');
-		$infoPage = $em->getRepository('VidalDrugBundle:InfoPage')->findByInfoPageID($InfoPageID);
+		$infoPage = $em->getRepository('VidalDrugBundle:InfoPage')->findOneByInfoPageID($InfoPageID);
 
 		if (!$infoPage) {
 			throw $this->createNotFoundException();
@@ -185,7 +185,7 @@ class VidalController extends Controller
 		$params      = array(
 			'infoPage'   => $infoPage,
 			'picture'    => $picture,
-			'title'      => $this->strip($infoPage['RusName']) . ' | Представительства фирм',
+			'title'      => $this->strip($infoPage->getRusName()) . ' | Представительства фирм',
 			'portfolios' => $em->getRepository('VidalDrugBundle:InfoPage')->findPortfolios($InfoPageID),
 		);
 
@@ -196,7 +196,7 @@ class VidalController extends Controller
 				$productIds          = $this->getProductIds($products);
 				$params['products']  = $products;
 				$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-				$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+				$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
 				$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 			}
 		}
@@ -333,7 +333,7 @@ class VidalController extends Controller
 			'products1' => $products1,
 			'products2' => $products2,
 			'companies' => $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds),
-			'pictures'  => $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y')),
+			'pictures'  => $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds),
 			'infoPages' => $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($productsRaw),
 			'title'     => mb_strtoupper($molecule->getTitle(), 'utf-8') . ' | Активные вещества в препаратах',
 		);
@@ -392,7 +392,7 @@ class VidalController extends Controller
 
 		$params['products']  = $products;
 		$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-		$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+		$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
 		$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 
 		return $params;
@@ -409,7 +409,7 @@ class VidalController extends Controller
 
 		$product = $em->getRepository('VidalDrugBundle:Product')->findByProductID($ProductID);
 
-		if (!$product) {
+		if (!$product || $product->getInactive()) {
 			throw $this->createNotFoundException();
 		}
 
@@ -431,10 +431,11 @@ class VidalController extends Controller
 		}
 
 		if ($document) {
-			$documentId           = $document->getDocumentID();
-			$params['document']   = $document;
-			$params['infoPages']  = $em->getRepository('VidalDrugBundle:InfoPage')->findByDocumentID($documentId);
-			$params['nozologies'] = $em->getRepository('VidalDrugBundle:Nozology')->findByDocumentID($documentId);
+			$documentId              = $document->getDocumentID();
+			$params['document']      = $document;
+			$params['infoPages']     = $em->getRepository('VidalDrugBundle:InfoPage')->findByDocumentID($documentId);
+			$params['nozologies']    = $em->getRepository('VidalDrugBundle:Nozology')->findByDocumentID($documentId);
+			$params['parentATCCode'] = $em->getRepository('VidalDrugBundle:ATC')->getParent($product);
 		}
 
 		$productId              = $product->getProductID();
@@ -444,6 +445,9 @@ class VidalController extends Controller
 		$params['owners']       = $em->getRepository('VidalDrugBundle:Company')->findOwnersByProducts($productIds);
 		$params['distributors'] = $em->getRepository('VidalDrugBundle:Company')->findDistributorsByProducts($productIds);
 		$params['molecules']    = $em->getRepository('VidalDrugBundle:Molecule')->findByProductID($productId);
+		$params['publications'] = $em->getRepository('VidalDrugBundle:Product')->findPublications($productId);
+		$params['articles']     = $em->getRepository('VidalDrugBundle:Product')->findArticles($productId);
+		$params['arts']         = $em->getRepository('VidalDrugBundle:Product')->findArts($productId);
 
 		# медицинские изделия выводятся по-другому
 		if ($product->isMI()) {
@@ -462,7 +466,7 @@ class VidalController extends Controller
 			return $this->render("VidalDrugBundle:Vidal:bad_document.html.twig", $params);
 		}
 		else {
-			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds, date('Y'));
+			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds);
 			$params['title']    = $this->strip($product->getRusName()) . ' - ' . $product->getZipInfo() . ' | Препараты';
 		}
 

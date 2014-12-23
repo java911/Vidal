@@ -26,12 +26,15 @@
 
 	<div class="article-body text">
 		{{ article.body|raw }}
+
+		{% if article.code is not empty %}
+			{{ article.code|raw }}
+		{% endif %}
 	</div>
+
 	<div class="article-footer">
 		<span class="article-date">{{ article.date|date('d.m.Y') }}</span>
 	</div>
 
-	{% if is_granted('ROLE_ADMIN') %}
-		{{ render(controller('VidalMainBundle:Tag:tags', {'object':article})) }}
-	{% endif %}
+	{{ render(controller('VidalMainBundle:Tag:tags', {'object':article})) }}
 </div>

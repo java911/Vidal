@@ -6,28 +6,40 @@ use Doctrine\ORM\EntityRepository;
 
 class ArticleRepository extends EntityRepository
 {
-	public function ofRubrique($rubrique)
+	public function ofRubrique($rubrique, $testMode = false)
 	{
-		return $this->_em->createQuery('
-			SELECT a
-			FROM VidalDrugBundle:Article a
-			WHERE a.rubrique = :rubriqueId
-			ORDER BY a.title ASC
-		')->setParameter('rubriqueId', $rubrique->getId())
-			->getResult();
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select('a')
+			->from('VidalDrugBundle:Article', 'a')
+			->where('a.rubrique = :rubriqueId')
+			->orderBy('a.title', 'ASC')
+			->setParameter('rubriqueId', $rubrique->getId());
+
+		$testMode
+			? $qb->andWhere('a.enabled = TRUE OR a.testMode = TRUE')
+			: $qb->andWhere('a.enabled = TRUE');
+
+		return $qb->getQuery()->getResult();
 	}
 
-	public function findLast()
+	public function findLast($testMode = false)
 	{
-		return $this->_em->createQuery('
-			SELECT a
-			FROM VidalDrugBundle:Article a
-			WHERE a.enabled = TRUE
-				AND a.date < :now
-				AND a.anons = TRUE
-			ORDER BY a.anonsPriority DESC, a.date DESC
-		')->setParameter('now', new \DateTime())
-			->getResult();
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select('a')
+			->from('VidalDrugBundle:Article', 'a')
+			->andWhere('a.date < :now')
+			->andWhere('a.anons = TRUE')
+			->orderBy('a.anonsPriority', 'DESC')
+			->addOrderBy('a.date', 'DESC')
+			->setParameter('now', new \DateTime());
+
+		$testMode
+			? $qb->andWhere('a.enabled = TRUE OR a.testMode = TRUE')
+			: $qb->andWhere('a.enabled = TRUE');
+
+		return $qb->getQuery()->getResult();
 	}
 
 	public function findFrom($from, $max)
@@ -58,14 +70,14 @@ class ArticleRepository extends EntityRepository
 				AND a.synonym NOT LIKE :l6
 			ORDER BY a.title ASC
 		')->setParameters(array(
-				'now' => new \DateTime(),
-				'l1'  => $l . '%',
-				'l2'  => '% ' . $l . '%',
-				'l3'  => $l . '%',
-				'l4'  => '% ' . $l . '%',
-				'l5'  => '% ' . $l . ' %',
-				'l6'  => '% ' . $l . ' %',
-			))
+			'now' => new \DateTime(),
+			'l1'  => $l . '%',
+			'l2'  => '% ' . $l . '%',
+			'l3'  => $l . '%',
+			'l4'  => '% ' . $l . '%',
+			'l5'  => '% ' . $l . ' %',
+			'l6'  => '% ' . $l . ' %',
+		))
 			->getResult();
 	}
 
@@ -154,5 +166,81 @@ class ArticleRepository extends EntityRepository
 		')->setParameter('now', new \DateTime())
 			->setParameter('tagId', $tagId)
 			->getResult();
+	}
+
+	public function findByTagWord($tagId, $text)
+	{
+		if (empty($text)) {
+			$results1 = $this->_em->createQuery('
+				SELECT a
+				FROM VidalDrugBundle:Article a
+				JOIN a.tags t WITH t = :tagId
+			')->setParameter('tagId', $tagId)
+				->getResult();
+
+			$results2 = $this->_em->createQuery('
+				SELECT a
+				FROM VidalDrugBundle:Article a
+				JOIN a.infoPages i
+				JOIN i.tag t WITH t = :tagId
+			')->setParameter('tagId', $tagId)
+				->getResult();
+
+			$results = array();
+
+			foreach ($results1 as $r) {
+				$key           = $r->getId();
+				$results[$key] = $r;
+			}
+			foreach ($results2 as $r) {
+				$key = $r->getId();
+				if (!isset($results[$key])) {
+					$results[$key] = $r;
+				}
+			}
+
+			return array_values($results);
+		}
+		else {
+			$tagHistory = $this->_em->getRepository('VidalDrugBundle:TagHistory')->findOneByTagText($tagId, $text);
+			$ids        = $tagHistory->getArticleIds();
+
+			if (empty($ids)) {
+				return array();
+			}
+
+			return $this->_em->createQuery('
+				SELECT a
+				FROM VidalDrugBundle:Article a
+				WHERE a.id IN (:ids)
+			')->setParameter('ids', $ids)
+				->getResult();
+		}
+	}
+
+	public function findByNozology($nozologyCodes)
+	{
+		return $this->_em->createQuery('
+			SELECT a
+			FROM VidalDrugBundle:Article a
+			JOIN a.nozologies n WITH n.NozologyCode IN (:codes)
+			JOIN a.rubrique r
+			WHERE a.enabled = TRUE
+				AND r.enabled = TRUE
+			ORDER BY a.date DESC
+		')->setParameter('codes', $nozologyCodes)
+			->getResult();
+	}
+
+	public function findActive()
+	{
+		return $this->_em->createQuery('
+		 	SELECT a
+		 	FROM VidalDrugBundle:Article a
+		 	JOIN a.rubrique r
+		 	WHERE a.enabled = TRUE
+		 		AND r.enabled = TRUE
+			ORDER BY a.title ASC
+		')->getResult();
 	}
 }

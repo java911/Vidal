@@ -22,6 +22,10 @@ class ArtRepository extends EntityRepository
 
 	public function getQueryByType($type)
 	{
+		if (!$type) {
+			return null;
+		}
+
 		return $this->_em->createQuery('
 			SELECT a
 			FROM VidalDrugBundle:Art a
@@ -36,6 +40,10 @@ class ArtRepository extends EntityRepository
 
 	public function getQueryByCategory($category)
 	{
+		if (!$category) {
+			return null;
+		}
+
 		return $this->_em->createQuery('
 			SELECT a
 			FROM VidalDrugBundle:Art a
@@ -84,6 +92,69 @@ class ArtRepository extends EntityRepository
 		 	ORDER BY a.date DESC
 		')->setParameter('now', new \DateTime())
 			->setParameter('tagId', $tagId)
+			->getResult();
+	}
+
+	public function findByTagWord($tagId, $text)
+	{
+		if (empty($text)) {
+			$results1 = $this->_em->createQuery('
+				SELECT a
+				FROM VidalDrugBundle:Art a
+				JOIN a.tags t WITH t = :tagId
+			')->setParameter('tagId', $tagId)
+				->getResult();
+
+			$results2 = $this->_em->createQuery('
+				SELECT a
+				FROM VidalDrugBundle:Art a
+				JOIN a.infoPages i
+				JOIN i.tag t WITH t = :tagId
+			')->setParameter('tagId', $tagId)
+				->getResult();
+
+			$results = array();
+
+			foreach ($results1 as $r) {
+				$key           = $r->getId();
+				$results[$key] = $r;
+			}
+			foreach ($results2 as $r) {
+				$key = $r->getId();
+				if (!isset($results[$key])) {
+					$results[$key] = $r;
+				}
+			}
+
+			return array_values($results);
+		}
+		else {
+			$tagHistory = $this->_em->getRepository('VidalDrugBundle:TagHistory')->findOneByTagText($tagId, $text);
+			$ids        = $tagHistory->getArtIds();
+
+			if (empty($ids)) {
+				return array();
+			}
+
+			return $this->_em->createQuery('
+				SELECT a
+				FROM VidalDrugBundle:Art a
+				WHERE a.id IN (:ids)
+			')->setParameter('ids', $ids)
+				->getResult();
+		}
+	}
+
+	public function findByNozology($nozologyCodes)
+	{
+		return $this->_em->createQuery('
+			SELECT a
+			FROM VidalDrugBundle:Art a
+			JOIN a.nozologies n WITH n.NozologyCode IN (:codes)
+			JOIN a.rubrique r
+			WHERE a.enabled = TRUE AND r.enabled = TRUE
+			ORDER BY a.date DESC
+		')->setParameter('codes', $nozologyCodes)
 			->getResult();
 	}
 }

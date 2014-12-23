@@ -81,7 +81,7 @@ class ProfileType extends AbstractType
 						return $er->createQueryBuilder('s')->orderBy('s.title', 'ASC');
 					}
 			))
-			->add('specialization', null, array('label' => 'Специализация', 'attr' => array('data-help' => 'если есть')))
+			->add('specialization', null, array('label' => 'Специализация', 'empty_value' => 'Не имеется', 'attr' => array('data-help' => 'если есть'), 'required' => false))
 			->add('academicDegree', 'choice', array('label' => 'Ученая степень', 'choices' => User::getAcademicDegrees(), 'empty_value' => 'выберите'))
 			->add('dissertation', null, array('label' => 'Тема диссертации', 'required' => false))
 			->add('professionalInterests', null, array('label' => 'Профессиональные интересы', 'required' => false))
@@ -96,7 +96,7 @@ class ProfileType extends AbstractType
 			->add('jobAchievements', null, array('label' => 'Достижения', 'required' => false))
 			->add('about', null, array('label' => 'О себе', 'required' => false))
 			->add('jobPublications', null, array('label' => 'Публикации', 'required' => false))
-            ->add('ConfirmationScan', 'iphp_file', array('label' => 'Скан документа, подтверждающий профессию', 'required' => false))
+            ->add('ConfirmationScan', 'iphp_file', array('label' => 'Скан действующего сертификата', 'required' => false))
 			->add('submit3', 'submit', array('label' => 'Сохранить'));
 
 	}

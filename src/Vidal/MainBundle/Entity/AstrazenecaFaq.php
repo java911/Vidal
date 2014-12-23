@@ -5,12 +5,12 @@ namespace Vidal\MainBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/** @ORM\Entity()
+/**
+ * @ORM\Entity(repositoryClass="AstrazenecaFaqRepository")
  * @ORM\Table()
  */
 class AstrazenecaFaq extends BaseEntity
 {
-
     /**
      * @ORM\Column(type="string", nullable=true)
      */

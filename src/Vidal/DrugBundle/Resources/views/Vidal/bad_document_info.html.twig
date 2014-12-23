@@ -30,15 +30,8 @@
 {# Свойства #}
 {% if document.PhInfluence is not empty %}
 	<div class="block" id="influence">
-		{% if isDoctor %}
-			<div class="block-head">Свойства</div>
-			<div class="block-content">{{ document.PhInfluence|raw }}</div>
-		{% else %}
-			<div class="block-head">
-				<a href="#" class="closed-link">Свойства</a>
-			</div>
-			{% include 'VidalMainBundle:Auth:closed_info.html.twig' %}
-		{% endif %}
+		<div class="block-head">Свойства</div>
+		<div class="block-content">{{ document.PhInfluence|raw }}</div>
 	</div>
 {% endif %}
 
@@ -138,15 +131,8 @@
 {# Фармакокинетика #}
 {% if document.PhKinetics is not empty %}
 	<div class="block" id="kinetics">
-		{% if isDoctor %}
-			<div class="block-head">Фармакокинетика</div>
-			<div class="block-content">{{ document.PhKinetics|raw }}</div>
-		{% else %}
-			<div class="block-head">
-				<a href="#" class="closed-link">Фармакокинетика</a>
-			</div>
-			{% include 'VidalMainBundle:Auth:closed_info.html.twig' %}
-		{% endif %}
+		<div class="block-head">Фармакокинетика</div>
+		<div class="block-content">{{ document.PhKinetics|raw }}</div>
 	</div>
 {% endif %}
 

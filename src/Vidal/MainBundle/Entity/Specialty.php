@@ -12,18 +12,6 @@ class Specialty
 	protected $id;
 
 	/**
-	 * @ORM\OneToMany(targetEntity="User", mappedBy="primarySpecialty")
-	 * @ORM\OrderBy({"title"="ASC"})
-	 */
-	protected $primaryDoctors;
-
-	/**
-	 * @ORM\OneToMany(targetEntity="User", mappedBy="secondarySpecialty")
-	 * @ORM\OrderBy({"title"="ASC"})
-	 */
-	protected $secondaryDoctors;
-
-	/**
 	 * @ORM\Column(type="string")
 	 * @Assert\NotBlank(message="Укажите название специальности.")
 	 * @Assert\Length(max=127, maxMessage="Название специальности не может быть длиннее {{limit}} знаков.")
@@ -44,10 +32,16 @@ class Specialty
 	 */
 	protected $doctorName;
 
+	/** @ORM\OneToMany(targetEntity="User", mappedBy="primarySpecialty") */
+	protected $primarySpecialties;
+
+	/** @ORM\OneToMany(targetEntity="User", mappedBy="secondarySpecialty") */
+	protected $secondarySpecialties;
+
 	public function __construct()
 	{
-		$this->primaryDoctors   = new ArrayCollection();
-		$this->secondaryDoctors = new ArrayCollection();
+		$this->primarySpecialties   = new ArrayCollection();
+		$this->secondarySpecialties = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -120,34 +114,44 @@ class Specialty
 	}
 
 	/**
-	 * @param mixed $primaryDoctors
+	 * @param mixed $primarySpecialties
 	 */
-	public function setPrimaryDoctors($primaryDoctors)
+	public function setPrimarySpecialties($primarySpecialties)
 	{
-		$this->primaryDoctors = $primaryDoctors;
+		$this->primarySpecialties = $primarySpecialties;
 	}
 
 	/**
 	 * @return mixed
 	 */
+	public function getPrimarySpecialties()
+	{
+		return $this->primarySpecialties;
+	}
+
 	public function getPrimaryDoctors()
 	{
-		return $this->primaryDoctors;
+		return $this->primarySpecialties;
 	}
 
 	/**
-	 * @param mixed $secondaryDoctors
+	 * @param mixed $secondarySpecialties
 	 */
-	public function setSecondaryDoctors($secondaryDoctors)
+	public function setSecondarySpecialties($secondarySpecialties)
 	{
-		$this->secondaryDoctors = $secondaryDoctors;
+		$this->secondarySpecialties = $secondarySpecialties;
 	}
 
 	/**
 	 * @return mixed
 	 */
+	public function getSecondarySpecialties()
+	{
+		return $this->secondarySpecialties;
+	}
+
 	public function getSecondaryDoctors()
 	{
-		return $this->secondaryDoctors;
+		return $this->secondarySpecialties;
 	}
 }

@@ -112,6 +112,12 @@ class Publication extends BaseEntity
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $priority;
 
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $code;
+
+	/** @ORM\Column(type="boolean") */
+	protected $testMode = false;
+
 	public function __construct()
 	{
 		$now              = new \DateTime('now');
@@ -479,5 +485,49 @@ class Publication extends BaseEntity
 	public function getProducts()
 	{
 		return $this->products;
+	}
+
+	public function addInfoPage($infoPage)
+	{
+		if (!$this->infoPages->contains($infoPage)) {
+			$this->infoPages[] = $infoPage;
+		}
+	}
+
+	public function removeInfoPage($infoPage)
+	{
+		$this->infoPages->remove($infoPage);
+	}
+
+	/**
+	 * @param mixed $code
+	 */
+	public function setCode($code)
+	{
+		$this->code = $code;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCode()
+	{
+		return $this->code;
+	}
+
+	/**
+	 * @param mixed $testMode
+	 */
+	public function setTestMode($testMode)
+	{
+		$this->testMode = $testMode;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTestMode()
+	{
+		return $this->testMode;
 	}
 }

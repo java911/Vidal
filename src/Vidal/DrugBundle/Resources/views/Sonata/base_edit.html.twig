@@ -22,33 +22,14 @@ file that was distributed with this source code.
 
 
 {% block actions %}
-	{% if app.session.flashBag.get('notice')|length %}
-		<div class="alert alert-success alert-dismissable">
-			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-			Объект клонирован
-		</div>
-	{% endif %}
-
-	{% if app.session.flashBag.get('tag_set')|length %}
-		<div class="alert alert-success alert-dismissable">
-			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-			Для статей и новостей был проставлен тег <b>{{ object.text }}</b>
-		</div>
-	{% endif %}
-
-	{% if app.session.flashBag.get('tag_clean')|length %}
-		<div class="alert alert-success alert-dismissable">
-			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-			Для статей и новостей был очищен тег <b>{{ object.text }}</b>
-		</div>
-	{% endif %}
-
-	{% if app.session.flashBag.get('tag_clean_old')|length %}
-		<div class="alert alert-success alert-dismissable">
-			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-			Для статей и новостей до 15.05.2014 был очищен тег <b>{{ object.text }}</b>
-		</div>
-	{% endif %}
+	{% for label, flashes in app.session.flashbag.all if label == 'msg' %}
+		{% for flash in flashes %}
+			<div class="alert alert-{{ label }}">
+				{{ flash|raw }}
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+			</div>
+		{% endfor %}
+	{% endfor %}
 
 	<div class="sonata-actions btn-group">
 		{% include 'SonataAdminBundle:Button:show_button.html.twig' %}
@@ -93,14 +74,9 @@ file that was distributed with this source code.
 			</script>
 		{% endif %}
 
-		{# кнопка проставления тегов по компании #}
+		{# кнопки управления тегами #}
 		{% if route == 'admin_vidal_drug_tag_edit' %}
-			<a href="{{ path('tag_clean_old', {'tagId':object.id}) }}" class="btn sonata-action-element"
-			   title="Очистить связи тега со статьями и новостями">Очистить до 15.05</a>
-			<a href="{{ path('tag_clean', {'tagId':object.id}) }}" class="btn sonata-action-element"
-			   title="Очистить связи тега со статьями и новостями">Очистить все</a>
-			<a href="{{ path('tag_set', {'tagId':object.id}) }}" class="btn sonata-action-element"
-			   title="Выставить этот тег для статей и новостей">Выставить</a>
+			{% include 'VidalDrugBundle:Sonata:tag_edit.html.twig' %}
 		{% endif %}
 	</div>
 {% endblock %}

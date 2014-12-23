@@ -538,6 +538,69 @@
 				<target>Удаление группы компаний</target>
 			</trans-unit>
 
+			<trans-unit id="sonata-30">
+				<source>Astrazeneca Faq List</source>
+				<target>Школа гастрита - вопрос/ответ</target>
+			</trans-unit>
+			<trans-unit id="sonata-30-1">
+				<source>Astrazeneca Faq Show</source>
+				<target>Школа гастрита - просмотр вопрос/ответ</target>
+			</trans-unit>
+			<trans-unit id="sonata-30-2">
+				<source>Astrazeneca Faq Edit</source>
+				<target>Школа гастрита - редактировать вопрос/ответ</target>
+			</trans-unit>
+			<trans-unit id="sonata-30-3">
+				<source>Astrazeneca Faq Create</source>
+				<target>Школа гастрита - создать вопрос/ответ</target>
+			</trans-unit>
+			<trans-unit id="sonata-30-4">
+				<source>Astrazeneca Faq Delete</source>
+				<target>Школа гастрита - удалить вопрос/ответ</target>
+			</trans-unit>
+
+			<trans-unit id="sonata-31">
+				<source>Astrazeneca New List</source>
+				<target>Школа гастрита - статьи</target>
+			</trans-unit>
+			<trans-unit id="sonata-31-1">
+				<source>Astrazeneca New Show</source>
+				<target>Школа гастрита - просмотр статьи</target>
+			</trans-unit>
+			<trans-unit id="sonata-31-2">
+				<source>Astrazeneca New Edit</source>
+				<target>Школа гастрита - редактировать статью</target>
+			</trans-unit>
+			<trans-unit id="sonata-31-3">
+				<source>Astrazeneca New Create</source>
+				<target>Школа гастрита - создать создать</target>
+			</trans-unit>
+			<trans-unit id="sonata-31-4">
+				<source>Astrazeneca New Delete</source>
+				<target>Школа гастрита - удалить статью</target>
+			</trans-unit>
+
+			<trans-unit id="sonata-32">
+				<source>Astrazeneca Blog List</source>
+				<target>Школа гастрита - блоги</target>
+			</trans-unit>
+			<trans-unit id="sonata-32-1">
+				<source>Astrazeneca Blog Show</source>
+				<target>Школа гастрита - просмотр блога</target>
+			</trans-unit>
+			<trans-unit id="sonata-32-2">
+				<source>Astrazeneca Blog Edit</source>
+				<target>Школа гастрита - редактировать блог</target>
+			</trans-unit>
+			<trans-unit id="sonata-32-3">
+				<source>Astrazeneca Blog Create</source>
+				<target>Школа гастрита - создать блог</target>
+			</trans-unit>
+			<trans-unit id="sonata-32-4">
+				<source>Astrazeneca Blog Delete</source>
+				<target>Школа гастрита - удалить блог</target>
+			</trans-unit>
+
         </body>
     </file>
 </xliff>

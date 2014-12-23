@@ -28,6 +28,7 @@ class ProductNameCommand extends ContainerAwareCommand
 		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 		$pdo = $em->getConnection();
 
+		# Product.Name
 		$pdo->prepare("UPDATE product SET Name = REPLACE(EngName,'<SUP>','')")->execute();
 		$pdo->prepare("UPDATE product SET Name = REPLACE(Name,'</SUP>','')")->execute();
 		$pdo->prepare("UPDATE product SET Name = REPLACE(Name,'<SUB>','')")->execute();
@@ -44,6 +45,21 @@ class ProductNameCommand extends ContainerAwareCommand
 		$pdo->prepare("UPDATE product SET Name = REPLACE(Name,' ','_')")->execute();
 		$pdo->prepare("UPDATE product SET Name = REPLACE(Name,'__','_')")->execute();
 		$pdo->prepare("UPDATE product SET Name = LOWER(Name)")->execute();
+
+		# Product.RusName2
+		$pdo->prepare("UPDATE product SET RusName2 = REPLACE(RusName,'<SUP>','')")->execute();
+		$pdo->prepare("UPDATE product SET RusName2 = REPLACE(RusName2,'</SUP>','')")->execute();
+		$pdo->prepare("UPDATE product SET RusName2 = REPLACE(RusName2,'<SUB>','')")->execute();
+		$pdo->prepare("UPDATE product SET RusName2 = REPLACE(RusName2,'</SUB>','')")->execute();
+		$pdo->prepare("UPDATE product SET RusName2 = REPLACE(RusName2,'<BR/>','')")->execute();
+		$pdo->prepare("UPDATE product SET RusName2 = REPLACE(RusName2,'<BR />','')")->execute();
+		$pdo->prepare("UPDATE product SET RusName2 = REPLACE(RusName2,'&reg;','')")->execute();
+		$pdo->prepare("UPDATE product SET RusName2 = REPLACE(RusName2,'&amp;','')")->execute();
+		$pdo->prepare("UPDATE product SET RusName2 = REPLACE(RusName2,'&trade;','')")->execute();
+		$pdo->prepare("UPDATE product SET RusName2 = REPLACE(RusName2,'&alpha;','')")->execute();
+		$pdo->prepare("UPDATE product SET RusName2 = REPLACE(RusName2,'&beta;','')")->execute();
+		$pdo->prepare("UPDATE product SET RusName2 = REPLACE(RusName2,'&plusmn;','')")->execute();
+		$pdo->prepare("UPDATE product SET RusName2 = REPLACE(RusName2,'  ',' ')")->execute();
 
 		$output->writeln("+++ vidal:product_name completed!");
 	}

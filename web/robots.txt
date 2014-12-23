@@ -3,3 +3,6 @@
 
 User-agent: *
 Disallow: /addbsk
+
+User-agent: *
+Disallow: /app_dev.php

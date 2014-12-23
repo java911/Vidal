@@ -9,8 +9,8 @@
 	<p>Для того чтобы получить полный доступ к функциям сайта, осталось лишь подтвердить, что
 		это Ваш настоящий электронный адрес. Для этого просто перейдите по ссылке:</p>
 	<p>
-		<a href="{{ url('confirm_email', {'userId': user.id, 'hash': user.hash}) }}">
-			{{ url('confirm_email', {'userId': user.id, 'hash': user.hash}) }}
+		<a href="http://www.vidal.ru/confirm-email/{{ user.id }}/{{ user.hash }}">
+			http://www.vidal.ru/confirm-email/{{ user.id }}/{{ user.hash }}
 		</a>
 	</p>
 

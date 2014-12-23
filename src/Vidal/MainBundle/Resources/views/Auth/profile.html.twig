@@ -19,13 +19,13 @@
 
 	{# извещения #}
 	{% if app.session.flashBag.get('confirmed')|length %}
-		<div class="thanks">Благодарим за регистрацию на нашем портале!</div>
+		<div class="thanks">Почтовый адрес подтвержден. Благодарим за регистрацию на нашем портале!</div>
 	{% elseif app.session.flashBag.get('saved')|length %}
 		<div class="thanks">Сохранено!</div>
 	{% endif %}
 
 	{# форма #}
-	<form id="profile_form" action="{{ path('profile') }}" method="post" {{ form_enctype(form) }}>
+	<form id="profile_form" action="{{ path('profile') }}" method="post" {{ form_enctype(form) }} novalidate>
 		{% form_theme form 'VidalMainBundle:Form:profile_form.html.twig' %}
 		{{ form_widget(form) }}
 	</form>

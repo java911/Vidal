@@ -29,12 +29,34 @@ class Tag
 	/** @ORM\ManyToMany(targetEntity="PharmArticle", mappedBy="tags", fetch="EXTRA_LAZY") */
 	protected $pharmArticles;
 
+	/**
+	 * @ORM\OneToOne(targetEntity="InfoPage")
+	 * @ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")
+	 */
+	protected $infoPage;
+
+	/** @ORM\Column(type="boolean") */
+	protected $enabled = true;
+
+	/**
+	 * @ORM\OneToMany(targetEntity="TagHistory", mappedBy="tag")
+	 * @ORM\OrderBy({"text" = "ASC"})
+	 */
+	protected $history;
+
+	/** @ORM\Column(type="boolean") */
+	protected $forCompany = false;
+
+	/** @ORM\Column(type="integer") */
+	protected $total = 0;
+
 	public function __construct()
 	{
 		$this->articles      = new ArrayCollection();
 		$this->arts          = new ArrayCollection();
 		$this->publications  = new ArrayCollection();
 		$this->pharmArticles = new ArrayCollection();
+		$this->history       = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -152,5 +174,106 @@ class Tag
 	public function getSearch()
 	{
 		return $this->search;
+	}
+
+	/**
+	 * @param mixed $infoPage
+	 */
+	public function setInfoPage($infoPage)
+	{
+		$this->infoPage = $infoPage;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getInfoPage()
+	{
+		return $this->infoPage;
+	}
+
+	/**
+	 * @param mixed $enabled
+	 */
+	public function setEnabled($enabled)
+	{
+		$this->enabled = $enabled;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getEnabled()
+	{
+		return $this->enabled;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function isEnabled()
+	{
+		return $this->enabled;
+	}
+
+	/**
+	 * @param mixed $history
+	 */
+	public function setHistory($history)
+	{
+		$this->history = $history;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getHistory()
+	{
+		return $this->history;
+	}
+
+	public function addTagHistory($history)
+	{
+		if (!$this->history->contains($history)) {
+			$history->setTag($this);
+			$this->history[] = $history;
+		}
+	}
+
+	/**
+	 * @param mixed $forCompany
+	 */
+	public function setForCompany($forCompany)
+	{
+		$this->forCompany = $forCompany;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getForCompany()
+	{
+		return $this->forCompany;
+	}
+
+	/**
+	 * @param mixed $total
+	 */
+	public function setTotal($total)
+	{
+		$this->total = $total;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTotal()
+	{
+		return $this->total;
+	}
+
+	public function countTotal()
+	{
+		$this->total++;
 	}
 }

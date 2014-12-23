@@ -68,15 +68,6 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	/** @ORM\Column(type="string") */
 	protected $roles;
 
-	/** @ORM\ManyToOne(targetEntity="Specialization", inversedBy="doctors") */
-	protected $specialization;
-
-	/** @ORM\ManyToOne(targetEntity="Specialty", inversedBy="primaryDoctors") */
-	protected $primarySpecialty;
-
-	/** @ORM\ManyToOne(targetEntity="Specialty", inversedBy="secondaryDoctors") */
-	protected $secondarySpecialty;
-
 	/** @ORM\ManyToOne(targetEntity="City", inversedBy="doctors") */
 	protected $city;
 
@@ -189,8 +180,23 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	/** @ORM\Column(type="boolean") */
 	protected $unsibscribed = false;
 
-    /** @ORM\Column(type="boolean") */
-    protected $firstset = false;
+	/** @ORM\Column(type="boolean") */
+	protected $firstset = false;
+
+	/** @ORM\Column(type="integer") */
+	protected $countConfirmationSent = 0;
+
+	/** @ORM\Column(type="integer") */
+	protected $countRestrictedSent = 0;
+
+	/** @ORM\ManyToOne(targetEntity="Specialty", inversedBy="primarySpecialties") */
+	protected $primarySpecialty;
+
+	/** @ORM\ManyToOne(targetEntity="Specialty", inversedBy="secondarySpecialties") */
+	protected $secondarySpecialty;
+
+	/** @ORM\ManyToOne(targetEntity="Specialization", inversedBy="users") */
+	protected $specialization;
 
 	public function __construct()
 	{
@@ -472,38 +478,6 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	public function getCity()
 	{
 		return $this->city;
-	}
-
-	/**
-	 * @param mixed $primarySpecialty
-	 */
-	public function setPrimarySpecialty($primarySpecialty)
-	{
-		$this->primarySpecialty = $primarySpecialty;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getPrimarySpecialty()
-	{
-		return $this->primarySpecialty;
-	}
-
-	/**
-	 * @param mixed $secondarySpecialty
-	 */
-	public function setSecondarySpecialty($secondarySpecialty)
-	{
-		$this->secondarySpecialty = $secondarySpecialty;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getSecondarySpecialty()
-	{
-		return $this->secondarySpecialty;
 	}
 
 	/**
@@ -1000,53 +974,53 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 		return $this;
 	}
 
-    /**
-     * @param boolean $unsubscribed
-     */
-    public function setUnsubscribed($unsubscribed = false)
-    {
-        $this->unsubscribed = $unsubscribed;
-    }
+	/**
+	 * @param boolean $unsubscribed
+	 */
+	public function setUnsubscribed($unsubscribed = false)
+	{
+		$this->unsubscribed = $unsubscribed;
+	}
 
-    /**
-     * @return boolean
-     */
-    public function getUnsubscribed()
-    {
-        return $this->unsubscribed;
-    }
+	/**
+	 * @return boolean
+	 */
+	public function getUnsubscribed()
+	{
+		return $this->unsubscribed;
+	}
 
-    /**
-     * @param mixed $firstset
-     */
-    public function setFirstset($firstset = false)
-    {
-        $this->firstset = $firstset;
-    }
+	/**
+	 * @param mixed $firstset
+	 */
+	public function setFirstset($firstset = false)
+	{
+		$this->firstset = $firstset;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getFirstset()
-    {
-        return $this->firstset;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getFirstset()
+	{
+		return $this->firstset;
+	}
 
-    /**
-     * @param mixed $unsibscribed
-     */
-    public function setUnsibscribed($unsibscribed)
-    {
-        $this->unsibscribed = $unsibscribed;
-    }
+	/**
+	 * @param mixed $unsibscribed
+	 */
+	public function setUnsibscribed($unsibscribed)
+	{
+		$this->unsibscribed = $unsibscribed;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getUnsibscribed()
-    {
-        return $this->unsibscribed;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getUnsibscribed()
+	{
+		return $this->unsibscribed;
+	}
 
 	/**
 	 * @param mixed $confirmationHas
@@ -1062,5 +1036,79 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	public function getConfirmationHas()
 	{
 		return $this->confirmationHas;
+	}
+
+	/**
+	 * @param mixed $countConfirmationSent
+	 */
+	public function setCountConfirmationSent($countConfirmationSent)
+	{
+		$this->countConfirmationSent = $countConfirmationSent;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCountConfirmationSent()
+	{
+		return $this->countConfirmationSent;
+	}
+
+	/**
+	 * @param mixed $countRestrictedSent
+	 */
+	public function setCountRestrictedSent($countRestrictedSent)
+	{
+		$this->countRestrictedSent = $countRestrictedSent;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCountRestrictedSent()
+	{
+		return $this->countRestrictedSent;
+	}
+
+	public function addCountRestrictedSent()
+	{
+		$this->countRestrictedSent++;
+	}
+
+	public function addCountConfirmationSent()
+	{
+		$this->countConfirmationSent++;
+	}
+
+	/**
+	 * @param mixed $primarySpecialty
+	 */
+	public function setPrimarySpecialty($primarySpecialty)
+	{
+		$this->primarySpecialty = $primarySpecialty;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPrimarySpecialty()
+	{
+		return $this->primarySpecialty;
+	}
+
+	/**
+	 * @param mixed $secondarySpecialty
+	 */
+	public function setSecondarySpecialty($secondarySpecialty)
+	{
+		$this->secondarySpecialty = $secondarySpecialty;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSecondarySpecialty()
+	{
+		return $this->secondarySpecialty;
 	}
 }

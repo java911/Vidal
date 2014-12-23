@@ -42,7 +42,7 @@
 
 	{% block javascripts %}
 		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/jquery-1.11.0.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/ready.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/coockie.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('bundles/vidalmain/checkbox/jquery.checkbox.js') }}"></script>
 		<script type="text/javascript"
@@ -52,6 +52,7 @@
 		<script type="text/javascript"
 				src="{{ asset('bundles/vidalmain/jquery-ui/jquery-ui-1.10.4.custom.min.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/swfobject2.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/ready.min.js') }}"></script>
 	{% endblock %}
 </head>
 
@@ -91,9 +92,12 @@
 	{% endblock %}
 
 	{{ render(controller('VidalMainBundle:Index:firstSet')) }}
-	<div class="footer">
-		{% include 'VidalMainBundle::footer.html.twig' %}
-	</div>
+
+	{% block footer %}
+		<div class="footer">
+			{% include 'VidalMainBundle::footer.html.twig' %}
+		</div>
+	{% endblock %}
 </div>
 
 <div id="overlay"></div>
@@ -102,10 +106,10 @@
 	<img src="{{ asset('bundles/vidalmain/images/icon_top.png') }}"/>
 </a>
 
-
+{% include 'VidalMainBundle::popupunder.html.twig' %}
 {# счетчики аналитики #}
 {#{% if app.environment == 'prod' %}#}
-{% include 'VidalMainBundle:Metrika:omniture.html.twig' %}
+
 {% include 'VidalMainBundle:Metrika:google_analytics.html.twig' %}
 {% include 'VidalMainBundle:Metrika:live_internet.html.twig' %}
 {% include 'VidalMainBundle:Metrika:tns.html.twig' %}

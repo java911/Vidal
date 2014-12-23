@@ -29,7 +29,6 @@
 						ПО ЗАБОЛЕВАНИЮ
 					</option>
 				</select>
-
 			</td>
 			<td class="sf">
 				<input type="submit" value="" class="search-submit"/>
@@ -39,12 +38,10 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="st no-selection">
+			<td class="st no-selection" colspan="2">
 				<input type="checkbox" id="bad" name="bad" class="checkbox" checked="checked"/>
-				<label for="bad">включая БАДы</label>
-			</td>
-			<td class="right st">
-				<a id="searche_link" href="{{ path('searche') }}">расширенный поиск</a>
+				<label for="bad" class="searchl">включая БАД</label>
+				<a id="searche_link" href="{{ path('drugs') }}">расширенный поиск</a>
 			</td>
 		</tr>
 	</table>

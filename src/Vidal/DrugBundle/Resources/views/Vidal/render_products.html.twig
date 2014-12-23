@@ -6,12 +6,11 @@
 			<td class="products-table-loz"></td>
 			<td>Название</td>
 			<td></td>
-			<td title="Показания к применению"></td>
 			<td>Форма выпуска</td>
 			<td title="Владелец регистрационного удостоверения">Владелец рег/уд</td>
 		</tr>
 
-		{% for id, product in products %}
+		{% for id, product in products if product %}
 			{% set id = product.ProductID %}
 			<tr>
 				<td class="products-table-loz">
@@ -42,33 +41,34 @@
 						   href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}">
 							{{ product.RusName|raw }}</a>
 					{% endif %}
-				</td>
-				<td class="products-table-picture">
-					{% if product.photo %}
-						<a class="no-underline"
-						   href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"
-							><img src="{{ product.photo.path }}"/></a>
-					{% elseif pictures[id] is defined %}
-						{% set path = '/upload/products/' ~ pictures[id] %}
-						{% if is_file(path) %}
-							<a class="no-underline"
-							   href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"
-								><img src="{{ path }}"/></a>
-						{% endif %}
-					{% endif %}
-				</td>
-				<td class="products-table-indication" title="Показания к применению">
+
 					{% if product.Indication is defined and product.Indication is not empty %}
-						<img src="{{ asset('bundles/vidalmain/images/more.png') }}"/>
+						<img class="m" src="{{ asset('bundles/vidalmain/images/more.png') }}" title="Показания к применению"/>
 						<div>{{ product.Indication|raw }}</div>
 					{% elseif indications is defined and indications[product.ProductID] is not empty %}
-						<img src="{{ asset('bundles/vidalmain/images/more.png') }}"/>
+						<img class="m" src="{{ asset('bundles/vidalmain/images/more.png') }}" title="Показания к применению"/>
 						<div>{{ indications[product.ProductID]|raw }}</div>
+					{% endif %}
+				</td>
+				<td class="products-table-picture">
+					{% if not product.hidePhoto %}
+						{% if product.photo %}
+							<a class="no-underline"
+							   href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"
+								><img src="{{ product.photo.path }}"/></a>
+						{% elseif pictures[id] is defined %}
+							{% set path = '/upload/products/' ~ pictures[id] %}
+							{% if is_file(path) %}
+								<a class="no-underline"
+								   href="{{ path('product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"
+									><img src="{{ path }}"/></a>
+							{% endif %}
+						{% endif %}
 					{% endif %}
 				</td>
 				<td class="products-table-zip">
 					<div>{{ product.ZipInfo|raw }}</div>
-				<span>рег. №: {{ product.RegistrationNumber }}
+				<span>рег. №: {{ product.RegistrationNumber|regNumber }}
 					{% if product.RegistrationDate is not empty %}
 						от {{ product.RegistrationDate }}
 					{% endif %}

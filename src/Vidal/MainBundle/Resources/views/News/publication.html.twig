@@ -61,15 +61,17 @@
 
 		<div class="publication-body text">
 			{{ publication.body|raw }}
+
+			{% if publication.code is not empty %}
+				{{ publication.code|raw }}
+			{% endif %}
 		</div>
 
 		<div class="publication-footer">
-			<span class="publication-date">{{ publication.created|date('d.m.Y') }}</span>
+			<span class="publication-date">{{ publication.date|date('d.m.Y') }}</span>
 		</div>
 
-		{% if is_granted('ROLE_ADMIN') %}
-			{{ render(controller('VidalMainBundle:Tag:tags', {'object':publication})) }}
-		{% endif %}
+		{{ render(controller('VidalMainBundle:Tag:tags', {'object':publication})) }}
 	</div>
 
 	{% include 'VidalMainBundle::yad_horizontal.html.twig' %}
@@ -79,4 +81,10 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/publication.css') }}"/>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript" src="{{ asset('bundles/vidalmain/ckeditor/spoiler.js') }}"></script>
 {% endblock %}

@@ -172,6 +172,7 @@ class InfoPageRepository extends EntityRepository
 			JOIN p.DocumentID d
 			JOIN d.infoPages i
 			WHERE i.InfoPageID = :InfoPageID
+			ORDER BY p.title ASC
 		')->setParameter('InfoPageID', $InfoPageID)
 			->getResult();
 	}
@@ -236,5 +237,16 @@ class InfoPageRepository extends EntityRepository
 		}
 
 		return array_unique($words);
+	}
+
+	public function findByCompanyName($name)
+	{
+		return $this->_em->createQuery('
+		 	SELECT i
+		 	FROM VidalDrugBundle:InfoPage i
+		 	WHERE i.RusName LIKE :name
+		')->setParameter('name', '%' . $name . '%')
+			->setMaxResults(1)
+			->getOneOrNullResult();
 	}
 }

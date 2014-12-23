@@ -15,7 +15,7 @@
     <div class="market-block-box" id="market-block-box"  style="display: none">
         {#{{ dump(lists.eapteka) }}#}
         {% if lists.wer is defined %}
-            <div class="market-title">Интернет аптека «wer.ru»:</div>
+			{% include 'VidalMainBundle:Market:apteka_wer.html.twig' %}
             <table>
                 {% for drug in lists.wer %}
                     <tr>
@@ -29,7 +29,7 @@
         {% endif %}
 
         {% if lists.eapteka is defined %}
-            <div class="market-title">Интернет аптека «Eapteka.ru»:</div>
+			{% include 'VidalMainBundle:Market:apteka_eapteka.html.twig' %}
             <table>
                 {% for drug in lists.eapteka %}
                     <tr>
@@ -43,7 +43,7 @@
         {% endif %}
 
         {% if lists.piluli is defined %}
-            <div class="market-title">Интернет аптека «Piluli.ru»:</div>
+			{% include 'VidalMainBundle:Market:apteka_piluli.html.twig' %}
             <table>
                 {% for drug in lists.piluli %}
                     <tr>
@@ -57,7 +57,7 @@
         {% endif %}
 
         {% if lists.zdravzona is defined %}
-            <div class="market-title">Интернет аптека «Здравзона»:</div>
+			{% include 'VidalMainBundle:Market:apteka_zdravzona.html.twig' %}
             <table>
                 {% for drug in lists.zdravzona %}
                     <tr>

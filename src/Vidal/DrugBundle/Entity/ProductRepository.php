@@ -9,7 +9,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT DISTINCT p.ProductID, p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo, p.hidePhoto,
 				d.Indication, d.DocumentID, d.ClPhGrDescription
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
@@ -61,7 +61,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatusID, p.ProductID,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo, p.hidePhoto
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
@@ -78,7 +78,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatusID, p.ProductID,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo, p.hidePhoto
 			FROM VidalDrugBundle:Product p
 			JOIN p.document d
 			JOIN d.portfolios portfolio WITH portfolio.id = :portfolioId
@@ -94,7 +94,7 @@ class ProductRepository extends EntityRepository
 	public function findByDocumentIDs($documentIds)
 	{
 		$raw = $this->_em->createQuery('
-			SELECT p.ProductID, p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.photo,
+			SELECT p.ProductID, p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.photo, p.hidePhoto,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, d.ArticleID, d.Indication, d.DocumentID
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
@@ -128,7 +128,7 @@ class ProductRepository extends EntityRepository
 
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatusID, p.ProductID,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo, p.hidePhoto
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.moleculeNames mn
 			LEFT JOIN VidalDrugBundle:Molecule m WITH m = mn.MoleculeID
@@ -146,7 +146,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ProductID, p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.NonPrescriptionDrug,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo, p.hidePhoto,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
 				d.Name DocumentName
 			FROM VidalDrugBundle:Product p
@@ -165,7 +165,7 @@ class ProductRepository extends EntityRepository
 		$qb = $this->_em->createQueryBuilder();
 
 		$qb->select('p.ProductID, p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.NonPrescriptionDrug,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo, p.hidePhoto,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
 				d.Name DocumentName')
 			->from('VidalDrugBundle:Product', 'p')
@@ -190,7 +190,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ProductID, p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.NonPrescriptionDrug,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo, p.hidePhoto,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
 				d.Name DocumentName
 			FROM VidalDrugBundle:Product p
@@ -209,7 +209,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
-				p.RegistrationNumber, p.RegistrationDate, p.photo,
+				p.RegistrationNumber, p.RegistrationDate, p.photo, p.hidePhoto,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
 				d.Name DocumentName
 			FROM VidalDrugBundle:Product p
@@ -228,7 +228,7 @@ class ProductRepository extends EntityRepository
 	{
 		$productsRaw = $this->_em->createQuery('
 			SELECT p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.ZipInfo,
-				p.RegistrationNumber, p.RegistrationDate, p.photo,
+				p.RegistrationNumber, p.RegistrationDate, p.photo, p.hidePhoto,
 				country.RusName CompanyCountry,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
 				d.Name DocumentName,
@@ -265,7 +265,7 @@ class ProductRepository extends EntityRepository
 	public function findByInfoPageID($InfoPageID)
 	{
 		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
+			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.hidePhoto,
 				p.RegistrationNumber, p.RegistrationDate
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
@@ -309,6 +309,7 @@ class ProductRepository extends EntityRepository
 			}
 		}
 
+		$productNames = array_unique($productNames);
 		usort($productNames, 'strcasecmp');
 
 		return $productNames;
@@ -320,7 +321,7 @@ class ProductRepository extends EntityRepository
 		$qb         = $this->_em->createQueryBuilder();
 		$anyOfWord  = null;
 
-		$qb->select('p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.ProductID, p.photo,
+		$qb->select('p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.ProductID, p.photo, p.hidePhoto,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, pt.ProductTypeCode,
 				d.Indication, d.ArticleID, d.DocumentID')
 			->from('VidalDrugBundle:Product', 'p')
@@ -351,7 +352,7 @@ class ProductRepository extends EntityRepository
 			if ($i > 0) {
 				$where .= ' AND ';
 			}
-			$where .= "(p.RusName LIKE '$word%' OR p.EngName LIKE '$word%' OR p.RusName LIKE '% $word%' OR p.EngName LIKE '% $word%' OR p.RusName LIKE '%-$word' OR p.EngName LIKE '%-$word')";
+			$where .= "(p.RusName2 LIKE '$word%' OR p.EngName LIKE '$word%' OR p.RusName2 LIKE '% $word%' OR p.EngName LIKE '% $word%' OR p.RusName2 LIKE '%-$word' OR p.EngName LIKE '%-$word')";
 		}
 
 		$qb->andWhere($where);
@@ -377,7 +378,7 @@ class ProductRepository extends EntityRepository
 				if ($i > 0) {
 					$where .= ' OR ';
 				}
-				$where .= "(p.RusName LIKE '$word%' OR p.EngName LIKE '$word%' OR p.RusName LIKE '% $word%' OR p.EngName LIKE '% $word%' OR p.RusName LIKE '%-$word' OR p.EngName LIKE '%-$word')";
+				$where .= "(p.RusName2 LIKE '$word%' OR p.EngName LIKE '$word%' OR p.RusName2 LIKE '% $word%' OR p.EngName LIKE '% $word%' OR p.RusName2 LIKE '%-$word' OR p.EngName LIKE '%-$word')";
 			}
 
 			# включать ли бады
@@ -431,7 +432,7 @@ class ProductRepository extends EntityRepository
 
 		$productsRaw = $this->_em->createQuery('
 			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, d.Indication, d.DocumentID, p.photo
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, d.Indication, d.DocumentID, p.photo, p.hidePhoto
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
@@ -474,7 +475,7 @@ class ProductRepository extends EntityRepository
 		}
 
 		$productsRaw = $this->_em->createQuery('
-			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID, p.photo,
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID, p.photo, p.hidePhoto,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, d.Indication, d.DocumentID
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
@@ -505,7 +506,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo, p.hidePhoto,
 				d.Indication, d.DocumentID, d.ClPhGrDescription
 			FROM VidalDrugBundle:Product p
 			LEFT JOIN p.document d
@@ -523,7 +524,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo, p.hidePhoto,
 				d.Indication, d.DocumentID
 			FROM VidalDrugBundle:Product p
 			JOIN p.phthgroups g WITH g.id = :id
@@ -649,7 +650,7 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
-				p.RegistrationNumber, p.RegistrationDate, p.photo,
+				p.RegistrationNumber, p.RegistrationDate, p.photo, p.hidePhoto,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
 				d.Name DocumentName
 			FROM VidalDrugBundle:Product p
@@ -736,7 +737,7 @@ class ProductRepository extends EntityRepository
 			FROM product
 			WHERE LEFT(RusName, 1) NOT IN ('1','2','3','5','9','_','D','H','L','N','Q','S')
 				AND MarketStatusID IN (1,2,7)
-				ANProductTypeCode IN D {$where}
+				AND ProductTypeCode IN {$where}
 			ORDER BY letters
 		";
 
@@ -784,6 +785,199 @@ class ProductRepository extends EntityRepository
 		return array($syllables, $table);
 	}
 
+	public function findPublications($ProductID)
+	{
+		$publicationsByProduct = $this->_em->createQuery('
+			SELECT p
+			FROM VidalDrugBundle:Publication p
+			JOIN p.products product WITH product.ProductID = :ProductID
+			WHERE p.enabled = TRUE
+		')->setParameter('ProductID', $ProductID)
+			->getResult();
+
+		$publicationsByAtc = $this->_em->createQuery('
+			SELECT DISTINCT p
+			FROM VidalDrugBundle:Publication p
+			JOIN p.atcCodes atc
+			JOIN atc.products product WITH product.ProductID = :ProductID
+			WHERE p.enabled = TRUE
+		')->setParameter('ProductID', $ProductID)
+			->getResult();
+
+		$publicationsByMolecule = $this->_em->createQuery('
+			SELECT DISTINCT p
+			FROM VidalDrugBundle:Publication p
+			JOIN p.molecules m
+			JOIN m.moleculeNames mn
+			JOIN mn.products product WITH product.ProductID = :ProductID
+			WHERE p.enabled = TRUE
+				AND SIZE(product.moleculeNames) = 1
+		')->setParameter('ProductID', $ProductID)
+			->getResult();
+
+		$ids          = array();
+		$publications = array();
+
+		foreach ($publicationsByProduct as $p) {
+			$ids[]          = $p->getId();
+			$publications[] = $p;
+		}
+
+		foreach ($publicationsByAtc as $p) {
+			if (!in_array($p->getId(), $ids)) {
+				$publications[] = $p;
+				$ids[]          = $p->getId();
+			}
+		}
+
+		foreach ($publicationsByMolecule as $p) {
+			if (!in_array($p->getId(), $ids)) {
+				$publications[] = $p;
+				$ids[]          = $p->getId();
+			}
+		}
+
+		usort($publications, array($this, 'sortByDate'));
+
+		return $publications;
+	}
+
+	public function findArticles($ProductID)
+	{
+		$articlesByProduct = $this->_em->createQuery('
+			SELECT a
+			FROM VidalDrugBundle:Article a
+			JOIN a.products product WITH product.ProductID = :ProductID
+			JOIN a.rubrique r
+			WHERE a.enabled = TRUE
+				AND r.enabled = TRUE
+		')->setParameter('ProductID', $ProductID)
+			->getResult();
+
+		$articlesByAtc = $this->_em->createQuery('
+			SELECT DISTINCT a
+			FROM VidalDrugBundle:Article a
+			JOIN a.atcCodes atc
+			JOIN atc.products product WITH product.ProductID = :ProductID
+			JOIN a.rubrique r
+			WHERE a.enabled = TRUE
+				AND r.enabled = TRUE
+		')->setParameter('ProductID', $ProductID)
+			->getResult();
+
+		$articlesByMolecule = $this->_em->createQuery('
+			SELECT DISTINCT a
+			FROM VidalDrugBundle:Article a
+			JOIN a.molecules m
+			JOIN m.moleculeNames mn
+			JOIN mn.products product WITH product.ProductID = :ProductID
+			JOIN a.rubrique r
+			WHERE a.enabled = TRUE
+				AND r.enabled = TRUE
+		')->setParameter('ProductID', $ProductID)
+			->getResult();
+
+		$ids      = array();
+		$articles = array();
+
+		foreach ($articlesByProduct as $a) {
+			$articles[] = $a;
+			$ids[]      = $a->getId();
+		}
+
+		foreach ($articlesByAtc as $a) {
+			if (!in_array($a->getId(), $ids)) {
+				$articles[] = $a;
+				$ids[]      = $a->getId();
+			}
+		}
+
+		foreach ($articlesByMolecule as $a) {
+			if (!in_array($a->getId(), $ids)) {
+				$articles[] = $a;
+				$ids[]      = $a->getId();
+			}
+		}
+
+		usort($articles, array($this, 'sortByDate'));
+
+		return $articles;
+	}
+
+	public function findArts($ProductID)
+	{
+		$articlesByProduct = $this->_em->createQuery('
+			SELECT a
+			FROM VidalDrugBundle:Art a
+			JOIN a.products product WITH product.ProductID = :ProductID
+			JOIN a.rubrique r
+			LEFT JOIN a.category c
+			LEFT JOIN a.type t
+			WHERE a.enabled = TRUE
+				AND r.enabled = TRUE
+				AND (t IS NULL OR t.enabled = TRUE)
+				AND (c IS NULL OR c.enabled = TRUE)
+		')->setParameter('ProductID', $ProductID)
+			->getResult();
+
+		$articlesByAtc = $this->_em->createQuery('
+			SELECT DISTINCT a
+			FROM VidalDrugBundle:Art a
+			JOIN a.atcCodes atc
+			JOIN atc.products product WITH product.ProductID = :ProductID
+			JOIN a.rubrique r
+			LEFT JOIN a.category c
+			LEFT JOIN a.type t
+			WHERE a.enabled = TRUE
+				AND r.enabled = TRUE
+				AND (t IS NULL OR t.enabled = TRUE)
+				AND (c IS NULL OR c.enabled = TRUE)
+		')->setParameter('ProductID', $ProductID)
+			->getResult();
+
+		$articlesByMolecule = $this->_em->createQuery('
+			SELECT DISTINCT a
+			FROM VidalDrugBundle:Art a
+			JOIN a.molecules m
+			JOIN m.moleculeNames mn
+			JOIN mn.products product WITH product.ProductID = :ProductID
+			JOIN a.rubrique r
+			LEFT JOIN a.category c
+			LEFT JOIN a.type t
+			WHERE a.enabled = TRUE
+				AND r.enabled = TRUE
+				AND (t IS NULL OR t.enabled = TRUE)
+				AND (c IS NULL OR c.enabled = TRUE)
+		')->setParameter('ProductID', $ProductID)
+			->getResult();
+
+		$ids      = array();
+		$articles = array();
+
+		foreach ($articlesByProduct as $a) {
+			$ids[]      = $a->getId();
+			$articles[] = $a;
+		}
+
+		foreach ($articlesByAtc as $a) {
+			if (!in_array($a->getId(), $ids)) {
+				$articles[] = $a;
+				$ids[]      = $a->getId();
+			}
+		}
+
+		foreach ($articlesByMolecule as $a) {
+			if (!in_array($a->getId(), $ids)) {
+				$articles[] = $a;
+				$ids[]      = $a->getId();
+			}
+		}
+
+		usort($articles, array($this, 'sortByDate'));
+
+		return $articles;
+	}
+
 	/**
 	 * Функция возвращает слово с заглавной первой буквой (c поддержкой кирилицы)
 	 *
@@ -798,5 +992,13 @@ class ProductRepository extends EntityRepository
 		$then      = mb_substr($string, 1, $strlen - 1, $encoding);
 
 		return mb_strtoupper($firstChar, $encoding) . $then;
+	}
+
+	private function sortByDate($a, $b)
+	{
+		$dateA = $a->getDate();
+		$dateB = $b->getDate();
+
+		return $dateA == $dateB ? 0 : ($dateA < $dateB ? 1 : -1);
 	}
 }

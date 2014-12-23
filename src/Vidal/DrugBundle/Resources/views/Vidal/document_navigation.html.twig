@@ -8,9 +8,9 @@
 		{#{% if document.clphPointers.count %}#}
 			{#<div>#}
 			{#{% if document.clphPointers|length == 1 %}#}
-				{#<a href="#clphpointer">Клинико-фармакологический указатель</a>#}
+				{#<a href="#clphpointer">Клинико-фармакологич. указатель</a>#}
 			{#{% else %}#}
-				{#<a href="#clphpointer">Клинико-фармакологические указатели</a>#}
+				{#<a href="#clphpointer">Клинико-фармакологич. указатели</a>#}
 			{#{% endif %}#}
 			{#</div>#}
 		{#{% endif %}#}
@@ -18,9 +18,9 @@
 		{% if product is defined and product.clphGroups.count %}
 			<div>
 				{% if product.clphGroups|length == 1 %}
-					<a href="#clphgroup">Клинико-фармакологическая группа</a>
+					<a href="#clphgroup">Клинико-фармакологич. группа</a>
 				{% else %}
-					<a href="#clphgroup">Клинико-фармакологические группы</a>
+					<a href="#clphgroup">Клинико-фармакологич. группы</a>
 				{% endif %}
 			</div>
 		{% endif %}
@@ -28,7 +28,7 @@
 		{% if product is defined and product.phthgroups.count %}
 			<div>
 				{% if product.clphGroups|length == 1 %}
-					<a href="#phthgroup">Фармако-терапевтическая группа:</a>
+					<a href="#phthgroup">Фармако-терапевтическая группа</a>
 				{% else %}
 					<a href="#phthgroup">Фармако-терапевтические группы</a>
 				{% endif %}

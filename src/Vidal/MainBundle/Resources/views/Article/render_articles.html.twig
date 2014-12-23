@@ -20,9 +20,11 @@
 				<div class="article-announse text">
 					{{ art.announce|raw }}
 				</div>
-				<div class="article-footer">
-					<span class="article-date">{{ art.date|date('d.m.Y') }}</span>
-				</div>
+				{% if not art.hideDate %}
+					<div class="article-footer">
+						<span class="article-date">{{ art.date|date('d.m.Y') }}</span>
+					</div>
+				{% endif %}
 			</div>
 		{% endfor %}
 	</div>

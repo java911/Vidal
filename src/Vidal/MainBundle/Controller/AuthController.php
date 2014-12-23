@@ -162,7 +162,7 @@ class AuthController extends Controller
 
 		if (!empty($user) && $user->getHash() == $hash) {
 			$user->setEmailConfirmed(true);
-			$user->setRoles('ROLE_DOCTOR');
+			$user->addRole('ROLE_DOCTOR');
 			$user->setLastLogin(new \DateTime('now'));
 			$em->flush();
 

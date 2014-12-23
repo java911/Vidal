@@ -35,7 +35,7 @@ class Company
 	protected $countProducts;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="CompanyGroup", inversedBy="companys")
+	 * @ORM\ManyToOne(targetEntity="CompanyGroup", inversedBy="companies")
 	 * @ORM\JoinColumn(name="CompanyGroupID", referencedColumnName="CompanyGroupID")
 	 */
 	protected $CompanyGroupID;

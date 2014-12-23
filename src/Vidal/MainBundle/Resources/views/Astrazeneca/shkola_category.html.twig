@@ -1,0 +1,30 @@
+{% extends 'VidalMainBundle:Astrazeneca:shkola_layout.html.twig' %}
+
+
+{% block navigation %}
+	<div class="breadcrumbs">
+		<a href="{{ path('shkola_gastrita2') }}">Школа гастрита</a>
+		<i></i>
+		<span>{{ category.label }}</span>
+	</div>
+{% endblock %}
+
+
+{% block info %}
+	<h1>{{ category }}</h1>
+
+	<div class="text">
+		{{ category.text|raw }}
+	</div>
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.info {
+			margin: 20px auto;
+			width:  90%;
+		}
+	</style>
+{% endblock %}

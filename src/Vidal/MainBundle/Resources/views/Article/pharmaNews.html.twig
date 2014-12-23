@@ -24,3 +24,21 @@
 	{{ parent() }}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/publication.css') }}"/>
 {% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript" src="{{ asset('bundles/vidalmain/ckeditor/spoiler.js') }}"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			// надо ссылки на примечания сделать с уникальными идентификаторами, приписываем ID статьи в конец
+			$('.pharm-article a[href^="#"]').each(function() {
+				var $link = $(this);
+				var pharmId = $link.closest('.pharm-article').attr('data');
+				var href = $link.attr('href') + pharmId;
+				var name = $link.attr('name') + pharmId;
+				$link.attr('href', href).attr('name', name);
+			});
+		});
+	</script>
+{% endblock %}

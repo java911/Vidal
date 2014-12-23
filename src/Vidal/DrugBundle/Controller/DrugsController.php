@@ -12,8 +12,8 @@ use Lsw\SecureControllerBundle\Annotation\Secure;
 
 class DrugsController extends Controller
 {
-	const PHARM_PER_PAGE    = 150;
-	const KFG_PER_PAGE      = 150;
+	const PHARM_PER_PAGE = 150;
+	const KFG_PER_PAGE = 150;
 	const PRODUCTS_PER_PAGE = 50;
 
 	private $nozologies;
@@ -74,7 +74,7 @@ class DrugsController extends Controller
 		if (!empty($products)) {
 			$productIds          = $this->getProductIds($products);
 			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
 			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 		}
 
@@ -87,15 +87,17 @@ class DrugsController extends Controller
 	 */
 	public function atcAction(Request $request)
 	{
-		$em = $this->getDoctrine()->getManager('drug');
-		$q  = $request->query->get('q', null);
-		$l  = $request->query->get('l', null);
+		$em      = $this->getDoctrine()->getManager('drug');
+		$q       = $request->query->get('q', null);
+		$l       = $request->query->get('l', null);
+		$atcCode = $request->query->get('ATCCode', '');
 
 		$params = array(
 			'menu_drugs' => 'atc',
 			'title'      => 'АТХ',
 			'l'          => $l,
 			'q'          => $q,
+			'atcCode'    => $atcCode,
 		);
 
 		if ($l) {
@@ -201,7 +203,7 @@ class DrugsController extends Controller
 			$productIds          = $this->getProductIds($products);
 			$params['products']  = $products;
 			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
 			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 
 			####################################################################################################
@@ -386,7 +388,7 @@ class DrugsController extends Controller
 			$productIds          = $this->getProductIds($products);
 			$params['products']  = $products;
 			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
 			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 		}
 
@@ -418,9 +420,25 @@ class DrugsController extends Controller
 			throw $this->createNotFoundException();
 		}
 
+		# надо найти нозологический код у этой назологии и родительской
+		$nozologyCodes = array($nozology->getNozologyCode());
+		if ($parent = $nozology->getParent()) {
+			if ($parent->getLevel()) {
+				$nozologyCodes[] = $parent->getNozologyCode();
+				if ($grandparent = $parent->getParent()) {
+					if ($grandparent->getLevel()) {
+						$nozologyCodes[] = $grandparent->getNozologyCode();
+					}
+				}
+			}
+		}
+
 		$params = array(
-			'nozology' => $nozology,
-			'title'    => $nozology->getName() . ' | ' . 'Нозологический указатель',
+			'nozology'     => $nozology,
+			'title'        => $nozology->getName() . ' | ' . 'Нозологический указатель',
+			'articles'     => $em->getRepository('VidalDrugBundle:Article')->findByNozology($nozologyCodes),
+			'arts'         => $em->getRepository('VidalDrugBundle:Art')->findByNozology($nozologyCodes),
+			'publications' => $em->getRepository('VidalDrugBundle:Publication')->findByNozology($nozologyCodes),
 		);
 
 		$params['molecules'] = $em->getRepository('VidalDrugBundle:Molecule')->findByNozologyCode($Code);
@@ -449,7 +467,7 @@ class DrugsController extends Controller
 				$productIds          = $this->getProductIds($products);
 				$params['products']  = $products;
 				$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-				$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+				$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
 				$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 			}
 		}
@@ -618,7 +636,7 @@ class DrugsController extends Controller
 			$productIds          = $this->getProductIds($products);
 			$params['products']  = $products;
 			$params['companies'] = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+			$params['pictures']  = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
 			$params['infoPages'] = $em->getRepository('VidalDrugBundle:InfoPage')->findByProducts($products);
 		}
 
@@ -767,7 +785,7 @@ class DrugsController extends Controller
 				$params['products']    = $products;
 				$params['indications'] = $em->getRepository('VidalDrugBundle:Document')->findIndicationsByProductIds($productIds);
 				$params['companies']   = $em->getRepository('VidalDrugBundle:Company')->findByProducts($productIds);
-				$params['pictures']    = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds, date('Y'));
+				$params['pictures']    = $em->getRepository('VidalDrugBundle:Picture')->findByProductIds($productIds);
 			}
 		}
 
@@ -829,6 +847,60 @@ class DrugsController extends Controller
 		return $params;
 	}
 
+	/**
+	 * @Route("/drugs/disease", name="disease")
+	 * @Template("VidalDrugBundle:Drugs:disease.html.twig")
+	 */
+	public function diseaseAction(Request $request)
+	{
+		$l  = $request->query->get('l', null);
+		$q  = $request->query->get('q', null);
+		$em = $this->getDoctrine()->getManager('drug');
+
+		$params = array(
+			'title'      => 'Список болезней по алфавиту',
+			'l'          => $l,
+			'q'          => $q,
+			'menu_drugs' => 'disease',
+		);
+
+		if ($l) {
+			$articles           = $em->getRepository('VidalDrugBundle:Article')->findDisease($l);
+			$params['articles'] = $this->highlight($articles, $l);
+		}
+		elseif ($q) {
+			$q                  = trim($q);
+			$params['articles'] = $em->getRepository('VidalDrugBundle:Article')->findByQuery($q);
+		}
+
+		return $params;
+	}
+
+	private function highlight($articles, $l)
+	{
+		foreach ($articles as &$article) {
+			# подсвечиваем заголовок статьи
+			$words = explode(' ', $article['title']);
+			$title = '';
+			foreach ($words as $word) {
+				$firstLetter = mb_strtoupper(mb_substr($word, 0, 1, 'utf-8'), 'utf-8');
+				$title[]     = $firstLetter == $l ? '<b>' . $word . '</b>' : $word;
+			}
+			$article['title'] = implode(' ', $title);
+
+			# подсвечиваем синонимы
+			$words = explode(' ', $article['synonym']);
+			$title = '';
+			foreach ($words as $word) {
+				$firstLetter = mb_strtoupper(mb_substr($word, 0, 1, 'utf-8'), 'utf-8');
+				$title[]     = $firstLetter == $l ? '<b>' . $word . '</b>' : $word;
+			}
+			$article['synonym'] = implode(' ', $title);
+		}
+
+		return $articles;
+	}
+
 	/** Получить массив идентификаторов продуктов */
 	private function getProductIds($products)
 	{
@@ -839,20 +911,6 @@ class DrugsController extends Controller
 		}
 
 		return $productIds;
-	}
-
-	private function getDocumentIds($products)
-	{
-		$documentIds = array();
-
-		foreach ($products as $product) {
-			$key = $product['DocumentID'];
-			if (!isset($documentIds[$key])) {
-				$documentIds[$key] = true;
-			}
-		}
-
-		return array_keys($documentIds);
 	}
 
 	private function strip($string)

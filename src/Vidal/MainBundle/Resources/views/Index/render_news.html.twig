@@ -1,5 +1,5 @@
 {% if news is not empty %}
-	<div class="news">
+	<div class="news text">
 		{% for publication in news %}
 			{% set withPhoto = publication.photo and is_file(publication.photo.path) %}
 			<div class="publication{{ withPhoto ? ' with-photo' }}">

@@ -22,50 +22,11 @@ class TestController extends Controller
 	}
 
 	/**
-	 * @Route("/trash")
-	 */
-	public function trashAction()
-	{
-		$file = $this->container->get('kernel')->getRootdir().'/../web/trash.php';
-
-		require $file;
-		exit;
-	}
-
-	/**
-	 * @Route("/loginpw/{username}/{password}")
+	 * @Route("/t")
 	 * @Secure(roles="ROLE_ADMIN")
 	 */
-	public function loginPwAction($username, $password)
+	public function tAction()
 	{
-		$em       = $this->getDoctrine()->getManager();
-		$user     = $em->getRepository('VidalMainBundle:User')->findOneByUsername($username);
-
-		if (!$user) {
-			echo 'user not found...'; exit;
-		}
-
-		$pwReal = $user->getPassword();
-
-		echo 'user found with password: ' . $pwReal . '<hr/>';
-
-		# пользователей со старой БД проверям с помощью mysql-функций
-		if ($user->getOldUser()) {
-			$pdo      = $em->getConnection();
-
-			$stmt = $pdo->prepare("SELECT PASSWORD('$password') as password");
-			$stmt->execute();
-			$pw1 = $stmt->fetch();
-			$pw1 = $pw1['password'];
-
-			$stmt = $pdo->prepare("SELECT OLD_PASSWORD('$password') as password");
-			$stmt->execute();
-			$pw2 = $stmt->fetch();
-			$pw2 = $pw2['password'];
-
-			echo 'pw1: ' . $pw1 . '<hr>';
-			echo 'pw2 (old_password): ' . $pw2 . '<hr>';
-		}
-		exit;
+		return $this->render('VidalMainBundle:Test:t.html.twig');
 	}
 }

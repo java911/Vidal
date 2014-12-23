@@ -4,8 +4,8 @@
     <h1>Корзина</h1>
 
     {% if products.eapteka is defined %}
+		{% include 'VidalMainBundle:Market:apteka_eapteka.html.twig' %}
         <table class="basket-table">
-            <caption>Интернет-магазин E-apteka.ru</caption>
             <tr>
                 <th>Наименование</th>
                 <th>Производитель</th>
@@ -16,7 +16,7 @@
             </tr>
             {% for drug in products.eapteka  %}
                 <tr>
-                    <td class="basket-title"><a href="#" target="_blank">{{ drug.title }}</a></td>
+                    <td class="basket-title">{{ drug.title }}</td>
                     <td class="basket-org">{{ drug.manufacturer }}</td>
                     <td class="basket-price">{{ drug.price |number_format(2, '.', ',') }}&nbsp;р.</td>
                     <td class="basket-count">
@@ -42,8 +42,8 @@
         <br />
     {% endif %}
     {% if products.piluli is defined %}
+		{% include 'VidalMainBundle:Market:apteka_piluli.html.twig' %}
         <table class="basket-table">
-            <caption>Интернет-магазин Piluli.ru</caption>
             <tr>
                 <th>Наименование</th>
                 <th>Производитель</th>
@@ -54,7 +54,7 @@
             </tr>
             {% for drug in products.piluli  %}
                 <tr>
-                    <td class="basket-title"><a href="#" target="_blank">{{ drug.title }}</a></td>
+                    <td class="basket-title">{{ drug.title }}</td>
                     <td class="basket-org">{{ drug.manufacturer }}</td>
                     <td class="basket-price">{{ drug.price |number_format(2, '.', ',') }}&nbsp;р.</td>
                     <td class="basket-count">
@@ -80,8 +80,8 @@
         <br />
     {% endif %}
     {% if products.zdravzona is defined %}
+		{% include 'VidalMainBundle:Market:apteka_zdravzona.html.twig' %}
         <table class="basket-table">
-            <caption>Интернет-магазин Zdravzona</caption>
             <tr>
                 <th>Наименование</th>
                 <th>Производитель</th>
@@ -92,7 +92,7 @@
             </tr>
             {% for drug in products.zdravzona  %}
                 <tr>
-                    <td class="basket-title"><a href="#" target="_blank">{{ drug.title }}</a></td>
+                    <td class="basket-title">{{ drug.title }}</td>
                     <td class="basket-org">{{ drug.manufacturer }}</td>
                     <td class="basket-price">{{ drug.price |number_format(2, '.', ',') }}&nbsp;р.</td>
                     <td class="basket-count">
@@ -119,8 +119,8 @@
     {% endif %}
 
     {% if products.wer is defined %}
+		{% include 'VidalMainBundle:Market:apteka_wer.html.twig' %}
         <table class="basket-table">
-            <caption>Интернет-магазин Wer.ru</caption>
             <tr>
                 <th>Наименование</th>
                 <th>Производитель</th>
@@ -129,9 +129,9 @@
                 <th>Сумма</th>
                 <th></th>
             </tr>
-            {% for drug in products.wer  %}
+            {% for drug in products.wer %}
                 <tr>
-                    <td class="basket-title"><a href="#" target="_blank">{{ drug.title }}</a></td>
+                    <td class="basket-title">{{ drug.title }}</td>
                     <td class="basket-org">{{ drug.manufacturer }}</td>
                     <td class="basket-price">{{ drug.price |number_format(2, '.', ',') }}&nbsp;р.</td>
                     <td class="basket-count">
@@ -186,6 +186,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
+	<link type="text/css" rel="stylesheet" href="{{ asset('bundles/vidalmain/stylesheets/market.css') }}"/>
     <style>
         .basket-count input{
             width: 30px;

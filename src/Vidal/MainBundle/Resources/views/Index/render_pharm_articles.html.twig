@@ -1,7 +1,7 @@
 {% if pagination is not empty %}
 	<div class="pharm-articles">
 		{% for article in pagination %}
-			<div class="pharm-article">
+			<div class="pharm-article" data="{{ article.id }}">
 				{% if article.company and company is not defined %}
 					<div class="article-company">
 						<a href="{{ path('pharma_company', {'id':article.company.id}) }}">
@@ -22,17 +22,14 @@
 				</div>
 
 				<div class="article-footer">
-					{{ article.created|date('d.m.Y') }}
 					{% if company is not defined %}
-						<div class="article-more">
-							<a href="{{ path('pharma_company', {'id':article.company.id}) }}">
-								Другие новости этой компании
-							</a>
-						</div>
+						<a href="{{ path('pharma_company', {'id':article.company.id}) }}">
+							Другие новости этой компании
+						</a>
 					{% endif %}
+					<span>{{ article.created|date('d.m.Y') }}</span>
 				</div>
 			</div>
-			<hr/>
 		{% endfor %}
 	</div>
 

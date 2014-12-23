@@ -8,6 +8,10 @@ class ArtCategoryRepository extends EntityRepository
 {
 	public function typeUrl($type, $url)
 	{
+		if (!$type) {
+			return null;
+		}
+
 		return $this->_em->createQuery('
 			SELECT c
 			FROM VidalDrugBundle:ArtCategory c
@@ -21,6 +25,10 @@ class ArtCategoryRepository extends EntityRepository
 
 	public function findByType($type)
 	{
+		if (!$type) {
+			return null;
+		}
+
 		return $this->_em->createQuery('
 			SELECT c
 			FROM VidalDrugBundle:ArtCategory c

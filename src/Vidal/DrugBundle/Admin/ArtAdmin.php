@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Doctrine\ORM\EntityRepository;
 use Vidal\DrugBundle\Transformer\DocumentTransformer;
 use Vidal\DrugBundle\Transformer\TagTransformer;
@@ -24,9 +25,24 @@ class ArtAdmin extends Admin
 				'_page'       => 1,
 				'_per_page'   => 25,
 				'_sort_order' => 'DESC',
-				'_sort_by'    => 'date',
+				'_sort_by'    => 'date'
 			);
 		}
+	}
+
+	public function createQuery($context = 'list')
+	{
+		$qb = $this->getModelManager()->getEntityManager($this->getClass())->createQueryBuilder();
+		$qb->select('a')->from($this->getClass(), 'a');
+
+		if (!isset($_GET['filter']['_sort_by']) || $_GET['filter']['_sort_by'] == 'created') {
+			$order = isset($_GET['filter']['_sort_order']) ? $_GET['filter']['_sort_order'] : 'DESC';
+			$qb->orderBy('a.date', $order)->addOrderBy('a.id', 'ASC');
+		}
+
+		$proxyQuery = new \Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery($qb);
+
+		return $proxyQuery;
 	}
 
 	protected function configureFormFields(FormMapper $formMapper)
@@ -129,6 +145,9 @@ class ArtAdmin extends Admin
 			->add('atIndex', null, array('label' => 'Отображать на главной', 'required' => false))
 			->add('anons', null, array('label' => 'Отображать в анонсе', 'required' => false))
 			->add('anonsPriority', null, array('label' => 'Приоритет в анонсе'))
+			->add('hideDate', null, array('label' => 'Скрывать дату', 'required' => false))
+			->add('code', null, array('label' => 'Дополнительный код', 'required' => false))
+			->add('testMode', null, array('label' => 'В режиме тестирования', 'required' => false, 'help' => 'видно только если в конец url-адреса дописать ?test'))
 			->add('enabled', null, array('label' => 'Активна', 'required' => false));
 	}
 
@@ -153,6 +172,7 @@ class ArtAdmin extends Admin
 			->add('atIndex', null, array('label' => 'Отображать на главной'))
 			->add('anons', null, array('label' => 'Отображать в анонсе', 'help' => 'В разделе специалистам'))
 			->add('anonsPriority', null, array('label' => 'Приоритет в анонсе'))
+			->add('testMode', null, array('label' => 'В режиме тестирования'))
 			->add('enabled', null, array('label' => 'Активна'));
 	}
 
@@ -169,6 +189,8 @@ class ArtAdmin extends Admin
 			->add('anons', null, array('label' => 'в анонсе', 'template' => 'VidalDrugBundle:Sonata:swap_anons.html.twig'))
 			->add('anonsPriority', null, array('label' => 'Приоритет в анонсе'))
 			->add('date', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
+			->add('updated', null, array('label' => 'Дата изменения', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
+			->add('hideDate', null, array('label' => 'Скрывать дату', 'template' => 'VidalDrugBundle:Sonata:swap_hideDate.html.twig'))
 			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',

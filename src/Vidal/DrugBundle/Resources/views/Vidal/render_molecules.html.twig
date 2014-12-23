@@ -1,17 +1,16 @@
 <table class="products-table">
 	<tr class="products-table-header">
-		<td width="23%">Активное вещ-во</td>
-		<td width="23%">Латинское</td>
-		<td width="14%" title="Международное непатентованное наименование (МНН)">МНН</td>
-		<td>Входит в состав препаратов</td>
+		<td>Активное вещ-во</td>
+		<td width="15%" title="Международное непатентованное наименование (МНН)">МНН</td>
+		<td width="15%">Входит в состав препаратов</td>
 	</tr>
 	{% for molecule in molecules %}
 		<tr>
-			<td>
+			<td class="molecule-name">
 				<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
 				   class="no-underline">{{ molecule.RusName|raw }}</a>
+				<span>({{ molecule.LatName|raw }})</span>
 			</td>
-			<td>{{ molecule.LatName|raw }}</td>
 			<td><a title="Международное непатентованное наименование (МНН)" href="{{ path('gnp') }}"
 				   class="no-underline">{{ molecule.GNParent }}</a></td>
 			<td><a href="{{ path('molecule_included', {'MoleculeID':molecule.MoleculeID}) }}"

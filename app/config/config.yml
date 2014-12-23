@@ -11,7 +11,7 @@ framework:
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
-    templating:      { engines: ['twig'], assets_version: v147 }
+    templating:      { engines: ['twig'], assets_version: v187 }
     form:            ~
     csrf_protection: false
     validation:      { enable_annotations: true }
@@ -149,7 +149,12 @@ iphp_file_store:
             overwrite_duplicates: false
             namer:
                  translit: ~
-
+        popup:
+            upload_dir: %upload_dir%/popup
+            upload_path: /upload/popup
+            overwrite_duplicates: false
+            namer:
+                 translit: ~
 
 # Swiftmailer Configuration
 swiftmailer:

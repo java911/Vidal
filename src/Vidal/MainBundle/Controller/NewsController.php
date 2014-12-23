@@ -23,12 +23,12 @@ class NewsController extends Controller
 	 * @Route("/novosti/{id}", name="publication")
 	 * @Template("VidalMainBundle:News:publication.html.twig")
 	 */
-	public function publicationAction($id)
+	public function publicationAction(Request $request, $id)
 	{
-		$em = $this->getDoctrine()->getManager('drug');
+		$em          = $this->getDoctrine()->getManager('drug');
 		$publication = $em->getRepository('VidalDrugBundle:Publication')->findOneById($id);
 
-		if (!$publication) {
+		if ((!$publication || $publication->getEnabled() === false) && !$request->query->has('test')) {
 			throw $this->createNotFoundException();
 		}
 
@@ -45,24 +45,32 @@ class NewsController extends Controller
 	 */
 	public function newsAction(Request $request)
 	{
-		$em     = $this->getDoctrine()->getManager('drug');
-		$page = $request->query->get('p', 1);
+		$em       = $this->getDoctrine()->getManager('drug');
+		$page     = $request->query->get('p', 1);
+		$testMode = $request->query->has('test');
+
 		$params = array(
 			'menu_left' => 'news',
 			'title'     => 'Новости',
 		);
 
 		if ($page == 1) {
-			$params['publicationsPriority'] = $em->getRepository('VidalDrugBundle:Publication')->findLastPriority();
+			$params['publicationsPriority'] = $em->getRepository('VidalDrugBundle:Publication')->findLastPriority($testMode);
 		}
 
 		$params['publicationsPagination'] = $this->get('knp_paginator')->paginate(
-			$em->getRepository('VidalDrugBundle:Publication')->getQueryEnabled(),
+			$em->getRepository('VidalDrugBundle:Publication')->getQueryEnabled($testMode),
 			$page,
 			self::PUBLICATIONS_PER_PAGE
 		);
 
 		return $params;
+	}
+
+	/** @Route("/novost-test", name="novost-test") */
+	public function novostTestAction()
+	{
+		return $this->redirect($this->generateUrl('publication', array('id' => 4618, 'test' => '')));
 	}
 
 	private function strip($string)

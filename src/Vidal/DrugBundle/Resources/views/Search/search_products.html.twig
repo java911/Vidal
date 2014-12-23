@@ -54,7 +54,11 @@
 			<div class="block" id="search_products">
 				<div class="block-anons">
 					<div class="block-head">
-						Найдено препаратов{{ anyOfWord ? ' по любому из слов' }}:
+						{% if productsPagination.totalItemCount == 1 %}
+							Найден препарат{{ anyOfWord ? ' по любому из слов' }}:
+						{% else %}
+							Найдено препаратов{{ anyOfWord ? ' по любому из слов' }}:
+						{% endif %}
 						<span>{{ productsPagination.totalItemCount }}</span>
 					</div>
 				</div>
@@ -75,7 +79,11 @@
 			<div class="block" id="search_mis">
 				<div class="block-anons">
 					<div class="block-head">
-						Найдено медицинских изделий (МИ){{ anyOfWord ? ' по любому из слов' }}:
+						{% if mis|length == 1 %}
+							Найдено медицинское изделие (МИ){{ anyOfWord ? ' по любому из слов' }}:
+						{% else %}
+							Найдено медицинских изделий (МИ){{ anyOfWord ? ' по любому из слов' }}:
+						{% endif %}
 						<span>{{ mis|length }}</span>
 					</div>
 				</div>
@@ -83,12 +91,13 @@
 			{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':mis, 'pictures':mi_pictures, 'companies':mi_companies, 'infoPages':mi_infoPages} %}
 		{% endif %}
 
-		{# Найдено БАДов #}
+		{# Найдено БАД #}
 		{% if bads is defined %}
 			<div class="block">
 				<div class="block-anons" id="search_bads">
 					<div class="block-head">
-						Найдено БАДов{{ anyOfWord ? ' по любому из слов' }}: <span>{{ bads|length }}</span>
+						Найдено БАД{{ anyOfWord ? ' по любому из слов' }}:
+						<span>{{ bads|length }}</span>
 					</div>
 				</div>
 			</div>

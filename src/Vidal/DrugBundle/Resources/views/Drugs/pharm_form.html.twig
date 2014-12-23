@@ -42,19 +42,14 @@
 			.autocomplete({
 				minLength: 2,
 				source:    function(request, response) {
-					$.ajax({
-						url:      "http://twiga.vidal.ru:9200/website/autocomplete_pharm/_search",
-						type:     "POST",
-						dataType: "JSON",
-						data:     '{ "query":{"query_string":{"query":"' + request.term + '*"}}, "fields":["name"], "size":15, "highlight":{"fields":{"name":{}}} }',
-						success:  function(data) {
-							response($.map(data.hits.hits, function(item) {
-								return {
-									label: item.highlight.name,
-									value: item.fields.name
-								}
-							}));
-						}
+					var url = Routing.generate('elastic_autocomplete_pharm', {'term':request.term.trim()});
+					$.getJSON(url, function(data) {
+						response($.map(data.hits.hits, function(item) {
+							return {
+								label: item.highlight.name,
+								value: item._source.name
+							}
+						}));
 					});
 				},
 				select:    function(event, ui) {

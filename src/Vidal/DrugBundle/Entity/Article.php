@@ -153,6 +153,15 @@ class Article extends BaseEntity
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $anonsPriority;
 
+	/** @ORM\Column(type="boolean") */
+	protected $hideDate = false;
+
+	/** @ORM\Column(type="boolean") */
+	protected $testMode = false;
+
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $code;
+
 	public function __construct()
 	{
 		$this->nozologies = new ArrayCollection();
@@ -753,5 +762,65 @@ class Article extends BaseEntity
 	public function getAnonsPriority()
 	{
 		return $this->anonsPriority;
+	}
+
+	public function addInfoPage($infoPage)
+	{
+		if (!$this->infoPages->contains($infoPage)) {
+			$this->infoPages[] = $infoPage;
+		}
+	}
+
+	public function removeInfoPage($infoPage)
+	{
+		$this->infoPages->remove($infoPage);
+	}
+
+	/**
+	 * @param mixed $hideDate
+	 */
+	public function setHideDate($hideDate)
+	{
+		$this->hideDate = $hideDate;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getHideDate()
+	{
+		return $this->hideDate;
+	}
+
+	/**
+	 * @param mixed $testMode
+	 */
+	public function setTestMode($testMode)
+	{
+		$this->testMode = $testMode;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTestMode()
+	{
+		return $this->testMode;
+	}
+
+	/**
+	 * @param mixed $code
+	 */
+	public function setCode($code)
+	{
+		$this->code = $code;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCode()
+	{
+		return $this->code;
 	}
 }

@@ -22,17 +22,47 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 		$container = $this->getContainer();
 		$em        = $container->get('doctrine')->getManager('drug');
 		$emDefault = $container->get('doctrine')->getManager();
+		$webRoot   = $container->get('kernel')->getRootDir() . "/../web";
 
 		////////////////////////////////////////////
 		$urlset  = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" /><!--?xml version="1.0" encoding="UTF-8"?-->');
+		$urlset2 = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" /><!--?xml version="1.0" encoding="UTF-8"?-->');
+		$urlset3 = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" /><!--?xml version="1.0" encoding="UTF-8"?-->');
+
 		$date    = new \DateTime();
 		$lastMod = $date->format('Y-m-d');
 
+		$xmlMain = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?>
+			<sitemapindex xmlns="http://www.google.com/schemas/sitemap/0.84">
+			 <sitemap>
+				<loc>http://www.vidal.ru/sitemap1.xml</loc>
+				<lastmod>' . $lastMod . '</lastmod>
+			 </sitemap>
+			 <sitemap>
+				<loc>http://www.vidal.ru/sitemap2.xml</loc>
+				<lastmod>' . $lastMod . '</lastmod>
+			 </sitemap>
+			 <sitemap>
+				<loc>http://www.vidal.ru/sitemap3.xml</loc>
+				<lastmod>' . $lastMod . '</lastmod>
+			 </sitemap>
+			</sitemapindex>
+		');
+
+		$xmlMain->asXML("{$webRoot}/sitemap.xml");
+
 		# главная
 		$url = $urlset->addChild('url');
-		$url->addChild('loc', 'http://www.vidal.ru');
+		$url->addChild('loc', 'http://www.vidal.ru/sitemap1.xml');
 		$url->addChild('lastmod', $lastMod);
-		$url->addChild('changefreq', 'weekly');
+		$url->addChild('changefreq', 'monthly');
+		$url->addChild('priority', '1');
+
+		# материалы
+		$url = $urlset->addChild('url');
+		$url->addChild('loc', 'http://www.vidal.ru/sitemap2.xml');
+		$url->addChild('lastmod', $lastMod);
+		$url->addChild('changefreq', 'daily');
 		$url->addChild('priority', '1');
 
 		# картинка-1
@@ -61,7 +91,7 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 			$loc = "http://www.vidal.ru/drugs/{$product['Name']}__{$product['ProductID']}";
 			$url->addChild('loc', $loc);
 			$url->addChild('lastmod', $lastMod);
-			$url->addChild('changefreq', 'weekly');
+			$url->addChild('changefreq', 'monthly');
 			$url->addChild('priority', '0.8');
 		}
 
@@ -78,41 +108,47 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 			$loc = "http://www.vidal.ru/drugs/molecule/{$molecule['MoleculeID']}";
 			$url->addChild('loc', $loc);
 			$url->addChild('lastmod', $lastMod);
-			$url->addChild('changefreq', 'weekly');
+			$url->addChild('changefreq', 'monthly');
 			$url->addChild('priority', '0.8');
 		}
 
 		# статьи энциклопедии
 		$articles = $em->createQuery('
-					SELECT a.link, r.rubrique
+					SELECT a
 					FROM VidalDrugBundle:Article a
 					JOIN a.rubrique r
 					WHERE a.enabled = TRUE
 				')->getResult();
 
 		foreach ($articles as $article) {
-			$url = $urlset->addChild('url');
-			$loc = "http://www.vidal.ru/encyclopedia/{$article['rubrique']}/{$article['link']}";
-			$url->addChild('loc', $loc);
-			$url->addChild('lastmod', $lastMod);
-			$url->addChild('changefreq', 'weekly');
-			$url->addChild('priority', '0.8');
+			if ($article->getRubrique() && $article->getRubrique()->getEnabled() && $article->getEnabled()) {
+				$url      = $urlset2->addChild('url');
+				$rubrique = $article->getRubrique()->getRubrique();
+				$link     = $article->getLink();
+				$loc      = "http://www.vidal.ru/encyclopedia/{$rubrique}/{$link}";
+				$url->addChild('loc', $loc);
+				$url->addChild('lastmod', $lastMod);
+				$url->addChild('changefreq', 'daily');
+				$url->addChild('priority', '0.8');
+			}
 		}
 
 		# новости
 		$publications = $em->createQuery('
-					SELECT p.id
+					SELECT p.id, p.enabled
 					FROM VidalDrugBundle:Publication p
 					WHERE p.enabled = TRUE
 				')->getResult();
 
 		foreach ($publications as $publication) {
-			$url = $urlset->addChild('url');
-			$loc = "http://www.vidal.ru/novosti/{$publication['id']}";
-			$url->addChild('loc', $loc);
-			$url->addChild('lastmod', $lastMod);
-			$url->addChild('changefreq', 'weekly');
-			$url->addChild('priority', '0.8');
+			if ($publication['enabled']) {
+				$url = $urlset2->addChild('url');
+				$loc = "http://www.vidal.ru/novosti/{$publication['id']}";
+				$url->addChild('loc', $loc);
+				$url->addChild('lastmod', $lastMod);
+				$url->addChild('changefreq', 'daily');
+				$url->addChild('priority', '0.8');
+			}
 		}
 
 		# компании
@@ -126,7 +162,7 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 			$loc = "http://www.vidal.ru/drugs/firm/{$company['CompanyID']}";
 			$url->addChild('loc', $loc);
 			$url->addChild('lastmod', $lastMod);
-			$url->addChild('changefreq', 'weekly');
+			$url->addChild('changefreq', 'monthly');
 			$url->addChild('priority', '0.8');
 		}
 
@@ -142,7 +178,7 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 			$loc = "http://www.vidal.ru/drugs/company/{$infoPage['InfoPageID']}";
 			$url->addChild('loc', $loc);
 			$url->addChild('lastmod', $lastMod);
-			$url->addChild('changefreq', 'weekly');
+			$url->addChild('changefreq', 'monthly');
 			$url->addChild('priority', '0.8');
 		}
 
@@ -178,8 +214,47 @@ class SitemapGeneratorCommand extends ContainerAwareCommand
 			$url->addChild('priority', '0.9');
 		}
 
+		# школа гастрита
+		$url = $urlset3->addChild('url');
+		$loc = "http://www.vidal.ru/shkola-gastrita";
+		$url->addChild('loc', $loc);
+		$url->addChild('lastmod', $lastMod);
+		$url->addChild('changefreq', 'daily');
+		$url->addChild('priority', '1');
+
+		$locs = array('online-test', 'besplatnaya-konsultaciya-gastroenterologa', 'video', 'blizhajshie-polikliniki');
+		foreach ($locs as $loc) {
+			$url = $urlset3->addChild('url');
+			$url->addChild('loc', "http://www.vidal.ru/shkola-gastrita/$loc");
+			$url->addChild('lastmod', $lastMod);
+			$url->addChild('changefreq', 'weekly');
+			$url->addChild('priority', '0.9');
+		}
+
+		$categories = $emDefault->getRepository('VidalMainBundle:ShkolaCategory')->findAll();
+		foreach ($categories as $category) {
+			$categoryUrl = $category->getUrl();
+			$url = $urlset3->addChild('url');
+			$url->addChild('loc', "http://www.vidal.ru/shkola-gastrita/$categoryUrl");
+			$url->addChild('lastmod', $lastMod);
+			$url->addChild('changefreq', 'weekly');
+			$url->addChild('priority', '0.9');
+
+			foreach ($category->getArticles() as $article) {
+				if (!$article->getCategoryPage()) {
+					$url = $urlset3->addChild('url');
+					$url->addChild('loc', "http://www.vidal.ru/shkola-gastrita/$categoryUrl/{$article->getUrl()}");
+					$url->addChild('lastmod', $lastMod);
+					$url->addChild('changefreq', 'weekly');
+					$url->addChild('priority', '0.9');
+				}
+			}
+		}
+
 		# запись в файл
-		$urlset->asXML('web/sitemap.xml');
+		$urlset->asXML("{$webRoot}/sitemap1.xml");
+		$urlset2->asXML("{$webRoot}/sitemap2.xml");
+		$urlset3->asXML("{$webRoot}/sitemap3.xml");
 
 		///////////////////////////////////////////
 

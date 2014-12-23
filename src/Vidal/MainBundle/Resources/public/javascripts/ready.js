@@ -7,40 +7,23 @@ $(document).ready(function() {
 		.autocomplete({
 			minLength: 2,
 			source:    function(request, response) {
-				type = $selectType.val();
-				var query = '{' +
-					' "query":{"query_string":{"query":"' + request.term + '*"}}' +
-					', "fields":["name","type"]' +
-					', "size":40' +
-					', "highlight":{"fields":{"name":{}}}';
-				if (type != 'all') {
-					query += ', "filter":{"term" :{"type" : "' + type + '"}}';
-				}
-				query += ' }';
-				$.ajax({
-					url:      "http://www.vidal.ru:9200/website/autocomplete/_search",
-					type:     "POST",
-					dataType: "JSON",
-					data:     query,
-					success:  function(data) {
-						var hits = data.hits.hits;
-						var values = $.map(hits, function(item) {
-							return {
-								label: item.highlight && item.highlight.name ? item.highlight.name : '',
-								value: item.fields.name,
-								type:  item.fields.type
-							}
-						});
-						values.sort(function(a, b) {
-							return (a.type == b.type) ? 0 : ((a.type < b.type) ? 1 : -1);
-						});
-						response(values.slice(0, 15));
-					}
+				var url = Routing.generate('elastic_autocomplete', {
+					'type': $selectType.val(),
+					'term': request.term.trim()
+				});
+				$.getJSON(url, function(data) {
+					response($.map(data.hits.hits, function(item) {
+						return {
+							label: item.highlight.name,
+							value: item._source.name,
+							type:  item._source.type
+						}
+					}));
 				});
 			},
 			select:    function(event, ui) {
 				if (ui.item) {
-					window.location = Routing.generate('search', {'q':ui.item.value[0]});
+					window.location = Routing.generate('search', {'q': ui.item.value[0]});
 				}
 			}
 		}).data("ui-autocomplete")._renderItem = function(ul, item) {
@@ -65,7 +48,7 @@ $(document).ready(function() {
 	});
 
 	$('#top-link').click(function() {
-		$("html, body").animate({ scrollTop: 0 }, 600);
+		$("html, body").animate({scrollTop: 0}, 600);
 		return false;
 	});
 
@@ -89,5 +72,56 @@ $(document).ready(function() {
 
 	$('body').click(function() {
 		$('.tags ul').hide();
+	});
+
+	$('.anons-footer').click(function(e) {
+		var $announcement = $(this).toggleClass('expanded').closest('.announcement');
+		$announcement.find('ul').slideToggle('fast');
+		$announcement.find('.products').slideToggle('fast');
+	});
+
+	$('.text a').each(function() {
+		var $link = $(this);
+		var text = $link.text();
+		var href = this.href;
+
+		if (text.length > 70 && text.indexOf(' ') === -1) {
+			var parts = text.split('/');
+			text = parts.join('<span style="display:inline-block;width:0"></span>/');
+			$link.html(text);
+		}
+
+		var index = href.indexOf('#_');
+		if (index !== -1) {
+			href = href.substring(index);
+			this.href = href;
+		}
+	});
+
+	$('.text a').click(function() {
+		var id = this.getAttribute('href').substring(2);
+		$('#' + id).closest('.spoiler-content').show();
+	});
+
+	$('.block table, .text table').not('.products-table').each(function() {
+		var $this = $(this);
+
+		if ($this.width() > 520) {
+			$this.wrap('<div class="table-wrap"><div>');
+		}
+	});
+
+	$('.products-table-name .m').click(function(e) {
+		e.stopPropagation();
+		var $exclude = $(this).children('div');
+		$('.products-table-name > div').not($exclude).hide();
+		var $indication = $(this).siblings('div');
+		$indication.css('display') == 'block'
+			? $indication.hide()
+			: $indication.show();
+	});
+
+	$('body').click(function() {
+		$('.products-table-name > div').hide();
 	});
 });

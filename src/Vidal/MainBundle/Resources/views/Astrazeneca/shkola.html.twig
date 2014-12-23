@@ -1,4 +1,4 @@
-{% extends 'VidalMainBundle::layout.html.twig' %}
+{% extends 'VidalMainBundle::layout_promo.html.twig' %}
 
 
 {% block middle %}
@@ -6,6 +6,14 @@
 {# Школа гастрита #}
 <div class="page page-main">
 	<img src="{{ asset('bundles/vidalmain/images/shkola/page-main.png') }}" class="page-main-bg"/>
+
+	<div class="main-links">
+		<a href="#articles" class="link">СТАТЬИ</a>
+		<a href="#video" class="link">ВИДЕО</a>
+		<a href="#test" class="link">ТЕСТ</a>
+		<a href="#qa" class="link">КОНСУЛЬТАЦИИ</a>
+		<a href="#map" class="link">КАРТА</a>
+	</div>
 
 	<div class="context left top">
 		<div class="main-title">
@@ -18,14 +26,6 @@
 			<a href="#map" class="link">нашей карты</a>
 		</div>
 
-		<div class="main-links">
-			<a href="#articles" class="link">СТАТЬИ</a>
-			<a href="#video" class="link">ВИДЕО</a>
-			<a href="#test" class="link">ТЕСТ</a>
-			<a href="#qa" class="link">КОНСУЛЬТАЦИИ</a>
-			<a href="#map" class="link">КАРТА</a>
-		</div>
-
 		<div class="texts">
 			{% for blog in blogs %}
 				<div class="text-{{ blog.id }} {{ loop.first ? 'active' }}">
@@ -36,6 +36,13 @@
 	</div>
 
 	<div class="blogs">
+		<div class="r-left">
+			<img src="{{ asset('bundles/vidalmain/images/bg/r-left.png') }}"/>
+		</div>
+		<div class="r-right">
+			<img src="{{ asset('bundles/vidalmain/images/bg/r-right.png') }}"/>
+		</div>
+
 		<div class="images">
 			{% for blog in blogs %}
 				<div class="image-{{ blog.id }} {{ loop.first ? 'active' }}">
@@ -56,6 +63,7 @@
 {# Статьи #}
 <div class="page page-articles" id="articles">
 	<div class="content">
+		<div class="content-title">СПРАВОЧНАЯ ИНФОРМАЦИЯ</div>
 		<div class="articles">
 			{% for article in articles %}
 				<div class="article article-{{ article.id }} {{ loop.index == 1 ? 'active' }}"
@@ -107,6 +115,7 @@
 	<a class="s-right" href="#"><img src="{{ asset('bundles/vidalmain/images/shkola/r.png') }}"/></a>
 
 	<div class="content">
+		<div class="content-title">ВИДЕО</div>
 		<div class="videos">
 			<div class="video video-1 active">
 				<div class="video-title">
@@ -233,9 +242,11 @@
 
 {# Тестирование #}
 <div class="page page-test" id="test">
-	<img src="{{ asset('bundles/vidalmain/images/shkola/page-test.png') }}" class="page-test-bg"/>
-
 	<div class="content">
+		<div class="content-title">ТЕСТИРОВАНИЕ</div>
+
+		<img src="{{ asset('bundles/vidalmain/images/shkola/bg-test.png') }}" class="page-test-bg"/>
+
 		<div class="test-images">
 			{% for test in tests %}
 				<img src="{{ asset('bundles/vidalmain/images/test' ~test.id~ '.jpg') }}"
@@ -264,7 +275,7 @@
 					со специалистом.</p>
 
 				<p>Найти специалистов Вы можете с помощью
-					<a href="{{ path('shkola_gastrita') }}#map">нашей карты</a></p>
+				s assets:install --symlink	<a href="{{ path('shkola_gastrita') }}#map">нашей карты</a></p>
 			</div>
 		</div>
 	</div>
@@ -274,26 +285,20 @@
 <div class="page-qa" id="qa">
 	<img src="{{ asset('bundles/vidalmain/images/shkola/stat.jpg') }}" class="stat"/>
 
-	<div class="qa-header">
-		<div>
-			<img src="{{ asset('bundles/vidalmain/images/shkola/qa_title.png') }}"/>
-		</div>
-		<div>
-			<button id="ask" class="btn-red">ЗАДАТЬ ВОПРОС</button>
-		</div>
-	</div>
+	<div class="content-title">КОНСУЛЬТАЦИИ</div>
+
 
 	{% if app.session.flashbag.get('questioned')|length %}
 		<div class="questioned">
 			Спасибо за ваш вопрос! В ближайшее время наш специалист на него ответит.
 		</div>
+	{% else %}
+		<div class="ask-form">
+			<form method="POST" action="{{ path('shkola_gastrita') }}#qa">
+				{{ form_widget(form) }}
+			</form>
+		</div>
 	{% endif %}
-
-	<div class="ask-form">
-		<form method="POST" action="{{ path('shkola_gastrita') }}#qa">
-			{{ form_widget(form) }}
-		</form>
-	</div>
 
 	<table class="qas">
 		{% for row in questionAnswers|batch(2) %}
@@ -326,14 +331,38 @@
 </div>
 
 {# Карта аптек #}
-<iframe src="{{ path('shkola_map') }}" style="width:995px; height:496px;"></iframe>
+<div id="map">
+	<div class="content-title">КАРТА АПТЕК И БОЛЬНИЦ</div>
+	<iframe src="{{ path('shkola_map') }}" style="width:995px; height:496px; border:none;"></iframe>
+</div>
 
+{% endblock %}
+
+
+{% block footer %}
+	<div class="footer">
+		<noindex>
+			<div class="footer-info">
+				Информация о препаратах, отпускаемых по рецепту, размещенная на сайте, предназначена только для
+				специалистов.
+				Информация, содержащаяся на сайте, не должна использоваться пациентами для принятия самостоятельного
+				решения о применении представленных лекарственных препаратов и не может служить заменой очной
+				консультации врача.
+			</div>
+		</noindex>
+
+		<div class="footer-copyright caption">
+			© 2014 «Школа Гастрита» - Справочная информация по язве желудка и гастрите
+		</div>
+
+		<img class="footer-logo" src="{{ asset('bundles/vidalmain/images/vidal-group.jpg') }}"/>
+	</div>
 {% endblock %}
 
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/shkola.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/shkola_gastrita.css') }}"/>
 {% endblock %}
 
 
@@ -341,7 +370,7 @@
 {{ parent() }}
 <script src="/bundles/vidalmain/javascripts/swfobject.js" type="text/javascript"></script>
 <script type="text/javascript">
-	var sliderTimeout = 10000;
+	var sliderTimeout = 25000;
 	var next = 1;
 	var t = 0;
 
@@ -363,6 +392,20 @@
 			sliderInterval = setInterval(slider, sliderTimeout);
 
 			return false;
+		});
+		$('.r-left').click(function() {
+			$('.slider a.active').removeClass('active').prevOrLast().addClass('active');
+			$('.images div.active').removeClass('active').prevOrLast().addClass('active');
+			$('.texts div.active').removeClass('active').prevOrLast().addClass('active');
+			clearInterval(sliderInterval);
+			sliderInterval = setInterval(slider, sliderTimeout);
+		});
+		$('.r-right').click(function() {
+			$('.slider a.active').removeClass('active').nextOrFirst().addClass('active');
+			$('.images div.active').removeClass('active').nextOrFirst().addClass('active');
+			$('.texts div.active').removeClass('active').nextOrFirst().addClass('active');
+			clearInterval(sliderInterval);
+			sliderInterval = setInterval(slider, sliderTimeout);
 		});
 
 		// articles
@@ -447,13 +490,6 @@
 			$qa.find('> a').show();
 		});
 
-		$('#ask').click(function(e) {
-			e.preventDefault();
-			$('.ask-form').slideDown();
-			$(this).hide();
-			$('.questioned').hide();
-		});
-
 		if ($('.form_error ul').length) {
 			$('#ask').hide();
 			$('.ask-form').show();
@@ -491,6 +527,7 @@
 			$('.videos .active, .scroller .active').removeClass('active');
 			$this.addClass('active');
 			$('.video-' + id).addClass('active');
+
 
 			return false;
 		});

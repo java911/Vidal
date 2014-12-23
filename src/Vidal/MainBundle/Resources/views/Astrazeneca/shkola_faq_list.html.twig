@@ -1,0 +1,80 @@
+{% extends 'VidalMainBundle::layout_promo.html.twig' %}
+
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('shkola_gastrita') }}">Школа Гастрита</a>
+		<i></i>
+		<span>Вопрос-ответ</span>
+	</div>
+{% endblock %}
+
+
+{% block content %}
+	<table class="faqs">
+		<tr>
+			<th>Вопрос</th>
+			<th style="width:62px; text-align:center;">Отвечен</th>
+			<th style="width:70px; text-align:right;">Действие</th>
+		</tr>
+		{% for faq in pagination %}
+			<tr>
+				<td>
+					{{ faq.question|raw }}
+				</td>
+				<td style="text-align:center;">{{ faq.enabled ? 'да' : 'нет' }}</td>
+				<td style="text-align:right;">
+					<a href="{{ path('shkola_faq_edit',{'id' : faq.id }) }}" class="btn btn-edit">
+						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/></a>
+					<a href="{{ path('shkola_faq_delete',{'id' : faq.id }) }}" class="btn btn-delete">
+						<img src="{{ asset('bundles/vidalmain/images/close.png') }}"></a>
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+
+	{{ knp_pagination_render(pagination) }}
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style type="text/css">
+		.faqs {
+			width:           100%;
+			border-collapse: collapse;
+			margin-bottom:   22px;
+		}
+		.faqs .btn img {
+			width: 20px;
+		}
+		.faqs .btn-delete {
+			margin-left: 10px;
+		}
+		.faqs th {
+			text-align:     left;
+			padding-bottom: 8px;
+			border-bottom:  1px solid #999;
+		}
+		.faqs td {
+			padding:    5px 7px;
+			border:     1px solid #999;
+			border-top: none;
+			font-size:  13px;
+		}
+	</style>
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.btn-delete').click(function() {
+				return confirm('Вы действительно хотите удалить вопрос?');
+			});
+		});
+	</script>
+{% endblock %}

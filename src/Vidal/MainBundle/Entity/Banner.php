@@ -103,6 +103,21 @@ class Banner extends BaseEntity
 	 */
 	protected $reference;
 
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $code;
+
+    /** @ORM\Column(type="integer", nullable=true) */
+    protected $width;
+
+    /** @ORM\Column(type="integer", nullable=true) */
+    protected $height;
+
+	/** @ORM\Column(type="boolean") */
+	protected $noStretch = false;
+
+    /** @ORM\Column(type="boolean") */
+    protected $onlyDoctor = false;
+
 	public function __construct()
 	{
 		$this->starts    = new \DateTime();
@@ -297,7 +312,9 @@ class Banner extends BaseEntity
 
 	public function isSwf()
 	{
-		return $this->banner['mimeType'] == 'application/x-shockwave-flash';
+		$ext = pathinfo($this->banner['path'], PATHINFO_EXTENSION);
+
+		return $ext == 'swf' || $ext == 'fla';
 	}
 
 	/**
@@ -415,4 +432,86 @@ class Banner extends BaseEntity
 	{
 		return $this->fallback;
 	}
+
+	/**
+	 * @param mixed $code
+	 */
+	public function setCode($code)
+	{
+		$this->code = $code;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCode()
+	{
+		return $this->code;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getNoStretch()
+	{
+		return $this->noStretch;
+	}
+
+	/**
+	 * @param mixed $noStretch
+	 */
+	public function setNoStretch($noStretch)
+	{
+		$this->noStretch = $noStretch;
+	}
+
+    /**
+     * @return mixed
+     */
+    public function getHeight()
+    {
+        return $this->height;
+    }
+
+    /**
+     * @param mixed $height
+     */
+    public function setHeight($height)
+    {
+        $this->height = $height;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+    /**
+     * @param mixed $width
+     */
+    public function setWidth($width)
+    {
+        $this->width = $width;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOnlyDoctor()
+    {
+        return $this->onlyDoctor;
+    }
+
+    /**
+     * @param mixed $onlyDoctor
+     */
+    public function setOnlyDoctor($onlyDoctor = false)
+    {
+        $this->onlyDoctor = $onlyDoctor;
+    }
+
+
 }
