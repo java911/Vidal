@@ -24,10 +24,18 @@
 	<div class="block">
 		<span class="block-head">АТХ код:</span>
 		<span><b>{{ atc.ATCCode }}</b></span>
-		<a href="{{ path('atc', {'ATCCode':atc.ATCCode}) }}" class="show-tree no-underline" target="_blank">
-			Показать в иерархии кодов
-		</a>
 	</div>
+
+	{% if atc.parent %}
+		<div class="block">
+			<span class="block-head">Входит в группу:</span>
+			<a href="{{ path('atc', {'ATCCode':atc.parent.ATCCode}) }}#{{ atc.parent.ATCCode }}"
+			   class="no-underline">
+				{{ atc.parent.ATCCode }}
+			</a> -
+			<span>{{ atc.parent.RusName|raw }}</span>
+		</div>
+	{% endif %}
 
 	<div class="block">
 		<span class="block-head">Название:</span>

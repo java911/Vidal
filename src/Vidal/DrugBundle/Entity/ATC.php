@@ -77,6 +77,15 @@ class ATC
 	/** @ORM\Column(type="integer") */
 	protected $countProducts = 0;
 
+	/**
+	 * @ORM\ManyToOne(targetEntity="ATC", inversedBy="children")
+	 * @ORM\JoinColumn(name="ParentATCCode", referencedColumnName="ATCCode")
+	 */
+	protected $parent;
+
+	/** @ORM\OneToMany(targetEntity="ATC", mappedBy="parent") */
+	protected $children;
+
 	public function __construct()
 	{
 		$this->products      = new ArrayCollection();
@@ -84,6 +93,7 @@ class ATC
 		$this->arts          = new ArrayCollection();
 		$this->publications  = new ArrayCollection();
 		$this->pharmArticles = new ArrayCollection();
+		$this->children      = new ArrayCollection();
 	}
 
 	public function getId()
@@ -286,5 +296,37 @@ class ATC
 	public function getCountProducts()
 	{
 		return $this->countProducts;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getParent()
+	{
+		return $this->parent;
+	}
+
+	/**
+	 * @param mixed $parent
+	 */
+	public function setParent($parent)
+	{
+		$this->parent = $parent;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getChildren()
+	{
+		return $this->children;
+	}
+
+	/**
+	 * @param mixed $children
+	 */
+	public function setChildren($children)
+	{
+		$this->children = $children;
 	}
 }

@@ -19,6 +19,16 @@
 
 
 {% block vidal %}
+	{% if nozology.parent %}
+		<div class="block">
+			<span class="block-head">Входит в группу:</span>
+			<a href="{{ path('nosology_item', {'Code':nozology.parent.Code}) }}" class="no-underline">
+				{{ nozology.parent.Code }}
+			</a> -
+			<span>{{ nozology.parent.Name|raw }}</span>
+		</div>
+	{% endif %}
+
 	{# новости #}
 	{% if publications is not empty %}
 		<div class="announcement">

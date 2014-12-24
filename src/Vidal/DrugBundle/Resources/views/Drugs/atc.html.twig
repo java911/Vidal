@@ -38,7 +38,7 @@
 			</tr>
 			{% for atc in codesByLetter %}
 				{% set length = atc.ATCCode|length %}
-				<tr{{ length == 3 ? ' class="bold"' }}>
+				<tr id="{{ atc.ATCCode }}" class="{{ atcCode == atc.ATCCode ? 'current' }} {{ length == 3 ? 'bold' }}">
 					<td style="padding-left:{{ (length - 3) * 13 }}px">
 						{{ atc.ATCCode }}
 					</td>
@@ -129,6 +129,10 @@
 		}
 		.atc * {
 			font-size: 13px !important;
+		}
+		.atc .current {
+			background-color: beige;
+			font-weight: bold;
 		}
 	</style>
 {% endblock %}

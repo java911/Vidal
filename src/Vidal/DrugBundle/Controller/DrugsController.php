@@ -100,6 +100,11 @@ class DrugsController extends Controller
 			'atcCode'    => $atcCode,
 		);
 
+		# если указан АТС-код, то показываем страницу по букве
+		if (!empty($atcCode)) {
+			$l = $params['l'] = substr($atcCode, 0, 1);
+		}
+
 		if ($l) {
 			$codesByLetter           = $em->getRepository('VidalDrugBundle:ATC')->findByLetter($l);
 			$params['codeByLetter']  = array_shift($codesByLetter);

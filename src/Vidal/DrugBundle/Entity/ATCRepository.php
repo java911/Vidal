@@ -51,8 +51,9 @@ class ATCRepository extends EntityRepository
 	{
 		if ($code = strstr($q, ' > ', true)) {
 			$atcCodesRaw = $this->_em->createQuery('
-				SELECT DISTINCT a.ATCCode, a.RusName, a.EngName, a.ParentATCCode
+				SELECT DISTINCT a.ATCCode, a.RusName, a.EngName, parent.ATCCode as parentATCCode, parent.RusName as parentRusName
 				FROM VidalDrugBundle:ATC a
+				LEFT JOIN a.parent parent
 				WHERE a.ATCCode = :code
 				ORDER BY a.ATCCode ASC
 			')->setParameter('code', $code)
@@ -60,8 +61,9 @@ class ATCRepository extends EntityRepository
 		}
 		else {
 			$qb = $this->_em->createQueryBuilder();
-			$qb->select('DISTINCT a.ATCCode, a.RusName, a.EngName, a.ParentATCCode')
+			$qb->select('DISTINCT a.ATCCode, a.RusName, a.EngName, parent.ATCCode as parentATCCode, parent.RusName as parentRusName')
 				->from('VidalDrugBundle:ATC', 'a')
+				->leftJoin('a.parent', 'parent')
 				->where('a.ATCCode LIKE :q')
 				->orderBy('a.ATCCode', 'ASC')
 				->setParameter('q', $q . '%');

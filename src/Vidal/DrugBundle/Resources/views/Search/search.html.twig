@@ -55,23 +55,21 @@ and (articles is not defined or articles is empty) %}
 
 			<table class="products-table">
 				<tr class="products-table-header">
-					<td style="width:10%">АТХ код</td>
-					<td style="width:40%">Название</td>
-					<td style="width:40%">Латинское название</td>
-					<td style="width:10%">Входит в&nbsp;группу</td>
+					<td style="width:50%">АТХ код</td>
+					<td style="width:50%">Входит в&nbsp;группу</td>
 				</tr>
 				{% for code, atc in atcCodes %}
 					<tr>
 						<td>
 							<a href="{{ path('atc_item', {'ATCCode':atc.ATCCode}) }}"
-							   class="no-underline">{{ atc.ATCCode }}</a>
+							   class="no-underline">{{ atc.ATCCode }}</a> -
+							<span>{{ atc.RusName|raw }}</span>
 						</td>
-						<td>{{ atc.RusName }}</td>
-						<td>{{ atc.EngName }}</td>
 						<td>
-							{% if atc.ParentATCCode is not empty %}
-								<a href="{{ path('atc', {'ATCCode':atc.ParentATCCode}) }}"
-								   class="no-underline">{{ atc.ParentATCCode }}</a>
+							{% if atc.parentATCCode is not empty %}
+								<a href="{{ path('atc', {'ATCCode':atc.parentATCCode}) }}#{{ atc.parentATCCode }}"
+								   class="no-underline">{{ atc.parentATCCode }}</a> -
+								<span>{{ atc.parentRusName|raw }}</span>
 							{% endif %}
 						</td>
 					</tr>

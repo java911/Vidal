@@ -19,7 +19,7 @@
 
 	{# извещения #}
 	{% if app.session.flashBag.get('confirmed')|length %}
-		<div class="thanks">Почтовый адрес подтвержден. Благодарим за регистрацию на нашем портале!</div>
+		{% include 'VidalMainBundle::popup.html.twig' with {'text': 'Почтовый адрес подтвержден.<br/>Благодарим за регистрацию на нашем портале!'} %}
 	{% elseif app.session.flashBag.get('saved')|length %}
 		<div class="thanks">Сохранено!</div>
 	{% endif %}
