@@ -168,7 +168,7 @@ class NozologyRepository extends EntityRepository
 		$raw = $this->_em->createQuery('
 			SELECT n.Code id, n.Name text, n.Level, n.countProducts, n.NozologyCode nc
 			FROM VidalDrugBundle:Nozology n
-			ORDER BY n.NozologyCode
+			ORDER BY n.NozologyCode2
 		')->getResult();
 
 		$nozologies = array();

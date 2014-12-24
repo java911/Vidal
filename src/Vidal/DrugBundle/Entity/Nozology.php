@@ -79,6 +79,9 @@ class Nozology
 	/** @ORM\Column(type="integer") */
 	protected $countProducts = 0;
 
+	/** @ORM\Column(length=8, nullable=true) */
+	protected $NozologyCode2;
+
 	public function __construct()
 	{
 		$this->documents     = new ArrayCollection();
@@ -300,5 +303,21 @@ class Nozology
 	public function setParent($parent)
 	{
 		$this->parent = $parent;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getNozologyCode2()
+	{
+		return $this->NozologyCode2;
+	}
+
+	/**
+	 * @param mixed $NozologyCode2
+	 */
+	public function setNozologyCode2($NozologyCode2)
+	{
+		$this->NozologyCode2 = $NozologyCode2;
 	}
 }

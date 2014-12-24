@@ -479,7 +479,7 @@ class DrugsController extends Controller
 	 * @Route("/drugs/nosology", name="nosology")
 	 * @Template("VidalDrugBundle:Drugs:nosology.html.twig")
 	 */
-	public function nologyAction(Request $request)
+	public function nosologyAction(Request $request)
 	{
 		$em = $this->getDoctrine()->getManager('drug');
 		$q  = $request->query->get('q', null);
