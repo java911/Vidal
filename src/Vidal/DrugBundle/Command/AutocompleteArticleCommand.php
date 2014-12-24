@@ -18,7 +18,6 @@ class AutocompleteArticleCommand extends ContainerAwareCommand
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		ini_set('memory_limit', -1);
-		$output->writeln('--- vidal:autocomplete_article started');
 
 		$em       = $this->getContainer()->get('doctrine')->getManager('drug');
 		$articles = $em->getRepository('VidalDrugBundle:Article')->findActive();
@@ -60,7 +59,5 @@ class AutocompleteArticleCommand extends ContainerAwareCommand
 		}
 		$elasticaType->addDocuments($documents);
 		$elasticaType->getIndex()->refresh();
-
-		$output->writeln("+++ vidal:autocomplete_article loaded $i documents!");
 	}
 }

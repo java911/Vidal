@@ -75,6 +75,58 @@ class ArticleAdmin extends Admin
 				'by_reference' => false,
 			))->addModelTransformer($tagTransformer)
 			)
+			->add('atcCodes', 'entity', array(
+				'label'         => 'Коды АТХ',
+				'class'         => 'VidalDrugBundle:ATC',
+				'query_builder' => function (EntityRepository $er) {
+					return $er->createQueryBuilder('atc')
+						->orderBy('atc.ATCCode', 'ASC');
+				},
+				'empty_value'   => 'не указано',
+				'required'      => false,
+				'multiple'      => true,
+				'attr'          => array('placeholder' => 'Начните вводить название или код'),
+			))
+			->add('molecules', 'entity', array(
+				'label'         => 'Активные вещества',
+				'help'          => '(Molecule)',
+				'class'         => 'VidalDrugBundle:Molecule',
+				'query_builder' => function (EntityRepository $er) {
+					return $er->createQueryBuilder('m')
+						->orderBy('m.RusName', 'ASC');
+				},
+				'empty_value'   => 'не указано',
+				'required'      => false,
+				'multiple'      => true,
+				'attr'          => array('placeholder' => 'Начните вводить название или ID'),
+			))
+			->add('infoPages', 'entity', array(
+				'label'         => 'Представительства',
+				'help'          => 'Информационные страницы (InfoPage)',
+				'class'         => 'VidalDrugBundle:InfoPage',
+				'query_builder' => function (EntityRepository $er) {
+					return $er->createQueryBuilder('ip')
+						->where("ip.CountryEditionCode = 'RUS'")
+						->orderBy('ip.RusName', 'ASC');
+				},
+				'empty_value'   => 'не указано',
+				'required'      => false,
+				'multiple'      => true,
+				'attr'          => array('placeholder' => 'Начните вводить название или ID'),
+			))
+			->add('nozologies', 'entity', array(
+				'label'         => 'Заболевания МКБ-10',
+				'help'          => '(Nozology)',
+				'class'         => 'VidalDrugBundle:Nozology',
+				'query_builder' => function (EntityRepository $er) {
+					return $er->createQueryBuilder('n')
+						->orderBy('n.NozologyCode', 'ASC');
+				},
+				'required'      => false,
+				'empty_value'   => 'не указано',
+				'multiple'      => true,
+				'attr'          => array('placeholder' => 'Начните вводить название или код'),
+			))
 			->add($formMapper->create('hidden2', 'text', array(
 				'label'        => 'Описания препаратов',
 				'required'     => false,
