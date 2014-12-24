@@ -44,6 +44,8 @@ class ProductNameCommand extends ContainerAwareCommand
 		$pdo->prepare("UPDATE product SET Name = REPLACE(Name,' - ','_')")->execute();
 		$pdo->prepare("UPDATE product SET Name = REPLACE(Name,' ','_')")->execute();
 		$pdo->prepare("UPDATE product SET Name = REPLACE(Name,'__','_')")->execute();
+		$pdo->prepare("UPDATE product SET Name = REPLACE(Name,'\"','')")->execute();
+		$pdo->prepare("UPDATE product SET Name = REPLACE(Name,\"'\",'')")->execute();
 		$pdo->prepare("UPDATE product SET Name = LOWER(Name)")->execute();
 
 		# Product.RusName2
