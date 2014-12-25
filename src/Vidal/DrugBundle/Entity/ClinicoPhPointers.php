@@ -39,9 +39,19 @@ class ClinicoPhPointers
 	/** @ORM\Column(type="integer") */
 	protected $countProducts = 0;
 
+	/**
+	 * @ORM\ManyToOne(targetEntity="ClinicoPhPointers", inversedBy="children")
+	 * @ORM\JoinColumn(name="parent", referencedColumnName="ClPhPointerID")
+	 */
+	protected $parent;
+
+	/** @ORM\OneToMany(targetEntity="ClinicoPhPointers", mappedBy="parent") */
+	protected $children;
+
 	public function __construct()
 	{
 		$this->documents = new ArrayCollection();
+		$this->children  = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -191,5 +201,37 @@ class ClinicoPhPointers
 	public function getCountProducts()
 	{
 		return $this->countProducts;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getParent()
+	{
+		return $this->parent;
+	}
+
+	/**
+	 * @param mixed $parent
+	 */
+	public function setParent($parent)
+	{
+		$this->parent = $parent;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getChildren()
+	{
+		return $this->children;
+	}
+
+	/**
+	 * @param mixed $children
+	 */
+	public function setChildren($children)
+	{
+		$this->children = $children;
 	}
 }

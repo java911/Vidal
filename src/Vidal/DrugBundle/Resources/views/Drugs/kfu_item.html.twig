@@ -17,47 +17,11 @@
 
 {% block vidal %}
 
-	{% if parent %}
+	{% if kfu.parent %}
 		<div class="block">
-			<div class="block-head">Входит в группу</div>
-			<div class="block-content">
-				<table class="products-table">
-					<tr>
-						<td style="width:90px">
-							{{ parent.Code }}
-						</td>
-						<td>
-							<a href="{{ path('kfu_item', {'code':parent.Code}) }}" class="no-underline">
-								{{ parent.Name|raw }}
-							</a>
-						</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-	{% endif %}
-
-	{% if children is not empty %}
-		<div class="block">
-			<div class="block-head">
-				{{ children|length == 1 ? 'Включает группу' : 'Включает группы' }}
-			</div>
-			<div class="block-content">
-				<table class="products-table">
-					{% for child in children %}
-						<tr>
-							<td style="width:90px">
-								{{ child.Code }}
-							</td>
-							<td>
-								<a href="{{ path('kfu_item', {'code':child.Code}) }}" class="no-underline">
-									{{ child.Name|raw }}
-								</a>
-							</td>
-						</tr>
-					{% endfor %}
-				</table>
-			</div>
+			<span class="block-head">Входит в группу:</span>
+			<a href="{{ path('kfu_item', {'code':kfu.parent.Code}) }}" class="no-underline">{{ kfu.parent.Code }}</a> -
+			<span>{{ kfu.parent.Name|raw }}</span>
 		</div>
 	{% endif %}
 
@@ -92,7 +56,7 @@
 				{% include 'VidalDrugBundle:Vidal:render_products.html.twig' with {'products':group.products} %}
 			</div>
 		{% endfor %}
-	{% elseif children is empty %}
+	{% else %}
 		<div class="no-results block">
 			Не найдено препаратов
 		</div>

@@ -22,9 +22,8 @@
 	{% if nozology.parent %}
 		<div class="block">
 			<span class="block-head">Входит в группу:</span>
-			<a href="{{ path('nosology_item', {'Code':nozology.parent.Code}) }}" class="no-underline">
-				{{ nozology.parent.Code }}
-			</a> -
+			<a href="{{ path('nosology_item', {'Code':nozology.parent.Code}) }}"
+			   class="no-underline">{{ nozology.parent.Code }}</a> -
 			<span>{{ nozology.parent.Name|raw }}</span>
 		</div>
 	{% endif %}
@@ -90,7 +89,8 @@
 						   href="{{ path('art', {'url':art.rubrique.url ~ '/' ~ (art.type ? art.type.url ~ '/') ~ (art.category ? art.category.url ~ '/') ~ art.link ~ '~' ~ art.id }) }}">{{ art.title|raw }}</a>
 
 						<div class="anons-info">
-							Рубрика: <a target="_blank" href="{{ path('art', {'url':art.rubrique.url}) }}">{{ art.rubrique.title }}</a>
+							Рубрика: <a target="_blank"
+										href="{{ path('art', {'url':art.rubrique.url}) }}">{{ art.rubrique.title }}</a>
 						</div>
 					</li>
 				{% endfor %}

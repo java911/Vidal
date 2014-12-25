@@ -69,39 +69,6 @@ class ClinicoPhPointersRepository extends EntityRepository
 			->getOneOrNullResult();
 	}
 
-	public function findParent($kfu)
-	{
-		$code = $kfu->getCode();
-		$pos  = strpos($code, '.');
-
-		if ($pos === false) {
-			return null;
-		}
-
-		$codes = explode('.', $code);
-		array_pop($codes);
-		$parentCode = implode('.', $codes);
-
-		return $this->findOneByCode($parentCode);
-	}
-
-	public function findChildren($code)
-	{
-		$len = strlen($code) + 3;
-
-		return $this->_em->createQuery('
-			SELECT c
-			FROM VidalDrugBundle:ClinicoPhPointers c
-			WHERE c.Code LIKE :code
-				AND LENGTH(c.Code) = :len
-			ORDER BY c.Code ASC
-		')->setParameters(array(
-				'code' => $code . '%',
-				'len'  => $len,
-			))
-			->getResult();
-	}
-
 	public function findByLetter($letter)
 	{
 		return $this->_em->createQuery('

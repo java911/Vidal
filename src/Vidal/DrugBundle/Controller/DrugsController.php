@@ -198,8 +198,6 @@ class DrugsController extends Controller
 			'menu_drugs' => 'kfu',
 			'kfu'        => $kfu,
 			'title'      => $this->strip($kfu) . ' | Клинико-фармакологические указатели',
-			'parent'     => $repo->findParent($kfu),
-			'children'   => $repo->findChildren($code),
 		);
 
 		$products = $em->getRepository('VidalDrugBundle:Product')->findByKfu($ClPhPointerID);
@@ -920,8 +918,8 @@ class DrugsController extends Controller
 
 	private function strip($string)
 	{
-		$pat = array(' /<sup>(.*?)<\/sup >/i', ' /<sub>(.*?)<\/sub >/i', ' /&amp;/');
-		$rep = array('', '', ' & ');
+		$pat = array(' /<sup>(.*?)<\/sup>/i', ' /<sub>(.*?)<\/sub>/i', ' /&amp;/');
+		$rep = array('$1', '$1', ' & ');
 
 		return preg_replace($pat, $rep, $string);
 	}
