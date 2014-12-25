@@ -25,6 +25,7 @@ class ProductZipCommand extends ContainerAwareCommand
 		$output->writeln('--- veterinar:product_zip started');
 
 		$em = $this->getContainer()->get('doctrine')->getManager('veterinar');
+		$pdo = $em->getConnection();
 
 		$products = $em->createQuery('
 			SELECT p.ProductID, p.ZipInfo
@@ -46,6 +47,8 @@ class ProductZipCommand extends ContainerAwareCommand
 				'product_id'  => $products[$i]['ProductID'],
 			))->execute();
 		}
+
+		$pdo->prepare("UPDATE product SET ZipInfo = REPLACE(ZipInfo,'микрогранулированный','микрогранулир-ый')")->execute();
 
 		$output->writeln('+++ veterinar:product_zip completed!');
 	}

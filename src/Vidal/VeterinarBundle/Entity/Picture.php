@@ -24,13 +24,9 @@ class Picture
 	 */
 	protected $infoPages;
 
-	/** @ORM\OneToMany(targetEntity="ProductPackage", mappedBy="PictureID") */
-	protected $productPackages;
-
 	public function __construct()
 	{
 		$this->infoPages       = new ArrayCollection();
-		$this->productPackages = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -100,21 +96,5 @@ class Picture
 	public function getInfoPages()
 	{
 		return $this->infoPages;
-	}
-
-	/**
-	 * @param mixed $productPackages
-	 */
-	public function setProductPackages(ArrayCollection $productPackages)
-	{
-		$this->productPackages = $productPackages;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getProductPackages()
-	{
-		return $this->productPackages;
 	}
 }

@@ -26,8 +26,9 @@ class PictureRepository extends EntityRepository
 			FROM VidalVeterinarBundle:Picture pict
 			JOIN VidalVeterinarBundle:ProductPicture pp WITH pp.PictureID = pict.PictureID
 			JOIN VidalVeterinarBundle:Product prod WITH pp.ProductID = prod.ProductID
-			WHERE prod.ProductID IN (:productIds) AND
-				pp.CountryEditionCode = \'RUS\'
+			WHERE prod.ProductID IN (:productIds)
+				AND pp.CountryEditionCode = \'RUS\'
+				AND pp.YearEdition > 2012
 			ORDER BY prod.ProductID DESC, pp.YearEdition DESC
 		')->setParameter('productIds', $productIds)
 			->getResult();
@@ -52,8 +53,9 @@ class PictureRepository extends EntityRepository
 			FROM VidalVeterinarBundle:Picture pict
 			JOIN VidalVeterinarBundle:ProductPicture pp WITH pp.PictureID = pict.PictureID
 			JOIN VidalVeterinarBundle:Product prod WITH pp.ProductID = prod.ProductID
-			WHERE prod.ProductID IN (:productIds) AND
-				pp.CountryEditionCode = \'RUS\'
+			WHERE prod.ProductID IN (:productIds)
+				AND pp.CountryEditionCode = \'RUS\'
+				AND pp.YearEdition > 2012
 			ORDER BY prod.ProductID DESC, pp.YearEdition DESC
 		')->setParameter('productIds', $productIds)
 			->getResult();

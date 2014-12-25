@@ -54,10 +54,9 @@ class InfoPage
 	protected $DateTextModified;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="CountryEdition", inversedBy="infoPages")
-	 * @ORM\JoinColumn(name="CountryEditionCode", referencedColumnName="CountryEditionCode")
+	 * @ORM\Column(length=10)
 	 */
-	protected $CoutryEditionCode;
+	protected $CountryEditionCode = 'RUS';
 
 	/** @ORM\ManyToMany(targetEntity="Picture", mappedBy="infoPages") */
 	protected $pictures;
@@ -65,39 +64,14 @@ class InfoPage
 	/** @ORM\OneToMany(targetEntity="DocumentInfoPage", mappedBy="InfoPageID") */
 	protected $documentInfoPages;
 
-	/**
-	 * @ORM\ManyToMany(targetEntity="RepresAndDistribs", mappedBy="infoPages")
-	 * @ORM\JoinTable(name="infopage_represanddistribs",
-	 *        joinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")},
-	 *        inverseJoinColumns={@ORM\JoinColumn(name="RepresAndDistribID", referencedColumnName="RepresAndDistribID")})
-	 */
-	protected $represAndDistribs;
-
 	public function __construct()
 	{
 		$this->pictures          = new ArrayCollection();
-		$this->documentInfoPages = new ArrayCollection();
 	}
 
 	public function __toString()
 	{
 		return $this->RusName;
-	}
-
-	/**
-	 * @param mixed $CoutryEditionCode
-	 */
-	public function setCoutryEditionCode($CoutryEditionCode)
-	{
-		$this->CoutryEditionCode = $CoutryEditionCode;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getCoutryEditionCode()
-	{
-		return $this->CoutryEditionCode;
 	}
 
 	/**
@@ -341,22 +315,6 @@ class InfoPage
 	}
 
 	/**
-	 * @param mixed $represAndDistribs
-	 */
-	public function setRepresAndDistribs($represAndDistribs)
-	{
-		$this->represAndDistribs = $represAndDistribs;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getRepresAndDistribs()
-	{
-		return $this->represAndDistribs;
-	}
-
-	/**
 	 * @param mixed $Name
 	 */
 	public function setName($Name)
@@ -370,5 +328,21 @@ class InfoPage
 	public function getName()
 	{
 		return $this->Name;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCountryEditionCode()
+	{
+		return $this->CountryEditionCode;
+	}
+
+	/**
+	 * @param mixed $CountryEditionCode
+	 */
+	public function setCountryEditionCode($CountryEditionCode)
+	{
+		$this->CountryEditionCode = $CountryEditionCode;
 	}
 }

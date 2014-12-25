@@ -22,11 +22,11 @@ class MoleculeName
 	/** @ORM\Column(type="text", nullable=true) */
 	protected $EngName;
 
-	/** @ORM\OneToMany(targetEntity="ItemActiveIng", mappedBy="ItemID") */
-	protected $itemActiveIngs;
+	/** @ORM\Column(type="integer", name="GDDB_MoleculeID", nullable=true) */
+	protected $gddbMoleculeID;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Product", inversedBy="moleculeNames")
+	 * @ORM\ManyToMany(targetEntity="Product", mappedBy="moleculeNames")
 	 * @ORM\JoinTable(name="product_moleculename",
 	 *        joinColumns={@ORM\JoinColumn(name="MoleculeNameID", referencedColumnName="MoleculeNameID")},
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")})
@@ -35,13 +35,12 @@ class MoleculeName
 
 	public function __construct()
 	{
-		$this->itemActiveIngs = new ArrayCollection();
 		$this->products       = new ArrayCollection();
 	}
 
 	public function __toString()
 	{
-		return $this->RusName;
+		return $this->MoleculeNameID . ' - ' . $this->RusName;
 	}
 
 	/**
@@ -109,19 +108,19 @@ class MoleculeName
 	}
 
 	/**
-	 * @param mixed $itemActiveIngs
+	 * @param mixed $gddbMoleculeID
 	 */
-	public function setItemActiveIngs(ArrayCollection $itemActiveIngs)
+	public function setGddbMoleculeID($gddbMoleculeID)
 	{
-		$this->itemActiveIngs = $itemActiveIngs;
+		$this->gddbMoleculeID = $gddbMoleculeID;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getItemActiveIngs()
+	public function getGddbMoleculeID()
 	{
-		return $this->itemActiveIngs;
+		return $this->gddbMoleculeID;
 	}
 
 	/**

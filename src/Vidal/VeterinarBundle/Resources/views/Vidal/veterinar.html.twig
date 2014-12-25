@@ -119,8 +119,8 @@
 
 {% block stylesheets %}
 	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/letters.css') }}"/>
 	<style type="text/css">
-		/* letters */
 		.veterinar-letters {
 			margin-top: 10px;
 		}
@@ -128,34 +128,6 @@
 			overflow: hidden;
 			display:  none;
 		}
-		.veterinar-letters input {
-			display:         inline-block;
-			width:           15px;
-			text-align:      center;
-			text-decoration: none;
-			color:           #62768A;
-			float:           left;
-			margin-right:    2px;
-			font-size:       14px;
-			outline:         none;
-			cursor:          pointer;
-			padding:         0;
-			background:      #F5F5F5;
-			border:          none;
-			line-height:     18px;
-		}
-		.veterinar-letters input.en {
-			color: #434EA0;
-		}
-		.veterinar-letters input.active, .veterinar-letters input:hover {
-			background: #d71344;
-			color:      white;
-		}
-		.veterinar-letters input:active {
-			position: relative;
-			top:      1px;
-		}
-
 		#veterinar_type {
 			width: 195px;
 		}

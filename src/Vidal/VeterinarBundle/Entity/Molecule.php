@@ -28,21 +28,43 @@ class Molecule
 	 */
 	protected $MarketStatusID;
 
-	/** @ORM\OneToMany(targetEntity="MoleculeDocument", mappedBy="MoleculeID") */
-	protected $moleculeDocuments;
+	/** @ORM\Column(length=500, nullable=true, name="GDDB_MoleculeName") */
+	protected $gddbMoleculeName;
+
+	/** @ORM\Column(type="integer", nullable=true, name="GDDB_MOLECULENAMEID") */
+	protected $gddbMoleculeNameID;
+
+	/** @ORM\Column(type="integer", nullable=true, name="GDDB_MoleculeID") */
+	protected $gddbMoleculeID;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Document", mappedBy="molecules")
+	 * @ORM\JoinTable(name="molecule_document",
+	 *        joinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})
+	 */
+	protected $documents;
+
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $GNVLS;
 
 	/** @ORM\OneToMany(targetEntity="MoleculeName", mappedBy="MoleculeID") */
 	protected $moleculeNames;
 
 	public function __construct()
 	{
-		$this->moleculeDocuments = new ArrayCollection();
-		$this->moleculeNames     = new ArrayCollection();
+		$this->documents     = new ArrayCollection();
+		$this->moleculeNames = new ArrayCollection();
 	}
 
 	public function __toString()
 	{
-		return $this->LatName;
+		return $this->MoleculeID . ' - ' . (empty($this->RusName) ? $this->LatName : $this->RusName);
+	}
+
+	public function getTitle()
+	{
+		return empty($this->RusName) ? $this->LatName : $this->RusName;
 	}
 
 	public function getId()
@@ -131,25 +153,89 @@ class Molecule
 	}
 
 	/**
-	 * @param mixed $moleculeDocuments
+	 * @param mixed $gddbMoleculeID
 	 */
-	public function setMoleculeDocuments(ArrayCollection $moleculeDocuments)
+	public function setGddbMoleculeID($gddbMoleculeID)
 	{
-		$this->moleculeDocuments = $moleculeDocuments;
+		$this->gddbMoleculeID = $gddbMoleculeID;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getMoleculeDocuments()
+	public function getGddbMoleculeID()
 	{
-		return $this->moleculeDocuments;
+		return $this->gddbMoleculeID;
+	}
+
+	/**
+	 * @param mixed $gddbMoleculeName
+	 */
+	public function setGddbMoleculeName($gddbMoleculeName)
+	{
+		$this->gddbMoleculeName = $gddbMoleculeName;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getGddbMoleculeName()
+	{
+		return $this->gddbMoleculeName;
+	}
+
+	/**
+	 * @param mixed $gddbMoleculeNameID
+	 */
+	public function setGddbMoleculeNameID($gddbMoleculeNameID)
+	{
+		$this->gddbMoleculeNameID = $gddbMoleculeNameID;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getGddbMoleculeNameID()
+	{
+		return $this->gddbMoleculeNameID;
+	}
+
+	/**
+	 * @param mixed $documents
+	 */
+	public function setDocuments($documents)
+	{
+		$this->documents = $documents;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDocuments()
+	{
+		return $this->documents;
+	}
+
+	/**
+	 * @param mixed $GNVLS
+	 */
+	public function setGNVLS($GNVLS)
+	{
+		$this->GNVLS = $GNVLS;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getGNVLS()
+	{
+		return $this->GNVLS;
 	}
 
 	/**
 	 * @param mixed $moleculeNames
 	 */
-	public function setMoleculeNames(ArrayCollection $moleculeNames)
+	public function setMoleculeNames($moleculeNames)
 	{
 		$this->moleculeNames = $moleculeNames;
 	}

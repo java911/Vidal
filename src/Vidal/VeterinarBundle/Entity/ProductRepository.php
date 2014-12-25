@@ -142,25 +142,6 @@ class ProductRepository extends EntityRepository
 			->getResult();
 	}
 
-	public function findByATCCode($ATCCode)
-	{
-		return $this->_em->createQuery('
-			SELECT p.ProductID, p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.NonPrescriptionDrug,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
-				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
-				d.Name DocumentName
-			FROM VidalVeterinarBundle:Product p
-			JOIN p.atcCodes a WITH a = :ATCCode
-			LEFT JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.ProductID = p
-			LEFT JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d
-			WHERE p.CountryEditionCode = \'RUS\' AND
-				p.MarketStatusID IN (0,1,2,3,4,5,6,7) AND
-				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
-			ORDER BY p.RusName ASC
-		')->setParameter('ATCCode', $ATCCode)
-			->getResult();
-	}
-
 	public function findByMoleculeID($MoleculeID)
 	{
 		return $this->_em->createQuery('

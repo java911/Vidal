@@ -52,7 +52,19 @@ class Document
 	protected $PhInfluence;
 
 	/** @ORM\Column(type="text", nullable=true) */
+	protected $PhKinetics;
+
+	/** @ORM\Column(type="text", nullable=true) */
 	protected $Dosage;
+
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $OverDosage;
+
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $Interaction;
+
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $Lactation;
 
 	/** @ORM\Column(type="text", nullable=true) */
 	protected $SideEffects;
@@ -104,26 +116,50 @@ class Document
 	/** @ORM\OneToMany(targetEntity="DocumentInfoPage", mappedBy="DocumentID") */
 	protected $documentInfoPages;
 
-	/**
-	 * @ORM\ManyToMany(targetEntity="Edition", mappedBy="documents")
-	 * @ORM\JoinTable(name="documentoc_edition",
-	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
-	 *        inverseJoinColumns={@ORM\JoinColumn(name="EditionCode", referencedColumnName="EditionCode")})
-	 */
-	protected $editions;
-
-	/** @ORM\OneToMany(targetEntity="DocumentEdition", mappedBy="DocumentID") */
-	protected $documentEditions;
-
 	/** @ORM\OneToMany(targetEntity="MoleculeDocument", mappedBy="DocumentID") */
 	protected $moleculeDocuments;
+
+	/** @ORM\Column(length=4, nullable=true) */
+	protected $PregnancyUsing;
+
+	/** @ORM\Column(length=4, nullable=true) */
+	protected $NursingUsing;
+
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $RenalInsuf;
+
+	/** @ORM\Column(length=4, nullable=true) */
+	protected $RenalInsufUsing;
+
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $HepatoInsuf;
+
+	/** @ORM\Column(length=4, nullable=true) */
+	protected $HepatoInsufUsing;
+
+	/** @ORM\Column(type="boolean") */
+	protected $WithoutRenalInsuf = false;
+
+	/** @ORM\Column(type="boolean") */
+	protected $WithoutHepatoInsuf = false;
+
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $ElderlyInsuf;
+
+	/** @ORM\Column(length=4, nullable=true) */
+	protected $ElderlyInsufUsing;
+
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $ChildInsuf;
+
+	/** @ORM\Column(length=4, nullable=true) */
+	protected $ChildInsufUsing;
 
 	public function __construct()
 	{
 		$this->productDocument   = new ArrayCollection();
 		$this->clphPointers      = new ArrayCollection();
 		$this->documentInfoPages = new ArrayCollection();
-		$this->documentEditions  = new ArrayCollection();
 		$this->moleculeDocuments = new ArrayCollection();
 	}
 
@@ -486,38 +522,6 @@ class Document
 	}
 
 	/**
-	 * @param mixed $WithoutHepatoInsuf
-	 */
-	public function setWithoutHepatoInsuf($WithoutHepatoInsuf)
-	{
-		$this->WithoutHepatoInsuf = $WithoutHepatoInsuf;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getWithoutHepatoInsuf()
-	{
-		return $this->WithoutHepatoInsuf;
-	}
-
-	/**
-	 * @param mixed $WithoutRenalInsuf
-	 */
-	public function setWithoutRenalInsuf($WithoutRenalInsuf)
-	{
-		$this->WithoutRenalInsuf = $WithoutRenalInsuf;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getWithoutRenalInsuf()
-	{
-		return $this->WithoutRenalInsuf;
-	}
-
-	/**
 	 * @param mixed $YearEdition
 	 */
 	public function setYearEdition($YearEdition)
@@ -598,38 +602,6 @@ class Document
 	}
 
 	/**
-	 * @param mixed $documentEditions
-	 */
-	public function setDocumentEditions(ArrayCollection $documentEditions)
-	{
-		$this->documentEditions = $documentEditions;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getDocumentEditions()
-	{
-		return $this->documentEditions;
-	}
-
-	/**
-	 * @param mixed $editions
-	 */
-	public function setEditions(ArrayCollection $editions)
-	{
-		$this->editions = $editions;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getEditions()
-	{
-		return $this->editions;
-	}
-
-	/**
 	 * @param mixed $moleculeDocuments
 	 */
 	public function setMoleculeDocuments(ArrayCollection $moleculeDocuments)
@@ -691,5 +663,261 @@ class Document
 	public function getContraIndication()
 	{
 		return $this->ContraIndication;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPhKinetics()
+	{
+		return $this->PhKinetics;
+	}
+
+	/**
+	 * @param mixed $PhKinetics
+	 */
+	public function setPhKinetics($PhKinetics)
+	{
+		$this->PhKinetics = $PhKinetics;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getOverDosage()
+	{
+		return $this->OverDosage;
+	}
+
+	/**
+	 * @param mixed $OverDosage
+	 */
+	public function setOverDosage($OverDosage)
+	{
+		$this->OverDosage = $OverDosage;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getInteraction()
+	{
+		return $this->Interaction;
+	}
+
+	/**
+	 * @param mixed $Interaction
+	 */
+	public function setInteraction($Interaction)
+	{
+		$this->Interaction = $Interaction;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getLactation()
+	{
+		return $this->Lactation;
+	}
+
+	/**
+	 * @param mixed $Lactation
+	 */
+	public function setLactation($Lactation)
+	{
+		$this->Lactation = $Lactation;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPregnancyUsing()
+	{
+		return $this->PregnancyUsing;
+	}
+
+	/**
+	 * @param mixed $PregnancyUsing
+	 */
+	public function setPregnancyUsing($PregnancyUsing)
+	{
+		$this->PregnancyUsing = $PregnancyUsing;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getNursingUsing()
+	{
+		return $this->NursingUsing;
+	}
+
+	/**
+	 * @param mixed $NursingUsing
+	 */
+	public function setNursingUsing($NursingUsing)
+	{
+		$this->NursingUsing = $NursingUsing;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getRenalInsuf()
+	{
+		return $this->RenalInsuf;
+	}
+
+	/**
+	 * @param mixed $RenalInsuf
+	 */
+	public function setRenalInsuf($RenalInsuf)
+	{
+		$this->RenalInsuf = $RenalInsuf;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getRenalInsufUsing()
+	{
+		return $this->RenalInsufUsing;
+	}
+
+	/**
+	 * @param mixed $RenalInsufUsing
+	 */
+	public function setRenalInsufUsing($RenalInsufUsing)
+	{
+		$this->RenalInsufUsing = $RenalInsufUsing;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getHepatoInsuf()
+	{
+		return $this->HepatoInsuf;
+	}
+
+	/**
+	 * @param mixed $HepatoInsuf
+	 */
+	public function setHepatoInsuf($HepatoInsuf)
+	{
+		$this->HepatoInsuf = $HepatoInsuf;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getHepatoInsufUsing()
+	{
+		return $this->HepatoInsufUsing;
+	}
+
+	/**
+	 * @param mixed $HepatoInsufUsing
+	 */
+	public function setHepatoInsufUsing($HepatoInsufUsing)
+	{
+		$this->HepatoInsufUsing = $HepatoInsufUsing;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getWithoutRenalInsuf()
+	{
+		return $this->WithoutRenalInsuf;
+	}
+
+	/**
+	 * @param mixed $WithoutRenalInsuf
+	 */
+	public function setWithoutRenalInsuf($WithoutRenalInsuf)
+	{
+		$this->WithoutRenalInsuf = $WithoutRenalInsuf;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getWithoutHepatoInsuf()
+	{
+		return $this->WithoutHepatoInsuf;
+	}
+
+	/**
+	 * @param mixed $WithoutHepatoInsuf
+	 */
+	public function setWithoutHepatoInsuf($WithoutHepatoInsuf)
+	{
+		$this->WithoutHepatoInsuf = $WithoutHepatoInsuf;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getElderlyInsuf()
+	{
+		return $this->ElderlyInsuf;
+	}
+
+	/**
+	 * @param mixed $ElderlyInsuf
+	 */
+	public function setElderlyInsuf($ElderlyInsuf)
+	{
+		$this->ElderlyInsuf = $ElderlyInsuf;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getElderlyInsufUsing()
+	{
+		return $this->ElderlyInsufUsing;
+	}
+
+	/**
+	 * @param mixed $ElderlyInsufUsing
+	 */
+	public function setElderlyInsufUsing($ElderlyInsufUsing)
+	{
+		$this->ElderlyInsufUsing = $ElderlyInsufUsing;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getChildInsuf()
+	{
+		return $this->ChildInsuf;
+	}
+
+	/**
+	 * @param mixed $ChildInsuf
+	 */
+	public function setChildInsuf($ChildInsuf)
+	{
+		$this->ChildInsuf = $ChildInsuf;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getChildInsufUsing()
+	{
+		return $this->ChildInsufUsing;
+	}
+
+	/**
+	 * @param mixed $ChildInsufUsing
+	 */
+	public function setChildInsufUsing($ChildInsufUsing)
+	{
+		$this->ChildInsufUsing = $ChildInsufUsing;
 	}
 }

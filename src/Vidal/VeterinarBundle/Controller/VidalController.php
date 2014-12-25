@@ -265,7 +265,7 @@ class VidalController extends Controller
 
 	/**
 	 * Описание препарата
-	 * @Route("/veterinar/{EngName}~{ProductID}.{ext}", name="v_product", requirements={"ProductID":"\d+"}, defaults={"ext"="htm"})
+	 * @Route("/veterinar/{EngName}~{ProductID}.{ext}", name="v_product", requirements={"ProductID":"\d+", "EngName"=".+"}, defaults={"ext"="htm"})
 	 *
 	 * @Template("VidalVeterinarBundle:Vidal:document.html.twig")
 	 */

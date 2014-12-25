@@ -25,10 +25,9 @@ class Product
 	protected $NonPrescriptionDrug = false;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="CountryEdition", inversedBy="products")
-	 * @ORM\JoinColumn(name="CountryEditionCode", referencedColumnName="CountryEditionCode")
+	 * @ORM\Column(length=10)
 	 */
-	protected $CountryEditionCode;
+	protected $CountryEditionCode = 'RUS';
 
 	/** @ORM\Column(type="datetime", nullable=true) */
 	protected $RegistrationDate;
@@ -52,8 +51,7 @@ class Product
 	protected $DateOfIncludingText;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="ProductType", inversedBy="products")
-	 * @ORM\JoinColumn(name="ProductTypeCode", referencedColumnName="ProductTypeCode")
+	 * @ORM\Column(length=10)
 	 */
 	protected $ProductTypeCode;
 
@@ -111,12 +109,6 @@ class Product
 	/** @ORM\OneToMany(targetEntity="ProductCompany", mappedBy="ProductID") */
 	protected $productCompany;
 
-	/** @ORM\OneToMany(targetEntity="ProductPackage", mappedBy="ProductID") */
-	protected $productPackages;
-
-	/** @ORM\OneToMany(targetEntity="ProductItem", mappedBy="ProductID") */
-	protected $productItems;
-
 	/**
 	 * @ORM\ManyToMany(targetEntity="MoleculeName", mappedBy="products")
 	 * @ORM\JoinTable(name="product_moleculename",
@@ -125,17 +117,11 @@ class Product
 	 */
 	protected $moleculeNames;
 
-	/** @ORM\OneToMany(targetEntity="ProductItemRoute", mappedBy="ProductID") */
-	protected $productItemRoutes;
-
 	public function __construct()
 	{
 		$this->productDocument   = new ArrayCollection();
 		$this->productCompany    = new ArrayCollection();
-		$this->productPackages   = new ArrayCollection();
-		$this->productItems      = new ArrayCollection();
 		$this->moleculeNames     = new ArrayCollection();
-		$this->productItemRoutes = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -629,38 +615,6 @@ class Product
 	}
 
 	/**
-	 * @param mixed $productPackages
-	 */
-	public function setProductPackages(ArrayCollection $productPackages)
-	{
-		$this->productPackages = $productPackages;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getProductPackages()
-	{
-		return $this->productPackages;
-	}
-
-	/**
-	 * @param mixed $productItems
-	 */
-	public function setProductItems(ArrayCollection $productItems)
-	{
-		$this->productItems = $productItems;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getProductItems()
-	{
-		return $this->productItems;
-	}
-
-	/**
 	 * @param mixed $moleculeNames
 	 */
 	public function setMoleculeNames(ArrayCollection $moleculeNames)
@@ -674,22 +628,6 @@ class Product
 	public function getMoleculeNames()
 	{
 		return $this->moleculeNames;
-	}
-
-	/**
-	 * @param mixed $productItemRoutes
-	 */
-	public function setProductItemRoutes(ArrayCollection $productItemRoutes)
-	{
-		$this->productItemRoutes = $productItemRoutes;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getProductItemRoutes()
-	{
-		return $this->productItemRoutes;
 	}
 
 	/**

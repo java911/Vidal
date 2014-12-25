@@ -11,10 +11,13 @@ class Company
 	protected $CompanyID;
 
 	/** @ORM\Column(length=255) */
+	protected $LocalName;
+
+	/** @ORM\Column(length=255, nullable=true) */
 	protected $Name;
 
-	/** @ORM\Column(length=255, unique=true) */
-	protected $LocalName;
+	/** @ORM\Column(length=255, nullable=true) */
+	protected $GDDBName;
 
 	/** @ORM\Column(length=30, nullable=true) */
 	protected $Property;
@@ -26,26 +29,16 @@ class Company
 	protected $CountryCode;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="CountryEdition", inversedBy="companies")
-	 * @ORM\JoinColumn(name="CountryEditionCode", referencedColumnName="CountryEditionCode")
+	 * @ORM\Column(length=10)
 	 */
-	protected $CountryEditionCode;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="CompanyGroup", mappedBy="companies")
-	 * @ORM\JoinTable(name="company_companygroup",
-	 *        joinColumns={@ORM\JoinColumn(name="CompanyID", referencedColumnName="CompanyID")},
-	 *        inverseJoinColumns={@ORM\JoinColumn(name="CompanyGroupID", referencedColumnName="CompanyGroupID")})
-	 */
-	protected $companyGroups;
+	protected $CountryEditionCode = 'RUS';
 
 	/** @ORM\OneToMany(targetEntity="ProductCompany", mappedBy="CompanyID") */
 	protected $productCompany;
 
 	public function __construct()
 	{
-		$companyGroups    = new ArrayCollection();
-		$productCompanies = new ArrayCollection();
+		$this->productCompany = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -139,22 +132,6 @@ class Company
 	}
 
 	/**
-	 * @param mixed $companyGroups
-	 */
-	public function setCompanyGroups(ArrayCollection $companyGroups)
-	{
-		$this->companyGroups = $companyGroups;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getCompanyGroups()
-	{
-		return $this->companyGroups;
-	}
-
-	/**
 	 * @param mixed $productCompany
 	 */
 	public function setProductCompany(ArrayCollection $productCompany)
@@ -171,11 +148,19 @@ class Company
 	}
 
 	/**
-	 * @param mixed $Name
+	 * @return mixed
 	 */
-	public function setName($Name)
+	public function getGDDBName()
 	{
-		$this->Name = $Name;
+		return $this->GDDBName;
+	}
+
+	/**
+	 * @param mixed $GDDBName
+	 */
+	public function setGDDBName($GDDBName)
+	{
+		$this->GDDBName = $GDDBName;
 	}
 
 	/**
@@ -184,5 +169,13 @@ class Company
 	public function getName()
 	{
 		return $this->Name;
+	}
+
+	/**
+	 * @param mixed $Name
+	 */
+	public function setName($Name)
+	{
+		$this->Name = $Name;
 	}
 }
