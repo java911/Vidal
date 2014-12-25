@@ -119,54 +119,9 @@ class ProductRepository extends EntityRepository
 			->getResult();
 	}
 
-	public function findByMolecules($molecules)
-	{
-		$moleculeIds = array();
-		foreach ($molecules as $molecule) {
-			$moleculeIds[] = $molecule['MoleculeID'];
-		}
-
-		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
-				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug
-			FROM VidalVeterinarBundle:Product p
-			LEFT JOIN p.moleculeNames mn
-			LEFT JOIN VidalVeterinarBundle:Molecule m WITH m = mn.MoleculeID
-			LEFT JOIN VidalVeterinarBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
-			WHERE m IN (:moleculeIds) AND
-				p.CountryEditionCode = \'RUS\' AND
-				p.MarketStatusID IN (0,1,2,3,4,5,6,7) AND
-				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
-			ORDER BY p.RusName ASC
-		')->setParameter('moleculeIds', $moleculeIds)
-			->getResult();
-	}
-
-	public function findByMoleculeID($MoleculeID)
-	{
-		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
-				p.RegistrationNumber, p.RegistrationDate,
-				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
-				d.Name DocumentName
-			FROM VidalVeterinarBundle:Product p
-			LEFT JOIN p.moleculeNames mn
-			LEFT JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.ProductID = p
-			LEFT JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d
-			WHERE mn.MoleculeID = :MoleculeID AND
-				p.CountryEditionCode = \'RUS\' AND
-				p.MarketStatusID IN (0,1,2,3,4,5,6,7) AND
-				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
-			ORDER BY d.ArticleID ASC
-		')->setParameter('MoleculeID', $MoleculeID)
-			->getResult();
-	}
 
 	public function findByInfoPageID($InfoPageID)
 	{
-		//
-		//d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
-		//		d.Name DocumentName, d.ClPhGrDescription
 		return $this->_em->createQuery('
 			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
 				p.RegistrationNumber, p.RegistrationDate

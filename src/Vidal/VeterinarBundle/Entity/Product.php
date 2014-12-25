@@ -109,19 +109,10 @@ class Product
 	/** @ORM\OneToMany(targetEntity="ProductCompany", mappedBy="ProductID") */
 	protected $productCompany;
 
-	/**
-	 * @ORM\ManyToMany(targetEntity="MoleculeName", mappedBy="products")
-	 * @ORM\JoinTable(name="product_moleculename",
-	 *        joinColumns={@ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")},
-	 *        inverseJoinColumns={@ORM\JoinColumn(name="MoleculeNameID", referencedColumnName="MoleculeNameID")})
-	 */
-	protected $moleculeNames;
-
 	public function __construct()
 	{
 		$this->productDocument   = new ArrayCollection();
 		$this->productCompany    = new ArrayCollection();
-		$this->moleculeNames     = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -612,22 +603,6 @@ class Product
 	public function getProductCompany()
 	{
 		return $this->productCompany;
-	}
-
-	/**
-	 * @param mixed $moleculeNames
-	 */
-	public function setMoleculeNames(ArrayCollection $moleculeNames)
-	{
-		$this->moleculeNames = $moleculeNames;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getMoleculeNames()
-	{
-		return $this->moleculeNames;
 	}
 
 	/**

@@ -116,9 +116,6 @@ class Document
 	/** @ORM\OneToMany(targetEntity="DocumentInfoPage", mappedBy="DocumentID") */
 	protected $documentInfoPages;
 
-	/** @ORM\OneToMany(targetEntity="MoleculeDocument", mappedBy="DocumentID") */
-	protected $moleculeDocuments;
-
 	/** @ORM\Column(length=4, nullable=true) */
 	protected $PregnancyUsing;
 
@@ -160,7 +157,6 @@ class Document
 		$this->productDocument   = new ArrayCollection();
 		$this->clphPointers      = new ArrayCollection();
 		$this->documentInfoPages = new ArrayCollection();
-		$this->moleculeDocuments = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -599,22 +595,6 @@ class Document
 	public function getDocumentInfoPages()
 	{
 		return $this->documentInfoPages;
-	}
-
-	/**
-	 * @param mixed $moleculeDocuments
-	 */
-	public function setMoleculeDocuments(ArrayCollection $moleculeDocuments)
-	{
-		$this->moleculeDocuments = $moleculeDocuments;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getMoleculeDocuments()
-	{
-		return $this->moleculeDocuments;
 	}
 
 	/**

@@ -282,24 +282,9 @@ class VidalController extends Controller
 
 		$params['title'] = $this->strip($product['RusName']) . ' - ' . $product['ZipInfo'] .' | Видаль-Ветеринар';
 		$document        = $em->getRepository('VidalVeterinarBundle:Document')->findByProductDocument($ProductID);
-		$molecules       = $em->getRepository('VidalVeterinarBundle:Molecule')->findByProductID($ProductID);
 
 		if ($document) {
 			$articleId = $document->getArticleID();
-
-			if ($articleId == 1) {
-				# описания активных веществ только для мономолекулярных препаратов
-				if (count($molecules) != 1) {
-					throw $this->createNotFoundException();
-				}
-				else {
-					$params['molecule'] = $molecules[0];
-				}
-			}
-			else {
-				$params['molecules'] = $molecules;
-			}
-
 			$params['document']  = $document;
 			$params['articleId'] = $articleId;
 			$params['infoPages'] = $em->getRepository('VidalVeterinarBundle:InfoPage')->findByDocumentID($document->getDocumentID());
@@ -325,7 +310,6 @@ class VidalController extends Controller
 		$productIds             = array($product['ProductID']);
 		$params['product']      = $product;
 		$params['products']     = array($product);
-		$params['molecules']    = $molecules;
 		$params['owners']       = $em->getRepository('VidalVeterinarBundle:Company')->findOwnersByProducts($productIds);
 		$params['distributors'] = $em->getRepository('VidalVeterinarBundle:Company')->findDistributorsByProducts($productIds);
 		$params['pictures']     = $em->getRepository('VidalVeterinarBundle:Picture')->findAllByProductIds($productIds);

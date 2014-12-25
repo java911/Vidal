@@ -116,61 +116,6 @@ class DocumentRepository extends EntityRepository
 		return $document;
 	}
 
-	public function findByMoleculeID($MoleculeID)
-	{
-		return $this->_em->createQuery('
-			SELECT d
-			FROM VidalVeterinarBundle:Document d
-			LEFT JOIN VidalVeterinarBundle:MoleculeDocument md WITH md.DocumentID = d
-			WHERE md.MoleculeID = :MoleculeID AND d.ArticleID = 1
-			ORDER BY d.YearEdition DESC
-		')->setParameter('MoleculeID', $MoleculeID)
-			->setMaxResults(1)
-			->getOneOrNullResult();
-	}
-
-	public function findByNozologyCode($code)
-	{
-		return $this->_em->createQuery("
-			SELECT DISTINCT d.DocumentID, d.ArticleID, d.CountryEditionCode
-			FROM VidalVeterinarBundle:Document d
-			JOIN d.nozologies n WITH n.Code = :code
-		")->setParameter('code', $code)
-			->getResult();
-	}
-
-	public function findClPhGroupsByQuery($q)
-	{
-		$qb = $this->_em->createQueryBuilder();
-
-		$qb->select('DISTINCT d.ClPhGrName name, d.ClPhGrDescription description')
-			->from('VidalVeterinarBundle:Document', 'd')
-			->where("d.CountryEditionCode = 'RUS'")
-			->orderBy('d.ClPhGrName', 'ASC');
-
-		# поиск по словам
-		$where = '';
-		$words = explode(' ', $q);
-
-		for ($i = 0; $i < count($words); $i++) {
-			$word = $words[$i];
-			if ($i > 0) {
-				$where .= ' OR ';
-			}
-			$where .= "(d.ClPhGrName LIKE '$word%' OR d.ClPhGrName LIKE '% $word%')";
-		}
-
-		$qb->andWhere($where);
-
-		$groups = $qb->getQuery()->getResult();
-
-		for ($i = 0, $c = count($groups); $i < $c; $i++) {
-			$groups[$i]['description'] = preg_replace('/' . $q . '/iu', '<span class="query">$0</span>', $groups[$i]['description']);
-		}
-
-		return $groups;
-	}
-
 	public function findIdsByInfoPageID($InfoPageID)
 	{
 		$documentsRaw = $this->_em->createQuery('
