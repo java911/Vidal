@@ -181,19 +181,15 @@
 				.autocomplete({
 					minLength: 2,
 					source:    function(request, response) {
-						$.ajax({
-							url:      "http://vidal.evrika.ru:9200/website/veterinar_autocomplete/_search",
-							type:     "POST",
-							dataType: "JSON",
-							data:     '{ "query":{"query_string":{"query":"' + request.term + '*"}}, "fields":["name"], "size":15, "highlight":{"fields":{"name":{}}} }',
-							success:  function(data) {
-								response($.map(data.hits.hits, function(item) {
-									return {
-										label: item.highlight.name,
-										value: item.fields.name
-									}
-								}));
-							}
+						var url = Routing.generate('elastic_autocomplete_veterinar', {'term': request.term.trim()});
+						$.getJSON(url, function(data) {
+							response($.map(data.hits.hits, function(item) {
+								return {
+									label: item.highlight.name,
+									value: item._source.name,
+									code:  item._source.code
+								}
+							}));
 						});
 					},
 					select:    function(event, ui) {
@@ -201,8 +197,9 @@
 							$(this).val(ui.item.value);
 						}
 					}
-				}).data("ui-autocomplete")._renderItem = function(ul, item) {
-				return $("<li></li>")
+				})
+				.data("ui-autocomplete")._renderItem = function(ul, item) {
+				return $('<li class="aut"></li>')
 					.data("item.autocomplete", item)
 					.append("<a>" + item.label + "</a>")
 					.appendTo(ul);

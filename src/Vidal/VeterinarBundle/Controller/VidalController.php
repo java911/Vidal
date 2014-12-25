@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Vidal\VeterinarBundle\Entity\Product;
 
 class VidalController extends Controller
@@ -349,6 +350,27 @@ class VidalController extends Controller
 		}
 
 		return array('codes' => $grouped);
+	}
+
+	/** @Route("/elastic/autocomplete_veterinar/{term}", name="elastic_autocomplete_veterinar", options={"expose":true}) */
+	public function autocompleteNozologyAction($term)
+	{
+		$words  = explode(' ', $term);
+		$query  = implode('* ', $words) . '*';
+		$client = new \Elasticsearch\Client();
+
+		$s['index'] = 'website';
+		$s['type']  = 'veterinar_autocomplete';
+
+		$s['body']['size']                                                 = 15;
+		$s['body']['query']['filtered']['query']['query_string']['query']  = $query;
+		$s['body']['query']['filtered']['query']['query_string']['fields'] = array('code', 'name');
+		$s['body']['highlight']['fields']['name']                          = array("fragment_size" => 100);
+		$s['body']['sort']['name']['order']                                = 'asc';
+
+		$results = $client->search($s);
+
+		return new JsonResponse($results);
 	}
 
 	/** Получить массив идентификаторов продуктов */
