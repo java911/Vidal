@@ -43,13 +43,35 @@ function init(data) {
 		var objectId = e.get('objectId');
 		var obj = objectManager.objects.getById(objectId);
 
-		obj.properties.balloonContent = 'Идет загрузка данных...';
-		objectManager.objects.balloon.open(objectId);
-
-		$.getJSON(Routing.generate('getMapBalloonContent', {'id': objectId}), function(balloonHtml) {
-			obj.properties.balloonContent = balloonHtml;
+		// если содержимое балуна пустое - заполняем
+		if (obj.properties.balloonContent.length == 0) {
+			obj.properties.balloonContent = 'Идет загрузка данных...';
 			objectManager.objects.balloon.open(objectId);
-		});
+
+			$.getJSON(Routing.generate('getMapBalloonContent', {'id': objectId}), function(balloonHtml) {
+				if (balloonHtml.length) {
+					obj.properties.balloonContent = balloonHtml;
+					objectManager.objects.balloon.open(objectId);
+				}
+				else {
+					// если не нашли содержимое для балуна - заполняем его адресом по координатам
+					var coords = obj.geometry.coordinates;
+					var myGeocoder = ymaps.geocode(coords);
+
+					myGeocoder.then(
+						function (res) {
+							var object = res.geoObjects.get(0);
+							obj.properties.balloonContent = object.properties.get('balloonContent');
+							objectManager.objects.balloon.open(objectId);
+						},
+						function (err) {
+							obj.properties.balloonContent = 'Нет данных';
+							objectManager.objects.balloon.open(objectId);
+						}
+					);
+				}
+			});
+		}
 	});
 
 	map.geoObjects.add(objectManager);
