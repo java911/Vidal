@@ -47,7 +47,7 @@ class KfuParentCommand extends ContainerAwareCommand
 		');
 
 		foreach ($this->couples as $code => $codes) {
-			$ids      = [];
+			$ids      = array();
 			$pointers = $selectIdsQuery->setParameter('codes', $codes)->getResult();
 
 			foreach ($pointers as $pointer) {
