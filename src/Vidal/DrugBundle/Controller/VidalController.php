@@ -539,9 +539,8 @@ class VidalController extends Controller
 
 	private function strip($string)
 	{
-		$pat = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/&amp;/');
-		$rep = array('', '', '&');
+		$string = preg_replace('/&(.+);/', '', $string);
 
-		return preg_replace($pat, $rep, $string);
+		return strip_tags($string);
 	}
 }

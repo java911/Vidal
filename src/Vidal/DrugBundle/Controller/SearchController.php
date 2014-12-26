@@ -407,16 +407,6 @@ class SearchController extends Controller
 	}
 
 	/**
-	 * @Route("/searche/atc-full", name="atc_full", options={"expose":true})
-	 */
-	public function atcFullAction()
-	{
-		$html = $this->renderView('VidalDrugBundle:Search:atc_full.html.twig');
-
-		return new JsonResponse($html);
-	}
-
-	/**
 	 * @Route("/search-options/{type}", name="search_options", options={"expose"=true})
 	 */
 	public function searchOptions($type)
@@ -473,9 +463,9 @@ class SearchController extends Controller
 
 	private function stripLower($string)
 	{
-		$pat = array('/<sup>(.*?)<\/sup>/i', '/<sub>(.*?)<\/sub>/i', '/&amp;/', '/®/');
-		$rep = array('', '', '&', '');
+		$string = preg_replace('/&(.+);/', '', $string);
+		$string = preg_replace('/®/', '', $string);
 
-		return mb_strtolower(preg_replace($pat, $rep, $string), 'utf-8');
+		return mb_strtolower(strip_tags($string), 'utf-8');
 	}
 }
