@@ -36,7 +36,15 @@
 		</div>
 	{% endif %}
 
-
+	{% if products is defined and products is not empty %}
+		{% include 'VidalVeterinarBundle:Vidal:render_products.html.twig' %}
+	{% else %}
+		<div class="block">
+			<div class="no-results">
+				Не найдено препаратов, содержащих активное вещество <span>{{ moleculeName|raw }}</span>
+			</div>
+		</div>
+	{% endif %}
 {% endblock %}
 
 
