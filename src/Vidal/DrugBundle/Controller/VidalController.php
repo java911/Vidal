@@ -539,6 +539,6 @@ class VidalController extends Controller
 
 	private function strip($string)
 	{
-		return strip_tags(html_entity_decode($string));
+		return strip_tags(html_entity_decode($string, ENT_QUOTES, 'UTF-8'));
 	}
 }
