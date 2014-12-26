@@ -54,7 +54,7 @@ class ArtAdmin extends Admin
 		$tagTransformer      = new TagTransformer($em, $subject);
 
 		$formMapper
-			->add('title', null, array('label' => 'Заголовок', 'required' => true))
+			->add('title', 'textarea', array('label' => 'Заголовок', 'required' => true, 'attr' => array('class' => 'ckeditormizer')))
 			->add('link', null, array('label' => 'Адрес страницы', 'required' => false, 'help' => 'латинские буквы и цифры, слова через тире. Оставьте пустым для автогенерации'))
 			->add('rubrique', null, array(
 				'label'         => 'Раздел',

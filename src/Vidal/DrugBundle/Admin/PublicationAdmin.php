@@ -72,24 +72,24 @@ class PublicationAdmin extends Admin
 
 		$formMapper
 			->add('photo', 'iphp_file', array('label' => 'Фотография', 'required' => false))
-			->add('title', null, array('label' => 'Заголовок', 'required' => true))
+			->add('title', 'textarea', array('label' => 'Заголовок', 'required' => true, 'attr' => array('class' => 'ckeditormizer')))
 			->add('priority', null, array('label' => 'Приоритет', 'required' => false, 'help' => 'Закреплено на главной по приоритету. Оставьте пустым, чтоб снять приоритет'))
 			->add('announce', null, array('label' => 'Анонс', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('body', null, array('label' => 'Основное содержимое', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('tags', null, array('label' => 'Теги', 'required' => false, 'help' => 'Выберите существующие теги или добавьте новый ниже'))
 			->add($formMapper->create('hidden', 'text', array(
-					'label'        => 'Создать теги через ;',
-					'required'     => false,
-					'by_reference' => false,
-				))->addModelTransformer($tagTransformer)
+				'label'        => 'Создать теги через ;',
+				'required'     => false,
+				'by_reference' => false,
+			))->addModelTransformer($tagTransformer)
 			)
 			->add('atcCodes', 'entity', array(
 				'label'         => 'Коды АТХ',
 				'class'         => 'VidalDrugBundle:ATC',
 				'query_builder' => function (EntityRepository $er) {
-						return $er->createQueryBuilder('atc')
-							->orderBy('atc.ATCCode', 'ASC');
-					},
+					return $er->createQueryBuilder('atc')
+						->orderBy('atc.ATCCode', 'ASC');
+				},
 				'empty_value'   => 'не указано',
 				'required'      => false,
 				'multiple'      => true,
@@ -100,9 +100,9 @@ class PublicationAdmin extends Admin
 				'help'          => '(Molecule)',
 				'class'         => 'VidalDrugBundle:Molecule',
 				'query_builder' => function (EntityRepository $er) {
-						return $er->createQueryBuilder('m')
-							->orderBy('m.RusName', 'ASC');
-					},
+					return $er->createQueryBuilder('m')
+						->orderBy('m.RusName', 'ASC');
+				},
 				'empty_value'   => 'не указано',
 				'required'      => false,
 				'multiple'      => true,
@@ -113,10 +113,10 @@ class PublicationAdmin extends Admin
 				'help'          => 'Информационные страницы (InfoPage)',
 				'class'         => 'VidalDrugBundle:InfoPage',
 				'query_builder' => function (EntityRepository $er) {
-						return $er->createQueryBuilder('ip')
-							->where("ip.CountryEditionCode = 'RUS'")
-							->orderBy('ip.RusName', 'ASC');
-					},
+					return $er->createQueryBuilder('ip')
+						->where("ip.CountryEditionCode = 'RUS'")
+						->orderBy('ip.RusName', 'ASC');
+				},
 				'empty_value'   => 'не указано',
 				'required'      => false,
 				'multiple'      => true,
@@ -127,20 +127,20 @@ class PublicationAdmin extends Admin
 				'help'          => '(Nozology)',
 				'class'         => 'VidalDrugBundle:Nozology',
 				'query_builder' => function (EntityRepository $er) {
-						return $er->createQueryBuilder('n')
-							->orderBy('n.NozologyCode', 'ASC');
-					},
+					return $er->createQueryBuilder('n')
+						->orderBy('n.NozologyCode', 'ASC');
+				},
 				'required'      => false,
 				'empty_value'   => 'не указано',
 				'multiple'      => true,
 				'attr'          => array('placeholder' => 'Начните вводить название или код'),
 			))
 			->add($formMapper->create('hidden2', 'text', array(
-					'label'        => 'Описания препаратов',
-					'required'     => false,
-					'by_reference' => false,
-					'attr'         => array('class' => 'doc'),
-				))->addModelTransformer($documentTransformer)
+				'label'        => 'Описания препаратов',
+				'required'     => false,
+				'by_reference' => false,
+				'attr'         => array('class' => 'doc'),
+			))->addModelTransformer($documentTransformer)
 			)
 			->add('date', null, array('label' => 'Дата создания', 'required' => true, 'years' => range(2000, date('Y'))))
 			->add('video', 'iphp_file', array('label' => 'Видео', 'required' => false, 'help' => 'Загрузить флеш-видео в формате .flv'))
