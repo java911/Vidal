@@ -463,9 +463,6 @@ class SearchController extends Controller
 
 	private function stripLower($string)
 	{
-		$string = preg_replace('/&(.+);/', '', $string);
-		$string = preg_replace('/®/', '', $string);
-
-		return mb_strtolower(strip_tags($string), 'utf-8');
+		return mb_strtolower(strip_tags(html_entity_decode($string)), 'utf-8');
 	}
 }

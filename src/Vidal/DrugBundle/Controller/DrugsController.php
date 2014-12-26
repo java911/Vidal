@@ -918,8 +918,6 @@ class DrugsController extends Controller
 
 	private function strip($string)
 	{
-		$string = preg_replace('/&(.+);/', '', $string);
-
-		return strip_tags($string);
+		return strip_tags(html_entity_decode($string));
 	}
 }
