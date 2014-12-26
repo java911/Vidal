@@ -193,7 +193,6 @@ class DocumentRepository extends EntityRepository
 			FROM VidalVeterinarBundle:Document d
 			LEFT JOIN d.molecules m
 			WHERE m.MoleculeID = :MoleculeID
-				AND d.ArticleID = 1
 			ORDER BY d.YearEdition DESC
 		')->setParameter('MoleculeID', $MoleculeID)
 			->setMaxResults(1)

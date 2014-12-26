@@ -285,15 +285,6 @@ class VidalController extends Controller
 			'title'    => mb_strtoupper($this->strip($molecule->getTitle()), 'utf-8') . ' | Активные вещества',
 		);
 
-		$products = $em->getRepository('VidalVeterinarBundle:Product')->findByMoleculeID($MoleculeID);
-
-		if (!empty($products)) {
-			$productIds          = $this->getProductIds($products);
-			$params['products']  = $products;
-			$params['companies'] = $em->getRepository('VidalVeterinarBundle:Company')->findByProducts($productIds);
-			$params['pictures']  = $em->getRepository('VidalVeterinarBundle:Picture')->findByProductIds($productIds);
-		}
-
 		return $params;
 	}
 
