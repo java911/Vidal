@@ -185,4 +185,18 @@ class DocumentRepository extends EntityRepository
 
 		return $indications;
 	}
+
+	public function findByMoleculeID($MoleculeID)
+	{
+		return $this->_em->createQuery('
+			SELECT d
+			FROM VidalVeterinarBundle:Document d
+			LEFT JOIN d.molecules m
+			WHERE m.MoleculeID = :MoleculeID
+				AND d.ArticleID = 1
+			ORDER BY d.YearEdition DESC
+		')->setParameter('MoleculeID', $MoleculeID)
+			->setMaxResults(1)
+			->getOneOrNullResult();
+	}
 }

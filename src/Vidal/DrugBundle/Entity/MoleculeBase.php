@@ -4,7 +4,10 @@ namespace Vidal\DrugBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/** @ORM\Entity @ORM\Table(name="moleculebase") */
+/**
+ * @ORM\Entity(repositoryClass="MoleculeBaseRepository")
+ * @ORM\Table(name="moleculebase")
+ */
 class MoleculeBase
 {
 	/** @ORM\Id @ORM\Column(length=20, unique=true) */

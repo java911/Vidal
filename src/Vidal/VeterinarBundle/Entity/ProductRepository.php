@@ -414,6 +414,23 @@ class ProductRepository extends EntityRepository
 		return $marketStatuses;
 	}
 
+	public function findByMoleculeID($MoleculeID)
+	{
+		return $this->_em->createQuery('
+			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
+				p.RegistrationNumber, p.RegistrationDate,
+				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
+				d.Name DocumentName
+			FROM VidalVeterinarBundle:Product p
+			LEFT JOIN p.moleculeNames mn
+			LEFT JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.ProductID = p
+			LEFT JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d
+			WHERE mn.MoleculeID = :MoleculeID
+			ORDER BY d.ArticleID ASC
+		')->setParameter('MoleculeID', $MoleculeID)
+			->getResult();
+	}
+
 	public function findAllNames()
 	{
 		return $this->_em->createQuery('

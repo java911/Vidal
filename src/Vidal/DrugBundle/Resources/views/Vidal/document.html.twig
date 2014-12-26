@@ -180,9 +180,9 @@
 
 				<span class="block-head">Активное вещество:</span>
 				<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
-				   class="no-underline">{{ molecule.RusName }}</a>
+				   class="no-underline">{{ molecule.RusName|raw }}</a>
 				{% if molecule.RusName %}
-					<span class="small">({{ molecule.LatName }})</span>
+					<span class="small">({{ molecule.LatName|raw }})</span>
 				{% endif %}
 				{% if gn is not empty %}
 					<div style="padding-left:146px">
@@ -199,9 +199,9 @@
 						{% set gn = molecule.GNParent %}
 						<li>
 							<a href="{{ path('molecule', {'MoleculeID':molecule.MoleculeID}) }}"
-							   class="no-underline">{{ molecule.RusName }}</a>
+							   class="no-underline">{{ molecule.RusName|raw }}</a>
 							{% if molecule.RusName %}
-								<span class="small">({{ molecule.LatName }})</span>
+								<span class="small">({{ molecule.LatName|raw }})</span>
 							{% endif %}
 							{% if gn is not empty %}
 								<a title="Международное непатентованное наименование (МНН)"

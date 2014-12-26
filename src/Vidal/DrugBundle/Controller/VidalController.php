@@ -352,7 +352,14 @@ class VidalController extends Controller
 			return $this->redirect($this->generateUrl('gnp'));
 		}
 
-		return array('title' => 'Международные наименования - МНН');
+		$em = $this->getDoctrine()->getManager('drug');
+
+		$params = array(
+			'title' => 'Международные наименования - МНН',
+			'gnps'  => $em->getRepository('VidalDrugBundle:MoleculeBase')->findAll(),
+		);
+
+		return $params;
 	}
 
 	/** @Route("/poisk_preparatov/{EngName}__{ProductID}.{ext}", requirements={"ProductID":"\d+", "EngName"=".+"}, defaults={"ext"="htm"}) */

@@ -19,9 +19,13 @@ class MarketStatus
 	/** @ORM\OneToMany(targetEntity="Product", mappedBy="MarketStatusID") */
 	protected $products;
 
+	/** @ORM\OneToMany(targetEntity="Molecule", mappedBy="MarketStatusID") */
+	protected $molecules;
+
 	public function __construct()
 	{
 		$this->products  = new ArrayCollection();
+		$this->molecules = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -91,5 +95,21 @@ class MarketStatus
 	public function getProducts()
 	{
 		return $this->products;
+	}
+
+	/**
+	 * @param mixed $molecules
+	 */
+	public function setMolecules(ArrayCollection $molecules)
+	{
+		$this->molecules = $molecules;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getMolecules()
+	{
+		return $this->molecules;
 	}
 }

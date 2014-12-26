@@ -265,6 +265,88 @@ class VidalController extends Controller
 	}
 
 	/**
+	 * Список препаратов по активному веществу: одно-монокомпонентные
+	 * @Route("/veterinar/molecule/{MoleculeID}", name="v_molecule", requirements={"MoleculeID":"\d+"})
+	 * @Template("VidalVeterinarBundle:Vidal:molecule.html.twig")
+	 */
+	public function moleculeAction($MoleculeID)
+	{
+		$em       = $this->getDoctrine()->getManager('veterinar');
+		$molecule = $em->getRepository('VidalVeterinarBundle:Molecule')->findByMoleculeID($MoleculeID);
+
+		if (!$molecule) {
+			throw $this->createNotFoundException();
+		}
+
+		$document = $em->getRepository('VidalVeterinarBundle:Document')->findByMoleculeID($MoleculeID);
+		$params   = array(
+			'molecule' => $molecule,
+			'document' => $document,
+			'title'    => mb_strtoupper($this->strip($molecule->getTitle()), 'utf-8') . ' | Активные вещества',
+		);
+
+		$products = $em->getRepository('VidalVeterinarBundle:Product')->findByMoleculeID($MoleculeID);
+
+		if (!empty($products)) {
+			$productIds          = $this->getProductIds($products);
+			$params['products']  = $products;
+			$params['companies'] = $em->getRepository('VidalVeterinarBundle:Company')->findByProducts($productIds);
+			$params['pictures']  = $em->getRepository('VidalVeterinarBundle:Picture')->findByProductIds($productIds);
+		}
+
+		return $params;
+	}
+
+	/**
+	 * Отображение списка препаратов, в состав которых входит активное вещество (Molecule)
+	 *
+	 * @Route("/veterinar/molecule-in/{MoleculeID}", name="v_molecule_included", requirements={"MoleculeID":"\d+"})
+	 * @Template("VidalVeterinarBundle:Vidal:molecule_included.html.twig")
+	 */
+	public function moleculeIncludedAction($MoleculeID)
+	{
+		$em       = $this->getDoctrine()->getManager('veterinar');
+		$molecule = $em->getRepository('VidalVeterinarBundle:Molecule')->findByMoleculeID($MoleculeID);
+
+		if (!$molecule) {
+			throw $this->createNotFoundException();
+		}
+
+		$params   = array(
+			'molecule' => $molecule,
+			'title'    => mb_strtoupper($this->strip($molecule->getTitle()), 'utf-8') . ' | Активные вещества в препаратах',
+		);
+		$products = $em->getRepository('VidalVeterinarBundle:Product')->findByMoleculeID($MoleculeID);
+
+		if (!empty($products)) {
+			$productIds          = $this->getProductIds($products);
+			$params['products']  = $products;
+			$params['companies'] = $em->getRepository('VidalVeterinarBundle:Company')->findByProducts($productIds);
+			$params['pictures']  = $em->getRepository('VidalVeterinarBundle:Picture')->findByProductIds($productIds);
+		}
+
+		return $params;
+	}
+
+	/**
+	 * Страничка рассшифровки МНН аббревиатур
+	 *
+	 * @Route("/veterinar/gnp", name="v_gnp")
+	 * @Template("VidalVeterinarBundle:Vidal:gnp.html.twig")
+	 */
+	public function gnpAction()
+	{
+		$em = $this->getDoctrine()->getManager('veterinar');
+
+		$params = array(
+			'title' => 'Международные наименования - МНН',
+			'gnps'  => $em->getRepository('VidalVeterinarBundle:MoleculeBase')->findAll(),
+		);
+
+		return $params;
+	}
+
+	/**
 	 * Описание препарата
 	 * @Route("/veterinar/{EngName}~{ProductID}.{ext}", name="v_product", requirements={"ProductID":"\d+", "EngName"=".+"}, defaults={"ext"="htm"})
 	 *
@@ -281,11 +363,11 @@ class VidalController extends Controller
 			throw $this->createNotFoundException();
 		}
 
-		$params['title'] = $this->strip($product['RusName']) . ' - ' . $product['ZipInfo'] .' | Видаль-Ветеринар';
+		$params['title'] = $this->strip($product['RusName']) . ' - ' . $product['ZipInfo'] . ' | Видаль-Ветеринар';
 		$document        = $em->getRepository('VidalVeterinarBundle:Document')->findByProductDocument($ProductID);
 
 		if ($document) {
-			$articleId = $document->getArticleID();
+			$articleId           = $document->getArticleID();
 			$params['document']  = $document;
 			$params['articleId'] = $articleId;
 			$params['infoPages'] = $em->getRepository('VidalVeterinarBundle:InfoPage')->findByDocumentID($document->getDocumentID());
@@ -314,6 +396,7 @@ class VidalController extends Controller
 		$params['owners']       = $em->getRepository('VidalVeterinarBundle:Company')->findOwnersByProducts($productIds);
 		$params['distributors'] = $em->getRepository('VidalVeterinarBundle:Company')->findDistributorsByProducts($productIds);
 		$params['pictures']     = $em->getRepository('VidalVeterinarBundle:Picture')->findAllByProductIds($productIds);
+		$params['molecules']    = $em->getRepository('VidalVeterinarBundle:Molecule')->findByProductID($ProductID);
 
 		return $params;
 	}
@@ -403,17 +486,8 @@ class VidalController extends Controller
 		return $ids;
 	}
 
-	/** Отсортировать препараты по имени */
-	private function sortProducts($a, $b)
-	{
-		return strcasecmp($a['RusName'], $b['RusName']);
-	}
-
 	private function strip($string)
 	{
-		$pat = array('/<sup|b>(.*)<\/sup|b>/iu', '/&amp;/');
-		$rep = array('$1', '&');
-
-		return preg_replace($pat, $rep, $string);
+		return strip_tags(html_entity_decode($string, ENT_QUOTES, 'UTF-8'));
 	}
 }

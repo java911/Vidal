@@ -152,11 +152,20 @@ class Document
 	/** @ORM\Column(length=4, nullable=true) */
 	protected $ChildInsufUsing;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="Molecule", inversedBy="documents")
+	 * @ORM\JoinTable(name="molecule_document",
+	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="MoleculeID", referencedColumnName="MoleculeID")})
+	 */
+	protected $molecules;
+
 	public function __construct()
 	{
 		$this->productDocument   = new ArrayCollection();
 		$this->clphPointers      = new ArrayCollection();
 		$this->documentInfoPages = new ArrayCollection();
+		$this->molecules         = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -371,7 +380,6 @@ class Document
 	{
 		return $this->Indication;
 	}
-
 
 	/**
 	 * @param mixed $IsApproved
@@ -899,5 +907,21 @@ class Document
 	public function setChildInsufUsing($ChildInsufUsing)
 	{
 		$this->ChildInsufUsing = $ChildInsufUsing;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getMolecules()
+	{
+		return $this->molecules;
+	}
+
+	/**
+	 * @param mixed $molecules
+	 */
+	public function setMolecules($molecules)
+	{
+		$this->molecules = $molecules;
 	}
 }

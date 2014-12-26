@@ -1,16 +1,33 @@
 {% extends 'VidalVeterinarBundle::vidal_layout.html.twig' %}
 
 
-{% block vidal %}
+{% block title %}
 	<h1>{{ molecule.LatName|upper|raw }}
 		{% if molecule.RusName is not empty %}
 			<span>({{ molecule.RusName|upper|raw }})</span>
 		{% endif %}
 	</h1>
+{% endblock %}
 
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('veterinar') }}">Видаль-Ветеринар</a>
+		<i></i>
+		<span>Активные вещества</span>
+		<i></i>
+		<span>{{ molecule.LatName|upper|raw }}</span>
+	</div>
+{% endblock %}
+
+
+{% block vidal %}
 	{% if molecule.GNParent is not empty %}
 		<div class="mnn anons">
-			<a title="Международное непатентованное наименование (МНН)" href="{{ path('gnp') }}"
+			Международное непатентованное наименование (МНН):
+			<a title="Международное непатентованное наименование (МНН)" href="{{ path('v_gnp') }}"
 			   class="no-underline mnn">{{ molecule.GNParent }}</a>
 			<span class="small italic">{{ molecule.GNParent.description }}</span>
 		</div>
@@ -24,10 +41,6 @@
 		<span class="block-head">Входит в состав препаратов: </span>
 		<a href="{{ path('v_molecule_included', {'MoleculeID':molecule.MoleculeID}) }}">список</a>
 	</div>
-
-	{% if document %}
-		{% include 'VidalVeterinarBundle:Vidal:document_info.html.twig' %}
-	{% endif %}
 {% endblock %}
 
 
@@ -36,7 +49,7 @@
 	<style type="text/css">
 		#vidal .mnn.anons {
 			margin-left: 0;
-			font-size: 15px;
+			font-size:   15px;
 		}
 		#vidal .mnn.anons a {
 			font-weight: bold;

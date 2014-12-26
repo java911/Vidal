@@ -94,16 +94,47 @@
 		</div>
 	{% endif %}
 
-	{# Блок кода АТХ #}
-	{% if atcCodes is defined and atcCodes is not empty %}
+	{# Блок активных веществ #}
+	{% if molecules is defined and molecules is not empty %}
 		<div class="block">
-			<span class="block-head">Код ATX: </span>
-			<span class="atc-content">
-				{% for atc in atcCodes %}
-					<a href="{{ path('v_atc', {'ATCCode':atc.ATCCode}) }}" class="no-underline">{{ atc.ATCCode }}</a>
-					<span class="atc-name small">({{ atc.RusName }})</span>
-				{% endfor %}
-			</span>
+			{% if molecules|length == 1 %}
+				{% set molecule = molecules[0] %}
+				{% set gn = molecule.GNParent %}
+
+				<span class="block-head">Активное вещество:</span>
+				<a href="{{ path('v_molecule', {'MoleculeID':molecule.MoleculeID}) }}"
+				   class="no-underline">{{ molecule.RusName|raw }}</a>
+				{% if molecule.RusName %}
+					<span class="small">({{ molecule.LatName|raw }})</span>
+				{% endif %}
+				{% if gn is not empty %}
+					<div style="padding-left:146px">
+						<a title="Международное непатентованное наименование (МНН)" href="{{ path('gnp') }}"
+						   class="no-underline mnn">{{ gn.GNParent }}
+						</a>
+						<span class="small italic">{{ gn.description }}</span>
+					</div>
+				{% endif %}
+			{% else %}
+				<div class="block-head">Активные вещества</div>
+				<ul class="ul-style">
+					{% for molecule in molecules %}
+						{% set gn = molecule.GNParent %}
+						<li>
+							<a href="{{ path('v_molecule', {'MoleculeID':molecule.MoleculeID}) }}"
+							   class="no-underline">{{ molecule.RusName|raw }}</a>
+							{% if molecule.RusName %}
+								<span class="small">({{ molecule.LatName|raw }})</span>
+							{% endif %}
+							{% if gn is not empty %}
+								<a title="Международное непатентованное наименование (МНН)"
+								   href="{{ path('v_gnp') }}" class="no-underline mnn">{{ gn.GNParent }}</a>
+								<span class="small italic">{{ gn.description }}</span>
+							{% endif %}
+						</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
 		</div>
 	{% endif %}
 

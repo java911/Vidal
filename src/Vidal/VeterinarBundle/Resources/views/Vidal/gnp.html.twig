@@ -1,6 +1,22 @@
 {% extends 'VidalVeterinarBundle::vidal_layout.html.twig' %}
 
 
+{% block title %}
+	<h1>Международные наименования <span>(МНН)</span></h1>
+{% endblock %}
+
+
+{% block nav %}
+	<div class="breadcrumbs">
+		<a href="{{ path('index') }}">Видаль</a>
+		<i></i>
+		<a href="{{ path('veterinar') }}">Видаль-Ветеринар</a>
+		<i></i>
+		<span>Международные наименования (МНН)</span>
+	</div>
+{% endblock %}
+
+
 {% block vidal %}
 	<div class="gnp">
 		<div class="gnp-title">
@@ -13,30 +29,12 @@
 		</div>
 
 		<ul class="gnp-items ul-style">
-			<li><b>BAN</b>принятое к употреблению в Великобритании</li>
-			<li><b>BAN Mod.</b>принятое к употреблению в Великобритании, модифицированное наименование</li>
-			<li><b>BHP</b>BHP</li>
-			<li><b>BP</b>Британская Фармакопея</li>
-			<li><b>DAB</b>Фармакопея Германии</li>
-			<li><b>DAC</b>принятое к употреблению в Германии</li>
-			<li><b>DAC Mod.</b>принятое к употреблению в Германии, модифицированное наименование</li>
-			<li><b>DCF</b>принятое к употреблению во Франции</li>
-			<li><b>Fr. Ph.</b>Фармакопея Франции</li>
-			<li><b>Iph</b>Итальянская Фармакопея</li>
-			<li><b>JAN</b>принятое к употреблению в Японии</li>
-			<li><b>P.Ph.</b>Польская Фармакопея</li>
-			<li><b>Ph.Eur.</b>Европейская Фармакопея</li>
-			<li><b>PhBs</b>Фармакопея Словакии</li>
-			<li><b>Prop.INN</b>предложенное к употреблению ВОЗ</li>
-			<li><b>Rec.INN</b>зарегистрированное ВОЗ</li>
-			<li><b>Rec.INN Mod.</b>зарегистрированное ВОЗ, модифицированное наименование</li>
-			<li><b>Swiss Ph.</b>Swiss Ph.</li>
-			<li><b>USAN</b>принятое к употреблению в США</li>
-			<li><b>USAN Mod.</b>принятое к употреблению в США, модифицированное наименование</li>
-			<li><b>USNF 22</b>The United States "National Formulaty 22", 2004, and supplements 1 and 2</li>
-			<li><b>USP</b>Фармакопея США</li>
-			<li><b>USP Mod.</b>USP Mod</li>
-			<li><b>ГФ</b>ГФ</li>
+			{% for gnp in gnps %}
+				<li>
+					<b>{{ gnp.GNParent }}</b>
+					<span>{{ gnp.description }}</span>
+				</li>
+			{% endfor %}
 		</ul>
 	</div>
 {% endblock %}
@@ -45,13 +43,25 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<style type="text/css">
+		.gnp {
+			font-size: 15px;
+		}
 		.gnp-title {
-			margin-bottom: 15px;
+			margin-bottom: 22px;
 			text-align:    justify;
 		}
-		.gnp-items b {
-			display: inline-block;
+		.gnp-items li {
+			overflow:      hidden;
+			margin-bottom: 5px;
+		}
+		.gnp-items li b {
+			display: block;
 			width:   95px;
+			float:   left;
+		}
+		.gnp-items li span {
+			display:     block;
+			margin-left: 100px;
 		}
 	</style>
 {% endblock %}

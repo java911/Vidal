@@ -27,30 +27,12 @@
 		</div>
 
 		<ul class="gnp-items ul-style">
-			<li><b>BAN</b><span>принятое к употреблению в Великобритании</span></li>
-			<li><b>BAN Mod.</b><span>принятое к употреблению в Великобритании, модифицированное наименование</span></li>
-			<li><b>BHP</b><span>BHP</span></li>
-			<li><b>BP</b><span>Британская Фармакопея</span></li>
-			<li><b>DAB</b><span>Фармакопея Германии</span></li>
-			<li><b>DAC</b><span>принятое к употреблению в Германии</span></li>
-			<li><b>DAC Mod.</b><span>принятое к употреблению в Германии, модифицированное наименование</span></li>
-			<li><b>DCF</b><span>принятое к употреблению во Франции</span></li>
-			<li><b>Fr. Ph.</b><span>Фармакопея Франции</span></li>
-			<li><b>Iph</b><span>Итальянская Фармакопея</span></li>
-			<li><b>JAN</b><span>принятое к употреблению в Японии</span></li>
-			<li><b>P.Ph.</b><span>Польская Фармакопея</span></li>
-			<li><b>Ph.Eur.</b><span>Европейская Фармакопея</span></li>
-			<li><b>PhBs</b><span>Фармакопея Словакии</span></li>
-			<li><b>Prop.INN</b><span>предложенное к употреблению ВОЗ</span></li>
-			<li><b>Rec.INN</b><span>зарегистрированное ВОЗ</span></li>
-			<li><b>Rec.INN Mod.</b><span>зарегистрированное ВОЗ, модифицированное наименование</span></li>
-			<li><b>Swiss Ph.</b><span>Swiss Ph.</span></li>
-			<li><b>USAN</b><span>принятое к употреблению в США</span></li>
-			<li><b>USAN Mod.</b><span>принятое к употреблению в США, модифицированное наименование</span></li>
-			<li><b>USNF 22</b><span>The United States "National Formulaty 22", 2004, and supplements 1 and 2</span></li>
-			<li><b>USP</b><span>Фармакопея США</span></li>
-			<li><b>USP Mod.</b><span>USP Mod</span></li>
-			<li><b>ГФ</b><span>ГФ</span></li>
+			{% for gnp in gnps %}
+				<li>
+					<b>{{ gnp.GNParent }}</b>
+					<span>{{ gnp.description }}</span>
+				</li>
+			{% endfor %}
 		</ul>
 	</div>
 {% endblock %}
