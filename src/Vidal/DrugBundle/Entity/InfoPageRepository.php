@@ -249,4 +249,29 @@ class InfoPageRepository extends EntityRepository
 			->setMaxResults(1)
 			->getOneOrNullResult();
 	}
+
+	public function adminAutocomplete($term)
+	{
+		$codes = $this->_em->createQuery('
+			SELECT i.InfoPageID, i.RusName
+			FROM VidalDrugBundle:InfoPage i
+			WHERE i.InfoPageID LIKE :id
+				OR i.RusName LIKE :RusName
+			ORDER BY i.InfoPageID ASC
+		')->setParameter('id', $term . '%')
+			->setParameter('RusName', '%' . $term . '%')
+			->setMaxResults(15)
+			->getResult();
+
+		$data = array();
+
+		foreach ($codes as $code) {
+			$data[] = array(
+				'id'   => $code['InfoPageID'],
+				'text' => $code['InfoPageID'] . ' - ' . $code['RusName']
+			);
+		}
+
+		return $data;
+	}
 }

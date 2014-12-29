@@ -106,9 +106,6 @@ class Publication extends BaseEntity
 	/** @ORM\Column(length=10, nullable=true) */
 	protected $hidden;
 
-	/** @ORM\Column(length=10, nullable=true) */
-	protected $hidden2;
-
 	/** @ORM\Column(type="integer", nullable=true) */
 	protected $priority;
 
@@ -438,22 +435,6 @@ class Publication extends BaseEntity
 		return $this->priority;
 	}
 
-	/**
-	 * @param mixed $hidden2
-	 */
-	public function setHidden2($hidden2)
-	{
-		$this->hidden2 = $hidden2;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getHidden2()
-	{
-		return $this->hidden2;
-	}
-
 	public function getT()
 	{
 		return 'Publication';
@@ -487,18 +468,6 @@ class Publication extends BaseEntity
 		return $this->products;
 	}
 
-	public function addInfoPage($infoPage)
-	{
-		if (!$this->infoPages->contains($infoPage)) {
-			$this->infoPages[] = $infoPage;
-		}
-	}
-
-	public function removeInfoPage($infoPage)
-	{
-		$this->infoPages->remove($infoPage);
-	}
-
 	/**
 	 * @param mixed $code
 	 */
@@ -529,5 +498,59 @@ class Publication extends BaseEntity
 	public function getTestMode()
 	{
 		return $this->testMode;
+	}
+
+	public function addAtcCode($atcCode)
+	{
+		$this->atcCodes[] = $atcCode;
+
+		return $this;
+	}
+
+	public function removeAtcCode($atcCode)
+	{
+		$this->atcCodes->removeElement($atcCode);
+	}
+
+	public function addNozology($nozology)
+	{
+		$this->nozologies[] = $nozology;
+
+		return $this;
+	}
+
+	public function removeNozology($nozology)
+	{
+		$this->nozologies->removeElement($nozology);
+
+		return $this;
+	}
+
+	public function addMolecule($molecule)
+	{
+		$this->molecules[] = $molecule;
+
+		return $this;
+	}
+
+	public function removeMolecule($molecule)
+	{
+		$this->molecules->removeElement($molecule);
+
+		return $this;
+	}
+
+	public function addInfoPage($infoPage)
+	{
+		$this->infoPages[] = $infoPage;
+
+		return $this;
+	}
+
+	public function removeInfoPage($infoPage)
+	{
+		$this->infoPages->removeElement($infoPage);
+
+		return $this;
 	}
 }

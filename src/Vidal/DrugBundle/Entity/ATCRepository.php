@@ -265,4 +265,29 @@ class ATCRepository extends EntityRepository
 
 		return null;
 	}
+
+	public function adminAutocomplete($term)
+	{
+		$atcCodes = $this->_em->createQuery('
+			SELECT a.ATCCode, a.RusName
+			FROM VidalDrugBundle:ATC a
+			WHERE a.ATCCode LIKE :atc
+				OR a.RusName LIKE :RusName
+			ORDER BY a.ATCCode ASC
+		')->setParameter('atc', $term . '%')
+			->setParameter('RusName', '%' . $term . '%')
+			->setMaxResults(15)
+			->getResult();
+
+		$data = array();
+
+		foreach ($atcCodes as $atc) {
+			$data[] = array(
+				'id'   => $atc['ATCCode'],
+				'text' => $atc['ATCCode'] . ' - ' . $atc['RusName']
+			);
+		}
+
+		return $data;
+	}
 }

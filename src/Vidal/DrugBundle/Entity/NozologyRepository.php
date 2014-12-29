@@ -16,6 +16,16 @@ class NozologyRepository extends EntityRepository
 			->getOneOrNullResult();
 	}
 
+	public function findOneByNozologyCode($NozologyCode)
+	{
+		return $this->_em->createQuery('
+			SELECT n
+			FROM VidalDrugBundle:Nozology n
+			WHERE n.NozologyCode = :NozologyCode
+		')->setParameter('NozologyCode', $NozologyCode)
+			->getOneOrNullResult();
+	}
+
 	public function findOneByCode($code)
 	{
 		$code = trim($code, ' ');
@@ -217,5 +227,30 @@ class NozologyRepository extends EntityRepository
 		}
 
 		return $items;
+	}
+
+	public function adminAutocomplete($term)
+	{
+		$codes = $this->_em->createQuery('
+			SELECT n.NozologyCode, n.Code, n.Name
+			FROM VidalDrugBundle:Nozology n
+			WHERE n.Code LIKE :code
+				OR n.Name LIKE :name
+			ORDER BY n.NozologyCode ASC
+		')->setParameter('code', $term . '%')
+			->setParameter('name', '%' . $term . '%')
+			->setMaxResults(15)
+			->getResult();
+
+		$data = array();
+
+		foreach ($codes as $code) {
+			$data[] = array(
+				'id'   => $code['NozologyCode'],
+				'text' => $code['Code'] . ' - ' . $code['Name']
+			);
+		}
+
+		return $data;
 	}
 }

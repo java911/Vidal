@@ -48,7 +48,6 @@ class ArticleAdmin extends Admin
 	{
 		$em                  = $this->getModelManager()->getEntityManager($this->getSubject());
 		$subject             = $this->getSubject();
-		$documentTransformer = new DocumentTransformer($em, $subject);
 		$tagTransformer      = new TagTransformer($em, $subject);
 
 		$formMapper
@@ -75,65 +74,11 @@ class ArticleAdmin extends Admin
 				'by_reference' => false,
 			))->addModelTransformer($tagTransformer)
 			)
-			->add('atcCodes', 'entity', array(
-				'label'         => 'Коды АТХ',
-				'class'         => 'VidalDrugBundle:ATC',
-				'query_builder' => function (EntityRepository $er) {
-					return $er->createQueryBuilder('atc')
-						->orderBy('atc.ATCCode', 'ASC');
-				},
-				'empty_value'   => 'не указано',
-				'required'      => false,
-				'multiple'      => true,
-				'attr'          => array('placeholder' => 'Начните вводить название или код'),
-			))
-			->add('molecules', 'entity', array(
-				'label'         => 'Активные вещества',
-				'help'          => '(Molecule)',
-				'class'         => 'VidalDrugBundle:Molecule',
-				'query_builder' => function (EntityRepository $er) {
-					return $er->createQueryBuilder('m')
-						->orderBy('m.RusName', 'ASC');
-				},
-				'empty_value'   => 'не указано',
-				'required'      => false,
-				'multiple'      => true,
-				'attr'          => array('placeholder' => 'Начните вводить название или ID'),
-			))
-			->add('infoPages', 'entity', array(
-				'label'         => 'Представительства',
-				'help'          => 'Информационные страницы (InfoPage)',
-				'class'         => 'VidalDrugBundle:InfoPage',
-				'query_builder' => function (EntityRepository $er) {
-					return $er->createQueryBuilder('ip')
-						->where("ip.CountryEditionCode = 'RUS'")
-						->orderBy('ip.RusName', 'ASC');
-				},
-				'empty_value'   => 'не указано',
-				'required'      => false,
-				'multiple'      => true,
-				'attr'          => array('placeholder' => 'Начните вводить название или ID'),
-			))
-			->add('nozologies', 'entity', array(
-				'label'         => 'Заболевания МКБ-10',
-				'help'          => '(Nozology)',
-				'class'         => 'VidalDrugBundle:Nozology',
-				'query_builder' => function (EntityRepository $er) {
-					return $er->createQueryBuilder('n')
-						->orderBy('n.NozologyCode', 'ASC');
-				},
-				'required'      => false,
-				'empty_value'   => 'не указано',
-				'multiple'      => true,
-				'attr'          => array('placeholder' => 'Начните вводить название или код'),
-			))
-			->add($formMapper->create('hidden2', 'text', array(
-				'label'        => 'Описания препаратов',
-				'required'     => false,
-				'by_reference' => false,
-				'attr'         => array('class' => 'doc'),
-			))->addModelTransformer($documentTransformer)
-			)
+			->add('atcCodes-text', 'text', array('label' => 'Коды АТХ', 'required' => false, 'mapped' => false, 'attr' => array('class' => 'atcCodes-text', 'placeholder' => 'Начните вводить название или код')))
+			->add('nozologies-text', 'text', array('label' => 'Заболевания МКБ-10', 'required' => false, 'mapped' => false, 'attr' => array('class' => 'nozologies-text', 'placeholder' => 'Начните вводить название или код')))
+			->add('molecules-text', 'text', array('label' => 'Активные вещества', 'required' => false, 'mapped' => false, 'attr' => array('class' => 'molecules-text', 'placeholder' => 'Начните вводить название или код')))
+			->add('infoPages-text', 'text', array('label' => 'Представительства', 'required' => false, 'mapped' => false, 'attr' => array('class' => 'infoPages-text', 'placeholder' => 'Начните вводить название')))
+			->add('products-text', 'text', array('label' => 'Описания препаратов', 'required' => false, 'mapped'=>false, 'attr' => array('class' => 'doc')))
 			->add('date', null, array('label' => 'Дата создания', 'required' => true, 'years' => range(2000, date('Y'))))
 			->add('synonym', null, array('label' => 'Синонимы', 'required' => false, 'help' => 'Через ;'))
 			->add('metaTitle', null, array('label' => 'Мета заголовок', 'required' => false))

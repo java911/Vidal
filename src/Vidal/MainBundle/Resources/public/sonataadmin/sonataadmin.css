@@ -149,15 +149,15 @@ input[type="text"], textarea {
 	width: 80% !important;
 }
 
-/* ul-remove */
-.ul-remove {
+/* list */
+.list {
 	list-style: none;
 	margin:     8px 0 !important;
 }
-.ul-remove li {
+.list li {
 	margin-top: 3px;
 }
-.ul-remove b a {
+.list b a {
 	width:      26px;
 	display:    inline-block;
 	text-align: center;

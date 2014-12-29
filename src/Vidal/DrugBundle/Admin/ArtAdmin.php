@@ -7,9 +7,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Doctrine\ORM\EntityRepository;
-use Vidal\DrugBundle\Transformer\DocumentTransformer;
 use Vidal\DrugBundle\Transformer\TagTransformer;
 
 class ArtAdmin extends Admin
@@ -47,11 +45,9 @@ class ArtAdmin extends Admin
 
 	protected function configureFormFields(FormMapper $formMapper)
 	{
-		$subject             = $this->getSubject();
-		$rubrique            = $subject->getRubrique();
-		$em                  = $this->getModelManager()->getEntityManager($subject);
-		$documentTransformer = new DocumentTransformer($em, $subject);
-		$tagTransformer      = new TagTransformer($em, $subject);
+		$subject        = $this->getSubject();
+		$em             = $this->getModelManager()->getEntityManager($subject);
+		$tagTransformer = new TagTransformer($em, $subject);
 
 		$formMapper
 			->add('title', 'textarea', array('label' => 'Заголовок', 'required' => true, 'attr' => array('class' => 'ckeditormizer')))
@@ -61,9 +57,9 @@ class ArtAdmin extends Admin
 				'required'      => true,
 				'attr'          => array('class' => 'art-rubrique'),
 				'query_builder' => function (EntityRepository $er) {
-						return $er->createQueryBuilder('r')
-							->orderBy('r.title', 'ASC');
-					},
+					return $er->createQueryBuilder('r')
+						->orderBy('r.title', 'ASC');
+				},
 			))
 			->add('type', null, array('label' => 'Категория', 'required' => false, 'attr' => array('class' => 'art-type')))
 			->add('category', null, array('label' => 'Подкатегория', 'required' => false, 'attr' => array('class' => 'art-category')))
@@ -72,70 +68,16 @@ class ArtAdmin extends Admin
 			->add('body', null, array('label' => 'Основное содержимое', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('tags', null, array('label' => 'Теги', 'required' => false, 'help' => 'Выберите существующие теги или добавьте новый ниже'))
 			->add($formMapper->create('hidden', 'text', array(
-					'label'        => 'Создать теги через ;',
-					'required'     => false,
-					'by_reference' => false,
-				))->addModelTransformer($tagTransformer)
+				'label'        => 'Создать теги через ;',
+				'required'     => false,
+				'by_reference' => false,
+			))->addModelTransformer($tagTransformer)
 			)
-			->add('atcCodes', 'entity', array(
-				'label'         => 'Коды АТХ',
-				'class'         => 'VidalDrugBundle:ATC',
-				'query_builder' => function (EntityRepository $er) {
-						return $er->createQueryBuilder('atc')
-							->orderBy('atc.ATCCode', 'ASC');
-					},
-				'empty_value'   => 'не указано',
-				'required'      => false,
-				'multiple'      => true,
-				'attr'          => array('placeholder' => 'Начните вводить название или код'),
-			))
-			->add('molecules', 'entity', array(
-				'label'         => 'Активные вещества',
-				'help'          => '(Molecule)',
-				'class'         => 'VidalDrugBundle:Molecule',
-				'query_builder' => function (EntityRepository $er) {
-						return $er->createQueryBuilder('m')
-							->orderBy('m.RusName', 'ASC');
-					},
-				'empty_value'   => 'не указано',
-				'required'      => false,
-				'multiple'      => true,
-				'attr'          => array('placeholder' => 'Начните вводить название или ID'),
-			))
-			->add('infoPages', 'entity', array(
-				'label'         => 'Представительства',
-				'help'          => 'Информационные страницы (InfoPage)',
-				'class'         => 'VidalDrugBundle:InfoPage',
-				'query_builder' => function (EntityRepository $er) {
-						return $er->createQueryBuilder('ip')
-							->where("ip.CountryEditionCode = 'RUS'")
-							->orderBy('ip.RusName', 'ASC');
-					},
-				'empty_value'   => 'не указано',
-				'required'      => false,
-				'multiple'      => true,
-				'attr'          => array('placeholder' => 'Начните вводить название или ID'),
-			))
-			->add('nozologies', 'entity', array(
-				'label'         => 'Заболевания МКБ-10',
-				'help'          => '(Nozology)',
-				'class'         => 'VidalDrugBundle:Nozology',
-				'query_builder' => function (EntityRepository $er) {
-						return $er->createQueryBuilder('n')
-							->orderBy('n.NozologyCode', 'ASC');
-					},
-				'required'      => false,
-				'empty_value'   => 'не указано',
-				'multiple'      => true,
-				'attr'          => array('placeholder' => 'Начните вводить название или код'),
-			))
-			->add($formMapper->create('hidden2', 'text', array(
-					'label'        => 'Описания препаратов',
-					'required'     => false,
-					'by_reference' => false,
-					'attr'         => array('class' => 'doc'),
-				))->addModelTransformer($documentTransformer)
-			)
+			->add('atcCodes-text', 'text', array('label' => 'Коды АТХ', 'required' => false, 'mapped' => false, 'attr' => array('class' => 'atcCodes-text', 'placeholder' => 'Начните вводить название или код')))
+			->add('nozologies-text', 'text', array('label' => 'Заболевания МКБ-10', 'required' => false, 'mapped' => false, 'attr' => array('class' => 'nozologies-text', 'placeholder' => 'Начните вводить название или код')))
+			->add('molecules-text', 'text', array('label' => 'Активные вещества', 'required' => false, 'mapped' => false, 'attr' => array('class' => 'molecules-text', 'placeholder' => 'Начните вводить название или код')))
+			->add('infoPages-text', 'text', array('label' => 'Представительства', 'required' => false, 'mapped' => false, 'attr' => array('class' => 'infoPages-text', 'placeholder' => 'Начните вводить название')))
+			->add('products-text', 'text', array('label' => 'Описания препаратов', 'required' => false, 'mapped'=>false, 'attr' => array('class' => 'doc')))
 			->add('date', null, array('label' => 'Дата создания', 'required' => true, 'years' => range(2000, date('Y'))))
 			->add('synonym', null, array('label' => 'Синонимы', 'required' => false, 'help' => 'Через ;'))
 			->add('metaTitle', null, array('label' => 'Мета заголовок', 'required' => false))
@@ -162,9 +104,9 @@ class ArtAdmin extends Admin
 				'required'      => true,
 				'attr'          => array('class' => 'art-rubrique'),
 				'query_builder' => function (EntityRepository $er) {
-						return $er->createQueryBuilder('r')
-							->orderBy('r.title', 'ASC');
-					},
+					return $er->createQueryBuilder('r')
+						->orderBy('r.title', 'ASC');
+				},
 			))
 			->add('type', null, array('label' => 'Категория', 'attr' => array('class' => 'art-type')))
 			->add('category', null, array('label' => 'Подкатегория', 'attr' => array('class' => 'art-category')))

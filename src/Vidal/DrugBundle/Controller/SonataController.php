@@ -688,4 +688,140 @@ class SonataController extends Controller
 
 		return new JsonResponse($user->getCountConfirmationSent());
 	}
+
+	/** @Route("/atc-add/{type}/{id}/{ATCCode}", name="atc_add", options={"expose"=true}) */
+	public function atcAdd($type, $id, $ATCCode)
+	{
+		$em     = $this->getDoctrine()->getManager('drug');
+		$entity = $em->getRepository("VidalDrugBundle:$type")->findOneById($id);
+		$atc    = $em->getRepository('VidalDrugBundle:ATC')->findOneByATCCode($ATCCode);
+
+		if ($entity && $atc) {
+			$entity->addAtcCode($atc);
+			$em->flush();
+
+			return new JsonResponse('OK');
+		}
+
+		return new JsonResponse('FAIL');
+	}
+
+	/** @Route("/atc-remove/{type}/{id}/{ATCCode}", name="atc_remove", options={"expose"=true}) */
+	public function atcRemove($type, $id, $ATCCode)
+	{
+		$em     = $this->getDoctrine()->getManager('drug');
+		$entity = $em->getRepository("VidalDrugBundle:$type")->findOneById($id);
+		$atc    = $em->getRepository('VidalDrugBundle:ATC')->findOneByATCCode($ATCCode);
+
+		if ($entity && $atc) {
+			$entity->removeAtcCode($atc);
+			$em->flush();
+
+			return new JsonResponse('OK');
+		}
+
+		return new JsonResponse('FAIL');
+	}
+
+	/** @Route("/nozology-add/{type}/{id}/{NozologyCode}", name="nozology_add", options={"expose"=true}) */
+	public function nozologyAdd($type, $id, $NozologyCode)
+	{
+		$em       = $this->getDoctrine()->getManager('drug');
+		$entity   = $em->getRepository("VidalDrugBundle:$type")->findOneById($id);
+		$nozology = $em->getRepository('VidalDrugBundle:Nozology')->findOneByNozologyCode($NozologyCode);
+
+		if ($entity && $nozology) {
+			$entity->addNozology($nozology);
+			$em->flush();
+
+			return new JsonResponse('OK');
+		}
+
+		return new JsonResponse('FAIL');
+	}
+
+	/** @Route("/nozology-remove/{type}/{id}/{NozologyCode}", name="nozology_remove", options={"expose"=true}) */
+	public function nozologyRemove($type, $id, $NozologyCode)
+	{
+		$em     = $this->getDoctrine()->getManager('drug');
+		$entity = $em->getRepository("VidalDrugBundle:$type")->findOneById($id);
+		$atc    = $em->getRepository('VidalDrugBundle:Nozology')->findOneByNozologyCode($NozologyCode);
+
+		if ($entity && $atc) {
+			$entity->removeNozology($atc);
+			$em->flush();
+
+			return new JsonResponse('OK');
+		}
+
+		return new JsonResponse('FAIL');
+	}
+
+	/** @Route("/molecule-add/{type}/{id}/{MoleculeID}", name="molecule_add", options={"expose"=true}) */
+	public function moleculeAdd($type, $id, $MoleculeID)
+	{
+		$em       = $this->getDoctrine()->getManager('drug');
+		$entity   = $em->getRepository("VidalDrugBundle:$type")->findOneById($id);
+		$molecule = $em->getRepository('VidalDrugBundle:Molecule')->findOneByMoleculeID($MoleculeID);
+
+		if ($entity && $molecule) {
+			$entity->addMolecule($molecule);
+			$em->flush();
+
+			return new JsonResponse('OK');
+		}
+
+		return new JsonResponse('FAIL');
+	}
+
+	/** @Route("/molecule-remove/{type}/{id}/{MoleculeID}", name="molecule_remove", options={"expose"=true}) */
+	public function moleculeRemove($type, $id, $MoleculeID)
+	{
+		$em       = $this->getDoctrine()->getManager('drug');
+		$entity   = $em->getRepository("VidalDrugBundle:$type")->findOneById($id);
+		$molecule = $em->getRepository('VidalDrugBundle:Molecule')->findOneByMoleculeID($MoleculeID);
+
+		if ($entity && $molecule) {
+			$entity->removeMolecule($molecule);
+			$em->flush();
+
+			return new JsonResponse('OK');
+		}
+
+		return new JsonResponse('FAIL');
+	}
+
+	/** @Route("/infopage-add/{type}/{id}/{InfoPageID}", name="infopage_add", options={"expose"=true}) */
+	public function infopageAdd($type, $id, $InfoPageID)
+	{
+		$em     = $this->getDoctrine()->getManager('drug');
+		$entity = $em->getRepository("VidalDrugBundle:$type")->findOneById($id);
+		$ip     = $em->getRepository('VidalDrugBundle:InfoPage')->findOneByInfoPageID($InfoPageID);
+
+		if ($entity && $ip) {
+			$entity->addInfoPage($ip);
+			$em->flush();
+
+			return new JsonResponse('OK');
+		}
+
+		return new JsonResponse('FAIL');
+	}
+
+	/** @Route("/infopage-remove/{type}/{id}/{InfoPageID}", name="infopage_remove", options={"expose"=true}) */
+	public function infopageRemove($type, $id, $InfoPageID)
+	{
+		$em     = $this->getDoctrine()->getManager('drug');
+		$entity = $em->getRepository("VidalDrugBundle:$type")->findOneById($id);
+		$ip     = $em->getRepository('VidalDrugBundle:InfoPage')->findOneByInfoPageID($InfoPageID);
+
+		if ($entity && $ip) {
+			$entity->removeInfoPage($ip);
+			$em->flush();
+
+			return new JsonResponse('OK');
+		}
+
+		return new JsonResponse('FAIL');
+	}
 }

@@ -456,4 +456,30 @@ class MoleculeRepository extends EntityRepository
 
 		return $qb->getQuery()->getResult();
 	}
+
+	public function adminAutocomplete($term)
+	{
+		$codes = $this->_em->createQuery('
+			SELECT m.MoleculeID, m.RusName, m.LatName
+			FROM VidalDrugBundle:Molecule m
+			WHERE m.MoleculeID LIKE :id
+				OR m.RusName LIKE :RusName
+				OR m.LatName LIKE :RusName
+			ORDER BY m.MoleculeID ASC
+		')->setParameter('id', $term . '%')
+			->setParameter('RusName', '%' . $term . '%')
+			->setMaxResults(15)
+			->getResult();
+
+		$data = array();
+
+		foreach ($codes as $code) {
+			$data[] = array(
+				'id'   => $code['MoleculeID'],
+				'text' => $code['MoleculeID'] . ' - ' . (empty($code['RusName']) ? $code['LatName'] : $code['RusName'])
+			);
+		}
+
+		return $data;
+	}
 }

@@ -141,9 +141,6 @@ class Article extends BaseEntity
 	/** @ORM\Column(length=10, nullable=true) */
 	protected $hidden;
 
-	/** @ORM\Column(length=10, nullable=true) */
-	protected $hidden2;
-
 	/** @ORM\OneToMany(targetEntity="ArticleLink", mappedBy="article", fetch="EXTRA_LAZY", cascade = {"persist", "remove"}, orphanRemoval=true) */
 	protected $links;
 
@@ -262,13 +259,6 @@ class Article extends BaseEntity
 	public function getNozologies()
 	{
 		return $this->nozologies;
-	}
-
-	public function addNozology($nozology)
-	{
-		$this->nozologies[] = $nozology;
-
-		return $this;
 	}
 
 	/**
@@ -620,22 +610,6 @@ class Article extends BaseEntity
 	}
 
 	/**
-	 * @param mixed $hidden2
-	 */
-	public function setHidden2($hidden2)
-	{
-		$this->hidden2 = $hidden2;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getHidden2()
-	{
-		return $this->hidden2;
-	}
-
-	/**
 	 * @param mixed $states
 	 */
 	public function setStates($states)
@@ -764,18 +738,6 @@ class Article extends BaseEntity
 		return $this->anonsPriority;
 	}
 
-	public function addInfoPage($infoPage)
-	{
-		if (!$this->infoPages->contains($infoPage)) {
-			$this->infoPages[] = $infoPage;
-		}
-	}
-
-	public function removeInfoPage($infoPage)
-	{
-		$this->infoPages->remove($infoPage);
-	}
-
 	/**
 	 * @param mixed $hideDate
 	 */
@@ -822,5 +784,59 @@ class Article extends BaseEntity
 	public function getCode()
 	{
 		return $this->code;
+	}
+
+	public function addAtcCode($atcCode)
+	{
+		$this->atcCodes[] = $atcCode;
+
+		return $this;
+	}
+
+	public function removeAtcCode($atcCode)
+	{
+		$this->atcCodes->removeElement($atcCode);
+	}
+
+	public function addNozology($nozology)
+	{
+		$this->nozologies[] = $nozology;
+
+		return $this;
+	}
+
+	public function removeNozology($nozology)
+	{
+		$this->nozologies->removeElement($nozology);
+
+		return $this;
+	}
+
+	public function addMolecule($molecule)
+	{
+		$this->molecules[] = $molecule;
+
+		return $this;
+	}
+
+	public function removeMolecule($molecule)
+	{
+		$this->molecules->removeElement($molecule);
+
+		return $this;
+	}
+
+	public function addInfoPage($infoPage)
+	{
+		$this->infoPages[] = $infoPage;
+
+		return $this;
+	}
+
+	public function removeInfoPage($infoPage)
+	{
+		$this->infoPages->removeElement($infoPage);
+
+		return $this;
 	}
 }

@@ -20,9 +20,6 @@ class PharmArticle extends BaseEntity
 	/** @ORM\Column(length=10, nullable=true) */
 	protected $hidden;
 
-	/** @ORM\Column(length=10, nullable=true) */
-	protected $hidden2;
-
 	/**
 	 * @ORM\ManyToMany(targetEntity="Nozology", inversedBy="pharmArticles")
 	 * @ORM\JoinTable(name="pharm_article_n",
@@ -281,22 +278,6 @@ class PharmArticle extends BaseEntity
 		$this->documents->removeElement($document);
 	}
 
-	/**
-	 * @param mixed $hidden2
-	 */
-	public function setHidden2($hidden2)
-	{
-		$this->hidden2 = $hidden2;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getHidden2()
-	{
-		return $this->hidden2;
-	}
-
 	public function getT()
 	{
 		return 'PharmArticle';
@@ -330,15 +311,57 @@ class PharmArticle extends BaseEntity
 		$this->products->removeElement($product);
 	}
 
+	public function addAtcCode($atcCode)
+	{
+		$this->atcCodes[] = $atcCode;
+
+		return $this;
+	}
+
+	public function removeAtcCode($atcCode)
+	{
+		$this->atcCodes->removeElement($atcCode);
+	}
+
+	public function addNozology($nozology)
+	{
+		$this->nozologies[] = $nozology;
+
+		return $this;
+	}
+
+	public function removeNozology($nozology)
+	{
+		$this->nozologies->removeElement($nozology);
+
+		return $this;
+	}
+
+	public function addMolecule($molecule)
+	{
+		$this->molecules[] = $molecule;
+
+		return $this;
+	}
+
+	public function removeMolecule($molecule)
+	{
+		$this->molecules->removeElement($molecule);
+
+		return $this;
+	}
+
 	public function addInfoPage($infoPage)
 	{
-		if (!$this->infoPages->contains($infoPage)) {
-			$this->infoPages[] = $infoPage;
-		}
+		$this->infoPages[] = $infoPage;
+
+		return $this;
 	}
 
 	public function removeInfoPage($infoPage)
 	{
-		$this->infoPages->remove($infoPage);
+		$this->infoPages->removeElement($infoPage);
+
+		return $this;
 	}
 }
