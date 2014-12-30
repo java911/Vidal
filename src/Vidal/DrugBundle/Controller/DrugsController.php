@@ -68,7 +68,7 @@ class DrugsController extends Controller
 		$params   = array(
 			'atc'      => $atc,
 			'products' => $products,
-			'title'    => $atc->getRusName() . ' - ' . $atc . ' | АТХ',
+			'title'    => $this->strip($atc->getRusName()) . ' - ' . $atc->getATCCode() . ' | АТХ',
 		);
 
 		if (!empty($products)) {
@@ -197,7 +197,7 @@ class DrugsController extends Controller
 		$params = array(
 			'menu_drugs' => 'kfu',
 			'kfu'        => $kfu,
-			'title'      => $this->strip($kfu) . ' | Клинико-фармакологические указатели',
+			'title'      => $this->strip($kfu->getName()) . ' - ' . $kfu->getCode() . ' | Клинико-фармакологические указатели',
 		);
 
 		$products = $em->getRepository('VidalDrugBundle:Product')->findByKfu($ClPhPointerID);
