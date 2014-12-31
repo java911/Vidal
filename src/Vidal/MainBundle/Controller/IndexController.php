@@ -405,14 +405,25 @@ class IndexController extends Controller
 		));
 	}
 
-	/** @Route("/pharmacies-objects/{regionId}", name="pharmacies_objects", options={"expose"=true}) */
-	public function pharmaciesObjectsAction($regionId)
+	/** @Route("/pharmacies-objects/{regionId}/{full}", name="pharmacies_objects", options={"expose"=true}) */
+	public function pharmaciesObjectsAction($regionId, $full = false)
+	{
+		$em = $this->getDoctrine()->getManager();
+
+		$data = array();
+		$data['region'] = $em->getRepository('VidalMainBundle:MapRegion')->byRegion($regionId);
+		$data['coords'] = $em->getRepository('VidalMainBundle:MapCoord')->getObjects($full ? null : $regionId);
+
+		return new JsonResponse($data);
+	}
+
+	/** @Route("/pharmacies-objects-rest/{regionId}", name="pharmacies_objects_rest", options={"expose"=true}) */
+	public function pharmaciesObjectsRestAction($regionId)
 	{
 		$em = $this->getDoctrine()->getManager();
 
 		return new JsonResponse(array(
-			'region' => $em->getRepository('VidalMainBundle:MapRegion')->byRegion($regionId),
-			'coords' => $em->getRepository('VidalMainBundle:MapCoord')->getObjects(),
+			'coords' => $em->getRepository('VidalMainBundle:MapCoord')->getObjects($regionId),
 		));
 	}
 

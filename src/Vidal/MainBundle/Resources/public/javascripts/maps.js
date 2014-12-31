@@ -1,27 +1,30 @@
 var map;
-//localStorage.clear('coordsData');
+var regionId;
 
 ymaps.ready(function() {
-	var regionId = $('.select').val();
+	regionId = $('.select').val();
 
 	if (supports_html5_storage()) {
 		var coordsData = localStorage.getItem("coordsData") || false;
 		if (coordsData) {
-			init(JSON.parse(coordsData));
+			init(JSON.parse(coordsData), true);
 		}
 		else {
 			$.getJSON(Routing.generate('pharmacies_objects', {'regionId': regionId}), function(data) {
-				localStorage.setItem('coordsData', JSON.stringify(data));
-				init(data);
+				init(data, false);
 			});
 		}
 	}
 	else {
-		$.getJSON(Routing.generate('pharmacies_objects', {'regionId': regionId}), init);
+		$.getJSON(Routing.generate('pharmacies_objects', {'regionId': regionId}), function(data) {
+			init(data, false);
+		});
 	}
 });
 
-function init(data) {
+function init(data, isFull) {
+	$('#map_loader').hide();
+
 	map = new ymaps.Map('map', {
 		center: [data.region.latitude, data.region.longitude],
 		zoom:   data.region.zoom
@@ -35,8 +38,12 @@ function init(data) {
 	});
 
 	// Чтобы задать опции одиночным объектам и кластерам, обратимся к дочерним коллекциям ObjectManager.
-	objectManager.objects.options.set('preset', 'islands#greenDotIcon');
-	objectManager.clusters.options.set('preset', 'islands#greenClusterIcons');
+
+	objectManager.clusters.options.set('preset', 'islands#redClusterIcons');
+	objectManager.objects.options.set('iconLayout', 'default#image');
+	objectManager.objects.options.set('iconImageHref', '/bundles/vidalmain/images/apt.png');
+	objectManager.objects.options.set('iconImageSize', [30, 30]);
+	objectManager.objects.options.set('iconImageOffset', [-20, -]);
 
 	// обработчик открытия метки
 	objectManager.objects.events.add('click', function(e) {
@@ -76,6 +83,16 @@ function init(data) {
 
 	map.geoObjects.add(objectManager);
 	objectManager.add(data.coords);
+
+	if (!isFull) {
+		$.getJSON(Routing.generate('pharmacies_objects', {'regionId':regionId, 'full':1}), function(data) {
+			objectManager.add(data.coords);
+
+			if (supports_html5_storage()) {
+				localStorage.setItem('coordsData', JSON.stringify(data));
+			}
+		});
+	}
 }
 
 function supports_html5_storage() {

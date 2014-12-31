@@ -16,14 +16,23 @@ class MapCoordRepository extends EntityRepository
 			->getResult();
 	}
 
-	public function getObjects()
+	public function getObjects($regionId = null)
 	{
 		$data = array('type' => 'FeatureCollection', 'features' => array());
 
-		$coords = $this->_em->createQuery('
-			SELECT c.latitude x, c.longitude y, c.offerId id
-			FROM VidalMainBundle:MapCoord c
-		')->getResult();
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select('c.latitude x, c.longitude y, c.offerId id')
+			->from('VidalMainBundle:MapCoord', 'c');
+
+		if ($regionId) {
+			if ($regionId == 87) {
+				$regionId = 84; # Москва => Московская область
+			}
+			$qb->where('c.region = :regionId')->setParameter('regionId', $regionId);
+		}
+
+		$coords = $qb->getQuery()->getResult();
 
 		for ($i = 0; $i < count($coords); $i++) {
 			$coord = array(
