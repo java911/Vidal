@@ -43,7 +43,7 @@ function init(data, isFull) {
 	objectManager.objects.options.set('iconLayout', 'default#image');
 	objectManager.objects.options.set('iconImageHref', '/bundles/vidalmain/images/apt.png');
 	objectManager.objects.options.set('iconImageSize', [30, 30]);
-	objectManager.objects.options.set('iconImageOffset', [-20, -]);
+	objectManager.objects.options.set('iconImageOffset', [-20, -7]);
 
 	// обработчик открытия метки
 	objectManager.objects.events.add('click', function(e) {
