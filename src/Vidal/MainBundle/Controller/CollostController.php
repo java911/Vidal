@@ -12,7 +12,6 @@ class CollostController extends Controller
 {
 
 	/**
-	 * @Route("/collost" ,name="collost")
 	 * @Template("VidalMainBundle:Collost:index.html.twig")
 	 */
 	public function indexAction()
