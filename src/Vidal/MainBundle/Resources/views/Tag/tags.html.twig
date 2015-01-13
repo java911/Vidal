@@ -27,7 +27,7 @@
 			{% elseif type == 'InfoPage' %}
 				<a href="{{ path('inf_item', {'InfoPageID':tag.InfoPageID}) }}" target="_blank"
 				   title="представительство">
-					{{ tag.tag ? tag.tag.text : key }}
+					{{ tag.tag ? tag.tag.text|raw : tag.RusName|raw }}
 				</a>
 
 				{# нозология #}

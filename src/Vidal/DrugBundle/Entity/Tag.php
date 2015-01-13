@@ -30,7 +30,7 @@ class Tag
 	protected $pharmArticles;
 
 	/**
-	 * @ORM\OneToOne(targetEntity="InfoPage")
+	 * @ORM\OneToOne(targetEntity="InfoPage", mappedBy="tag")
 	 * @ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")
 	 */
 	protected $infoPage;

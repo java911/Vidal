@@ -113,7 +113,7 @@ class InfoPage
 	protected $photo;
 
 	/**
-	 * @ORM\OneToOne(targetEntity="Tag")
+	 * @ORM\OneToOne(targetEntity="Tag", inversedBy="infoPage")
 	 * @ORM\JoinColumn(name="tag_id", referencedColumnName="id")
 	 */
 	protected $tag;
