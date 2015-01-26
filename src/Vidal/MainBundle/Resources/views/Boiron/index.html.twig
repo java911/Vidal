@@ -1,0 +1,117 @@
+{% extends 'VidalMainBundle::layout_promo.html.twig' %}
+
+{% block middle %}
+	<div class="boiron-bg">
+		<div class="boiron-top">
+			<img src="{{ asset('bundles/vidalmain/boiron/top.png') }}" style="width: 800px; margin-left: 50px;">
+		</div>
+		<div class="boiron-content">
+			<div class="line">
+				<img src="{{ asset('bundles/vidalmain/boiron/line1.png') }}">
+				<img src="{{ asset('bundles/vidalmain/boiron/line4.png') }}" class="comment">
+			</div>
+			<div class="content">
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+			</div>
+			<div class="line">
+				<img src="{{ asset('bundles/vidalmain/boiron/line2.png') }}">
+				<img src="{{ asset('bundles/vidalmain/boiron/line4.png') }}" class="comment">
+			</div>
+			<div class="content">
+				<table>
+					<tr>
+						<td><img src="{{ asset('bundles/vidalmain/boiron/circle-green.png') }}"></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td><img src="{{ asset('bundles/vidalmain/boiron/circle-green.png') }}"></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td><img src="{{ asset('bundles/vidalmain/boiron/circle-green.png') }}"></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td><img src="{{ asset('bundles/vidalmain/boiron/circle-green.png') }}"></td>
+						<td></td>
+					</tr>
+
+				</table>
+			</div>
+			<div class="line">
+				<img src="{{ asset('bundles/vidalmain/boiron/line3.png') }}">
+				<img src="{{ asset('bundles/vidalmain/boiron/line4.png') }}" class="comment">
+			</div>
+			<div class="content">
+				<table>
+					<tr>
+						<td><img src="{{ asset('bundles/vidalmain/boiron/circle-blue.png') }}"></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td><img src="{{ asset('bundles/vidalmain/boiron/circle-blue.png') }}"></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td><img src="{{ asset('bundles/vidalmain/boiron/circle-blue.png') }}"></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td><img src="{{ asset('bundles/vidalmain/boiron/circle-blue.png') }}"></td>
+						<td></td>
+					</tr>
+
+				</table>
+			</div>
+		</div>
+	</div>
+	{#<div class="boiron-footer">#}
+		{#<img src="{{ asset('bundles/vidalmain/boiron/man-bottom.png') }}" class="man-bottom">#}
+		{#<img src="{{ asset('bundles/vidalmain/boiron/logo-bottom.png') }}" class="logo-bottom">#}
+	{#</div>#}
+{% endblock %}
+
+{% block stylesheets %}
+		{{ parent() }}
+		<style>
+			.boiron-bg{
+				background: url('{{ asset('bundles/vidalmain/boiron/bg.png') }}');
+				position: relative;
+				height: 1763px;
+			}
+			.boiron-content{
+				min-height: 500px;
+			}
+			.boiron-box{
+				width: 410px;
+				position: absolute;
+				top: 178px;
+				right: 46px;
+			}
+			.boiron-footer{
+				height: 200px;
+				background: #FFFFFF;
+				position: relative;
+			}
+			.line{
+				text-align: left;
+				margin-left: 100px;
+				position: relative;
+			}
+			.comment{
+				position: absolute;
+				bottom: 0;
+				right: 95px;
+				width: 150px;
+			}
+			.content{
+				width: 750px;
+				margin: 0 auto;
+			}
+
+		</style>
+{% endblock %}
