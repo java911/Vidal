@@ -5,6 +5,7 @@
 	<div class="boiron-bg">
 		<div class="boiron-top">
 			<img src="{{ asset('bundles/vidalmain/boiron/top.png') }}" style="width: 800px; margin-left: 50px;">
+			<a class="logo-a" href="{{ path('boiron_main') }}"></a>
 		</div>
 		<div class="boiron-content">
 			<div class="line">
@@ -22,8 +23,10 @@
 				<br />
 				<br />
 				<div class="comment-box">
-					<img src="{{ asset('bundles/vidalmain/boiron/line4.png') }}" class="comment">
-					<div class="comment-title">Читать далее..</div>
+					<a href="{{ path('boiron_page',{'pageNum' : 1}) }}">
+						<img src="{{ asset('bundles/vidalmain/boiron/line4.png') }}" class="comment">
+						<div class="comment-title">Читать далее..</div>
+					</a>
 				</div>
 			</div>
 			<div class="line">
@@ -64,8 +67,10 @@
 					</tr>
 				</table>
 				<div class="comment-box">
-					<img src="{{ asset('bundles/vidalmain/boiron/line4.png') }}" class="comment">
-					<div class="comment-title">Читать далее..</div>
+					<a href="{{ path('boiron_page',{'pageNum' : 2}) }}">
+						<img src="{{ asset('bundles/vidalmain/boiron/line4.png') }}" class="comment">
+						<div class="comment-title">Читать далее..</div>
+					</a>
 				</div>
 			</div>
 			<div class="line">
@@ -118,8 +123,10 @@
 					</tr>
 				</table>
 				<div class="comment-box" style="margin-top: -98px">
-					<img src="{{ asset('bundles/vidalmain/boiron/line4.png') }}" class="comment">
-					<div class="comment-title">Читать далее..</div>
+					<a href="{{ path('boiron_page',{'pageNum' : 3}) }}">
+						<img src="{{ asset('bundles/vidalmain/boiron/line4.png') }}" class="comment">
+						<div class="comment-title">Читать далее..</div>
+					</a>
 				</div>
 			</div>
 		</div>
@@ -193,6 +200,14 @@
 				font-weight: bold;
 				font-size: 16px;
 				cursor: pointer;
+			}
+			.logo-a{
+				display: block;
+				position: absolute;
+				width: 360px;
+				height: 70px;
+				top: 35px;
+				left: 300px;
 			}
 		</style>
 {% endblock %}

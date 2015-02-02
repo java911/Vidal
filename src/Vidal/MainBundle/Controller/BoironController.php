@@ -12,17 +12,33 @@ class BoironController extends Controller
 {
 
 	/**
-	 * @Route("/boiron")
+	 * @Route("/boiron", name="boiron_main")
 	 * @Template("VidalMainBundle:Boiron:index.html.twig")
 	 */
 	public function indexAction()
 	{
 		return array(
-			'title'       => 'Коллост - инновационный стерильный биопластический коллагеновый материал',
-			'description' => 'Коллост - инновационный стерильный биопластический коллагеновый материал, обеспечивающий регенерацию пораженных тканей',
-			'keywords'    => 'инновационный стерильный биопластический коллагеновый материал регенерация пораженных тканей',
+			'title'       => 'Boiron',
+			'description' => 'Boiron',
+			'keywords'    => 'Boiron',
 			'noYad'       => true,
 			'menu_left'   => 'boiron',
+		);
+	}
+
+	/**
+	 * @Route("/boiron/{pageNum}", name="boiron_page")
+	 * @Template("VidalMainBundle:Boiron:page.html.twig")
+	 */
+	public function pageAction($pageNum)
+	{
+		return array(
+			'title'       => 'Boiron',
+			'description' => 'Boiron',
+			'keywords'    => 'Boiron',
+			'noYad'       => true,
+			'menu_left'   => 'boiron',
+			'page'		  => $pageNum
 		);
 	}
 }
