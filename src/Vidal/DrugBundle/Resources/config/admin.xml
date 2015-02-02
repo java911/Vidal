@@ -218,6 +218,15 @@
 			<argument />
 		</service>
 
+		<!-- Ветеринария -->
+		<!--<service id="veterinar.admin.product" class="Vidal\VeterinarBundle\Admin\ProductAdmin">-->
+			<!--<tag name="sonata.admin" manager_type="orm" group="Ветеринария" label="Препараты"/>-->
+			<!--<argument />-->
+			<!--<argument>Vidal\VeterinarBundle\Entity\Product</argument>-->
+			<!--<argument>SonataAdminBundle:CRUD</argument>-->
+			<!--<argument />-->
+		<!--</service>-->
+
 		<!-- Не используется -->
 		<service id="sonata.admin.productcompany" class="Vidal\DrugBundle\Admin\ProductCompanyAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="Не используется" label="-" show_in_dashboard="false"/>
