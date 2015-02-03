@@ -1,0 +1,144 @@
+{% extends 'VidalMainBundle::layout_promo.html.twig' %}
+
+{% block middle %}
+    <noindex>
+        <div class="boiron-bg">
+            <div class="boiron-top">
+                <img src="{{ asset('bundles/vidalmain/boiron/top.png') }}" style="width: 800px; margin-left: 50px;">
+                <a class="logo-a" href="{{ path('boiron_main') }}"></a>
+            </div>
+
+
+            <div class="boiron-content">
+                {% if page == 1 %}
+                    <div class="line">
+                        <div>
+                            <img src="{{ asset('bundles/vidalmain/boiron/line1.png') }}">
+                            <div class="line-title">ЛАБОРАТОРИЯ БУАРОН ПРЕДСТАВЛЯЕТ НОВИНКУ!</div>
+                        </div>
+                    </div>
+                {% elseif page == 2 %}
+                    <div class="line">
+                        <div>
+                            <img src="{{ asset('bundles/vidalmain/boiron/line2.png') }}">
+                            <div class="line-title" style="top: 35px;left: 45px;">ПРЕПАРАТ ВЫБОРА - ОЦИЛЛОКОКЦИНУМ <br />ПОЧЕМУ?</div>
+                        </div>
+                    </div>
+                {% elseif page == 3 %}
+                    <div class="line">
+                        <div>
+                            <img src="{{ asset('bundles/vidalmain/boiron/line3.png') }}">
+                            <div class="line-title" style="top: 51px;left: 26px;">ОЦИЛЛОКОКЦИНУМ - ПРОВЕРЕННОЕ ФРАНЦУЗСКОЕ РЕШЕНИЕ <br /> ДЛЯ ПРОФИЛАКТИКИ И ЛЕЧЕНИЯ ГРИППА</div>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="content">
+                    С сентября 2014 года в российских аптеках появиться Оциллококцинум в упаковке на 30 доз. <br /> Это прекрасная новость для миллионов
+                    россиян, которые оценят практичность и экономичность такой упаковки. Теперь заботиться о свем здоровье и здоровье всех членов
+                    семьи стало еще удобнее!
+                    <br /><br />
+                    Должен признаться, сам был удивлен подобной ситуацией. Я вообще ни разу не сисадмин, не пишу код и даже работаю в сфере, очень далекой от IT. Короче, я менеджер. По продажам промышленного оборудования. Однако люблю поковыряться в Linux (не могу не признаться в любви к calculate-linux) и поиграть в Windows.
+                    <br /><br />
+                    Итак, сегодня (на момент размещения публикации в Песочнице) 31 число, пора оплатить интернет. Побродив по сайту моего провайдера Дом.ru решил посмотреть статистику. Тут-то и началось интересное.
+                    <br /><br />
+                    Я обратил внимание, что мой логин светится в адресной строке браузера. Тут же мной овладел зуд исследователя и пентестера. Я просто поменял одну цифру моего логина в строке браузера (даже не отладчика) и увидел чужую статистику с полными ФИО, №договора. В следующие пару минут я нашел еще несколько действующих договоров (если правильно понял, там возвращают ошибку, если в системе не существует логина).
+                    <br /><br />
+                    Несколько скринов в подтверждение моих слов:
+                    <br /><br />
+                    Должен признаться, сам был удивлен подобной ситуацией. Я вообще ни разу не сисадмин, не пишу код и даже работаю в сфере, очень далекой от IT. Короче, я менеджер. По продажам промышленного оборудования. Однако люблю поковыряться в Linux (не могу не признаться в любви к calculate-linux) и поиграть в Windows.
+                    <br /><br />
+                    Итак, сегодня (на момент размещения публикации в Песочнице) 31 число, пора оплатить интернет. Побродив по сайту моего провайдера Дом.ru решил посмотреть статистику. Тут-то и началось интересное.
+                    <br /><br />
+                    Я обратил внимание, что мой логин светится в адресной строке браузера. Тут же мной овладел зуд исследователя и пентестера. Я просто поменял одну цифру моего логина в строке браузера (даже не отладчика) и увидел чужую статистику с полными ФИО, №договора. В следующие пару минут я нашел еще несколько действующих договоров (если правильно понял, там возвращают ошибку, если в системе не существует логина).
+                    <br /><br />
+                    Несколько скринов в подтверждение моих слов:
+                    <br /><br />
+                    Должен признаться, сам был удивлен подобной ситуацией. Я вообще ни разу не сисадмин, не пишу код и даже работаю в сфере, очень далекой от IT. Короче, я менеджер. По продажам промышленного оборудования. Однако люблю поковыряться в Linux (не могу не признаться в любви к calculate-linux) и поиграть в Windows.
+
+                    <br />
+                    <br />
+                </div>
+            </div>
+        </div>
+    </noindex>
+    {#<div class="boiron-footer">#}
+    {#<img src="{{ asset('bundles/vidalmain/boiron/man-bottom.png') }}" class="man-bottom">#}
+    {#<img src="{{ asset('bundles/vidalmain/boiron/logo-bottom.png') }}" class="logo-bottom">#}
+    {#</div>#}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .boiron-bg{
+            background: url('{{ asset('bundles/vidalmain/boiron/bg.png') }}');
+            position: relative;
+            height: 1763px;
+        }
+        .boiron-content{
+            min-height: 500px;
+        }
+        .boiron-box{
+            width: 410px;
+            position: absolute;
+            top: 178px;
+            right: 46px;
+        }
+        .boiron-footer{
+            height: 200px;
+            background: #FFFFFF;
+            position: relative;
+        }
+        .line{
+            text-align: left;
+            margin-left: 55px;
+            position: relative;
+            /*margin-top: 20px;*/
+        }
+        .comment{
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 150px;
+            cursor: pointer;
+        }
+        .content{
+            width: 850px;
+            margin: 0 auto;
+            padding-top: 35px;
+            color: #6a685a;
+            line-height: 22px;
+            font-size: 15px;
+            text-align: justify;
+            position: relative;
+        }
+        .line-title{
+            position: absolute;
+            font-weight: bold;
+            color: #353535;
+            font-size: 20px;
+            top: 48px;
+            left: 23px;
+        }
+        .comment-box{
+            position: relative;
+        }
+        .comment-title{
+            position: absolute;
+            color: #EEEEEE;
+            right: 16px;
+            top: -51px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .logo-a{
+            display: block;
+            position: absolute;
+            width: 360px;
+            height: 70px;
+            top: 35px;
+            left: 300px;
+        }
+    </style>
+{% endblock %}
