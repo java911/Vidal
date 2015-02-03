@@ -188,6 +188,11 @@ class Publication extends BaseEntity
 	 */
 	public function setTitle($title)
 	{
+		$title = str_replace('<p>', '', $title);
+		$title = str_replace('</p>', '', $title);
+		$title = str_replace('<div>', '', $title);
+		$title = str_replace('</div>', '', $title);
+
 		$this->title = $title;
 	}
 
