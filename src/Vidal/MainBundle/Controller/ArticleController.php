@@ -326,7 +326,7 @@ class ArticleController extends Controller
 	}
 
 	/**
-	 * @Route("/vracham/expert/Vidal-CD/", name="vracham_expert_cd")
+	 * @Route("/vracham-expert/Vidal-CD/", name="vracham_expert_cd")
 	 * @Template("VidalMainBundle:Article:vrachamExpertCd.html.twig")
 	 */
 	public function vrachamExpertCdAction()
