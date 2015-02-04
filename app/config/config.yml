@@ -89,6 +89,9 @@ doctrine:
                 connection: default
                 mappings:
                     VidalMainBundle: ~
+                dql:
+                    datetime_functions:
+                        DATE_FORMAT: Vidal\MainBundle\Dql\DateFormat
             drug:
                 connection: drug
                 mappings:

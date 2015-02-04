@@ -1,0 +1,62 @@
+{#<a href="#" id="excel_users" class="btn sonata-action-element"#}
+   {#title="Скачать пользователей Видаля в файле Excel">Выгрузка в Excel</a>#}
+
+<a href="#" id="excel" class="btn sonata-action-element"
+   title="Скачать пользователей Видаля в файле Excel">Выгрузить пользователей</a>
+
+<div style="display:none; float:right; font-size: 14px; font-weight:bold; white-space:normal;" id="excel_select">
+	<p>Выберите год или месяц для начала загрузки. Формирование Excel-документа может занять несколько минут.</p>
+	<select>
+		<option value=""></option>
+		<option value="0">все</option>
+		<option value="2015">2015</option>
+		<option value="2014">2014</option>
+		<option value="1">январь</option>
+		<option value="2">февраль</option>
+		<option value="3">март</option>
+		<option value="4">апрель</option>
+		<option value="5">май</option>
+		<option value="6">июнь</option>
+		<option value="7">июль</option>
+		<option value="8">август</option>
+		<option value="9">сентябрь</option>
+		<option value="10">окрябрь</option>
+		<option value="11">ноябрь</option>
+		<option value="12">декабрь</option>
+	</select>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#excel').click(function(e) {
+			e.preventDefault();
+			$('#excel_select').show();
+			return false;
+		});
+
+		$('#excel_select select').on('change', function() {
+			var val = this.value;
+			if (val == '0') {
+				
+			}
+			if (val != '') {
+				window.stop();
+				window.location = Routing.generate('users_excel', {'number': val});
+			}
+		});
+
+		$('#excel_users').click(function(e) {
+			e.preventDefault();
+			var pw = prompt('Для загрузки необходимо ввести пароль');
+			$.getJSON(Routing.generate('check_keyvalue', {'key': 'users', 'value': pw}), function(isMatch) {
+				if (isMatch) {
+					window.location = Routing.generate('download', {'filename': 'users.xls', 'pw': pw});
+				}
+				else {
+					alert('Неверно введен пароль');
+				}
+			});
+			return false;
+		});
+	});
+</script>

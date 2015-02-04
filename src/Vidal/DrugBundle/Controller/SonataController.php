@@ -824,4 +824,63 @@ class SonataController extends Controller
 
 		return new JsonResponse('FAIL');
 	}
+
+	/** @Route("/users-excel/{number}", name="users_excel", options={"expose"=true}) */
+	public function usersExcel($number = null)
+	{
+		ini_set('memory_limit', -1);
+		ini_set('max_execution_time', 0);
+
+		$em             = $this->get('doctrine')->getManager();
+		$users          = $em->getRepository('VidalMainBundle:User')->forExcel($number);
+		$phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
+
+		$phpExcelObject->getProperties()->setCreator("Vidal.ru")
+			->setLastModifiedBy("Vidal.ru")
+			->setTitle("Зарегистрированные пользователи Видаля")
+			->setSubject("Зарегистрированные пользователи Видаля");
+
+		$phpExcelObject->setActiveSheetIndex(0)
+			->setCellValue('A1', 'Специальность')
+			->setCellValue('B1', 'Город')
+			->setCellValue('C1', 'Регион')
+			->setCellValue('D1', 'Зарегистр.')
+			->setCellValue('E1', 'Почтовый адрес')
+			->setCellValue('F1', 'ФИО');
+
+		$worksheet = $phpExcelObject->getActiveSheet();
+		$alphabet  = explode(' ', 'A B C D E F G H I J K L N O P Q R S T U V W X');
+		foreach ($alphabet as $letter) {
+			$worksheet->getColumnDimension($letter)->setAutoSize('true');
+		}
+
+		for ($i = 0; $i < count($users); $i++) {
+			$index = $i + 2;
+			$worksheet
+				->setCellValue("A{$index}", $users[$i]['specialty'])
+				->setCellValue("B{$index}", $users[$i]['city'])
+				->setCellValue("C{$index}", $users[$i]['region'])
+				->setCellValue("D{$index}", $users[$i]['registered'])
+				->setCellValue("E{$index}", $users[$i]['username'])
+				->setCellValue("F{$index}", $users[$i]['lastName'] . ' ' . $users[$i]['firstName'] . ' ' . $users[$i]['surName']);
+		}
+
+		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+		$phpExcelObject->setActiveSheetIndex(0);
+
+		// create the writer
+		$writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
+		// create the response
+		$response = $this->get('phpexcel')->createStreamedResponse($writer);
+		// adding headers
+		$filename = $number
+			? ($number > 2000 ? "Отчет: $number год" : "Отчет: $number месяц " . date('Y') . ' год')
+			: 'Отчет: все пользователи';
+		$response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+		$response->headers->set('Content-Disposition', "attachment;filename={$filename}.xls");
+		$response->headers->set('Pragma', 'public');
+		$response->headers->set('Cache-Control', 'maxage=1');
+
+		return $response;
+	}
 }

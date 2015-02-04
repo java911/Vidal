@@ -42,4 +42,34 @@ class UserRepository extends EntityRepository
 
 		return $users;
 	}
+
+	public function forExcel($number = null)
+	{
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select("s.title as specialty, c.title as city, r.title as region, DATE_FORMAT(u.created, '%Y-%m-%d') as registered, u.username, u.lastName, u.firstName, u.surName")
+			->from('VidalMainBundle:User', 'u')
+			->leftJoin('u.city', 'c')
+			->leftJoin('c.region', 'r')
+			->leftJoin('c.country', 'co')
+			->leftJoin('u.primarySpecialty', 's')
+			->orderBy('u.username', 'ASC');
+
+		if ($number > 2000) {
+			$created = new \DateTime("$number-01-01 00:00:00");
+			$qb->where('u.created > :created')->setParameter('created', $created);
+		}
+		elseif ($number > 0 && $number <= 12) {
+			$year      = date('Y');
+			$created   = new \DateTime("$year-$number-01 00:00:00");
+			$nextMonth = new \DateTime("$year-$number-01 00:00:00");
+			$nextMonth->modify('+1 month');
+			$qb->where('u.created > :created')
+				->andWhere('u.created < :nextMonth')
+				->setParameter('created', $created)
+				->setParameter('nextMonth', $nextMonth);
+		}
+
+		return $qb->getQuery()->getResult();
+	}
 }

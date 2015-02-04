@@ -488,8 +488,9 @@ class ArticleController extends Controller
 	{
 		$response = null;
 		$secutiry = $this->get('security.context');
+		$user = $this->getUser();
 
-		if (!$secutiry->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+		if (!$user) {
 			$response = $this->render('VidalMainBundle:Auth:login.html.twig', array(
 				'title' => 'Закрытый раздел',
 				'menu'  => 'vracham',

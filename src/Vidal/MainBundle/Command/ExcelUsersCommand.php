@@ -17,10 +17,10 @@ class ExcelUsersCommand extends ContainerAwareCommand
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		ini_set('memory_limit', -1);
-		$output->writeln('--- vidal:excel_users started');
+		ini_set('max_execution_time', 0);
 
 		$em             = $this->getContainer()->get('doctrine')->getManager();
-		$users          = $em->getRepository('VidalMainBundle:User')->findUsersExcel();
+		$users          = $em->getRepository('VidalMainBundle:User')->forExcel();
 		$phpExcelObject = $this->getContainer()->get('phpexcel')->createPHPExcelObject();
 
 		$phpExcelObject->getProperties()->setCreator("Vidal.ru")
@@ -29,31 +29,12 @@ class ExcelUsersCommand extends ContainerAwareCommand
 			->setSubject("Зарегистрированные пользователи Видаля");
 
 		$phpExcelObject->setActiveSheetIndex(0)
-			->setCellValue('A1', 'Почтовый адрес')
-			->setCellValue('B1', 'Фамилия')
-			->setCellValue('C1', 'Имя')
-			->setCellValue('D1', 'Отчество')
-			->setCellValue('E1', 'Первичная специальность')
-			->setCellValue('F1', 'Вторичная специальность')
-			->setCellValue('G1', 'Специализация')
-			->setCellValue('H1', 'Университет')
-			->setCellValue('I1', 'Другое учебное заведение')
-			->setCellValue('J1', 'Год выпуска')
-			->setCellValue('K1', 'Форма обучения')
-			->setCellValue('L1', 'Ученая степень')
-			->setCellValue('M1', 'Дата рождения')
-			->setCellValue('N1', 'Номер телефона')
-			->setCellValue('O1', 'ICQ')
-			->setCellValue('P1', 'Тема диссертации')
-			->setCellValue('Q1', 'Профессиональные интересы')
-			->setCellValue('R1', 'Место работы')
-			->setCellValue('S1', 'Должность')
-			->setCellValue('T1', 'Стаж')
-			->setCellValue('U1', 'Достижения')
-			->setCellValue('V1', 'Публикации')
-			->setCellValue('W1', 'О себе')
-			->setCellValue('X1', 'Со старого сайта')
-			->setCellValue('Y1', 'Зарегистрирован');
+			->setCellValue('A1', 'Специальность')
+			->setCellValue('B1', 'Город')
+			->setCellValue('C1', 'Регион')
+			->setCellValue('D1', 'Зарегистр.')
+			->setCellValue('E1', 'Почтовый адрес')
+			->setCellValue('F1', 'ФИО');
 
 		$worksheet = $phpExcelObject->getActiveSheet();
 		$alphabet  = explode(' ', 'A B C D E F G H I J K L N O P Q R S T U V W X');
@@ -64,31 +45,12 @@ class ExcelUsersCommand extends ContainerAwareCommand
 		for ($i = 0; $i < count($users); $i++) {
 			$index = $i + 2;
 			$worksheet
-				->setCellValue("A{$index}", $users[$i]['username'])
-				->setCellValue("B{$index}", $users[$i]['lastName'])
-				->setCellValue("C{$index}", $users[$i]['firstName'])
-				->setCellValue("D{$index}", $users[$i]['surName'])
-				->setCellValue("E{$index}", $users[$i]['primarySpecialty'])
-				->setCellValue("F{$index}", $users[$i]['secondarySpecialty'])
-				->setCellValue("G{$index}", $users[$i]['specialization'])
-				->setCellValue("H{$index}", $users[$i]['university'])
-				->setCellValue("I{$index}", $users[$i]['school'])
-				->setCellValue("J{$index}", $users[$i]['graduateYear'] ? $users[$i]['graduateYear']->format('Y') : null)
-				->setCellValue("K{$index}", $users[$i]['educationType'])
-				->setCellValue("L{$index}", $users[$i]['academicDegree'])
-				->setCellValue("M{$index}", $users[$i]['birthdate'] ? $users[$i]['birthdate']->format('d.m.Y') : null)
-				->setCellValue("N{$index}", $users[$i]['phone'])
-				->setCellValue("N{$index}", $users[$i]['icq'])
-				->setCellValue("P{$index}", $users[$i]['dissertation'])
-				->setCellValue("Q{$index}", $users[$i]['professionalInterests'])
-				->setCellValue("R{$index}", $users[$i]['jobPlace'])
-				->setCellValue("S{$index}", $users[$i]['jobPosition'])
-				->setCellValue("T{$index}", $users[$i]['jobStage'])
-				->setCellValue("U{$index}", $users[$i]['jobAchievements'])
-				->setCellValue("V{$index}", $users[$i]['jobPublications'])
-				->setCellValue("W{$index}", $users[$i]['about'])
-				->setCellValue("X{$index}", $users[$i]['oldUser'] ? 'Да' : 'Нет')
-				->setCellValue("Y{$index}", $users[$i]['created'] ? $users[$i]['created']->format('d.m.Y') : null);
+				->setCellValue("A{$index}", $users[$i]['specialty'])
+				->setCellValue("B{$index}", $users[$i]['city'])
+				->setCellValue("C{$index}", $users[$i]['region'])
+				->setCellValue("D{$index}", $users[$i]['registered'])
+				->setCellValue("E{$index}", $users[$i]['username'])
+				->setCellValue("F{$index}", $users[$i]['lastName'] . ' ' . $users[$i]['firstName'] . ' ' . $users[$i]['surName']);
 		}
 
 		// Set active sheet index to the first sheet, so Excel opens this as the first sheet

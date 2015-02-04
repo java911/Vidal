@@ -18,25 +18,7 @@ file that was distributed with this source code.
 
 		{# кнопка скачки пользователей в экселе #}
 		{% if route == 'admin_vidal_main_user_list' %}
-			<a href="#" id="excel_users" class="btn sonata-action-element"
-			   title="Скачать пользователей Видаля в файле Excel">Выгрузка в Excel</a>
-			<script type="text/javascript">
-				$(document).ready(function() {
-					$('#excel_users').click(function(e) {
-						e.preventDefault();
-						var pw = prompt('Для загрузки необходимо ввести пароль');
-						$.getJSON(Routing.generate('check_keyvalue', {'key':'users','value':pw}), function(isMatch) {
-							if (isMatch) {
-								window.location = Routing.generate('download', {'filename':'users.xls','pw':pw});
-							}
-							else {
-								alert('Неверно введен пароль');
-							}
-						});
-						return false;
-					});
-				});
-			</script>
+			{% include 'VidalDrugBundle:Sonata:user_list_buttons.html.twig' %}
 		{% endif %}
 
 		{% if route == 'admin_vidal_drug_tag_list' %}
