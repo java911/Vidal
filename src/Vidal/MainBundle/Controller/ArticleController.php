@@ -331,9 +331,9 @@ class ArticleController extends Controller
 	 */
 	public function vrachamExpertCdAction()
 	{
-		if ($response = $this->checkRole()) {
-			return $response;
-		}
+//		if ($response = $this->checkRole()) {
+//			return $response;
+//		}
 
 		return array(
 			'menu'  => 'vracham',
