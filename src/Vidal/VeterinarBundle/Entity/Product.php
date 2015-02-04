@@ -5,8 +5,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
+use Iphp\FileStoreBundle\Mapping\Annotation as FileStore;
 
-/** @ORM\Entity(repositoryClass="ProductRepository") @ORM\Table(name="product") */
+/** @ORM\Entity(repositoryClass="ProductRepository") @ORM\Table(name="product") @FileStore\Uploadable */
 class Product
 {
 	/** @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue */
@@ -116,6 +117,24 @@ class Product
 	 *        inverseJoinColumns={@ORM\JoinColumn(name="MoleculeNameID", referencedColumnName="MoleculeNameID")})
 	 */
 	protected $moleculeNames;
+
+	/** @ORM\Column(type="boolean") */
+	protected $inactive = false;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="Document", inversedBy="products")
+	 * @ORM\JoinColumn(name="document_id", referencedColumnName="DocumentID")
+	 */
+	protected $document;
+
+	/** @ORM\Column(type="boolean") */
+	protected $hidePhoto = false;
+
+	/**
+	 * @ORM\Column(type="array", nullable=true)
+	 * @FileStore\UploadableField(mapping="product_photo")
+	 */
+	protected $photo;
 
 	public function __construct()
 	{
@@ -585,7 +604,7 @@ class Product
 	/**
 	 * @param mixed $productDocument
 	 */
-	public function setProductDocument(ArrayCollection $productDocument)
+	public function setProductDocument($productDocument)
 	{
 		$this->productDocument = $productDocument;
 	}
@@ -601,7 +620,7 @@ class Product
 	/**
 	 * @param mixed $productCompany
 	 */
-	public function setProductCompany(ArrayCollection $productCompany)
+	public function setProductCompany($productCompany)
 	{
 		$this->productCompany = $productCompany;
 	}
@@ -644,5 +663,69 @@ class Product
 	public function setMoleculeNames($moleculeNames)
 	{
 		$this->moleculeNames = $moleculeNames;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getInactive()
+	{
+		return $this->inactive;
+	}
+
+	/**
+	 * @param mixed $inactive
+	 */
+	public function setInactive($inactive)
+	{
+		$this->inactive = $inactive;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDocument()
+	{
+		return $this->document;
+	}
+
+	/**
+	 * @param mixed $document
+	 */
+	public function setDocument($document)
+	{
+		$this->document = $document;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getHidePhoto()
+	{
+		return $this->hidePhoto;
+	}
+
+	/**
+	 * @param mixed $hidePhoto
+	 */
+	public function setHidePhoto($hidePhoto)
+	{
+		$this->hidePhoto = $hidePhoto;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPhoto()
+	{
+		return $this->photo;
+	}
+
+	/**
+	 * @param mixed $photo
+	 */
+	public function setPhoto($photo)
+	{
+		$this->photo = $photo;
 	}
 }

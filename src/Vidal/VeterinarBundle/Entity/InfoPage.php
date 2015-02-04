@@ -4,8 +4,9 @@ namespace Vidal\VeterinarBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Iphp\FileStoreBundle\Mapping\Annotation as FileStore;
 
-/** @ORM\Entity(repositoryClass="InfoPageRepository") @ORM\Table(name="infopage") */
+/** @ORM\Entity(repositoryClass="InfoPageRepository") @ORM\Table(name="infopage") @FileStore\Uploadable */
 class InfoPage
 {
 	/** @ORM\Id @ORM\Column(type="integer") @ORM\GeneratedValue */
@@ -61,12 +62,24 @@ class InfoPage
 	/** @ORM\ManyToMany(targetEntity="Picture", mappedBy="infoPages") */
 	protected $pictures;
 
-	/** @ORM\OneToMany(targetEntity="DocumentInfoPage", mappedBy="InfoPageID") */
-	protected $documentInfoPages;
+	/**
+	 * @ORM\ManyToMany(targetEntity="Document", mappedBy="infoPages")
+	 * @ORM\JoinTable(name="document_infopage",
+	 *        joinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")})
+	 */
+	protected $documents;
+
+	/**
+	 * @ORM\Column(type="array", nullable=true)
+	 * @FileStore\UploadableField(mapping="infopage_photo")
+	 */
+	protected $photo;
 
 	public function __construct()
 	{
-		$this->pictures          = new ArrayCollection();
+		$this->pictures  = new ArrayCollection();
+		$this->documents = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -283,22 +296,6 @@ class InfoPage
 	}
 
 	/**
-	 * @param mixed $documentInfoPages
-	 */
-	public function setDocumentInfoPages(ArrayCollection $documentInfoPages)
-	{
-		$this->documentInfoPages = $documentInfoPages;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getDocumentInfoPages()
-	{
-		return $this->documentInfoPages;
-	}
-
-	/**
 	 * @param mixed $CountryCode
 	 */
 	public function setCountryCode($CountryCode)
@@ -344,5 +341,37 @@ class InfoPage
 	public function setCountryEditionCode($CountryEditionCode)
 	{
 		$this->CountryEditionCode = $CountryEditionCode;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDocuments()
+	{
+		return $this->documents;
+	}
+
+	/**
+	 * @param mixed $documents
+	 */
+	public function setDocuments($documents)
+	{
+		$this->documents = $documents;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPhoto()
+	{
+		return $this->photo;
+	}
+
+	/**
+	 * @param mixed $photo
+	 */
+	public function setPhoto($photo)
+	{
+		$this->photo = $photo;
 	}
 }

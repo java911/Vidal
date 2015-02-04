@@ -170,18 +170,18 @@
         </service>
 
 		<!-- Справочник -->
-		<service id="sonata.admin.document" class="Vidal\DrugBundle\Admin\DocumentAdmin">
-			<tag name="sonata.admin" manager_type="orm" group="Справочник" label="Документы"/>
-			<argument />
-			<argument>Vidal\DrugBundle\Entity\Document</argument>
-			<argument>SonataAdminBundle:CRUD</argument>
-			<argument />
-		</service>
-
 		<service id="sonata.admin.product" class="Vidal\DrugBundle\Admin\ProductAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="Справочник" label="Препараты"/>
 			<argument />
 			<argument>Vidal\DrugBundle\Entity\Product</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.document" class="Vidal\DrugBundle\Admin\DocumentAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Справочник" label="Документы"/>
+			<argument />
+			<argument>Vidal\DrugBundle\Entity\Document</argument>
 			<argument>SonataAdminBundle:CRUD</argument>
 			<argument />
 		</service>
@@ -219,15 +219,47 @@
 		</service>
 
 		<!-- Ветеринария -->
-		<!--<service id="veterinar.admin.product" class="Vidal\VeterinarBundle\Admin\ProductAdmin">-->
-			<!--<tag name="sonata.admin" manager_type="orm" group="Ветеринария" label="Препараты"/>-->
-			<!--<argument />-->
-			<!--<argument>Vidal\VeterinarBundle\Entity\Product</argument>-->
-			<!--<argument>SonataAdminBundle:CRUD</argument>-->
-			<!--<argument />-->
-		<!--</service>-->
+		<service id="veterinar.admin.product" class="Vidal\VeterinarBundle\Admin\ProductAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Ветеринария" label="Препараты"/>
+			<argument />
+			<argument>Vidal\VeterinarBundle\Entity\Product</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="veterinar.admin.document" class="Vidal\VeterinarBundle\Admin\DocumentAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Ветеринария" label="Документы"/>
+			<argument />
+			<argument>Vidal\VeterinarBundle\Entity\Document</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.vcompany" class="Vidal\VeterinarBundle\Admin\CompanyAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Ветеринария" label="Компании"/>
+			<argument />
+			<argument>Vidal\VeterinarBundle\Entity\Company</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="sonata.admin.vinfoPage" class="Vidal\VeterinarBundle\Admin\InfoPageAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Ветеринария" label="Представительства"/>
+			<argument />
+			<argument>Vidal\VeterinarBundle\Entity\InfoPage</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
 
 		<!-- Не используется -->
+		<service id="sonata.admin.vproductcompany" class="Vidal\VeterinarBundle\Admin\ProductCompanyAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Не используется" label="-" show_in_dashboard="false"/>
+			<argument />
+			<argument>Vidal\VeterinarBundle\Entity\ProductCompany</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
 		<service id="sonata.admin.productcompany" class="Vidal\DrugBundle\Admin\ProductCompanyAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="Не используется" label="-" show_in_dashboard="false"/>
 			<argument />

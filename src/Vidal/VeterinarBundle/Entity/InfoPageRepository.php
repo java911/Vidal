@@ -8,7 +8,7 @@ class InfoPageRepository extends EntityRepository
 	public function findByLetter($l)
 	{
 		return $this->_em->createQuery('
-			SELECT i.InfoPageID, i.RusName, c.RusName Country, i.Name
+			SELECT i.InfoPageID, i.RusName, c.RusName Country, i.Name, i.photo
 			FROM VidalVeterinarBundle:InfoPage i
 			LEFT JOIN VidalVeterinarBundle:Country c WITH i.CountryCode = c
 			WHERE i.RusName LIKE :letter
@@ -22,7 +22,7 @@ class InfoPageRepository extends EntityRepository
 		$qb = $this->_em->createQueryBuilder();
 
 		$qb
-			->select('i.InfoPageID, i.RusName, country.RusName Country, i.Name')
+			->select('i.InfoPageID, i.RusName, country.RusName Country, i.Name, i.photo')
 			->from('VidalVeterinarBundle:InfoPage', 'i')
 			->leftJoin('VidalVeterinarBundle:Country', 'country', 'WITH', 'country.CountryCode = i.CountryCode')
 			->orderBy('i.RusName', 'ASC');
@@ -63,7 +63,7 @@ class InfoPageRepository extends EntityRepository
 	public function findByInfoPageID($InfoPageID)
 	{
 		return $this->_em->createQuery('
-			SELECT i.InfoPageID, i.RusName, i.RusAddress, c.RusName Country, i.Name
+			SELECT i.InfoPageID, i.RusName, i.RusAddress, c.RusName Country, i.Name, i.photo
 			FROM VidalVeterinarBundle:InfoPage i
 			LEFT JOIN VidalVeterinarBundle:Country c WITH i.CountryCode = c
 			WHERE i = :InfoPageID
@@ -76,10 +76,9 @@ class InfoPageRepository extends EntityRepository
 		return $this->_em->createQuery('
 			SELECT i.InfoPageID, i.RusName, c.RusName Country, i.Name
 			FROM VidalVeterinarBundle:InfoPage i
-			LEFT JOIN VidalVeterinarBundle:DocumentInfoPage di WITH di.InfoPageID = i
+			LEFT JOIN i.documents d
 			LEFT JOIN VidalVeterinarBundle:Country c WITH i.CountryCode = c
-			WHERE di.DocumentID = :DocumentID
-			ORDER BY di.Ranking DESC
+			WHERE d.DocumentID = :DocumentID
 		')->setParameter('DocumentID', $DocumentID)
 			->getResult();
 	}
@@ -87,7 +86,7 @@ class InfoPageRepository extends EntityRepository
 	public function findOneByName($name)
 	{
 		return $this->_em->createQuery('
-			SELECT i.InfoPageID, i.RusName, i.RusAddress, c.RusName Country, i.Name
+			SELECT i.InfoPageID, i.RusName, i.RusAddress, c.RusName Country, i.Name, i.photo
 			FROM VidalVeterinarBundle:InfoPage i
 			LEFT JOIN VidalVeterinarBundle:Country c WITH i.CountryCode = c
 			WHERE i.Name = :name
@@ -98,7 +97,7 @@ class InfoPageRepository extends EntityRepository
 	public function findAllOrdered()
 	{
 		return $this->_em->createQuery('
-			SELECT i.Name, i.RusName, c.RusName Country
+			SELECT i.Name, i.RusName, c.RusName Country, i.photo
 			FROM VidalVeterinarBundle:InfoPage i
 			LEFT JOIN VidalVeterinarBundle:Country c WITH i.CountryCode = c
 			ORDER BY i.RusName

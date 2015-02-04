@@ -355,7 +355,7 @@ class VidalController extends Controller
 		}
 
 		$params['title'] = $this->strip($product['RusName']) . ' - ' . $product['ZipInfo'] . ' | Видаль-Ветеринар';
-		$document        = $em->getRepository('VidalVeterinarBundle:Document')->findByProductDocument($ProductID);
+		$document        = $em->getRepository('VidalVeterinarBundle:Document')->findByProductID($ProductID);
 
 		if ($document) {
 			$articleId           = $document->getArticleID();

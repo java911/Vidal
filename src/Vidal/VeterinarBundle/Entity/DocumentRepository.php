@@ -89,40 +89,13 @@ class DocumentRepository extends EntityRepository
 		return $document;
 	}
 
-	public function findByProductDocument($ProductID)
-	{
-		$document = $this->_em->createQuery('
-			SELECT d
-			FROM VidalVeterinarBundle:Document d
-			LEFT JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.DocumentID = d
-			WHERE pd.ProductID = :ProductID AND d.ArticleID IN (2,5)
-			ORDER BY d.ArticleID ASC
-		')->setParameter('ProductID', $ProductID)
-			->setMaxResults(1)
-			->getOneOrNullResult();
-
-		if (!$document) {
-			$document = $this->_em->createQuery('
-				SELECT d
-				FROM VidalVeterinarBundle:Document d
-				LEFT JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.DocumentID = d
-				WHERE pd.ProductID = :ProductID AND d.ArticleID IN (4,3,1)
-				ORDER BY d.ArticleID DESC
-			')->setParameter('ProductID', $ProductID)
-				->setMaxResults(1)
-				->getOneOrNullResult();
-		}
-
-		return $document;
-	}
-
 	public function findIdsByInfoPageID($InfoPageID)
 	{
 		$documentsRaw = $this->_em->createQuery('
 			SELECT DISTINCT d.DocumentID
 			FROM VidalVeterinarBundle:Document d
-			JOIN VidalVeterinarBundle:DocumentInfoPage di WITH di.DocumentID = d
-			WHERE di.InfoPageID = :InfoPageID AND
+			JOIN d.infoPages i
+			WHERE i.InfoPageID = :InfoPageID AND
 				d.CountryEditionCode = \'RUS\' AND
 				d.ArticleID IN (2,5,4,3)
 			ORDER BY d.DocumentID
@@ -170,8 +143,7 @@ class DocumentRepository extends EntityRepository
 		$raw = $this->_em->createQuery('
 			SELECT p.ProductID, d.Indication
 			FROM VidalVeterinarBundle:Product p
-			LEFT JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.ProductID = p
-			LEFT JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d
+			LEFT JOIN p.document d
 			WHERE p.ProductID IN (:productIds)
 		')->setParameter('productIds', $productIds)
 			->getResult();
@@ -195,6 +167,17 @@ class DocumentRepository extends EntityRepository
 			WHERE m.MoleculeID = :MoleculeID
 			ORDER BY d.YearEdition DESC
 		')->setParameter('MoleculeID', $MoleculeID)
+			->setMaxResults(1)
+			->getOneOrNullResult();
+	}
+
+	public function findByProductID($ProductID)
+	{
+		return $this->_em->createQuery('
+			SELECT d
+			FROM VidalVeterinarBundle:Document d
+			JOIN d.products p WITH p = :ProductID
+		')->setParameter('ProductID', $ProductID)
 			->setMaxResults(1)
 			->getOneOrNullResult();
 	}

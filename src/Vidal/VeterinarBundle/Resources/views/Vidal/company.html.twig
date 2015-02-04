@@ -2,10 +2,19 @@
 
 
 {% block title %}
-	<h1>{{ company.CompanyName|upper|raw }}{% if company.Property is not empty %}, {{ company.Property|raw }}{% endif %}
-		{% if company.Country is not empty  and company.Country != 'Unknown' %}
-			<span>({{ company.Country }})</span>
-		{% endif %}</h1>
+	<div class="relative">
+		<h1>{{ company.CompanyName|upper|raw }}{% if company.Property is not empty %}, {{ company.Property|raw }}{% endif %}
+			{% if company.Country is not empty  and company.Country != 'Unknown' %}
+				<span>({{ company.Country }})</span>
+			{% endif %}</h1>
+
+		{% if isAdmin %}
+			<a class="admin-edit fade" target="_blank"
+			   href="{{ path('admin_vidal_veterinar_company_edit', {'id':company.CompanyID}) }}">
+				<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+			</a>
+		{% endif %}
+	</div>
 {% endblock %}
 
 
@@ -38,6 +47,9 @@
 	<style type="text/css">
 		.products-table-name {
 			width: 140px;
+		}
+		.relative {
+			position: relative;
 		}
 	</style>
 {% endblock %}

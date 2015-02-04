@@ -1,6 +1,6 @@
 {% set Composition = product is defined ? product.Composition : document.CompiledComposition %}
 
-<div class="navigation">
+<div class="navigation relative">
 	<i></i>
 
 	<div class="navigation-items">
@@ -34,6 +34,14 @@
 			<div><a href="#storage">Условия и сроки хранения</a></div>
 		{% endif %}
 	</div>
+
+	{# ссылка админу на редактирование #}
+	{% if isAdmin %}
+		<a class="admin-edit fade" target="_blank"
+		   href="{{ path('admin_vidal_veterinar_document_edit', {'id':document.DocumentID}) }}">
+			<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+		</a>
+	{% endif %}
 </div>
 
 <script type="text/javascript">

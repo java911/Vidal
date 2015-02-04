@@ -7,7 +7,17 @@
 
 
 {% block title %}
-	<h1>{{ RusName|raw }}</h1>
+	<div class="relative">
+		{# ссылка админу на редактирование #}
+		{% if isAdmin %}
+			<a class="admin-edit fade" target="_blank"
+			   href="{{ path('admin_vidal_veterinar_product_edit', {'id':product.ProductID}) }}">
+				<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+			</a>
+		{% endif %}
+
+		<h1>{{ RusName|raw }}</h1>
+	</div>
 {% endblock %}
 
 
@@ -23,15 +33,45 @@
 
 
 {% block vidal %}
-	{% if products is not empty %}
-		<div class="pictures">
-			{% for picture in pictures %}
-				{% set path = '/upload/veterinar/' ~ picture %}
-				{% if is_file(path) %}
-					<img src="{{ path }}"/>
-				{% endif %}
-			{% endfor %}
-		</div>
+	{% if not product.hidePhoto %}
+		{% if product.photo %}
+			<div class="pictures block">
+				<a href="{{ product.photo.path }}" target="_blank">
+					<img src="{{ product.photo.path }}"/>
+				</a>
+			</div>
+		{% elseif pictures is defined and pictures is not empty %}
+			<div class="pictures block">
+				{% for picture in pictures %}
+					{% set path = '/upload/products/' ~ picture %}
+					{% if is_file(path) %}
+						<a href="{{ path }}" target="_blank">
+							<img src="{{ path }}"/>
+						</a>
+					{% endif %}
+				{% endfor %}
+			</div>
+		{% endif %}
+	{% endif %}
+
+
+	{% if not product.hidePhoto %}
+		{% if product.photo %}
+			<div class="pictures">
+				<a href="{{ product.photo.path }}" target="_blank">
+					<img src="{{ product.photo.path }}"/>
+				</a>
+			</div>
+		{% elseif pictures is not empty %}
+			<div class="pictures">
+				{% for picture in pictures %}
+					{% set path = '/upload/veterinar/' ~ picture %}
+					{% if is_file(path) %}
+						<img src="{{ path }}"/>
+					{% endif %}
+				{% endfor %}
+			</div>
+		{% endif %}
 	{% endif %}
 
 	{# Навигация и анонс описания #}
@@ -41,7 +81,8 @@
 				<span>Описание лекарственного препарата ветеринарного назначения <b>{{ RusName|raw }}</b></span>
 			</div>
 			<div class="anons-content">
-				основано на официально утвержденной инструкции по применению препарата {{ RusName|raw }} для специалистов
+				основано на официально утвержденной инструкции по применению препарата {{ RusName|raw }} для
+				специалистов
 				и утверждено компанией-производителем для издания справочника Видаль Ветеринар 2013 года.
 			</div>
 		</div>
@@ -179,8 +220,8 @@
 		<div class="block-head">Форма выпуска, состав и упаковка</div>
 		<div class="block-content composition">
 			{{ Composition|replace({
-			'[PRING]':'<i class"pring">Вспомогательные вещества</i>:',
-			'&loz;':'<img class="loz" src="'~loz~'" title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>'
+				'[PRING]':'<i class"pring">Вспомогательные вещества</i>:',
+				'&loz;':'<img class="loz" src="'~loz~'" title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>'
 			})|raw }}
 		</div>
 	</div>
@@ -201,9 +242,13 @@
 			{% spaceless %}
 				<textarea cols="92" rows="2">
 					{% if product is defined %}
-						<a href="{{ url('v_product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}" target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике Видаль-Ветеринар.</a>
+						<a href="{{ url('v_product', {'EngName':product.Name, 'ProductID':product.ProductID}) }}"
+						   target="_blank"><b>{{ product.RusName|raw }}</b>. Описание препарата в справочнике
+							Видаль-Ветеринар.</a>
 					{% else %}
-						<a href="{{ url('v_document', {'name':document.Name ~ '_' ~ document.DocumentID}) }}" target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике Видаль-Ветеринар.</a>
+						<a href="{{ url('v_document', {'name':document.Name ~ '_' ~ document.DocumentID}) }}"
+						   target="_blank"><b>{{ document.RusName|raw }}</b>. Описание препарата в справочнике
+							Видаль-Ветеринар.</a>
 					{% endif %}
 				</textarea>
 			{% endspaceless %}
@@ -223,6 +268,9 @@
 		.navigation-items > div {
 			display: block;
 			width:   auto;
+		}
+		.relative {
+			position: relative;
 		}
 	</style>
 {% endblock %}

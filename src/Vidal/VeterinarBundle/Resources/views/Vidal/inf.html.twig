@@ -2,11 +2,20 @@
 
 
 {% block title %}
-	<h1>{{ infoPage.RusName|upper|raw }}
-		{% if infoPage.Country is not empty and infoPage.Country != 'Unknown' %}
-			<span>({{ infoPage.Country }})</span>
+	<div class="relative">
+		<h1>{{ infoPage.RusName|upper|raw }}
+			{% if infoPage.Country is not empty and infoPage.Country != 'Unknown' %}
+				<span>({{ infoPage.Country }})</span>
+			{% endif %}
+		</h1>
+
+		{% if isAdmin %}
+			<a class="admin-edit fade" target="_blank"
+			   href="{{ path('admin_vidal_veterinar_infopage_edit', {'id':infoPage.InfoPageID}) }}">
+				<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+			</a>
 		{% endif %}
-	</h1>
+	</div>
 {% endblock %}
 
 
@@ -27,8 +36,12 @@
 	{# логотип компании и инфо #}
 	<table class="infopage">
 		<tr>
-			{% if picture %}
-				{% set path = '/upload/veterinar/infoPages/' ~ picture.path %}
+			{% if infoPage.photo %}
+				<td class="infopage-logo">
+					<img src="{{ infoPage.photo.path }}"/>
+				</td>
+			{% elseif picture %}
+				{% set path = '/upload/companies/' ~ picture.path %}
 				{% if is_file(path) %}
 					<td class="infopage-logo">
 						<img src="{{ path }}"/>
@@ -68,6 +81,9 @@
 		.infopage-about p {
 			margin:    7px 0;
 			font-size: 14px;
+		}
+		.relative {
+			position: relative;
 		}
 	</style>
 {% endblock %}

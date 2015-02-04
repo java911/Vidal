@@ -8,11 +8,10 @@ class ProductRepository extends EntityRepository
 	public function findByLetter($letter)
 	{
 		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID, p.photo, p.hidePhoto,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, d.ArticleID, d.Indication, d.DocumentID
 			FROM VidalVeterinarBundle:Product p
-			LEFT JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.ProductID = p
-			LEFT JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d
+			LEFT JOIN p.document d
 			LEFT JOIN VidalVeterinarBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE p.RusName LIKE :letter
 			ORDER BY p.RusName ASC
@@ -23,7 +22,7 @@ class ProductRepository extends EntityRepository
 	public function findByCompany($CompanyID)
 	{
 		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
+			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo, p.hidePhoto,
 				p.RegistrationNumber, p.RegistrationDate,
 				country.RusName CompanyCountry,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
@@ -33,10 +32,8 @@ class ProductRepository extends EntityRepository
 			JOIN VidalVeterinarBundle:ProductCompany pc WITH pc.ProductID = p
 			JOIN VidalVeterinarBundle:Company c WITH pc.CompanyID = c
 			LEFT JOIN VidalVeterinarBundle:Country country WITH c.CountryCode = country
-			LEFT JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.ProductID = p
-			LEFT JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d
-			LEFT JOIN VidalVeterinarBundle:DocumentInfoPage di WITH di.DocumentID = d
-			LEFT JOIN VidalVeterinarBundle:InfoPage i WITH di.InfoPageID = i
+			LEFT JOIN p.document d
+			LEFT JOIN d.infoPages i
 			LEFT JOIN VidalVeterinarBundle:Country co WITH i.CountryCode = co
 			WHERE c = :CompanyID
 			ORDER BY p.RusName ASC
@@ -47,7 +44,7 @@ class ProductRepository extends EntityRepository
 	public function findByProductID($ProductID)
 	{
 		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID, p.photo, p.hidePhoto,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.Composition
 			FROM VidalVeterinarBundle:Product p
 			LEFT JOIN VidalVeterinarBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
@@ -59,7 +56,7 @@ class ProductRepository extends EntityRepository
 	public function findOneByName($Name)
 	{
 		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID, p.photo, p.hidePhoto,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.Composition
 			FROM VidalVeterinarBundle:Product p
 			LEFT JOIN VidalVeterinarBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
@@ -72,11 +69,10 @@ class ProductRepository extends EntityRepository
 	public function findOneByDocumentID($DocumentID)
 	{
 		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID, p.photo, p.hidePhoto,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.Composition
 			FROM VidalVeterinarBundle:Product p
-			JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.ProductID = p.ProductID
-			JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d.DocumentID
+			JOIN p.document d
 			LEFT JOIN VidalVeterinarBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d = :DocumentID
 		')->setParameter('DocumentID', $DocumentID)
@@ -87,16 +83,15 @@ class ProductRepository extends EntityRepository
 	public function findByDocumentID($DocumentID)
 	{
 		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID, p.photo, p.hidePhoto,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug
 			FROM VidalVeterinarBundle:Product p
-			LEFT JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.ProductID = p
-			LEFT JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d
+			LEFT JOIN p.document d
 			LEFT JOIN VidalVeterinarBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d = :DocumentID AND
 				p.CountryEditionCode = \'RUS\' AND
 				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
-			ORDER BY pd.Ranking DESC, p.RusName ASC
+			ORDER BY p.RusName ASC
 		')->setParameter('DocumentID', $DocumentID)
 			->getResult();
 	}
@@ -104,11 +99,10 @@ class ProductRepository extends EntityRepository
 	public function findByDocumentIDs($documentIds)
 	{
 		return $this->_em->createQuery('
-			SELECT DISTINCT(p.ProductID), p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus,
+			SELECT DISTINCT(p.ProductID), p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.photo, p.hidePhoto,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, d.ArticleID, d.Indication, d.DocumentID
 			FROM VidalVeterinarBundle:Product p
-			LEFT JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.ProductID = p
-			LEFT JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d
+			LEFT JOIN p.document d
 			LEFT JOIN VidalVeterinarBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d IN (:DocumentIDs) AND
 				p.CountryEditionCode = \'RUS\' AND
@@ -123,12 +117,11 @@ class ProductRepository extends EntityRepository
 	public function findByInfoPageID($InfoPageID)
 	{
 		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
+			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo, p.hidePhoto,
 				p.RegistrationNumber, p.RegistrationDate
 			FROM VidalVeterinarBundle:Product p
-			JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.ProductID = p
-			JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d
-			JOIN VidalVeterinarBundle:DocumentInfoPage di WITH di.DocumentID = d AND di.InfoPageID = :InfoPageID
+			JOIN p.document d
+			JOIN d.infoPages WITH i.InfoPageID = :InfoPageID
 			WHERE p.CountryEditionCode = \'RUS\' AND
 				(p.MarketStatusID = 1 OR p.MarketStatusID = 2) AND
 				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
@@ -172,14 +165,12 @@ class ProductRepository extends EntityRepository
 		$qb = $this->_em->createQueryBuilder();
 
 		$qb
-			->select('p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.ProductID,
+			->select('p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.ProductID, p.photo, p.hidePhoto,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
 				d.Indication, d.ArticleID')
 			->from('VidalVeterinarBundle:Product', 'p')
-			->leftJoin('VidalVeterinarBundle:ProductDocument', 'pd', 'WITH', 'pd.ProductID = p')
-			->leftJoin('VidalVeterinarBundle:Document', 'd', 'WITH', 'pd.DocumentID = d')
-			->orderBy('p.RusName', 'ASC')
-			->addOrderBy('pd.Ranking', 'DESC');
+			->leftJoin('p.document', 'd')
+			->orderBy('p.RusName', 'ASC');
 
 		# поиск по словам
 		$where = '';
@@ -252,16 +243,15 @@ class ProductRepository extends EntityRepository
 		}
 
 		$productsRaw = $this->_em->createQuery('
-			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID, p.photo, p.hidePhoto,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, d.Indication, d.DocumentID
 			FROM VidalVeterinarBundle:Product p
-			LEFT JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.ProductID = p
-			LEFT JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d
+			LEFT JOIN p.document d
 			LEFT JOIN VidalVeterinarBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d IN (:documentIds) AND
 				p.CountryEditionCode = \'RUS\' AND
 				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
-			ORDER BY pd.Ranking DESC, p.RusName ASC
+			ORDER BY p.RusName ASC
 		')->setParameter('documentIds', $documentIds)
 			->getResult();
 
@@ -296,16 +286,15 @@ class ProductRepository extends EntityRepository
 		}
 
 		$productsRaw = $this->_em->createQuery('
-			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID, p.photo, p.hidePhoto,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, d.Indication, d.DocumentID
 			FROM VidalVeterinarBundle:Product p
-			LEFT JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.ProductID = p
-			LEFT JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d
+			LEFT JOIN p.document d
 			LEFT JOIN VidalVeterinarBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d IN (:documentIds) AND
 				p.CountryEditionCode = \'RUS\' AND
 				(p.ProductTypeCode = \'DRUG\' OR p.ProductTypeCode = \'GOME\')
-			ORDER BY pd.Ranking DESC, p.RusName ASC
+			ORDER BY p.RusName ASC
 		')->setParameter('documentIds', $documentIds)
 			->getResult();
 
@@ -326,12 +315,11 @@ class ProductRepository extends EntityRepository
 	public function findByClPhGroup($description)
 	{
 		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID, p.photo, p.hidePhoto,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
 				d.Indication, d.DocumentID, d.ClPhGrDescription
 			FROM VidalVeterinarBundle:Product p
-			LEFT JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.ProductID = p
-			LEFT JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d
+			LEFT JOIN p.document d
 			LEFT JOIN VidalVeterinarBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d.ClPhGrName = :description AND
 				p.CountryEditionCode = \'RUS\' AND
@@ -344,13 +332,12 @@ class ProductRepository extends EntityRepository
 	public function findByPhThGroup($id)
 	{
 		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID,
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, ms.RusName MarketStatus, p.ProductID, p.photo, p.hidePhoto,
 				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
 				d.Indication, d.DocumentID
 			FROM VidalVeterinarBundle:Product p
 			JOIN p.phthgroups g WITH g.id = :id
-			LEFT JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.ProductID = p
-			LEFT JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d
+			LEFT JOIN p.document d
 			LEFT JOIN VidalVeterinarBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE p.CountryEditionCode = \'RUS\' AND
 				p.ProductTypeCode IN (\'DRUG\',\'GOME\')
@@ -417,14 +404,13 @@ class ProductRepository extends EntityRepository
 	public function findByMoleculeID($MoleculeID)
 	{
 		return $this->_em->createQuery('
-			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug,
+			SELECT p.ZipInfo, p.ProductID, p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo, p.hidePhoto,
 				p.RegistrationNumber, p.RegistrationDate,
 				d.Indication, d.DocumentID, d.ArticleID, d.RusName DocumentRusName, d.EngName DocumentEngName,
 				d.Name DocumentName
 			FROM VidalVeterinarBundle:Product p
 			LEFT JOIN p.moleculeNames mn
-			LEFT JOIN VidalVeterinarBundle:ProductDocument pd WITH pd.ProductID = p
-			LEFT JOIN VidalVeterinarBundle:Document d WITH pd.DocumentID = d
+			LEFT JOIN p.document d
 			WHERE mn.MoleculeID = :MoleculeID
 			ORDER BY d.ArticleID ASC
 		')->setParameter('MoleculeID', $MoleculeID)

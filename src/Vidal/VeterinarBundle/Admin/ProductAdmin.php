@@ -5,7 +5,7 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Vidal\DrugBundle\Transformer\DocumentToStringTransformer;
+use Vidal\VeterinarBundle\Transformer\DocumentToStringTransformer;
 
 class ProductAdmin extends Admin
 {
@@ -54,10 +54,7 @@ class ProductAdmin extends Admin
 			->add('DLO', null, array('label' => 'ДЛО', 'required' => false))
 			->add('ValidPeriod', null, array('label' => 'Срок действия', 'required' => false))
 			->add('StrCond', null, array('label' => 'Условия хранения', 'required' => false))
-			->add('atcCodes', null, array('label' => 'Коды АТХ', 'required' => false))
 			->add('moleculeNames', null, array('label' => 'Активные вещества', 'required' => false))
-			->add('clphGroups', null, array('label' => 'Клинико-фармакологические группы', 'required' => false, 'help' => 'ClPhGroups'))
-			->add('phthgroups', null, array('label' => 'Фармако-терапевтические группы', 'required' => false, 'help' => 'PhThGroups'))
 			->add('productCompany', 'sonata_type_collection',
 				array(
 					'label'              => 'Компании',
@@ -82,7 +79,6 @@ class ProductAdmin extends Admin
 			->add('ProductID', null, array('label' => 'ID'))
 			->add('RusName', null, array('label' => 'Название'))
 			->add('EngName', null, array('label' => 'Латинское'))
-			->add('ProductTypeCode', null, array('label' => 'Тип препарата'))
 			->add('MarketStatusID', null, array('label' => 'Статус'))
 			->add('ZipInfo', null, array('label' => 'Форма выпуска'))
 			->add('RegistrationDate', null, array('label' => 'Дата регистр.'))
@@ -96,7 +92,6 @@ class ProductAdmin extends Admin
 			->addIdentifier('ProductID', null, array('label' => 'ID'))
 			->add('RusName', null, array('label' => 'Название', 'template' => 'VidalDrugBundle:Sonata:RusName.html.twig'))
 			->add('EngName', null, array('label' => 'Латинское', 'template' => 'VidalDrugBundle:Sonata:EngName.html.twig'))
-			->add('ProductTypeCode', null, array('label' => 'Тип препарата'))
 			->add('MarketStatusID', null, array('label' => 'Статус'))
 			->add('ZipInfo', null, array('label' => 'Форма выпуска'))
 			->add('RegistrationDate', null, array('label' => 'Дата регистр.'))

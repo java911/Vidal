@@ -113,9 +113,6 @@ class Document
 	 */
 	protected $clphPointers;
 
-	/** @ORM\OneToMany(targetEntity="DocumentInfoPage", mappedBy="DocumentID") */
-	protected $documentInfoPages;
-
 	/** @ORM\Column(length=4, nullable=true) */
 	protected $PregnancyUsing;
 
@@ -160,12 +157,24 @@ class Document
 	 */
 	protected $molecules;
 
+	/** @ORM\OneToMany(targetEntity="Product", mappedBy="document") */
+	protected $products;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="InfoPage", inversedBy="documents")
+	 * @ORM\JoinTable(name="document_infopage",
+	 *        joinColumns={@ORM\JoinColumn(name="DocumentID", referencedColumnName="DocumentID")},
+	 *        inverseJoinColumns={@ORM\JoinColumn(name="InfoPageID", referencedColumnName="InfoPageID")})
+	 */
+	protected $infoPages;
+
 	public function __construct()
 	{
 		$this->productDocument   = new ArrayCollection();
 		$this->clphPointers      = new ArrayCollection();
-		$this->documentInfoPages = new ArrayCollection();
+		$this->infoPages         = new ArrayCollection();
 		$this->molecules         = new ArrayCollection();
+		$this->products          = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -590,22 +599,6 @@ class Document
 	}
 
 	/**
-	 * @param mixed $documentInfoPages
-	 */
-	public function setDocumentInfoPages(ArrayCollection $documentInfoPages)
-	{
-		$this->documentInfoPages = $documentInfoPages;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getDocumentInfoPages()
-	{
-		return $this->documentInfoPages;
-	}
-
-	/**
 	 * @param mixed $Name
 	 */
 	public function setName($Name)
@@ -923,5 +916,37 @@ class Document
 	public function setMolecules($molecules)
 	{
 		$this->molecules = $molecules;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getProducts()
+	{
+		return $this->products;
+	}
+
+	/**
+	 * @param mixed $products
+	 */
+	public function setProducts($products)
+	{
+		$this->products = $products;
+	}
+
+	/**
+	 * @param mixed $infoPages
+	 */
+	public function setInfoPages($infoPages)
+	{
+		$this->infoPages = $infoPages;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getInfoPages()
+	{
+		return $this->infoPages;
 	}
 }
