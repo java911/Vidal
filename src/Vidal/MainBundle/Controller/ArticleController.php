@@ -367,11 +367,12 @@ class ArticleController extends Controller
 	}
 
 	/**
-	 * @Route("/vracham/{url}", name="art", requirements={"url"=".+"})
 	 * @Template("VidalMainBundle:Article:art.html.twig")
 	 */
 	public function artAction(Request $request, $url)
 	{
+		//@Route("/vracham/{url}", name="art", requirements={"url"=".+"})
+
 		if ($response = $this->checkRole()) {
 			return $response;
 		}
