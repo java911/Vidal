@@ -310,7 +310,7 @@ class ArticleController extends Controller
 	}
 
 	/**
-	 * @Route("/vracham/expert/", name="vracham_expert")
+	 * @Route("/vracham/expert", name="vracham_expert")
 	 * @Template
 	 */
 	public function vrachamExpertAction()
