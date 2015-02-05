@@ -11,7 +11,8 @@ class ExcelUsersCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:excel_users');
+		$this->setName('vidal:excel_users')
+			->addArgument('numbers', InputArgument::IS_ARRAY, 'Number of year or month');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
@@ -20,13 +21,15 @@ class ExcelUsersCommand extends ContainerAwareCommand
 		ini_set('max_execution_time', 0);
 
 		$em             = $this->getContainer()->get('doctrine')->getManager();
-		$users          = $em->getRepository('VidalMainBundle:User')->forExcel();
 		$phpExcelObject = $this->getContainer()->get('phpexcel')->createPHPExcelObject();
+		$numbers        = $input->getArgument('numbers');
+		$number         = empty($numbers) ? null : intval($numbers[0]);
+		$users          = $em->getRepository('VidalMainBundle:User')->forExcel($number);
 
-		$phpExcelObject->getProperties()->setCreator("Vidal.ru")
-			->setLastModifiedBy("Vidal.ru")
-			->setTitle("Зарегистрированные пользователи Видаля")
-			->setSubject("Зарегистрированные пользователи Видаля");
+		$phpExcelObject->getProperties()->setCreator('Vidal.ru')
+			->setLastModifiedBy('Vidal.ru')
+			->setTitle('Зарегистрированные пользователи Видаля')
+			->setSubject('Зарегистрированные пользователи Видаля');
 
 		$phpExcelObject->setActiveSheetIndex(0)
 			->setCellValue('A1', 'Специальность')
@@ -44,24 +47,30 @@ class ExcelUsersCommand extends ContainerAwareCommand
 
 		for ($i = 0; $i < count($users); $i++) {
 			$index = $i + 2;
+			$name  = $users[$i]['lastName'] . ' ' . $users[$i]['firstName'];
+			if (!empty($users[$i]['surName'])) {
+				$name .= ' ' . $users[$i]['surName'];
+			}
+
 			$worksheet
 				->setCellValue("A{$index}", $users[$i]['specialty'])
 				->setCellValue("B{$index}", $users[$i]['city'])
 				->setCellValue("C{$index}", $users[$i]['region'])
 				->setCellValue("D{$index}", $users[$i]['registered'])
 				->setCellValue("E{$index}", $users[$i]['username'])
-				->setCellValue("F{$index}", $users[$i]['lastName'] . ' ' . $users[$i]['firstName'] . ' ' . $users[$i]['surName']);
+				->setCellValue("F{$index}", $name);
 		}
 
 		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 		$phpExcelObject->setActiveSheetIndex(0);
 
 		$file = $this->getContainer()->get('kernel')->getRootDir() . DIRECTORY_SEPARATOR . '..'
-			. DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR . 'users.xls';
+			. DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR
+			. ($number ? "users_{$number}.xls" : 'users.xls');
 
 		$writer = $this->getContainer()->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
 		$writer->save($file);
 
-		$output->writeln("+++ vidal:excel_users completed!");
+		$output->writeln('+++ vidal:excel_users completed!');
 	}
 }

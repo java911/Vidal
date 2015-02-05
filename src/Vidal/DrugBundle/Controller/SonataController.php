@@ -828,59 +828,66 @@ class SonataController extends Controller
 	/** @Route("/users-excel/{number}", name="users_excel", options={"expose"=true}) */
 	public function usersExcel($number = null)
 	{
-		ini_set('memory_limit', -1);
-		ini_set('max_execution_time', 0);
+		$response = new Response();
 
-		$em             = $this->get('doctrine')->getManager();
-		$users          = $em->getRepository('VidalMainBundle:User')->forExcel($number);
-		$phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
+		$file = $this->get('kernel')->getRootDir() . DIRECTORY_SEPARATOR . '..'
+			. DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR
+			. ($number ? "users_{$number}.xls" : 'users.xls');
 
-		$phpExcelObject->getProperties()->setCreator("Vidal.ru")
-			->setLastModifiedBy("Vidal.ru")
-			->setTitle("Зарегистрированные пользователи Видаля")
-			->setSubject("Зарегистрированные пользователи Видаля");
+		$name = 'Отчет Vidal - ';
 
-		$phpExcelObject->setActiveSheetIndex(0)
-			->setCellValue('A1', 'Специальность')
-			->setCellValue('B1', 'Город')
-			->setCellValue('C1', 'Регион')
-			->setCellValue('D1', 'Зарегистр.')
-			->setCellValue('E1', 'Почтовый адрес')
-			->setCellValue('F1', 'ФИО');
-
-		$worksheet = $phpExcelObject->getActiveSheet();
-		$alphabet  = explode(' ', 'A B C D E F G H I J K L N O P Q R S T U V W X');
-		foreach ($alphabet as $letter) {
-			$worksheet->getColumnDimension($letter)->setAutoSize('true');
+		if (!$number) {
+			$name .= 'по всем пользователям';
 		}
-
-		for ($i = 0; $i < count($users); $i++) {
-			$index = $i + 2;
-			$worksheet
-				->setCellValue("A{$index}", $users[$i]['specialty'])
-				->setCellValue("B{$index}", $users[$i]['city'])
-				->setCellValue("C{$index}", $users[$i]['region'])
-				->setCellValue("D{$index}", $users[$i]['registered'])
-				->setCellValue("E{$index}", $users[$i]['username'])
-				->setCellValue("F{$index}", $users[$i]['lastName'] . ' ' . $users[$i]['firstName'] . ' ' . $users[$i]['surName']);
+		elseif ($number > 2000) {
+			$name .= "за $number год";
 		}
+		else {
+			$name .= 'за ' . $this->getMonthName($number) . ' ' . date('Y') . ' года';
+		}
+		$name .= '.xls';
 
-		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
-		$phpExcelObject->setActiveSheetIndex(0);
+		// Set headers
+		$response->headers->set('Cache-Control', 'private');
+		$response->headers->set('Content-type', mime_content_type($file));
+		$response->headers->set('Content-Disposition', 'attachment; filename="' . $name . '";');
+		$response->headers->set('Content-length', filesize($file));
 
-		// create the writer
-		$writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
-		// create the response
-		$response = $this->get('phpexcel')->createStreamedResponse($writer);
-		// adding headers
-		$filename = $number
-			? ($number > 2000 ? "Отчет: $number год" : "Отчет: $number месяц " . date('Y') . ' год')
-			: 'Отчет: все пользователи';
-		$response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-		$response->headers->set('Content-Disposition', "attachment;filename={$filename}.xls");
-		$response->headers->set('Pragma', 'public');
-		$response->headers->set('Cache-Control', 'maxage=1');
+		// Send headers before outputting anything
+		$response->sendHeaders();
 
-		return $response;
+		$response->setContent(readfile($file));
+	}
+
+	public function getMonthName($month)
+	{
+		switch ($month) {
+			case 1:
+				return 'Январь';
+			case 2:
+				return 'Февраль';
+			case 3:
+				return 'Март';
+			case 4:
+				return 'Апрель';
+			case 5:
+				return 'Май';
+			case 6:
+				return 'Июнь';
+			case 7:
+				return 'Июль';
+			case 8:
+				return 'Август';
+			case 9:
+				return 'Сентябрь';
+			case 10:
+				return 'Октябрь';
+			case 11:
+				return 'Ноябрь';
+			case 12:
+				return 'Декабрь';
+			default:
+				return '';
+		}
 	}
 }
