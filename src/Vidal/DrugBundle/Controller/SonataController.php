@@ -834,7 +834,7 @@ class SonataController extends Controller
 			. DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR
 			. ($number ? "users_{$number}.xlsx" : 'users.xlsx');
 
-		//$file = '/home/twigavid/vidal/users_reports/' . ($number ? "users_{$number}.xlsx" : 'users.xlsx');
+		$file = '/home/twigavid/vidal/users_reports/' . ($number ? "users_{$number}.xlsx" : 'users.xlsx');
 
 		$name = 'Отчет Vidal - ';
 
