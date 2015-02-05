@@ -828,14 +828,8 @@ class SonataController extends Controller
 	/** @Route("/excel-users/{number}", name="excel_users", options={"expose"=true}) */
 	public function excelUsersAction($number = null)
 	{
-		$response = new Response();
-
-		$file = $this->get('kernel')->getRootDir() . DIRECTORY_SEPARATOR . '..'
-			. DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR
-			. ($number ? "users_{$number}.xlsx" : 'users.xlsx');
-
+		# имя для скачки
 		$name = 'Отчет Vidal - ';
-
 		if (!$number) {
 			$name .= 'по всем пользователям';
 		}
@@ -845,19 +839,27 @@ class SonataController extends Controller
 		else {
 			$name .= 'за ' . $this->getMonthName($number) . ' ' . date('Y') . ' года';
 		}
-		$name .= '.xlsx';
+		$name .= '.xls';
 
-		// Set headers
-		$response->headers->set('Cache-Control', 'private');
-		$response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-		$response->headers->set('Content-Disposition', 'attachment; filename="' . $name . '";');
-		$response->headers->set('Content-length', filesize($file));
-		$response->headers->set('X-Sendfile', $file);
+		if (!$this->get('security.context')->isGranted('ROLE_DOCTOR')) {
+			return $this->redirect($this->generateUrl('no_download', array('filename' => $name)));
+		}
 
-		// Send headers before outputting anything
-		$response->sendHeaders();
+		# путь файла
+		if ($this->get('kernel')->getEnvironment() == 'dev') {
+			$file = $this->get('kernel')->getRootDir() . DIRECTORY_SEPARATOR . '..'
+				. DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR
+				. ($number ? "users_{$number}.xls" : 'users.xls');
+		}
+		else {
+			$file = '/home/twigavid/vidal/download/' . ($number ? "users_{$number}.xlsx" : 'users.xlsx');
+		}
 
-		$response->setContent(readfile($file));
+		header('X-Sendfile: ' . $file);
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment; filename="' . $name . '"');
+		readfile($file);
+		//exit;
 	}
 
 	public function getMonthName($month)
