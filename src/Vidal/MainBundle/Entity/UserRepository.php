@@ -60,7 +60,11 @@ class UserRepository extends EntityRepository
 			$qb->where('u.created > :created')->setParameter('created', $created);
 		}
 		elseif ($number > 0 && $number <= 12) {
-			$year      = date('Y');
+			$year  = date('Y');
+			$month = date('m');
+			if ($number > $month) {
+				$year--;
+			}
 			$created   = new \DateTime("$year-$number-01 00:00:00");
 			$nextMonth = new \DateTime("$year-$number-01 00:00:00");
 			$nextMonth->modify('+1 month');

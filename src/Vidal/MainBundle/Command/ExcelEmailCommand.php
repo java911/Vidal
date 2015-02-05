@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ExcelEmailCommand extends ContainerAwareCommand
 {
-	protected $emails = array('7binary@gmail.com');
+	protected $emails = array('7binary@gmail.com', 'm.yudintseva@vidal.ru');
 
 	protected function configure()
 	{
@@ -18,60 +18,88 @@ class ExcelEmailCommand extends ContainerAwareCommand
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		ini_set('memory_limit', -1);
-		ini_set('max_execution_time', 0);
-
-		$em             = $this->getContainer()->get('doctrine')->getManager();
-		$phpExcelObject = $this->getContainer()->get('phpexcel')->createPHPExcelObject();
-		$numbers        = $input->getArgument('numbers');
-		$number         = empty($numbers) ? null : intval($numbers[0]);
-		$users          = $em->getRepository('VidalMainBundle:User')->forExcel($number);
-
-		$phpExcelObject->getProperties()->setCreator('Vidal.ru')
-			->setLastModifiedBy('Vidal.ru')
-			->setTitle('Зарегистрированные пользователи Видаля')
-			->setSubject('Зарегистрированные пользователи Видаля');
-
-		$phpExcelObject->setActiveSheetIndex(0)
-			->setCellValue('A1', 'Специальность')
-			->setCellValue('B1', 'Город')
-			->setCellValue('C1', 'Регион')
-			->setCellValue('D1', 'Зарегистр.')
-			->setCellValue('E1', 'Почтовый адрес')
-			->setCellValue('F1', 'ФИО');
-
-		$worksheet = $phpExcelObject->getActiveSheet();
-		$alphabet  = explode(' ', 'A B C D E F G H I J K L N O P Q R S T U V W X');
-		foreach ($alphabet as $letter) {
-			$worksheet->getColumnDimension($letter)->setAutoSize('true');
+		foreach ($this->emails as $email) {
+			$this->send($email);
+			$output->writeln("+++ send email to <$email>");
 		}
+	}
 
-		for ($i = 0; $i < count($users); $i++) {
-			$index = $i + 2;
-			$name  = $users[$i]['lastName'] . ' ' . $users[$i]['firstName'];
-			if (!empty($users[$i]['surName'])) {
-				$name .= ' ' . $users[$i]['surName'];
-			}
+	private function send($email)
+	{
+		$mail = new \PHPMailer();
 
-			$worksheet
-				->setCellValue("A{$index}", $users[$i]['specialty'])
-				->setCellValue("B{$index}", $users[$i]['city'])
-				->setCellValue("C{$index}", $users[$i]['region'])
-				->setCellValue("D{$index}", $users[$i]['registered'])
-				->setCellValue("E{$index}", $users[$i]['username'])
-				->setCellValue("F{$index}", $name);
+		$mail->isSMTP();
+		$mail->isHTML(true);
+		$mail->CharSet  = 'UTF-8';
+		$mail->FromName = 'Портал Vidal.ru';
+		$mail->Subject  = 'Отчет по пользователям Vidal';
+		$mail->Body     = '<h2>Отчет содержится в прикрепленных файлах</h2>';
+		$mail->addAddress($email);
+
+		# prod - оптравка через Exim, dev/test - отправка через Gmail
+		if ($this->getContainer()->getParameter('kernel.environment') == 'prod') {
+			$mail->Host = '127.0.0.1';
+			$mail->From = 'maillist@vidal.ru';
 		}
-
-		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
-		$phpExcelObject->setActiveSheetIndex(0);
+		else {
+			$mail->Host       = 'smtp.mail.ru';
+			$mail->From       = '7binary@list.ru';
+			$mail->SMTPSecure = 'ssl';
+			$mail->Port       = 465;
+			$mail->SMTPAuth   = true;
+			$mail->Username   = '7binary@list.ru';
+			$mail->Password   = 'ooo000)O';
+		}
 
 		$file = $this->getContainer()->get('kernel')->getRootDir() . DIRECTORY_SEPARATOR . '..'
 			. DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR
-			. ($number ? "users_{$number}.xls" : 'users.xls');
+			. 'users.xlsx';
 
-		$writer = $this->getContainer()->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
-		$writer->save($file);
+		$mail->AddAttachment($file, 'Отчет Vidal: по всем пользователям.xlsx');
 
-		$output->writeln('+++ vidal:excel_users completed!');
+		$prevMonth = new \DateTime('now');
+		$prevMonth = $prevMonth->modify('-1 month');
+		$prevMonth = intval($prevMonth->format('m'));
+
+		$file = $this->getContainer()->get('kernel')->getRootDir() . DIRECTORY_SEPARATOR . '..'
+			. DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR
+			. "users_{$prevMonth}.xlsx";
+		$name = 'Отчет Vidal: за прошедший месяц - ' . $this->getMonthName($prevMonth) . '.xlsx';
+
+		$mail->AddAttachment($file, $name);
+
+		$mail->send();
+	}
+
+	public function getMonthName($month)
+	{
+		switch ($month) {
+			case 1:
+				return 'Январь';
+			case 2:
+				return 'Февраль';
+			case 3:
+				return 'Март';
+			case 4:
+				return 'Апрель';
+			case 5:
+				return 'Май';
+			case 6:
+				return 'Июнь';
+			case 7:
+				return 'Июль';
+			case 8:
+				return 'Август';
+			case 9:
+				return 'Сентябрь';
+			case 10:
+				return 'Октябрь';
+			case 11:
+				return 'Ноябрь';
+			case 12:
+				return 'Декабрь';
+			default:
+				return '';
+		}
 	}
 }

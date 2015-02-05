@@ -40,9 +40,21 @@ class ExcelUsersCommand extends ContainerAwareCommand
 			->setCellValue('F1', 'ФИО');
 
 		$worksheet = $phpExcelObject->getActiveSheet();
-		$alphabet  = explode(' ', 'A B C D E F G H I J K L N O P Q R S T U V W X');
+		$alphabet  = explode(' ', 'A B C D E F');
 		foreach ($alphabet as $letter) {
-			$worksheet->getColumnDimension($letter)->setAutoSize('true');
+			$worksheet->getColumnDimension($letter)->setWidth('30');
+			$worksheet->getStyle($letter . '1')->applyFromArray(array(
+				'fill' => array(
+					'type'  => \PHPExcel_Style_Fill::FILL_SOLID,
+					'color' => array('rgb' => 'FF0000')
+				),
+				'font' => array(
+					'bold'  => true,
+					'color' => array('rgb' => 'FFFFFF'),
+					'size'  => 14,
+					'name'  => 'Verdana',
+				)
+			));
 		}
 
 		for ($i = 0; $i < count($users); $i++) {
