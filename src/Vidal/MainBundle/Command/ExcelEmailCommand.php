@@ -7,12 +7,13 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ExcelUsersCommand extends ContainerAwareCommand
+class ExcelEmailCommand extends ContainerAwareCommand
 {
+	protected $emails = array('7binary@gmail.com');
+
 	protected function configure()
 	{
-		$this->setName('vidal:excel_users')
-			->addArgument('numbers', InputArgument::IS_ARRAY, 'Number of year or month');
+		$this->setName('vidal:excel_email');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
@@ -66,9 +67,6 @@ class ExcelUsersCommand extends ContainerAwareCommand
 
 		$file = $this->getContainer()->get('kernel')->getRootDir() . DIRECTORY_SEPARATOR . '..'
 			. DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR
-			. ($number ? "users_{$number}.xls" : 'users.xls');
-
-		$file = '/home/twigavid/vidal/users_reports/'
 			. ($number ? "users_{$number}.xls" : 'users.xls');
 
 		$writer = $this->getContainer()->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
