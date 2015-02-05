@@ -856,7 +856,7 @@ class SonataController extends Controller
 		}
 
 		header('X-Sendfile: ' . $file);
-		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 		header('Content-Disposition: attachment; filename="' . $name . '"');
 		exit;
 	}
