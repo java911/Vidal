@@ -825,17 +825,16 @@ class SonataController extends Controller
 		return new JsonResponse('FAIL');
 	}
 
-	/** @Route("/users-excel/{number}", name="users_excel", options={"expose"=true}) */
-	public function usersExcel($number = null)
+	/** @Route("/excel-users/{number}", name="excel_users", options={"expose"=true}) */
+	public function excelUsersAction($number = null)
 	{
 		$response = new Response();
 
 		$file = $this->get('kernel')->getRootDir() . DIRECTORY_SEPARATOR . '..'
 			. DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR
-			. ($number ? "users_{$number}.xls" : 'users.xlsx');
+			. ($number ? "users_{$number}.xlsx" : 'users.xlsx');
 
-		$file = '/home/twigavid/vidal/users_reports/'
-			. ($number ? "users_{$number}.xls" : 'users.xlsx');
+		//$file = '/home/twigavid/vidal/users_reports/' . ($number ? "users_{$number}.xlsx" : 'users.xlsx');
 
 		$name = 'Отчет Vidal - ';
 
@@ -848,7 +847,7 @@ class SonataController extends Controller
 		else {
 			$name .= 'за ' . $this->getMonthName($number) . ' ' . date('Y') . ' года';
 		}
-		$name .= '.xls';
+		$name .= '.xlsx';
 
 		// Set headers
 		$response->headers->set('Cache-Control', 'private');

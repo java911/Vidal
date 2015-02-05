@@ -52,6 +52,7 @@ class UserRepository extends EntityRepository
 			->leftJoin('c.region', 'r')
 			->leftJoin('c.country', 'co')
 			->leftJoin('u.primarySpecialty', 's')
+			//->setMaxResults(10)
 			->orderBy('u.username', 'ASC');
 
 		if ($number > 2000) {

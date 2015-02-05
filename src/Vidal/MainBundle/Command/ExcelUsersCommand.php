@@ -66,10 +66,9 @@ class ExcelUsersCommand extends ContainerAwareCommand
 
 		$file = $this->getContainer()->get('kernel')->getRootDir() . DIRECTORY_SEPARATOR . '..'
 			. DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR
-			. ($number ? "users_{$number}.xls" : 'users.xlsx');
+			. ($number ? "users_{$number}.xlsx" : 'users.xlsx');
 
-		$file = '/home/twigavid/vidal/users_reports/'
-			. ($number ? "users_{$number}.xls" : 'users.xlsx');
+		//$file = '/home/twigavid/vidal/users_reports/' . ($number ? "users_{$number}.xlsx" : 'users.xlsx');
 
 		$writer = $this->getContainer()->get('phpexcel')->createWriter($phpExcelObject, 'Excel2007');
 		$writer->save($file);
