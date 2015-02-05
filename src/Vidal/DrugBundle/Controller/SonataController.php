@@ -834,8 +834,6 @@ class SonataController extends Controller
 			. DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR
 			. ($number ? "users_{$number}.xlsx" : 'users.xlsx');
 
-		$file = '/home/twigavid/vidal/users_reports/' . ($number ? "users_{$number}.xlsx" : 'users.xlsx');
-
 		$name = 'Отчет Vidal - ';
 
 		if (!$number) {
@@ -854,6 +852,7 @@ class SonataController extends Controller
 		$response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
 		$response->headers->set('Content-Disposition', 'attachment; filename="' . $name . '";');
 		$response->headers->set('Content-length', filesize($file));
+		$response->headers->set('X-Sendfile', $file);
 
 		// Send headers before outputting anything
 		$response->sendHeaders();
