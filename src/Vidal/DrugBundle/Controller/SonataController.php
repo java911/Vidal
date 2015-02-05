@@ -858,9 +858,7 @@ class SonataController extends Controller
 		header('X-Sendfile: ' . $file);
 		header('Content-Type: application/vnd.ms-excel');
 		header('Content-Disposition: attachment; filename="' . $name . '"');
-		header('Content-Length: ' . filesize($file));
-		readfile($file);
-		//exit;
+		exit;
 	}
 
 	public function getMonthName($month)
