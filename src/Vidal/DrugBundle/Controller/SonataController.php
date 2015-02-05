@@ -832,10 +832,10 @@ class SonataController extends Controller
 
 		$file = $this->get('kernel')->getRootDir() . DIRECTORY_SEPARATOR . '..'
 			. DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR
-			. ($number ? "users_{$number}.xls" : 'users.xls');
+			. ($number ? "users_{$number}.xls" : 'users.xlsx');
 
 		$file = '/home/twigavid/vidal/users_reports/'
-			. ($number ? "users_{$number}.xls" : 'users.xls');
+			. ($number ? "users_{$number}.xls" : 'users.xlsx');
 
 		$name = 'Отчет Vidal - ';
 
@@ -852,7 +852,7 @@ class SonataController extends Controller
 
 		// Set headers
 		$response->headers->set('Cache-Control', 'private');
-		$response->headers->set('Content-type', mime_content_type($file));
+		$response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
 		$response->headers->set('Content-Disposition', 'attachment; filename="' . $name . '";');
 		$response->headers->set('Content-length', filesize($file));
 
