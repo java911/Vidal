@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ExcelEmailCommand extends ContainerAwareCommand
 {
-	protected $emails = array('7binary@gmail.com', 'm.yudintseva@vidal.ru');
+	protected $emails = array('m.yudintseva@vidal.ru');
 
 	protected function configure()
 	{
@@ -36,20 +36,16 @@ class ExcelEmailCommand extends ContainerAwareCommand
 		$mail->Body     = '<h2>Отчет содержится в прикрепленных файлах</h2>';
 		$mail->addAddress($email);
 
-		# prod - оптравка через Exim, dev/test - отправка через Gmail
-		if ($this->getContainer()->getParameter('kernel.environment') == 'prod') {
-			$mail->Host = '127.0.0.1';
-			$mail->From = 'maillist@vidal.ru';
-		}
-		else {
-			$mail->Host       = 'smtp.mail.ru';
-			$mail->From       = '7binary@list.ru';
-			$mail->SMTPSecure = 'ssl';
-			$mail->Port       = 465;
-			$mail->SMTPAuth   = true;
-			$mail->Username   = '7binary@list.ru';
-			$mail->Password   = 'ooo000)O';
-		}
+		$mail->Host = '127.0.0.1';
+		$mail->From = 'maillist@vidal.ru';
+
+		//			$mail->Host       = 'smtp.mail.ru';
+		//			$mail->From       = '7binary@list.ru';
+		//			$mail->SMTPSecure = 'ssl';
+		//			$mail->Port       = 465;
+		//			$mail->SMTPAuth   = true;
+		//			$mail->Username   = '7binary@list.ru';
+		//			$mail->Password   = 'ooo000)O';
 
 		$file = $this->getContainer()->get('kernel')->getRootDir() . DIRECTORY_SEPARATOR . '..'
 			. DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR
