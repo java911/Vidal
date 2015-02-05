@@ -839,7 +839,7 @@ class SonataController extends Controller
 		else {
 			$name .= 'за ' . $this->getMonthName($number) . ' ' . date('Y') . ' года';
 		}
-		$name .= '.xls';
+		$name .= '.xlsx';
 
 		if (!$this->get('security.context')->isGranted('ROLE_DOCTOR')) {
 			return $this->redirect($this->generateUrl('no_download', array('filename' => $name)));
@@ -849,7 +849,7 @@ class SonataController extends Controller
 		if ($this->get('kernel')->getEnvironment() == 'dev') {
 			$file = $this->get('kernel')->getRootDir() . DIRECTORY_SEPARATOR . '..'
 				. DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR
-				. ($number ? "users_{$number}.xls" : 'users.xls');
+				. ($number ? "users_{$number}.xlsx" : 'users.xlsx');
 		}
 		else {
 			$file = '/home/twigavid/vidal/download/' . ($number ? "users_{$number}.xlsx" : 'users.xlsx');
@@ -858,6 +858,7 @@ class SonataController extends Controller
 		header('X-Sendfile: ' . $file);
 		header('Content-Type: application/vnd.ms-excel');
 		header('Content-Disposition: attachment; filename="' . $name . '"');
+		header('Content-Length: ' . filesize($file));
 		readfile($file);
 		//exit;
 	}
