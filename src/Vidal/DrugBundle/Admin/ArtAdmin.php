@@ -83,7 +83,19 @@ class ArtAdmin extends Admin
 			->add('metaTitle', null, array('label' => 'Мета заголовок', 'required' => false))
 			->add('metaDescription', null, array('label' => 'Мета описание', 'required' => false))
 			->add('metaKeywords', null, array('label' => 'Мета ключевые слова', 'required' => false))
-			->add('video', 'iphp_file', array('label' => 'Видео', 'required' => false, 'help' => 'Загрузить флеш-видео в формате .flv'))
+			->add('videos', 'sonata_type_collection',
+				array(
+					'label'              => 'Видео файлы',
+					'by_reference'       => false,
+					'cascade_validation' => true,
+					'required'           => false,
+				),
+				array(
+					'edit'         => 'inline',
+					'inline'       => 'table',
+					'allow_delete' => true
+				)
+			)
 			->add('atIndex', null, array('label' => 'Отображать на главной', 'required' => false))
 			->add('anons', null, array('label' => 'Отображать в анонсе', 'required' => false))
 			->add('anonsPriority', null, array('label' => 'Приоритет в анонсе'))

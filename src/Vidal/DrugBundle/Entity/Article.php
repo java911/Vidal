@@ -159,6 +159,9 @@ class Article extends BaseEntity
 	/** @ORM\Column(type="text", nullable=true) */
 	protected $code;
 
+	/** @ORM\ManyToMany(targetEntity="Video", inversedBy="articles", cascade={"persist"}) */
+	protected $videos;
+
 	public function __construct()
 	{
 		$this->nozologies = new ArrayCollection();
@@ -169,6 +172,8 @@ class Article extends BaseEntity
 		$this->tags       = new ArrayCollection();
 		$this->states     = new ArrayCollection();
 		$this->links      = new ArrayCollection();
+		$this->infoPages  = new ArrayCollection();
+		$this->videos     = new ArrayCollection();
 		$this->public     = true;
 		$now              = new \DateTime('now');
 		$this->created    = $now;
@@ -843,5 +848,35 @@ class Article extends BaseEntity
 		$this->infoPages->removeElement($infoPage);
 
 		return $this;
+	}
+
+	/**
+	 * @param mixed $videos
+	 */
+	public function setVideos($videos)
+	{
+		$this->videos = $videos;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getVideos()
+	{
+		return $this->videos;
+	}
+
+	public function addVideo(Video $video)
+	{
+		if (!$this->videos->contains($video)) {
+			$this->videos[] = $video;
+		}
+
+		return $this;
+	}
+
+	public function removeVideo(Video $video)
+	{
+		$this->videos->removeElement($video);
 	}
 }

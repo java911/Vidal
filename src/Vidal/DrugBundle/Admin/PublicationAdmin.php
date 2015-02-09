@@ -88,7 +88,19 @@ class PublicationAdmin extends Admin
 			->add('infoPages-text', 'text', array('label' => 'Представительства', 'required' => false, 'mapped' => false, 'attr' => array('class' => 'infoPages-text', 'placeholder' => 'Начните вводить название')))
 			->add('products-text', 'text', array('label' => 'Описания препаратов', 'required' => false, 'mapped'=>false, 'attr' => array('class' => 'doc')))
 			->add('date', null, array('label' => 'Дата создания', 'required' => true, 'years' => range(2000, date('Y'))))
-			->add('video', 'iphp_file', array('label' => 'Видео', 'required' => false, 'help' => 'Загрузить флеш-видео в формате .flv'))
+			->add('videos', 'sonata_type_collection',
+				array(
+					'label'              => 'Видео файлы',
+					'by_reference'       => false,
+					'cascade_validation' => true,
+					'required'           => false,
+				),
+				array(
+					'edit'         => 'inline',
+					'inline'       => 'table',
+					'allow_delete' => true
+				)
+			)
 			->add('code', null, array('label' => 'Дополнительный код', 'required' => false))
 			->add('testMode', null, array('label' => 'В режиме тестирования', 'required' => false, 'help' => 'видно только если в конец url-адреса дописать ?test'))
 			->add('enabled', null, array('label' => 'Активна', 'required' => false));

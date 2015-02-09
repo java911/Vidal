@@ -20,6 +20,15 @@ class Video extends BaseEntity
 	/** @ORM\ManyToMany(targetEntity="PharmPortfolio", mappedBy="videos") */
 	protected $portfolios;
 
+	/** @ORM\ManyToMany(targetEntity="Art", mappedBy="videos") */
+	protected $arts;
+
+	/** @ORM\ManyToMany(targetEntity="Article", mappedBy="videos") */
+	protected $articles;
+
+	/** @ORM\ManyToMany(targetEntity="Publication", mappedBy="videos") */
+	protected $publications;
+
 	public function __toString()
 	{
 		return $this->path;
@@ -27,7 +36,10 @@ class Video extends BaseEntity
 
 	public function __construct()
 	{
-		$this->portfolios = new ArrayCollection();
+		$this->portfolios   = new ArrayCollection();
+		$this->arts         = new ArrayCollection();
+		$this->articles     = new ArrayCollection();
+		$this->publications = new ArrayCollection();
 	}
 
 	/**

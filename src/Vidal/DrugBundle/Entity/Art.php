@@ -145,6 +145,9 @@ class Art extends BaseEntity
 	/** @ORM\Column(type="text", nullable=true) */
 	protected $code;
 
+	/** @ORM\ManyToMany(targetEntity="Video", inversedBy="arts", cascade={"persist"}) */
+	protected $videos;
+
 	public function __construct()
 	{
 		$this->nozologies = new ArrayCollection();
@@ -154,6 +157,8 @@ class Art extends BaseEntity
 		$this->atcCodes   = new ArrayCollection();
 		$this->infoPages  = new ArrayCollection();
 		$this->tags       = new ArrayCollection();
+		$this->videos     = new ArrayCollection();
+
 		$now              = new \DateTime('now');
 		$this->created    = $now;
 		$this->updated    = $now;
@@ -738,5 +743,35 @@ class Art extends BaseEntity
 		$this->infoPages->removeElement($infoPage);
 
 		return $this;
+	}
+
+	/**
+	 * @param mixed $videos
+	 */
+	public function setVideos($videos)
+	{
+		$this->videos = $videos;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getVideos()
+	{
+		return $this->videos;
+	}
+
+	public function addVideo(Video $video)
+	{
+		if (!$this->videos->contains($video)) {
+			$this->videos[] = $video;
+		}
+
+		return $this;
+	}
+
+	public function removeVideo(Video $video)
+	{
+		$this->videos->removeElement($video);
 	}
 }
