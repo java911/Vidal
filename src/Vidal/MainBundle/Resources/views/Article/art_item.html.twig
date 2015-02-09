@@ -37,9 +37,15 @@
 			</a>
 		{% endif %}
 
+		{# видео вручную #}
+		{% for video in article.videos if video.enabled %}
+			{% include 'VidalMainBundle:Article:render_video.html.twig' with {'path':video.path, 'width':video.width, 'height':video.height, 'id':'video' ~ video.id} %}
+		{% endfor %}
+
 		<div class="article-body text">
 			{{ article.body|raw }}
 		</div>
+
 		{% if not article.hideDate %}
 			<div class="article-footer">
 				<span class="article-date">{{ article.date|date('d.m.Y') }}</span>

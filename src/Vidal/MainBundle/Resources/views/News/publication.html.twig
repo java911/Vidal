@@ -59,6 +59,11 @@
 			</script>
 		{% endif %}
 
+		{# видео вручную #}
+		{% for video in article.videos if video.enabled %}
+			{% include 'VidalMainBundle:Article:render_video.html.twig' with {'path':video.path, 'width':video.width, 'height':video.height, 'id':'video' ~ video.id} %}
+		{% endfor %}
+
 		<div class="publication-body text">
 			{{ publication.body|raw }}
 
