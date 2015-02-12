@@ -31,7 +31,7 @@ class PictureRepository extends EntityRepository
 				JOIN VidalDrugBundle:Product prod WITH pp.ProductID = prod.ProductID
 				WHERE prod.ProductID IN (:productIds)
 					AND pp.CountryEditionCode = \'RUS\'
-					AND pp.YearEdition = :year
+					AND (pp.YearEdition = :year OR prod.ProductTypeCode = \'BAD\')
 				ORDER BY prod.ProductID DESC, pp.YearEdition DESC
 			')->setParameter('productIds', $productIds)
 				->setParameter('year', $year)
@@ -72,7 +72,7 @@ class PictureRepository extends EntityRepository
 				JOIN VidalDrugBundle:Product prod WITH pp.ProductID = prod.ProductID
 				WHERE prod.ProductID IN (:productIds)
 					AND pp.CountryEditionCode = \'RUS\'
-					AND pp.YearEdition = :year
+					AND (pp.YearEdition = :year OR prod.ProductTypeCode = \'BAD\')
 				ORDER BY prod.ProductID DESC, pp.YearEdition DESC
 			')->setParameter('productIds', $productIds)
 				->setParameter('year', $year)
@@ -100,6 +100,9 @@ class PictureRepository extends EntityRepository
 				$pictures[$key] = $path;
 			}
 		}
+
+		var_dump($pictures);
+		exit;
 
 		return $pictures;
 	}
