@@ -23,7 +23,9 @@ $(document).ready(function() {
 			},
 			select:    function(event, ui) {
 				if (ui.item) {
-					window.location = Routing.generate('search', {'q': ui.item.value});
+					$('#bad').prop('checked')
+						? window.location = Routing.generate('search', {'q': ui.item.value, 'bad':'on'})
+						: window.location = Routing.generate('search', {'q': ui.item.value});
 				}
 			}
 		}).data("ui-autocomplete")._renderItem = function(ul, item) {
