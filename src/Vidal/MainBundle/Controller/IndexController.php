@@ -14,6 +14,7 @@ use Lsw\SecureControllerBundle\Annotation\Secure;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Vidal\MainBundle\Form\DataTransformer\CityToStringTransformer;
 
 class IndexController extends Controller
 {
@@ -50,8 +51,9 @@ class IndexController extends Controller
 	 */
 	public function qaAction(Request $request)
 	{
-		$em  = $this->getDoctrine()->getManager();
-		$faq = new QuestionAnswer();
+		$em                      = $this->getDoctrine()->getManager();
+		$cityToStringTransformer = new CityToStringTransformer($em);
+		$faq                     = new QuestionAnswer();
 
 		if ($user = $this->getUser()) {
 			$faq->setAuthorFirstName($user->getFirstname());
@@ -62,15 +64,9 @@ class IndexController extends Controller
 		$builder
 			->add('authorFirstName', null, array('label' => 'Ваше имя'))
 			->add('authorEmail', null, array('label' => 'Ваш e-mail'))
-			->add('place', 'entity', array(
-				'label'         => 'Область заболевания',
-				'empty_value'   => 'выберите',
-				'required'      => true,
-				'class'         => 'VidalMainBundle:QuestionAnswerPlace',
-				'query_builder' => function (EntityRepository $er) {
-					return $er->createQueryBuilder('s')->orderBy('s.title', 'ASC');
-				}
-			))
+			->add(
+				$builder->create('city', 'text', array('label' => 'Город'))->addModelTransformer($cityToStringTransformer)
+			)
 			->add('question', null, array('label' => 'Вопрос'))
 			->add('captcha', 'captcha', array('label' => 'Введите код с картинки'))
 			->add('submit', 'submit', array('label' => 'Задать вопрос', 'attr' => array('class' => 'btn')));
@@ -410,7 +406,7 @@ class IndexController extends Controller
 	{
 		$em = $this->getDoctrine()->getManager();
 
-		$data = array();
+		$data           = array();
 		$data['region'] = $em->getRepository('VidalMainBundle:MapRegion')->byRegion($regionId);
 		$data['coords'] = $em->getRepository('VidalMainBundle:MapCoord')->getObjects($full ? null : $regionId);
 

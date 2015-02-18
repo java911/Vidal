@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Vidal\MainBundle\Form\DataTransformer\CityToStringTransformer;
 
 class QuestionAnswerAdmin extends Admin
 {
@@ -28,9 +29,14 @@ class QuestionAnswerAdmin extends Admin
 
 	protected function configureFormFields(FormMapper $formMapper)
 	{
+		$em = $this->modelManager->getEntityManager('Vidal\MainBundle\Entity\City');
+		$cityToStringTransformer = new CityToStringTransformer($em);
+
 		$formMapper
             ->add('authorFirstName', null, array('label' => 'Автор вопроса', 'required' => true))
-            ->add('place', null, array('label' => 'Область заболевания', 'required' => true))
+			->add(
+				$formMapper->create('city', 'text', array('label' => 'Город'))->addModelTransformer($cityToStringTransformer)
+			)
             ->add('authorEmail', null, array('label' => 'Email автора', 'required' => true))
 			->add('question', null, array('label' => 'Вопрос', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('answer', null, array('label' => 'Ответ', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
@@ -55,7 +61,7 @@ class QuestionAnswerAdmin extends Admin
 	{
 		$listMapper
 			->add('id')
-            ->add('place', null, array('label' => 'Область заболевания', 'required' => true))
+            ->add('city', null, array('label' => 'Город'))
 			->add('question', null, array('label' => 'Вопрос'))
 			->add('answer', null, array('label' => 'Ответ', 'template' => 'VidalDrugBundle:Sonata:qa_answer.html.twig'))
 			->add('created', null, array(

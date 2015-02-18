@@ -28,7 +28,6 @@ class QuestionAnswer extends BaseEntity
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="QuestionAnswerPlace", inversedBy="qas")
-	 * @Assert\NotBlank(message="Пожалуйста, укажите область заболевания")
 	 */
 	protected $place;
 
@@ -45,6 +44,9 @@ class QuestionAnswer extends BaseEntity
 
 	/** @ORM\Column(type="boolean") */
 	protected $emailSent = false;
+
+	/** @ORM\ManyToOne(targetEntity="city", inversedBy="qa") */
+	protected $city;
 
 	public function __construct()
 	{
@@ -170,4 +172,19 @@ class QuestionAnswer extends BaseEntity
 		return $this->place;
 	}
 
+	/**
+	 * @return mixed
+	 */
+	public function getCity()
+	{
+		return $this->city;
+	}
+
+	/**
+	 * @param mixed $city
+	 */
+	public function setCity($city)
+	{
+		$this->city = $city;
+	}
 }

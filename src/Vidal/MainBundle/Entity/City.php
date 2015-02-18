@@ -9,8 +9,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 /** @ORM\Entity(repositoryClass="CityRepository") @ORM\Table(name="city") */
 class City
 {
-    /** @ORM\Id @ORM\Column(type = "integer") @ORM\GeneratedValue */
-    protected $id;
+	/** @ORM\Id @ORM\Column(type = "integer") @ORM\GeneratedValue */
+	protected $id;
 
 	/**
 	 * @ORM\Column(type ="string")
@@ -19,35 +19,39 @@ class City
 	 */
 	protected $title;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Country", inversedBy="cities")
-     * @Assert\NotBlank(message="Пожалуйста, укажите страну.")
-     */
-    protected $country;
+	/**
+	 * @ORM\ManyToOne(targetEntity="Country", inversedBy="cities")
+	 * @Assert\NotBlank(message="Пожалуйста, укажите страну.")
+	 */
+	protected $country;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Region", inversedBy="cities")
-     * @Assert\NotBlank(message="Пожалуйста, укажите регион.")
-     */
-    protected $region;
+	/**
+	 * @ORM\ManyToOne(targetEntity="Region", inversedBy="cities")
+	 * @Assert\NotBlank(message="Пожалуйста, укажите регион.")
+	 */
+	protected $region;
 
-    /** @ORM\OneToMany(targetEntity="User", mappedBy="city") */
-    protected $doctors;
+	/** @ORM\OneToMany(targetEntity="User", mappedBy="city") */
+	protected $doctors;
 
-    /**
-     * @ORM\ManyToMany(targetEntity = "Banner", mappedBy = "cities")
-     */
-    protected $banners;
+	/**
+	 * @ORM\ManyToMany(targetEntity = "Banner", mappedBy = "cities")
+	 */
+	protected $banners;
 
-    public function __construct()
-    {
-        $this->doctors = new ArrayCollection();
-    }
+	/** @ORM\OneToMany(targetEntity="QuestionAnswer", mappedBy="city") */
+	protected $qa;
 
-    public function __toString()
-    {
-        return $this->title;
-    }
+	public function __construct()
+	{
+		$this->doctors = new ArrayCollection();
+		$this->qa      = new ArrayCollection();
+	}
+
+	public function __toString()
+	{
+		return $this->title;
+	}
 
 	/**
 	 * @param mixed $country
@@ -121,21 +125,35 @@ class City
 		return $this->title;
 	}
 
-    /**
-     * @param mixed $banners
-     */
-    public function setBanners($banners)
-    {
-        $this->banners = $banners;
-    }
+	/**
+	 * @param mixed $banners
+	 */
+	public function setBanners($banners)
+	{
+		$this->banners = $banners;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getBanners()
-    {
-        return $this->banners;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getBanners()
+	{
+		return $this->banners;
+	}
 
+	/**
+	 * @return mixed
+	 */
+	public function getQa()
+	{
+		return $this->qa;
+	}
 
+	/**
+	 * @param mixed $qa
+	 */
+	public function setQa($qa)
+	{
+		$this->qa = $qa;
+	}
 }

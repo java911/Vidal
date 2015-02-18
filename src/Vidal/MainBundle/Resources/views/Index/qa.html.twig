@@ -153,8 +153,15 @@
                 $this.children('.qa-expand').hide();
                 $this.addClass('expanded').find('.qa-answer').slideDown('fast');
             }
-		});
-        $(document).ready(function() {
+
+            $("#form_city").autocomplete({
+                source:    Routing.generate('ajax_city'),
+                minLength: 2,
+                delay:     100,
+                autoFocus: true,
+                limit:     15
+            });
+
             $('.qa-expand').click(function() {
                 var $this = $(this);
                 $this.hide();
@@ -177,9 +184,9 @@
             });
 
             $('.link').click(function(){
-               $(this).children('i').css('display','inline');
-               $(this).children('b').css('display','none');
+                $(this).children('i').css('display','inline');
+                $(this).children('b').css('display','none');
             });
-        });
+		});
 	</script>
 {% endblock %}
