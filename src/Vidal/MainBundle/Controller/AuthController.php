@@ -289,9 +289,9 @@ class AuthController extends Controller
 
 		foreach ($cities as $city) {
 			$title = $city->getTitle();
-			if ($region = $city->getRegion()) {
-				$title .= ', ' . $region->getTitle();
-			}
+//			if ($region = $city->getRegion()) {
+//				$title .= ', ' . $region->getTitle();
+//			}
 			if ($country = $city->getCountry()) {
 				$title .= ', ' . $country->getTitle();
 			}
