@@ -36,6 +36,9 @@ class CityToStringTransformer implements DataTransformerInterface
 
 		$title = $city->getTitle();
 
+		if ($region = $city->getRegion()) {
+			$title .= ', ' . $region->getTitle();
+		}
 		if ($country = $city->getCountry()) {
 			$title .= ', ' . $country->getTitle();
 		}
@@ -52,9 +55,15 @@ class CityToStringTransformer implements DataTransformerInterface
 			return null;
 		}
 
-		$titles       = explode(', ', $string);
-		$cityTitle    = $titles[0];
-		$countryTitle = count($titles) > 1 ? $titles[1] : null;
+		$titles  = explode(',', $string);
+		$city    = trim($titles[0]);
+		$region  = null;
+		$country = null;
+
+		if (isset($titles[2])) {
+			$region  = trim($titles[1]);
+			$country = trim($titles[2]);
+		}
 
 		$builder = $this->om->createQueryBuilder();
 
@@ -62,14 +71,19 @@ class CityToStringTransformer implements DataTransformerInterface
 			->select('city')
 			->from('VidalMainBundle:City', 'city')
 			->leftJoin('VidalMainBundle:Country', 'country', 'WITH', 'country = city.country')
-			->where('city.title = :cityTitle')
+			->where('city.title = :city')
 			->orderBy('country.id', 'ASC')
-			->setParameter('cityTitle', $cityTitle)
+			->setParameter('city', $city)
 			->setMaxResults(1);
 
-		if ($countryTitle) {
-			$builder->andWhere('country.title LIKE :countryTitle')
-				->setParameter('countryTitle', '%'.$countryTitle.'%');
+		if ($country) {
+			$builder
+				->leftJoin('city.country', 'c')
+				->leftJoin('city.region', 'r')
+				->andWhere('c.title LIKE :country')
+				->andWhere('r.title LIKE :region')
+				->setParameter('country', $country)
+				->setParameter('region', $region);
 		}
 
 		$city = $builder->getQuery()->getOneOrNullResult();
