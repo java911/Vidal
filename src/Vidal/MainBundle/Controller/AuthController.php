@@ -122,6 +122,7 @@ class AuthController extends Controller
 	 *
 	 * @Route("/profile", name="profile")
 	 * @Template()
+	 * @Secure(roles="IS_AUTHENTICATED_REMEMBERED")
 	 */
 	public function profileAction(Request $request)
 	{
@@ -288,6 +289,9 @@ class AuthController extends Controller
 
 		foreach ($cities as $city) {
 			$title = $city->getTitle();
+			if ($region = $city->getRegion()) {
+				$title .= ', ' . $region->getTitle();
+			}
 			if ($country = $city->getCountry()) {
 				$title .= ', ' . $country->getTitle();
 			}
