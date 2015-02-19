@@ -1,48 +1,90 @@
 {% set type = app.request.get('t') %}
 
-<a href="{{ path('index') }}" class="header-link"></a>
+<style>
+	.header table {
+		width:           100%;
+		border-collapse: collapse;
+	}
+	.header table td {
+		padding: 0;
+	}
+	.header-link {
+		display: inline-block;
+		padding: 29px 0;
+	}
+	.header-link img, .header-1 {
+		width: 143px;
+	}
+	.header-1 {
+		border-top: 6px solid #b70039;
+	}
+	.header-2 {
+		padding-left: 30px !important;
+	}
+	.header-3 {
+		width: 70px;
+	}
+	.header-4 {
+		padding-top: 18px;
+		width:       440px;
+	}
+</style>
 
-<div class="header-about"></div>
-<div class="header-search"></div>
-
-<form id="search_form" class="search" method="get" action="{{ path('search') }}">
-	<table>
-		<tr class="row1">
-			<td class="bg-gray">
-				<select class="search-type" name="t">
-					<option value="all" {{ type == 'all' ? 'selected="selected"' }}>
-						ВЕЗДЕ
-					</option>
-					<option value="product" {{ type == 'product' ? 'selected="selected"' }}>
-						ПО ПРЕПАРАТУ
-					</option>
-					<option value="company" {{ type == 'company' ? 'selected="selected"' }}>
-						ПО КОМПАНИИ
-					</option>
-					<option value="molecule" {{ type == 'molecule' ? 'selected="selected"' }}>
-						ПО ВЕЩЕСТВУ
-					</option>
-					<option value="atc" {{ type == 'atc' ? 'selected="selected"' }}>
-						ПО АТХ КОДУ
-					</option>
-					<option value="disease" {{ type == 'disease' ? 'selected="selected"' }}>
-						ПО ЗАБОЛЕВАНИЮ
-					</option>
-				</select>
-			</td>
-			<td class="sf">
-				<input type="submit" value="" class="search-submit"/>
-				<input class="search-query" type="text" name="q" placeholder="Введите слово для поиска..."
-					   autocomplete="off"
-					   value="{{ app.request.attributes.get('_route') == 'search' ? app.request.get('q') }}"/>
-			</td>
-		</tr>
-		<tr>
-			<td class="st no-selection" colspan="2">
-				<input type="checkbox" id="bad" name="bad" class="checkbox" checked="checked"/>
-				<label for="bad" class="searchl">включая БАД</label>
-				<a id="searche_link" href="{{ path('drugs') }}">расширенный поиск</a>
-			</td>
-		</tr>
-	</table>
-</form>
+<table>
+	<tr>
+		<td class="header-1">
+			<a href="{{ path('index') }}" class="header-link">
+				<img src="{{ asset('bundles/vidalmain/images/vidal.png') }}"/>
+			</a>
+		</td>
+		<td class="header-2">
+			<img src="{{ asset('bundles/vidalmain/images/header-about.jpg') }}"/>
+		</td>
+		<td class="header-3">
+			<img src="{{ asset('bundles/vidalmain/images/header-search.jpg') }}"/>
+		</td>
+		<td class="header-4">
+			<form id="search_form" class="search" method="get" action="{{ path('search') }}">
+				<table>
+					<tr class="row1">
+						<td class="bg-gray">
+							<select class="search-type" name="t">
+								<option value="all" {{ type == 'all' ? 'selected="selected"' }}>
+									ВЕЗДЕ
+								</option>
+								<option value="product" {{ type == 'product' ? 'selected="selected"' }}>
+									ПО ПРЕПАРАТУ
+								</option>
+								<option value="company" {{ type == 'company' ? 'selected="selected"' }}>
+									ПО КОМПАНИИ
+								</option>
+								<option value="molecule" {{ type == 'molecule' ? 'selected="selected"' }}>
+									ПО ВЕЩЕСТВУ
+								</option>
+								<option value="atc" {{ type == 'atc' ? 'selected="selected"' }}>
+									ПО АТХ КОДУ
+								</option>
+								<option value="disease" {{ type == 'disease' ? 'selected="selected"' }}>
+									ПО ЗАБОЛЕВАНИЮ
+								</option>
+							</select>
+						</td>
+						<td class="sf">
+							<input type="submit" value="" class="search-submit"/>
+							<input class="search-query" type="text" name="q" placeholder="Введите слово для поиска..."
+								   autocomplete="off"
+								   value="{{ app.request.attributes.get('_route') == 'search' ? app.request.get('q') }}"/>
+						</td>
+					</tr>
+					<tr>
+						<td class="st no-selection" colspan="2">
+							<input type="checkbox" id="bad" name="bad" class="checkbox" checked="checked"/>
+							<label for="bad" class="searchl">включая БАД</label>
+							<a id="searche_link" href="{{ path('drugs') }}">расширенный поиск</a>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</td>
+	</tr>
+</table>

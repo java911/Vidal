@@ -1,10 +1,6 @@
-.header-link {
-	background: url(../images/header-noline.jpg) no-repeat top left !important;
-}
-.banner-top {
-	margin: 10px auto -10px;
-	border: none;
-}
 .header {
-	margin-top: 10px !important;
+	margin-top: 15px !important;
+}
+.header-1 {
+	border-top: none !important;
 }
