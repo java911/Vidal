@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class ArticleController extends Controller
 {
 	const ARTICLES_PER_PAGE = 14;
-	const PHARM_PER_PAGE    = 5;
+	const PHARM_PER_PAGE = 5;
 
 	/**
 	 * Конкретная статья рубрики энциклопедии
@@ -489,12 +489,13 @@ class ArticleController extends Controller
 	{
 		$response = null;
 		$secutiry = $this->get('security.context');
-		$user = $this->getUser();
+		$user     = $this->getUser();
 
 		if (!$user) {
 			$response = $this->render('VidalMainBundle:Auth:login.html.twig', array(
-				'title' => 'Закрытый раздел',
-				'menu'  => 'vracham',
+				'title'    => 'Закрытый раздел',
+				'menu'     => 'vracham',
+				'moduleId' => 7,
 			));
 		}
 		elseif (!$secutiry->isGranted('ROLE_DOCTOR')) {

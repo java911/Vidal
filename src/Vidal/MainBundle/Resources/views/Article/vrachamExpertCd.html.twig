@@ -6,7 +6,6 @@
 
 {% block title %}
     <h1>
-        Электронный справочник Видаль
         {% if isAdmin %}
             <a class="admin-edit fade" target="_blank"
                href="{{ path('admin_vidal_main_module_edit', {'id':moduleId}) }}">

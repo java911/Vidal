@@ -11,7 +11,7 @@
 		<tr>
 			<td class="with-img">
 				<a href="{{ path('vracham_expert_cd') }}">
-					<img src="{{ asset('bundles/vidalmain/images/icons/cd.jpg') }}"/>
+					<img src="{{ asset('bundles/vidalmain/images/icons/cd.png') }}"/>
 				</a>
 			</td>
 			<td>
@@ -82,8 +82,11 @@
 	{{ parent() }}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/article.css') }}"/>
 	<style type="text/css">
-		.with-link.last {
-			margin: 7px 0 16px;
+		.with-img {
+			width: 100px;
+		}
+		.with-img img {
+			width: 84px;
 		}
 		.with-link a {
 			font-size:   15px;
@@ -105,24 +108,16 @@
 		h1 {
 			margin-bottom: 10px;
 		}
-
 		/* links */
 		.links {
 			border-collapse: collapse;
 			width:           100%;
 		}
-		.links img {
-			width: 60px;
-		}
-		.links .with-img {
-			width:          75px;
-			padding-bottom: 10px;
-		}
 		.links a {
 			text-decoration: none;
 			color:           #2f4053;
 			font-weight:     bold;
-			font-size:       13px;
+			font-size:       16px;
 		}
 		.links a:hover {
 			color: #d71344;
