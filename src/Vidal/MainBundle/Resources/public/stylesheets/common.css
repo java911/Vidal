@@ -163,6 +163,10 @@ h1 span {
 	font-style: italic;
 	color:      #999;
 }
+.module h1 span {
+	color:      #d71344;;
+	font-style: normal;
+}
 #main h1:first-of-type {
 	margin-top: 0;
 }
