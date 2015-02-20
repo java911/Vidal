@@ -64,7 +64,7 @@ class ArtRepository extends EntityRepository
 		 		AND a.date < :now
 		 	ORDER BY a.date DESC
 		')->setParameter('now', new \DateTime())
-			->setMaxResults(1)
+			->setMaxResults(2)
 			->getOneOrNullResult();
 	}
 

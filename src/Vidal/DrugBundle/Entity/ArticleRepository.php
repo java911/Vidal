@@ -33,6 +33,7 @@ class ArticleRepository extends EntityRepository
 			->andWhere('a.anons = TRUE')
 			->orderBy('a.anonsPriority', 'DESC')
 			->addOrderBy('a.date', 'DESC')
+			->setMaxResults(3)
 			->setParameter('now', new \DateTime());
 
 		$testMode
