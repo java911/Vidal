@@ -463,6 +463,7 @@ class SearchController extends Controller
 
 	private function stripLower($string)
 	{
-		return mb_strtolower(strip_tags(html_entity_decode($string, ENT_QUOTES, 'UTF-8')), 'utf-8');
+		$string = mb_strtolower(strip_tags(html_entity_decode($string, ENT_QUOTES, 'UTF-8')), 'utf-8');
+		return str_replace(explode(' ', '® ™'), '', $string);
 	}
 }

@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class VidalController extends Controller
 {
-	const PRODUCTS_PER_PAGE  = 40;
+	const PRODUCTS_PER_PAGE = 40;
 	const COMPANIES_PER_PAGE = 50;
 	const MOLECULES_PER_PAGE = 50;
 
@@ -546,6 +546,7 @@ class VidalController extends Controller
 
 	private function strip($string)
 	{
-		return strip_tags(html_entity_decode($string, ENT_QUOTES, 'UTF-8'));
+		$string = strip_tags(html_entity_decode($string, ENT_QUOTES, 'UTF-8'));
+		return str_replace(explode(' ', '® ™'), '', $string);
 	}
 }

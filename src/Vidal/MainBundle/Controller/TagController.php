@@ -11,7 +11,7 @@ use Lsw\SecureControllerBundle\Annotation\Secure;
 
 class TagController extends Controller
 {
-	const NEWS_PER_PAGE  = 12;
+	const NEWS_PER_PAGE = 12;
 	const PHARM_PER_PAGE = 4;
 
 	/**
@@ -267,10 +267,8 @@ class TagController extends Controller
 
 	private function strip($string)
 	{
-		$pat = array(' /<sup>(.*?)<\/sup >/i', ' /<sub>(.*?)<\/sub >/i', ' /&amp;/');
-		$rep = array('', '', ' & ');
-
-		return preg_replace($pat, $rep, $string);
+		$string = strip_tags(html_entity_decode($string, ENT_QUOTES, 'UTF-8'));
+		return str_replace(explode(' ', '® ™'), '', $string);
 	}
 
 	private function casecmp($a, $b)

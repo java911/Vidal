@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class NewsController extends Controller
 {
-	const PUBLICATIONS_PER_PAGE  = 22;
+	const PUBLICATIONS_PER_PAGE = 22;
 	const PUBLICATIONS_PER_PHARM = 5;
 
 	/** @Route("/novosti/novosti_{id}.{ext}", defaults={"ext"="html"}) */
@@ -75,6 +75,7 @@ class NewsController extends Controller
 
 	private function strip($string)
 	{
-		return strip_tags(html_entity_decode($string, ENT_QUOTES, 'UTF-8'));
+		$string = strip_tags(html_entity_decode($string, ENT_QUOTES, 'UTF-8'));
+		return str_replace(explode(' ', '® ™'), '', $string);
 	}
 }
