@@ -65,7 +65,7 @@ class ArtRepository extends EntityRepository
 		 	ORDER BY a.date DESC
 		')->setParameter('now', new \DateTime())
 			->setMaxResults(2)
-			->getOneOrNullResult();
+			->getResult();
 	}
 
 	public function findForAnons()

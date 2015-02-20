@@ -30,9 +30,8 @@ class IndexController extends Controller
 		$testMode = $request->query->has('test');
 		$articles = $em->getRepository('VidalDrugBundle:Article')->findLast($testMode);
 
-		if ($art = $em->getRepository('VidalDrugBundle:Art')->atIndex()) {
-			$articles[] = $art;
-		}
+		$arts = $em->getRepository('VidalDrugBundle:Art')->atIndex();
+		$articles = array_merge($articles, $arts);
 
 		$params = array(
 			'indexPage'            => true,
