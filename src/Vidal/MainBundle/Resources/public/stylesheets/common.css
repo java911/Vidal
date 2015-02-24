@@ -1394,9 +1394,6 @@ tr.bold td {
 .text a *:hover {
 	text-decoration: underline !important;
 }
-.text img {
-	max-width: 520px !important;
-}
 .text p {
 	margin-top:    0 !important;
 	margin-bottom: 9px !important;

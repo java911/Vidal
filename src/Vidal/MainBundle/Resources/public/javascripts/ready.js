@@ -105,7 +105,7 @@ $(document).ready(function() {
 		$('#' + id).closest('.spoiler-content').show();
 	});
 
-	$('.block table, .text table').not('.products-table').each(function() {
+	$('.block table, .text table, .text img, .block img').not('.products-table').each(function() {
 		var $this = $(this);
 
 		if ($this.width() > 520) {
