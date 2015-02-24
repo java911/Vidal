@@ -2,7 +2,7 @@
 
 
 {% block title %}
-	<h1>
+	<h1 itemprop="headline">
 		{{ article.title|raw }}
 		{# админам карандашик редактирования #}
 		{% if is_granted('ROLE_ADMIN') %}

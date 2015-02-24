@@ -4,7 +4,7 @@
 
 
 {% block title %}
-	<h1>
+	<h1 itemprop="headline">
 		{{ publication|raw }}
 		{# админу карандашик на правку #}
 		{% if isAdmin %}
@@ -31,7 +31,7 @@
 		{% if withPhoto %}
 			<div class="publication-header with-photo">
 				<div class="photo">
-					<img src="{{ publication.photo.path }}" alt="{{ publication.title }}"/>
+					<img src="{{ publication.photo.path }}" alt="{{ publication.title }}" itemprop="image"/>
 				</div>
 			</div>
 		{% endif %}
@@ -64,7 +64,7 @@
 			{% include 'VidalMainBundle:Article:render_video.html.twig' with {'path':video.path, 'width':video.width, 'height':video.height, 'id':'video' ~ video.id} %}
 		{% endfor %}
 
-		<div class="publication-body text">
+		<div class="publication-body text" itemprop="articleBody">
 			{{ publication.body|raw }}
 
 			{% if publication.code is not empty %}
