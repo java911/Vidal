@@ -37,7 +37,7 @@ class NewsController extends Controller
 		return array(
 			'publication' => $publication,
 			'menu_left'   => 'news',
-			'seotitle'    => $title,
+			'title'       => $title,
 			'description' => $this->getDescription($publication->getBody()),
 		);
 	}
@@ -85,7 +85,7 @@ class NewsController extends Controller
 	private function getDescription($string)
 	{
 		$string = preg_replace('/&nbsp;|®|™/', '', $string);
-		$string = substr($string,0, strpos($string, "</p>")+4);
+		$string = substr($string, 0, strpos($string, "</p>") + 4);
 		$string = str_replace("<p>", "", str_replace("</p>", "", $string));
 		$string = strip_tags(html_entity_decode($string, ENT_QUOTES, 'UTF-8'));
 		$string = preg_replace('/&nbsp;|®|™/', '', $string);

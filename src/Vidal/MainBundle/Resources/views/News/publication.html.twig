@@ -3,6 +3,14 @@
 {% set withPhoto = publication.photo and is_file(publication.photo.path) %}
 
 
+{% block meta %}
+	{{ parent() }}
+	<meta property="og:image" content="http://www.vidal.ru/bundles/vidalmain/images/vidal.png">
+	<meta content="{{ title }}" property="og:title">
+	<meta content="{{ description }}" property="og:description">
+{% endblock %}
+
+
 {% block title %}
 	<h1>
 		{{ publication|raw }}

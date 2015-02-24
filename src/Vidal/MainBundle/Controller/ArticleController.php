@@ -32,11 +32,15 @@ class ArticleController extends Controller
 			throw $this->createNotFoundException();
 		}
 
+		$title = $this->strip($article->getTitle());
+
 		$params = array(
-			'title'    => $this->strip($article . '') . ' | ' . $rubrique,
+			'title'    => $title . ' | ' . $rubrique,
+			'ogTitle'  => $title,
 			'menu'     => 'articles',
 			'rubrique' => $rubrique,
 			'article'  => $article,
+			'description'=> $this->getDescription($article->getAnnounce()),
 		);
 
 		$articleId = $article->getId();
@@ -518,5 +522,16 @@ class ArticleController extends Controller
 		}
 
 		return $productIds;
+	}
+
+	private function getDescription($string)
+	{
+		$string = preg_replace('/&nbsp;|®|™/', '', $string);
+		$string = substr($string, 0, strpos($string, "</p>") + 4);
+		$string = str_replace("<p>", "", str_replace("</p>", "", $string));
+		$string = strip_tags(html_entity_decode($string, ENT_QUOTES, 'UTF-8'));
+		$string = preg_replace('/&nbsp;|®|™/', '', $string);
+
+		return $string;
 	}
 }

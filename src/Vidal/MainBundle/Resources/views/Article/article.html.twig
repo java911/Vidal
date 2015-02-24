@@ -1,6 +1,14 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
+{% block meta %}
+	{{ parent() }}
+	<meta property="og:image" content="http://www.vidal.ru/bundles/vidalmain/images/vidal.png">
+	<meta content="{{ ogTitle }}" property="og:title">
+	<meta content="{{ description }}" property="og:description">
+{% endblock %}
+
+
 {% block title %}
 	<h1>
 		{{ article.title|raw }}
