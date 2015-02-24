@@ -13,8 +13,8 @@
 
 
 {% block content %}
-	<div itemscope="" itemtype="http://schema.org/NewsArticle">
-		<h1 itemprop="headline">
+	<article itemscope itemtype="http://schema.org/Article" class="publication">
+		<h1 itemprop="name">
 			{{ publication|raw }}
 			{# админу карандашик на правку #}
 			{% if isAdmin %}
@@ -24,59 +24,56 @@
 				</a>
 			{% endif %}
 		</h1>
-
-		<div class="publication">
-			{% if withPhoto %}
-				<div class="publication-header with-photo">
-					<div class="photo" itemscope="" itemtype="http://schema.org/ImageObject" itemprop="image">
-						<img src="{{ publication.photo.path }}" alt="{{ publication.title }}" itemprop="image"/>
-					</div>
+		{% if withPhoto %}
+			<div class="publication-header with-photo">
+				<div class="photo">
+					<img src="{{ publication.photo.path }}" alt="{{ publication.title }}"/>
 				</div>
-			{% endif %}
-
-			{% if publication.video and publication.video.path is defined %}
-				{% set width = publication.videoWidth > 480 ? 480 : publication.videoWidth %}
-				{% set height = publication.videoWidth > 480
-				? (publication.videoHeight * 480 / publication.videoWidth) | number_format(0)
-				: publication.videoHeight %}
-
-				<p id="player1"></p>
-
-				<script src="{{ asset('bundles/vidalmain/javascripts/swfobject.js') }}" type="text/javascript"></script>
-				<script type="text/javascript">
-					var so = new SWFObject('/players/uppod.swf', 'mpl', {{ width }}, {{ height }}, '8');
-					so.addParam('allowscriptaccess', 'always');
-					so.addParam('allowfullscreen', 'true');
-					so.addVariable('height', '{{ height }}');
-					so.addVariable('width', '{{ width }}');
-					so.addVariable('file', '{{ publication.video.path }}');
-					so.addVariable('bufferlength', '10');
-					so.addVariable('autostart', 'false');
-					so.addVariable('enablejs', 'true');
-					so.write('player1');
-				</script>
-			{% endif %}
-
-			{# видео вручную #}
-			{% for video in publication.videos if video.enabled %}
-				{% include 'VidalMainBundle:Article:render_video.html.twig' with {'path':video.path, 'width':video.width, 'height':video.height, 'id':'video' ~ video.id} %}
-			{% endfor %}
-
-			<div class="publication-body text" itemscope="" itemprop="articleBody">
-				{{ publication.body|raw }}
-
-				{% if publication.code is not empty %}
-					{{ publication.code|raw }}
-				{% endif %}
 			</div>
+		{% endif %}
 
-			<div class="publication-footer">
-				<span class="publication-date">{{ publication.date|date('d.m.Y') }}</span>
-			</div>
+		{% if publication.video and publication.video.path is defined %}
+			{% set width = publication.videoWidth > 480 ? 480 : publication.videoWidth %}
+			{% set height = publication.videoWidth > 480
+			? (publication.videoHeight * 480 / publication.videoWidth) | number_format(0)
+			: publication.videoHeight %}
 
-			{{ render(controller('VidalMainBundle:Tag:tags', {'object':publication})) }}
+			<p id="player1"></p>
+
+			<script src="{{ asset('bundles/vidalmain/javascripts/swfobject.js') }}" type="text/javascript"></script>
+			<script type="text/javascript">
+				var so = new SWFObject('/players/uppod.swf', 'mpl', {{ width }}, {{ height }}, '8');
+				so.addParam('allowscriptaccess', 'always');
+				so.addParam('allowfullscreen', 'true');
+				so.addVariable('height', '{{ height }}');
+				so.addVariable('width', '{{ width }}');
+				so.addVariable('file', '{{ publication.video.path }}');
+				so.addVariable('bufferlength', '10');
+				so.addVariable('autostart', 'false');
+				so.addVariable('enablejs', 'true');
+				so.write('player1');
+			</script>
+		{% endif %}
+
+		{# видео вручную #}
+		{% for video in publication.videos if video.enabled %}
+			{% include 'VidalMainBundle:Article:render_video.html.twig' with {'path':video.path, 'width':video.width, 'height':video.height, 'id':'video' ~ video.id} %}
+		{% endfor %}
+
+		<div class="publication-body text" itemprop="articleBody">
+			{{ publication.body|raw }}
+
+			{% if publication.code is not empty %}
+				{{ publication.code|raw }}
+			{% endif %}
 		</div>
-	</div>
+
+		<div class="publication-footer">
+			<span class="publication-date">{{ publication.date|date('d.m.Y') }}</span>
+		</div>
+
+		{{ render(controller('VidalMainBundle:Tag:tags', {'object':publication})) }}
+	</article>
 
 	{% include 'VidalMainBundle::yad_horizontal.html.twig' %}
 {% endblock %}
