@@ -3,6 +3,20 @@
 {% set withPhoto = publication.photo and is_file(publication.photo.path) %}
 
 
+{% block title %}
+	<h1>
+		{{ publication|raw }}
+		{# админу карандашик на правку #}
+		{% if isAdmin %}
+			<a class="admin-edit fade" target="_blank"
+			   href="{{ path('admin_vidal_drug_publication_edit', {'id':publication.id}) }}">
+				<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+			</a>
+		{% endif %}
+	</h1>
+{% endblock %}
+
+
 {% block nav %}
 	<div class="breadcrumbs">
 		<a href="{{ path('index') }}">Видаль</a>
@@ -13,17 +27,7 @@
 
 
 {% block content %}
-	<article itemscope itemtype="http://schema.org/Article" class="publication">
-		<h1 itemprop="name">
-			{{ publication|raw }}
-			{# админу карандашик на правку #}
-			{% if isAdmin %}
-				<a class="admin-edit fade" target="_blank"
-				   href="{{ path('admin_vidal_drug_publication_edit', {'id':publication.id}) }}">
-					<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-				</a>
-			{% endif %}
-		</h1>
+	<div class="publication">
 		{% if withPhoto %}
 			<div class="publication-header with-photo">
 				<div class="photo">
@@ -60,7 +64,7 @@
 			{% include 'VidalMainBundle:Article:render_video.html.twig' with {'path':video.path, 'width':video.width, 'height':video.height, 'id':'video' ~ video.id} %}
 		{% endfor %}
 
-		<div class="publication-body text" itemprop="articleBody">
+		<div class="publication-body text">
 			{{ publication.body|raw }}
 
 			{% if publication.code is not empty %}
@@ -73,7 +77,7 @@
 		</div>
 
 		{{ render(controller('VidalMainBundle:Tag:tags', {'object':publication})) }}
-	</article>
+	</div>
 
 	{% include 'VidalMainBundle::yad_horizontal.html.twig' %}
 {% endblock %}

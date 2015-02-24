@@ -32,10 +32,13 @@ class NewsController extends Controller
 			throw $this->createNotFoundException();
 		}
 
+		$title = $this->strip($publication->getTitle());
+
 		return array(
 			'publication' => $publication,
 			'menu_left'   => 'news',
-			'title'       => $this->strip($publication->getTitle()) . ' | Новости',
+			'seotitle'    => $title,
+			'description' => $this->getDescription($publication->getBody()),
 		);
 	}
 
@@ -77,5 +80,16 @@ class NewsController extends Controller
 	{
 		$string = strip_tags(html_entity_decode($string, ENT_QUOTES, 'UTF-8'));
 		return str_replace(explode(' ', '® ™'), '', $string);
+	}
+
+	private function getDescription($string)
+	{
+		$string = preg_replace('/&nbsp;|®|™/', '', $string);
+		$string = substr($string,0, strpos($string, "</p>")+4);
+		$string = str_replace("<p>", "", str_replace("</p>", "", $string));
+		$string = strip_tags(html_entity_decode($string, ENT_QUOTES, 'UTF-8'));
+		$string = preg_replace('/&nbsp;|®|™/', '', $string);
+
+		return $string;
 	}
 }

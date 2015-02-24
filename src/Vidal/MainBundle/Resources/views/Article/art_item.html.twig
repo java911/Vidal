@@ -2,7 +2,7 @@
 
 
 {% block title %}
-	<h1 itemprop="headline">{{ article|raw }}</h1>
+	<h1>{{ article|raw }}</h1>
 {% endblock %}
 
 
@@ -42,7 +42,7 @@
 			{% include 'VidalMainBundle:Article:render_video.html.twig' with {'path':video.path, 'width':video.width, 'height':video.height, 'id':'video' ~ video.id} %}
 		{% endfor %}
 
-		<div class="article-body text" itemprop="articleBody">
+		<div class="article-body text">
 			{{ article.body|raw }}
 		</div>
 
