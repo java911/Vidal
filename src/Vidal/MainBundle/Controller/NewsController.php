@@ -38,7 +38,7 @@ class NewsController extends Controller
 			'publication' => $publication,
 			'menu_left'   => 'news',
 			'title'       => $title,
-			'description' => $this->getDescription($publication->getBody()),
+			'description' => $this->getDescription($publication->getAnnounce()),
 		);
 	}
 
