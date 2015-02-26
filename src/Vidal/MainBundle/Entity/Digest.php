@@ -18,8 +18,14 @@ class Digest extends BaseEntity
 	/** @ORM\Column(type="string", length=255) */
 	protected $subject;
 
+	/** @ORM\Column(type="string", length=500, nullable=true) */
+	protected $emails;
+
 	/** @ORM\ManyToMany(targetEntity="Specialty", inversedBy="digests") */
 	protected $specialties;
+
+	/** @ORM\Column(type="boolean") */
+	protected $allSpecialties = true;
 
 	public function __construct()
 	{
@@ -88,5 +94,37 @@ class Digest extends BaseEntity
 	public function setSpecialties($specialties)
 	{
 		$this->specialties = $specialties;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getEmails()
+	{
+		return $this->emails;
+	}
+
+	/**
+	 * @param mixed $emails
+	 */
+	public function setEmails($emails)
+	{
+		$this->emails = $emails;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getAllSpecialties()
+	{
+		return $this->allSpecialties;
+	}
+
+	/**
+	 * @param mixed $allSpecialties
+	 */
+	public function setAllSpecialties($allSpecialties)
+	{
+		$this->allSpecialties = $allSpecialties;
 	}
 }

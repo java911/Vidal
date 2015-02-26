@@ -7,29 +7,18 @@
 
 
 {% block middle %}
-	{% include 'VidalMainBundle:Digest:render.html.twig' with {'text':digest.text} %}
+	<div class="outer">
+		{% if app.session.flashbag.get('test')|length %}
+			<div class="emails">Было отправлено на адреса: {{ digest.emails }}</div>
+		{% endif %}
+
+		{% include 'VidalMainBundle:Digest:render.html.twig' with {'text':digest.text} %}
+	</div>
 
 	{# форма #}
 	<form id="delivery_form" method="POST" action="{{ path('delivery') }}">
-		<div>
-			<div>{{ form_label(form.subject) }}</div>
-			<div>{{ form_errors(form.subject) }}</div>
-			<div>{{ form_widget(form.subject) }}</div>
-		</div>
-
-		<div>
-			<div>{{ form_label(form.specialties) }}</div>
-			<div>{{ form_errors(form.specialties) }}</div>
-			<div>{{ form_widget(form.specialties) }}</div>
-		</div>
-
-		<div>
-			<div>{{ form_label(form.text) }}</div>
-			<div>{{ form_errors(form.text) }}</div>
-			<div>{{ form_widget(form.text) }}</div>
-		</div>
-
-		<div>{{ form_widget(form.submit) }}</div>
+		{{ form_widget(form.text) }}
+		{{ form_widget(form) }}
 	</form>
 {% endblock %}
 
@@ -37,14 +26,25 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<style type="text/css">
-		#delivery_form {
-			margin-top: 20px;
+		.outer {
+			margin: 40px 0;
 		}
-		#delivery_form > div {
-			margin-bottom: 18px;
+		.emails {
+			background:    lightgreen;
+			padding:       6px 10px;
+			margin-bottom: 30px;
 		}
-		#form_subject, #form_specialties {
+		#delivery_form select, #delivery_form input[type="text"] {
 			width: 600px;
+		}
+		#delivery_form td.label {
+			width: 200px;
+		}
+		#delivery_form td.widget {
+			width: auto;
+		}
+		#form_subject {
+			margin-top: 10px;
 		}
 	</style>
 {% endblock %}

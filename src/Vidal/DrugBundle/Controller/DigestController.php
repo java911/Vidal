@@ -24,9 +24,12 @@ class DigestController extends Controller
 		$digest = $em->getRepository('VidalMainBundle:Digest')->get();
 
 		$form = $this->createFormBuilder($digest)
+			->add('text', null, array('label' => 'Текст письма', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('subject', null, array('label' => 'Тема письма', 'required' => true))
 			->add('specialties', null, array('label' => 'Специальности', 'required' => false))
-			->add('text', null, array('label' => 'Текст письма', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
+			->add('allSpecialties', null, array('label' => 'Всем специальностям', 'required' => false))
+			->add('emails', null, array('label' => 'Тестовые e-mail через ;', 'required' => false))
+			->add('test', 'submit', array('label' => 'Разослать на тестовые', 'attr' => array('class' => 'btn-red')))
 			->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn-red')))
 			->getForm();
 
@@ -34,6 +37,13 @@ class DigestController extends Controller
 
 		if ($form->isValid()) {
 			$em->flush();
+			$formData = $request->request->get('form');
+
+			if (isset($formData['test'])) {
+				$emails = isset($formData['emails']) ? explode(';', $formData['emails']) : array();
+				$this->testTo($emails, $digest);
+				$this->get('session')->getFlashBag()->add('test', true);
+			}
 
 			return $this->redirect($this->generateUrl('delivery'));
 		}
@@ -45,5 +55,18 @@ class DigestController extends Controller
 		);
 
 		return $params;
+	}
+
+	private function testTo($emails, $digest)
+	{
+		$service = $this->get('email.service');
+
+		foreach ($emails as $email) {
+			$service->send(
+				$email,
+				array('VidalMainBundle:Email:digest.html.twig', array('digest' => $digest)),
+				$digest->getSubject()
+			);
+		}
 	}
 }
