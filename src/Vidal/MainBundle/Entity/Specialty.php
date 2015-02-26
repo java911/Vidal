@@ -38,10 +38,14 @@ class Specialty
 	/** @ORM\OneToMany(targetEntity="User", mappedBy="secondarySpecialty") */
 	protected $secondarySpecialties;
 
+	/** @ORM\ManyToMany(targetEntity="Digest", mappedBy="specialties") */
+	protected $digests;
+
 	public function __construct()
 	{
 		$this->primarySpecialties   = new ArrayCollection();
 		$this->secondarySpecialties = new ArrayCollection();
+		$this->digests              = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -153,5 +157,21 @@ class Specialty
 	public function getSecondaryDoctors()
 	{
 		return $this->secondarySpecialties;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDigests()
+	{
+		return $this->digests;
+	}
+
+	/**
+	 * @param mixed $digests
+	 */
+	public function setDigests($digests)
+	{
+		$this->digests = $digests;
 	}
 }
