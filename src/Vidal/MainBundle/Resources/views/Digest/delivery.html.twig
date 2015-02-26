@@ -12,7 +12,7 @@
 			<div class="emails">Было отправлено на адреса: {{ digest.emails }}</div>
 		{% endif %}
 
-		{% include 'VidalMainBundle:Digest:render.html.twig' with {'text':digest.text} %}
+		{% include 'VidalMainBundle:Digest:render.html.twig' with {'digest':digest} %}
 	</div>
 
 	{# форма #}

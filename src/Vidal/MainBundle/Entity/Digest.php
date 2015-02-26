@@ -15,6 +15,9 @@ class Digest extends BaseEntity
 	/** @ORM\Column(type="text", nullable=true) */
 	protected $text;
 
+	/** @ORM\Column(type="text", nullable=true) */
+	protected $footer;
+
 	/** @ORM\Column(type="string", length=255) */
 	protected $subject;
 
@@ -126,5 +129,21 @@ class Digest extends BaseEntity
 	public function setAllSpecialties($allSpecialties)
 	{
 		$this->allSpecialties = $allSpecialties;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getFooter()
+	{
+		return $this->footer;
+	}
+
+	/**
+	 * @param mixed $footer
+	 */
+	public function setFooter($footer)
+	{
+		$this->footer = $footer;
 	}
 }
