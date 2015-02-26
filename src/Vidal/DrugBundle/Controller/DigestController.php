@@ -62,6 +62,7 @@ class DigestController extends Controller
 		$service = $this->get('email.service');
 
 		foreach ($emails as $email) {
+			$email = trim($email);
 			$service->send(
 				$email,
 				array('VidalMainBundle:Email:digest.html.twig', array('digest' => $digest)),
