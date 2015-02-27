@@ -25,6 +25,9 @@ class DigestCommand extends ContainerAwareCommand
 	{
 		# снимаем ограничение времени выполнения скрипта (в safe-mode не работает)
 		set_time_limit(0);
+		ini_set('max_execution_time', 0);
+		ini_set('max_input_time', 0);
+		ini_set('memory_limit', -1);
 
 		# опции не указаны - выводим мануал
 		if (!$input->getOption('test') && !$input->getOption('clean') && !$input->getOption('all') && !$input->getOption('me') && !$input->getOption('me')) {
