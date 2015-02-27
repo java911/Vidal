@@ -162,8 +162,8 @@ class DigestCommand extends ContainerAwareCommand
 		$mail->isSMTP();
 		$mail->isHTML(true);
 		$mail->CharSet  = 'UTF-8';
-		$mail->From     = 'noreply@mailbot.evrika.ru';
-		$mail->FromName = 'Портал «Evrika.ru»';
+		$mail->From     = 'maillist@vidal.ru';
+		$mail->FromName = 'Портал «Vidal.ru»';
 		$mail->Subject  = $subject;
 		$mail->Host     = '127.0.0.1';
 		$mail->Body     = $body;
