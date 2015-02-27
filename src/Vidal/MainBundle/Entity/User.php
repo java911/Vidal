@@ -198,6 +198,12 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	/** @ORM\ManyToOne(targetEntity="Specialization", inversedBy="users") */
 	protected $specialization;
 
+	/** @ORM\Column(type = "boolean") */
+	protected $digestSubscribed = true;
+
+	/** @ORM\Column(type = "datetime", nullable = true) */
+	protected $digestUnsubscribed = null;
+
 	public function __construct()
 	{
 		$this->confirmationScan = array();
@@ -1110,5 +1116,38 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	public function getSecondarySpecialty()
 	{
 		return $this->secondarySpecialty;
+	}
+
+	public function getDigestSubscribed()
+	{
+		return $this->digestSubscribed;
+	}
+
+	public function setDigestSubscribed($digestSubscribed)
+	{
+		$this->digestSubscribed = $digestSubscribed;
+
+		# если пользователь отписался от дайджеста - надо обновить и дату отписки
+		if (!$digestSubscribed) {
+			$this->setDigestUnsubscribed(new \DateTime());
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDigestUnsubscribed()
+	{
+		return $this->digestUnsubscribed;
+	}
+
+	/**
+	 * @param mixed $digestUnsubscribed
+	 */
+	public function setDigestUnsubscribed($digestUnsubscribed)
+	{
+		$this->digestUnsubscribed = $digestUnsubscribed;
 	}
 }

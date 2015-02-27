@@ -30,6 +30,9 @@ class Digest extends BaseEntity
 	/** @ORM\Column(type="boolean") */
 	protected $allSpecialties = true;
 
+	/** @ORM\Column(type="string", length=255) */
+	protected $font;
+
 	public function __construct()
 	{
 		$this->specialties = new ArrayCollection();
@@ -145,5 +148,21 @@ class Digest extends BaseEntity
 	public function setFooter($footer)
 	{
 		$this->footer = $footer;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getFont()
+	{
+		return $this->font;
+	}
+
+	/**
+	 * @param mixed $font
+	 */
+	public function setFont($font)
+	{
+		$this->font = $font;
 	}
 }

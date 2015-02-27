@@ -1,0 +1,147 @@
+<?php
+namespace Vidal\MainBundle\Command;
+
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
+
+class DigestCommand extends ContainerAwareCommand
+{
+	protected function configure()
+	{
+		$this->setName('vidal:digest')
+			->setDescription('Send digest to users')
+			->addOption('test', null, InputOption::VALUE_NONE, 'Send digest to manager e-mails')
+			->addOption('stop', null, InputOption::VALUE_NONE, 'Stop sending digests')
+			->addOption('clean', null, InputOption::VALUE_NONE, 'Clean log app/logs/digest_sent.txt')
+			->addOption('all', null, InputOption::VALUE_NONE, 'Send digest to every subscribed user')
+			->addOption('me', null, InputOption::VALUE_NONE, 'Send digest to 7binary@gmail.com');;
+	}
+
+	protected function execute(InputInterface $input, OutputInterface $output)
+	{
+		# снимаем ограничение времени выполнения скрипта (в safe-mode не работает)
+		set_time_limit(0);
+
+		# опции не указаны - выводим мануал
+		if (!$input->getOption('test') && !$input->getOption('clean') && !$input->getOption('all') && !$input->getOption('me')) {
+			$output->writeln('=> Error: uncorrect syntax. READ BELOW');
+			$output->writeln('$ php app/console evrika:digest --test');
+			$output->writeln('$ php app/console evrika:digest --stop');
+			$output->writeln('$ php app/console evrika:digest --clean');
+			$output->writeln('$ php app/console evrika:digest --all');
+			$output->writeln('$ php app/console evrika:digest --me');
+			return false;
+		}
+
+		$container = $this->getContainer();
+		$em        = $container->get('doctrine')->getManager();
+		$digest    = $em->getRepository('VidalMainBundle:Digest')->get();
+
+		# --stop   остановка рассылки дайджеста
+		if ($input->getOption('stop')) {
+			$digest->setProgress(false);
+			$em->flush();
+			$output->writeln('=> digest STOPPED');
+			return true;
+		}
+
+		# если рассылка уже идет - возвращаем false
+		if ($digest->getProgress()) {
+			$output->writeln("=> ERROR: digest IN PROGRESS");
+			return false;
+		}
+
+		if ($input->getOption('all')) {
+			# рассылка всем подписанным врачам
+			$output->writeln("Sending: in progress to ALL subscribed users...");
+			$digest->setProgress(true);
+			$this->sendToAll();
+		}
+		elseif ($input->getOption('test')) {
+			# рассылка нашим менеджерам
+			$raw      = explode(';', $digest->getEmails());
+			$emails[] = array();
+
+			foreach ($raw as $email) {
+				$emails[] = trim($email);
+			}
+
+			$output->writeln("Sending: in progress to managers: " . implode(', ', $emails));
+			$this->sendTo($emails);
+		}
+		elseif ($input->getOption('me')) {
+			$output->writeln("Sending: in progress to 7binary@gmail.com");
+			$this->sendTo(array('7binary@gmail.com'));
+		}
+		elseif ($input->getOption('clean')) {
+			$output->writeln('Cleaned sent flag of users!');
+		}
+
+		return true;
+	}
+
+	/**
+	 * Рассылка по массиву почтовых адресов без логирования
+	 *
+	 * @param array $emails
+	 */
+	private function sendTo(array $emails)
+	{
+		$container  = $this->getContainer();
+		$em         = $container->get('doctrine')->getManager();
+		$templating = $container->get('templating');
+		$digest     = $em->getRepository('VidalMainBundle:Digest')->get();
+
+		$users = $em->createQuery("
+			SELECT u.username, u.id, DATE_FORMAT(u.created, '%Y-%m-%d_%H:%i:%s') as created, u.firstName
+			FROM VidalMainBundle:User u
+			WHERE u.username IN (:emails)
+		")->setParameter('emails', $emails)
+			->getResult();
+
+		$subject = $digest->getSubject();
+		$template1 = $templating->render('VidalMainBundle:Digest:template1.html.twig', array('digest' => $digest));
+
+		foreach ($users as $user) {
+			$template2 = $templating->render('VidalMainBundle:Digest:template2.html.twig', array('user' => $user));
+			$template = $template1 . $template2;
+
+			$test = true;
+			$this->send($user['username'], $user['firstName'], $template, $subject, $test);
+		}
+	}
+
+	public function send($email, $to, $body, $subject, $test = false)
+	{
+		$mail = new \PHPMailer();
+
+		$mail->isSMTP();
+		$mail->isHTML(true);
+		$mail->CharSet  = 'UTF-8';
+		$mail->From     = 'noreply@mailbot.evrika.ru';
+		$mail->FromName = 'Портал «Evrika.ru»';
+		$mail->Subject  = $subject;
+		$mail->Host     = '127.0.0.1';
+		$mail->Body     = $body;
+		$mail->addAddress($email, $to);
+		$mail->addCustomHeader('Precedence', 'bulk');
+
+		if ($test) {
+			$mail->Host       = 'smtp.gmail.com';
+			$mail->From       = 'binacy@gmail.com';
+			$mail->SMTPSecure = 'ssl';
+			$mail->Port       = 465;
+			$mail->SMTPAuth   = true;
+			$mail->Username   = 'binacy@gmail.com';
+			$mail->Password   = '2q32q3q2';
+		}
+
+		$result = $mail->send();
+		$mail   = null;
+
+		return $result;
+	}
+}

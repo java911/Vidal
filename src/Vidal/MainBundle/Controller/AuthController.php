@@ -440,4 +440,21 @@ class AuthController extends Controller
 			'user'  => $user
 		);
 	}
+
+	/** @Route("/unsubscribe-digest/{userId}/{userCreated}", name = "unsubscribe_digest") */
+	public function unsubscribeDigestAction($userId, $userCreated)
+	{
+		$em   = $this->getDoctrine()->getManager();
+		$user = $em->getRepository('VidalMainBundle:User')->findOneById($userId);
+
+		if (!$user || $user->getCreated()->format('Y-m-d_H:i:s') != $userCreated) {
+			throw $this->createNotFoundException();
+		}
+
+		$user->setDigestSubscribed(false);
+		$em->flush();
+
+		return $this->redirect($this->generateUrl('index'));
+		//return $this->render('EvrikaMainBundle:User:unsubscribe_digest.html.twig', array('user' => $user));
+	}
 }

@@ -28,6 +28,7 @@ class DigestController extends Controller
 			->add('subject', null, array('label' => 'Тема письма', 'required' => true))
 			->add('specialties', null, array('label' => 'Специальности', 'required' => false))
 			->add('allSpecialties', null, array('label' => 'Всем специальностям', 'required' => false))
+			->add('font', null, array('label' => 'Название шрифта без кавычек', 'required' => true))
 			->add('emails', null, array('label' => 'Тестовые e-mail через ;', 'required' => false))
 			->add('test', 'submit', array('label' => 'Разослать на тестовые', 'attr' => array('class' => 'btn-red')))
 			->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn-red')))
