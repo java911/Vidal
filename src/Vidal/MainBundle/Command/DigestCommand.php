@@ -99,14 +99,14 @@ class DigestCommand extends ContainerAwareCommand
 		$em         = $container->get('doctrine')->getManager();
 		$templating = $container->get('templating');
 		$digest     = $em->getRepository('VidalMainBundle:Digest')->get();
-		$step = 40;
+		$step       = 40;
 
 		$users = $em->createQuery("
 			SELECT u.username, u.id, DATE_FORMAT(u.created, '%Y-%m-%d_%H:%i:%s') as created, u.firstName
 			FROM VidalMainBundle:User u
 			WHERE u.send = 0
 			ORDER BY u.id ASC
-		")->setMaxResults(40)
+		")->setMaxResults($step)
 			->getResult();
 
 		$subject     = $digest->getSubject();
@@ -114,19 +114,12 @@ class DigestCommand extends ContainerAwareCommand
 		$updateQuery = $em->createQuery('UPDATE VidalMainBundle:User u SET u.send=1 WHERE u.id = :id');
 
 		# рассылка
-		for ($i = 0, $c = count($users); $i < $c; $i = $i + $step) {
-			$users100 = array_slice($users, $i, $step);
+		foreach ($users as $user) {
+			$template2 = $templating->render('VidalMainBundle:Digest:template2.html.twig', array('user' => $user));
+			$template  = $template1 . $template2;
 
-			foreach ($users100 as $user) {
-				$template2 = $templating->render('VidalMainBundle:Digest:template2.html.twig', array('user' => $user));
-				$template  = $template1 . $template2;
-
-				$this->send($user['username'], $user['firstName'], $template, $subject);
-				$updateQuery->setParameter('id', $user['id'])->execute();
-			}
-
-			break;
-			//sleep(60);
+			$this->send($user['username'], $user['firstName'], $template, $subject);
+			$updateQuery->setParameter('id', $user['id'])->execute();
 		}
 	}
 
