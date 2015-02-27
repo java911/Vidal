@@ -42,26 +42,38 @@
 {% endif %}
 
 
+<style>
+	.descr {
+		overflow: hidden;
+	}
+	.descr * {
+		display:        inline-block;
+		float:          left;
+		vertical-align: bottom;
+		margin:         0
+	}
+	.descr a {
+		margin-left: 6px;
+	}
+</style>
+
+
 {% if productGroups is not empty %}
-	<div class="block">
+	<div class="block descr">
 		<span class="block-head">Описания препаратов:</span>
 		{% for key, products in productGroups %}
 			{% if products|length == 1 %}
 				<a href="{{ path('product', {'EngName':products[0].Name, 'ProductID':products[0].ProductID}) }}"
-				   target="blank" class="no-underline">
-					{{ products[0].RusName|raw }}
-				</a>
+				   target="blank" class="no-underline">{{ products[0].RusName|raw }}</a>
 			{% else %}
 				{% set ids = [] %}
 				{% for product in products %}
 					{% set ids = ids|merge([product.ProductID]) %}
 				{% endfor %}
 				<a href="{{ path('product-group', {'ids':ids|join('-')}) }}" target="blank"
-				   class="no-underline">
-					{{ products[0].RusName|raw }}
-				</a>
+				   class="no-underline">{{ products[0].RusName|raw }}</a>
 			{% endif %}
-			{% if not loop.last %}, {% endif %}
+			<span>{{ loop.last ? '.' : ',' }} </span>
 		{% endfor %}
 	</div>
 {% endif %}

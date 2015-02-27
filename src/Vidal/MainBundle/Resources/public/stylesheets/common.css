@@ -713,6 +713,18 @@ tr.bold td {
 	display: inline-block;
 	width:   145px;
 }
+.descr {
+	overflow: hidden;
+}
+.descr * {
+	display:        inline-block;
+	float:          left;
+	vertical-align: bottom;
+	margin:         0
+}
+.descr a {
+	margin-left: 6px;
+}
 /* atc */
 .atc-name {
 	margin-left:  2px;
