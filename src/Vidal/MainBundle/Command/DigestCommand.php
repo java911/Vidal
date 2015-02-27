@@ -99,21 +99,21 @@ class DigestCommand extends ContainerAwareCommand
 		$em         = $container->get('doctrine')->getManager();
 		$templating = $container->get('templating');
 		$digest     = $em->getRepository('VidalMainBundle:Digest')->get();
+		$step = 40;
 
 		$users = $em->createQuery("
 			SELECT u.username, u.id, DATE_FORMAT(u.created, '%Y-%m-%d_%H:%i:%s') as created, u.firstName
 			FROM VidalMainBundle:User u
 			WHERE u.send = 0
 			ORDER BY u.id ASC
-		")->getResult();
+		")->setMaxResults(40)
+			->getResult();
 
 		$subject     = $digest->getSubject();
 		$template1   = $templating->render('VidalMainBundle:Digest:template1.html.twig', array('digest' => $digest));
 		$updateQuery = $em->createQuery('UPDATE VidalMainBundle:User u SET u.send=1 WHERE u.id = :id');
 
 		# рассылка
-		$step = 40;
-
 		for ($i = 0, $c = count($users); $i < $c; $i = $i + $step) {
 			$users100 = array_slice($users, $i, $step);
 
@@ -125,7 +125,8 @@ class DigestCommand extends ContainerAwareCommand
 				$updateQuery->setParameter('id', $user['id'])->execute();
 			}
 
-			sleep(60);
+			break;
+			//sleep(60);
 		}
 	}
 
