@@ -204,6 +204,9 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	/** @ORM\Column(type = "datetime", nullable = true) */
 	protected $digestUnsubscribed = null;
 
+	/** @ORM\Column(type = "boolean") */
+	protected $send = false;
+
 	public function __construct()
 	{
 		$this->confirmationScan = array();

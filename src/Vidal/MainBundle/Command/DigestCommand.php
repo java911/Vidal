@@ -18,8 +18,7 @@ class DigestCommand extends ContainerAwareCommand
 			->addOption('clean', null, InputOption::VALUE_NONE, 'Clean log app/logs/digest_sent.txt')
 			->addOption('all', null, InputOption::VALUE_NONE, 'Send digest to every subscribed user')
 			->addOption('me', null, InputOption::VALUE_NONE, 'Send digest to 7binary@gmail.com')
-			->addOption('local', null, InputOption::VALUE_NONE, 'Send digest from 7binary@list.ru')
-		;
+			->addOption('local', null, InputOption::VALUE_NONE, 'Send digest from 7binary@list.ru');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
@@ -59,7 +58,6 @@ class DigestCommand extends ContainerAwareCommand
 
 		# рассылка всем подписанным врачам
 		if ($input->getOption('all')) {
-
 			$output->writeln("Sending: in progress to ALL subscribed users...");
 			$digest->setProgress(true);
 			$this->sendToAll();
@@ -84,12 +82,47 @@ class DigestCommand extends ContainerAwareCommand
 			$this->sendTo(array('7binary@gmail.com'), $input->getOption('local'));
 		}
 
-
 		if ($input->getOption('clean')) {
+			$em->createQuery('UPDATE VidalMainBundle:User u SET u.send=0 WHERE u.send=1')->execute();
 			$output->writeln('Cleaned sent flag of users!');
 		}
 
 		return true;
+	}
+
+	private function sendToAll()
+	{
+		$container  = $this->getContainer();
+		$em         = $container->get('doctrine')->getManager();
+		$templating = $container->get('templating');
+		$digest     = $em->getRepository('VidalMainBundle:Digest')->get();
+
+		$users = $em->createQuery("
+			SELECT u.username, u.id, DATE_FORMAT(u.created, '%Y-%m-%d_%H:%i:%s') as created, u.firstName
+			FROM VidalMainBundle:User u
+			ORDER BY u.id ASC
+		")->getResult();
+
+		$subject     = $digest->getSubject();
+		$template1   = $templating->render('VidalMainBundle:Digest:template1.html.twig', array('digest' => $digest));
+		$updateQuery = $em->createQuery('UPDATE VidalMainBundle:User u SET u.send=1 WHERE u.id = :id');
+
+		# рассылка
+		$step = 40;
+
+		for ($i = 0, $c = count($users); $i < $c; $i = $i + $step) {
+			$users100 = array_slice($users, $i, $step);
+
+			foreach ($users100 as $user) {
+				$template2 = $templating->render('VidalMainBundle:Digest:template2.html.twig', array('user' => $user));
+				$template  = $template1 . $template2;
+
+				$this->send($user['username'], $user['firstName'], $template, $subject);
+				$updateQuery->setParameter('id', $user['id'])->execute();
+			}
+
+			sleep(60);
+		}
 	}
 
 	/**
@@ -111,12 +144,12 @@ class DigestCommand extends ContainerAwareCommand
 		")->setParameter('emails', $emails)
 			->getResult();
 
-		$subject = $digest->getSubject();
+		$subject   = $digest->getSubject();
 		$template1 = $templating->render('VidalMainBundle:Digest:template1.html.twig', array('digest' => $digest));
 
 		foreach ($users as $user) {
 			$template2 = $templating->render('VidalMainBundle:Digest:template2.html.twig', array('user' => $user));
-			$template = $template1 . $template2;
+			$template  = $template1 . $template2;
 
 			$this->send($user['username'], $user['firstName'], $template, $subject, $local);
 		}
