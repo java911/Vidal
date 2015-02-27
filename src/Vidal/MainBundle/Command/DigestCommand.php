@@ -100,6 +100,7 @@ class DigestCommand extends ContainerAwareCommand
 		$users = $em->createQuery("
 			SELECT u.username, u.id, DATE_FORMAT(u.created, '%Y-%m-%d_%H:%i:%s') as created, u.firstName
 			FROM VidalMainBundle:User u
+			WHERE u.send = 0
 			ORDER BY u.id ASC
 		")->getResult();
 
