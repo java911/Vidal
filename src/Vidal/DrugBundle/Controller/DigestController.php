@@ -61,14 +61,19 @@ class DigestController extends Controller
 	private function testTo($emails, $digest)
 	{
 		$service = $this->get('email.service');
+		$em      = $this->getDoctrine()->getManager();
 
 		foreach ($emails as $email) {
 			$email = trim($email);
-			$service->send(
-				$email,
-				array('VidalMainBundle:Email:digest.html.twig', array('digest' => $digest)),
-				$digest->getSubject()
-			);
+			$user  = $em->getRepository('VidalMainBundle:User')->findOneByUsername($email);
+
+			if ($user) {
+				$service->send(
+					$email,
+					array('VidalMainBundle:Email:digest.html.twig', array('digest' => $digest, 'user' => $user)),
+					$digest->getSubject()
+				);
+			}
 		}
 	}
 }
