@@ -62,6 +62,7 @@ class ProfileType extends AbstractType
 			->add('hidePhone', null, array('required' => false))
 			->add('icq', null, array('label' => 'ICQ', 'required' => false))
 			->add('hideIcq', null, array('required' => false))
+			->add('digestSubscribed', null, array('label' => 'Подписан на рассылку новостей', 'required' => false))
 			->add('submit1', 'submit', array('label' => 'Сохранить'))
 
 			###############################################################################################

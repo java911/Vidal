@@ -1128,7 +1128,10 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 		$this->digestSubscribed = $digestSubscribed;
 
 		# если пользователь отписался от дайджеста - надо обновить и дату отписки
-		if (!$digestSubscribed) {
+		if ($digestSubscribed) {
+			$this->setDigestUnsubscribed(null);
+		}
+		else {
 			$this->setDigestUnsubscribed(new \DateTime());
 		}
 

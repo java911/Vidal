@@ -454,7 +454,9 @@ class AuthController extends Controller
 		$user->setDigestSubscribed(false);
 		$em->flush();
 
-		return $this->redirect($this->generateUrl('index'));
-		//return $this->render('EvrikaMainBundle:User:unsubscribe_digest.html.twig', array('user' => $user));
+		return $this->render('VidalMainBundle:Auth:unsubscribe_digest.html.twig', array(
+			'title' => 'Подписка на рассылку новостей',
+			'user' => $user
+		));
 	}
 }
