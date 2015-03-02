@@ -1,46 +1,50 @@
+{% set t = title|url_encode(true) %}
+{% set d = description|url_encode(true) %}
+{% set u = app.request.uri %}
+
 <div id="share-buttons">
-	<a href="http://vk.com/share.php?url={{ app.request.uri }}" target="_blank" title="Поделиться в ВКонтакте">
+	<a href="http://vk.com/share.php?url={{ u }}&title={{ t }}&description={{ d }}" target="_blank" title="Поделиться в ВКонтакте">
 		<img src="{{ asset('bundles/vidalmain/images/share/VKontakte.png') }}"/>
 	</a>
 
 	<!-- Facebook -->
-	<a href="http://www.facebook.com/sharer.php?s=100&p[url]={{ app.request.uri }}" target="_blank"
+	<a href="http://www.facebook.com/sharer.php?s=100&p[url]={{ u }}&p[title]={{ t }}&p[description]={{ d }}" target="_blank"
 	   title="Поделиться в Facebook">
 		<img src="{{ asset('bundles/vidalmain/images/share/Facebook.png') }}"/>
 	</a>
 
 	<!-- Twitter -->
-	<a href="http://twitter.com/share?url={{ app.request.uri }}"
+	<a href="http://twitter.com/share?url={{ u }}&title={{ t }}&description={{ d }}"
 	   target="_blank" title="Twitter">
 		<img src="{{ asset('bundles/vidalmain/images/share/Twitter.png') }}"/>
 	</a>
 
 	<!-- LiveJournal -->
-	<a href="http://twitter.com/share?url={{ app.request.uri }}"
+	<a href="http://www.livejournal.com/update.bml?subject={{ t }}&event={{ d }}&url={{ u }}"
 	   target="_blank" title="Опубликовать в LiveJournal">
 		<img src="{{ asset('bundles/vidalmain/images/share/Livejournal.png') }}"/>
 	</a>
 
 	<!-- Google+ -->
-	<a href="https://plus.google.com/share?url={{ app.request.uri }}" target="_blank"
+	<a href="https://plus.google.com/share?url={{ u }}&title={{ t }}&description={{ d }}" target="_blank"
 	   title="Поделиться в Google+">
 		<img src="{{ asset('bundles/vidalmain/images/share/Google+.png') }}"/>
 	</a>
 
 	<!-- LinkedIn -->
-	<a href="http://www.linkedin.com/shareArticle?mini=true&url={{ app.request.uri }}"
+	<a href="http://www.linkedin.com/shareArticle?mini=true&url={{ u }}&title={{ t }}&description={{ d }}"
 	   target="_blank" title="Добавить в LinkedIn">
 		<img src="{{ asset('bundles/vidalmain/images/share/Linkedin.png') }}"/>
 	</a>
 
 	<!-- Odnoklassniki -->
-	<a href="http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1&st._surl={{ app.request.uri }}&st.comments"
+	<a href="http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1&st._surl={{ u }}&st.comments"
 	   target="_blank" title="Поделиться в Однокласники">
 		<img src="{{ asset('bundles/vidalmain/images/share/Odnoklassniki.png') }}"/>
 	</a>
 
 	<!-- MoiMir -->
-	<a href="http://connect.mail.ru/share?url={{ app.request.uri }}&title={{ '' }}"
+	<a href="http://connect.mail.ru/share?url={{ u }}&title={{ t }}&description={{ d }}"
 	   target="_blank" title="Добавить в Мой мир">
 		<img src="{{ asset('bundles/vidalmain/images/share/Mail.png') }}"/>
 	</a>
