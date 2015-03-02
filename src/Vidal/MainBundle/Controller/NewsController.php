@@ -37,7 +37,8 @@ class NewsController extends Controller
 		return array(
 			'publication' => $publication,
 			'menu_left'   => 'news',
-			'title'       => $title,
+			'title'       => $title . ' | Новости',
+			'ogTitle'     => $title,
 			'description' => $this->strip($publication->getAnnounce()),
 		);
 	}

@@ -6,6 +6,14 @@
 {% set isDoctor = is_granted('IS_AUTHENTICATED_REMEMBERED') %}
 
 
+{% block meta %}
+	{{ parent() }}
+	<meta property="og:image" content="http://www.vidal.ru/bundles/vidalmain/images/vidal.png">
+	<meta content="{{ ogTitle }}" property="og:title">
+	<meta content="{{ description }}" property="og:description">
+{% endblock %}
+
+
 {% block title %}
 	<h1>{{ product.RusName|raw }} <span>({{ product.EngName|raw }})</span></h1>
 {% endblock %}
@@ -21,6 +29,10 @@
 
 
 {% block vidal %}
+	{% if is_granted('ROLE_ADMIN') %}
+		{% include 'VidalMainBundle::share.html.twig' %}
+	{% endif %}
+
 	{# ссылка админу на редактирование #}
 	{% if isAdmin %}
 		<a class="admin-edit fade" target="_blank"

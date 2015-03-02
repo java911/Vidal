@@ -1,6 +1,14 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
+{% block meta %}
+	{{ parent() }}
+	<meta property="og:image" content="http://www.vidal.ru/bundles/vidalmain/images/vidal.png">
+	<meta content="{{ ogTitle }}" property="og:title">
+	<meta content="{{ description }}" property="og:description">
+{% endblock %}
+
+
 {% block title %}
 	<h1>{{ article|raw }}</h1>
 {% endblock %}
@@ -28,6 +36,10 @@
 
 
 {% block content %}
+	{% if is_granted('ROLE_ADMIN') %}
+		{% include 'VidalMainBundle::share.html.twig' %}
+	{% endif %}
+
 	<div class="article-wrap">
 		{# админам карандашик редактирования #}
 		{% if isAdmin %}

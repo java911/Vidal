@@ -35,12 +35,12 @@ class ArticleController extends Controller
 		$title = $this->strip($article->getTitle());
 
 		$params = array(
-			'title'    => $title . ' | ' . $rubrique,
-			'ogTitle'  => $title,
-			'menu'     => 'articles',
-			'rubrique' => $rubrique,
-			'article'  => $article,
-			'description'=> $this->strip($article->getAnnounce()),
+			'title'       => $title . ' | ' . $rubrique,
+			'ogTitle'     => $title,
+			'menu'        => 'articles',
+			'rubrique'    => $rubrique,
+			'article'     => $article,
+			'description' => $this->strip($article->getAnnounce()),
 		);
 
 		$articleId = $article->getId();
@@ -454,7 +454,10 @@ class ArticleController extends Controller
 		# формируем заголовок страницы
 		$titles = array();
 		if (isset($params['article'])) {
-			$titles[] = $this->strip($params['article']->getTitle());
+			$title                 = $this->strip($params['article']->getTitle());
+			$titles[]              = $title;
+			$params['ogTitle']     = $title;
+			$params['description'] = $this->strip($params['article']->getAnnounce());
 		}
 		if (isset($params['category'])) {
 			$titles[] = $params['category'];

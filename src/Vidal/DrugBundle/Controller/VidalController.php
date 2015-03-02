@@ -455,11 +455,14 @@ class VidalController extends Controller
 		$params['publications'] = $em->getRepository('VidalDrugBundle:Product')->findPublications($productId);
 		$params['articles']     = $em->getRepository('VidalDrugBundle:Product')->findArticles($productId);
 		$params['arts']         = $em->getRepository('VidalDrugBundle:Product')->findArts($productId);
+		$title                  = $this->strip($product->getRusName());
+		$params['ogTitle']      = $title;
+		$params['description']  = $product->getZipInfo();
 
 		# медицинские изделия выводятся по-другому
 		if ($product->isMI()) {
 			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds);
-			$params['title']    = $this->strip($product->getRusName()) . ' - ' . $product->getZipInfo() . ' | Медицинские изделия';
+			$params['title']    = $title . ' - ' . $product->getZipInfo() . ' | Медицинские изделия';
 			$params['isMI']     = true;
 
 			return $this->render("VidalDrugBundle:Vidal:bad_document.html.twig", $params);
@@ -468,13 +471,13 @@ class VidalController extends Controller
 		# БАДы выводятся по-другому
 		if ($product->isBAD() || ($document && $document->isBAD())) {
 			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds);
-			$params['title']    = $this->strip($product->getRusName()) . ' - ' . $product->getZipInfo() . ' | БАДы';
+			$params['title']    = $title . ' - ' . $product->getZipInfo() . ' | БАДы';
 
 			return $this->render("VidalDrugBundle:Vidal:bad_document.html.twig", $params);
 		}
 		else {
 			$params['pictures'] = $em->getRepository('VidalDrugBundle:Picture')->findAllByProductIds($productIds);
-			$params['title']    = $this->strip($product->getRusName()) . ' - ' . $product->getZipInfo() . ' | Препараты';
+			$params['title']    = $title . ' - ' . $product->getZipInfo() . ' | Препараты';
 		}
 
 		return $params;

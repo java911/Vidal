@@ -6,7 +6,7 @@
 {% block meta %}
 	{{ parent() }}
 	<meta property="og:image" content="http://www.vidal.ru/bundles/vidalmain/images/vidal.png">
-	<meta content="{{ title }}" property="og:title">
+	<meta content="{{ ogTitle }}" property="og:title">
 	<meta content="{{ description }}" property="og:description">
 {% endblock %}
 
@@ -35,6 +35,10 @@
 
 
 {% block content %}
+	{% if is_granted('ROLE_ADMIN') %}
+		{% include 'VidalMainBundle::share.html.twig' %}
+	{% endif %}
+
 	<div class="publication">
 		{% if withPhoto %}
 			<div class="publication-header with-photo">
@@ -83,10 +87,6 @@
 		<div class="publication-footer">
 			<span class="publication-date">{{ publication.date|date('d.m.Y') }}</span>
 		</div>
-
-		{% if is_granted('ROLE_ADMIN') and app.request.get('t') == 1 %}
-			{% include 'VidalMainBundle::share.html.twig' %}
-		{% endif %}
 
 		{{ render(controller('VidalMainBundle:Tag:tags', {'object':publication})) }}
 	</div>
