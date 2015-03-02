@@ -1,0 +1,68 @@
+<div id="share-buttons">
+	<a href="http://vk.com/share.php?url={{ app.request.uri }}" target="_blank" title="Поделиться в ВКонтакте">
+		<img src="{{ asset('bundles/vidalmain/images/share/VKontakte.png') }}"/>
+	</a>
+
+	<!-- Facebook -->
+	<a href="http://www.facebook.com/sharer.php?s=100&p[url]={{ app.request.uri }}" target="_blank"
+	   title="Поделиться в Facebook">
+		<img src="{{ asset('bundles/vidalmain/images/share/Facebook.png') }}"/>
+	</a>
+
+	<!-- Twitter -->
+	<a href="http://twitter.com/share?url={{ app.request.uri }}"
+	   target="_blank" title="Twitter">
+		<img src="{{ asset('bundles/vidalmain/images/share/Twitter.png') }}"/>
+	</a>
+
+	<!-- LiveJournal -->
+	<a href="http://twitter.com/share?url={{ app.request.uri }}"
+	   target="_blank" title="Опубликовать в LiveJournal">
+		<img src="{{ asset('bundles/vidalmain/images/share/Livejournal.png') }}"/>
+	</a>
+
+	<!-- Google+ -->
+	<a href="https://plus.google.com/share?url={{ app.request.uri }}" target="_blank"
+	   title="Поделиться в Google+">
+		<img src="{{ asset('bundles/vidalmain/images/share/Google+.png') }}"/>
+	</a>
+
+	<!-- LinkedIn -->
+	<a href="http://www.linkedin.com/shareArticle?mini=true&url={{ app.request.uri }}"
+	   target="_blank" title="Добавить в LinkedIn">
+		<img src="{{ asset('bundles/vidalmain/images/share/Linkedin.png') }}"/>
+	</a>
+
+	<!-- Odnoklassniki -->
+	<a href="http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1&st._surl={{ app.request.uri }}&st.comments"
+	   target="_blank" title="Поделиться в Однокласники">
+		<img src="{{ asset('bundles/vidalmain/images/share/Odnoklassniki.png') }}"/>
+	</a>
+
+	<!-- MoiMir -->
+	<a href="http://connect.mail.ru/share?url={{ app.request.uri }}&title={{ '' }}"
+	   target="_blank" title="Добавить в Мой мир">
+		<img src="{{ asset('bundles/vidalmain/images/share/Mail.png') }}"/>
+	</a>
+
+	<!-- Email -->
+	<a href="#" class="share-email" title="Поделиться через E-mail">
+		<img src="{{ asset('bundles/vidalmain/images/share/Email.png') }}" alt="Email"/>
+	</a>
+</div>
+
+<style type="text/css">
+	#share-buttons {
+		overflow: hidden;
+	}
+	#share-buttons > * {
+		display:      inline-block;
+		float:        left;
+		margin-right: 3px;
+	}
+	#share-buttons img {
+		width:      35px;
+		border:     0;
+		box-shadow: 0;
+	}
+</style>

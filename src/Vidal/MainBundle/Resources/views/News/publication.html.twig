@@ -84,6 +84,10 @@
 			<span class="publication-date">{{ publication.date|date('d.m.Y') }}</span>
 		</div>
 
+		{% if is_granted('ROLE_ADMIN') %}
+			{% include 'VidalMainBundle::share.html.twig' %}
+		{% endif %}
+
 		{{ render(controller('VidalMainBundle:Tag:tags', {'object':publication})) }}
 	</div>
 
