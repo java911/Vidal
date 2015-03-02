@@ -9,11 +9,11 @@ use
 	Symfony\Component\Console\Output\OutputInterface,
 	Symfony\Component\Process\Process;
 
-class EventCommand extends ContainerAwareCommand
+class GoogleCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:event');
+		$this->setName('vidal:google');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
@@ -21,45 +21,15 @@ class EventCommand extends ContainerAwareCommand
 		# снимаем ограничение времени выполнения скрипта (в safe-mode не работает)
 		set_time_limit(0);
 
-		$container = $this->getContainer();
 
-		$logger    = $container->get('vidal.digest_logger');
+		$container = $this->getContainer();
 		$em        = $container->get('doctrine')->getManager();
 
-		# рассылаем с помощью EventSendCommand
-		$command = 'php '
-			. $container->get('kernel')->getRootDir()
-			. '/console vidal:eventsend ';
+		$rootDir = $container->get('kernel')->getRootDir();
 
-        $doctors = $em->createQuery('
-                        SELECT e.username
-                        FROM VidalMainBundle:User e
-                ')->getResult();
+		require_once $rootDir . '/Google/Client.php';
+		require_once $rootDir . '/Google/Service.php';
 
-        $emails = array();
-        foreach ($doctors as $doctor) {
-            $emails[] = $doctor['username'];
-        }
 
-//        $emails[] = 'tulupov.m@gmail.com';
-		$emails = array_diff($emails, $logger->getSentEmails());
-
-		for ($i = 0, $c = count($emails); $i < $c; $i = $i + 100) {
-			$emails100 = array_slice($emails, $i, 100);
-			$emails100 = implode(' ', $emails100);
-
-			# формируем команду для рассылки соточки
-			try {
-				$processCmd = $command . $emails100;
-				$process    = new Process($processCmd);
-				$process->run();
-			}
-			catch (\Exception $e) {
-				continue;
-			}
-
-			$process = null;
-			sleep(40);
-		}
 	}
 }

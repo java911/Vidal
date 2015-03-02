@@ -716,12 +716,13 @@ tr.bold td {
 .descr {
 	overflow: hidden;
 }
-.descr * {
-	display:        inline-block;
-	float:          left;
+.descr a, .descr span {
+	display: inline-block;
+	float: left;
 	vertical-align: bottom;
-	margin:         0;
-	font-size:      14px;
+	margin: 0;
+	font-size: 14px;
+	line-height: 18px;
 }
 .descr a {
 	margin-left: 6px;
