@@ -3022,16 +3022,16 @@
         },
         {
             "name": "sonata-project/block-bundle",
-            "version": "dev-master",
+            "version": "2.2.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataBlockBundle.git",
-                "reference": "f4ca92b038dcca9cb433a94b9302ab5f670cfc45"
+                "reference": "f4d965821c8d249d97dedbb741c713f13c45c19f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/f4ca92b038dcca9cb433a94b9302ab5f670cfc45",
-                "reference": "f4ca92b038dcca9cb433a94b9302ab5f670cfc45",
+                "url": "https://api.github.com/repos/sonata-project/SonataBlockBundle/zipball/f4d965821c8d249d97dedbb741c713f13c45c19f",
+                "reference": "f4d965821c8d249d97dedbb741c713f13c45c19f",
                 "shasum": ""
             },
             "require": {
@@ -3053,7 +3053,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.3.x-dev"
+                    "dev-master": "2.2.x-dev"
                 }
             },
             "autoload": {
@@ -3082,7 +3082,7 @@
                 "block",
                 "sonata"
             ],
-            "time": "2015-02-18 16:57:06"
+            "time": "2014-12-17 15:27:31"
         },
         {
             "name": "sonata-project/cache",
