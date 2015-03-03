@@ -2,33 +2,6 @@
 {% set d = description|url_encode(true) %}
 {% set u = app.request.uri %}
 
-<style>
-	#share-buttons {
-		margin-bottom: 15px;
-	}
-	#share-buttons > div {
-		overflow:      hidden;
-		display:       inline-block;
-		border:        1px solid #ccc;
-		border-radius: 4px;
-		height:        30px;
-		padding:       3px 4px;
-	}
-	#share-buttons a {
-		display:     inline-block;
-		float:       left;
-		margin-left: 3px;
-	}
-	#share-buttons a.first {
-		margin-left: 0;
-	}
-	#share-buttons img {
-		width:      30px;
-		border:     0;
-		box-shadow: 0;
-	}
-</style>
-
 <div id="share-buttons">
 	<div>
 		<a href="http://vk.com/share.php?url={{ u }}&title={{ t }}&description={{ d }}" target="_blank"
@@ -80,8 +53,52 @@
 		</a>
 
 		<!-- Email -->
-		<a href="#" class="share-email" title="Поделиться через E-mail">
+		<a href="#share-email" class="share-email" title="Поделиться через E-mail">
 			<img src="{{ asset('bundles/vidalmain/images/share/Email.png') }}" alt="Email"/>
 		</a>
 	</div>
 </div>
+
+
+{#<div id="share-email">#}
+	{#<form action="" method="POST">#}
+		{#<table>#}
+			{#<tr class="email">#}
+				{#<td><label for="form_email">E-mail <b>*</b></label></td>#}
+				{#<td><input id="form_email" name="email" required="required"/></td>#}
+			{#</tr>#}
+			{#<tr class="lastName">#}
+				{#<td><label for="form_lastName">Фамилия <b>*</b></label></td>#}
+				{#<td><input id="form_lastName" name="lastName" required="required"/></td>#}
+			{#</tr>#}
+			{#<tr class="firstName">#}
+				{#<td><label for="form_firstName">Имя <b>*</b></label></td>#}
+				{#<td><input id="form_firstName" name="firstName" required="required"/></td>#}
+			{#</tr>#}
+			{#<tr class="company">#}
+				{#<td><label for="form_company">Компания <b>*</b></label></td>#}
+				{#<td><input id="form_company" name="company" required="required"/></td>#}
+			{#</tr>#}
+			{#<tr class="position">#}
+				{#<td><label for="form_position">Должность <b>*</b></label></td>#}
+				{#<td><input id="form_position" name="position" required="required"/></td>#}
+			{#</tr>#}
+			{#<tr class="comment">#}
+				{#<td><label for="form_comment">Задать вопрос</label></td>#}
+				{#<td><textarea id="form_comment" name="comment"></textarea></td>#}
+			{#</tr>#}
+			{#<tr>#}
+				{#<td><input type="hidden" name="vebinar" value=""/></td>#}
+				{#<td class="button">#}
+					{#<button class="btn-gray">Отправить</button>#}
+				{#</td>#}
+			{#</tr>#}
+		{#</table>#}
+	{#</form>#}
+{#</div>#}
+
+<style>
+	.share-email {
+
+	}
+</style>
