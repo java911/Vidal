@@ -17,13 +17,13 @@
 		</a>
 
 		<!-- Twitter -->
-		<a href="http://twitter.com/share?url={{ u }}&title={{ t }}&description={{ d }}"
+		<a href="http://twitter.com/share?url={{ u }}&text={{ t }}"
 		   target="_blank" title="Twitter">
 			<img src="{{ asset('bundles/vidalmain/images/share/Twitter.png') }}"/>
 		</a>
 
 		<!-- LiveJournal -->
-		<a href="http://www.livejournal.com/update.bml?subject={{ t }}&event={{ d }}&url={{ u }}"
+		<a href="http://www.livejournal.com/update.bml?subject={{ t ~ ' | ' ~ u }}&event={{ d }}&url={{ u }}"
 		   target="_blank" title="Опубликовать в LiveJournal">
 			<img src="{{ asset('bundles/vidalmain/images/share/Livejournal.png') }}"/>
 		</a>
