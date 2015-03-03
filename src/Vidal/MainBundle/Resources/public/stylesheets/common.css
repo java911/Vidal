@@ -1709,28 +1709,3 @@ tr.bold td {
 #closepopupvidal:hover {
 	opacity: 1;
 }
-/* share */
-#share-buttons {
-	margin-bottom: 15px;
-}
-#share-buttons > div {
-	overflow:      hidden;
-	display:       inline-block;
-	border:        1px solid #ccc;
-	border-radius: 4px;
-	height:        30px;
-	padding:       3px 4px;
-}
-#share-buttons a {
-	display:     inline-block;
-	float:       left;
-	margin-left: 3px;
-}
-#share-buttons a.first {
-	margin-left: 0;
-}
-#share-buttons img {
-	width:      30px;
-	border:     0;
-	box-shadow: 0;
-}

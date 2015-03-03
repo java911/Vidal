@@ -98,10 +98,15 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/publication.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/share.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/fancybox/jquery.fancybox.css') }}"/>
 {% endblock %}
 
 
 {% block javascripts %}
 	{{ parent() }}
 	<script type="text/javascript" src="{{ asset('bundles/vidalmain/ckeditor/spoiler.js') }}"></script>
+	<link rel="stylesheet" type="text/css"
+		  href="{{ asset('bundles/vidalmain/fancybox/jquery.mousewheel-3.0.6.pack.js') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/fancybox/jquery.fancybox.js') }}"/>
 {% endblock %}

@@ -27,7 +27,13 @@
 			</a>
 		{% endif %}
 	</div>
+
+	{% if is_granted('ROLE_ADMIN') %}
+		{% include 'VidalMainBundle::share.html.twig' %}
+	{% endif %}
+
 	{% include 'VidalDrugBundle:Vidal:document_stars.html.twig' %}
+
 {% endblock %}
 
 
@@ -44,9 +50,6 @@
 
 
 {% block vidal %}
-	{% if is_granted('ROLE_ADMIN') %}
-		{% include 'VidalMainBundle::share.html.twig' %}
-	{% endif %}
 
 	{# Иконки использования при состояниях #}
 	{% if document is defined %}
@@ -310,7 +313,7 @@
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link type="text/css" rel="stylesheet" href="{{ asset('bundles/vidalmain/stylesheets/market.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/share.css') }}"/>
 	<style type="text/css">
 		.relative {
 			position: relative;
@@ -382,7 +385,7 @@
 		}
 		/* stars */
 		.stars {
-			margin:           -12px 0 20px;
+			margin:           0 0 20px;
 			background-color: beige;
 			padding:          7px 8px 4px;
 			overflow:         hidden;
