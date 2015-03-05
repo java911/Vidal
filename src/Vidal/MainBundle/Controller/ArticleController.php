@@ -487,7 +487,7 @@ class ArticleController extends Controller
 			return $this->render('VidalMainBundle:Article:art_item.html.twig', $params);
 		}
 
-		if ($response = $this->checkRole) {
+		if ($response = $this->checkRole()) {
 			return $response;
 		}
 
