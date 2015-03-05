@@ -376,10 +376,6 @@ class ArticleController extends Controller
 	 */
 	public function artAction(Request $request, $url)
 	{
-		if ($response = $this->checkRole()) {
-			return $response;
-		}
-
 		$parts    = explode('/', $url);
 		$em       = $this->getDoctrine()->getManager('drug');
 		$rubrique = $em->getRepository('VidalDrugBundle:ArtRubrique')->findOneByUrl($parts[0]);
@@ -480,7 +476,19 @@ class ArticleController extends Controller
 				throw $this->createNotFoundException();
 			}
 
+			if (!$this->getUser()) {
+				$params['title']    = 'Закрытый раздел';
+				$params['menu']     = 'vracham';
+				$params['moduleId'] = 7;
+
+				return $this->render('VidalMainBundle:Auth:login.html.twig', $params);
+			}
+
 			return $this->render('VidalMainBundle:Article:art_item.html.twig', $params);
+		}
+
+		if ($response = $this->checkRole) {
+			return $response;
 		}
 
 		return $params;

@@ -48,7 +48,8 @@
 					</div>
 					<div class="article-footer">
 						<span>Рубрика:</span>
-						<a href="{{ path('vracham') }}">Статьи для специалистов, {{ article.rubrique }}</a>
+						<a href="{{ path('vracham') }}">Статьи для специалистов</a>,
+						<a href="{{ path('art', {'url':article.rubrique.url}) }}">{{ article.rubrique }}</a>
 					</div>
 				</div>
 			{% endif %}

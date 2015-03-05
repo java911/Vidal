@@ -1,6 +1,16 @@
 {% extends 'VidalMainBundle::layout.html.twig' %}
 
 
+{% if ogTitle is defined %}
+	{% block meta %}
+		{{ parent() }}
+		<meta property="og:image" content="http://www.vidal.ru/bundles/vidalmain/images/share/vidal.jpg">
+		<meta content="{{ ogTitle }}" property="og:title">
+		<meta content="{{ description }}" property="og:description">
+	{% endblock %}
+{% endif %}
+
+
 {% block content %}
 	{{ render(controller('VidalMainBundle:Index:Module', {'moduleId':moduleId})) }}
 {% endblock %}
