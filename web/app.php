@@ -25,7 +25,6 @@ require_once __DIR__ . '/../app/AppKernel.php';
 
 if (strpos($_SERVER['REQUEST_URI'], 'otvety_specialistov') !== false) {
 	$kernel = new AppKernel('prod', true);
-	exit;
 }
 else {
 	$kernel = new AppKernel('prod', false);
