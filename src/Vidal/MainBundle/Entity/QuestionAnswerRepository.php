@@ -13,7 +13,7 @@ class QuestionAnswerRepository extends EntityRepository
 			FROM VidalMainBundle:QuestionAnswer qa
 			WHERE qa.enabled = TRUE
 			ORDER BY qa.created DESC
-		');
+		')->getResult();
 	}
 
 	public function findAll()
