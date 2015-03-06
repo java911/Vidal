@@ -1,0 +1,10 @@
+{% extends 'VidalMainBundle::minimal_layout.html.twig' %}
+
+{% block body %}
+	<p>{{ text }}</p>
+
+	<p>
+		{{ title }}<br/>
+		<a href="{{ url }}" target="_blank">{{ url }}</a>
+	</p>
+{% endblock %}

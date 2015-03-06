@@ -15,7 +15,7 @@ class EmailService
 		$this->templating = $templating;
 	}
 
-	public function send($emails, $template, $subject = 'Уведомление', $from = 'maillist@vidal.ru', $localhost = false)
+	public function send($emails, $template, $subject = 'Уведомление', $from = 'maillist@vidal.ru', $localhost = false, $fromName = false)
 	{
 		$mail = new \PHPMailer();
 
@@ -24,7 +24,7 @@ class EmailService
 		$mail->isSMTP();
 		$mail->isHTML(true);
 		$mail->CharSet  = 'UTF-8';
-		$mail->FromName = 'Портал ' . $portal;
+		$mail->FromName = $fromName ? $fromName : 'Портал ' . $portal;
 		$mail->Subject  = $subject;
 
 		# prod - оптравка через почтовый сервер на серваке, dev/test - отправка через Mail.ru

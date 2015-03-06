@@ -17,7 +17,7 @@
 		</a>
 
 		<!-- Twitter -->
-		<a href="http://twitter.com/share?url={{ u }}&text={{ t ~ ': '}}"
+		<a href="http://twitter.com/share?url={{ u }}&text={{ t ~ ': ' }}"
 		   target="_blank" title="Twitter">
 			<img src="{{ asset('bundles/vidalmain/images/share/Twitter.png') }}"/>
 		</a>
@@ -53,52 +53,54 @@
 		</a>
 
 		<!-- Email -->
-		<a href="#share-email" class="share-email" title="Поделиться через E-mail">
+		<a href="#share-email" class="share-btn" title="Поделиться через E-mail">
 			<img src="{{ asset('bundles/vidalmain/images/share/Email.png') }}" alt="Email"/>
 		</a>
 	</div>
 </div>
 
 
-{#<div id="share-email">#}
-	{#<form action="" method="POST">#}
-		{#<table>#}
-			{#<tr class="email">#}
-				{#<td><label for="form_email">E-mail <b>*</b></label></td>#}
-				{#<td><input id="form_email" name="email" required="required"/></td>#}
-			{#</tr>#}
-			{#<tr class="lastName">#}
-				{#<td><label for="form_lastName">Фамилия <b>*</b></label></td>#}
-				{#<td><input id="form_lastName" name="lastName" required="required"/></td>#}
-			{#</tr>#}
-			{#<tr class="firstName">#}
-				{#<td><label for="form_firstName">Имя <b>*</b></label></td>#}
-				{#<td><input id="form_firstName" name="firstName" required="required"/></td>#}
-			{#</tr>#}
-			{#<tr class="company">#}
-				{#<td><label for="form_company">Компания <b>*</b></label></td>#}
-				{#<td><input id="form_company" name="company" required="required"/></td>#}
-			{#</tr>#}
-			{#<tr class="position">#}
-				{#<td><label for="form_position">Должность <b>*</b></label></td>#}
-				{#<td><input id="form_position" name="position" required="required"/></td>#}
-			{#</tr>#}
-			{#<tr class="comment">#}
-				{#<td><label for="form_comment">Задать вопрос</label></td>#}
-				{#<td><textarea id="form_comment" name="comment"></textarea></td>#}
-			{#</tr>#}
-			{#<tr>#}
-				{#<td><input type="hidden" name="vebinar" value=""/></td>#}
-				{#<td class="button">#}
-					{#<button class="btn-gray">Отправить</button>#}
-				{#</td>#}
-			{#</tr>#}
-		{#</table>#}
-	{#</form>#}
-{#</div>#}
-
 <style>
-	.share-email {
-
+	#share-email {
+		display: none;
+	}
+	#share-email .share-title {
+		color:         #d71344;
+		font-size:     17px;
+		font-weight:   bold;
+		margin-bottom: 18px;
+	}
+	#share-email div {
+		margin-bottom: 10px;
+	}
+	#share-email input[type="text"], #share-email textarea {
+		width: 400px;
+	}
+	#share-email .submit {
+		text-align: right;
 	}
 </style>
+
+
+<div id="share-email">
+	<div class="share-title">
+		Поделиться с друзьями
+	</div>
+	<form action="{{ path('share') }}" method="POST">
+		<div>
+			<input type="text" name="my" required="required" placeholder="Мой E-mail"/>
+		</div>
+		<div>
+			<input type="text" name="friends" required="required" placeholder="E-mail друзей через ;"/>
+		</div>
+		<div>
+			<textarea name="text" placeholder="Комментарий (максимум 200 символов)" required="required"></textarea>
+		</div>
+		<input type="hidden" name="title" value="{{ t }}"/>
+		<input type="hidden" name="url" value="{{ u }}"/>
+
+		<div class="submit">
+			<input type="submit" class="btn-red" value="Отправить"/>
+		</div>
+	</form>
+</div>
