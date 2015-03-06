@@ -33,6 +33,7 @@
 }
 #share-email div {
 	margin-bottom: 10px;
+	width:         418px;
 }
 #share-email input[type="text"], #share-email textarea {
 	width: 400px;

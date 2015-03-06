@@ -1,6 +1,7 @@
 {% set t = ogTitle|url_encode(true) %}
 {% set d = description|url_encode(true) %}
 {% set u = app.request.uri %}
+{% set hiddenTitle = (ogTitle ~ ' — ' ~ subtitle ~ ' — Vidal.ru')|url_encode(true) %}
 
 <div id="share-buttons">
 	<div>
@@ -59,9 +60,21 @@
 	</div>
 </div>
 
+<style>
+	.share-error, .share-message {
+		display: none;
+	}
+</style>
+
 <div id="share-email">
 	<div class="share-title">
 		Поделиться с друзьями
+	</div>
+	<div class="share-error">
+		Пожалуйста, заполните все поля и убедитесь в правильности указанных e-mail адресов
+	</div>
+	<div class="share-message">
+
 	</div>
 	<form action="{{ path('share') }}" method="POST">
 		<div>
@@ -73,7 +86,7 @@
 		<div>
 			<textarea name="text" placeholder="Комментарий (максимум 200 символов)" required="required"></textarea>
 		</div>
-		<input type="hidden" name="title" value="{{ t }}"/>
+		<input type="hidden" name="title" value="{{ hiddenTitle }}"/>
 		<input type="hidden" name="url" value="{{ u }}"/>
 
 		<div class="submit">

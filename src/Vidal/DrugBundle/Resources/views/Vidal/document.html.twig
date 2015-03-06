@@ -29,7 +29,7 @@
 	</div>
 
 	{% if is_granted('ROLE_ADMIN') %}
-		{% include 'VidalMainBundle::share.html.twig' %}
+		{% include 'VidalMainBundle::share.html.twig' with {'subtitle':'Лекарственные препараты'} %}
 	{% endif %}
 
 	{% include 'VidalDrugBundle:Vidal:document_stars.html.twig' %}
