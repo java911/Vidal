@@ -7,11 +7,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class RedirectController extends Controller
 {
-	/** @Route("/reckittbenckiser/{url}", requirements={"url"=".+"}) */
-	public function redirectreckitt()
-	{
-		return $this->redirect($this->generateUrl('index'), 301);
-	}
 
 	/** @Route("/symptom{url}", requirements={"url"=".+"}) */
 	public function redirectSymptom()
