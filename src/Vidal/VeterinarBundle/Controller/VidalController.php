@@ -238,6 +238,9 @@ class VidalController extends Controller
 			}
 		}
 
+		var_dump($params['picture']);
+		exit;
+
 		return $params;
 	}
 
