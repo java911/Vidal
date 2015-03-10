@@ -23,7 +23,7 @@ class RegistrationDateCommand extends ContainerAwareCommand
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		ini_set('memory_limit', -1);
-		$output->writeln('--- vidal:registrationdate started');
+		$output->writeln('--- vidal:registration_date started');
 
 		$em = $this->getContainer()->get('doctrine')->getManager('veterinar');
 
