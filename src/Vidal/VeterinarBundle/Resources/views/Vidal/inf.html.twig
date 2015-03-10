@@ -41,7 +41,7 @@
 					<img src="{{ infoPage.photo.path }}"/>
 				</td>
 			{% elseif picture %}
-				{% set path = '/veterinar/infoPage/' ~ picture.path %}
+				{% set path = '/upload/veterinar/infoPages/' ~ picture.path %}
 				{% if is_file(path) %}
 					<td class="infopage-logo">
 						<img src="{{ path }}"/>
