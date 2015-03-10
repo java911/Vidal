@@ -1,5 +1,5 @@
 <?php
-namespace Vidal\DrugBundle\Command;
+namespace Vidal\VeterinarBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -16,7 +16,7 @@ class RegistrationDateCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:registration_date')
+		$this->setName('veterinar:registration_date')
 			->setDescription('Transforms dates of product registration to NULL if its like 0000-00-00 00:00:00');
 	}
 
@@ -25,16 +25,16 @@ class RegistrationDateCommand extends ContainerAwareCommand
 		ini_set('memory_limit', -1);
 		$output->writeln('--- vidal:registrationdate started');
 
-		$em = $this->getContainer()->get('doctrine')->getManager('drug');
+		$em = $this->getContainer()->get('doctrine')->getManager('veterinar');
 
 		$em->createQuery('
-			UPDATE VidalDrugBundle:Product p
+			UPDATE VidalVeterinarBundle:Product p
 			SET p.RegistrationDate = NULL
 			WHERE p.RegistrationDate = \'0000-00-00 00:00:00\'
 		')->execute();
 
 		$em->createQuery('
-			UPDATE VidalDrugBundle:Product p
+			UPDATE VidalVeterinarBundle:Product p
 			SET p.DateOfCloseRegistration = NULL
 			WHERE p.DateOfCloseRegistration = \'0000-00-00 00:00:00\'
 		')->execute();
@@ -42,13 +42,13 @@ class RegistrationDateCommand extends ContainerAwareCommand
 		#########################
 		$products = $em->createQuery('
 			SELECT p.ProductID, p.RegistrationDate, p.DateOfCloseRegistration
-			FROM VidalDrugBundle:Product p
+			FROM VidalVeterinarBundle:Product p
 		')->getResult();
 
 		$output->writeln('============ RegistrationDate =============');
 
 		$updateQuery = $em->createQuery('
-			UPDATE VidalDrugBundle:Product p
+			UPDATE VidalVeterinarBundle:Product p
 			SET p.RegistrationDate = :reg
 			WHERE p.ProductID = :id
 		');
@@ -78,7 +78,7 @@ class RegistrationDateCommand extends ContainerAwareCommand
 		$output->writeln('============ DateOfCloseRegistration =============');
 
 		$updateQuery = $em->createQuery('
-			UPDATE VidalDrugBundle:Product p
+			UPDATE VidalVeterinarBundle:Product p
 			SET p.DateOfCloseRegistration = :reg
 			WHERE p.ProductID = :id
 		');
