@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class NewsController extends Controller
 {
@@ -71,10 +72,47 @@ class NewsController extends Controller
 		return $params;
 	}
 
-	/** @Route("/novost-test", name="novost-test") */
-	public function novostTestAction()
+	/** @Route("/share", name="share", options={"expose":true}) */
+	public function shareAction(Request $request)
 	{
-		return $this->redirect($this->generateUrl('publication', array('id' => 4618, 'test' => '')));
+		$my      = trim($request->request->get('my', ''));
+		$friends = $request->request->get('friends', null);
+		$text    = $request->request->get('text', null);
+
+		if (!empty($my) && !empty($friends) && !empty($text) && filter_var($request->request->get('my'), FILTER_VALIDATE_EMAIL)) {
+			$emails = explode(';', $friends);
+			$to     = array();
+
+			# проверяем валидность адресов
+			foreach ($emails as $email) {
+				$email = trim($email);
+				if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+					return new JsonResponse('FAIL');
+				}
+				$to[] = $email;
+			}
+
+			$url   = $request->request->get('url', '');
+			$title = urldecode($request->request->get('title', ''));
+
+			# рассылаем
+			$this->get('email.service')->send(
+				$to,
+				array('VidalMainBundle:Email:share.html.twig', array(
+					'text'  => $text,
+					'url'   => $url,
+					'title' => $title,
+				)),
+				$my . ' поделился(ась) с вами: ' . $title,
+				$my,
+				false,
+				$my
+			);
+
+			return new JsonResponse(implode('; ', $to));
+		}
+
+		return new JsonResponse('FAIL');
 	}
 
 	private function strip($string)

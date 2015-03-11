@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Команда генерации нормальных дат препаратов
  *
- * @package Vidal\VeterinarBundle\Command
+ * @package Vidal\DrugBundle\Command
  */
 class RegistrationDateCommand extends ContainerAwareCommand
 {
@@ -22,7 +22,8 @@ class RegistrationDateCommand extends ContainerAwareCommand
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$output->writeln('--- veterinar:registrationdate started');
+		ini_set('memory_limit', -1);
+		$output->writeln('--- vidal:registration_date started');
 
 		$em = $this->getContainer()->get('doctrine')->getManager('veterinar');
 
@@ -38,6 +39,72 @@ class RegistrationDateCommand extends ContainerAwareCommand
 			WHERE p.DateOfCloseRegistration = \'0000-00-00 00:00:00\'
 		')->execute();
 
-		$output->writeln('+++ veterinar:registration_date completed!');
+		#########################
+		$products = $em->createQuery('
+			SELECT p.ProductID, p.RegistrationDate, p.DateOfCloseRegistration
+			FROM VidalVeterinarBundle:Product p
+		')->getResult();
+
+		$output->writeln('============ RegistrationDate =============');
+
+		$updateQuery = $em->createQuery('
+			UPDATE VidalVeterinarBundle:Product p
+			SET p.RegistrationDate = :reg
+			WHERE p.ProductID = :id
+		');
+
+		for ($i = 0; $i < count($products); $i++) {
+			$date = $products[$i]['RegistrationDate'];
+
+			if ($date instanceof \DateTime) {
+				$year  = intval($date->format('d')) + 2000;
+				$month = intval($date->format('m'));
+				$day   = intval($date->format('y'));
+				$date->setDate($year, $month, $day);
+
+				$updateQuery
+					->setParameters(array(
+						'reg' => $date->format('Y-m-d 00:00:00'),
+						'id'  => $products[$i]['ProductID'],
+					))
+					->execute();
+			}
+
+			if ($i && $i % 500 == 0) {
+				$output->writeln("... +$i");
+			}
+		}
+
+		$output->writeln('============ DateOfCloseRegistration =============');
+
+		$updateQuery = $em->createQuery('
+			UPDATE VidalVeterinarBundle:Product p
+			SET p.DateOfCloseRegistration = :reg
+			WHERE p.ProductID = :id
+		');
+
+		for ($i = 0; $i < count($products); $i++) {
+			$date = $products[$i]['DateOfCloseRegistration'];
+
+			if ($date instanceof \DateTime) {
+				$year  = intval($date->format('d')) + 2000;
+				$month = intval($date->format('m'));
+				$day   = intval($date->format('y'));
+				$date->setDate($year, $month, $day);
+
+				$updateQuery
+					->setParameters(array(
+						'reg' => $date->format('Y-m-d 00:00:00'),
+						'id'  => $products[$i]['ProductID'],
+					))
+					->execute();
+			}
+
+			if ($i && $i % 500 == 0) {
+				$output->writeln("... +$i");
+			}
+		}
+
+		$output->writeln('+++ vidal:registration_date completed!');
 	}
 }

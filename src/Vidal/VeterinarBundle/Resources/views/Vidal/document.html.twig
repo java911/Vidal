@@ -35,28 +35,6 @@
 {% block vidal %}
 	{% if not product.hidePhoto %}
 		{% if product.photo %}
-			<div class="pictures block">
-				<a href="{{ product.photo.path }}" target="_blank">
-					<img src="{{ product.photo.path }}"/>
-				</a>
-			</div>
-		{% elseif pictures is defined and pictures is not empty %}
-			<div class="pictures block">
-				{% for picture in pictures %}
-					{% set path = '/upload/products/' ~ picture %}
-					{% if is_file(path) %}
-						<a href="{{ path }}" target="_blank">
-							<img src="{{ path }}"/>
-						</a>
-					{% endif %}
-				{% endfor %}
-			</div>
-		{% endif %}
-	{% endif %}
-
-
-	{% if not product.hidePhoto %}
-		{% if product.photo %}
 			<div class="pictures">
 				<a href="{{ product.photo.path }}" target="_blank">
 					<img src="{{ product.photo.path }}"/>

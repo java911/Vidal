@@ -29,7 +29,7 @@
 	</div>
 
 	{% if is_granted('ROLE_ADMIN') %}
-		{% include 'VidalMainBundle::share.html.twig' %}
+		{% include 'VidalMainBundle::share.html.twig' with {'subtitle':'Лекарственные препараты'} %}
 	{% endif %}
 
 	{% include 'VidalDrugBundle:Vidal:document_stars.html.twig' %}
@@ -314,6 +314,7 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/share.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/fancybox/source/jquery.fancybox.css') }}"/>
 	<style type="text/css">
 		.relative {
 			position: relative;
@@ -413,6 +414,10 @@
 
 {% block javascripts %}
 	{{ parent() }}
+	<script type="text/javascript" src="{{ asset('bundles/vidalmain/fancybox/source/jquery.fancybox.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('bundles/vidalmain/placeholder/jquery.placeholder.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/jquery.form.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/share.js') }}"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('.copy textarea')
