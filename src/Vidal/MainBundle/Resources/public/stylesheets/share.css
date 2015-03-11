@@ -41,3 +41,6 @@
 #share-email .submit {
 	text-align: right;
 }
+.share-error, .share-message {
+	display: none;
+}

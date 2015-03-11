@@ -80,6 +80,7 @@ class NewsController extends Controller
 		$text    = $request->request->get('text', null);
 
 		if (!empty($my) && !empty($friends) && !empty($text) && filter_var($request->request->get('my'), FILTER_VALIDATE_EMAIL)) {
+
 			$emails = explode(';', $friends);
 			$to     = array();
 
@@ -95,6 +96,11 @@ class NewsController extends Controller
 			$url   = $request->request->get('url', '');
 			$title = urldecode($request->request->get('title', ''));
 
+			# предотвратить отправку нескольких
+			if ($this->get('prevent')->doubleClick()) {
+				return new JsonResponse('DoubleClick');
+			}
+
 			# рассылаем
 			$this->get('email.service')->send(
 				$to,
@@ -103,7 +109,7 @@ class NewsController extends Controller
 					'url'   => $url,
 					'title' => $title,
 				)),
-				$my . ' поделился(ась) с вами: ' . $title,
+				$my . ' поделился(-ась) с Вами: ' . $title,
 				$my,
 				false,
 				$my

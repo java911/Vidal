@@ -1,7 +1,7 @@
 {% set t = ogTitle|url_encode(true) %}
 {% set d = description|url_encode(true) %}
 {% set u = app.request.uri %}
-{% set hiddenTitle = (ogTitle ~ ' — ' ~ subtitle ~ ' — Vidal.ru')|url_encode(true) %}
+{% set hiddenTitle = (ogTitle ~ ' – ' ~ subtitle ~ ' – Vidal.ru')|url_encode(true) %}
 
 <div id="share-buttons">
 	<div>
@@ -18,19 +18,19 @@
 		</a>
 
 		<!-- Twitter -->
-		<a href="http://twitter.com/share?url={{ u }}&text={{ t ~ ': ' }}"
+		<a href="http://twitter.com/share?url={{ u }}&text={{ forPatient is defined ? 'Статья для пациентов на сайте Vidal.ru – «' ~ t ~ '»: ' : (zip is defined ? ogTitle ~ ', ' ~ zip : ogTitle)|url_encode(true) }}"
 		   target="_blank" title="Twitter">
 			<img src="{{ asset('bundles/vidalmain/images/share/Twitter.png') }}"/>
 		</a>
 
 		<!-- LiveJournal -->
-		<a href="http://www.livejournal.com/update.bml?subject={{ t }}&event={{ d ~ ' Ссылка: ' ~ u }}&url={{ u }}"
+		<a href="http://www.livejournal.com/update.bml?subject={{ t }}&event={{ product is defined ? 'Текст материала на сайте vidal.ru: ' ~ u : d ~ ' Текст материала на сайте vidal.ru: ' ~ u }}&url={{ u }}"
 		   target="_blank" title="Опубликовать в LiveJournal">
 			<img src="{{ asset('bundles/vidalmain/images/share/Livejournal.png') }}"/>
 		</a>
 
 		<!-- Google+ -->
-		<a href="https://plus.google.com/share?url={{ u }}&title={{ t }}&description={{ d }}" target="_blank"
+		<a href="https://plus.google.com/share?url={{ u }}&title={{ (zip is defined ? ogTitle ~ ', ' ~ zip : ogTitle)|url_encode(true) }}&description={{ d }}" target="_blank"
 		   title="Поделиться в Google+">
 			<img src="{{ asset('bundles/vidalmain/images/share/Google+.png') }}"/>
 		</a>
@@ -57,14 +57,30 @@
 		<a href="#share-email" class="share-btn" title="Поделиться через E-mail">
 			<img src="{{ asset('bundles/vidalmain/images/share/Email.png') }}" alt="Email"/>
 		</a>
+
+		{% if app.request.get('t') == 1 %}
+		<button
+			class="g-interactivepost"
+			data-contenturl="https://plus.google.com/pages/"
+			data-contentdeeplinkid="/pages"
+			data-clientid="xxxxx.apps.googleusercontent.com"
+			data-cookiepolicy="single_host_origin"
+			data-prefilltext="Engage your users today, create a Google+ page for your business."
+			data-calltoactionlabel="CREATE"
+			data-calltoactionurl="http://plus.google.com/pages/create"
+			data-calltoactiondeeplinkid="/pages/create">
+		</button>
+			<script type="text/javascript">
+				$(document).ready(function() {
+					var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+					po.src = 'https://apis.google.com/js/client:plusone.js';
+					var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+				});
+			</script>
+		{% endif %}
 	</div>
 </div>
 
-<style>
-	.share-error, .share-message {
-		display: none;
-	}
-</style>
 
 <div id="share-email">
 	<div class="share-title">
@@ -94,3 +110,6 @@
 		</div>
 	</form>
 </div>
+
+{#{{ dump(app.request.uri) }}#}
+{#{{ render_hinclude(url('')) }}#}

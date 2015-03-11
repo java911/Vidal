@@ -13,7 +13,10 @@ $(document).ready(function() {
 	$('#share-email input[type="text"], #share-email textarea').placeholder();
 
 	$('#share-email form').ajaxForm(function(data) {
-		if (data == 'FAIL') {
+		if (data == 'DoubleClick') {
+
+		}
+		else if (data == 'FAIL') {
 			$('.share-error').show();
 		}
 		else {
