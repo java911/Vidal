@@ -1,0 +1,205 @@
+{% extends 'VidalMainBundle::layout_promo.html.twig' %}
+
+{% block middle %}
+	<div class="heli pages">
+        <div class="heli-green" style="font-size: 25px">ХЕЛИНОРМ</div>
+        <br />
+        <br />
+        <div class="heli-block">
+            <h2>Тест на наличие Helicobacter pylori</h2>
+            <b>ВОПРОС №1 Из 6:</b>&nbsp;&nbsp;&nbsp;&nbsp; Были/есть ли у Ваших родственников серьезные случаи заболевания желудка (рак, язвенная болезнь)?
+            <br />
+            <ul>
+                <li>нет</li>
+                <li>были/есть но не такие серьезные</li>
+                <li>были есть</li>
+            </ul>
+            <br />
+            <span class="heli-btn">ПРОДОЛЖИТЬ</span>
+        </div>
+        <br />
+        <br />
+        <div class="heli-block" style="text-align: center">
+            <img src="{{ asset('bundles/vidalmain/helinorm/heli-video.png') }}" style="width: 645px">
+        </div>
+        <br />
+        <div class="heli-block">
+            <div class="heli-title">
+                Cимптомы заражения Хеликобактер пилори
+            </div>
+            <div class="heli-text">
+                Заподозрить наличие Хеликобактер пилори в организме достаточно сложно.
+                Дело в том, что заражение этой бактерией часто протекает бессимптомно.
+                Это означает, что только на основании наличия тех или иных симптомов
+                нет совершенно никакой возможности установить, заражен ли человек
+                Хеликобактер пилори или нет. Окончательно убедиться в отсутствии бактерии
+                Хеликобактер пилори можно, только пройдя специальное медицинское
+                обследование...
+            </div>
+            <div class="heli-more">
+                <img src="{{ asset('bundles/vidalmain/helinorm/heli-more.png') }}">
+            </div>
+        </div>
+        <br style="clear: both"/>
+        <br />
+        <div class="heli-block">
+            <div class="heli-title">
+                Cимптомы заражения Хеликобактер пилори
+            </div>
+            <div class="heli-text">
+                Заподозрить наличие Хеликобактер пилори в организме достаточно сложно.
+                Дело в том, что заражение этой бактерией часто протекает бессимптомно.
+                Это означает, что только на основании наличия тех или иных симптомов
+                нет совершенно никакой возможности установить, заражен ли человек
+                Хеликобактер пилори или нет. Окончательно убедиться в отсутствии бактерии
+                Хеликобактер пилори можно, только пройдя специальное медицинское
+                обследование...
+            </div>
+            <div class="heli-more">
+                <img src="{{ asset('bundles/vidalmain/helinorm/heli-more.png') }}">
+            </div>
+        </div>
+        <div class="heli-block">
+
+        </div>
+        <br style="clear: both"/>
+        <br />
+        <div class="heli-block" style="text-align: center">
+            <img src="{{ asset('bundles/vidalmain/helinorm/heli-box.png') }}" style="width: 340px;">
+        </div>
+        <div class="heli-green" style="font-size: 25px">ХЕЛИНОРМ</div>
+	</div>
+
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style>
+		@font-face {
+			font-family: PFBeauSansPro; /* Имя шрифта */
+			src:         url("{{ asset('bundles/vidalmain/helinorm/PFBeauSansPro-Bbook.ttf') }}");
+		}
+        .heli{
+            background: url("{{ asset('bundles/vidalmain/helinorm/heli-bg.png') }}") repeat-y;
+        }
+        .heli * {
+            font-family: PFBeauSansPro;
+            color: #304e10;
+        }
+
+        .heli-green{
+            background: url("{{ asset('bundles/vidalmain/helinorm/line-bg.png') }}") repeat-y;
+            max-width: 1160px;
+            color: #fdfafd;
+            line-height: 75px;
+            height: 75px;
+            padding: 0 20px;
+        }
+        .heli-block{
+            width: 650px;
+            margin: 20px auto;
+
+        }
+        .heli-btn{
+            color: #ffffdd;
+            background: #2c4e33;
+            padding: 12px 40px;
+            cursor: pointer;
+        }
+        .heli-title{
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        .heli-text{
+            width: 565px;
+            float: left;
+        }
+        .heli-more{
+            float: right;
+            margin-top: 30px;
+        }
+
+	</style>
+
+{% endblock %}
+
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var timer;
+
+			function timer() {
+				clearInterval(timer);
+				timer = setInterval(function() {
+					var item = $('.slider-item').eq(0);
+					item.animate({marginLeft: -900}, 300, function() {
+						$('.slider-box').append(item);
+					});
+					item.animate({marginLeft: 0}, 1);
+					$('.btn-circle').css('background-image', "url('/bundles/vidalmain/images/collost/ellipse.png')");
+					$('#circle-' + $('.slider-item').eq(1).attr('data')).css('background-image', "url('/bundles/vidalmain/images/collost/ellipse-act.png')");
+				}, 7000);
+			}
+
+			timer();
+
+			$('.btn-circle').click(function() {
+				var i = 0;
+				while (true) {
+					i++;
+					var currentItem = $('.slider-item').eq(0).attr('data');
+					var thisItem = $(this).attr('data');
+					var tmpItem = thisItem - currentItem;
+					if (tmpItem != 0) {
+						if (tmpItem > 0) {
+							var item = $('.slider-item').eq(0);
+							item.animate({marginLeft: -900}, 0, function() {
+								$('.slider-box').append(item);
+							});
+							item.animate({marginLeft: 0}, 1);
+							$('.btn-circle').css('background-image', "url('/bundles/vidalmain/images/collost/ellipse.png')");
+							$('#circle-' + $('.slider-item').eq(0).attr('data')).css('background-image', "url('/bundles/vidalmain/images/collost/ellipse-act.png')");
+						} else {
+							var item = $('.slider-item').eq(4);
+							$('.slider-box').prepend(item);
+							item.animate({marginLeft: -900}, 0);
+							item.animate({marginLeft: 0}, 0);
+
+							$('.btn-circle').css('background-image', "url('/bundles/vidalmain/images/collost/ellipse.png')");
+							$('#circle-' + $('.slider-item').eq(0).attr('data')).css('background-image', "url('/bundles/vidalmain/images/collost/ellipse-act.png')");
+						}
+					} else {
+						timer();
+						return true;
+					}
+					if (i > 10) return true;
+				}
+
+			});
+
+			$('.rbtn').click(function() {
+				var item = $('.slider-item').eq(0);
+				item.animate({marginLeft: -900}, 0, function() {
+					$('.slider-box').append(item);
+				});
+				item.animate({marginLeft: 0}, 1);
+				$('.btn-circle').css('background-image', "url('/bundles/vidalmain/images/collost/ellipse.png')");
+				$('#circle-' + $('.slider-item').eq(0).attr('data')).css('background-image', "url('/bundles/vidalmain/images/collost/ellipse-act.png')");
+			});
+
+			$('.lbtn').click(function() {
+				var item = $('.slider-item').eq(4);
+				$('.slider-box').prepend(item);
+				item.animate({marginLeft: -900}, 0);
+				item.animate({marginLeft: 0}, 0);
+
+				$('.btn-circle').css('background-image', "url('/bundles/vidalmain/images/collost/ellipse.png')");
+				$('#circle-' + $('.slider-item').eq(0).attr('data')).css('background-image', "url('/bundles/vidalmain/images/collost/ellipse-act.png')");
+			});
+
+		});
+	</script>
+{% endblock %}
