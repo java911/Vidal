@@ -36,7 +36,7 @@
 
 {% block content %}
 	{% if is_granted('ROLE_ADMIN') %}
-		{% include 'VidalMainBundle::share.html.twig' with {'subtitle':'Материалы для пациентов'} %}
+		{% include 'VidalMainBundle::share.html.twig' with {'subtitle':'Материалы для пациентов', 'forPatient':'1'} %}
 	{% endif %}
 
 	{% include 'VidalMainBundle:Article:render_article.html.twig' %}

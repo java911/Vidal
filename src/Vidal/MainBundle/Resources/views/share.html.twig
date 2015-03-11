@@ -18,7 +18,7 @@
 		</a>
 
 		<!-- Twitter -->
-		<a href="http://twitter.com/share?url={{ u }}&text={{ t ~ ': ' }}"
+		<a href="http://twitter.com/share?url={{ u }}&text={{ forPatient is defined ? 'Статья для пациентов на сайте Vidal.ru – «' ~ t ~ '»: ' : t ~ ': ' }}"
 		   target="_blank" title="Twitter">
 			<img src="{{ asset('bundles/vidalmain/images/share/Twitter.png') }}"/>
 		</a>
