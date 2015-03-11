@@ -456,8 +456,9 @@ class VidalController extends Controller
 		$params['articles']     = $em->getRepository('VidalDrugBundle:Product')->findArticles($productId);
 		$params['arts']         = $em->getRepository('VidalDrugBundle:Product')->findArts($productId);
 		$title                  = $this->strip($product->getRusName());
-		$params['ogTitle']      = $title . ', ' . $this->strip($product->getZipInfo());
+		$params['ogTitle']      = $title;
 		$params['description']  = $product->getZipInfo();
+		$params['zip']          = $this->strip($product->getZipInfo());
 
 		# медицинские изделия выводятся по-другому
 		if ($product->isMI()) {

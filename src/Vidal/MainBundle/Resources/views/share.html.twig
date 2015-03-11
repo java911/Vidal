@@ -18,19 +18,19 @@
 		</a>
 
 		<!-- Twitter -->
-		<a href="http://twitter.com/share?url={{ u }}&text={{ forPatient is defined ? 'Статья для пациентов на сайте Vidal.ru – «' ~ t ~ '»: ' : t ~ ': ' }}"
+		<a href="http://twitter.com/share?url={{ u }}&text={{ forPatient is defined ? 'Статья для пациентов на сайте Vidal.ru – «' ~ t ~ '»: ' : (zip is defined ? t ~ ', ' ~ zip : t ~ ': ') }}"
 		   target="_blank" title="Twitter">
 			<img src="{{ asset('bundles/vidalmain/images/share/Twitter.png') }}"/>
 		</a>
 
 		<!-- LiveJournal -->
-		<a href="http://www.livejournal.com/update.bml?subject={{ t }}&event={{ d ~ ' Текст материала на сайте vidal.ru: ' ~ u }}&url={{ u }}"
+		<a href="http://www.livejournal.com/update.bml?subject={{ t }}&event={{ product is defined ? 'Текст материала на сайте vidal.ru: ' ~ u : d ~ ' Текст материала на сайте vidal.ru: ' ~ u }}&url={{ u }}"
 		   target="_blank" title="Опубликовать в LiveJournal">
 			<img src="{{ asset('bundles/vidalmain/images/share/Livejournal.png') }}"/>
 		</a>
 
 		<!-- Google+ -->
-		<a href="https://plus.google.com/share?url={{ u }}&title={{ t }}&description={{ d }}" target="_blank"
+		<a href="https://plus.google.com/share?url={{ u }}&title={{ zip is defined ? t ~ ', ' ~ zip : t }}&description={{ d }}" target="_blank"
 		   title="Поделиться в Google+">
 			<img src="{{ asset('bundles/vidalmain/images/share/Google+.png') }}"/>
 		</a>
