@@ -1,32 +1,42 @@
 <!DOCTYPE html>
 {% set isAdmin = app.user and is_granted('ROLE_ADMIN') %}
+{% set route = app.request.get('_route') %}
 <html lang="ru" xmlns:og="http://ogp.me/ns#">
 <head>
 	<meta charset="UTF-8"/>
 	<link rel="shortcut icon" href="{{ asset('favicon.ico') }}?v=2"/>
 
 	{% block meta %}
-		<title>{% spaceless %}
-				{% if seotitle is defined and seotitle is not null %}
-					{{ seotitle }}
-				{% else %}
-					{{ title is defined and title is not null ? title ~ ' | ' }}Vidal.ru - cправочник лекарственных препаратов
-				{% endif %}
-			{% endspaceless %}</title>
-		<meta name="description" content="{% spaceless %}
+	<title>{% spaceless %}
+			{% if seotitle is defined and seotitle is not null %}
+				{{ seotitle }}
+			{% else %}
+				{{ title is defined and title is not null ? title ~ ' | ' }}Vidal.ru - cправочник лекарственных препаратов
+			{% endif %}
+		{% endspaceless %}</title>
+	<meta name="description" content="{% spaceless %}
 				{% if description is defined and description is not null %}
 					{{ description }}
 				{% else %}
 					{{ title is defined ? title ~ '. ' }}Справочник лекарственных препаратов, содержащий подробные описания и инструкции по применению лекарственных средств. Так же, на сайте: медицинская энциклопедия с описанием болезней, новости медицины и фармацевтики, взаимодействие лекарств и исследования их эффективности.
 				{% endif %}
 			{% endspaceless %}"/>
-		<meta name="keywords" content="{% spaceless %}
+	<meta name="keywords" content="{% spaceless %}
 				{% if keywords is defined %}
 					{{ keywords }}
 				{% else %}
 					{{ title is defined ? title ~ ' ' }}Справочник лекарственных препаратов, средств, лекарства, описания, инструкции, применение, медицина, болезни, энциклопедия, врачи, новости, лечение, Видаль
 				{% endif %}
 			{% endspaceless %}"/>
+
+	{% if route not in ['product','article', 'art','publication'] %}
+	<meta property="og:image" content="http://www.vidal.ru/bundles/vidalmain/images/share/vidal.jpg"/>
+	{% if title is defined and title is not null %}
+		<meta property="og:title" content="{{ title }}"/>
+	{% endif %}
+	{% if description is defined and description is not null %}
+		<meta property="og:description" content="Справочник лекарственных средств, содержащий подробные описания и инструкции по применению препаратов. Также на сайте: материалы для специалистов, включая данные клинических исследований и алгоритмы ведения пациентов, медицинская энциклопедия с описанием болезней, новости медицины и фармации."/>
+	{% endif %}
 	{% endblock %}
 
 	{% block stylesheets %}
