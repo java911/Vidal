@@ -58,6 +58,10 @@ services:
         class: Vidal\DrugBundle\Service\ElasticaService
         arguments: [@lingua.service]
 
+    prevent:
+        class: Vidal\MainBundle\Service\Prevent
+        arguments: [@session]
+
     drug.timestampable:
         class: Gedmo\Timestampable\TimestampableListener
         tags:

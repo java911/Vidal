@@ -168,13 +168,16 @@ class Document
 	 */
 	protected $infoPages;
 
+	/** @ORM\OneToMany(targetEntity="PharmPortfolio", mappedBy="company") */
+	protected $portfolios;
+
 	public function __construct()
 	{
-		$this->productDocument   = new ArrayCollection();
-		$this->clphPointers      = new ArrayCollection();
-		$this->infoPages         = new ArrayCollection();
-		$this->molecules         = new ArrayCollection();
-		$this->products          = new ArrayCollection();
+		$this->productDocument = new ArrayCollection();
+		$this->clphPointers    = new ArrayCollection();
+		$this->infoPages       = new ArrayCollection();
+		$this->molecules       = new ArrayCollection();
+		$this->products        = new ArrayCollection();
 	}
 
 	public function __toString()

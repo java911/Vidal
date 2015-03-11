@@ -36,9 +36,7 @@
 
 
 {% block content %}
-	{% if is_granted('ROLE_ADMIN') %}
-		{% include 'VidalMainBundle::share.html.twig' with {'subtitle':'Статьи для специалистов'} %}
-	{% endif %}
+	{% include 'VidalMainBundle::share.html.twig' with {'subtitle':'Статьи для специалистов'} %}
 
 	<div class="article-wrap">
 		{# админам карандашик редактирования #}

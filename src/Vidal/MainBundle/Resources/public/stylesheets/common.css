@@ -1257,6 +1257,10 @@ tr.bold td {
 	font-weight:     bold;
 	font-size:       13px;
 }
+.tabs.veterinar-menu a {
+	padding:   5px 5px 6px 6px !important;
+	font-size: 12px !important;
+}
 .tabs a.active {
 	color:            white;
 	background-color: #2e3f51;

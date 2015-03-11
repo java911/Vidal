@@ -456,7 +456,7 @@ class VidalController extends Controller
 		$params['articles']     = $em->getRepository('VidalDrugBundle:Product')->findArticles($productId);
 		$params['arts']         = $em->getRepository('VidalDrugBundle:Product')->findArts($productId);
 		$title                  = $this->strip($product->getRusName());
-		$params['ogTitle']      = $title;
+		$params['ogTitle']      = $title . ', ' . $this->strip($product->getZipInfo());
 		$params['description']  = $product->getZipInfo();
 
 		# медицинские изделия выводятся по-другому
@@ -550,6 +550,6 @@ class VidalController extends Controller
 	private function strip($string)
 	{
 		$string = strip_tags(html_entity_decode($string, ENT_QUOTES, 'UTF-8'));
-		return str_replace(explode(' ', '® ™'), '', $string);
+		return trim(str_replace(explode(' ', '® ™'), '', $string));
 	}
 }
