@@ -13,10 +13,10 @@
 
 
 {% if result is defined %}
-    <b style="font-size: 22px;">{{ result.title }}</b>
+    <b style="font-size: 22px;">{{ result.title | raw }}</b>
     <br />
     <br />
-    {{ result.text }}
+    {{ result.text | raw }}
     <input type="hidden" name="number" value="{{ number }}" id="number">
     <br />
     <br />
