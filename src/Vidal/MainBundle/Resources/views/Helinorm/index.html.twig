@@ -20,11 +20,21 @@
                 <br />
             </div>
             <span class="heli-btn" id="heli-test-next">ПРОДОЛЖИТЬ</span>
+            <span class="heli-btn" id="heli-test-first" style="display: none">ПРОЙТИ ТЕСТ ЗАНОВО</span>
         </div>
         <br />
         <br />
         <div class="heli-block" style="text-align: center">
-            <img src="{{ asset('bundles/vidalmain/helinorm/heli-video.png') }}" style="width: 645px">
+            <object id="идентификатор" type="application/x-shockwave-flash" data="{{ asset('bundles/vidalmain/helinorm/uppod-video.swf') }}" width="645" height="364">
+                <param name="bgcolor" value="#ffffff" />
+                <param name="allowFullScreen" value="true" />
+                <param name="allowScriptAccess" value="always" />
+                <param name="wmode" value="window" />
+                <param name="movie" value="{{ asset('bundles/vidalmain/helinorm/uppod-video.swf') }}" />
+                <param name="flashvars" value="st={{ asset('bundles/vidalmain/helinorm/videostyle.txt') }}&m=video&file=/upload/HELINORM_8.mp4&poster={{ asset('bundles/vidalmain/helinorm/heli-video-first.png') }}" />
+            </object>
+
+            {#<img src="{{ asset('bundles/vidalmain/helinorm/heli-video.png') }}" style="width: 645px">#}
         </div>
         <br />
         <div class="heli-block">
@@ -234,6 +244,7 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('bundles/vidalmain/fancybox/source/jquery.fancybox.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/vidalmain/helinorm/uppod_api.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function() {
            $(document).on('click','.heli-test li', function(){
@@ -252,7 +263,20 @@
 //                        alert($('#number').val());
                         if ($('#number').val() > 6){
                             $('#heli-test-next').css('display','none');
+                            $('#heli-test-first').css('display','inline');
                         }
+                    }
+                });
+            });
+
+            $('#heli-test-first').click(function(){
+                $.ajax({
+                    type: "GET",
+                    url: Routing.generate('helinorm_test', {'number': '0' }),
+                    success: function(msg){
+                        $('#heli-replace-block').html(msg);
+                        $('#heli-test-first').css('display','none');
+                        $('#heli-test-next').css('display','inline');
                     }
                 });
             });
