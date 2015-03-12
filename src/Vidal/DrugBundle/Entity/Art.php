@@ -148,6 +148,9 @@ class Art extends BaseEntity
 	/** @ORM\ManyToMany(targetEntity="Video", inversedBy="arts", cascade={"persist"}) */
 	protected $videos;
 
+	/** @ORM\OneToMany(targetEntity="Share", mappedBy="art") */
+	protected $shares;
+
 	public function __construct()
 	{
 		$this->nozologies = new ArrayCollection();
@@ -158,11 +161,12 @@ class Art extends BaseEntity
 		$this->infoPages  = new ArrayCollection();
 		$this->tags       = new ArrayCollection();
 		$this->videos     = new ArrayCollection();
+		$this->shares     = new ArrayCollection();
 
-		$now              = new \DateTime('now');
-		$this->created    = $now;
-		$this->updated    = $now;
-		$this->date       = $now;
+		$now           = new \DateTime('now');
+		$this->created = $now;
+		$this->updated = $now;
+		$this->date    = $now;
 	}
 
 	public function __toString()

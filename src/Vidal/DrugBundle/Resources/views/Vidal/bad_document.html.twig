@@ -29,9 +29,7 @@
 
 
 {% block vidal %}
-	{% if is_granted('ROLE_ADMIN') %}
-		{% include 'VidalMainBundle::share.html.twig' with {'subtitle':'Лекарственные препараты, БАД, МИ', 'class':'Product', 'id':product.id} %}
-	{% endif %}
+	{% include 'VidalMainBundle::share.html.twig' with {'subtitle':'Лекарственные препараты, БАД, МИ', 'class':'Product', 'id':product.id} %}
 
 	{# ссылка админу на редактирование #}
 	{% if isAdmin %}

@@ -35,9 +35,7 @@
 
 
 {% block content %}
-	{% if is_granted('ROLE_ADMIN') %}
-		{% include 'VidalMainBundle::share.html.twig' with {'subtitle':'Медицинская энциклопедия', 'forPatient':'1', 'class':'Article', 'id':article.id} %}
-	{% endif %}
+	{% include 'VidalMainBundle::share.html.twig' with {'subtitle':'Медицинская энциклопедия', 'forPatient':'1', 'class':'Article', 'id':article.id} %}
 
 	{% include 'VidalMainBundle:Article:render_article.html.twig' %}
 

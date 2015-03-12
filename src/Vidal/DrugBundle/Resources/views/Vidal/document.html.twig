@@ -28,9 +28,7 @@
 		{% endif %}
 	</div>
 
-	{% if is_granted('ROLE_ADMIN') %}
-		{% include 'VidalMainBundle::share.html.twig' with {'subtitle':'Лекарственные препараты, БАД, МИ', 'class':'Product', 'id':product.id} %}
-	{% endif %}
+	{% include 'VidalMainBundle::share.html.twig' with {'subtitle':'Лекарственные препараты, БАД, МИ', 'class':'Product', 'id':product.id} %}
 
 	{% include 'VidalDrugBundle:Vidal:document_stars.html.twig' %}
 
