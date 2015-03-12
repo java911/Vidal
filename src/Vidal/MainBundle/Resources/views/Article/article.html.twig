@@ -125,7 +125,7 @@
 	<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/share.js') }}"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('.products .btn-red').click(function(e) {
+			$('.btn-red').not('#share-email .btn-red').click(function(e) {
 				e.preventDefault();
 				var $btn = $(e.target);
 				$btn.hide();
