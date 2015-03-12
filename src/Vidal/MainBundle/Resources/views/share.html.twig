@@ -1,5 +1,5 @@
 {% set t = ogTitle|url_encode(true) %}
-{% set d = description|url_encode(true) %}
+{% set d = description|last == '.' ? description|url_encode(true) : (description ~ '.')|url_encode(true) %}
 {% set u = app.request.uri %}
 {% set hiddenTitle = (ogTitle ~ ' – ' ~ subtitle ~ ' – Vidal.ru')|url_encode(true) %}
 
@@ -18,13 +18,13 @@
 		</a>
 
 		<!-- Twitter -->
-		<a href="http://twitter.com/share?url={{ u }}&text={{ forPatient is defined ? 'Статья для пациентов на сайте Vidal.ru – «' ~ t ~ '»: ' : (zip is defined ? ogTitle ~ ', ' ~ zip : ogTitle)|url_encode(true) }}"
+		<a href="http://twitter.com/share?url={{ u }}&text={{ forPatient is defined ? 'Статья из медицинской энциклопедии сайта vidal.ru – «' ~ t ~ '»: ' : (zip is defined ? ogTitle ~ ', ' ~ zip : ogTitle)|url_encode(true) }}"
 		   target="_blank" title="Twitter">
 			<img src="{{ asset('bundles/vidalmain/images/share/Twitter.png') }}"/>
 		</a>
 
 		<!-- LiveJournal -->
-		<a href="http://www.livejournal.com/update.bml?subject={{ t }}&event={{ product is defined ? 'Текст материала на сайте vidal.ru: ' ~ u : d ~ ' Текст материала на сайте vidal.ru: ' ~ u }}&url={{ u }}"
+		<a href="http://www.livejournal.com/update.bml?subject={{ (zip is defined ? ogTitle ~ ', ' ~ zip : ogTitle)|url_encode(true) }}&event={{ product is defined ? 'Текст материала на сайте vidal.ru: ' ~ u : d ~ ' Текст материала на сайте vidal.ru: ' ~ u }}&url={{ u }}"
 		   target="_blank" title="Опубликовать в LiveJournal">
 			<img src="{{ asset('bundles/vidalmain/images/share/Livejournal.png') }}"/>
 		</a>
@@ -87,7 +87,7 @@
 		Поделиться с друзьями
 	</div>
 	<div class="share-error">
-		Пожалуйста, заполните все поля и убедитесь в правильности указанных e-mail адресов
+		Пожалуйста, заполните поля e-mail адресов и убедитесь в их правильности
 	</div>
 	<div class="share-message">
 
@@ -100,7 +100,7 @@
 			<input type="text" name="friends" required="required" placeholder="E-mail друзей через ;"/>
 		</div>
 		<div>
-			<textarea name="text" placeholder="Комментарий (максимум 200 символов)" required="required"></textarea>
+			<textarea name="text" placeholder="Комментарий (максимум 200 символов)"></textarea>
 		</div>
 		<input type="hidden" name="title" value="{{ hiddenTitle }}"/>
 		<input type="hidden" name="url" value="{{ u }}"/>

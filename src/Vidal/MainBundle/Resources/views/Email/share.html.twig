@@ -1,7 +1,9 @@
 {% extends 'VidalMainBundle::minimal_layout.html.twig' %}
 
 {% block body %}
-	<p>{{ text }}</p>
+	{% if text is not empty %}
+		<p>{{ text }}</p>
+	{% endif %}
 
 	<p>
 		{{ title }}<br/>

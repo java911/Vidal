@@ -30,7 +30,7 @@
 
 {% block vidal %}
 	{% if is_granted('ROLE_ADMIN') %}
-		{% include 'VidalMainBundle::share.html.twig' with {'subtitle':'Лекарственные препараты'} %}
+		{% include 'VidalMainBundle::share.html.twig' with {'subtitle':'Лекарственные препараты, БАД, МИ', 'class':'Product', 'id':product.id} %}
 	{% endif %}
 
 	{# ссылка админу на редактирование #}
