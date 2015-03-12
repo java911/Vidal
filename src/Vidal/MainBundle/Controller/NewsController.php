@@ -79,7 +79,7 @@ class NewsController extends Controller
 		$friends = $request->request->get('friends', null);
 		$text    = $request->request->get('text', null);
 
-		if (!empty($my) && !empty($friends) && !empty($text) && filter_var($request->request->get('my'), FILTER_VALIDATE_EMAIL)) {
+		if (!empty($my) && !empty($friends) && filter_var($request->request->get('my'), FILTER_VALIDATE_EMAIL)) {
 
 			$emails = explode(';', $friends);
 			$to     = array();

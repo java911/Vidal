@@ -36,7 +36,7 @@
 
 {% block content %}
 	{% if is_granted('ROLE_ADMIN') %}
-		{% include 'VidalMainBundle::share.html.twig' with {'subtitle':'Материалы для пациентов', 'forPatient':'1'} %}
+		{% include 'VidalMainBundle::share.html.twig' with {'subtitle':'Медицинская энциклопедия', 'forPatient':'1'} %}
 	{% endif %}
 
 	{% include 'VidalMainBundle:Article:render_article.html.twig' %}
@@ -125,7 +125,7 @@
 	<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/share.js') }}"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('.btn-red').not('#share-email .btn-red').click(function(e) {
+			$('.products .btn-red').click(function(e) {
 				e.preventDefault();
 				var $btn = $(e.target);
 				$btn.hide();
