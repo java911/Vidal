@@ -36,7 +36,7 @@
 
 
 {% block content %}
-	{% include 'VidalMainBundle::share.html.twig' with {'subtitle':'Статьи для специалистов'} %}
+	{% include 'VidalMainBundle::share.html.twig' with {'subtitle':'Статьи для специалистов', 'class':'Art', 'id':article.id} %}
 
 	<div class="article-wrap">
 		{# админам карандашик редактирования #}

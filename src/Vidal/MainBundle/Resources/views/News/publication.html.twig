@@ -36,7 +36,7 @@
 
 {% block content %}
 	{% if is_granted('ROLE_ADMIN') %}
-		{% include 'VidalMainBundle::share.html.twig' with {'subtitle':'Новости'} %}
+		{% include 'VidalMainBundle::share.html.twig' with {'subtitle':'Новости', 'class':'Publication', 'id':publication.id} %}
 	{% endif %}
 
 	<div class="publication">
