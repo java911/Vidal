@@ -118,6 +118,9 @@ class Publication extends BaseEntity
 	/** @ORM\ManyToMany(targetEntity="Video", inversedBy="publications", cascade={"persist"}) */
 	protected $videos;
 
+	/** @ORM\OneToMany(targetEntity="Share", mappedBy="publication") */
+	protected $shares;
+
 	public function __construct()
 	{
 		$now              = new \DateTime('now');
@@ -132,6 +135,7 @@ class Publication extends BaseEntity
 		$this->infoPages  = new ArrayCollection();
 		$this->tags       = new ArrayCollection();
 		$this->videos     = new ArrayCollection();
+		$this->shares     = new ArrayCollection();
 	}
 
 	public function __toString()

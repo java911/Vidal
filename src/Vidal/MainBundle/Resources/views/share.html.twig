@@ -18,8 +18,8 @@
 		</a>
 
 		<!-- Twitter -->
-		<a href="http://twitter.com/share?url={{ u }}&text={{ forPatient is defined ? 'Статья из медицинской энциклопедии сайта vidal.ru – «' ~ t ~ '»: ' : (zip is defined ? ogTitle ~ ', ' ~ zip : ogTitle)|url_encode(true) }}"
-		   target="_blank" title="Twitter">
+		<a href="http://twitter.com/share?url={{ u }}&text={{ forPatient is defined ? 'Статья из медицинской энциклопедии сайта vidal.ru – «' ~ t ~ '»: ' : ((zip is defined ? ogTitle ~ ', ' ~ zip : ogTitle) ~ ': ')|url_encode(true) }}"
+		   target="_blank" title="Опубликовать в Twitter">
 			<img src="{{ asset('bundles/vidalmain/images/share/Twitter.png') }}"/>
 		</a>
 
