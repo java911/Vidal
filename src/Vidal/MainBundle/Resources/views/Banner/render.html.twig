@@ -1,4 +1,4 @@
-{% if banner and is_file(banner.banner.path) %}
+{% if banner.banner.path is defined and banner and is_file(banner.banner.path) %}
 	{% set group = 'banner_' ~ banner.id %}
 	{% set name = 'banner-' ~ banner.group.name %}
 	{% set isSwf = banner.isSwf() %}
