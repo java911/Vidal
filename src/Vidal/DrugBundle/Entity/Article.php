@@ -162,9 +162,6 @@ class Article extends BaseEntity
 	/** @ORM\ManyToMany(targetEntity="Video", inversedBy="articles", cascade={"persist"}) */
 	protected $videos;
 
-	/** @ORM\OneToMany(targetEntity="Share", mappedBy="article") */
-	protected $shares;
-
 	public function __construct()
 	{
 		$this->nozologies = new ArrayCollection();

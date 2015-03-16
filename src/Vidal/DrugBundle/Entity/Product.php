@@ -197,9 +197,6 @@ class Product
 	/** @ORM\Column(type="boolean") */
 	protected $hidePhoto = false;
 
-	/** @ORM\OneToMany(targetEntity="Share", mappedBy="ProductID") */
-	protected $shares;
-
 	public function __construct()
 	{
 		$this->atcCodes       = new ArrayCollection();
@@ -211,7 +208,6 @@ class Product
 		$this->arts           = new ArrayCollection();
 		$this->publications   = new ArrayCollection();
 		$this->pharmArticles  = new ArrayCollection();
-		$this->shares         = new ArrayCollection();
 	}
 
 	public function __toString()
