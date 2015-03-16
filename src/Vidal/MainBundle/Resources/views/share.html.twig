@@ -58,26 +58,8 @@
 			<img src="{{ asset('bundles/vidalmain/images/share/Email.png') }}" alt="Email"/>
 		</a>
 
-		{% if app.request.get('t') == 1 %}
-		<button
-			class="g-interactivepost"
-			data-contenturl="https://plus.google.com/pages/"
-			data-contentdeeplinkid="/pages"
-			data-clientid="xxxxx.apps.googleusercontent.com"
-			data-cookiepolicy="single_host_origin"
-			data-prefilltext="Engage your users today, create a Google+ page for your business."
-			data-calltoactionlabel="CREATE"
-			data-calltoactionurl="http://plus.google.com/pages/create"
-			data-calltoactiondeeplinkid="/pages/create">
-		</button>
-			<script type="text/javascript">
-				$(document).ready(function() {
-					var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-					po.src = 'https://apis.google.com/js/client:plusone.js';
-					var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-				});
-			</script>
-		{% endif %}
+		<!-- Counter -->
+		{{ render(controller('VidalMainBundle:Share:counter', { 'class':class, 'id':id })) }}
 	</div>
 </div>
 

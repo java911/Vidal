@@ -45,7 +45,7 @@ class ProductAdmin extends Admin
 			->add('ZipInfo', null, array('label' => 'Форма выпуска', 'required' => true))
 			->add('photo', 'iphp_file', array('label' => 'Фотография временная', 'required' => false))
 			->add('Composition', null, array('label' => 'Описание', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
-			->add('RegistrationDate', null, array('label' => 'Дата регистрации', 'years' => range(2000, 2030)))
+			->add('RegistrationDate', null, array('label' => 'Дата регистрации'))
 			->add('RegistrationNumber', null, array('label' => 'Номер регистрации'))
 			->add('NonPrescriptionDrug', null, array('label' => 'Безрецептурный', 'required' => false))
 			->add('StrongMeans', null, array('label' => 'Сильнодействующий', 'required' => false))

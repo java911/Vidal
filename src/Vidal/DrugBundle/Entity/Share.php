@@ -5,85 +5,44 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/** @ORM\Entity() @ORM\Table(name="share") */
+/** @ORM\Entity(RepositoryClass="ShareRepository") @ORM\Table(name="share") */
 class Share extends BaseEntity
 {
-	/**
-	 * @ORM\ManyToOne(targetEntity="Product", inversedBy="shares")
-	 * @ORM\JoinColumn(name="ProductID", referencedColumnName="ProductID")
-	 */
-	protected $ProductID;
+	/** @ORM\Column(type="integer") */
+	protected $id;
 
-	/** @ORM\ManyToOne(targetEntity="Art", inversedBy="shares") */
-	protected $art;
-
-	/** @ORM\ManyToOne(targetEntity="Article", inversedBy="shares") */
-	protected $article;
-
-	/** @ORM\ManyToOne(targetEntity="Publication", inversedBy="shares") */
-	protected $publication;
+	/** @ORM\Column(type="string", length=255) */
+	protected $type;
 
 	/**
 	 * @return mixed
 	 */
-	public function getProductID()
+	public function getId()
 	{
-		return $this->ProductID;
+		return $this->id;
 	}
 
 	/**
-	 * @param mixed $ProductID
+	 * @param mixed $id
 	 */
-	public function setProductID($ProductID)
+	public function setId($id)
 	{
-		$this->ProductID = $ProductID;
+		$this->id = $id;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getArt()
+	public function getType()
 	{
-		return $this->art;
+		return $this->type;
 	}
 
 	/**
-	 * @param mixed $art
+	 * @param mixed $type
 	 */
-	public function setArt($art)
+	public function setType($type)
 	{
-		$this->art = $art;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getArticle()
-	{
-		return $this->article;
-	}
-
-	/**
-	 * @param mixed $article
-	 */
-	public function setArticle($article)
-	{
-		$this->article = $article;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getPublication()
-	{
-		return $this->publication;
-	}
-
-	/**
-	 * @param mixed $publication
-	 */
-	public function setPublication($publication)
-	{
-		$this->publication = $publication;
+		$this->type = $type;
 	}
 }
