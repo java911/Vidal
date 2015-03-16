@@ -14,7 +14,6 @@ class ShareController extends Controller
 	public function counterAction($class, $id)
 	{
 		$em     = $this->getDoctrine()->getManager('drug');
-		$entity = $em->getRepository('VidalDrugBundle:Share');
 	}
 
 	/** @Route("/share", name="share", options={"expose":true}) */
