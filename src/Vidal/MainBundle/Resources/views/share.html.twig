@@ -4,65 +4,69 @@
 {% set hiddenTitle = (ogTitle ~ ' – ' ~ subtitle ~ ' – Vidal.ru')|url_encode(true) %}
 
 <div id="share-buttons">
-	<div>
+	<div class="shares">
 		<a href="http://vk.com/share.php?url={{ u }}&title={{ t }}&description={{ d }}" target="_blank"
-		   title="Поделиться в ВКонтакте" class="first">
+		   title="Поделиться в ВКонтакте" class="social first">
 			<img src="{{ asset('bundles/vidalmain/images/share/VKontakte.png') }}"/>
 		</a>
 
 		<!-- Facebook -->
 		<a href="http://www.facebook.com/sharer.php?s=100&p[url]={{ u }}&p[title]={{ t }}&p[description]={{ d }}"
-		   target="_blank"
+		   target="_blank" class="social"
 		   title="Поделиться в Facebook">
 			<img src="{{ asset('bundles/vidalmain/images/share/Facebook.png') }}"/>
 		</a>
 
 		<!-- Twitter -->
 		<a href="http://twitter.com/share?url={{ u }}&text={{ forPatient is defined ? 'Статья из медицинской энциклопедии сайта vidal.ru – «' ~ t ~ '»: ' : ((zip is defined ? ogTitle ~ ', ' ~ zip : ogTitle) ~ ': ')|url_encode(true) }}"
-		   target="_blank" title="Опубликовать в Twitter">
+		   target="_blank" title="Опубликовать в Twitter" class="social">
 			<img src="{{ asset('bundles/vidalmain/images/share/Twitter.png') }}"/>
 		</a>
 
 		<!-- LiveJournal -->
 		<a href="http://www.livejournal.com/update.bml?subject={{ (zip is defined ? ogTitle ~ ', ' ~ zip : ogTitle)|url_encode(true) }}&event={{ product is defined ? 'Текст описания на сайте vidal.ru: ' ~ u : d ~ ' Текст материала на сайте vidal.ru: ' ~ u }}&url={{ u }}"
-		   target="_blank" title="Опубликовать в LiveJournal">
+		   target="_blank" title="Опубликовать в LiveJournal" class="social">
 			<img src="{{ asset('bundles/vidalmain/images/share/Livejournal.png') }}"/>
 		</a>
 
 		<!-- Google+ -->
-		<a href="https://plus.google.com/share?url={{ u }}&title={{ (zip is defined ? ogTitle ~ ', ' ~ zip : ogTitle)|url_encode(true) }}&description={{ d }}" target="_blank"
+		<a href="https://plus.google.com/share?url={{ u }}&title={{ (zip is defined ? ogTitle ~ ', ' ~ zip : ogTitle)|url_encode(true) }}&description={{ d }}"
+		   target="_blank" class="social"
 		   title="Поделиться в Google+">
 			<img src="{{ asset('bundles/vidalmain/images/share/Google+.png') }}"/>
 		</a>
 
 		<!-- LinkedIn -->
 		<a href="http://www.linkedin.com/shareArticle?mini=true&url={{ u }}&title={{ t }}&description={{ d }}"
-		   target="_blank" title="Добавить в LinkedIn">
+		   target="_blank" title="Добавить в LinkedIn" class="social">
 			<img src="{{ asset('bundles/vidalmain/images/share/Linkedin.png') }}"/>
 		</a>
 
 		<!-- Odnoklassniki -->
 		<a href="http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1&st._surl={{ u }}&st.comments"
-		   target="_blank" title="Поделиться в Однокласники">
+		   target="_blank" title="Поделиться в Однокласники" class="social">
 			<img src="{{ asset('bundles/vidalmain/images/share/Odnoklassniki.png') }}"/>
 		</a>
 
 		<!-- MoiMir -->
 		<a href="http://connect.mail.ru/share?url={{ u }}&title={{ t }}&description={{ d }}"
-		   target="_blank" title="Добавить в Мой мир">
+		   target="_blank" title="Добавить в Мой мир" class="social">
 			<img src="{{ asset('bundles/vidalmain/images/share/Mail.png') }}"/>
 		</a>
 
 		<!-- Email -->
-		<a href="#share-email" class="share-btn" title="Поделиться через E-mail">
+		<a href="#share-email" class="share-btn" title="Поделиться через E-mail" class="social">
 			<img src="{{ asset('bundles/vidalmain/images/share/Email.png') }}" alt="Email"/>
 		</a>
-
-		<!-- Counter -->
-		{{ render(controller('VidalMainBundle:Share:counter', { 'class':class, 'id':id })) }}
 	</div>
-</div>
 
+	<!-- Counter -->
+	<span class="counter">
+		<b></b>
+		<i></i>
+		<span> </span>
+	</span>
+</div>
 
 <div id="share-email">
 	<div class="share-title">
@@ -74,7 +78,7 @@
 	<div class="share-message">
 
 	</div>
-	<form action="{{ path('share') }}" method="POST">
+	<form action="{{ path('share', {'class':class, 'target':id}) }}" method="POST">
 		<div>
 			<input type="text" name="my" required="required" placeholder="Мой E-mail"/>
 		</div>
@@ -93,5 +97,56 @@
 	</form>
 </div>
 
-{#{{ dump(app.request.uri) }}#}
-{#{{ render_hinclude(url('')) }}#}
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('.share-btn').fancybox({
+			helpers:    {
+				title: null
+			},
+			beforeShow: function() {
+				$('#share-email input[type="text"], #share-email textarea').val('');
+				$('.share-message, .share-error').hide();
+				$('#share-email form').show();
+			}
+		});
+
+		$('#share-email input[type="text"], #share-email textarea').placeholder();
+
+		$('#share-email form').ajaxForm(function(data) {
+			if (data == 'DoubleClick') {
+
+			}
+			else if (data == 'FAIL') {
+				$('.share-error').show();
+			}
+			else {
+				$('#share-email form, .share-error').hide();
+				$('.share-message').text('Ваше приглашение было успешно отправлено на e-mail: ' + data).show();
+				$.getJSON(Routing.generate('share_counter', {'class': '{{ class }}', 'target': '{{ id }}'}), function(data) {
+					$('.counter span').text(data);
+					if (parseInt(data) > 0) {
+						$('.counter').css('display', 'inline-block');
+					}
+				});
+			}
+		});
+
+		$.getJSON(Routing.generate('share_counter', {'class': '{{ class }}', 'target': '{{ id }}'}), function(data) {
+			$('.counter span').text(data);
+			if (parseInt(data) > 0) {
+				$('.counter').css('display', 'inline-block');
+			}
+		});
+
+		$('.social').click(function() {
+			$.getJSON(Routing.generate('share_click', {'class': '{{ class }}', 'target': '{{ id }}'}), function(data) {
+				if (data != 'DoubleClick') {
+					$('.counter span').text(data);
+					if (parseInt(data) > 0) {
+						$('.counter').css('display', 'inline-block');
+					}
+				}
+			});
+		});
+	});
+</script>

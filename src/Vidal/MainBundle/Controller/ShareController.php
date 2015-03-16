@@ -9,15 +9,41 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+use Vidal\MainBundle\Entity\Share;
+
 class ShareController extends Controller
 {
-	public function counterAction($class, $id)
+	/** @Route("/share-counter/{class}/{target}", name="share_counter", options={"expose":true}) */
+	public function counterAction($class, $target)
 	{
-		$em     = $this->getDoctrine()->getManager('drug');
+		$em    = $this->getDoctrine()->getManager();
+		$count = $em->getRepository('VidalMainBundle:Share')->countBy($class, $target);
+
+		return new JsonResponse($count);
 	}
 
-	/** @Route("/share", name="share", options={"expose":true}) */
-	public function shareAction(Request $request)
+	/** @Route("/share-click/{class}/{target}", name="share_click", options={"expose":true}) */
+	public function clickAction($class, $target)
+	{
+		if ($this->get('prevent')->doubleClick()) {
+			return new JsonResponse('DoubleClick');
+		}
+
+		$share = new Share();
+		$share->setClass($class);
+		$share->setTarget($target);
+
+		$em = $this->getDoctrine()->getManager();
+		$em->persist($share);
+		$em->flush($share);
+
+		$count = $em->getRepository('VidalMainBundle:Share')->countBy($class, $target);
+
+		return new JsonResponse($count);
+	}
+
+	/** @Route("/share/{class}/{target}", name="share", options={"expose":true}) */
+	public function shareAction(Request $request, $class, $target)
 	{
 		$my      = trim($request->request->get('my', ''));
 		$friends = $request->request->get('friends', null);
@@ -58,6 +84,14 @@ class ShareController extends Controller
 				false,
 				$my
 			);
+
+			$share = new Share();
+			$share->setClass($class);
+			$share->setTarget($target);
+
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($share);
+			$em->flush($share);
 
 			return new JsonResponse(implode('; ', $to));
 		}

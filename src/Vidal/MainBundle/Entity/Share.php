@@ -12,23 +12,7 @@ class Share extends BaseEntity
 	protected $target;
 
 	/** @ORM\Column(type="string", length=255) */
-	protected $type;
-
-	/**
-	 * @return mixed
-	 */
-	public function getType()
-	{
-		return $this->type;
-	}
-
-	/**
-	 * @param mixed $type
-	 */
-	public function setType($type)
-	{
-		$this->type = $type;
-	}
+	protected $class;
 
 	/**
 	 * @return mixed
@@ -44,5 +28,21 @@ class Share extends BaseEntity
 	public function setTarget($target)
 	{
 		$this->target = $target;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getClass()
+	{
+		return $this->class;
+	}
+
+	/**
+	 * @param mixed $class
+	 */
+	public function setClass($class)
+	{
+		$this->class = $class;
 	}
 }

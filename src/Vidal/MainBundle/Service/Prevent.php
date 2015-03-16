@@ -30,6 +30,6 @@ class Prevent
 
 		$this->session->set('lastClick', $now->getTimeStamp());
 
-		return $diff->s < 5;
+		return $diff->s < 3;
 	}
 }
