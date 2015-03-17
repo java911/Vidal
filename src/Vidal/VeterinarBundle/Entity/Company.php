@@ -36,13 +36,9 @@ class Company
 	/** @ORM\OneToMany(targetEntity="ProductCompany", mappedBy="CompanyID") */
 	protected $productCompany;
 
-	/** @ORM\OneToMany(targetEntity="PharmPortfolio", mappedBy="company") */
-	protected $portfolios;
-
 	public function __construct()
 	{
 		$this->productCompany = new ArrayCollection();
-		$this->portfolios     = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -181,21 +177,5 @@ class Company
 	public function setName($Name)
 	{
 		$this->Name = $Name;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getPortfolios()
-	{
-		return $this->portfolios;
-	}
-
-	/**
-	 * @param mixed $portfolios
-	 */
-	public function setPortfolios($portfolios)
-	{
-		$this->portfolios = $portfolios;
 	}
 }

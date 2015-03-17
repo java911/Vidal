@@ -103,4 +103,17 @@ class InfoPageRepository extends EntityRepository
 			ORDER BY i.RusName
 		')->getResult();
 	}
+
+	public function findPortfolios($InfoPageID)
+	{
+		return $this->_em->createQuery('
+			SELECT DISTINCT p
+			FROM VidalVeterinarBundle:PharmPortfolio p
+			JOIN p.DocumentID d
+			JOIN d.infoPages i
+			WHERE i.InfoPageID = :InfoPageID
+			ORDER BY p.title ASC
+		')->setParameter('InfoPageID', $InfoPageID)
+			->getResult();
+	}
 }

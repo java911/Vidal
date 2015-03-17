@@ -168,7 +168,7 @@ class Document
 	 */
 	protected $infoPages;
 
-	/** @ORM\OneToMany(targetEntity="PharmPortfolio", mappedBy="company") */
+	/** @ORM\OneToMany(targetEntity="PharmPortfolio", mappedBy="DocumentID") */
 	protected $portfolios;
 
 	public function __construct()
@@ -951,5 +951,21 @@ class Document
 	public function getInfoPages()
 	{
 		return $this->infoPages;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPortfolios()
+	{
+		return $this->portfolios;
+	}
+
+	/**
+	 * @param mixed $portfolios
+	 */
+	public function setPortfolios($portfolios)
+	{
+		$this->portfolios = $portfolios;
 	}
 }

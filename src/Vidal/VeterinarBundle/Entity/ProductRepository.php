@@ -426,6 +426,21 @@ class ProductRepository extends EntityRepository
 		')->getResult();
 	}
 
+	public function findByPortfolio($portfolioId)
+	{
+		return $this->_em->createQuery('
+			SELECT p.ZipInfo, p.RegistrationNumber, p.RegistrationDate, p.ProductID,
+				p.RusName, p.EngName, p.Name, p.NonPrescriptionDrug, p.photo, p.hidePhoto
+			FROM VidalVeterinarBundle:Product p
+			JOIN p.document d
+			JOIN d.portfolios portfolio
+			WHERE p.inactive = FALSE
+				AND portfolio.id = :id
+			ORDER BY p.RusName ASC
+		')->setParameter('id', $portfolioId)
+			->getResult();
+	}
+
 	/**
 	 * Функция возвращает слово с заглавной первой буквой (c поддержкой кирилицы)
 	 *

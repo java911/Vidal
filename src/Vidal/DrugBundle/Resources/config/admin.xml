@@ -235,7 +235,7 @@
 			<argument />
 		</service>
 
-		<service id="sonata.admin.vcompany" class="Vidal\VeterinarBundle\Admin\CompanyAdmin">
+		<service id="veterinar.admin.company" class="Vidal\VeterinarBundle\Admin\CompanyAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="Ветеринария" label="Компании"/>
 			<argument />
 			<argument>Vidal\VeterinarBundle\Entity\Company</argument>
@@ -243,10 +243,18 @@
 			<argument />
 		</service>
 
-		<service id="sonata.admin.vinfoPage" class="Vidal\VeterinarBundle\Admin\InfoPageAdmin">
+		<service id="veterinar.admin.infoPage" class="Vidal\VeterinarBundle\Admin\InfoPageAdmin">
 			<tag name="sonata.admin" manager_type="orm" group="Ветеринария" label="Представительства"/>
 			<argument />
 			<argument>Vidal\VeterinarBundle\Entity\InfoPage</argument>
+			<argument>SonataAdminBundle:CRUD</argument>
+			<argument />
+		</service>
+
+		<service id="veterinar.admin.pharmPortfolio" class="Vidal\VeterinarBundle\Admin\PharmPortfolioAdmin">
+			<tag name="sonata.admin" manager_type="orm" group="Ветеринария" label="Портфели препаратов"/>
+			<argument />
+			<argument>Vidal\VeterinarBundle\Entity\PharmPortfolio</argument>
 			<argument>SonataAdminBundle:CRUD</argument>
 			<argument />
 		</service>

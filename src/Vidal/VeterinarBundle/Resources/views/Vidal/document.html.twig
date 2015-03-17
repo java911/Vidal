@@ -33,6 +33,17 @@
 
 
 {% block vidal %}
+	{# подробнее о препарате #}
+	{% if document is defined and document.portfolios.count %}
+		<div class="block">
+			{% set portfolio = document.portfolios[0] %}
+			<a href="{{ path('veterinar_portfolio', {'url':portfolio.url}) }}"
+			   class="portfolio-link no-underline closed-link">
+				<span>Подробнее о препарате</span><img src="{{ asset('bundles/vidalmain/images/redbutton.jpg') }}"/>
+			</a>
+		</div>
+	{% endif %}
+
 	{% if not product.hidePhoto %}
 		{% if product.photo %}
 			<div class="pictures">
@@ -249,6 +260,21 @@
 		}
 		.relative {
 			position: relative;
+		}
+		.portfolio-link {
+			display:     inline-block;
+			background:  #eee;
+			font-weight: bold;
+			padding:     1px 1px 0 10px;
+			border:      2px solid #ddd;
+		}
+		.portfolio-link > span {
+			display:        inline-block;
+			vertical-align: top;
+			margin:         7px 5px 0 0;
+		}
+		.portfolio-link:hover {
+			border: 2px solid #bbb;
 		}
 	</style>
 {% endblock %}

@@ -19,13 +19,6 @@ services:
          class: Vidal\DrugBundle\Service\TagTotalService
          arguments: [@service_container]
 
-    default.timestampable:
-        class: Gedmo\Timestampable\TimestampableListener
-        tags:
-            - { name: doctrine.event_subscriber, connection: default }
-        calls:
-            - [ setAnnotationReader, [ @annotation_reader ] ]
-
     gedmo.listener.sortable:
         class: Gedmo\Sortable\SortableListener
         tags:
@@ -62,9 +55,23 @@ services:
         class: Vidal\MainBundle\Service\Prevent
         arguments: [@session]
 
+    default.timestampable:
+        class: Gedmo\Timestampable\TimestampableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ @annotation_reader ] ]
+
     drug.timestampable:
         class: Gedmo\Timestampable\TimestampableListener
         tags:
             - { name: doctrine.event_subscriber, connection: drug }
+        calls:
+            - [ setAnnotationReader, [ @annotation_reader ] ]
+
+    veterinar.timestampable:
+        class: Gedmo\Timestampable\TimestampableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: veterinar }
         calls:
             - [ setAnnotationReader, [ @annotation_reader ] ]

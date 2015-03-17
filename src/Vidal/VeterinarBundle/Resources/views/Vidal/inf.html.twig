@@ -26,8 +26,6 @@
 		<a href="{{ path('veterinar') }}">Видаль-Ветеринар</a>
 		<i></i>
 		<a href="{{ path('predstavitelstvo') }}">Представительства фирм</a>
-		<i></i>
-		<span>{{ infoPage.RusName|raw }}</span>
 	</div>
 {% endblock %}
 
@@ -53,6 +51,28 @@
 			</td>
 		</tr>
 	</table>
+
+	{# портфели препаратов #}
+	{% if portfolios is not empty %}
+		<div class="block">
+			<div class="block-head">Портфели препаратов</div>
+			<ul class="ul-style portfolios">
+				{% for portfolio in portfolios %}
+					<li>
+						<a href="{{ path('veterinar_portfolio', {'url':portfolio.url}) }}">
+							{{ portfolio.title|raw }}
+						</a>
+						{% if isAdmin %}
+							<a class="admin-edit fade" target="_blank"
+							   href="{{ path('admin_vidal_veterinar_pharmportfolio_edit', {'id':portfolio.id}) }}">
+								<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+							</a>
+						{% endif %}
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	{% endif %}
 
 	{# препараты #}
 	{% if products is defined and products is not empty %}
@@ -84,6 +104,16 @@
 		}
 		.relative {
 			position: relative;
+		}
+		.portfolios li {
+			position: relative;
+		}
+		.portfolios li a {
+			text-decoration: none;
+			font-weight:     bold;
+		}
+		.portfolios li a:hover {
+			text-decoration: underline;
 		}
 	</style>
 {% endblock %}

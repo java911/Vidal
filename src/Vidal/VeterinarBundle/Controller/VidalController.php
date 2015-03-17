@@ -224,6 +224,7 @@ class VidalController extends Controller
 			'menu_veterinar' => 'infoPage',
 			'infoPage'       => $infoPage,
 			'picture'        => $picture,
+			'portfolios' => $em->getRepository('VidalVeterinarBundle:InfoPage')->findPortfolios($InfoPageID)
 		);
 		$documentIds = $em->getRepository('VidalVeterinarBundle:Document')->findIdsByInfoPageID($InfoPageID);
 
@@ -447,11 +448,43 @@ class VidalController extends Controller
 		return new JsonResponse($results);
 	}
 
-	/** Route("/veterinar/podrobno-o-preparate", name="veterinar_portfolios") */
+	/**
+	 * @Route("/veterinar/podrobno-o-preparate", name="veterinar_portfolios")
+	 * @Template("VidalVeterinarBundle:Vidal:portfolios.html.twig")
+	 */
 	public function portfoliosAction()
 	{
 		$em         = $this->getDoctrine()->getManager('veterinar');
 		$portfolios = $em->getRepository('VidalVeterinarBundle:PharmPortfolio')->findActive();
+
+		return array(
+			'title'          => 'Портфели препаратов | Видаль-Ветеринар',
+			'menu_veterinar' => 'portfolios',
+			'portfolios'     => $portfolios,
+		);
+	}
+
+	/**
+	 * @Route("/veterinar/podrobno-o-preparate/{url}", name="veterinar_portfolio")
+	 * @Template("VidalVeterinarBundle:Vidal:portfolio.html.twig")
+	 */
+	public function portfolioAction($url)
+	{
+		$em        = $this->getDoctrine()->getManager('veterinar');
+		$portfolio = $em->getRepository('VidalVeterinarBundle:PharmPortfolio')->findOneByUrl($url);
+
+		if (!$portfolio) {
+			throw $this->createNotFoundException();
+		}
+
+		$params = array(
+			'title'     => $this->strip($portfolio->getTitle()) . ' | Портфель препарата | Видаль-Ветеринар',
+			'menu_veterinar' => 'portfolios',
+			'portfolio' => $portfolio,
+			'products'  => $em->getRepository('VidalVeterinarBundle:Product')->findByPortfolio($portfolio->getId()),
+		);
+
+		return $params;
 	}
 
 	/** Получить массив идентификаторов продуктов */
