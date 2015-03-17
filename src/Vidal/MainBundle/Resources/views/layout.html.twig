@@ -99,7 +99,9 @@
 					{% endblock %}
 				</td>
 				<td class="right-sidebar">
-					{% include 'VidalMainBundle::right_sidebar.html.twig' %}
+					{% block right %}
+						{% include 'VidalMainBundle::right_sidebar.html.twig' %}
+					{% endblock %}
 				</td>
 			</tr>
 		</table>

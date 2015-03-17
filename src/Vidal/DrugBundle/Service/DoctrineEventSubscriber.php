@@ -210,21 +210,22 @@ class DoctrineEventSubscriber implements EventSubscriber
 	private function autocompleteProduct($product)
 	{
 		try {
-			$patterns     = array('/<SUP>.*<\/SUP>/', '/<SUB>.*<\/SUB>/');
-			$replacements = array('', '');
+			$patterns     = array('/<SUP>.*<\/SUP>/', '/<SUB>.*<\/SUB>/', '/&alpha;/', '/&plusmn;/', '/&reg;/', '/&shy;/');
+			$replacements = array('', '', ' ', ' ', ' ', ' ');
 			$RusName      = preg_replace($patterns, $replacements, $product->getRusName());
 			$RusName      = mb_strtolower($RusName, 'UTF-8');
 			$EngName      = preg_replace($patterns, $replacements, $product->getEngName());
 			$EngName      = mb_strtolower($EngName, 'UTF-8');
+			$ProductID    = $product->getProductID();
 
 			if (!empty($RusName)) {
-				$this->createAutocomplete('autocomplete', $product->getProductID(), $RusName);
-				$this->createAutocomplete('autocompleteext', $product->getProductID(), $RusName);
+				$this->createAutocomplete('autocomplete', $ProductID, $RusName);
+				$this->createAutocomplete('autocompleteext', $ProductID, $RusName);
 			}
 
 			if (!empty($EngName)) {
-				$this->createAutocomplete('autocomplete', $product->getProductID() + 1, $EngName);
-				$this->createAutocomplete('autocompleteext', $product->getProductID() + 1, $EngName);
+				$this->createAutocomplete('autocomplete', $ProductID + 1, $EngName);
+				$this->createAutocomplete('autocompleteext', $ProductID + 1, $EngName);
 			}
 		}
 		catch (\Exception $e) {
@@ -257,8 +258,7 @@ class DoctrineEventSubscriber implements EventSubscriber
 		$elasticaClient = new \Elastica\Client();
 		$elasticaIndex  = $elasticaClient->getIndex('website');
 		$elasticaType   = $elasticaIndex->getType($indexName);
-
-		$document = new \Elastica\Document($id + 100000, array('name' => $name));
+		$document       = new \Elastica\Document($id + 100000, array('name' => $name, 'type' => 'product'));
 
 		$elasticaType->addDocument($document);
 		$elasticaType->getIndex()->refresh();
