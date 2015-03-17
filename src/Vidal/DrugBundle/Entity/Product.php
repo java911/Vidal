@@ -13,7 +13,7 @@ class Product
 	/** @ORM\Id @ORM\Column(type="integer") */
 	protected $ProductID;
 
-	/** @ORM\Column(length=500) */
+	/** @ORM\Column(length=500, nullable=true) */
 	protected $RusName;
 
 	/**
@@ -22,7 +22,7 @@ class Product
 	 */
 	protected $RusName2;
 
-	/** @ORM\Column(length=500) */
+	/** @ORM\Column(length=500, nullable=true) */
 	protected $EngName;
 
 	/** @ORM\Column(length=500, nullable=true) */
@@ -337,7 +337,7 @@ class Product
 	 */
 	public function setEngName($EngName)
 	{
-		$this->RusName = $EngName;
+		$this->EngName = $EngName;
 	}
 
 	/**
@@ -578,6 +578,22 @@ class Product
 	public function setRusName($RusName)
 	{
 		$this->RusName = $RusName;
+
+		$rusName2 = str_replace('<SUP>', '', $RusName);
+		$rusName2 = str_replace('</SUP>', '', $rusName2);
+		$rusName2 = str_replace('<SUB>', '', $rusName2);
+		$rusName2 = str_replace('</SUB>', '', $rusName2);
+		$rusName2 = str_replace('<BR/>', '', $rusName2);
+		$rusName2 = str_replace('<BR />', '', $rusName2);
+		$rusName2 = str_replace('&reg;', '', $rusName2);
+		$rusName2 = str_replace('&amp;', '', $rusName2);
+		$rusName2 = str_replace('&trade;', '', $rusName2);
+		$rusName2 = str_replace('&alpha;', '', $rusName2);
+		$rusName2 = str_replace('&beta;', '', $rusName2);
+		$rusName2 = str_replace('&plusmn;', '', $rusName2);
+		$rusName2 = str_replace('  ', '', $rusName2);
+
+		$this->RusName2 = $rusName2;
 	}
 
 	/**

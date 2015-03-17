@@ -40,26 +40,6 @@ class PharmPortfolio extends BaseEntity
 	 */
 	protected $DocumentID;
 
-	/**
-	 * @ORM\Column(type="array", nullable=true)
-	 * @FileStore\UploadableField(mapping="video")
-	 * @Assert\File(
-	 *        maxSize="100M",
-	 *        maxSizeMessage="Видео не может быть больше 100Мб",
-	 *        mimeTypesMessage="Видео должно быть в формате .flv"
-	 * )
-	 */
-	protected $video;
-
-	/** @ORM\Column(type="integer", nullable=true) */
-	protected $videoWidth;
-
-	/** @ORM\Column(type="integer", nullable=true) */
-	protected $videoHeight;
-
-	/** @ORM\ManyToMany(targetEntity="Video", inversedBy="portfolios", cascade={"persist"}) */
-	protected $videos;
-
 	public function __toString()
 	{
 		return $this->title;

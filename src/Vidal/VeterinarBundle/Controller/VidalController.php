@@ -447,6 +447,13 @@ class VidalController extends Controller
 		return new JsonResponse($results);
 	}
 
+	/** Route("/veterinar/podrobno-o-preparate", name="veterinar_portfolios") */
+	public function portfoliosAction()
+	{
+		$em         = $this->getDoctrine()->getManager('veterinar');
+		$portfolios = $em->getRepository('VidalVeterinarBundle:PharmPortfolio')->findActive();
+	}
+
 	/** Получить массив идентификаторов продуктов */
 	private function getProductIds($products)
 	{
