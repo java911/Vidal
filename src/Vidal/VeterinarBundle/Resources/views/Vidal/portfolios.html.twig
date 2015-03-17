@@ -2,7 +2,14 @@
 
 
 {% block title %}
-	<h1>Портфели препаратов</h1>
+	<h1>Портфели препаратов
+		{% if is_granted('ROLE_ADMIN') %}
+			<a class="admin-edit fade" target="_blank"
+			   href="{{ path('admin_vidal_veterinar_pharmportfolio_list') }}">
+				<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+			</a>
+		{% endif %}
+	</h1>
 {% endblock %}
 
 
@@ -16,30 +23,34 @@
 
 
 {% block vidal %}
-	<ul class="portfolios ul-style">
-		{% for portfolio in portfolios %}
-			<li>
+	{% if portfolios is empty %}
+		Раздел находится в наполнении
+	{% else %}
+		<ul class="portfolios ul-style">
+			{% for portfolio in portfolios %}
+				<li>
 				<span class="portfolio">
 					<a href="{{ path('veterinar_portfolio', {'url':portfolio.url}) }}">
 						{{ portfolio.title|raw }}
 					</a>
 				</span>
-				{% if portfolio.DocumentID.infoPages[0] is defined %}
-					{% set infoPage = portfolio.DocumentID.infoPages[0] %}
-					<br/>
-					<a href="{{ path('v_inf', {'Name':infoPage.Name}) }}" class="no-underline infoPage">
-						{{ infoPage.RusName|raw }}
-					</a>
-				{% endif %}
-				{% if isAdmin %}
-					<a class="admin-edit fade" target="_blank"
-					   href="{{ path('admin_vidal_veterinar_pharmportfolio_edit', {'id':portfolio.id}) }}">
-						<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
-					</a>
-				{% endif %}
-			</li>
-		{% endfor %}
-	</ul>
+					{% if portfolio.DocumentID.infoPages[0] is defined %}
+						{% set infoPage = portfolio.DocumentID.infoPages[0] %}
+						<br/>
+						<a href="{{ path('v_inf', {'Name':infoPage.Name}) }}" class="no-underline infoPage">
+							{{ infoPage.RusName|raw }}
+						</a>
+					{% endif %}
+					{% if isAdmin %}
+						<a class="admin-edit fade" target="_blank"
+						   href="{{ path('admin_vidal_veterinar_pharmportfolio_edit', {'id':portfolio.id}) }}">
+							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
+						</a>
+					{% endif %}
+				</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
 {% endblock %}
 
 
