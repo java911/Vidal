@@ -5,25 +5,6 @@
         <div class="heli-green" style="font-size: 25px">ХЕЛИНОРМ&#174;</div>
         <br />
         <br />
-        <div class="heli-block">
-            <h2>Тест на наличие Helicobacter pylori</h2>
-            <div id="heli-replace-block">
-                <b>ВОПРОС №1 Из 6:</b>&nbsp;&nbsp;&nbsp;&nbsp; Были/есть ли у Ваших родственников серьезные случаи заболевания желудка (рак, язвенная болезнь)?
-                <br />
-                <ul class="heli-test">
-                    <li data-num="0" class="active"><div>нет</div></li>
-                    <li data-num="1"><div>были/есть но не такие серьезные</div></li>
-                    <li data-num="2"><div>были есть</div></li>
-                </ul>
-                <input type="hidden" name="number" value="1" id="number">
-                <input type="hidden" name="value" value="0" id="value">
-                <br />
-            </div>
-            <span class="heli-btn" id="heli-test-next">ПРОДОЛЖИТЬ</span>
-            <span class="heli-btn" id="heli-test-first" style="display: none">ПРОЙТИ ТЕСТ ЗАНОВО</span>
-        </div>
-        <br />
-        <br />
         <div class="heli-block" style="text-align: center">
             <object id="идентификатор" type="application/x-shockwave-flash" data="{{ asset('bundles/vidalmain/helinorm/uppod-video.swf') }}" width="645" height="364">
                 <param name="bgcolor" value="#ffffff" />
@@ -67,6 +48,25 @@
             <div class="heli-more">
                 <a class="heliPages" href="#heli-text-2"><img src="{{ asset('bundles/vidalmain/helinorm/heli-more.png') }}"></a>
             </div>
+        </div>
+        <br />
+        <br />
+         <div class="heli-block">
+            <h2>Тест на наличие Helicobacter pylori</h2>
+            <div id="heli-replace-block">
+                <b>ВОПРОС №1 Из 6:</b>&nbsp;&nbsp;&nbsp;&nbsp; Были/есть ли у Ваших родственников серьезные случаи заболевания желудка (рак, язвенная болезнь)?
+                <br />
+                <ul class="heli-test">
+                    <li data-num="0" class="active"><div>нет</div></li>
+                    <li data-num="1"><div>были/есть но не такие серьезные</div></li>
+                    <li data-num="2"><div>были есть</div></li>
+                </ul>
+                <input type="hidden" name="number" value="1" id="number">
+                <input type="hidden" name="value" value="0" id="value">
+                <br />
+            </div>
+            <span class="heli-btn" id="heli-test-next">ПРОДОЛЖИТЬ</span>
+            <span class="heli-btn" id="heli-test-first" style="display: none">ПРОЙТИ ТЕСТ ЗАНОВО</span>
         </div>
         <div class="heli-block">
 
