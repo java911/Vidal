@@ -25,6 +25,22 @@ class HelinormController extends Controller
 			'menu_left'   => 'helinorm',
 		);
 	}
+	
+	
+	/**
+	 * @Route("/helinorm2" ,name="helinorm2")
+	 * @Template("VidalMainBundle:Helinorm:index2.html.twig")
+	 */
+	public function indexAction()
+	{
+		return array(
+			'title'       => 'Helinorm',
+			'description' => 'Helinorm',
+			'keywords'    => 'Helinorm',
+			'noYad'       => true,
+			'menu_left'   => 'helinorm',
+		);
+	}
 
     /**
      * @Route("/helinorm-test/{number}" ,name="helinorm_test", options={"expose" = true})
