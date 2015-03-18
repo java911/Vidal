@@ -40,14 +40,14 @@
 
 	<script type="text/javascript">
 		$(document).ready(function() {
-			{% if isProd %}
-			_gaq.push(['_trackEvent', ' {{ group }}', 'show', '%показ баннера%']);
-			{% endif %}
+			{#{% if isProd %}#}
+			{#_gaq.push(['_trackEvent', ' {{ group }}', 'show', '%показ баннера%']);#}
+			{#{% endif %}#}
 
 			$('#{{ group }} .banner-link').click(function() {
-				{% if isProd %}
-				_gaq.push(['_trackEvent', '{{ group }}', 'click', '%клик по баннеру%']);
-				{% endif %}
+				{#{% if isProd %}#}
+				{#_gaq.push(['_trackEvent', '{{ group }}', 'click', '%клик по баннеру%']);#}
+				{#{% endif %}#}
 				$.get(Routing.generate('banner_clicked', {'bannerId': '{{ banner.id }}'}));
 			});
 
