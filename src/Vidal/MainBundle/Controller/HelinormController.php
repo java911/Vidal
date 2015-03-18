@@ -31,7 +31,7 @@ class HelinormController extends Controller
 	 * @Route("/helinorm2" ,name="helinorm2")
 	 * @Template("VidalMainBundle:Helinorm:index2.html.twig")
 	 */
-	public function indexAction()
+	public function index2Action()
 	{
 		return array(
 			'title'       => 'Helinorm',
