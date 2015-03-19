@@ -5,25 +5,6 @@
         <div class="heli-green" style="font-size: 25px">ХЕЛИНОРМ&#174;</div>
         <br />
         <br />
-        <div class="heli-block">
-            <h2>Тест на наличие Helicobacter pylori</h2>
-            <div id="heli-replace-block">
-                <b>ВОПРОС №1 Из 6:</b>&nbsp;&nbsp;&nbsp;&nbsp; Были/есть ли у Ваших родственников серьезные случаи заболевания желудка (рак, язвенная болезнь)?
-                <br />
-                <ul class="heli-test">
-                    <li data-num="0" class="active"><div>нет</div></li>
-                    <li data-num="1"><div>были/есть но не такие серьезные</div></li>
-                    <li data-num="2"><div>были есть</div></li>
-                </ul>
-                <input type="hidden" name="number" value="1" id="number">
-                <input type="hidden" name="value" value="0" id="value">
-                <br />
-            </div>
-            <span class="heli-btn" id="heli-test-next">ПРОДОЛЖИТЬ</span>
-            <span class="heli-btn" id="heli-test-first" style="display: none">ПРОЙТИ ТЕСТ ЗАНОВО</span>
-        </div>
-        <br />
-        <br />
         <div class="heli-block" style="text-align: center">
             <object id="идентификатор" type="application/x-shockwave-flash" data="{{ asset('bundles/vidalmain/helinorm/uppod-video.swf') }}" width="645" height="364">
                 <param name="bgcolor" value="#ffffff" />
@@ -36,7 +17,6 @@
 
             {#<img src="{{ asset('bundles/vidalmain/helinorm/heli-video.png') }}" style="width: 645px">#}
         </div>
-        <br />
         <div class="heli-block">
             <div class="heli-title">
                 <a class="heliPages" href="#heli-text-1">Хеликобактер пилори: нормальная бактерия или опасный возбудитель заболеваний ЖКТ?</a>
@@ -46,7 +26,7 @@
                 Существует множество заблуждений, связанных с причинами развития гастрита. Самое распространенное – из серии «все болезни от нервов».
                 Не менее популярное звучит так: если я не пью крепких напитков и ограничиваю себя в жирных блюдах, то могу не переживать за здоровье своего пищеварения.
                 Учеными доказано: гастрит не всегда происходит от стрессов и излишеств в еде и не от алкоголя.  Основной  «виновник» развития гастрита – бактерия хеликобактер пилори
-                (Helicobacter pylori), та самая, за <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&bt=2&ad=511031&pid=1919501&bid=3782873&bn=3782873&rnd=2031419984" target="_blank">открытие</a>
+                (Helicobacter pylori), та самая, за <a href="http://helinorm.ru/articles/khelikobakter_pilori_istoriya_otkrytiya_odnoy_bakterii.html?utm_source=vidal&utm_medium=infosite&utm_content=article_khelikobakter_pilori1&utm_campaign=helinorm" target="_blank">открытие</a>
                 которой австралийским исследователям Робину Уоррену и Барри Маршаллу в 2005 году дали Нобелевскую премию.
             </div>
             <div class="heli-more">
@@ -67,6 +47,25 @@
             <div class="heli-more">
                 <a class="heliPages" href="#heli-text-2"><img src="{{ asset('bundles/vidalmain/helinorm/heli-more.png') }}"></a>
             </div>
+        </div>
+        <br  style="clear: both;"/>
+        <br />
+         <div class="heli-block">
+            <h2>Тест на наличие Helicobacter pylori</h2>
+            <div id="heli-replace-block">
+                <b>ВОПРОС №1 Из 6:</b>&nbsp;&nbsp;&nbsp;&nbsp; Были/есть ли у Ваших родственников серьезные случаи заболевания желудка (рак, язвенная болезнь)?
+                <br />
+                <ul class="heli-test">
+                    <li data-num="0" class="active"><div>нет</div></li>
+                    <li data-num="1"><div>были/есть но не такие серьезные</div></li>
+                    <li data-num="2"><div>были есть</div></li>
+                </ul>
+                <input type="hidden" name="number" value="1" id="number">
+                <input type="hidden" name="value" value="0" id="value">
+                <br />
+            </div>
+            <span class="heli-btn" id="heli-test-next">ПРОДОЛЖИТЬ</span>
+            <span class="heli-btn" id="heli-test-first" style="display: none">ПРОЙТИ ТЕСТ ЗАНОВО</span>
         </div>
         <div class="heli-block">
 
@@ -91,13 +90,13 @@
             Не менее популярное звучит так: если я не пью крепких напитков и ограничиваю себя в жирных блюдах, то могу не переживать за здоровье
             своего пищеварения. Учеными доказано: гастрит не всегда происходит от стрессов и излишеств в еде и не от алкоголя.  Основной  «виновник»
             развития гастрита – бактерия хеликобактер пилори (Helicobacter pylori), та самая, за
-            <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&bt=2&ad=511031&pid=1919501&bid=3782873&bn=3782873&rnd=2031419984" target="_blank">открытие</a> которой
+            <a href="http://helinorm.ru/articles/khelikobakter_pilori_istoriya_otkrytiya_odnoy_bakterii.html?utm_source=vidal&utm_medium=infosite&utm_content=article_khelikobakter_pilori1&utm_campaign=helinorm" target="_blank">открытие</a> которой
             австралийским исследователям Робину Уоррену и Барри Маршаллу в 2005 году дали Нобелевскую премию.
             <br/>
             <br/>
             <img src="{{ asset('bundles/vidalmain/helinorm/img_text_3.jpg') }}" style="width: 250px; float: left; margin: 0 10px 0 0 ">
             С помощью научных изысканий Британского общества гастроэнтерологов (2013) удалось установить, что у большинства (до 90%) инфицированных
-            носителей Helicobacter pylori не обнаруживается никаких симптомов заболевания, пока не возникают благоприятные для активного размножения
+            носителей Helicobacter pylori не обнаруживается никаких симптомов заболевания, пока не возникают благоприятные для активного размножения
             «агрессора», но неблагоприятные для нашего здоровья условия. Еще немного медицинской статистики, теперь уже отечественной: считается, что
             более 75% населения России инфицированы бактерией Helicobacter pylori. К болезням, связанным с этим микроорганизмом, относятся хронический
             гастрит, язвенная болезнь желудка и двенадцатиперстной кишки.Стоит ли ждать, когда эта мина замедленного действия даст о себе знать? Разумеется, нет.
@@ -109,7 +108,7 @@
             <br/>
             <b>Предотвратить легче, чем лечить</b><br />
             Недавно на российском рынке появилось новое средство для борьбы с Хеликобактер пилори в составе которого, открытая зарубежными учеными
-            субстанция <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&bt=2&ad=511031&pid=1919501&bid=3782874&bn=3782874&rnd=915526715" target="_blank">Pylopass™</a>
+            субстанция <a href="http://helinorm.ru/about/pylopass/?utm_source=vidal&utm_medium=infosite&utm_content=article_khelikobakter_pilori2&utm_campaign=helinorm" target="_blank">Pylopass™</a>
             (торговая марка Lonza Ltd., Швейцария). Pylopass™
             связывает бактерии Хеликобактер пилори при помощи особых рецепторов и выводит вместе с собой из организма естественным путем. Курсовой
             прием Хелинорм содействует профилактике заболеваний желудка.
@@ -118,7 +117,7 @@
             Препараты, содержащие Pylopass™, успешно выпускаются и продаются во многих странах мира, включая Испанию, Италию, Францию, Румынию, Вьетнам.
             <br />
             <br />
-            <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&bt=2&ad=511031&pid=1919501&bid=3782875&bn=3782875&rnd=703765876" target="_blank" >Семь бед в один
+            <a href="http://helinorm.ru/articles/sem_bed_v_odin_obed_kakie_bolezni_vyzyvaet_khelikobakter_pilori.html?utm_source=vidal&utm_medium=infosite&utm_content=article_khelikobakter_pilori3&utm_campaign=helinorm" target="_blank" >Семь бед в один
                 обед. Какие болезни вызывает Хеликобактер пилори?</a>
             <br />
             <br />
@@ -153,7 +152,7 @@
             Коварный микроорганизм непросто обнаружить: заражение зачастую протекает бессимптомно, а поставить диагноз можно только после специального
             обследования. По статистике, три четверти россиян — носители бактерии Хеликобактер пилори, но далеко не каждый догадывается о существующей
             проблеме. Тем не менее, известен
-            <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&bt=2&ad=511031&pid=1919501&bid=3782876&bn=3782876&rnd=683644348" target="_blank">ряд тревожных
+            <a href="http://helinorm.ru/articles/cimptomy_zarazheniya_khelikobakter_pilori.html?utm_source=vidal&utm_medium=infosite&utm_content=article_gastroskopiya1&utm_campaign=helinorm" target="_blank">ряд тревожных
                 симптомов</a>:
             <br/>
             <br/>
@@ -190,10 +189,10 @@
             <img src="{{ asset('bundles/vidalmain/helinorm/img_text_3.jpg') }}" style="width: 250px; float: right; margin: 0 0 0 10px ">
             Если вы все еще сомневаетесь, стоит ли обращаться к врачу, советуем пройти тест. Он покажет, есть ли у вас симптомы, свидетельствующие о возможной патологии
             желудка. Своевременность в этом случае крайне важна: лечение стоит
-            <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&bt=2&ad=511031&pid=1919501&bid=3782877&bn=3782877&rnd=921686800" target="_blank">начать раньше</a>, чем результаты жизнедеятельности бактерии повлекут за собой серьезные последствия для желудочно-кишечного тракта.
+            <a href="http://helinorm.ru/articles/profilaktika_helicobacter_pylori_luchshe_predupredit_chem_lechit.html?utm_source=vidal&utm_medium=infosite&utm_content=article_gastroskopiya2&utm_campaign=helinorm" target="_blank">начать раньше</a>, чем результаты жизнедеятельности бактерии повлекут за собой серьезные последствия для желудочно-кишечного тракта.
             <br />
             <br />
-            <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&bt=2&ad=511031&pid=1919501&bid=3782878&bn=3782878&rnd=1693777187" target="_blank">Как диагностировать наличие Хеликобактер пилори?</a>
+            <a href="http://helinorm.ru/articles/kak_diagnostirovat_nalichie_khelikobakter_pilori.html?utm_source=vidal&utm_medium=infosite&utm_content=article_gastroskopiya3&utm_campaign=helinorm" target="_blank">Как диагностировать наличие Хеликобактер пилори?</a>
             <br/>
             <br/>
             <b>Пройти обследование на наличие Хеликобактер пилори можно здесь:</b>
