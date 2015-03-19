@@ -1326,7 +1326,7 @@ tr.bold td {
 .banner a {
 	position: absolute;
 }
-.left-sidebar > div, .right-sidebar > div {
+.left-sidebar > div, .right-sidebar > div, .left-sidebar > a {
 	margin-bottom: 25px;
 }
 .footer-banner {
