@@ -1336,6 +1336,29 @@ tr.bold td {
 	display:    inline-block;
 	margin-top: 20px;
 }
+.vd {
+	display:         block;
+	border:          1px solid #d71344;
+	text-decoration: none;
+	color:           black;
+	font-size:       11px;
+	text-align:      center;
+	padding:         6px 0 4px;
+	background:      #fbfbe2;
+	font-family:     "Tahoma", sans-serif;
+}
+.vd p {
+	margin: 6px 0;
+}
+.vd p.vd-v {
+	color:       #d71344;
+	font-weight: bold;
+	margin:      12px 0 6px;
+	font-size:   13px;
+}
+.vd img {
+	width: 100px;
+}
 /* description */
 .description {
 	border:        3px solid #eee;
