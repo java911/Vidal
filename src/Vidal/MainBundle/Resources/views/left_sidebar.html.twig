@@ -22,90 +22,92 @@
 		<a href="{{ path('veterinar') }}"
 		   class="{{ menu_left is defined and menu_left == 'veterinar' ? 'active' : 'dotted' }}">Ветеринария</a>
 	</li>
-    <li>
-        <a href="{{ path('helinorm') }}"  class="dotted">Жизнь без гастрита</a>
-    </li>
+	<li>
+		<a href="{{ path('helinorm') }}" class="dotted">Жизнь без гастрита</a>
+	</li>
 
 
 
 	{#<li>#}
-		{#<a href="{{ path('shkola_gastrita') }}"#}
-		   {#class="{{ menu_left is defined and menu_left == 'shkola' ? 'active' : 'dotted' }}">Школа гастрита</a>#}
+	{#<a href="{{ path('shkola_gastrita') }}"#}
+	{#class="{{ menu_left is defined and menu_left == 'shkola' ? 'active' : 'dotted' }}">Школа гастрита</a>#}
 	{#</li>#}
 	{#<li>#}
-		{#<a href="{{ path('collost') }}"#}
-		   {#class="{{ menu_left is defined and menu_left == 'collost' ? 'active' : 'dotted' }}">Коллост</a>#}
+	{#<a href="{{ path('collost') }}"#}
+	{#class="{{ menu_left is defined and menu_left == 'collost' ? 'active' : 'dotted' }}">Коллост</a>#}
 	{#</li>#}
 	{#<li>#}
-		{#<a href="/reckittbenckiser/index.html?medi" target="_blank">#}
-			{#<button class="btn-red">Без боли</button>#}
-		{#</a>#}
+	{#<a href="/reckittbenckiser/index.html?medi" target="_blank">#}
+	{#<button class="btn-red">Без боли</button>#}
+	{#</a>#}
 	{#</li>#}
 
 </ul>
 
 {# блок авторизации или личного кабинета #}
-<div class="auth auth-main">
-	{% if isLogged %}
-		<div class="auth-welcome">
-			Здравствуйте,<br/>
-			{{ app.user.politeReference }}
-		</div>
+{% if loginAuthError is not defined %}
+	<div class="auth auth-main">
+		{% if isLogged %}
+			<div class="auth-welcome">
+				Здравствуйте,<br/>
+				{{ app.user.politeReference }}
+			</div>
 
-		<ul class="auth-controls ul">
-			{% if is_granted('ROLE_ADMIN') %}
+			<ul class="auth-controls ul">
+				{% if is_granted('ROLE_ADMIN') %}
+					<li>
+						<a href="{{ path('sonata_admin_dashboard') }}" class="dotted">Панель администратора</a>
+					</li>
+				{% endif %}
+				{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_QA') %}
+					<li id="qanswer">
+						<a href="{{ path('qa_admin') }}" class="dotted">Ответы</a>
+					</li>
+				{% endif %}
+				{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SHKOLA') %}
+					<li>
+						<a href="{{ path('shkola_faq_list') }}" class="dotted">Ответы в Школе Гастрита</a>
+					</li>
+				{% endif %}
 				<li>
-					<a href="{{ path('sonata_admin_dashboard') }}" class="dotted">Панель администратора</a>
+					<a href="{{ path('profile') }}" class="dotted">Профиль</a>
 				</li>
-			{% endif %}
-			{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_QA') %}
-				<li id="qanswer">
-					<a href="{{ path('qa_admin') }}" class="dotted">Ответы</a>
-				</li>
-			{% endif %}
-			{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SHKOLA') %}
 				<li>
-					<a href="{{ path('shkola_faq_list') }}" class="dotted">Ответы в Школе Гастрита</a>
+					<a href="{{ path('logout') }}" class="dotted">Выйти</a>
 				</li>
-			{% endif %}
-			<li>
-				<a href="{{ path('profile') }}" class="dotted">Профиль</a>
-			</li>
-			<li>
-				<a href="{{ path('logout') }}" class="dotted">Выйти</a>
-			</li>
-		</ul>
-	{% else %}
-		{% include 'VidalMainBundle:Auth:login_form.html.twig' %}
-	{% endif %}
-</div>
-
-{% if not isLogged %}
-	<div class="go-registration">
-		<a href="{{ path('registration') }}">Регистрация</a>
-
-		<div class="go-reset ">
-			<a href="{{ path('password_reset') }}" class="no-underline">Забыли пароль?</a>
-		</div>
-	</div>
-{% elseif not app.user.emailConfirmed %}
-	<div class="confirm">
-		<a href="{{ path('registration_resend') }}" id="confirm_email" class="note"
-		   title="Отправить письмо для активации">
-			Пожалуйста, подтвердите e-mail
-		</a>
+			</ul>
+		{% else %}
+			{% include 'VidalMainBundle:Auth:login_form.html.twig' %}
+		{% endif %}
 	</div>
 
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$('#confirm_email').click(function() {
-				$.getJSON(this.href, function(data) {
-					$('.confirm').html('<span class="good">Письмо отослано на адрес {{ app.user.username }}</span>');
+	{% if not isLogged %}
+		<div class="go-registration">
+			<a href="{{ path('registration') }}">Регистрация</a>
+
+			<div class="go-reset ">
+				<a href="{{ path('password_reset') }}" class="no-underline">Забыли пароль?</a>
+			</div>
+		</div>
+	{% elseif not app.user.emailConfirmed %}
+		<div class="confirm">
+			<a href="{{ path('registration_resend') }}" id="confirm_email" class="note"
+			   title="Отправить письмо для активации">
+				Пожалуйста, подтвердите e-mail
+			</a>
+		</div>
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('#confirm_email').click(function() {
+					$.getJSON(this.href, function(data) {
+						$('.confirm').html('<span class="good">Письмо отослано на адрес {{ app.user.username }}</span>');
+					});
+					return false;
 				});
-				return false;
 			});
-		});
-	</script>
+		</script>
+	{% endif %}
 {% endif %}
 
 {# баннеры #}

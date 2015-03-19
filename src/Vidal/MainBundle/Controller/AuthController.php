@@ -25,15 +25,72 @@ class AuthController extends Controller
 
 	/**
 	 * @Route("/login", name="login")
-	 * @Template()
+	 * @Template("VidalMainBundle:Auth:login.html.twig")
 	 */
-	public function loginAction()
+	public function loginAction(Request $request)
 	{
 		if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
 			return new RedirectResponse($this->generateUrl('index'));
 		}
 
-		return array();
+		$success  = false;
+		$username = $request->request->get('username', null);
+		$password = $request->request->get('password', null);
+		$em       = $this->getDoctrine()->getManager();
+		$user     = $em->getRepository('VidalMainBundle:User')->findOneByLogin($username);
+
+		if ($user) {
+			$pwReal = $user->getPassword();
+
+			# пользователей со старой БД проверям с помощью mysql-функций
+			if ($user->getOldUser()) {
+				$success = $em->getRepository('VidalMainBundle:User')->checkOldPassword($password, $pwReal);
+			}
+			elseif ($password === $pwReal) {
+				$success = true;
+			}
+		}
+
+		if ($success) {
+			$this->resetToken($user);
+			$user->setLastLogin(new \DateTime('now'));
+			$em->flush();
+
+			return $this->redirect($this->generateUrl('index'));
+		}
+
+		return array(
+			'loginAuthError' => $username && !$success,
+			'title'          => 'Вход для специалистов',
+			'moduleId'       => 7,
+			'username'       => $username,
+			'password'       => $password,
+		);
+	}
+
+	/**
+	 * @Route("/logout", name="logout")
+	 * @Secure(roles="IS_AUTHENTICATED_REMEMBERED")
+	 */
+	public function logoutAction()
+	{
+		// Logging user out.
+		$this->get('security.context')->setToken(null);
+
+		// Invalidating the session.
+		$session = $this->get('request')->getSession();
+		$session->invalidate();
+
+		// Redirecting user to login page in the end.
+		$response = $this->redirect($this->generateUrl('index'));
+
+		// Clearing the cookies.
+		$cookieNames = array('sessionname','rememberme');
+		foreach ($cookieNames as $cookieName) {
+			$response->headers->clearCookie($cookieName);
+		}
+
+		return $response;
 	}
 
 	/**
@@ -456,7 +513,7 @@ class AuthController extends Controller
 
 		return $this->render('VidalMainBundle:Auth:unsubscribe_digest.html.twig', array(
 			'title' => 'Подписка на рассылку новостей',
-			'user' => $user
+			'user'  => $user
 		));
 	}
 }

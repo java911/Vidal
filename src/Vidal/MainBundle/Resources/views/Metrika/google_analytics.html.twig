@@ -6,7 +6,17 @@
 
 	ga('create', 'UA-45285788-1', 'auto');
 
+	{% if app.user %}
 	ga('send', 'pageview', {
-		'dimension1':  '{{ app.user ? 'Зарегистрирован' : 'Не зарегистрирован' }}'
+		'dimension1':  'Зарегистрирован',
+		'dimension2':  'Зарегистрирован',
+		'dimension3':  'Зарегистрирован'
 	});
+	{% else %}
+	ga('send', 'pageview', {
+		'dimension1':  'Не зарегистрирован',
+		'dimension2':  'Не зарегистрирован',
+		'dimension3':  'Не зарегистрирован'
+	});
+	{% endif %}
 </script>
