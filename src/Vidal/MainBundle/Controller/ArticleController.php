@@ -494,36 +494,26 @@ class ArticleController extends Controller
 		return $params;
 	}
 
+	public function checkRole()
+	{
+		$security = $this->get('security.context');
+
+		if (!$security->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+			return $this->redirect($this->generateUrl('login'));
+		}
+		elseif (!$security->isGranted('ROLE_DOCTOR')) {
+			return $this->redirect($this->generateUrl('confirm'));
+		}
+
+		return null;
+	}
+
 	private function strip($string)
 	{
 		$string = strip_tags(html_entity_decode($string, ENT_QUOTES, 'UTF-8'));
 		$string = preg_replace('/&nbsp;|®|™/', '', $string);
 
 		return $string;
-	}
-
-	private function checkRole()
-	{
-		$response = null;
-		$secutiry = $this->get('security.context');
-		$user     = $this->getUser();
-
-		if (!$user) {
-			$response = $this->render('VidalMainBundle:Auth:login.html.twig', array(
-				'title'    => 'Закрытый раздел',
-				'menu'     => 'vracham',
-				'moduleId' => 7,
-			));
-		}
-		elseif (!$secutiry->isGranted('ROLE_DOCTOR')) {
-			$response = $this->render('VidalMainBundle:Auth:confirm.html.twig', array(
-				'title' => 'Подтвердите e-mail',
-				'menu'  => 'vracham',
-				'user'  => $this->getUser(),
-			));
-		}
-
-		return $response;
 	}
 
 	private function getProductIds($products)

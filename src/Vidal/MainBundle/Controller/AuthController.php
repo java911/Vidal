@@ -69,6 +69,22 @@ class AuthController extends Controller
 	}
 
 	/**
+	 * @Route("/confirm", name="confirm")
+	 * @Secure(roles="IS_AUTHENTICATED_REMEMBERED")
+	 * @Template("VidalMainBundle:Auth:confirm.html.twig")
+	 */
+	public function confirmAction()
+	{
+		$params = array(
+			'title' => 'Подтвердите e-mail',
+			'menu'  => 'vracham',
+			'user'  => $this->getUser(),
+		);
+
+		return $params;
+	}
+
+	/**
 	 * @Route("/registration-resend", name="registration_resend")
 	 */
 	public function registrationResend()
