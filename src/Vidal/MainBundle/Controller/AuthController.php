@@ -69,31 +69,6 @@ class AuthController extends Controller
 	}
 
 	/**
-	 * @Route("/logout", name="logout")
-	 * @Secure(roles="IS_AUTHENTICATED_REMEMBERED")
-	 */
-	public function logoutAction()
-	{
-		// Logging user out.
-		$this->get('security.context')->setToken(null);
-
-		// Invalidating the session.
-		$session = $this->get('request')->getSession();
-		$session->invalidate();
-
-		// Redirecting user to login page in the end.
-		$response = $this->redirect($this->generateUrl('index'));
-
-		// Clearing the cookies.
-		$cookieNames = array('sessionname','rememberme');
-		foreach ($cookieNames as $cookieName) {
-			$response->headers->clearCookie($cookieName);
-		}
-
-		return $response;
-	}
-
-	/**
 	 * @Route("/registration-resend", name="registration_resend")
 	 */
 	public function registrationResend()
@@ -268,58 +243,6 @@ class AuthController extends Controller
 	private function generatePassword()
 	{
 		return substr(chr(rand(103, 122)) . chr(rand(103, 122)) . chr(rand(103, 122)) . md5(time() + rand(100, 999) . chr(rand(97, 122)) . chr(rand(97, 122)) . chr(rand(97, 122))), 0, 8);
-	}
-
-	/**
-	 * [AJAX] Логин через асинхронный запрос
-	 * @Route("/ajax-login", name="ajax_login", options={"expose"=true})
-	 */
-	public function ajaxLoginAction(Request $request)
-	{
-		$username = $request->request->get('username');
-		$password = $request->request->get('password');
-		$em       = $this->getDoctrine()->getManager();
-		$user     = $em->getRepository('VidalMainBundle:User')->findOneByLogin($username);
-
-		if (!$user) {
-			return new JsonResponse(array('success' => 'no'));
-		}
-
-		$pwReal = $user->getPassword();
-		$auth   = false;
-
-		# пользователей со старой БД проверям с помощью mysql-функций
-		if ($user->getOldUser()) {
-			$pdo = $em->getConnection();
-
-			$stmt = $pdo->prepare("SELECT PASSWORD('$password') as password");
-			$stmt->execute();
-			$pw1 = $stmt->fetch();
-			$pw1 = $pw1['password'];
-
-			$stmt = $pdo->prepare("SELECT OLD_PASSWORD('$password') as password");
-			$stmt->execute();
-			$pw2 = $stmt->fetch();
-			$pw2 = $pw2['password'];
-
-			if ($pw1 === $pwReal || $pw2 === $pwReal) {
-				$auth = true;
-			}
-		}
-
-		if (!$auth && $pwReal === $password) {
-			$auth = true;
-		}
-
-		if (!$auth) {
-			return new JsonResponse(array('success' => 'no'));
-		}
-
-		$this->resetToken($user);
-		$user->setLastLogin(new \DateTime('now'));
-		$em->flush();
-
-		return new JsonResponse(array('success' => 'yes'));
 	}
 
 	/**
