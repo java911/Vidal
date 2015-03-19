@@ -35,7 +35,7 @@
 {% block vidal %}
 	{# подробнее о препарате #}
 	{% if document is defined and document.portfolios.count %}
-		<div class="block">
+		<div class="block with-portfolio">
 			{% set portfolio = document.portfolios[0] %}
 			<a href="{{ path('veterinar_portfolio', {'url':portfolio.url}) }}"
 			   class="portfolio-link no-underline closed-link">
@@ -260,6 +260,9 @@
 		}
 		.relative {
 			position: relative;
+		}
+		.with-portfolio {
+			margin-bottom: 20px;
 		}
 		.portfolio-link {
 			display:     inline-block;

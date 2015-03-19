@@ -75,4 +75,21 @@ class UserRepository extends EntityRepository
 
 		return $qb->getQuery()->getResult();
 	}
+
+	public function checkOldPassword($password, $pwReal)
+	{
+		$pdo = $this->_em->getConnection();
+
+		$stmt = $pdo->prepare("SELECT PASSWORD('$password') as password");
+		$stmt->execute();
+		$pw1 = $stmt->fetch();
+		$pw1 = $pw1['password'];
+
+		$stmt = $pdo->prepare("SELECT OLD_PASSWORD('$password') as password");
+		$stmt->execute();
+		$pw2 = $stmt->fetch();
+		$pw2 = $pw2['password'];
+
+		return $pw1 === $pwReal || $pw2 === $pwReal;
+	}
 }

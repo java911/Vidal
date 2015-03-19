@@ -1,4 +1,4 @@
-<form id="auth_form" action="{{ path("ajax_login") }}" method="POST">
+<form id="auth_form" action="{{ path("login") }}" method="POST">
 	<div class="auth-info raspberry">Вход для специалистов</div>
 
 	<div class="auth-username">
@@ -12,8 +12,7 @@
 	</div>
 
 	<div class="auth-submit">
-		{#<a href="{{ path('password_reset') }}" title="Сбросить пароль">Забыли пароль?</a>#}
-		<a class="submit btn-red" href="#">Войти</a>
+		<input type="submit" class="btn-red" value="Войти"/>
 	</div>
 
 	<div class="auth-fail-message red">Неверный логин<br/> или пароль</div>
@@ -29,22 +28,8 @@
 
 		$('#password').bind('keypress', function(e) {
 			if(e.keyCode==13){
-				ajaxLogin();
+				$('#auth_form').submit();
 			}
 		});
-
-		$('.auth a.submit').click(function(e) {
-			e.preventDefault();
-			ajaxLogin();
-		});
 	});
-
-	function ajaxLogin()
-	{
-		$.post(Routing.generate('ajax_login'), $('#auth_form').serialize(), function(data) {
-			data['success'] == 'yes'
-				? location.reload()
-				: $('.auth-main .auth-fail-message').fadeOut('fast').fadeIn('fast');
-		});
-	}
 </script>

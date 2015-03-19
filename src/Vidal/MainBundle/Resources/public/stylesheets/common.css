@@ -438,7 +438,7 @@ tr.bold td {
 .auth .auth-password {
 	margin: 8px 0 15px;
 }
-.auth input {
+#username, #password {
 	height:        26px;
 	width:         120px;
 	border-radius: 0;

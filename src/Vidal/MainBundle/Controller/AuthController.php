@@ -25,15 +25,47 @@ class AuthController extends Controller
 
 	/**
 	 * @Route("/login", name="login")
-	 * @Template()
+	 * @Template("VidalMainBundle:Auth:login.html.twig")
 	 */
-	public function loginAction()
+	public function loginAction(Request $request)
 	{
 		if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
 			return new RedirectResponse($this->generateUrl('index'));
 		}
 
-		return array();
+		$success  = false;
+		$username = $request->request->get('username', null);
+		$password = $request->request->get('password', null);
+		$em       = $this->getDoctrine()->getManager();
+		$user     = $em->getRepository('VidalMainBundle:User')->findOneByLogin($username);
+
+		if ($user) {
+			$pwReal = $user->getPassword();
+
+			# пользователей со старой БД проверям с помощью mysql-функций
+			if ($user->getOldUser()) {
+				$success = $em->getRepository('VidalMainBundle:User')->checkOldPassword($password, $pwReal);
+			}
+			elseif ($password === $pwReal) {
+				$success = true;
+			}
+		}
+
+		if ($success) {
+			$this->resetToken($user);
+			$user->setLastLogin(new \DateTime('now'));
+			$em->flush();
+
+			return $this->redirect($this->generateUrl('index'));
+		}
+
+		return array(
+			'loginAuthError' => $username && !$success,
+			'title'          => 'Вход для специалистов',
+			'moduleId'       => 7,
+			'username'       => $username,
+			'password'       => $password,
+		);
 	}
 
 	/**
@@ -211,58 +243,6 @@ class AuthController extends Controller
 	private function generatePassword()
 	{
 		return substr(chr(rand(103, 122)) . chr(rand(103, 122)) . chr(rand(103, 122)) . md5(time() + rand(100, 999) . chr(rand(97, 122)) . chr(rand(97, 122)) . chr(rand(97, 122))), 0, 8);
-	}
-
-	/**
-	 * [AJAX] Логин через асинхронный запрос
-	 * @Route("/ajax-login", name="ajax_login", options={"expose"=true})
-	 */
-	public function ajaxLoginAction(Request $request)
-	{
-		$username = $request->request->get('username');
-		$password = $request->request->get('password');
-		$em       = $this->getDoctrine()->getManager();
-		$user     = $em->getRepository('VidalMainBundle:User')->findOneByLogin($username);
-
-		if (!$user) {
-			return new JsonResponse(array('success' => 'no'));
-		}
-
-		$pwReal = $user->getPassword();
-		$auth   = false;
-
-		# пользователей со старой БД проверям с помощью mysql-функций
-		if ($user->getOldUser()) {
-			$pdo = $em->getConnection();
-
-			$stmt = $pdo->prepare("SELECT PASSWORD('$password') as password");
-			$stmt->execute();
-			$pw1 = $stmt->fetch();
-			$pw1 = $pw1['password'];
-
-			$stmt = $pdo->prepare("SELECT OLD_PASSWORD('$password') as password");
-			$stmt->execute();
-			$pw2 = $stmt->fetch();
-			$pw2 = $pw2['password'];
-
-			if ($pw1 === $pwReal || $pw2 === $pwReal) {
-				$auth = true;
-			}
-		}
-
-		if (!$auth && $pwReal === $password) {
-			$auth = true;
-		}
-
-		if (!$auth) {
-			return new JsonResponse(array('success' => 'no'));
-		}
-
-		$this->resetToken($user);
-		$user->setLastLogin(new \DateTime('now'));
-		$em->flush();
-
-		return new JsonResponse(array('success' => 'yes'));
 	}
 
 	/**
@@ -456,7 +436,7 @@ class AuthController extends Controller
 
 		return $this->render('VidalMainBundle:Auth:unsubscribe_digest.html.twig', array(
 			'title' => 'Подписка на рассылку новостей',
-			'user' => $user
+			'user'  => $user
 		));
 	}
 }
