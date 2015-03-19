@@ -61,7 +61,7 @@ class ProductAdmin extends Admin
 			->add('productCompany', 'sonata_type_collection',
 				array(
 					'label'              => 'Компании',
-					'by_reference'       => true,
+					'by_reference'       => false,
 					'cascade_validation' => true,
 					'required'           => false,
 				),
