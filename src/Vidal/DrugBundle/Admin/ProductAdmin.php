@@ -11,10 +11,10 @@ class ProductAdmin extends Admin
 {
 	protected function configureFormFields(FormMapper $formMapper)
 	{
-		$subject            = $this->getSubject();
-		$em                 = $this->getModelManager()->getEntityManager($subject);
-		$transformer        = new DocumentToStringTransformer($em, $subject);
-		$pt = array(
+		$subject     = $this->getSubject();
+		$em          = $this->getModelManager()->getEntityManager($subject);
+		$transformer = new DocumentToStringTransformer($em, $subject);
+		$pt          = array(
 			'ALRG' => 'Аллерген',
 			'BAD'  => 'Биологически активная добавка',
 			'GOME' => 'Гомеопатическое средство',

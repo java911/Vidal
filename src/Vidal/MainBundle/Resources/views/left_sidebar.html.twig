@@ -111,17 +111,7 @@
 {% endif %}
 
 {# баннеры #}
-<a href="{{ app.user ? path('download', {'filename':'disk_2011-2015.zip'}) : path('registration') }}" class="vd">
-	<p>
-		<img src="{{ asset('bundles/vidalmain/images/vidal.png') }}">
-	</p>
-
-	<p>Электронный справочник<br/>2011-2015</p>
-
-	<p class="vd-v">ВРАЧАМ!</p>
-
-	<p>При регистрации на сайте<br/>www.vidal.ru</p>
-</a>
+{{ render(controller('VidalMainBundle:Banner:render', {'groupId':7})) }}
 
 {# реклама вакансий #}
 {% if app.environment == 'prod' %}

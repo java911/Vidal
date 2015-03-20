@@ -124,7 +124,7 @@ class Product
 	 */
 	protected $clphGroups;
 
-	/** @ORM\OneToMany(targetEntity="ProductCompany", mappedBy="ProductID", cascade={"persist"}) */
+	/** @ORM\OneToMany(targetEntity="ProductCompany", mappedBy="ProductID", cascade={"persist", "remove"}, orphanRemoval=true) */
 	protected $productCompany;
 
 	/**
