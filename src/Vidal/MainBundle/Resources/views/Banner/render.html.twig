@@ -27,7 +27,7 @@
 			{% endif %}
 		{% endif %}
 
-		<a href="{{ banner.link }}" class="banner-link" style="width:{{ width }}px; height:{{ height }}px"></a>
+		<a href="{{ banner.loggedLink is not empty and app.user ? banner.loggedLink : banner.link }}" class="banner-link" style="width:{{ width }}px; height:{{ height }}px"></a>
 
 		{# админам карандашик редактирования #}
 		{% if is_granted('ROLE_ADMIN') %}

@@ -33,6 +33,12 @@ class Banner extends BaseEntity
 	protected $link;
 
 	/**
+	 * @ORM\Column(length=500, nullable=true)
+	 * @Assert\Url(message="Ссылка для баннера указана некорректно")
+	 */
+	protected $loggedLink;
+
+	/**
 	 * @ORM\Column(type="datetime")
 	 */
 	protected $starts;
@@ -513,5 +519,19 @@ class Banner extends BaseEntity
         $this->onlyDoctor = $onlyDoctor;
     }
 
+	/**
+	 * @return mixed
+	 */
+	public function getLoggedLink()
+	{
+		return $this->loggedLink;
+	}
 
+	/**
+	 * @param mixed $loggedLink
+	 */
+	public function setLoggedLink($loggedLink)
+	{
+		$this->loggedLink = $loggedLink;
+	}
 }

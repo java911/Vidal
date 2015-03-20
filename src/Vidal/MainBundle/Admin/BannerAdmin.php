@@ -34,6 +34,7 @@ class BannerAdmin extends Admin
             ->add('height', null, array('label' => 'Высота', 'required' => false ))
             ->add('onlyDoctor', null, array('label' => 'Только для зарегестрированных', 'required' => false))
 			->add('link', null, array('label' => 'Ссылка', 'required' => true))
+			->add('loggedLink', null, array('label' => 'Ссылка для зарегистрированных', 'required' => false))
 			->add('group', null, array('label' => 'Баннерное место', 'required' => true))
 			->add('expires', null, array('label' => 'Осталось показов', 'help' => 'Оставьте пустым, чтоб не учитывать'))
 			//->add('countries', null, array('label' => 'Страны', 'required' => false))
