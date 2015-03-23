@@ -110,7 +110,7 @@ class AuthController extends Controller
 	 * Регистрация врача на сайте
 	 *
 	 * @Route("/registration", name="registration")
-	 * @Template()
+	 * @Template("VidalMainBundle:Auth:registration.html.twig")
 	 */
 	public function registrationAction(Request $request)
 	{

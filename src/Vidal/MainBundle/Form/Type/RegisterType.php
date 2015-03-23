@@ -96,7 +96,7 @@ class RegisterType extends AbstractType
 				'mapped'      => false,
 				'required'    => false,
 				'constraints' => new True(array(
-						'message' => 'Пожалуйста, подтвердите что вы согласны с пользовательским соглашением'
+						'message' => 'Пожалуйста, подтвердите, что Вы согласны с пользовательским соглашением'
 					))
 			))
 			->add('submit', 'submit', array('label' => 'Зарегистрироваться'));

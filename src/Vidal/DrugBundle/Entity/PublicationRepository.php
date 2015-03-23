@@ -153,42 +153,16 @@ class PublicationRepository extends EntityRepository
 			->getResult();
 	}
 
-	public function findLeft($max = 5, $byPriority = 3)
+	public function findLeft($max = 5)
 	{
-		$publicationsPriority = $this->_em->createQuery('
-			SELECT p.id, p.title, p.date, p.announce
-			FROM VidalDrugBundle:Publication p
-			WHERE p.date < :now
-				AND p.priority IS NOT NULL
-				AND p.enabled = TRUE
-			ORDER BY p.date DESC, p.priority DESC
-		')->setParameter('now', new \DateTime())
-			->setMaxResults($byPriority)
-			->getResult();
-
-		$countPriority = count($publicationsPriority);
-
-		$publications = $this->_em->createQuery('
+		return $this->_em->createQuery('
 			SELECT p.id, p.title, p.date, p.announce
 			FROM VidalDrugBundle:Publication p
 			WHERE p.enabled = TRUE
 				AND p.date < :now
-				AND p.priority IS NULL
 			ORDER BY p.date DESC
 		')->setParameter('now', new \DateTime())
-			->setMaxResults($max - $countPriority)
+			->setMaxResults($max)
 			->getResult();
-
-		$publications = array_merge($publications, $publicationsPriority);
-
-		usort($publications, function($a, $b) {
-			if ($a['date'] == $b['date']) {
-				return 0;
-			}
-
-			return $a['date'] < $b['date'];
-		});
-
-		return $publications;
 	}
 }
