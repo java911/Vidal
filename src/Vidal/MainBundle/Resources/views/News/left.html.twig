@@ -1,7 +1,9 @@
 <div class="pubs">
-	<div class="pubs-title">Последние новости</div>
+	<div class="pubs-title">
+		<a href="{{ path('news') }}">Последние новости</a>
+	</div>
 	{% for p in publications %}
-		<div class="p">
+		<div class="p{{ loop.last ? ' last' }}">
 			<p class="p-title">
 				<a href="{{ path('publication', {'id':p.id}) }}">{{ p.title|raw }}</a>
 			</p>
@@ -11,6 +13,9 @@
 			<p class="p-date">{{ p.date|date('d.m.Y') }}</p>
 		</div>
 	{% endfor %}
+	<div class="pubs-title">
+		<a href="{{ path('news') }}" class="pubs-all">Все новости</a>
+	</div>
 </div>
 
 <style>
@@ -32,11 +37,11 @@
 	.p-title {
 		font-weight: bold;
 	}
-	.p-title a {
+	.p-title a, .pubs-title > a {
 		color:           #476173;
-		text-decoration: none;
+		text-decoration: none !important;
 	}
-	.p-title a:hover {
+	.p-title a:hover, .pubs-title > a {
 		text-decoration: underline;
 	}
 	.p-announce {
@@ -46,7 +51,7 @@
 		padding:       5px 4px 6px;
 		border-bottom: 1px dashed #CED2D5;
 	}
-	.p:last-child {
+	.p.last {
 		border-bottom: none;
 		margin-bottom: 0;
 	}
