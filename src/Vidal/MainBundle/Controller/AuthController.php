@@ -43,11 +43,11 @@ class AuthController extends Controller
 			$pwReal = $user->getPassword();
 
 			# пользователей со старой БД проверям с помощью mysql-функций
-			if ($user->getOldUser()) {
-				$success = $em->getRepository('VidalMainBundle:User')->checkOldPassword($password, $pwReal);
-			}
-			elseif ($password === $pwReal) {
+			if ($password === $pwReal) {
 				$success = true;
+			}
+			elseif ($user->getOldUser()) {
+				$success = $em->getRepository('VidalMainBundle:User')->checkOldPassword($password, $pwReal);
 			}
 		}
 
