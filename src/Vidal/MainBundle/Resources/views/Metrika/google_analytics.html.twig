@@ -14,22 +14,19 @@
 	ga('create', 'UA-45285788-1', 'auto');
 
 	{% if app.user %}
+	ga('send', 'event', 'Зарегистрирован ли?', 'Да');
 	ga('send', 'pageview', {
 		'dimension1': 'Зарегистрирован',
 		'dimension2': 'Зарегистрирован',
 		'dimension3': 'Зарегистрирован'
 	});
-	ga('send', 'event', 'Пользователь', 'Зарегистрирован', {
-		dimension4: 'Да'
-	});
 	{% else %}
+	ga('send', 'event', 'Зарегистрирован ли?', 'Нет');
 	ga('send', 'pageview', {
 		'dimension1': 'Не зарегистрирован',
 		'dimension2': 'Не зарегистрирован',
 		'dimension3': 'Не зарегистрирован'
 	});
-	ga('send', 'event', 'Пользователь', 'Зарегистрирован', {
-		dimension4: 'Нет'
-	});
+
 	{% endif %}
 </script>
