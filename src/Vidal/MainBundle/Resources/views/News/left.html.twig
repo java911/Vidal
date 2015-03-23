@@ -1,0 +1,59 @@
+<div class="pubs">
+	<div class="pubs-title">Последние новости</div>
+	{% for p in publications %}
+		<div class="p">
+			<p class="p-title">
+				<a href="{{ path('publication', {'id':p.id}) }}">{{ p.title|raw }}</a>
+			</p>
+			{% if p.announce is not empty %}
+				<p class="p-announce">{{ p.announce|raw }}</p>
+			{% endif %}
+			<p class="p-date">{{ p.date|date('d.m.Y') }}</p>
+		</div>
+	{% endfor %}
+</div>
+
+<style>
+	.pubs {
+		font-size: 11px;
+		color:     #666;
+		border:    1px solid #CED2D5;
+	}
+	.pubs-title {
+		background-color: #D8DBE2;
+		color:            #476173;
+		font-size:        12px;
+		text-align:       center;
+		padding:          1px 0 2px;
+	}
+	.p > p {
+		margin: 0;
+	}
+	.p-title {
+		font-weight: bold;
+	}
+	.p-title a {
+		color:           #476173;
+		text-decoration: none;
+	}
+	.p-title a:hover {
+		text-decoration: underline;
+	}
+	.p-announce {
+		font-size: 11px;
+	}
+	.p {
+		padding:       5px 4px 6px;
+		border-bottom: 1px dashed #CED2D5;
+	}
+	.p:last-child {
+		border-bottom: none;
+		margin-bottom: 0;
+	}
+	.pubs .p-announce, .pubs .p-date {
+		margin-top: 5px;
+	}
+	.p-date {
+		text-align: right;
+	}
+</style>

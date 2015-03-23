@@ -152,4 +152,16 @@ class PublicationRepository extends EntityRepository
 		')->setParameter('codes', $nozologyCodes)
 			->getResult();
 	}
+
+	public function findLeft($max = 5)
+	{
+		return $this->_em->createQuery('
+			SELECT p.id, p.title, p.date, p.announce
+			FROM VidalDrugBundle:Publication p
+			WHERE p.enabled = TRUE
+				AND p.date < :now
+		')->setParameter('now', new \DateTime())
+			->setMaxResults($max)
+			->getResult();
+	}
 }

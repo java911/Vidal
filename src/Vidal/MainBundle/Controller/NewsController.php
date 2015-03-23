@@ -72,6 +72,15 @@ class NewsController extends Controller
 		return $params;
 	}
 
+	public function leftAction()
+	{
+		$em = $this->getDoctrine()->getManager('drug');
+
+		return $this->render('VidalMainBundle:News:left.html.twig', array(
+			'publications' => $em->getRepository('VidalDrugBundle:Publication')->findLeft(),
+		));
+	}
+
 	private function strip($string)
 	{
 		$string = strip_tags(html_entity_decode($string, ENT_QUOTES, 'UTF-8'));
