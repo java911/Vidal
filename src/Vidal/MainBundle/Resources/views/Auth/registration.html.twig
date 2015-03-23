@@ -125,40 +125,41 @@
 	{{ parent() }}
 	<script>
 		$(document).ready(function() {
-//			$('#register_city')
-//				.autocomplete({
-//					minLength: 2,
-//					source:    function(request, response) {
-//						var url = Routing.generate('elastic_autocomplete_city', {'term': request.term.trim()});
-//						$.getJSON(url, function(data) {
-//							response($.map(data.hits.hits, function(item) {
-//								return {
-//									label: item.highlight.name,
-//									value: item._source.name
-//								}
-//							}));
-//						});
-//					},
-//					select:    function(event, ui) {
-//						if (ui.item) {
-//							$(this).val(ui.item.value);
-//						}
-//					}
-//				})
-//				.data("ui-autocomplete")._renderItem = function(ul, item) {
-//				return $('<li class="aut"></li>')
-//					.data("item.autocomplete", item)
-//					.append("<a>" + item.label + "</a>")
-//					.appendTo(ul);
-//			};
-
-			$("#register_city").autocomplete({
-				source:    Routing.generate('ajax_city'),
-				minLength: 2,
-				delay:     100,
-				autoFocus: true,
-				limit:     15
-			});
+			$('#register_city')
+				.autocomplete({
+					minLength: 2,
+					source:    function(request, response) {
+						var url = Routing.generate('elastic_autocomplete_city', {'term': request.term.trim()});
+						$.getJSON(url, function(data) {
+							if(!data.hits.hits.length){
+								var result = [{
+									label: 'Населенный пункт не найден',
+									value: response.term
+								}];
+								response(result);
+							}
+							else {
+								response($.map(data.hits.hits, function(item) {
+									return {
+										label: item.highlight.title,
+										value: item._source.title
+									}
+								}));
+							}
+						});
+					},
+					select:    function(event, ui) {
+						if (ui.item) {
+							$(this).val(ui.item.value);
+						}
+					}
+				})
+				.data("ui-autocomplete")._renderItem = function(ul, item) {
+				return $('<li class="aut"></li>')
+					.data("item.autocomplete", item)
+					.append("<a>" + item.label + "</a>")
+					.appendTo(ul);
+			};
 
 			var $miniChoices = $('#register_jobAlignment, #register_jobType, #register_academicDegree');
 			$('#register_form select').not($miniChoices).chosen({

@@ -44,26 +44,19 @@ class CityRepository extends EntityRepository
 
 		foreach ($raw as $r) {
 			$name = trim($r['city']);
+			$title = $name;
 
 			if (!empty($r['region'])) {
-				$name .= ', ' . $r['region'];
+				$title .= ', ' . trim($r['region']);
 			}
 
 			if (!empty($r['country'])) {
-				$name .= ', ' . $r['country'];
+				$title .= ', ' . trim($r['country']);
 			}
 
-			$names[] = $name;
+			$names[] = array('name' => $name, 'title' => $title);
 		}
 
-		$uniques = array();
-
-		foreach ($names as $name) {
-			if (!isset($uniques[$name])) {
-				$uniques[$name] = '';
-			}
-		}
-
-		return array_keys($uniques);
+		return $names;
 	}
 }

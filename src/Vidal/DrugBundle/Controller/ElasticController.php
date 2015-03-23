@@ -181,7 +181,7 @@ class ElasticController extends Controller
 
 		$s['body']['size']                                                 = 15;
 		$s['body']['query']['filtered']['query']['query_string']['query']  = $query;
-		$s['body']['query']['filtered']['query']['query_string']['fields'] = array('name');
+		$s['body']['query']['filtered']['query']['query_string']['fields'] = array('name', 'title');
 		$s['body']['highlight']['fields']['name']                          = array("fragment_size" => 100);
 		$s['body']['sort']['name']['order']                                = 'asc';
 

@@ -19,11 +19,11 @@ class AutocompleteCityCommand extends ContainerAwareCommand
 		ini_set('memory_limit', -1);
 		$output->writeln('--- vidal:autocomplete_city started');
 
-		$em = $this->getContainer()->get('doctrine')->getManager();
+		$em    = $this->getContainer()->get('doctrine')->getManager();
 		$names = $em->getRepository('VidalMainBundle:City')->getNames();
 
-//		$em = $this->getContainer()->get('doctrine')->getManager('drug');
-//		$names = $em->getRepository('VidalDrugBundle:Company')->getNames();
+		//		$em = $this->getContainer()->get('doctrine')->getManager('drug');
+		//		$names = $em->getRepository('VidalDrugBundle:Company')->getNames();
 
 		$elasticaClient = new \Elastica\Client();
 		$elasticaIndex  = $elasticaClient->getIndex('website');
@@ -40,7 +40,8 @@ class AutocompleteCityCommand extends ContainerAwareCommand
 
 		# Set mapping
 		$mapping->setProperties(array(
-			'name' => array('type' => 'string', 'include_in_all' => TRUE),
+			'name'  => array('type' => 'string', 'include_in_all' => FALSE),
+			'title' => array('type' => 'string', 'include_in_all' => FALSE),
 		));
 
 		# Send mapping to type
@@ -51,7 +52,8 @@ class AutocompleteCityCommand extends ContainerAwareCommand
 
 		for ($i = 0; $i < count($names); $i++) {
 			$documents[] = new \Elastica\Document(null, array(
-				'name' => $names[$i]['city'],
+				'name'  => mb_strtolower($names[$i]['name'], 'UTF-8'),
+				'title' => $names[$i]['title'],
 			));
 
 			if ($i && $i % 500 == 0) {
