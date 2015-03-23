@@ -1,5 +1,5 @@
 <?php
-namespace Vidal\MainBundle\Command;
+namespace Vidal\DrugBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -11,8 +11,7 @@ class AutocompleteCityCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:autocomplete_city')
-			->setDescription('Creates autocomplete for Company.LocalName in Elastica');
+		$this->setName('vidal:autocomplete_city');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
@@ -20,8 +19,11 @@ class AutocompleteCityCommand extends ContainerAwareCommand
 		ini_set('memory_limit', -1);
 		$output->writeln('--- vidal:autocomplete_city started');
 
-		$em     = $this->getContainer()->get('doctrine')->getManager('drug');
-		$names = $em->getRepository('VidalDrugBundle:City')->findAutocomplete();
+		$em = $this->getContainer()->get('doctrine')->getManager();
+		$names = $em->getRepository('VidalMainBundle:City')->getNames();
+
+//		$em = $this->getContainer()->get('doctrine')->getManager('drug');
+//		$names = $em->getRepository('VidalDrugBundle:Company')->getNames();
 
 		$elasticaClient = new \Elastica\Client();
 		$elasticaIndex  = $elasticaClient->getIndex('website');
@@ -38,7 +40,6 @@ class AutocompleteCityCommand extends ContainerAwareCommand
 
 		# Set mapping
 		$mapping->setProperties(array(
-			'id'   => array('type' => 'integer', 'include_in_all' => FALSE),
 			'name' => array('type' => 'string', 'include_in_all' => TRUE),
 		));
 
@@ -48,14 +49,15 @@ class AutocompleteCityCommand extends ContainerAwareCommand
 		# записываем на сервер документы автодополнения
 		$documents = array();
 
-		for ($i = 0, $c = count($names); $i < $c; $i++) {
-			$documents[] = new \Elastica\Document($i + 1, array('name' => $names[$i]));
+		for ($i = 0; $i < count($names); $i++) {
+			$documents[] = new \Elastica\Document(null, array(
+				'name' => $names[$i]['city'],
+			));
 
 			if ($i && $i % 500 == 0) {
 				$elasticaType->addDocuments($documents);
 				$elasticaType->getIndex()->refresh();
 				$documents = array();
-				$output->writeln("... + $i");
 			}
 		}
 		$elasticaType->addDocuments($documents);
