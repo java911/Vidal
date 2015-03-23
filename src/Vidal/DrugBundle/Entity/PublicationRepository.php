@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityRepository;
 
 class PublicationRepository extends EntityRepository
 {
-	public function findLast($top = 5, $testMode = false)
+	public function findLast($top = 4, $testMode = false)
 	{
 		$qb = $this->_em->createQueryBuilder();
 
