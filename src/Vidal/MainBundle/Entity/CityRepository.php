@@ -36,7 +36,6 @@ class CityRepository extends EntityRepository
 		 	LEFT JOIN c.country co
 		 	WHERE c.title != ''
 		 		AND c.title IS NOT NULL
-		 		AND co.id = 1
 		 	ORDER BY c.title ASC
 		")->getResult();
 
