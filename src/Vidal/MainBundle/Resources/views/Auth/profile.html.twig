@@ -25,7 +25,8 @@
 	{% endif %}
 
 	{# форма #}
-	<form id="profile_form" action="{{ path('profile') }}" method="post" {{ form_enctype(form) }} novalidate>
+	<form id="profile_form" action="{{ path('profile') }}" method="post" {{ form_enctype(form) }}
+		  novalidate autocomplete="off">
 		{% form_theme form 'VidalMainBundle:Form:profile_form.html.twig' %}
 		{{ form_widget(form) }}
 	</form>
