@@ -1,5 +1,5 @@
 <?php
-namespace Vidal\DrugBundle\Command;
+namespace Vidal\MainBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,10 +20,7 @@ class AutocompleteCityCommand extends ContainerAwareCommand
 		$output->writeln('--- vidal:autocomplete_city started');
 
 		$em    = $this->getContainer()->get('doctrine')->getManager();
-		$names = $em->getRepository('VidalMainBundle:City')->getNames();
-
-		//		$em = $this->getContainer()->get('doctrine')->getManager('drug');
-		//		$names = $em->getRepository('VidalDrugBundle:Company')->getNames();
+		$pdo   = $em->getConnection();
 
 		$elasticaClient = new \Elastica\Client();
 		$elasticaIndex  = $elasticaClient->getIndex('website');

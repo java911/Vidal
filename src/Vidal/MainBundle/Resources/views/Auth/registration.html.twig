@@ -20,13 +20,13 @@
 	<form id="register_form" action="{{ path('registration') }}" method="post" {{ form_enctype(form) }} novalidate>
 		{% form_theme form 'VidalMainBundle:Form:registration_form.html.twig' %}
 		{{ form_widget(form) }}
-		<p class="addition-info">Специализацию вы можете указать в профиле после регистрации</p>
+		<p class="addition-info">Специализацию Вы можете указать в профиле после регистрации</p>
 	</form>
 
 	<img id="help" src="{{ asset('bundles/vidalmain/images/help.png') }}" title="Образец заполнения"/>
 	<div id="helper">
 		<div class="helper-header">Образец заполнения</div>
-		<img src="{{ asset('bundles/vidalmain/images/register.bmp') }}"/>
+		<img src="{{ asset('bundles/vidalmain/images/register.png') }}"/>
 	</div>
 {% endblock %}
 
@@ -45,7 +45,7 @@
 		#helper {
 			display:          none;
 			position:         absolute;
-			top:              -7px;
+			top:              -8px;
 			right:            -348px;
 			width:            340px;
 			background-color: #eee;
@@ -117,6 +117,13 @@
 			vertical-align: top;
 			margin-top:     11px;
 		}
+		#register_eula {
+			width:          22px;
+			height:         22px;
+			margin:         0;
+			display:        inline-block;
+			vertical-align: top;
+		}
 	</style>
 {% endblock %}
 
@@ -125,41 +132,67 @@
 	{{ parent() }}
 	<script>
 		$(document).ready(function() {
-			$('#register_city')
-				.autocomplete({
-					minLength: 2,
-					source:    function(request, response) {
-						var url = Routing.generate('elastic_autocomplete_city', {'term': request.term.trim()});
-						$.getJSON(url, function(data) {
-							if(!data.hits.hits.length){
-								var result = [{
-									label: 'Населенный пункт не найден',
-									value: response.term
-								}];
-								response(result);
-							}
-							else {
-								response($.map(data.hits.hits, function(item) {
-									return {
-										label: item.highlight.title,
-										value: item._source.title
-									}
-								}));
-							}
-						});
-					},
-					select:    function(event, ui) {
-						if (ui.item) {
-							$(this).val(ui.item.value);
+			$("#register_city").autocomplete({
+				source:    function(request, response) {
+					var url = Routing.generate('ajax_city', {'term': request.term.trim()});
+					$.getJSON(url, function(data) {
+						if (!data.length) {
+							var result = [{
+								label: 'Населенный пункт не найден',
+								value: response.term
+							}];
+							response(result);
 						}
-					}
-				})
-				.data("ui-autocomplete")._renderItem = function(ul, item) {
-				return $('<li class="aut"></li>')
-					.data("item.autocomplete", item)
-					.append("<a>" + item.label + "</a>")
-					.appendTo(ul);
-			};
+						else {
+							response($.map(data, function(item) {
+								return {
+									label: item,
+									value: item
+								}
+							}));
+						}
+					});
+				},
+				minLength: 2,
+				autoFocus: true,
+				limit:     15
+			});
+
+//			$('#register_city')
+//				.autocomplete({
+//					minLength: 2,
+//					source:    function(request, response) {
+//						var url = Routing.generate('elastic_autocomplete_city', {'term': request.term.trim()});
+//						$.getJSON(url, function(data) {
+//							if(!data.hits.hits.length){
+//								var result = [{
+//									label: 'Населенный пункт не найден',
+//									value: response.term
+//								}];
+//								response(result);
+//							}
+//							else {
+//								response($.map(data.hits.hits, function(item) {
+//									return {
+//										label: item.highlight.title,
+//										value: item._source.title
+//									}
+//								}));
+//							}
+//						});
+//					},
+//					select:    function(event, ui) {
+//						if (ui.item) {
+//							$(this).val(ui.item.value);
+//						}
+//					}
+//				})
+//				.data("ui-autocomplete")._renderItem = function(ul, item) {
+//				return $('<li class="aut"></li>')
+//					.data("item.autocomplete", item)
+//					.append("<a>" + item.label + "</a>")
+//					.appendTo(ul);
+//			};
 
 			var $miniChoices = $('#register_jobAlignment, #register_jobType, #register_academicDegree');
 			$('#register_form select').not($miniChoices).chosen({
@@ -171,7 +204,7 @@
 				no_results_text: "не найдено"
 			});
 
-			$('#register_form input[type="checkbox"]').checkbox();
+			//$('#register_form input[type="checkbox"]').checkbox();
 
 			$('#help').click(function() {
 				$('#helper').toggle();

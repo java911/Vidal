@@ -32,17 +32,19 @@ class CityRepository extends EntityRepository
 		$raw = $this->_em->createQuery("
 		 	SELECT c.title as city, r.title as region, co.title as country
 		 	FROM VidalMainBundle:City c
-		 	LEFT JOIN c.region r
-		 	LEFT JOIN c.country co
+		 	JOIN c.region r
+		 	JOIN c.country co
 		 	WHERE c.title != ''
 		 		AND c.title IS NOT NULL
 		 	ORDER BY c.title ASC
-		")->getResult();
+		")
+			->setMaxResults(1000)
+			->getResult();
 
 		$names = array();
 
 		foreach ($raw as $r) {
-			$name = trim($r['city']);
+			$name  = trim($r['city']);
 			$title = $name;
 
 			if (!empty($r['region'])) {

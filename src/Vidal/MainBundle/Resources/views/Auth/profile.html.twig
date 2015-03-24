@@ -95,41 +95,67 @@
 			src="{{ asset('bundles/vidalmain/javascripts/jquery.customfile.js') }}"></script>
 	<script>
 		$(document).ready(function() {
-			$('#profile_city')
-				.autocomplete({
-					minLength: 2,
-					source:    function(request, response) {
-						var url = Routing.generate('elastic_autocomplete_city', {'term': request.term.trim()});
-						$.getJSON(url, function(data) {
-							if(!data.hits.hits.length){
-								var result = [{
-										label: 'Населенный пункт не найден',
-										value: response.term
-								}];
-								response(result);
-							}
-							else {
-								response($.map(data.hits.hits, function(item) {
-									return {
-										label: item.highlight.title,
-										value: item._source.title
-									}
-								}));
-							}
-						});
-					},
-					select:    function(event, ui) {
-						if (ui.item) {
-							$(this).val(ui.item.value);
+			$("#profile_city").autocomplete({
+				source:    function(request, response) {
+					var url = Routing.generate('ajax_city', {'term':request.term.trim()});
+					$.getJSON(url, function(data) {
+						if (!data.length) {
+							var result = [{
+								label: 'Населенный пункт не найден',
+								value: response.term
+							}];
+							response(result);
 						}
-					}
-				})
-				.data("ui-autocomplete")._renderItem = function(ul, item) {
-				return $('<li class="aut"></li>')
-					.data("item.autocomplete", item)
-					.append("<a>" + item.label + "</a>")
-					.appendTo(ul);
-			};
+						else {
+							response($.map(data, function(item) {
+								return {
+									label: item,
+									value: item
+								}
+							}));
+						}
+					});
+				},
+				minLength: 2,
+				autoFocus: true,
+				limit:     15
+			});
+
+//			$('#profile_city')
+//				.autocomplete({
+//					minLength: 2,
+//					source:    function(request, response) {
+//						var url = Routing.generate('elastic_autocomplete_city', {'term': request.term.trim()});
+//						$.getJSON(url, function(data) {
+//							if(!data.hits.hits.length){
+//								var result = [{
+//										label: 'Населенный пункт не найден',
+//										value: response.term
+//								}];
+//								response(result);
+//							}
+//							else {
+//								response($.map(data.hits.hits, function(item) {
+//									return {
+//										label: item.highlight.title,
+//										value: item._source.title
+//									}
+//								}));
+//							}
+//						});
+//					},
+//					select:    function(event, ui) {
+//						if (ui.item) {
+//							$(this).val(ui.item.value);
+//						}
+//					}
+//				})
+//				.data("ui-autocomplete")._renderItem = function(ul, item) {
+//				return $('<li class="aut"></li>')
+//					.data("item.autocomplete", item)
+//					.append("<a>" + item.label + "</a>")
+//					.appendTo(ul);
+//			};
 
 			$("#profile_avatar_file").customFile();
 			$("#profile_ConfirmationScan_file").customFile();

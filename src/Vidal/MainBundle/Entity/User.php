@@ -76,7 +76,6 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 
 	/**
 	 * @ORM\Column(type="date", nullable=true)
-	 * @Assert\NotBlank(message = "Укажите год окончания ВУЗа")
 	 */
 	protected $graduateYear;
 
@@ -88,7 +87,6 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 
 	/**
 	 * @ORM\Column(type="string", nullable=true)
-	 * @Assert\NotBlank(message="Укажите ученую степень")
 	 * @Assert\Choice(callback="getAcademicDegrees", message="Некорректная ученая степень. Пожалуйста, выберите из списка.")
 	 */
 	protected $academicDegree;

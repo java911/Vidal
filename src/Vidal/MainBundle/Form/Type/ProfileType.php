@@ -70,7 +70,7 @@ class ProfileType extends AbstractType
 			->add('university', null, array('label' => 'Выберите учебное заведение из списка', 'required' => false, 'empty_value' => 'выберите'))
 			->add('school', null, array('label' => 'Или укажите другое'))
 			->add(
-				$builder->create('graduateYear', 'choice', array('label' => 'Год окончания учебного заведения', 'choices' => $years, 'empty_value' => 'выберите'))->addModelTransformer($yearToNumberTransformer)
+				$builder->create('graduateYear', 'choice', array('label' => 'Год окончания учебного заведения', 'choices' => $years, 'empty_value' => 'выберите', 'required' => false))->addModelTransformer($yearToNumberTransformer)
 			)
 			->add('educationType', 'choice', array('label' => 'Форма обучения', 'required' => false, 'choices' => User::getEducationTypes(), 'empty_value' => 'выберите'))
 			->add('primarySpecialty', 'entity', array(
@@ -82,8 +82,17 @@ class ProfileType extends AbstractType
 						return $er->createQueryBuilder('s')->orderBy('s.title', 'ASC');
 					}
 			))
+			->add('secondarySpecialty', 'entity', array(
+				'label'         => 'Дополнительная специальность',
+				'empty_value'   => 'выберите',
+				'required'      => false,
+				'class'         => 'VidalMainBundle:Specialty',
+				'query_builder' => function (EntityRepository $er) {
+					return $er->createQueryBuilder('s')->orderBy('s.title', 'ASC');
+				}
+			))
 			->add('specialization', null, array('label' => 'Специализация', 'empty_value' => 'Не имеется', 'attr' => array('data-help' => 'если есть'), 'required' => false))
-			->add('academicDegree', 'choice', array('label' => 'Ученая степень', 'choices' => User::getAcademicDegrees(), 'empty_value' => 'выберите'))
+			->add('academicDegree', 'choice', array('label' => 'Ученая степень', 'choices' => User::getAcademicDegrees(), 'required' => false, 'empty_data'=> 'Нет'))
 			->add('dissertation', null, array('label' => 'Тема диссертации', 'required' => false))
 			->add('professionalInterests', null, array('label' => 'Профессиональные интересы', 'required' => false))
 			->add('submit2', 'submit', array('label' => 'Сохранить'))
