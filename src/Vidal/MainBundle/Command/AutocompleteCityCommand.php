@@ -20,7 +20,7 @@ class AutocompleteCityCommand extends ContainerAwareCommand
 		$output->writeln('--- vidal:autocomplete_city started');
 
 		$em    = $this->getContainer()->get('doctrine')->getManager();
-		$pdo   = $em->getConnection();
+		$names = $em->getRepository('VidalMainBundle:City')->getNames();
 
 		$elasticaClient = new \Elastica\Client();
 		$elasticaIndex  = $elasticaClient->getIndex('website');

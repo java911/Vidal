@@ -21,8 +21,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class AuthController extends Controller
 {
-	const DISPLAYED_CITIES_AJAX = 10;
-
 	/**
 	 * @Route("/login", name="login")
 	 * @Template("VidalMainBundle:Auth:login.html.twig")
@@ -271,30 +269,37 @@ class AuthController extends Controller
 			return new JsonResponse();
 		}
 
-		$str = $request->query->get('term');
-		$em  = $this->getDoctrine()->getManager();
-		$str = '%' . $str . '%';
+		$term = $request->query->get('term');
 
-		$cities = $em->createQuery('SELECT c FROM VidalMainBundle:City c WHERE c.title LIKE :letter ORDER BY c.title ASC')
-			->setParameter('letter', $str)
-			->setFirstResult(0)
-			->setMaxResults(self::DISPLAYED_CITIES_AJAX)
-			->getResult();
+//		$words  = explode(' ', $term);
+//		$query  = implode('* ', $words) . '*';
+//		$client = new \Elasticsearch\Client();
+//
+//		$s['index']                                                        = 'website';
+//		$s['type']                                                         = 'autocomplete_city';
+//		$s['body']['size']                                                 = 10;
+//		$s['body']['query']['filtered']['query']['query_string']['query']  = $query;
+//		$s['body']['query']['filtered']['query']['query_string']['fields'] = array('name', 'title');
+//		$s['body']['highlight']['fields']['name']                          = array("fragment_size" => 100);
+//		$s['body']['sort']['name']['order']                                = 'asc';
+//
+//		$results = $client->search($s);
+//		$titles  = array();
+//
+//		if (isset($results['hits']['hits']) && !empty($results['hits']['hits'])) {
+//			foreach ($results['hits']['hits'] as $result) {
+//				$titles[] = $result['_source']['title'];
+//			}
+//		}
+//
+//		if (!empty($titles)) {
+//			return new JsonResponse($titles);
+//		}
 
-		$citiesArray = array();
+		$em     = $this->getDoctrine()->getManager();
+		$titles = $em->getRepository('VidalMainBundle:City')->findAutocomplete($term);
 
-		foreach ($cities as $city) {
-			$title = $city->getTitle();
-			if ($region = $city->getRegion()) {
-				$title .= ', ' . $region->getTitle();
-			}
-			if ($country = $city->getCountry()) {
-				$title .= ', ' . $country->getTitle();
-			}
-			$citiesArray[] = $title;
-		}
-
-		return new JsonResponse($citiesArray);
+		return new JsonResponse($titles);
 	}
 
 	/**

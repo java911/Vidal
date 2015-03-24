@@ -17,7 +17,8 @@
 		</div>
 	{% endif %}
 
-	<form id="register_form" action="{{ path('registration') }}" method="post" {{ form_enctype(form) }} novalidate>
+	<form id="register_form" action="{{ path('registration') }}" method="post" {{ form_enctype(form) }}
+		  novalidate autocomplete="off">
 		{% form_theme form 'VidalMainBundle:Form:registration_form.html.twig' %}
 		{{ form_widget(form) }}
 		<p class="addition-info">Специализацию Вы можете указать в профиле после регистрации</p>
@@ -124,6 +125,9 @@
 			display:        inline-block;
 			vertical-align: top;
 		}
+		.ui-autocomplete-loading {
+			background: url('{{ asset('bundles/vidalmain/images/ajax-loader.gif') }}') no-repeat right center
+		}
 	</style>
 {% endblock %}
 
@@ -138,7 +142,7 @@
 					$.getJSON(url, function(data) {
 						if (!data.length) {
 							var result = [{
-								label: 'Населенный пункт не найден',
+								label: '* Населенный пункт не найден',
 								value: response.term
 							}];
 							response(result);
@@ -153,46 +157,20 @@
 						}
 					});
 				},
+				select:    function(event, ui) {
+					if (ui.item) {
+						$(this).val(ui.item.value);
+					}
+				},
 				minLength: 2,
 				autoFocus: true,
 				limit:     15
-			});
-
-//			$('#register_city')
-//				.autocomplete({
-//					minLength: 2,
-//					source:    function(request, response) {
-//						var url = Routing.generate('elastic_autocomplete_city', {'term': request.term.trim()});
-//						$.getJSON(url, function(data) {
-//							if(!data.hits.hits.length){
-//								var result = [{
-//									label: 'Населенный пункт не найден',
-//									value: response.term
-//								}];
-//								response(result);
-//							}
-//							else {
-//								response($.map(data.hits.hits, function(item) {
-//									return {
-//										label: item.highlight.title,
-//										value: item._source.title
-//									}
-//								}));
-//							}
-//						});
-//					},
-//					select:    function(event, ui) {
-//						if (ui.item) {
-//							$(this).val(ui.item.value);
-//						}
-//					}
-//				})
-//				.data("ui-autocomplete")._renderItem = function(ul, item) {
-//				return $('<li class="aut"></li>')
-//					.data("item.autocomplete", item)
-//					.append("<a>" + item.label + "</a>")
-//					.appendTo(ul);
-//			};
+			}).data("ui-autocomplete")._renderItem = function(ul, item) {
+				return $('<li class="aut"></li>')
+					.data("item.autocomplete", item)
+					.append("<a>" + item.label + "</a>")
+					.appendTo(ul);
+			};
 
 			var $miniChoices = $('#register_jobAlignment, #register_jobType, #register_academicDegree');
 			$('#register_form select').not($miniChoices).chosen({
@@ -203,8 +181,6 @@
 				disable_search:  true,
 				no_results_text: "не найдено"
 			});
-
-			//$('#register_form input[type="checkbox"]').checkbox();
 
 			$('#help').click(function() {
 				$('#helper').toggle();
