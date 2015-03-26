@@ -61,6 +61,6 @@ class AutocompleteArticleCommand extends ContainerAwareCommand
 		$elasticaType->addDocuments($documents);
 		$elasticaType->getIndex()->refresh();
 
-		$output->writeln("+++ vidal:autocomplete_article loaded $i documents!");
+		$output->writeln("+++ vidal:autocomplete_article completed!");
 	}
 }

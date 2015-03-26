@@ -34,10 +34,6 @@ class NozologyCountCommand extends ContainerAwareCommand
 				'countProducts' => $raw[$i]['countProducts'],
 				'Code'          => $raw[$i]['Code'],
 			))->execute();
-
-			if ($i && $i % 500 == 0) {
-				$output->writeln("... +$i ");
-			}
 		}
 
 		$output->writeln('+++ vidal:nozology_count completed');

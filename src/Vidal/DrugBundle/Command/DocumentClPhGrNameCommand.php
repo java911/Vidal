@@ -74,8 +74,6 @@ class DocumentClPhGrNameCommand extends ContainerAwareCommand
 					'document_id'         => $document['DocumentID'],
 				))->execute();
 			}
-
-			$output->writeln("... " . ($i + $step) . " / $count done");
 		}
 
 		$output->writeln('+++ vidal:document_clphgrname completed!');

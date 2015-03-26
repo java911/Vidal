@@ -64,13 +64,9 @@ class AutocompleteDocumentCommand extends ContainerAwareCommand
 			$document = new \Elastica\Document(null, array('name' => $names[$i]));
 			$elasticaType->addDocument($document);
 			$elasticaType->getIndex()->refresh();
-
-			if ($i && $i % 500 == 0) {
-				$output->writeln("... + $i");
-			}
 		}
 
-		$output->writeln("+++ vidal:autocomplete_document loaded $i documents!");
+		$output->writeln("+++ vidal:autocomplete_document completed!");
 	}
 
 	private function strip($string)

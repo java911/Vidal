@@ -24,12 +24,11 @@ class AutocompleteBaseCommand extends ContainerAwareCommand
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		ini_set('memory_limit', -1);
-		$output->writeln('--- vidal:elastic_index started');
+		$output->writeln('--- vidal:autocomplete_base started');
 
 		$elasticaClient = new \Elastica\Client();
 		$elasticaIndex  = $elasticaClient->getIndex('website');
 
-		// Create the index new
 		$elasticaIndex->create(
 			array(
 				'number_of_shards'   => 4,
@@ -45,6 +44,6 @@ class AutocompleteBaseCommand extends ContainerAwareCommand
 			true
 		);
 
-		$output->writeln('+++ vidal:elastic_index created!');
+		$output->writeln('+++ vidal:autocomplete_base completed!');
 	}
 }
