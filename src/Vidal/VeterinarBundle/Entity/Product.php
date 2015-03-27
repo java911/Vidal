@@ -40,19 +40,19 @@ class Product
 	protected $RegistrationNumber;
 
 	/** @ORM\Column(type="boolean") */
-	protected $PPR;
+	protected $PPR = false;
 
 	/** @ORM\Column(length=255) */
 	protected $ZipInfo;
 
-	/** @ORM\Column(type="text") */
+	/** @ORM\Column(type="text", nullable=true) */
 	protected $Composition;
 
-	/** @ORM\Column(type="datetime") @Gedmo\Timestampable(on="update") */
+	/** @ORM\Column(type="datetime", nullable=true) @Gedmo\Timestampable(on="update") */
 	protected $DateOfIncludingText;
 
 	/**
-	 * @ORM\Column(length=10)
+	 * @ORM\Column(length=10, nullable=true)
 	 */
 	protected $ProductTypeCode;
 
@@ -107,7 +107,7 @@ class Product
 	/** @ORM\OneToMany(targetEntity="ProductDocument", mappedBy="ProductID") */
 	protected $productDocument;
 
-	/** @ORM\OneToMany(targetEntity="ProductCompany", mappedBy="ProductID") */
+	/** @ORM\OneToMany(targetEntity="ProductCompany", mappedBy="ProductID", cascade={"persist", "remove"}, orphanRemoval=true) */
 	protected $productCompany;
 
 	/**
@@ -727,5 +727,16 @@ class Product
 	public function setPhoto($photo)
 	{
 		$this->photo = $photo;
+	}
+
+	public function addProductCompany(ProductCompany $pc)
+	{
+		$pc->setProductID($this);
+		$this->productCompany[] = $pc;
+	}
+
+	public function removeProductCompany(ProductCompany $pc)
+	{
+		$this->productCompany->removeElement($pc);
 	}
 }

@@ -85,6 +85,7 @@ class UpgradeCommand extends ContainerAwareCommand
 			'vidal:autocomplete_pharm',
 			'vidal:autocomplete_company',
 			'vidal:autocomplete_article',
+			'vidal:autocomplete_product',
 		);
 	}
 }
