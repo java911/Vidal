@@ -63,7 +63,6 @@ class ArticleAdmin extends Admin
 				},
 			))
 			->add('type', null, array('label' => 'Категория', 'required' => false, 'empty_value' => 'не указано'))
-			->add('states', null, array('label' => 'Болезни', 'required' => false, 'empty_value' => 'не указано'))
 			->add('priority', null, array('label' => 'Приоритет', 'required' => false, 'help' => 'Закреплено на главной по приоритету. Оставьте пустым, чтоб снять приоритет'))
 			->add('announce', null, array('label' => 'Анонс', 'required' => false, 'attr' => array('class' => 'ckeditorfull')))
 			->add('body', null, array('label' => 'Основное содержимое', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
