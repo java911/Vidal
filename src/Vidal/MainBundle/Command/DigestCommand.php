@@ -101,6 +101,18 @@ class DigestCommand extends ContainerAwareCommand
 		$digest     = $em->getRepository('VidalMainBundle:Digest')->get();
 		$step       = 40;
 
+		# проверка лимита в 5000
+		$limit     = 5000;
+		$countSend = $em->createQuery('
+			SELECT COUNT(u.id)
+			FROM VidalMainBundle:User u
+			WHERE u.send = 1
+		')->getSingleScalarResult();
+
+		if ($countSend >= $limit) {
+			return;
+		}
+
 		$users = $em->createQuery("
 			SELECT u.username, u.id, DATE_FORMAT(u.created, '%Y-%m-%d_%H:%i:%s') as created, u.firstName
 			FROM VidalMainBundle:User u
