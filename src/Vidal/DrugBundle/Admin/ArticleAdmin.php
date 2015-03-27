@@ -58,8 +58,7 @@ class ArticleAdmin extends Admin
 				'required'      => true,
 				'empty_value'   => 'выберите',
 				'query_builder' => function (EntityRepository $er) {
-					return $er->createQueryBuilder('r')
-						->orderBy('r.title', 'ASC');
+					return $er->createQueryBuilder('r')->orderBy('r.title', 'ASC');
 				},
 			))
 			->add('type', null, array('label' => 'Категория', 'required' => false, 'empty_value' => 'не указано'))
