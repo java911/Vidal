@@ -104,16 +104,13 @@ class DigestCommand extends ContainerAwareCommand
 		# лимит зависит от времени
 		$hour = date('H');
 
-		if ($hour >= 16 && $hour <= 19) {
-			$limit = 10000;
-		}
-		elseif ($hour >= 23 && $hour <= 2 ) {
+		if ($hour == 3 || $hour == 4 || $hour == 5 ) {
 			$limit = 15000;
 		}
-		elseif ($hour >= 6 && $hour <= 9) {
+		elseif ($hour == 10 || $hour == 11 || $hour == 12) {
 			$limit = 20000;
 		}
-		elseif ($hour >= 13 && $hour <= 16) {
+		elseif ($hour == 17 || $hour == 18 || $hour == 19) {
 			$limit = 25000;
 		}
 		else {
