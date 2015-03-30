@@ -166,6 +166,12 @@ class ParserXmlCommand extends ContainerAwareCommand
             $output->writeln('<comment> : '.$i.'</comment>');
         }
 
+//        if ($val == 6){
+//            $em = $this->getContainer()->get('doctrine')->getManager();
+//            $em2 = $this->getContainer()->get('doctrine')->getManager('drug');
+//            $file = '/var/www/file.txt';
+//            $docs = $em2->getRepository('VidalDrugBundle:Document')->fondOneById()
+//        }
 
 
         $output->writeln('+++ vidal:parser completed!');
@@ -259,4 +265,5 @@ class ParserXmlCommand extends ContainerAwareCommand
         }
         return $arr;
     }
+
 }
