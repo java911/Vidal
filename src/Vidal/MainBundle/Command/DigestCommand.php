@@ -30,7 +30,7 @@ class DigestCommand extends ContainerAwareCommand
 		ini_set('memory_limit', -1);
 
 		# опции не указаны - выводим мануал
-		if (!$input->getOption('test') && !$input->getOption('clean') && !$input->getOption('all') && !$input->getOption('me') && !$input->getOption('me')) {
+		if (!$input->getOption('test') && !$input->getOption('clean') && !$input->getOption('all') && !$input->getOption('me') && !$input->getOption('local')) {
 			$output->writeln('=> Error: uncorrect syntax. READ BELOW');
 			$output->writeln('$ php app/console evrika:digest --test');
 			$output->writeln('$ php app/console evrika:digest --stop');

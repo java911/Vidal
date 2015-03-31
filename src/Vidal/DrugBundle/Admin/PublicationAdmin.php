@@ -103,6 +103,7 @@ class PublicationAdmin extends Admin
 			)
 			->add('code', null, array('label' => 'Дополнительный код', 'required' => false))
 			->add('testMode', null, array('label' => 'В режиме тестирования', 'required' => false, 'help' => 'видно только если в конец url-адреса дописать ?test'))
+			->add('sticked', null, array('label' => 'Закреплена слева', 'required' => false))
 			->add('enabled', null, array('label' => 'Активна', 'required' => false));
 	}
 
@@ -113,6 +114,7 @@ class PublicationAdmin extends Admin
 			->add('title', null, array('label' => 'Заголовок'))
 			->add('priority', null, array('label' => 'Приоритет'))
 			->add('testMode', null, array('label' => 'В режиме тестирования'))
+			->add('sticked', null, array('label' => 'Закреплена слева'))
 			->add('enabled', null, array('label' => 'Активна'));
 	}
 
@@ -125,6 +127,7 @@ class PublicationAdmin extends Admin
 			->add('date', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
 			->add('updated', null, array('label' => 'Дата изменения', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
 			->add('priority', null, array('label' => 'Приоритет'))
+			->add('sticked', null, array('label' => 'Закреплена', 'template' => 'VidalDrugBundle:Sonata:swap_sticked.html.twig'))
 			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))
 			->add('_action', 'actions', array(
 				'label'   => 'Действия',

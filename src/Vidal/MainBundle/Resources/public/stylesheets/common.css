@@ -717,12 +717,12 @@ tr.bold td {
 	overflow: hidden;
 }
 .descr a, .descr span {
-	display: inline-block;
-	float: left;
+	display:        inline-block;
+	float:          left;
 	vertical-align: bottom;
-	margin: 0;
-	font-size: 14px;
-	line-height: 18px;
+	margin:         0;
+	font-size:      14px;
+	line-height:    18px;
 }
 .descr a {
 	margin-left: 6px;
@@ -1778,4 +1778,8 @@ tr.bold td {
 }
 .p-date {
 	text-align: right;
+}
+.p.sticked {
+	border:     1px solid rgb(207, 207, 183);
+	background: beige;
 }

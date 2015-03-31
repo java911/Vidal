@@ -156,11 +156,11 @@ class PublicationRepository extends EntityRepository
 	public function findLeft($max = 5)
 	{
 		return $this->_em->createQuery('
-			SELECT p.id, p.title, p.date, p.announce
+			SELECT p.id, p.title, p.date, p.announce, p.sticked
 			FROM VidalDrugBundle:Publication p
 			WHERE p.enabled = TRUE
 				AND p.date < :now
-			ORDER BY p.date DESC
+			ORDER BY p.sticked DESC, p.date DESC
 		')->setParameter('now', new \DateTime())
 			->setMaxResults($max)
 			->getResult();
