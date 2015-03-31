@@ -12,7 +12,7 @@ class RegistrationCommand extends ContainerAwareCommand
 {
 	protected function configure()
 	{
-		$this->setName('vidal:registration')
+		$this->setName('vidal:registration_resend')
 			->setDescription('Send registration to users')
 			->addOption('all', null, InputOption::VALUE_NONE, 'Send digest to every subscribed user')
 			->addOption('me', null, InputOption::VALUE_NONE, 'Send digest to 7binary@gmail.com')
@@ -38,19 +38,33 @@ class RegistrationCommand extends ContainerAwareCommand
 		$container  = $this->getContainer();
 		$em         = $container->get('doctrine')->getManager();
 		$templating = $container->get('templating');
+		$subject    = 'Пожалуйста, подтвердите регистрацию на портале Vidal.ru';
+		$qb         = $em->createQueryBuilder();
 
-		$subject   = 'Пожалуйста, подтвердите регистрацию на портале Vidal.ru';
-		$template1 = $templating->render('VidalMainBundle:Digest:registration.html.twig');
+		$qb->select("u.username, u.id, DATE_FORMAT(u.created, '%Y-%m-%d_%H:%i:%s') as created,
+					u.firstName, u.surName, u.password, u.hash")
+			->from('VidalMainBundle:User', 'u')
+			->where('u.enabled = TRUE')
+			->andWhere('u.digestSubscribed = TRUE');
 
 		# рассылка всем подписанным врачам
 		if ($input->getOption('all')) {
 			$output->writeln("Sending: in progress to ALL subscribed users...");
 
-			$users = $em->createQuery("
-				SELECT u.username, u.id, DATE_FORMAT(u.created, '%Y-%m-%d_%H:%i:%s') as created, u.firstName, u.password
-				FROM VidalMainBundle:User u
-				WHERE u.username IN (:emails)
-			")->getResult();
+			$qb->andWhere('u.emailConfirmed = FALSE');
+
+			$orX = $qb->expr()->orX();
+			foreach ($this->getDates() as $date) {
+				$orX->add("u.created LIKE '$date%'");
+			}
+			$qb->andWhere($orX);
+
+			$users = $qb->getQuery()->getResult();
+
+			foreach ($users as $user) {
+				$template = $templating->render('VidalMainBundle:Digest:registration.html.twig', array('user' => $user));
+				$this->send($user['username'], $user['firstName'], $template, $subject);
+			}
 		}
 
 		# отправить самому себе
@@ -58,15 +72,12 @@ class RegistrationCommand extends ContainerAwareCommand
 			$email = '7binary@gmail.com';
 			$output->writeln("Sending: in progress to $email");
 
-			$user = $em->createQuery("
-				SELECT u.username, u.id, DATE_FORMAT(u.created, '%Y-%m-%d_%H:%i:%s') as created, u.firstName, u.password
-				FROM VidalMainBundle:User u
-				WHERE u.username = :email
-			")->setParameter('email', $email)
-				->getSingleResult();
+			$qb->where('u.username = :email')->setParameter('email', $email);
+
+			$user = $qb->getQuery()->getSingleResult();
 
 			$template = $templating->render('VidalMainBundle:Digest:registration.html.twig', array('user' => $user));
-			$local     = $this->getOption('local');
+			$local    = $input->getOption('local');
 
 			$this->send($user['username'], $user['firstName'], $template, $subject, $local);
 		}
@@ -74,7 +85,7 @@ class RegistrationCommand extends ContainerAwareCommand
 		return true;
 	}
 
-	public function send($email, $to, $body, $subject, $local = false)
+	private function send($email, $to, $body, $subject, $local = false)
 	{
 		$mail = new \PHPMailer();
 
@@ -103,5 +114,18 @@ class RegistrationCommand extends ContainerAwareCommand
 		$mail   = null;
 
 		return $result;
+	}
+
+	private function getDates()
+	{
+		$dates = array();
+		$date  = new \DateTime('now');
+
+		for ($i = 1; $i <= 6; $i++) {
+			$date->modify('-1 month');
+			$dates[] = $date->format('Y-m-d');
+		}
+
+		return $dates;
 	}
 }

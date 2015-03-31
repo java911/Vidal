@@ -40,7 +40,21 @@
 	<tr>
 		<td style="padding: 18px 35px 28px; background-color: #f9f9f9;">
 			<div style="font-family:Arial, sans-serif; font-size:14px; color:black;">
-
+				<p style="font-family:Arial, sans-serif; font-size:14px; color:black;">
+					Уважаемый {{ user.firstName }}{{ user.surName is not empty ? ' ' ~ user.surName }},
+					благодарим Вас за регистрацию на портале Vidal.ru!</p>
+				<p style="font-family:Arial, sans-serif; font-size:14px; color:black;">
+					Ваш логин: <b>{{ user.username }}</b><br/>
+					Ваш пароль: <b>{{ user.password }}</b>
+				</p>
+				<p style="font-family:Arial, sans-serif; font-size:14px; color:black;">
+					Для того чтобы получить полный доступ к функциям сайта, осталось лишь подтвердить,
+					что это Ваш настоящий электронный адрес. Для этого просто перейдите по ссылке:</p>
+				<p style="font-family:Arial, sans-serif; font-size:14px; color:black;">
+					<a href="http://www.vidal.ru/confirm-email/{{ user.id }}/{{ user.hash }}">
+						http://www.vidal.ru/confirm-email/{{ user.id }}/{{ user.hash }}
+					</a>
+				</p>
 			</div>
 
 			<div style="margin-top:35px; color:#500050; width: 300px; font-family:Arial, sans-serif;">
