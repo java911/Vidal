@@ -131,6 +131,9 @@ class DigestCommand extends ContainerAwareCommand
 			SELECT u.username, u.id, DATE_FORMAT(u.created, '%Y-%m-%d_%H:%i:%s') as created, u.firstName
 			FROM VidalMainBundle:User u
 			WHERE u.send = 0
+				AND u.enabled = TRUE
+				AND u.emailConfirmed = TRUE
+				AND u.digestSubscribed = TRUE
 			ORDER BY u.id ASC
 		")->setMaxResults($step)
 			->getResult();

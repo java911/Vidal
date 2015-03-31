@@ -50,9 +50,12 @@ class DeliveryController extends Controller
 		}
 
 		$params = array(
-			'title'  => 'Рассылка писем',
-			'digest' => $digest,
-			'form'   => $form->createView(),
+			'title'        => 'Рассылка писем',
+			'digest'       => $digest,
+			'form'         => $form->createView(),
+			'total'        => $em->getRepository('VidalMainBundle:User')->total(),
+			'subscribed'   => $em->getRepository('VidalMainBundle:Digest')->countSubscribed(),
+			'unsubscribed' => $em->getRepository('VidalMainBundle:Digest')->countUnsubscribed(),
 		);
 
 		return $params;
