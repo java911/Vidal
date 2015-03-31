@@ -39,9 +39,10 @@ class DigestRepository extends EntityRepository
 
 	public function countUnsubscribed()
 	{
-		$unsub = array();
+		$intervals = array('day', 'week', 'month', 'year');
+		$unsub     = array();
 
-		foreach (['day', 'week', 'month', 'year'] as $interval) {
+		foreach ($intervals as $interval) {
 			$unsub[$interval] = $this->_em->createQuery("
 				SELECT COUNT(u.id)
 				FROM VidalMainBundle:User u
