@@ -1,6 +1,6 @@
 <html lang="ru">
 <head>
-	<meta charset="UTF-8" />
+	<meta charset="UTF-8"/>
 </head>
 <body>
 <table cellpadding="0" cellspacing="0" border="0" width="600"
@@ -43,13 +43,16 @@
 				<p style="font-family:Arial, sans-serif; font-size:14px; color:black;">
 					Уважаемый {{ user.firstName }}{{ user.surName is not empty ? ' ' ~ user.surName }},
 					благодарим Вас за регистрацию на портале Vidal.ru!</p>
+
 				<p style="font-family:Arial, sans-serif; font-size:14px; color:black;">
 					Ваш логин: <b>{{ user.username }}</b><br/>
 					Ваш пароль: <b>{{ user.password }}</b>
 				</p>
+
 				<p style="font-family:Arial, sans-serif; font-size:14px; color:black;">
-					Для того чтобы получить полный доступ к функциям сайта, осталось лишь подтвердить,
-					что это Ваш настоящий электронный адрес. Для этого просто перейдите по ссылке:</p>
+					Вы успешно зарегистрировались на нашем сайте, но для получения полного доступа к функциям сайта Вам
+					нужно подтвердить электронный адрес. Для этого просто перейдите по ссылке:</p>
+
 				<p style="font-family:Arial, sans-serif; font-size:14px; color:black;">
 					<a href="http://www.vidal.ru/confirm-email/{{ user.id }}/{{ user.hash }}">
 						http://www.vidal.ru/confirm-email/{{ user.id }}/{{ user.hash }}
