@@ -15,7 +15,7 @@ class Document
 	/** @ORM\Column(length=500) */
 	protected $RusName;
 
-	/** @ORM\Column(length=500) */
+	/** @ORM\Column(length=500, nullable=true) */
 	protected $EngName;
 
 	/** @ORM\Column(length=500, nullable=true) */
@@ -33,13 +33,13 @@ class Document
 	/** @ORM\Column(type="datetime") @Gedmo\Timestampable(on="update") */
 	protected $DateOfIncludingText;
 
-	/** @ORM\Column(type="datetime") */
+	/** @ORM\Column(type="datetime", nullable=true) */
 	protected $DateTextModified;
 
-	/** @ORM\Column(length=255) */
+	/** @ORM\Column(length=255, nullable=true) */
 	protected $Elaboration;
 
-	/** @ORM\Column(type="text") */
+	/** @ORM\Column(type="text", nullable=true) */
 	protected $CompaniesDescription;
 
 	/** @ORM\Column(type="text", nullable=true) */
@@ -88,7 +88,7 @@ class Document
 	protected $NewForCurrentEdition = false;
 
 	/** @ORM\Column(length=10) */
-	protected $CountryEditionCode;
+	protected $CountryEditionCode = 'RUS';
 
 	/** @ORM\Column(type="boolean") */
 	protected $IsApproved = false;

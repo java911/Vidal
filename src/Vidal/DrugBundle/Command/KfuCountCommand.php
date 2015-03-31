@@ -34,10 +34,6 @@ class KfuCountCommand extends ContainerAwareCommand
 				'countProducts' => $raw[$i]['countProducts'],
 				'ClPhPointerID' => $raw[$i]['ClPhPointerID'],
 			))->execute();
-
-			if ($i && $i % 500 == 0) {
-				$output->writeln("... +$i ");
-			}
 		}
 
 		$output->writeln('+++ vidal:kfu_count completed');

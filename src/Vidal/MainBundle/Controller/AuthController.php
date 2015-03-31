@@ -17,6 +17,7 @@ use Vidal\MainBundle\Form\Type\RegisterType;
 use Vidal\MainBundle\Form\Type\ProfileType;
 use Lsw\SecureControllerBundle\Annotation\Secure;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class AuthController extends Controller
@@ -439,6 +440,56 @@ class AuthController extends Controller
 			'title' => 'Смена пароля',
 			'form'  => $form->createView(),
 			'user'  => $user
+		);
+	}
+
+	/**
+	 * Отправка данных для входа на сайт
+	 *
+	 * @Route("/credentials", name="credentials")
+	 * @Template("VidalMainBundle:Auth:credentials.html.twig")
+	 */
+	public function credentialsAction(Request $request)
+	{
+		$form = $this->createFormBuilder()
+			->add('email', null, array(
+				'label'       => 'Укажите E-mail',
+				'required'    => true,
+				'constraints' => new Assert\Email(array(
+					'message' => 'E-mail {{ value }} указан некорректно',
+					'checkMX' => false,
+				)),
+			))
+			->add('submit', 'submit', array('label' => 'Отправить'))
+			->getForm();
+
+		$form->handleRequest($request);
+
+		if ($form->isValid()) {
+			$formData = $form->getData();
+			$email    = $formData['email'];
+			$em       = $this->getDoctrine()->getManager();
+			$user     = $em->getRepository('VidalMainBundle:User')->findOneByUsername($email);
+
+			if (!$user) {
+				$form->get('email')->addError(new FormError('Пользователь с таким e-mail адресом в системе не обнаружен'));
+			}
+			else {
+				$this->get('email.service')->send(
+					$email,
+					array('VidalMainBundle:Email:credentials.html.twig', array('user' => $user)),
+					'Напоминание данных для входа на сайт Vidal.ru'
+				);
+
+				$this->get('session')->getFlashBag()->add('notice', $email);
+
+				return $this->redirect($this->generateUrl('credentials'));
+			}
+		}
+
+		return array(
+			'title' => 'Напомнить данные для входа на сайт',
+			'form'  => $form->createView(),
 		);
 	}
 

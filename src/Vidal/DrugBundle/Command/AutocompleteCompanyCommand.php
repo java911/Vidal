@@ -61,12 +61,11 @@ class AutocompleteCompanyCommand extends ContainerAwareCommand
 				$elasticaType->addDocuments($documents);
 				$elasticaType->getIndex()->refresh();
 				$documents = array();
-				$output->writeln("... + $i");
 			}
 		}
 		$elasticaType->addDocuments($documents);
 		$elasticaType->getIndex()->refresh();
 
-		$output->writeln("+++ vidal:autocomplete_company loaded $i documents!");
+		$output->writeln("+++ vidal:autocomplete_company completed!");
 	}
 }

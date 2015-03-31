@@ -69,6 +69,6 @@ class AutocompleteNozologyCommand extends ContainerAwareCommand
 		$elasticaType->addDocuments($documents);
 		$elasticaType->getIndex()->refresh();
 
-		$output->writeln("+++ vidal:autocomplete_nozology loaded $i documents!");
+		$output->writeln("+++ vidal:autocomplete_nozology completed!");
 	}
 }

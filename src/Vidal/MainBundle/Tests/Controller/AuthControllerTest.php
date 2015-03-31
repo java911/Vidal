@@ -2,24 +2,25 @@
 
 namespace Vidal\MainBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-
-class AuthControllerTest extends WebTestCase
+class AuthControllerTest extends TestCase
 {
 	public function testRegistration()
 	{
 		$client  = static::createClient();
 		$crawler = $client->request('GET', '/registration');
 
-		$form = $crawler->selectButton('register[submit]')->form();
+		$this->assertTrue($crawler->filter('#register_form')->count() > 0);
+	}
 
-		// set some values
-		//$form['name'] = 'Lucas';
-		//$form['form_name[subject]'] = 'Hey there!';
+	public function testProfile()
+	{
+		$client = static::createClient();
 
-		// submit the form
-		//$crawler = $client->submit($form);
+		$this->logIn($client);
 
-		//$this->assertTrue($crawler->filter('.thanks')->count() > 0);
+		//$url     = $client->getContainer()->get('router')->generate('profile', array(), false);
+		$crawler = $client->request('GET', '/profile');
+
+		$this->assertTrue($crawler->filter('#profile_form')->count() > 0);
 	}
 }

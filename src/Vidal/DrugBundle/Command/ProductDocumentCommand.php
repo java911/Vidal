@@ -98,10 +98,6 @@ class ProductDocumentCommand extends ContainerAwareCommand
 				'ProductID'  => $ProductID,
 			))->execute();
 
-			if ($i && $i % 500 == 0) {
-				$output->writeln("... $i / $count");
-			}
-
 			$i++;
 		}
 
@@ -162,9 +158,6 @@ class ProductDocumentCommand extends ContainerAwareCommand
 			catch (\Exception $e) {
 			}
 
-			if ($i && $i % 500 == 0) {
-				$output->writeln(".. $i / $count");
-			}
 			$i++;
 		}
 

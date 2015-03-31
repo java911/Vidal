@@ -67,6 +67,6 @@ class AutocompletePharmCommand extends ContainerAwareCommand
 		$elasticaType->addDocuments($documents);
 		$elasticaType->getIndex()->refresh();
 
-		$output->writeln("+++ vidal:autocomplete_pharm loaded $i documents!");
+		$output->writeln("+++ vidal:autocomplete_pharm completed!");
 	}
 }

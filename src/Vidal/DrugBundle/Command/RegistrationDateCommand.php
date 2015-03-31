@@ -45,8 +45,6 @@ class RegistrationDateCommand extends ContainerAwareCommand
 			FROM VidalDrugBundle:Product p
 		')->getResult();
 
-		$output->writeln('============ RegistrationDate =============');
-
 		$updateQuery = $em->createQuery('
 			UPDATE VidalDrugBundle:Product p
 			SET p.RegistrationDate = :reg
@@ -69,13 +67,7 @@ class RegistrationDateCommand extends ContainerAwareCommand
 					))
 					->execute();
 			}
-
-			if ($i && $i % 500 == 0) {
-				$output->writeln("... +$i");
-			}
 		}
-
-		$output->writeln('============ DateOfCloseRegistration =============');
 
 		$updateQuery = $em->createQuery('
 			UPDATE VidalDrugBundle:Product p
@@ -98,10 +90,6 @@ class RegistrationDateCommand extends ContainerAwareCommand
 						'id'  => $products[$i]['ProductID'],
 					))
 					->execute();
-			}
-
-			if ($i && $i % 500 == 0) {
-				$output->writeln("... +$i");
 			}
 		}
 
