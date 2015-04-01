@@ -2,6 +2,7 @@
 
 {% block middle %}
     <noindex>
+        <div class="back"><a href="{{ path('boiron_main') }}">< Вернуться назад</a></div>
         {% if page == 1 %}
             <div class="boiron-bg">
                 <div class="boiron-content">
@@ -203,7 +204,7 @@
         .comment{
             position: absolute;
             bottom: 0;
-            right: 0;
+            left: 20px;
             width: 150px;
             cursor: pointer;
         }
@@ -231,8 +232,8 @@
         .comment-title{
             position: absolute;
             color: #EEEEEE;
-            right: 16px;
-            top: -51px;
+            right: 25px;
+            top: -54px;
             font-weight: bold;
             font-size: 16px;
             cursor: pointer;
@@ -244,6 +245,24 @@
             height: 70px;
             top: 35px;
             left: 300px;
+        }
+        .back{
+            color: #024a9c;
+            font-size: 18px;
+            font-style: italic;
+            margin-bottom: 10px;
+            text-decoration: none !important;
+        }
+        .back a{
+            color: #024a9c;
+            text-decoration: none !important;
+        }
+        .back:hover{
+            text-decoration: underline;
+        }
+        .back a:hover{
+            color: #024a9c;
+            text-shadow: 1px 1px rgba(0, 0, 204, 0.14);
         }
     </style>
 {% endblock %}
