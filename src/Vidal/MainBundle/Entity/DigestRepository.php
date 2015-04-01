@@ -25,4 +25,34 @@ class DigestRepository extends EntityRepository
 
 		return $digest;
 	}
+
+	public function countSubscribed()
+	{
+		return $this->_em->createQuery('
+			SELECT COUNT(d.id)
+			FROM VidalMainBundle:User d
+			WHERE d.digestSubscribed = TRUE
+				AND d.emailConfirmed = TRUE
+				AND d.enabled = TRUE
+		')->getSingleScalarResult();
+	}
+
+	public function countUnsubscribed()
+	{
+		$intervals = array('day', 'week', 'month', 'year');
+		$unsub     = array();
+
+		foreach ($intervals as $interval) {
+			$unsub[$interval] = $this->_em->createQuery("
+				SELECT COUNT(u.id)
+				FROM VidalMainBundle:User u
+				WHERE u.digestSubscribed = FALSE
+					AND u.enabled = TRUE
+					AND u.emailConfirmed = TRUE
+					AND u.digestUnsubscribed > '" . date('Y-m-d', strtotime("-1 $interval")) . "'"
+			)->getSingleScalarResult();
+		}
+
+		return $unsub;
+	}
 }

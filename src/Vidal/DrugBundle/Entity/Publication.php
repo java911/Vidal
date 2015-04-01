@@ -115,6 +115,9 @@ class Publication extends BaseEntity
 	/** @ORM\Column(type="boolean") */
 	protected $testMode = false;
 
+	/** @ORM\Column(type="boolean") */
+	protected $sticked = false;
+
 	/** @ORM\ManyToMany(targetEntity="Video", inversedBy="publications", cascade={"persist"}) */
 	protected $videos;
 
@@ -591,5 +594,21 @@ class Publication extends BaseEntity
 	public function removeVideo(Video $video)
 	{
 		$this->videos->removeElement($video);
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSticked()
+	{
+		return $this->sticked;
+	}
+
+	/**
+	 * @param mixed $sticked
+	 */
+	public function setSticked($sticked)
+	{
+		$this->sticked = $sticked;
 	}
 }

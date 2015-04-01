@@ -15,7 +15,6 @@
 	position: relative;
 	top:      1px;
 }
-
 .letters input {
 	display:            inline-block;
 	width:              16px;
@@ -24,6 +23,7 @@
 	color:              #62768A;
 	float:              left;
 	margin-right:       2px;
+	margin-bottom:      3px;
 	font-size:          12px;
 	outline:            none;
 	cursor:             pointer;
@@ -36,12 +36,12 @@
 	line-height:        18px;
 }
 .letter.active {
-	border:      1px solid #d71344;
-	color:       #d71344;
+	border: 1px solid #d71344;
+	color:  #d71344;
 }
 .letter:hover {
-	border:      1px solid #d71344;
-	color:       #d71344;
+	border: 1px solid #d71344;
+	color:  #d71344;
 }
 .letter:active {
 	position: relative;

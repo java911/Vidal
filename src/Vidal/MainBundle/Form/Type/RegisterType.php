@@ -74,7 +74,7 @@ class RegisterType extends AbstractType
 			->add('university', null, array('label' => 'Выберите учебное заведение из списка', 'required' => false, 'empty_value' => 'выберите'))
 			->add('school', null, array('label' => 'Или укажите другое'))
 			->add(
-				$builder->create('graduateYear', 'choice', array('label' => 'Год окончания учебного заведения', 'choices' => $years, 'empty_value' => 'выберите'))->addModelTransformer($yearToNumberTransformer)
+				$builder->create('graduateYear', 'choice', array('label' => 'Год окончания учебного заведения', 'choices' => $years, 'empty_value' => 'выберите', 'required' => false))->addModelTransformer($yearToNumberTransformer)
 			)
 			->add('primarySpecialty', 'entity', array(
 				'label'         => 'Основная специальность',
@@ -85,7 +85,16 @@ class RegisterType extends AbstractType
 						return $er->createQueryBuilder('s')->orderBy('s.title', 'ASC');
 					}
 			))
-			->add('academicDegree', 'choice', array('label' => 'Ученая степень', 'choices' => User::getAcademicDegrees(), 'empty_value' => 'выберите'))
+		    ->add('secondarySpecialty', 'entity', array(
+				'label'         => 'Дополнительная специальность',
+				'empty_value'   => 'выберите',
+				'required'      => false,
+				'class'         => 'VidalMainBundle:Specialty',
+				'query_builder' => function (EntityRepository $er) {
+					return $er->createQueryBuilder('s')->orderBy('s.title', 'ASC');
+				}
+			))
+			->add('academicDegree', 'choice', array('label' => 'Ученая степень', 'choices' => User::getAcademicDegrees(), 'required' => false, 'data'=> 'Нет'))
 			->add('captcha', 'captcha', array(
 				'label'    => 'Проверочный код',
 				'mapped'   => false,
@@ -96,7 +105,7 @@ class RegisterType extends AbstractType
 				'mapped'      => false,
 				'required'    => false,
 				'constraints' => new True(array(
-						'message' => 'Пожалуйста, подтвердите что вы согласны с пользовательским соглашением'
+						'message' => 'Пожалуйста, подтвердите, что Вы согласны с пользовательским соглашением'
 					))
 			))
 			->add('submit', 'submit', array('label' => 'Зарегистрироваться'));

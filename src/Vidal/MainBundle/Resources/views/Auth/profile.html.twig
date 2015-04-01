@@ -25,7 +25,8 @@
 	{% endif %}
 
 	{# форма #}
-	<form id="profile_form" action="{{ path('profile') }}" method="post" {{ form_enctype(form) }} novalidate>
+	<form id="profile_form" action="{{ path('profile') }}" method="post" {{ form_enctype(form) }}
+		  novalidate autocomplete="off">
 		{% form_theme form 'VidalMainBundle:Form:profile_form.html.twig' %}
 		{{ form_widget(form) }}
 	</form>
@@ -85,6 +86,7 @@
 			padding-right: 12px;
 			font-weight:   bold;
 		}
+		.ui-autocomplete-loading { background:url('{{ asset('bundles/vidalmain/images/ajax-loader.gif') }}') no-repeat right center }
 	</style>
 {% endblock %}
 
@@ -96,12 +98,40 @@
 	<script>
 		$(document).ready(function() {
 			$("#profile_city").autocomplete({
-				source:    Routing.generate('ajax_city'),
+				source:    function(request, response) {
+					var url = Routing.generate('ajax_city', {'term': request.term.trim()});
+					$.getJSON(url, function(data) {
+						if (!data.length) {
+							var result = [{
+								label: '* Населенный пункт не найден',
+								value: response.term
+							}];
+							response(result);
+						}
+						else {
+							response($.map(data, function(item) {
+								return {
+									label: item,
+									value: item
+								}
+							}));
+						}
+					});
+				},
+				select:    function(event, ui) {
+					if (ui.item) {
+						$(this).val(ui.item.value);
+					}
+				},
 				minLength: 2,
-				delay:     100,
 				autoFocus: true,
 				limit:     15
-			});
+			}).data("ui-autocomplete")._renderItem = function(ul, item) {
+				return $('<li class="aut"></li>')
+					.data("item.autocomplete", item)
+					.append("<a>" + item.label + "</a>")
+					.appendTo(ul);
+			};
 
 			$("#profile_avatar_file").customFile();
 			$("#profile_ConfirmationScan_file").customFile();

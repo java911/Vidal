@@ -18,7 +18,7 @@ use Vidal\MainBundle\Form\DataTransformer\CityToStringTransformer;
 
 class IndexController extends Controller
 {
-	const PUBLICATIONS_SHOW = 5;
+	const PUBLICATIONS_SHOW = 4;
 
 	/**
 	 * @Route("/", name="index")
@@ -30,7 +30,7 @@ class IndexController extends Controller
 		$testMode = $request->query->has('test');
 		$articles = $em->getRepository('VidalDrugBundle:Article')->findLast($testMode);
 
-		$arts = $em->getRepository('VidalDrugBundle:Art')->atIndex();
+		$arts     = $em->getRepository('VidalDrugBundle:Art')->atIndex();
 		$articles = array_merge($articles, $arts);
 
 		$params = array(

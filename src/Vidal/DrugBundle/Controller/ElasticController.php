@@ -168,4 +168,25 @@ class ElasticController extends Controller
 
 		return new JsonResponse($results);
 	}
+
+	/** @Route("/elastic/autocomplete_city/{term}", name="elastic_autocomplete_city", options={"expose":true}) */
+	public function autocompleteCityAction($term)
+	{
+		$words  = explode(' ', $term);
+		$query  = implode('* ', $words) . '*';
+		$client = new \Elasticsearch\Client();
+
+		$s['index'] = 'website';
+		$s['type']  = 'autocomplete_city';
+
+		$s['body']['size']                                                 = 15;
+		$s['body']['query']['filtered']['query']['query_string']['query']  = $query;
+		$s['body']['query']['filtered']['query']['query_string']['fields'] = array('name', 'title');
+		$s['body']['highlight']['fields']['name']                          = array("fragment_size" => 100);
+		$s['body']['sort']['name']['order']                                = 'asc';
+
+		$results = $client->search($s);
+
+		return new JsonResponse($results);
+	}
 }

@@ -92,4 +92,12 @@ class UserRepository extends EntityRepository
 
 		return $pw1 === $pwReal || $pw2 === $pwReal;
 	}
+
+	public function total()
+	{
+		return $this->_em->createQuery('
+			SELECT COUNT(u.id)
+			FROM VidalMainBundle:User u
+		')->getSingleScalarResult();
+	}
 }

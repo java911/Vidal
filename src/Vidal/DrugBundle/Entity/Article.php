@@ -10,14 +10,6 @@ use Iphp\FileStoreBundle\Mapping\Annotation as FileStore;
 /** @ORM\Entity(repositoryClass="ArticleRepository") @ORM\Table(name="article") @FileStore\Uploadable */
 class Article extends BaseEntity
 {
-	/**
-	 * @ORM\ManyToMany(targetEntity = "DiseaseState", inversedBy="articles")
-	 * @ORM\JoinTable(name="diseaseStateArticle",
-	 *        joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
-	 *        inverseJoinColumns={@ORM\JoinColumn(name="state_id", referencedColumnName="id")})
-	 */
-	protected $states;
-
 	/** @ORM\Column(length=255) */
 	protected $title;
 
@@ -170,7 +162,6 @@ class Article extends BaseEntity
 		$this->products   = new ArrayCollection();
 		$this->atcCodes   = new ArrayCollection();
 		$this->tags       = new ArrayCollection();
-		$this->states     = new ArrayCollection();
 		$this->links      = new ArrayCollection();
 		$this->infoPages  = new ArrayCollection();
 		$this->videos     = new ArrayCollection();
@@ -617,32 +608,6 @@ class Article extends BaseEntity
 	public function getHidden()
 	{
 		return $this->hidden;
-	}
-
-	/**
-	 * @param mixed $states
-	 */
-	public function setStates($states)
-	{
-		$this->states = $states;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getStates()
-	{
-		return $this->states;
-	}
-
-	public function addState($state)
-	{
-		$this->states[] = $state;
-	}
-
-	public function removeState($state)
-	{
-		$this->states->removeElement($state);
 	}
 
 	public function isArticle()

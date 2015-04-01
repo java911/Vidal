@@ -717,12 +717,12 @@ tr.bold td {
 	overflow: hidden;
 }
 .descr a, .descr span {
-	display: inline-block;
-	float: left;
+	display:        inline-block;
+	float:          left;
 	vertical-align: bottom;
-	margin: 0;
-	font-size: 14px;
-	line-height: 18px;
+	margin:         0;
+	font-size:      14px;
+	line-height:    18px;
 }
 .descr a {
 	margin-left: 6px;
@@ -1735,4 +1735,51 @@ tr.bold td {
 }
 #closepopupvidal:hover {
 	opacity: 1;
+}
+/* pubs */
+.pubs {
+	font-size: 11px;
+	color:     #666;
+	border:    1px solid #CED2D5;
+}
+.pubs-title {
+	background-color: #D8DBE2;
+	color:            #476173;
+	font-size:        12px;
+	text-align:       center;
+	padding:          1px 0 2px;
+}
+.p > p {
+	margin: 0;
+}
+.p-title {
+	font-weight: bold;
+}
+.p-title a, .pubs-title > a {
+	color:           #476173;
+	text-decoration: none !important;
+}
+.p-title a:hover, .pubs-title > a:hover {
+	text-decoration: underline !important;
+}
+.p-announce {
+	font-size: 11px;
+}
+.p {
+	padding:       5px 4px 6px;
+	border-bottom: 1px dashed #CED2D5;
+}
+.p.last {
+	border-bottom: none;
+	margin-bottom: 0;
+}
+.pubs .p-announce, .pubs .p-date {
+	margin-top: 5px;
+}
+.p-date {
+	text-align: right;
+}
+.p.sticked {
+	border:     1px solid rgb(207, 207, 183);
+	background: beige;
 }

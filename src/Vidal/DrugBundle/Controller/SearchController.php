@@ -282,7 +282,7 @@ class SearchController extends Controller
 	 */
 	public function diseaseRedirectAction()
 	{
-		return $this->redirect($this->generateUrl('drugs_disease'), 301);
+		return $this->redirect($this->generateUrl('drugs'), 301);
 	}
 
 	/**

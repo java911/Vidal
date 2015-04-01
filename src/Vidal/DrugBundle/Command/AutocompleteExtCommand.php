@@ -78,7 +78,5 @@ class AutocompleteExtCommand extends ContainerAwareCommand
 
 		$elasticaType->addDocuments($documents);
 		$elasticaType->getIndex()->refresh();
-
-		$output->writeln("... autocomplete_ext loaded $i documents of type '$type'");
 	}
 }

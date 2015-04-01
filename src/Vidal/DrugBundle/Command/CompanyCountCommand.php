@@ -28,10 +28,6 @@ class CompanyCountCommand extends ContainerAwareCommand
 		for ($i = 0; $i < count($companies); $i++) {
 			$count = $repo->countByCompanyID($companies[$i]->getCompanyID());
 			$companies[$i]->setCountProducts($count);
-
-			if ($i && $i % 500 == 0) {
-				$output->writeln("... +$i ");
-			}
 		}
 
 		$em->flush();

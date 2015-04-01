@@ -17,12 +17,11 @@ use Vidal\MainBundle\Form\Type\RegisterType;
 use Vidal\MainBundle\Form\Type\ProfileType;
 use Lsw\SecureControllerBundle\Annotation\Secure;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class AuthController extends Controller
 {
-	const DISPLAYED_CITIES_AJAX = 10;
-
 	/**
 	 * @Route("/login", name="login")
 	 * @Template("VidalMainBundle:Auth:login.html.twig")
@@ -43,11 +42,11 @@ class AuthController extends Controller
 			$pwReal = $user->getPassword();
 
 			# пользователей со старой БД проверям с помощью mysql-функций
-			if ($user->getOldUser()) {
-				$success = $em->getRepository('VidalMainBundle:User')->checkOldPassword($password, $pwReal);
-			}
-			elseif ($password === $pwReal) {
+			if ($password === $pwReal) {
 				$success = true;
+			}
+			elseif ($user->getOldUser()) {
+				$success = $em->getRepository('VidalMainBundle:User')->checkOldPassword($password, $pwReal);
 			}
 		}
 
@@ -110,7 +109,7 @@ class AuthController extends Controller
 	 * Регистрация врача на сайте
 	 *
 	 * @Route("/registration", name="registration")
-	 * @Template()
+	 * @Template("VidalMainBundle:Auth:registration.html.twig")
 	 */
 	public function registrationAction(Request $request)
 	{
@@ -271,30 +270,37 @@ class AuthController extends Controller
 			return new JsonResponse();
 		}
 
-		$str = $request->query->get('term');
-		$em  = $this->getDoctrine()->getManager();
-		$str = '%' . $str . '%';
+		$term = $request->query->get('term');
 
-		$cities = $em->createQuery('SELECT c FROM VidalMainBundle:City c WHERE c.title LIKE :letter ORDER BY c.title ASC')
-			->setParameter('letter', $str)
-			->setFirstResult(0)
-			->setMaxResults(self::DISPLAYED_CITIES_AJAX)
-			->getResult();
+		$words  = explode(' ', $term);
+		$query  = implode('* ', $words) . '*';
+		$client = new \Elasticsearch\Client();
 
-		$citiesArray = array();
+		$s['index']                                                        = 'website';
+		$s['type']                                                         = 'autocomplete_city';
+		$s['body']['size']                                                 = 10;
+		$s['body']['query']['filtered']['query']['query_string']['query']  = $query;
+		$s['body']['query']['filtered']['query']['query_string']['fields'] = array('name', 'title');
+		$s['body']['highlight']['fields']['name']                          = array("fragment_size" => 100);
+		$s['body']['sort']['name']['order']                                = 'asc';
 
-		foreach ($cities as $city) {
-			$title = $city->getTitle();
-			if ($region = $city->getRegion()) {
-				$title .= ', ' . $region->getTitle();
+		$results = $client->search($s);
+		$titles  = array();
+
+		if (isset($results['hits']['hits']) && !empty($results['hits']['hits'])) {
+			foreach ($results['hits']['hits'] as $result) {
+				$titles[] = $result['_source']['title'];
 			}
-			if ($country = $city->getCountry()) {
-				$title .= ', ' . $country->getTitle();
-			}
-			$citiesArray[] = $title;
 		}
 
-		return new JsonResponse($citiesArray);
+		if (!empty($titles)) {
+			return new JsonResponse($titles);
+		}
+
+		$em     = $this->getDoctrine()->getManager();
+		$titles = $em->getRepository('VidalMainBundle:City')->findAutocomplete($term);
+
+		return new JsonResponse($titles);
 	}
 
 	/**
@@ -434,6 +440,56 @@ class AuthController extends Controller
 			'title' => 'Смена пароля',
 			'form'  => $form->createView(),
 			'user'  => $user
+		);
+	}
+
+	/**
+	 * Отправка данных для входа на сайт
+	 *
+	 * @Route("/credentials", name="credentials")
+	 * @Template("VidalMainBundle:Auth:credentials.html.twig")
+	 */
+	public function credentialsAction(Request $request)
+	{
+		$form = $this->createFormBuilder()
+			->add('email', null, array(
+				'label'       => 'Укажите E-mail',
+				'required'    => true,
+				'constraints' => new Assert\Email(array(
+					'message' => 'E-mail {{ value }} указан некорректно',
+					'checkMX' => false,
+				)),
+			))
+			->add('submit', 'submit', array('label' => 'Отправить'))
+			->getForm();
+
+		$form->handleRequest($request);
+
+		if ($form->isValid()) {
+			$formData = $form->getData();
+			$email    = $formData['email'];
+			$em       = $this->getDoctrine()->getManager();
+			$user     = $em->getRepository('VidalMainBundle:User')->findOneByUsername($email);
+
+			if (!$user) {
+				$form->get('email')->addError(new FormError('Пользователь с таким e-mail адресом в системе не обнаружен'));
+			}
+			else {
+				$this->get('email.service')->send(
+					$email,
+					array('VidalMainBundle:Email:credentials.html.twig', array('user' => $user)),
+					'Напоминание данных для входа на сайт Vidal.ru'
+				);
+
+				$this->get('session')->getFlashBag()->add('notice', $email);
+
+				return $this->redirect($this->generateUrl('credentials'));
+			}
+		}
+
+		return array(
+			'title' => 'Напомнить данные для входа на сайт',
+			'form'  => $form->createView(),
 		);
 	}
 

@@ -6,6 +6,8 @@ use Doctrine\ORM\EntityRepository;
 
 class CityRepository extends EntityRepository
 {
+	const DISPLAYED_CITIES_AJAX = 10;
+
 	public function getChoices()
 	{
 		$raw = $this->_em->createQuery('
@@ -25,5 +27,73 @@ class CityRepository extends EntityRepository
 		}
 
 		return $cities;
+	}
+
+	public function getNames()
+	{
+		$raw = $this->_em->createQuery("
+		 	SELECT c.title as city, r.title as region, co.title as country
+		 	FROM VidalMainBundle:City c
+		 	JOIN c.region r
+		 	JOIN c.country co
+		 	WHERE c.title != ''
+		 		AND co.title IN ('Беларусь','Грузия','Казахстан','Кыргызстан','Молдова','Россия','Украина','Узбекистан','Таджикистан')
+		 	ORDER BY c.title ASC
+		")
+			->getResult();
+
+		$names = array();
+
+		foreach ($raw as $r) {
+			$name  = trim($r['city']);
+			$title = $name;
+
+			if (!empty($r['region'])) {
+				$title .= ', ' . trim($r['region']);
+			}
+
+			if (!empty($r['country'])) {
+				$title .= ', ' . trim($r['country']);
+			}
+
+			$names[] = array('name' => $name, 'title' => $title);
+		}
+
+		return $names;
+	}
+
+	public function findAutocomplete($term)
+	{
+		$term = $term . '%';
+
+		$raw = $this->_em->createQuery('
+			SELECT c.title city, r.title region, co.title country
+			FROM VidalMainBundle:City c
+			LEFT JOIN c.region r
+			LEFT JOIN c.country co
+			WHERE c.title LIKE :term
+			ORDER BY c.title ASC
+		')
+			->setParameter('term', $term)
+			->setMaxResults(self::DISPLAYED_CITIES_AJAX)
+			->getResult();
+
+		$titles = array();
+
+		foreach ($raw as $r) {
+			$title = $r['city'];
+
+			if (!empty($r['region'])) {
+				$title .= ', ' . $r['region'];
+			}
+
+			if (!empty($r['country'])) {
+				$title .= ', ' . $r['country'];
+			}
+
+			$titles[] = $title;
+		}
+
+		return $titles;
 	}
 }

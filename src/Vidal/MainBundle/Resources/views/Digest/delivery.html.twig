@@ -19,7 +19,8 @@
 				<td style="font-family:{{ digest.font }}, sans-serif; font-size:12px; color:gray;">
 					Вы получили это письмо, потому что подписаны на рассылку новостей портала
 					<a href="http://www.vidal.ru">Vidal.ru</a><br/>
-					<span style="color:gray">Если Вы не хотите больше получать нашу рассылку, Вы можете отписаться по</span>
+					<span
+						style="color:gray">Если Вы не хотите больше получать нашу рассылку, Вы можете отписаться по</span>
 					<a href="http://www.vidal.ru/unsubscribe-digest/{{ app.user.id }}/{{ app.user.created|date('Y-m-d_H:i:s') }}"
 						>этой ссылке</a>.
 				<td>
@@ -32,6 +33,39 @@
 		{{ form_widget(form.text) }}
 		{{ form_widget(form) }}
 	</form>
+
+	{# Подписанные и отписавшиеся #}
+	<div class="subs">
+		<table>
+			<tr>
+				<td class="first">Всего пользователей</td>
+				<td>{{ total }}</td>
+			</tr>
+			<tr>
+				<td class="first">Подписано</td>
+				<td>{{ subscribed }}
+					<span>(рассылаем тем, кто подтвердил электронный адрес, кто НЕ отписался от рассылки,
+						и чей адрес действительно существует)</span>
+				</td>
+			</tr>
+			<tr>
+				<td class="first">Отписались за день</td>
+				<td>{{ unsubscribed.day }}</td>
+			</tr>
+			<tr>
+				<td class="first">Отписались за неделю</td>
+				<td>{{ unsubscribed.week }}</td>
+			</tr>
+			<tr>
+				<td class="first">Отписались за месяц</td>
+				<td>{{ unsubscribed.month }}</td>
+			</tr>
+			<tr>
+				<td class="first">Отписались за год</td>
+				<td>{{ unsubscribed.year }}</td>
+			</tr>
+		</table>
+	</div>
 {% endblock %}
 
 
@@ -60,6 +94,24 @@
 		}
 		.outer a {
 			color: #00F;
+		}
+		.subs {
+			border-top:  1px solid #ddd;
+			margin-top:  25px;
+			padding-top: 15px;
+		}
+		.subs > table {
+			width:           100%;
+			border-collapse: collapse;
+		}
+		.subs .first {
+			color:       slategrey;
+			font-weight: bold;
+			width:       185px;
+		}
+		.subs span {
+			color:     gray;
+			font-size: 12px;
 		}
 	</style>
 {% endblock %}

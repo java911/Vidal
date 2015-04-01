@@ -1,6 +1,6 @@
 <?php
 
-namespace Vidal\DrugBundle\Controller;
+namespace Vidal\MainBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -12,7 +12,7 @@ use Lsw\SecureControllerBundle\Annotation\Secure;
 use Vidal\MainBundle\Entity\Digest;
 
 /** @Secure(roles="ROLE_ADMIN") */
-class DigestController extends Controller
+class DeliveryController extends Controller
 {
 	/**
 	 * @Route("/delivery", name="delivery")
@@ -50,9 +50,12 @@ class DigestController extends Controller
 		}
 
 		$params = array(
-			'title'  => 'Рассылка писем',
-			'digest' => $digest,
-			'form'   => $form->createView(),
+			'title'        => 'Рассылка писем',
+			'digest'       => $digest,
+			'form'         => $form->createView(),
+			'total'        => $em->getRepository('VidalMainBundle:User')->total(),
+			'subscribed'   => $em->getRepository('VidalMainBundle:Digest')->countSubscribed(),
+			'unsubscribed' => $em->getRepository('VidalMainBundle:Digest')->countUnsubscribed(),
 		);
 
 		return $params;

@@ -36,11 +36,13 @@ class DocumentToStringTransformer implements DataTransformerInterface
 
 		$id = intval($text);
 
-		return $this->em->createQuery('
+		$document = $this->em->createQuery('
 			SELECT d
 			FROM VidalVeterinarBundle:Document d
 			WHERE d.DocumentID = :id
 		')->setParameter('id', $id)
 			->getOneOrNullResult();
+
+		return $document;
 	}
 }

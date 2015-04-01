@@ -117,27 +117,25 @@
 {# баннеры #}
 {{ render(controller('VidalMainBundle:Banner:render', {'groupId':7})) }}
 
-{% if isAdmin %}
-	{# последние новости #}
-	{{ render(controller('VidalMainBundle:News:left')) }}
-{% else %}
-	{# реклама вакансий #}
-	{% if app.environment == 'prod' %}
-		<div id="phrpAd">
-			<script type="text/javascript">
-				(function() {
-					function l() {
-						var s = document.createElement('script');
-						s.type = 'text/javascript';
-						s.async = true;
-						s.src = 'http://pharmpersonal.ru/pub/ad';
-						var x = document.getElementsByTagName('script')[0];
-						x.parentNode.insertBefore(s, x);
-					}
+{# последние новости #}
+{{ render(controller('VidalMainBundle:News:left')) }}
 
-					if (window.attachEvent) window.attachEvent('onload', l); else window.addEventListener('load', l, false);
-				})();
-			</script>
-		</div>
-	{% endif %}
+{# реклама вакансий #}
+{% if app.environment == 'prod' %}
+	<div id="phrpAd">
+		<script type="text/javascript">
+			(function() {
+				function l() {
+					var s = document.createElement('script');
+					s.type = 'text/javascript';
+					s.async = true;
+					s.src = 'http://pharmpersonal.ru/pub/ad';
+					var x = document.getElementsByTagName('script')[0];
+					x.parentNode.insertBefore(s, x);
+				}
+
+				if (window.attachEvent) window.attachEvent('onload', l); else window.addEventListener('load', l, false);
+			})();
+		</script>
+	</div>
 {% endif %}

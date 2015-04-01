@@ -30,7 +30,7 @@ class DigestCommand extends ContainerAwareCommand
 		ini_set('memory_limit', -1);
 
 		# опции не указаны - выводим мануал
-		if (!$input->getOption('test') && !$input->getOption('clean') && !$input->getOption('all') && !$input->getOption('me') && !$input->getOption('me')) {
+		if (!$input->getOption('test') && !$input->getOption('clean') && !$input->getOption('all') && !$input->getOption('me') && !$input->getOption('local')) {
 			$output->writeln('=> Error: uncorrect syntax. READ BELOW');
 			$output->writeln('$ php app/console evrika:digest --test');
 			$output->writeln('$ php app/console evrika:digest --stop');
@@ -101,10 +101,39 @@ class DigestCommand extends ContainerAwareCommand
 		$digest     = $em->getRepository('VidalMainBundle:Digest')->get();
 		$step       = 40;
 
+		# лимит зависит от времени
+		$hour = date('H');
+
+		if ($hour == 3 || $hour == 4 || $hour == 5 ) {
+			$limit = 15000;
+		}
+		elseif ($hour == 10 || $hour == 11 || $hour == 12) {
+			$limit = 20000;
+		}
+		elseif ($hour == 17 || $hour == 18 || $hour == 19) {
+			$limit = 25000;
+		}
+		else {
+			return;
+		}
+
+		$countSend = $em->createQuery('
+			SELECT COUNT(u.id)
+			FROM VidalMainBundle:User u
+			WHERE u.send = 1
+		')->getSingleScalarResult();
+
+		if ($countSend >= $limit) {
+			return;
+		}
+
 		$users = $em->createQuery("
 			SELECT u.username, u.id, DATE_FORMAT(u.created, '%Y-%m-%d_%H:%i:%s') as created, u.firstName
 			FROM VidalMainBundle:User u
 			WHERE u.send = 0
+				AND u.enabled = TRUE
+				AND u.emailConfirmed = TRUE
+				AND u.digestSubscribed = TRUE
 			ORDER BY u.id ASC
 		")->setMaxResults($step)
 			->getResult();

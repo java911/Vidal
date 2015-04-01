@@ -477,9 +477,10 @@ class ArticleController extends Controller
 			}
 
 			if (!$this->getUser()) {
-				$params['title']    = 'Закрытый раздел';
-				$params['menu']     = 'vracham';
-				$params['moduleId'] = 7;
+				$params['title']          = 'Закрытый раздел';
+				$params['menu']           = 'vracham';
+				$params['moduleId']       = 7;
+				$params['loginAuthError'] = false;
 
 				return $this->render('VidalMainBundle:Auth:login.html.twig', $params);
 			}

@@ -34,10 +34,6 @@ class AtcCountCommand extends ContainerAwareCommand
 				'countProducts' => $raw[$i]['countProducts'],
 				'ATCCode'       => $raw[$i]['ATCCode'],
 			))->execute();
-
-			if ($i && $i % 500 == 0) {
-				$output->writeln("... +$i ");
-			}
 		}
 
 		$output->writeln('+++ vidal:atc_count completed');
