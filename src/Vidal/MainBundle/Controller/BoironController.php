@@ -18,9 +18,9 @@ class BoironController extends Controller
 	public function indexAction()
 	{
 		return array(
-			'title'       => 'Boiron',
-			'description' => 'Boiron',
-			'keywords'    => 'Boiron',
+			'title'       => 'Boiron  - Французская помощь при ОРВИ',
+			'description' => 'Boiron  - Французская помощь при ОРВИ',
+			'keywords'    => 'Boiron, Французская помощь при ОРВИ',
 			'noYad'       => true,
 			'menu_left'   => 'boiron',
 		);
@@ -33,11 +33,11 @@ class BoironController extends Controller
 	public function pageAction($pageNum)
 	{
 		return array(
-			'title'       => 'Boiron',
-			'description' => 'Boiron',
-			'keywords'    => 'Boiron',
+			'title'       => 'Boiron - Французская помощь при ОРВИ',
+			'description' => 'Boiron - Французская помощь при ОРВИ',
+			'keywords'    => 'Boiron - Французская помощь при ОРВИ',
 			'noYad'       => true,
-			'menu_left'   => 'boiron',
+			'menu_left'   => 'boiron - Французская помощь при ОРВИ',
 			'page'		  => $pageNum
 		);
 	}

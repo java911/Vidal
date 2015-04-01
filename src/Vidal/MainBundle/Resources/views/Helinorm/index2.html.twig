@@ -14,8 +14,6 @@
                 <param name="movie" value="{{ asset('bundles/vidalmain/helinorm/uppod-video.swf') }}" />
                 <param name="flashvars" value="st={{ asset('bundles/vidalmain/helinorm/videostyle.txt') }}&m=video&file=/upload/HELINORM_8.mp4&poster={{ asset('bundles/vidalmain/helinorm/heli-video-first.png') }}" />
             </object>
-
-            {#<img src="{{ asset('bundles/vidalmain/helinorm/heli-video.png') }}" style="width: 645px">#}
         </div>
         <div class="heli-block">
             <div class="heli-title">
@@ -292,7 +290,7 @@
            $(document).on('click','.heli-test li', function(){
               $('.heli-test li').removeClass('active');
               $(this).addClass('active');
-              $('#value').val($(this).attr('data-num'));g
+              $('#value').val($(this).attr('data-num'));
            });
 
             $('#heli-test-next').click(function(){

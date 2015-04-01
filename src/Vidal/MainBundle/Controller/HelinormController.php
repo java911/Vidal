@@ -47,7 +47,6 @@ class HelinormController extends Controller
      * @Template("VidalMainBundle:Helinorm:test.html.twig")
      */
     public function testAction(Request $request, $number){
-//        $number = $number - 1;
         $test = array(
             0 => array(
                 'question' => '<b>ВОПРОС №1 Из 6:</b>&nbsp;&nbsp;&nbsp;&nbsp;Были/есть ли у Ваших родственников серьезные случаи заболевания желудка (рак, язвенная болезнь)?',
