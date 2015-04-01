@@ -1,7 +1,6 @@
 {% extends 'VidalMainBundle::layout_promo.html.twig' %}
 
 {% block middle %}
-    <noindex>
         <div class="back"><a href="{{ path('boiron_main') }}">< Вернуться назад</a></div>
         {% if page == 1 %}
             <div class="boiron-bg">
@@ -160,7 +159,6 @@
                 </div>
             </div>
         {% endif %}
-    </noindex>
 {% endblock %}
 
 {% block stylesheets %}
