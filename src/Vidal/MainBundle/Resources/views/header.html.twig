@@ -41,8 +41,8 @@
 						</td>
 						<td class="sf">
 							<input type="submit" value="" class="search-submit"/>
-							<input class="search-query" type="text" name="q" placeholder="Введите слово для поиска..."
-								   autocomplete="off"
+							<input class="search-query" type="text" name="q" autocomplete="off"
+								   placeholder="Арбидол, Байер, грипп..."
 								   value="{{ app.request.attributes.get('_route') == 'search' ? app.request.get('q') }}"/>
 						</td>
 					</tr>

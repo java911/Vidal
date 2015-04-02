@@ -1,6 +1,13 @@
 #share-buttons {
 	margin-bottom: 15px;
 }
+#share-buttons > b {
+	vertical-align: top;
+	display:        inline-block;
+	color:          #666;
+	margin-top:     9px;
+	margin-right:   5px;
+}
 #share-buttons > div {
 	overflow:      hidden;
 	display:       inline-block;

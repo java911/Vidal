@@ -1780,6 +1780,6 @@ tr.bold td {
 	text-align: right;
 }
 .p.sticked {
-	border:     1px solid rgb(207, 207, 183);
-	background: beige;
+	border-bottom: 1px solid rgb(207, 207, 183);
+	background:    beige;
 }
