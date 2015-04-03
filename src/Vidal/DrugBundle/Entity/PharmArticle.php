@@ -17,6 +17,9 @@ class PharmArticle extends BaseEntity
 	/** @ORM\ManyToOne(targetEntity="PharmCompany", inversedBy="articles") */
 	protected $company;
 
+	/** @ORM\ManyToMany(targetEntity="PharmCompany", inversedBy="pharmArticles") */
+	protected $companies;
+
 	/** @ORM\Column(length=10, nullable=true) */
 	protected $hidden;
 
@@ -80,6 +83,7 @@ class PharmArticle extends BaseEntity
 		$this->atcCodes   = new ArrayCollection();
 		$this->infoPages  = new ArrayCollection();
 		$this->tags       = new ArrayCollection();
+		$this->companies  = new ArrayCollection();
 		$now              = new \DateTime('now');
 		$this->created    = $now;
 		$this->updated    = $now;
@@ -363,5 +367,33 @@ class PharmArticle extends BaseEntity
 		$this->infoPages->removeElement($infoPage);
 
 		return $this;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCompanies()
+	{
+		return $this->companies;
+	}
+
+	/**
+	 * @param mixed $companies
+	 */
+	public function setCompanies($companies)
+	{
+		$this->companies = $companies;
+	}
+
+	public function addCompany($c)
+	{
+		$this->companies[] = $c;
+
+		return $this;
+	}
+
+	public function removeCompany($c)
+	{
+		$this->companies->removeElement($c);
 	}
 }

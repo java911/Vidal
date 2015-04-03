@@ -17,6 +17,9 @@ class PharmCompany
 	/** @ORM\OneToMany(targetEntity="PharmArticle", mappedBy="company") */
 	protected $articles;
 
+	/** @ORM\ManyToMany(targetEntity="PharmArticle", mappedBy="companies") */
+	protected $pharmArticles;
+
 	/** @ORM\OneToMany(targetEntity="PharmPortfolio", mappedBy="company") */
 	protected $portfolios;
 
@@ -25,9 +28,10 @@ class PharmCompany
 
 	public function __construct()
 	{
-		$this->articles   = new ArrayCollection();
-		$this->portfolios = new ArrayCollection();
-		$this->enabled    = true;
+		$this->articles      = new ArrayCollection();
+		$this->portfolios    = new ArrayCollection();
+		$this->pharmArticles = new ArrayCollection();
+		$this->enabled       = true;
 	}
 
 	public function __toString()
@@ -105,5 +109,21 @@ class PharmCompany
 	public function getPortfolios()
 	{
 		return $this->portfolios;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPharmArticles()
+	{
+		return $this->pharmArticles;
+	}
+
+	/**
+	 * @param mixed $pharmArticles
+	 */
+	public function setPharmArticles($pharmArticles)
+	{
+		$this->pharmArticles = $pharmArticles;
 	}
 }
