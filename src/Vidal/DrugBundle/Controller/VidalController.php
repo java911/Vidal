@@ -452,13 +452,23 @@ class VidalController extends Controller
 		$params['owners']       = $em->getRepository('VidalDrugBundle:Company')->findOwnersByProducts($productIds);
 		$params['distributors'] = $em->getRepository('VidalDrugBundle:Company')->findDistributorsByProducts($productIds);
 		$params['molecules']    = $em->getRepository('VidalDrugBundle:Molecule')->findByProductID($productId);
-		$params['publications'] = $em->getRepository('VidalDrugBundle:Product')->findPublications($productId);
-		$params['articles']     = $em->getRepository('VidalDrugBundle:Product')->findArticles($productId);
-		$params['arts']         = $em->getRepository('VidalDrugBundle:Product')->findArts($productId);
-		$title                  = $this->strip($product->getRusName());
-		$params['ogTitle']      = $title;
-		$params['description']  = $product->getZipInfo();
-		$params['zip']          = $this->strip($product->getZipInfo());
+
+		$params['publicationsByProduct']  = $em->getRepository('VidalDrugBundle:Product')->publicationsByProduct($productId);
+		$params['publicationsByAtc']      = $em->getRepository('VidalDrugBundle:Product')->publicationsByAtc($productId);
+		$params['publicationsByMolecule'] = $em->getRepository('VidalDrugBundle:Product')->publicationsByMolecule($productId);
+
+		$params['articlesByProduct']  = $em->getRepository('VidalDrugBundle:Product')->articlesByProduct($productId);
+		$params['articlesByAtc']      = $em->getRepository('VidalDrugBundle:Product')->articlesByAtc($productId);
+		$params['articlesByMolecule'] = $em->getRepository('VidalDrugBundle:Product')->articlesByMolecule($productId);
+
+		$params['artsByProduct']  = $em->getRepository('VidalDrugBundle:Product')->artsByProduct($productId);
+		$params['artsByAtc']      = $em->getRepository('VidalDrugBundle:Product')->artsByAtc($productId);
+		$params['artsByMolecule'] = $em->getRepository('VidalDrugBundle:Product')->artsByMolecule($productId);
+
+		$title                 = $this->strip($product->getRusName());
+		$params['ogTitle']     = $title;
+		$params['description'] = $product->getZipInfo();
+		$params['zip']         = $this->strip($product->getZipInfo());
 
 		# медицинские изделия выводятся по-другому
 		if ($product->isMI()) {

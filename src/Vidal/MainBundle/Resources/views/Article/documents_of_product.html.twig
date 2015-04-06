@@ -1,12 +1,12 @@
-{# новости #}
-{% if publications is not empty %}
+{# новости по продукту #}
+{% if publicationsByProduct is not empty %}
 	<div class="announcement">
 		<div class="anons-footer no-selection">
-			Новости по {{ label }} <span>«{{ item|raw }}»</span>
-			<i>{{ publications|length }}</i>
+			Новости по препарату <span>«{{ publicationsByProduct[0].productTitle|raw }}»</span>
+			<i>{{ publicationsByProduct|length }}</i>
 		</div>
 		<ul class="ul-style black" style="display:none">
-			{% for publication in publications %}
+			{% for publication in publicationsByProduct %}
 				<li>
 					<a href="{{ path('publication', {'id':publication.id}) }}" target="_blank" class="no-underline">
 						{{ publication.title|raw }}
@@ -19,17 +19,59 @@
 	</div>
 {% endif %}
 
-{# энциклопедия #}
-{% if articles is not empty %}
+{# новости по АТХ #}
+{% if publicationsByAtc is not empty %}
 	<div class="announcement">
 		<div class="anons-footer no-selection">
-			Материалы медицинской энциклопедии по {{ label }} <span>«{{ item|raw }}»</span>
-			<i>{{ articles|length }}</i>
+			Новости по коду АТХ <span>«{{ publicationsByAtc[0].atcTitle|raw }}»</span>
+			<i>{{ publicationsByAtc|length }}</i>
 		</div>
 		<ul class="ul-style black" style="display:none">
-			{% for article in articles %}
+			{% for publication in publicationsByAtc %}
 				<li>
-					<a href="{{ path('article', {'rubrique':article.rubrique.rubrique, 'link':article.link}) }}"
+					<a href="{{ path('publication', {'id':publication.id}) }}" target="_blank" class="no-underline">
+						{{ publication.title|raw }}
+					</a>
+
+					<div class="anons-info">{{ publication.date|date('d.m.Y') }}</div>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endif %}
+
+{# новости по веществу #}
+{% if publicationsByMolecule is not empty %}
+	<div class="announcement">
+		<div class="anons-footer no-selection">
+			Новости по активному веществу <span>«{{ publicationsByMolecule[0].moleculeTitle|raw }}»</span>
+			<i>{{ publicationsByMolecule|length }}</i>
+		</div>
+		<ul class="ul-style black" style="display:none">
+			{% for publication in publicationsByMolecule %}
+				<li>
+					<a href="{{ path('publication', {'id':publication.id}) }}" target="_blank" class="no-underline">
+						{{ publication.title|raw }}
+					</a>
+
+					<div class="anons-info">{{ publication.date|date('d.m.Y') }}</div>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endif %}
+
+{# энциклопедия по продукту #}
+{% if articlesByProduct is not empty %}
+	<div class="announcement">
+		<div class="anons-footer no-selection">
+			Материалы медицинской энциклопедии по препарату <span>«{{ articlesByProduct[0].productTitle|raw }}»</span>
+			<i>{{ articlesByProduct|length }}</i>
+		</div>
+		<ul class="ul-style black" style="display:none">
+			{% for article in articlesByProduct %}
+				<li>
+					<a href="{{ path('article', {'rubrique':article.rubrique, 'link':article.link}) }}"
 					   target="_blank" class="no-underline">
 						{{ article.title|raw }}
 					</a>
@@ -37,7 +79,7 @@
 					<div class="anons-info">
 						Рубрика:
 						<a target="_blank"
-						   href="{{ path('rubrique', {'rubrique':article.rubrique.rubrique}) }}">{{ article.rubrique }}</a>
+						   href="{{ path('rubrique', {'rubrique':article.rubrique}) }}">{{ article.rubriqueTitle }}</a>
 					</div>
 				</li>
 			{% endfor %}
@@ -45,21 +87,117 @@
 	</div>
 {% endif %}
 
-{# специалистам #}
-{% if arts is not empty %}
+{# энциклопедия по АТХ #}
+{% if articlesByAtc is not empty %}
 	<div class="announcement">
 		<div class="anons-footer no-selection">
-			Материалы для специалистов по {{ label }} <span>«{{ item|raw }}»</span>
-			<i>{{ arts|length }}</i>
+			Материалы медицинской энциклопедии по коду АТХ <span>«{{ articlesByAtc[0].atcTitle|raw }}»</span>
+			<i>{{ articlesByAtc|length }}</i>
 		</div>
 		<ul class="ul-style black" style="display:none">
-			{% for art in arts %}
+			{% for article in articlesByAtc %}
 				<li>
-					<a class="no-underline" target="_blank"
-					   href="{{ path('art', {'url':art.rubrique.url ~ '/' ~ (art.type ? art.type.url ~ '/') ~ (art.category ? art.category.url ~ '/') ~ art.link ~ '~' ~ art.id }) }}">{{ art.title|raw }}</a>
+					<a href="{{ path('article', {'rubrique':article.rubrique, 'link':article.link}) }}"
+					   target="_blank" class="no-underline">
+						{{ article.title|raw }}
+					</a>
 
 					<div class="anons-info">
-						Рубрика: <a target="_blank" href="{{ path('art', {'url':art.rubrique.url}) }}">{{ art.rubrique.title }}</a>
+						Рубрика:
+						<a target="_blank"
+						   href="{{ path('rubrique', {'rubrique':article.rubrique}) }}">{{ article.rubriqueTitle }}</a>
+					</div>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endif %}
+
+{# энциклопедия по веществу #}
+{% if articlesByMolecule is not empty %}
+	<div class="announcement">
+		<div class="anons-footer no-selection">
+			Материалы медицинской энциклопедии по активному веществу <span>«{{ articlesByMolecule[0].moleculeTitle|raw }}»</span>
+			<i>{{ articlesByMolecule|length }}</i>
+		</div>
+		<ul class="ul-style black" style="display:none">
+			{% for article in articlesByMolecule %}
+				<li>
+					<a href="{{ path('article', {'rubrique':article.rubrique, 'link':article.link}) }}"
+					   target="_blank" class="no-underline">
+						{{ article.title|raw }}
+					</a>
+
+					<div class="anons-info">
+						Рубрика:
+						<a target="_blank"
+						   href="{{ path('rubrique', {'rubrique':article.rubrique}) }}">{{ article.rubriqueTitle }}</a>
+					</div>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endif %}
+
+{# специалистам по препарату #}
+{% if artsByProduct is not empty %}
+	<div class="announcement">
+		<div class="anons-footer no-selection">
+			Материалы для специалистов по препарату <span>«{{ artsByProduct[0].productTitle|raw }}»</span>
+			<i>{{ artsByProduct|length }}</i>
+		</div>
+		<ul class="ul-style black" style="display:none">
+			{% for art in artsByProduct %}
+				<li>
+					<a class="no-underline" target="_blank"
+					   href="{{ path('art', {'url':art.rubriqueUrl ~ '/' ~ (art.typeUrl ? art.typeUrl ~ '/') ~ (art.categoryUrl ? art.categoryUrl ~ '/') ~ art.link ~ '~' ~ art.id }) }}">{{ art.title|raw }}</a>
+
+					<div class="anons-info">
+						Рубрика: <a target="_blank" href="{{ path('art', {'url':art.rubriqueUrl}) }}">{{ art.rubriqueTitle }}</a>
+					</div>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endif %}
+
+{# специалистам по АТХ #}
+{% if artsByAtc is not empty %}
+	<div class="announcement">
+		<div class="anons-footer no-selection">
+			Материалы для специалистов по коду АТХ <span>«{{ artsByAtc[0].atcTitle|raw }}»</span>
+			<i>{{ artsByAtc|length }}</i>
+		</div>
+		<ul class="ul-style black" style="display:none">
+			{% for art in artsByAtc %}
+				<li>
+					<a class="no-underline" target="_blank"
+					   href="{{ path('art', {'url':art.rubriqueUrl ~ '/' ~ (art.typeUrl ? art.typeUrl ~ '/') ~ (art.categoryUrl ? art.categoryUrl ~ '/') ~ art.link ~ '~' ~ art.id }) }}">{{ art.title|raw }}</a>
+
+					<div class="anons-info">
+						Рубрика: <a target="_blank" href="{{ path('art', {'url':art.rubriqueUrl}) }}">{{ art.rubriqueTitle }}</a>
+					</div>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endif %}
+
+{# специалистам по веществу #}
+{% if artsByMolecule is not empty %}
+	<div class="announcement">
+		<div class="anons-footer no-selection">
+			Материалы для специалистов по активному веществу <span>«{{ artsByMolecule[0].moleculeTitle|raw }}»</span>
+			<i>{{ artsByMolecule|length }}</i>
+		</div>
+		<ul class="ul-style black" style="display:none">
+			{% for art in artsByMolecule %}
+				<li>
+					<a class="no-underline" target="_blank"
+					   href="{{ path('art', {'url':art.rubriqueUrl ~ '/' ~ (art.typeUrl ? art.typeUrl ~ '/') ~ (art.categoryUrl ? art.categoryUrl ~ '/') ~ art.link ~ '~' ~ art.id }) }}">{{ art.title|raw }}</a>
+
+					<div class="anons-info">
+						Рубрика: <a target="_blank" href="{{ path('art', {'url':art.rubriqueUrl}) }}">{{ art.rubriqueTitle }}</a>
 					</div>
 				</li>
 			{% endfor %}

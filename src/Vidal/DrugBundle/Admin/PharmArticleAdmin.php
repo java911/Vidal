@@ -45,16 +45,6 @@ class PharmArticleAdmin extends Admin
 		return $proxyQuery;
 	}
 
-	protected function configureShowField(ShowMapper $showMapper)
-	{
-		$showMapper
-			->add('id')
-			->add('company', null, array('label' => 'Фарм-компания'))
-			->add('enabled', null, array('label' => 'Активна'))
-			->add('created', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
-			->add('updated', null, array('label' => 'Дата обновления', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'));
-	}
-
 	protected function configureFormFields(FormMapper $formMapper)
 	{
 		$subject              = $this->getSubject();
@@ -62,22 +52,21 @@ class PharmArticleAdmin extends Admin
 		$tagTransformer       = new TagTransformer($em, $subject);
 
 		$formMapper
-			->add('company', null, array(
-				'label'         => 'Фарм-компания',
+			->add('companies', null, array(
+				'label'         => 'Фарм-компании',
 				'required'      => true,
 				'query_builder' => function (EntityRepository $er) {
-					return $er->createQueryBuilder('c')
-						->orderBy('c.title', 'ASC');
+						return $er->createQueryBuilder('c')->orderBy('c.title', 'ASC');
 				},
 			))
 			->add('priority', null, array('label' => 'Приоритет', 'required' => false))
 			->add('text', null, array('label' => 'Содержимое', 'required' => true, 'attr' => array('class' => 'ckeditorfull')))
 			->add('tags', null, array('label' => 'Теги', 'required' => false, 'help' => 'Выберите существующие теги или добавьте новый ниже'))
 			->add($formMapper->create('hidden', 'text', array(
-				'label'        => 'Создать тег',
-				'required'     => false,
-				'by_reference' => false,
-			))->addModelTransformer($tagTransformer)
+					'label'        => 'Создать тег',
+					'required'     => false,
+					'by_reference' => false,
+				))->addModelTransformer($tagTransformer)
 			)
 			->add('atcCodes-text', 'text', array('label' => 'Коды АТХ', 'required' => false, 'mapped' => false, 'attr' => array('class' => 'atcCodes-text', 'placeholder' => 'Начните вводить название или код')))
 			->add('nozologies-text', 'text', array('label' => 'Заболевания МКБ-10', 'required' => false, 'mapped' => false, 'attr' => array('class' => 'nozologies-text', 'placeholder' => 'Начните вводить название или код')))
@@ -92,12 +81,12 @@ class PharmArticleAdmin extends Admin
 	{
 		$datagridMapper
 			->add('id')
-			->add('company', null, array(
-				'label'         => 'Фарм-компания',
+			->add('companies', null, array(
+				'label'         => 'Фарм-компании',
 				'query_builder' => function (EntityRepository $er) {
-					return $er->createQueryBuilder('c')
-						->orderBy('c.title', 'ASC');
-				},
+						return $er->createQueryBuilder('c')
+							->orderBy('c.title', 'ASC');
+					},
 			))
 			->add('priority', null, array('label' => 'Приоритет'))
 			->add('enabled', null, array('label' => 'Активна'));
@@ -107,7 +96,7 @@ class PharmArticleAdmin extends Admin
 	{
 		$listMapper
 			->add('id')
-			->add('company', null, array('label' => 'Фарм-компания'))
+			->add('companies', null, array('label' => 'Фарм-компании', 'template' => 'VidalDrugBundle:Sonata:pharm_companies.html.twig'))
 			->add('priority', null, array('label' => 'Приоритет'))
 			->add('created', null, array('label' => 'Дата создания', 'widget' => 'single_text', 'format' => 'd.m.Y в H:i'))
 			->add('enabled', null, array('label' => 'Активна', 'template' => 'VidalDrugBundle:Sonata:swap_enabled.html.twig'))

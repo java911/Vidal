@@ -785,88 +785,79 @@ class ProductRepository extends EntityRepository
 		return array($syllables, $table);
 	}
 
-	public function findPublications($ProductID)
+	public function publicationsByProduct($ProductID)
 	{
-		$publicationsByProduct = $this->_em->createQuery('
-			SELECT p
+		return $this->_em->createQuery('
+			SELECT p.id, p.title, p.date, product.RusName productTitle
 			FROM VidalDrugBundle:Publication p
 			JOIN p.products product WITH product.ProductID = :ProductID
 			WHERE p.enabled = TRUE
+			ORDER BY p.date DESC
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
+	}
 
-		$publicationsByAtc = $this->_em->createQuery('
-			SELECT DISTINCT p
+	public function publicationsByAtc($ProductID)
+	{
+		return $this->_em->createQuery('
+			SELECT p.id, p.title, p.date, atc.ATCCode atcTitle
 			FROM VidalDrugBundle:Publication p
 			JOIN p.atcCodes atc
 			JOIN atc.products product WITH product.ProductID = :ProductID
 			WHERE p.enabled = TRUE
+			ORDER BY p.date DESC
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
+	}
 
-		$publicationsByMolecule = $this->_em->createQuery('
-			SELECT DISTINCT p
+	public function publicationsByMolecule($ProductID)
+	{
+		return $this->_em->createQuery('
+			SELECT p.id, p.title, p.date, m.RusName moleculeTitle
 			FROM VidalDrugBundle:Publication p
 			JOIN p.molecules m
 			JOIN m.moleculeNames mn
 			JOIN mn.products product WITH product.ProductID = :ProductID
 			WHERE p.enabled = TRUE
 				AND SIZE(product.moleculeNames) = 1
+			ORDER BY p.date DESC
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
-
-		$ids          = array();
-		$publications = array();
-
-		foreach ($publicationsByProduct as $p) {
-			$ids[]          = $p->getId();
-			$publications[] = $p;
-		}
-
-		foreach ($publicationsByAtc as $p) {
-			if (!in_array($p->getId(), $ids)) {
-				$publications[] = $p;
-				$ids[]          = $p->getId();
-			}
-		}
-
-		foreach ($publicationsByMolecule as $p) {
-			if (!in_array($p->getId(), $ids)) {
-				$publications[] = $p;
-				$ids[]          = $p->getId();
-			}
-		}
-
-		usort($publications, array($this, 'sortByDate'));
-
-		return $publications;
 	}
 
-	public function findArticles($ProductID)
+	public function articlesByProduct($ProductID)
 	{
-		$articlesByProduct = $this->_em->createQuery('
-			SELECT a
+		return $this->_em->createQuery('
+			SELECT a.id, a.title, a.link, r.rubrique rubrique, r.title rubriqueTitle, product.RusName productTitle
 			FROM VidalDrugBundle:Article a
 			JOIN a.products product WITH product.ProductID = :ProductID
 			JOIN a.rubrique r
 			WHERE a.enabled = TRUE
 				AND r.enabled = TRUE
+			ORDER BY a.date DESC
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
+	}
 
-		$articlesByAtc = $this->_em->createQuery('
-			SELECT DISTINCT a
+	public function articlesByAtc($ProductID)
+	{
+		return $this->_em->createQuery('
+			SELECT a.id, a.title, a.link, r.rubrique rubrique, r.title rubriqueTitle, atc.ATCCode atcTitle
 			FROM VidalDrugBundle:Article a
 			JOIN a.atcCodes atc
 			JOIN atc.products product WITH product.ProductID = :ProductID
 			JOIN a.rubrique r
 			WHERE a.enabled = TRUE
 				AND r.enabled = TRUE
+			ORDER BY a.date DESC
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
+	}
 
-		$articlesByMolecule = $this->_em->createQuery('
-			SELECT DISTINCT a
+	public function articlesByMolecule($ProductID)
+	{
+		return $this->_em->createQuery('
+			SELECT a.id, a.title, a.link, r.rubrique rubrique, r.title rubriqueTitle, m.RusName moleculeTitle
 			FROM VidalDrugBundle:Article a
 			JOIN a.molecules m
 			JOIN m.moleculeNames mn
@@ -874,40 +865,16 @@ class ProductRepository extends EntityRepository
 			JOIN a.rubrique r
 			WHERE a.enabled = TRUE
 				AND r.enabled = TRUE
+			ORDER BY a.date DESC
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
-
-		$ids      = array();
-		$articles = array();
-
-		foreach ($articlesByProduct as $a) {
-			$articles[] = $a;
-			$ids[]      = $a->getId();
-		}
-
-		foreach ($articlesByAtc as $a) {
-			if (!in_array($a->getId(), $ids)) {
-				$articles[] = $a;
-				$ids[]      = $a->getId();
-			}
-		}
-
-		foreach ($articlesByMolecule as $a) {
-			if (!in_array($a->getId(), $ids)) {
-				$articles[] = $a;
-				$ids[]      = $a->getId();
-			}
-		}
-
-		usort($articles, array($this, 'sortByDate'));
-
-		return $articles;
 	}
 
-	public function findArts($ProductID)
+	public function artsByProduct($ProductID)
 	{
-		$articlesByProduct = $this->_em->createQuery('
-			SELECT a
+		return $this->_em->createQuery('
+			SELECT a.id, a.title, a.link, r.url rubriqueUrl, r.title rubriqueTitle,
+				c.url categoryUrl, t.url typeUrl, product.RusName productTitle
 			FROM VidalDrugBundle:Art a
 			JOIN a.products product WITH product.ProductID = :ProductID
 			JOIN a.rubrique r
@@ -917,11 +884,16 @@ class ProductRepository extends EntityRepository
 				AND r.enabled = TRUE
 				AND (t IS NULL OR t.enabled = TRUE)
 				AND (c IS NULL OR c.enabled = TRUE)
+			ORDER BY a.date DESC
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
+	}
 
-		$articlesByAtc = $this->_em->createQuery('
-			SELECT DISTINCT a
+	public function artsByAtc($ProductID)
+	{
+		return $this->_em->createQuery('
+			SELECT a.id, a.title, a.link, r.url rubriqueUrl, r.title rubriqueTitle,
+				c.url categoryUrl, t.url typeUrl, atc.ATCCode atcTitle
 			FROM VidalDrugBundle:Art a
 			JOIN a.atcCodes atc
 			JOIN atc.products product WITH product.ProductID = :ProductID
@@ -932,11 +904,16 @@ class ProductRepository extends EntityRepository
 				AND r.enabled = TRUE
 				AND (t IS NULL OR t.enabled = TRUE)
 				AND (c IS NULL OR c.enabled = TRUE)
+			ORDER BY a.date DESC
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
+	}
 
-		$articlesByMolecule = $this->_em->createQuery('
-			SELECT DISTINCT a
+	public function artsByMolecule($ProductID)
+	{
+		return $this->_em->createQuery('
+			SELECT a.id, a.title, a.link, r.url rubriqueUrl, r.title rubriqueTitle,
+				c.url categoryUrl, t.url typeUrl, m.RusName moleculeTitle
 			FROM VidalDrugBundle:Art a
 			JOIN a.molecules m
 			JOIN m.moleculeNames mn
@@ -948,34 +925,9 @@ class ProductRepository extends EntityRepository
 				AND r.enabled = TRUE
 				AND (t IS NULL OR t.enabled = TRUE)
 				AND (c IS NULL OR c.enabled = TRUE)
+			ORDER BY a.date DESC
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
-
-		$ids      = array();
-		$articles = array();
-
-		foreach ($articlesByProduct as $a) {
-			$ids[]      = $a->getId();
-			$articles[] = $a;
-		}
-
-		foreach ($articlesByAtc as $a) {
-			if (!in_array($a->getId(), $ids)) {
-				$articles[] = $a;
-				$ids[]      = $a->getId();
-			}
-		}
-
-		foreach ($articlesByMolecule as $a) {
-			if (!in_array($a->getId(), $ids)) {
-				$articles[] = $a;
-				$ids[]      = $a->getId();
-			}
-		}
-
-		usort($articles, array($this, 'sortByDate'));
-
-		return $articles;
 	}
 
 	/**

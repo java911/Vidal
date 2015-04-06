@@ -36,8 +36,8 @@ class PharmArticleRepository extends EntityRepository
 		return $this->_em->createQuery('
 			SELECT a
 			FROM VidalDrugBundle:PharmArticle a
+			JOIN a.companies c WITH c.id = :id
 			WHERE a.enabled = TRUE
-				AND a.company = :id
 				AND a.created < :now
 			ORDER BY a.priority DESC, a.created DESC
 		')->setParameter('now', new \DateTime())
