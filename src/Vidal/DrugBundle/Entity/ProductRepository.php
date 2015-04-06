@@ -799,7 +799,7 @@ class ProductRepository extends EntityRepository
 
 	public function publicationsByAtc($ProductID)
 	{
-		return $this->_em->createQuery('
+		$raw = $this->_em->createQuery('
 			SELECT p.id, p.title, p.date, atc.ATCCode atcTitle
 			FROM VidalDrugBundle:Publication p
 			JOIN p.atcCodes atc
@@ -808,11 +808,23 @@ class ProductRepository extends EntityRepository
 			ORDER BY p.date DESC
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
+
+		$results = array();
+
+		foreach ($raw as $r) {
+			$key = $r['atcTitle'];
+
+			isset ($results[$key])
+				? $results[$key][] = $r
+				: $results[$key] = array($r);
+		}
+
+		return $results;
 	}
 
 	public function publicationsByMolecule($ProductID)
 	{
-		return $this->_em->createQuery('
+		$raw = $this->_em->createQuery('
 			SELECT p.id, p.title, p.date, m.RusName moleculeTitle
 			FROM VidalDrugBundle:Publication p
 			JOIN p.molecules m
@@ -823,6 +835,18 @@ class ProductRepository extends EntityRepository
 			ORDER BY p.date DESC
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
+
+		$results = array();
+
+		foreach ($raw as $r) {
+			$key = $r['moleculeTitle'];
+
+			isset ($results[$key])
+				? $results[$key][] = $r
+				: $results[$key] = array($r);
+		}
+
+		return $results;
 	}
 
 	public function articlesByProduct($ProductID)
@@ -841,7 +865,7 @@ class ProductRepository extends EntityRepository
 
 	public function articlesByAtc($ProductID)
 	{
-		return $this->_em->createQuery('
+		$raw = $this->_em->createQuery('
 			SELECT a.id, a.title, a.link, r.rubrique rubrique, r.title rubriqueTitle, atc.ATCCode atcTitle
 			FROM VidalDrugBundle:Article a
 			JOIN a.atcCodes atc
@@ -852,11 +876,23 @@ class ProductRepository extends EntityRepository
 			ORDER BY a.date DESC
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
+
+		$results = array();
+
+		foreach ($raw as $r) {
+			$key = $r['atcTitle'];
+
+			isset ($results[$key])
+				? $results[$key][] = $r
+				: $results[$key] = array($r);
+		}
+
+		return $results;
 	}
 
 	public function articlesByMolecule($ProductID)
 	{
-		return $this->_em->createQuery('
+		$raw = $this->_em->createQuery('
 			SELECT a.id, a.title, a.link, r.rubrique rubrique, r.title rubriqueTitle, m.RusName moleculeTitle
 			FROM VidalDrugBundle:Article a
 			JOIN a.molecules m
@@ -868,6 +904,18 @@ class ProductRepository extends EntityRepository
 			ORDER BY a.date DESC
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
+
+		$results = array();
+
+		foreach ($raw as $r) {
+			$key = $r['moleculeTitle'];
+
+			isset ($results[$key])
+				? $results[$key][] = $r
+				: $results[$key] = array($r);
+		}
+
+		return $results;
 	}
 
 	public function artsByProduct($ProductID)
@@ -891,7 +939,7 @@ class ProductRepository extends EntityRepository
 
 	public function artsByAtc($ProductID)
 	{
-		return $this->_em->createQuery('
+		$raw = $this->_em->createQuery('
 			SELECT a.id, a.title, a.link, r.url rubriqueUrl, r.title rubriqueTitle,
 				c.url categoryUrl, t.url typeUrl, atc.ATCCode atcTitle
 			FROM VidalDrugBundle:Art a
@@ -907,11 +955,23 @@ class ProductRepository extends EntityRepository
 			ORDER BY a.date DESC
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
+
+		$results = array();
+
+		foreach ($raw as $r) {
+			$key = $r['atcTitle'];
+
+			isset ($results[$key])
+				? $results[$key][] = $r
+				: $results[$key] = array($r);
+		}
+
+		return $results;
 	}
 
 	public function artsByMolecule($ProductID)
 	{
-		return $this->_em->createQuery('
+		$raw = $this->_em->createQuery('
 			SELECT a.id, a.title, a.link, r.url rubriqueUrl, r.title rubriqueTitle,
 				c.url categoryUrl, t.url typeUrl, m.RusName moleculeTitle
 			FROM VidalDrugBundle:Art a
@@ -928,6 +988,18 @@ class ProductRepository extends EntityRepository
 			ORDER BY a.date DESC
 		')->setParameter('ProductID', $ProductID)
 			->getResult();
+
+		$results = array();
+
+		foreach ($raw as $r) {
+			$key = $r['moleculeTitle'];
+
+			isset ($results[$key])
+				? $results[$key][] = $r
+				: $results[$key] = array($r);
+		}
+
+		return $results;
 	}
 
 	/**
