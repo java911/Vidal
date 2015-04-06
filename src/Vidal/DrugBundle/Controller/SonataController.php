@@ -825,6 +825,67 @@ class SonataController extends Controller
 		return new JsonResponse('FAIL');
 	}
 
+	/** @Route("/admin/tag-export", name="admin_tag_export", options={"expose"=true}) */
+	public function tagExportAction()
+	{
+		$em   = $this->getDoctrine()->getManager('drug');
+		$tags = $em->getRepository('VidalDrugBundle:Tag')->export();
+
+		$phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
+		$phpExcelObject->getProperties()->setCreator("Evrika")
+			->setTitle("Vidal.ru - все теги")
+			->setSubject("Vidal.ru - все теги");
+
+		$phpExcelObject->setActiveSheetIndex(0)
+			->setCellValue('A1', 'Текст')
+			->setCellValue('B1', 'Выставляется')
+			->setCellValue('C1', 'Представительство')
+			->setCellValue('D1', 'Для компании')
+			->setCellValue('E1', 'Всего')
+			->setCellValue('F1', 'Статей энциклопедии')
+			->setCellValue('G1', 'Статей специалистам')
+			->setCellValue('H1', 'Новостей')
+			->setCellValue('I1', 'Новостей фарм. компаний');
+
+		$worksheet = $phpExcelObject->getActiveSheet();
+		$letters   = explode(' ', 'A B C D E F G H I');
+
+		foreach ($letters as $letter) {
+			$worksheet->getColumnDimension($letter)->setAutoSize('true');
+			$worksheet->getStyle($letter . '1')->getFont()->getColor()->setRGB('FF0000');
+		}
+
+		for ($i = 0; $i < count($tags); $i++) {
+			$phpExcelObject->setActiveSheetIndex(0)
+				->setCellValue('A' . ($i + 2), $tags[$i]['text'])
+				->setCellValue('B' . ($i + 2), $tags[$i]['search'])
+				->setCellValue('C' . ($i + 2), $tags[$i]['infoPage'])
+				->setCellValue('D' . ($i + 2), $tags[$i]['forCompany'] ? 'Да' : 'Нет')
+				->setCellValue('E' . ($i + 2), $tags[$i]['total'])
+				->setCellValue('F' . ($i + 2), $tags[$i]['articles'])
+				->setCellValue('G' . ($i + 2), $tags[$i]['arts'])
+				->setCellValue('H' . ($i + 2), $tags[$i]['publications'])
+				->setCellValue('I' . ($i + 2), $tags[$i]['pharmArticles']);
+		}
+
+		$phpExcelObject->getActiveSheet()->setTitle('Simple');
+
+		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+		$phpExcelObject->setActiveSheetIndex(0);
+
+		// create the writer
+		$writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
+		// create the response
+		$response = $this->get('phpexcel')->createStreamedResponse($writer);
+		// adding headers
+		$response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+		$response->headers->set('Content-Disposition', 'attachment;filename=vidal_tags.xls');
+		$response->headers->set('Pragma', 'public');
+		$response->headers->set('Cache-Control', 'maxage=1');
+
+		return $response;
+	}
+
 	/** @Route("/excel-users/{number}", name="excel_users", options={"expose"=true}) */
 	public function excelUsersAction($number = null)
 	{

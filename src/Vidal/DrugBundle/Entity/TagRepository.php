@@ -24,4 +24,16 @@ class TagRepository extends EntityRepository
 
 		return $tag;
 	}
+
+	public function export()
+	{
+		return $this->_em->createQuery('
+			SELECT t.text, t.search, i.RusName infoPage, t.forCompany, t.total,
+				SIZE(t.articles) articles, SIZE(t.arts) arts, SIZE(t.publications) publications,
+				SIZE(t.pharmArticles) pharmArticles
+			FROM VidalDrugBundle:Tag t
+			LEFT JOIN t.infoPage i
+		')
+			->getResult();
+	}
 }

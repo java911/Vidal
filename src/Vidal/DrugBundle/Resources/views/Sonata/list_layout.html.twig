@@ -16,13 +16,11 @@ file that was distributed with this source code.
 	<div class="sonata-actions btn-group">
 		{% include 'SonataAdminBundle:Core:create_button.html.twig' %}
 
-		{# кнопка скачки пользователей в экселе #}
 		{% if route == 'admin_vidal_main_user_list' %}
 			{% include 'VidalDrugBundle:Sonata:user_list_buttons.html.twig' %}
-		{% endif %}
-
-		{% if route == 'admin_vidal_drug_tag_list' %}
+		{% elseif route == 'admin_vidal_drug_tag_list' %}
 			<a href="{{ path('admin_tag_recalc') }}" class="btn sonata-action-element">Пересчитать материалы</a>
+			<a href="{{ path('admin_tag_export') }}" class="btn sonata-action-element">Выгрузить в XLS</a>
 		{% endif %}
 	</div>
 {% endblock %}
