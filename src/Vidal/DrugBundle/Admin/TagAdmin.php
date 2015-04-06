@@ -64,4 +64,9 @@ class TagAdmin extends Admin
 				)
 			));
 	}
+
+	public function getExportFields()
+	{
+		return array('text', 'search');
+	}
 }

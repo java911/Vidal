@@ -115,15 +115,15 @@ file that was distributed with this source code.
 								{% endif %}
 
 								<div class="pull-right">
-									{% if admin.hasRoute('export') and admin.isGranted("EXPORT") and admin.getExportFormats()|length %}
-										{{ "label_export_download"|trans({}, "SonataAdminBundle") }}
-										{% for format in admin.getExportFormats() %}
-											<a
-											href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">{{ format }}</a>{% if not loop.last %},{% endif %}
-										{% endfor %}
+									{#{% if admin.hasRoute('export') and admin.isGranted("EXPORT") and admin.getExportFormats()|length %}#}
+										{#{{ "label_export_download"|trans({}, "SonataAdminBundle") }}#}
+										{#{% for format in admin.getExportFormats() %}#}
+											{#<a#}
+											{#href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">{{ format }}</a>{% if not loop.last %},{% endif %}#}
+										{#{% endfor %}#}
 
-										&nbsp;-&nbsp;
-									{% endif %}
+										{#&nbsp;-&nbsp;#}
+									{#{% endif %}#}
 
 									{{ admin.datagrid.pager.page }} / {{ admin.datagrid.pager.lastpage }}
 
