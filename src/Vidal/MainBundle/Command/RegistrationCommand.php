@@ -121,7 +121,7 @@ class RegistrationCommand extends ContainerAwareCommand
 		$dates = array();
 		$date  = new \DateTime('now');
 
-		for ($i = 1; $i <= 6; $i++) {
+		for ($i = 1; $i <= 3; $i++) {
 			$date->modify('-1 month');
 			$dates[] = $date->format('Y-m-d');
 		}
