@@ -77,11 +77,6 @@ class DoctrineEventSubscriber implements EventSubscriber
 		if ($entity instanceof Product) {
 			$this->autocompleteProduct($entity);
 		}
-
-		# добавили документ - генерируем автодополнение ElasticSearch
-		if ($entity instanceof Document) {
-			$this->autocompleteDocument($entity);
-		}
 	}
 
 	public function preUpdate(LifecycleEventArgs $args)
@@ -107,6 +102,10 @@ class DoctrineEventSubscriber implements EventSubscriber
 				$pdo->prepare("UPDATE infopage SET tag_id = NULL WHERE tag_id = {$entity->getId()}")->execute();
 				$pdo->prepare("UPDATE infopage SET tag_id = {$entity->getId()} WHERE InfoPageID = {$infoPage->getInfoPageID()}")->execute();
 			}
+		}
+
+		if ($entity instanceof Product) {
+			$this->autocompleteProduct($entity);
 		}
 	}
 
@@ -210,58 +209,82 @@ class DoctrineEventSubscriber implements EventSubscriber
 	private function autocompleteProduct($product)
 	{
 		try {
-			$patterns     = array('/<SUP>.*<\/SUP>/', '/<SUB>.*<\/SUB>/', '/&alpha;/', '/&plusmn;/', '/&reg;/', '/&shy;/');
-			$replacements = array('', '', ' ', ' ', ' ', ' ');
-			$RusName      = preg_replace($patterns, $replacements, $product->getRusName());
-			$RusName      = mb_strtolower($RusName, 'UTF-8');
-			$EngName      = preg_replace($patterns, $replacements, $product->getEngName());
-			$EngName      = mb_strtolower($EngName, 'UTF-8');
-			$ProductID    = $product->getProductID();
-
-			if (!empty($RusName)) {
-				$this->createAutocomplete('autocomplete', $ProductID, $RusName);
-				$this->createAutocomplete('autocompleteext', $ProductID, $RusName);
+			# check product is visible
+			$productTypes = array('DRUG', 'GOME');
+			$marketIds    = array(1, 2, 7);
+			if ($product->getInactive()
+				|| !in_array($product->getProductTypeCode(), $productTypes)
+				|| !in_array($product->getMarketStatusID()->getMarketStatusID(), $marketIds)
+			) {
+				return false;
 			}
 
-			if (!empty($EngName)) {
-				$this->createAutocomplete('autocomplete', $ProductID + 1, $EngName);
-				$this->createAutocomplete('autocompleteext', $ProductID + 1, $EngName);
-			}
-		}
-		catch (\Exception $e) {
-		}
-	}
+			# get names
+			$RusName = $this->strip($product->getRusName());
+			$RusName = mb_strtolower($RusName, 'UTF-8');
+			$EngName = $this->strip($product->getEngName());
+			$EngName = mb_strtolower($EngName, 'UTF-8');
 
-	private function autocompleteDocument($document)
-	{
-		try {
-			# autocomplete_document
 			$elasticaClient = new \Elastica\Client();
 			$elasticaIndex  = $elasticaClient->getIndex('website');
-			$elasticaType   = $elasticaIndex->getType('autocomplete_document');
-			$id             = $document->getDocumentID();
 
-			$document = new \Elastica\Document(
-				$id + 100000,
-				array('name' => $id . ' - ' . $this->strip($document->getName()))
-			);
+			# check if names exists
+			$client = new \Elasticsearch\Client();
 
-			$elasticaType->addDocument($document);
-			$elasticaType->getIndex()->refresh();
+			$s['index']                                                        = 'website';
+			$s['type']                                                         = 'autocomplete';
+			$s['body']['size']                                                 = 1;
+			$s['body']['query']['filtered']['query']['query_string']['query']  = $RusName;
+			$s['body']['query']['filtered']['query']['query_string']['fields'] = array('name', 'type');
+			$s['body']['highlight']['fields']['name']                          = array("fragment_size" => 100);
+			$s['body']['sort']['type']['order']                                = 'desc';
+			$s['body']['sort']['name']['order']                                = 'asc';
+			$s['body']['query']['filtered']['filter']['term']['type']          = 'product';
+
+			$results  = $client->search($s);
+			$totalRus = $results['hits']['total'];
+
+			$s['body']['query']['filtered']['query']['query_string']['query'] = $EngName;
+			$results                                                          = $client->search($s);
+			$totalEng                                                         = $results['hits']['total'];
+
+			# autocomplete
+			$type = $elasticaIndex->getType('autocomplete');
+			if ($totalRus == 0) {
+				$document = new \Elastica\Document(null, array('name' => $RusName, 'type' => 'product'));
+				$type->addDocument($document);
+			}
+			if ($totalEng == 0) {
+				$document = new \Elastica\Document(null, array('name' => $EngName, 'type' => 'product'));
+				$type->addDocument($document);
+			}
+			$type->getIndex()->refresh();
+
+			# autocomplete_ext
+			$type = $elasticaIndex->getType('autocomplete_ext');
+			if ($totalRus == 0) {
+				$document = new \Elastica\Document(null, array('name' => $RusName, 'type' => 'product'));
+				$type->addDocument($document);
+			}
+			if ($totalEng == 0) {
+				$document = new \Elastica\Document(null, array('name' => $EngName, 'type' => 'product'));
+				$type->addDocument($document);
+			}
+			$type->getIndex()->refresh();
+
+			# product
+			$type = $elasticaIndex->getType('autocomplete_product');
+			if ($totalRus == 0) {
+				$name     = $RusName . ' ' . $product->getProductID();
+				$document = new \Elastica\Document(null, array('name' => $name));
+				$type->addDocument($document);
+			}
+			$type->getIndex()->refresh();
 		}
 		catch (\Exception $e) {
 		}
-	}
 
-	private function createAutocomplete($indexName, $id, $name)
-	{
-		$elasticaClient = new \Elastica\Client();
-		$elasticaIndex  = $elasticaClient->getIndex('website');
-		$elasticaType   = $elasticaIndex->getType($indexName);
-		$document       = new \Elastica\Document($id + 100000, array('name' => $name, 'type' => 'product'));
-
-		$elasticaType->addDocument($document);
-		$elasticaType->getIndex()->refresh();
+		return true;
 	}
 
 	private function strip($string)
