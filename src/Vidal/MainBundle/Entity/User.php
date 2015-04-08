@@ -41,7 +41,6 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 
 	/**
 	 * @ORM\Column(type="string")
-	 * @Assert\NotBlank(message="Укажите свое имя")
 	 */
 	protected $firstName;
 

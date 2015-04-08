@@ -69,7 +69,13 @@ class RegisterType extends AbstractType
 				)
 			))
 			->add(
-				$builder->create('city', 'text', array('label' => 'Город'))->addModelTransformer($cityToStringTransformer)
+				$builder->create('city', 'text', array(
+					'label'       => 'Город',
+					'required'    => true,
+					'constraints' => array(
+						new NotBlank(array('message' => 'Укажите свой город')),
+					)
+				))->addModelTransformer($cityToStringTransformer)
 			)
 			->add('university', null, array('label' => 'Выберите учебное заведение из списка', 'required' => false, 'empty_value' => 'выберите'))
 			->add('school', null, array('label' => 'Или укажите другое'))
@@ -80,12 +86,15 @@ class RegisterType extends AbstractType
 				'label'         => 'Основная специальность',
 				'empty_value'   => 'выберите',
 				'required'      => true,
+				'constraints'   => array(
+					new NotBlank(array('message' => 'Укажите свою специальность')),
+				),
 				'class'         => 'VidalMainBundle:Specialty',
 				'query_builder' => function (EntityRepository $er) {
-						return $er->createQueryBuilder('s')->orderBy('s.title', 'ASC');
-					}
+					return $er->createQueryBuilder('s')->orderBy('s.title', 'ASC');
+				}
 			))
-		    ->add('secondarySpecialty', 'entity', array(
+			->add('secondarySpecialty', 'entity', array(
 				'label'         => 'Дополнительная специальность',
 				'empty_value'   => 'выберите',
 				'required'      => false,
@@ -94,7 +103,7 @@ class RegisterType extends AbstractType
 					return $er->createQueryBuilder('s')->orderBy('s.title', 'ASC');
 				}
 			))
-			->add('academicDegree', 'choice', array('label' => 'Ученая степень', 'choices' => User::getAcademicDegrees(), 'required' => false, 'data'=> 'Нет'))
+			->add('academicDegree', 'choice', array('label' => 'Ученая степень', 'choices' => User::getAcademicDegrees(), 'required' => false, 'data' => 'Нет'))
 			->add('captcha', 'captcha', array(
 				'label'    => 'Проверочный код',
 				'mapped'   => false,
@@ -105,8 +114,8 @@ class RegisterType extends AbstractType
 				'mapped'      => false,
 				'required'    => false,
 				'constraints' => new True(array(
-						'message' => 'Пожалуйста, подтвердите, что Вы согласны с пользовательским соглашением'
-					))
+					'message' => 'Пожалуйста, подтвердите, что Вы согласны с пользовательским соглашением'
+				))
 			))
 			->add('submit', 'submit', array('label' => 'Зарегистрироваться'));
 	}

@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints\True;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Doctrine\ORM\EntityManager;
 use Vidal\MainBundle\Form\DataTransformer\CityToStringTransformer;
 use Vidal\MainBundle\Form\DataTransformer\YearToNumberTransformer;
@@ -53,10 +54,20 @@ class ProfileType extends AbstractType
 				'label'  => 'Дата рождения',
 				'years'  => range(date('Y') - 111, date('Y')),
 				'format' => 'dd MMMM yyyy',
+				'constraints' => array(
+					new NotBlank(array('message' => 'Укажите дату своего рождения')),
+					new DateTime(array('message' => 'Дата рождения указана в неверно')),
+				)
 			))
 			->add('hideBirthdate', null, array('required' => false))
 			->add(
-				$builder->create('city', 'text', array('label' => 'Город'))->addModelTransformer($cityToStringTransformer)
+				$builder->create('city', 'text', array(
+					'label'       => 'Город',
+					'required'    => true,
+					'constraints' => array(
+						new NotBlank(array('message' => 'Укажите свой город')),
+					)
+				))->addModelTransformer($cityToStringTransformer)
 			)
 			->add('phone', null, array('label' => 'Телефон', 'required' => false))
 			->add('hidePhone', null, array('required' => false))
@@ -77,6 +88,9 @@ class ProfileType extends AbstractType
 				'label'         => 'Основная специальность',
 				'empty_value'   => 'выберите',
 				'required'      => true,
+				'constraints' => array(
+					new NotBlank(array('message' => 'Укажите свою специальность')),
+				),
 				'class'         => 'VidalMainBundle:Specialty',
 				'query_builder' => function (EntityRepository $er) {
 						return $er->createQueryBuilder('s')->orderBy('s.title', 'ASC');
