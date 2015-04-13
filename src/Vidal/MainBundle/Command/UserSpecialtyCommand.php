@@ -66,7 +66,7 @@ class UserSpecialtyCommand extends ContainerAwareCommand
 
 	protected function configure()
 	{
-		$this->setName('vidal:us');
+		$this->setName('vidal:user_specialty');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
