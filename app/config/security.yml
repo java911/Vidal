@@ -5,6 +5,7 @@ security:
     role_hierarchy:
         ROLE_DOCTOR: ~
         ROLE_ADMIN: [ROLE_DOCTOR, ROLE_ALLOWED_TO_SWITCH, ROLE_QA, ROLE_SHKOLA]
+        ROLE_SUPERADMIN: [ROLE_ADMIN]
 
     providers:
         local_database:
@@ -27,4 +28,6 @@ security:
             anonymous: ~
 
     access_control:
+        - { path: ^/excel-users/, roles: [ROLE_SUPERADMIN] }
+        - { path: ^/admin/vidal/main/user/, roles: [ROLE_SUPERADMIN] }
         - { path: ^/admin/, roles: [ROLE_ADMIN] }
