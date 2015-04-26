@@ -14,6 +14,13 @@
 
 require "core/autoload.php";
 $uploader = new uploader();
+
+if (!isset($_SESSION['_sf2_attributes']['_security_everything'])
+	|| !preg_match('/(ROLE_ADMIN|ROLE_SUPERADMIN)/', $_SESSION['_sf2_attributes']['_security_everything'])) {
+	echo '<h1>Доступ к разделу запрещен</h1>';
+	exit;
+}
+
 $uploader->upload();
 
 ?>

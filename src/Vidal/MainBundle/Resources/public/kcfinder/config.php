@@ -27,7 +27,10 @@ $_CONFIG = array(
 
     'uploadURL' => "/upload/kcfinder",
     'uploadDir' => "/home/twigavid/vidal/upload/kcfinder",
+	'_sessionDir' => '/home/twigavid/vidal/session',
+
 	//'uploadDir' => "C:/wamp/www/Vidal/web/upload/kcfinder",
+	//'_sessionDir' => "C:/wamp/tmp",
 
     'dirPerms' => 0755,
     'filePerms' => 0644,
@@ -96,8 +99,6 @@ $_CONFIG = array(
 
     '_sessionVar' => &$_SESSION['KCFINDER'],
     //'_sessionLifetime' => 30,
-    //'_sessionDir' => "C:/wamp/tmp",
-	'_sessionDir' => '/home/twigavid/vidal/session',
 
     //'_sessionDomain' => ".mysite.com",
     //'_sessionPath' => "/my/path",
