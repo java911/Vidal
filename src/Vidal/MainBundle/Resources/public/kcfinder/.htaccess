@@ -1,0 +1,5 @@
+#AuthUserFile C:/wamp/www/Vidal/.htpasswd
+AuthUserFile /home/twigavid/public_html/current/.htpasswd
+AuthName "Authorization Required"
+AuthType Basic
+require valid-user
