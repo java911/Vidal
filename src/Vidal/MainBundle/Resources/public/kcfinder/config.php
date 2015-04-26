@@ -96,7 +96,8 @@ $_CONFIG = array(
 
     '_sessionVar' => &$_SESSION['KCFINDER'],
     //'_sessionLifetime' => 30,
-    //'_sessionDir' => "/full/directory/path",
+    //'_sessionDir' => "C:/wamp/tmp",
+	'_sessionDir' => '/home/twigavid/vidal/session',
 
     //'_sessionDomain' => ".mysite.com",
     //'_sessionPath' => "/my/path",

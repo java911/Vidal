@@ -14,6 +14,11 @@
 
 require "core/autoload.php";
 $browser = new browser();
+
+echo '<pre>';
+print_r($_SESSION);
+echo '</pre>';
+
 $browser->action();
 
 ?>
