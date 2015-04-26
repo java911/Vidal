@@ -15,9 +15,11 @@
 require "core/autoload.php";
 $browser = new browser();
 
-echo '<pre>';
-print_r($_SESSION);
-echo '</pre>';
+if (!isset($_SESSION['_sf2_attributes']['_security_everything'])
+	|| !preg_match('/(ROLE_ADMIN|ROLE_SUPERADMIN)/', $_SESSION['_sf2_attributes']['_security_everything'])) {
+	echo '<h1>Доступ к разделу запрещен</h1>';
+	exit;
+}
 
 $browser->action();
 
