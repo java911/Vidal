@@ -454,7 +454,7 @@ class VidalController extends Controller
 		$params['molecules']    = $em->getRepository('VidalDrugBundle:Molecule')->findByProductID($productId);
 
 		$params['publicationsByProduct']  = $em->getRepository('VidalDrugBundle:Product')->publicationsByProduct($productId);
-		$params['publicationsByAtc']      = $em->getRepository('VidalDrugBundle:Product')->publicationsByAtc($productId);
+		$params['publicationsByAtc']      = $em->getRepository('VidalDrugBundle:Product')->publicationsByAtc($product);
 		$params['publicationsByMolecule'] = $em->getRepository('VidalDrugBundle:Product')->publicationsByMolecule($productId);
 
 		$params['articlesByProduct']  = $em->getRepository('VidalDrugBundle:Product')->articlesByProduct($productId);

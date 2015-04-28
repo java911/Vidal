@@ -5,6 +5,8 @@ use Doctrine\ORM\EntityRepository;
 
 class ProductRepository extends EntityRepository
 {
+	protected $atcCodes = array();
+
 	public function findFieldsByProductID($ProductID)
 	{
 		return $this->_em->createQuery('
@@ -797,16 +799,19 @@ class ProductRepository extends EntityRepository
 			->getResult();
 	}
 
-	public function publicationsByAtc($ProductID)
+	public function publicationsByAtc($product)
 	{
+		foreach ($product->getATCCodes() as $atcCode) {
+			$this->findParentATC($atcCode);
+		}
+
 		$raw = $this->_em->createQuery('
 			SELECT p.id, p.title, p.date, atc.ATCCode atcTitle
 			FROM VidalDrugBundle:Publication p
-			JOIN p.atcCodes atc
-			JOIN atc.products product WITH product.ProductID = :ProductID
+			JOIN p.atcCodes atc WITH atc.ATCCode IN (:atcCodes)
 			WHERE p.enabled = TRUE
 			ORDER BY p.date DESC
-		')->setParameter('ProductID', $ProductID)
+		')->setParameter('atcCodes', $this->atcCodes)
 			->getResult();
 
 		$results = array();
@@ -1024,5 +1029,14 @@ class ProductRepository extends EntityRepository
 		$dateB = $b->getDate();
 
 		return $dateA == $dateB ? 0 : ($dateA < $dateB ? 1 : -1);
+	}
+
+	private function findParentATC($atcCode)
+	{
+		$this->atcCodes[] = $atcCode->getATCCode();
+
+		if ($parent = $atcCode->getParent()) {
+			$this->findParentATC($parent);
+		}
 	}
 }
