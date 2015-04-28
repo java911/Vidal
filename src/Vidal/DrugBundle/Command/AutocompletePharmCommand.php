@@ -61,7 +61,6 @@ class AutocompletePharmCommand extends ContainerAwareCommand
 				$elasticaType->addDocuments($documents);
 				$elasticaType->getIndex()->refresh();
 				$documents = array();
-				$output->writeln("... + $i");
 			}
 		}
 		$elasticaType->addDocuments($documents);

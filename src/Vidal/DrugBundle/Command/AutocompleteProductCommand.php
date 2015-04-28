@@ -65,10 +65,6 @@ class AutocompleteProductCommand extends ContainerAwareCommand
 			$document = new \Elastica\Document($id, array('name' => $name));
 			$elasticaType->addDocument($document);
 			$elasticaType->getIndex()->refresh();
-
-			if ($i && $i % 500 == 0) {
-				$output->writeln("... $i / $total");
-			}
 		}
 
 		$output->writeln("+++ vidal:autocomplete_product loaded $i documents!");

@@ -456,16 +456,19 @@ class VidalController extends Controller
 		$params['molecules']    = $em->getRepository('VidalDrugBundle:Molecule')->findByProductID($productId);
 
 		$params['publicationsByProduct']  = $em->getRepository('VidalDrugBundle:Product')->publicationsByProduct($productId);
-		$params['publicationsByAtc']      = $em->getRepository('VidalDrugBundle:Product')->publicationsByAtc($atcCodes);
 		$params['publicationsByMolecule'] = $em->getRepository('VidalDrugBundle:Product')->publicationsByMolecule($productId);
 
 		$params['articlesByProduct']  = $em->getRepository('VidalDrugBundle:Product')->articlesByProduct($productId);
-		$params['articlesByAtc']      = $em->getRepository('VidalDrugBundle:Product')->articlesByAtc($atcCodes);
 		$params['articlesByMolecule'] = $em->getRepository('VidalDrugBundle:Product')->articlesByMolecule($productId);
 
 		$params['artsByProduct']  = $em->getRepository('VidalDrugBundle:Product')->artsByProduct($productId);
-		$params['artsByAtc']      = $em->getRepository('VidalDrugBundle:Product')->artsByAtc($atcCodes);
 		$params['artsByMolecule'] = $em->getRepository('VidalDrugBundle:Product')->artsByMolecule($productId);
+
+		if (!empty($atcCodes)) {
+			$params['publicationsByAtc'] = $em->getRepository('VidalDrugBundle:Product')->publicationsByAtc($atcCodes);
+			$params['articlesByAtc']     = $em->getRepository('VidalDrugBundle:Product')->articlesByAtc($atcCodes);
+			$params['artsByAtc']         = $em->getRepository('VidalDrugBundle:Product')->artsByAtc($atcCodes);
+		}
 
 		$title                 = $this->strip($product->getRusName());
 		$params['ogTitle']     = $title;

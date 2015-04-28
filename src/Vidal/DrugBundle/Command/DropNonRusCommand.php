@@ -22,23 +22,18 @@ class DropNonRusCommand extends ContainerAwareCommand
 		$em = $this->getContainer()->get('doctrine')->getManager('drug');
 		$pdo = $em->getConnection();
 
-		$output->writeln('... SET FOREIGN_KEY_CHECKS=0');
 		$stmt = $pdo->prepare('SET FOREIGN_KEY_CHECKS=0');
 		$stmt->execute();
 
-		$output->writeln("... DELETE FROM infopage WHERE CountryEditionCode != 'RUS'");
 		$stmt = $pdo->prepare("DELETE FROM infopage WHERE CountryEditionCode != 'RUS'");
 		$stmt->execute();
 
-		$output->writeln("... DELETE FROM company WHERE CountryEditionCode != 'RUS'");
 		$stmt = $pdo->prepare("DELETE FROM company WHERE CountryEditionCode != 'RUS'");
 		$stmt->execute();
 
-		$output->writeln("... DELETE FROM product WHERE CountryEditionCode != 'RUS'");
 		$stmt = $pdo->prepare("DELETE FROM product WHERE CountryEditionCode != 'RUS'");
 		$stmt->execute();
 
-		$output->writeln("... DELETE FROM document WHERE YearEdition > 2015 OR (CountryEditionCode != 'RUS' AND ArticleID NOT IN (1,4,5))");
 		$stmt = $pdo->prepare("DELETE FROM document WHERE YearEdition > 2015 OR (CountryEditionCode != 'RUS' AND ArticleID NOT IN (1,4,5))");
 		$stmt->execute();
 
