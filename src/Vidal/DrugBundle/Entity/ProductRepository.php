@@ -799,19 +799,24 @@ class ProductRepository extends EntityRepository
 			->getResult();
 	}
 
-	public function publicationsByAtc($product)
+	public function findAllATC($product)
 	{
 		foreach ($product->getATCCodes() as $atcCode) {
 			$this->findParentATC($atcCode);
 		}
 
+		return $this->atcCodes;
+	}
+
+	public function publicationsByAtc($atcCodes)
+	{
 		$raw = $this->_em->createQuery('
 			SELECT p.id, p.title, p.date, atc.ATCCode atcTitle
 			FROM VidalDrugBundle:Publication p
 			JOIN p.atcCodes atc WITH atc.ATCCode IN (:atcCodes)
 			WHERE p.enabled = TRUE
 			ORDER BY p.date DESC
-		')->setParameter('atcCodes', $this->atcCodes)
+		')->setParameter('atcCodes', $atcCodes)
 			->getResult();
 
 		$results = array();
@@ -868,18 +873,17 @@ class ProductRepository extends EntityRepository
 			->getResult();
 	}
 
-	public function articlesByAtc($ProductID)
+	public function articlesByAtc($atcCodes)
 	{
 		$raw = $this->_em->createQuery('
 			SELECT a.id, a.title, a.link, r.rubrique rubrique, r.title rubriqueTitle, atc.ATCCode atcTitle
 			FROM VidalDrugBundle:Article a
-			JOIN a.atcCodes atc
-			JOIN atc.products product WITH product.ProductID = :ProductID
+			JOIN a.atcCodes atc WITH atc.ATCCode IN (:atcCodes)
 			JOIN a.rubrique r
 			WHERE a.enabled = TRUE
 				AND r.enabled = TRUE
 			ORDER BY a.date DESC
-		')->setParameter('ProductID', $ProductID)
+		')->setParameter('atcCodes', $atcCodes)
 			->getResult();
 
 		$results = array();
@@ -942,14 +946,13 @@ class ProductRepository extends EntityRepository
 			->getResult();
 	}
 
-	public function artsByAtc($ProductID)
+	public function artsByAtc($atcCodes)
 	{
 		$raw = $this->_em->createQuery('
 			SELECT a.id, a.title, a.link, r.url rubriqueUrl, r.title rubriqueTitle,
 				c.url categoryUrl, t.url typeUrl, atc.ATCCode atcTitle
 			FROM VidalDrugBundle:Art a
-			JOIN a.atcCodes atc
-			JOIN atc.products product WITH product.ProductID = :ProductID
+			JOIN a.atcCodes atc WITH atc.ATCCode IN (:atcCodes)
 			JOIN a.rubrique r
 			LEFT JOIN a.category c
 			LEFT JOIN a.type t
@@ -958,7 +961,7 @@ class ProductRepository extends EntityRepository
 				AND (t IS NULL OR t.enabled = TRUE)
 				AND (c IS NULL OR c.enabled = TRUE)
 			ORDER BY a.date DESC
-		')->setParameter('ProductID', $ProductID)
+		')->setParameter('atcCodes', $atcCodes)
 			->getResult();
 
 		$results = array();
