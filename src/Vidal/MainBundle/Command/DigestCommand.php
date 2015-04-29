@@ -104,37 +104,26 @@ class DigestCommand extends ContainerAwareCommand
 		# лимит зависит от времени
 		$hour = date('H');
 
-//		if ($hour == 3 || $hour == 4 || $hour == 5 ) {
-//			$limit = 15000;
-//		}
-//		elseif ($hour == 10 || $hour == 11 || $hour == 12) {
-//			$limit = 20000;
-//		}
-//		elseif ($hour == 17 || $hour == 18 || $hour == 19) {
-//			$limit = 25000;
-//		}
-//		else {
-//			return;
-//		}
+		if ($hour == 17 || $hour == 18 || $hour == 19) {
+			$limit = 5000;
+		}
+		elseif ($hour == 0 || $hour == 1 || $hour == 2) {
+			$limit = 10000;
+		}
+		elseif ($hour == 7 || $hour == 8 || $hour == 9) {
+			$limit = 15000;
+		}
+		elseif ($hour == 14 || $hour == 15 || $hour == 16) {
+			$limit = 20000;
+		}
+		else {
+			return;
+		}
 
-//		$countSend = $em->createQuery('
-//			SELECT COUNT(u.id)
-//			FROM VidalMainBundle:User u
-//			WHERE u.send = 1
-//		')->getSingleScalarResult();
-//
-//		if ($countSend >= $limit) {
-//			return;
-//		}
+		$countSend = $em->createQuery('SELECT COUNT(u.id) FROM VidalMainBundle:User u WHERE u.send = 1')
+			->getSingleScalarResult();
 
-		$total = $em->createQuery('
-			SELECT COUNT(u.id)
-			FROM VidalMainBundle:User u
-			WHERE send = TRUE
-				AND (u.primarySpecialty IN (31) or u.secondarySpecialty IN (31))
-		')->getSingleScalarResult();
-
-		if ($total > 1000) {
+		if ($countSend >= $limit) {
 			return;
 		}
 
@@ -145,7 +134,6 @@ class DigestCommand extends ContainerAwareCommand
 				AND u.enabled = TRUE
 				AND u.emailConfirmed = TRUE
 				AND u.digestSubscribed = TRUE
-				AND (u.primarySpecialty IN (31) or u.secondarySpecialty IN (31))
 			ORDER BY u.id ASC
 		")->setMaxResults($step)
 			->getResult();
