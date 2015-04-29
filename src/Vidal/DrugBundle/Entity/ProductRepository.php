@@ -333,16 +333,13 @@ class ProductRepository extends EntityRepository
 			->andWhere('p.MarketStatusID IN (1,2,7)')
 			->andWhere('p.inactive = FALSE');
 
-		# включать ли бады
-		$productTypes = array('DRUG', 'GOME');
+		# включать ли бады или медицинские изделия
 		if ($badIncluded) {
-			$productTypes[] = 'BAD';
+			$qb->andWhere("p.ProductTypeCode NOT IN ('SUBS')");
 		}
-		if ($miIncluded) {
-			$productTypes[] = 'MI';
+		else {
+			$qb->andWhere("p.ProductTypeCode NOT IN ('BAD', 'SUBS')");
 		}
-		$qb->andWhere('p.ProductTypeCode IN (:productTypes)')
-			->setParameter('productTypes', $productTypes);
 
 		$words = explode(' ', $q);
 
