@@ -413,8 +413,9 @@ class ArticleController extends Controller
 
 		if ($count == 1) {
 			$params['types']      = $em->getRepository('VidalDrugBundle:ArtType')->findByRubrique($rubrique);
+			$query                = $em->getRepository('VidalDrugBundle:Art')->getQueryByRubrique($rubrique);
 			$params['pagination'] = $this->get('knp_paginator')->paginate(
-				$em->getRepository('VidalDrugBundle:Art')->getQueryByRubrique($rubrique),
+				$query,
 				$request->query->get('p', 1),
 				self::ARTICLES_PER_PAGE
 			);
@@ -426,8 +427,9 @@ class ArticleController extends Controller
 			}
 			$params['type']       = $type;
 			$params['categories'] = $em->getRepository('VidalDrugBundle:ArtCategory')->findByType($type);
+			$query                = $em->getRepository('VidalDrugBundle:Art')->getQueryByType($type);
 			$params['pagination'] = $this->get('knp_paginator')->paginate(
-				$em->getRepository('VidalDrugBundle:Art')->getQueryByType($type),
+				$query,
 				$request->query->get('p', 1),
 				self::ARTICLES_PER_PAGE
 			);
@@ -440,8 +442,9 @@ class ArticleController extends Controller
 			if (!$type || !$type->getEnabled() || !$category || !$category->getEnabled()) {
 				throw $this->createNotFoundException();
 			}
+			$query                = $em->getRepository('VidalDrugBundle:Art')->getQueryByCategory($params['category']);
 			$params['pagination'] = $this->get('knp_paginator')->paginate(
-				$em->getRepository('VidalDrugBundle:Art')->getQueryByCategory($params['category']),
+				$query,
 				$request->query->get('p', 1),
 				self::ARTICLES_PER_PAGE
 			);
@@ -463,6 +466,20 @@ class ArticleController extends Controller
 		}
 		$titles[]        = $params['rubrique'];
 		$params['title'] = implode(' | ', $titles);
+
+		# og-мета для разделов
+		if (!isset($params['article'])) {
+			$titles            = array_reverse($titles);
+			$params['ogTitle'] = implode('. ', $titles);
+			$descriptions      = array();
+			if (isset($query)) {
+				$arts = $query->getResult();
+				foreach ($arts as $art) {
+					$descriptions[] = $this->strip($art->getTitle());
+				}
+				$params['description'] = implode('. ', $descriptions);
+			}
+		}
 
 		# отображение отдельной статьи своим шаблоном
 		if (isset($params['article'])) {
@@ -486,6 +503,15 @@ class ArticleController extends Controller
 			}
 
 			return $this->render('VidalMainBundle:Article:art_item.html.twig', $params);
+		}
+
+		if (!$this->getUser()) {
+			$params['title']          = 'Закрытый раздел';
+			$params['menu']           = 'vracham';
+			$params['moduleId']       = 7;
+			$params['loginAuthError'] = false;
+
+			return $this->render('VidalMainBundle:Auth:login.html.twig', $params);
 		}
 
 		if ($response = $this->checkRole()) {
