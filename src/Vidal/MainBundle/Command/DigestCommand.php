@@ -134,7 +134,7 @@ class DigestCommand extends ContainerAwareCommand
 				AND u.enabled = TRUE
 				AND u.emailConfirmed = TRUE
 				AND u.digestSubscribed = TRUE
-				AND (u.primarySpecialty_id IN (8,19) or u.seconarySpecialty_id IN (8,19))
+				AND (u.primarySpecialty_id IN (8,19) or u.secondarySpecialty_id IN (8,19))
 			ORDER BY u.id ASC
 		")->setMaxResults($step)
 			->getResult();
