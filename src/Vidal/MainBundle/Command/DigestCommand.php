@@ -127,6 +127,17 @@ class DigestCommand extends ContainerAwareCommand
 //			return;
 //		}
 
+		$total = $em->createQuery('
+			SELECT COUNT(u.id)
+			FROM VidalMainBundle:User u
+			WHERE send = TRUE
+				AND (u.primarySpecialty IN (31) or u.secondarySpecialty IN (31))
+		')->getSingleScalarResult();
+
+		if ($total > 1000) {
+			return;
+		}
+
 		$users = $em->createQuery("
 			SELECT u.username, u.id, DATE_FORMAT(u.created, '%Y-%m-%d_%H:%i:%s') as created, u.firstName
 			FROM VidalMainBundle:User u
@@ -134,7 +145,7 @@ class DigestCommand extends ContainerAwareCommand
 				AND u.enabled = TRUE
 				AND u.emailConfirmed = TRUE
 				AND u.digestSubscribed = TRUE
-				AND (u.primarySpecialty_id IN (8,19) or u.secondarySpecialty_id IN (8,19))
+				AND (u.primarySpecialty IN (31) or u.secondarySpecialty IN (31))
 			ORDER BY u.id ASC
 		")->setMaxResults($step)
 			->getResult();
