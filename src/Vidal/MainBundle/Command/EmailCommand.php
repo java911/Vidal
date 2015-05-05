@@ -24,50 +24,15 @@ class EmailCommand extends ContainerAwareCommand
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		ini_set('memory_limit', -1);
-		$output->writeln('--- vidal:email started');
+		ini_set('max_execution_time', 0);
+		ini_set('set_time_limit', 0);
 
-		$this->container  = $container = $this->getContainer();
-		$em               = $container->get('doctrine')->getManager();
-		$this->templating = $templating = $container->get('templating');
-
-		# получаем список адресов по рассылке
-		$doctors = $em->createQuery('
-			SELECT u.username
-			FROM VidalMainBundle:User u
-		')->getResult();
-
-		$emails = array();
-		foreach ($doctors as $doctor) {
-			$emails[] = $doctor['username'];
+		for ($i = 1; $i <= 10; $i++) {
+			$output->writeln($i);
+			sleep(30);
 		}
 
-		# разметка дайджеста
-		$subject = 'Тестовая рассылка';
-		$html    = $templating->render('VidalMainBundle:Email:email.html.twig');
-
-		#testing
-		$emails = array(
-			//'si-bu@yandex.ru',
-			//'feijfrdug@mail.ru',
-			//'ovshum@rambler.ru',
-			//'m.yudintseva@vidal.ru',
-			//'alfa__omega@mail.ru',
-			//'meola243@gmail.com',
-			//'tan-zh@yandex.ru',
-			'7binary@bk.ru',
-			'7binary@gmail.com',
-		);
-
-		# рассылка по 100 пользователям за цикл
-		for ($i = 0, $c = count($emails); $i < $c; $i++) {
-			$result = $this->send($emails[$i], $html, $subject);
-
-			if ($i && ($i % 50) == 0) {
-				sleep(30);
-			}
-		}
-
-		$output->writeln('+++ vidal:email completed!');
+		$output->writeln('completed!');
 	}
 
 	public function send($email, $html, $subject)
