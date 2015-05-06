@@ -69,16 +69,10 @@ class DeliveryController extends Controller
 				$em->createQuery('UPDATE VidalMainBundle:Digest d SET d.progress = 1')->execute();
 				$this->get('session')->getFlashBag()->add('test', 'Рассылка запущена (в течении 5 минут начнется отправка)');
 
-				$kernel = $this->get('kernel');
-				$cmd    = 'nohup php ' . $kernel->getRootDir() . '/console vidal:digest --all > /dev/null 2>&1 &';
-
 				# если команда уже не запущена, то запускаем на выполнение
-				@exec("/bin/ps -axw | grep vidal:digest", $out);
-				if (1 == count($out)) {
-					$kernel = $container->get('kernel');
-					$cmd    = 'nohup php ' . $kernel->getRootDir() . '/console vidal:digest --all > /dev/null 2>&1 &';
-					@system($cmd);
-				}
+				$kernel = $this->get('kernel');
+				$cmd    = 'php ' . $kernel->getRootDir() . '/console vidal:digest:start';
+				@system($cmd);
 
 				return $this->redirect($this->generateUrl('delivery'));
 			}
