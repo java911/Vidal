@@ -69,10 +69,6 @@ class DeliveryController extends Controller
 				$em->createQuery('UPDATE VidalMainBundle:Digest d SET d.progress = 1')->execute();
 				$this->get('session')->getFlashBag()->add('test', 'Рассылка запущена (в течении нескольких минут начнется отправка)');
 
-				$kernel = $this->get('kernel');
-				$process = new \Symfony\Component\Process\Process('nohup php '. $kernel->getRootDir() .'/console vidal:digest --all > /dev/null 2>&1 &');
-				$process->run();
-
 				return $this->redirect($this->generateUrl('delivery'));
 			}
 
