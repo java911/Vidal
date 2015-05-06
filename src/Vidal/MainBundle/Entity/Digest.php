@@ -245,6 +245,6 @@ class Digest extends BaseEntity
 	 */
 	public function setTotalLeft($totalLeft)
 	{
-		$this->totalLeft = $totalLeft;
+		$this->totalLeft = $totalLeft < 0 ? 0 : $totalLeft;
 	}
 }

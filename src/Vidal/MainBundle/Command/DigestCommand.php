@@ -120,8 +120,7 @@ class DigestCommand extends ContainerAwareCommand
 			foreach ($specialties as $specialty) {
 				$ids[] = $specialty->getId();
 			}
-			//$qb->andWhere('(u.primarySpecialty IN (:ids) OR u.secondarySpecialty IN (:ids))')->setParameter('ids', $ids);
-			$qb->andWhere("u.username = '7binary@bk.ru'");
+			$qb->andWhere('(u.primarySpecialty IN (:ids) OR u.secondarySpecialty IN (:ids))')->setParameter('ids', $ids);
 		}
 
 		$users = $qb->getQuery()->getResult();
@@ -135,8 +134,7 @@ class DigestCommand extends ContainerAwareCommand
 			->andWhere('u.digestSubscribed = 1');
 
 		if (isset($ids)) {
-			//$qb->andWhere('(u.primarySpecialty IN (:ids) OR u.secondarySpecialty IN (:ids))')->setParameter('ids', $ids);
-			$qb->andWhere("u.username = '7binary@bk.ru'");
+			$qb->andWhere('(u.primarySpecialty IN (:ids) OR u.secondarySpecialty IN (:ids))')->setParameter('ids', $ids);
 		}
 
 		$total = $qb->getQuery()->getSingleScalarResult();
