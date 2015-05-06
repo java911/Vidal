@@ -26,11 +26,11 @@ class DigestStartCommand extends ContainerAwareCommand
 			exec("pgrep digest", $pids);
 			if (empty($pids)) {
 				$kernel  = $container->get('kernel');
-				$cmd     = 'php ' . $kernel->getRootDir() . '/console vidal:digest --all';
+				$cmd     = 'nohup php ' . $kernel->getRootDir() . '/console vidal:digest --all > /dev/null 2>&1 &';
 				$process = new \Symfony\Component\Process\Process($cmd);
 
-				$process->run();
-				$output->writeln('+++ started');
+				$process->start();
+				$output->writeln('+++ started: ' . $cmd);
 			}
 			else {
 				$output->writeln('--- digest already running');
