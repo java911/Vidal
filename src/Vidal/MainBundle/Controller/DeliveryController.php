@@ -73,7 +73,7 @@ class DeliveryController extends Controller
 				# если команда уже не запущена, то запускаем на выполнение
 				exec("/bin/ps -axw", $out);
 				if (!preg_match('/vidal:digest --all/', implode(' ', $out))) {
-					$cmd = 'nohup php ' . $this->get('kernel')->getRootDir() . '/console vidal:digest --all > /dev/null 2>&1 &';
+					$cmd = 'nohup php ' . $this->get('kernel')->getRootDir() . '/console vidal:digest --all > /home/twigavid/c.log 2>&1 &';
 					system($cmd);
 				}
 

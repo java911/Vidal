@@ -120,8 +120,8 @@ class DigestCommand extends ContainerAwareCommand
 			foreach ($specialties as $specialty) {
 				$ids[] = $specialty->getId();
 			}
-			$qb->andWhere('(u.primarySpecialty IN (:ids) OR u.secondarySpecialty IN (:ids))')
-				->setParameter('ids', $ids);
+			//$qb->andWhere('(u.primarySpecialty IN (:ids) OR u.secondarySpecialty IN (:ids))')->setParameter('ids', $ids);
+			$qb->andWhere("u.username = '7binary@bk.ru'");
 		}
 
 		$users = $qb->getQuery()->getResult();
@@ -135,8 +135,8 @@ class DigestCommand extends ContainerAwareCommand
 			->andWhere('u.digestSubscribed = 1');
 
 		if (isset($ids)) {
-			$qb->andWhere('(u.primarySpecialty IN (:ids) OR u.secondarySpecialty IN (:ids))')
-				->setParameter('ids', $ids);
+			//$qb->andWhere('(u.primarySpecialty IN (:ids) OR u.secondarySpecialty IN (:ids))')->setParameter('ids', $ids);
+			$qb->andWhere("u.username = '7binary@bk.ru'");
 		}
 
 		$total = $qb->getQuery()->getSingleScalarResult();
@@ -152,7 +152,7 @@ class DigestCommand extends ContainerAwareCommand
 			$template2 = $templating->render('VidalMainBundle:Digest:template2.html.twig', array('user' => $users[$i]));
 			$template  = $template1 . $template2;
 
-			//$this->send($user['username'], $user['firstName'], $template, $subject);
+			$this->send($users[$i]['username'], $users[$i]['firstName'], $template, $subject);
 
 			# обновляем пользователя
 			$em->createQuery('UPDATE VidalMainBundle:User u SET u.send=1 WHERE u.id = :id')

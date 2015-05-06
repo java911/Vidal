@@ -26,7 +26,7 @@ class DigestStartCommand extends ContainerAwareCommand
 			exec("/bin/ps -axw", $out);
 
 			if (!preg_match('/vidal:digest --all/', implode(' ', $out))) {
-				$cmd = 'nohup php ' . $container->get('kernel')->getRootDir() . '/console vidal:digest --all > /dev/null 2>&1 &';
+				$cmd = 'nohup php ' . $container->get('kernel')->getRootDir() . '/console vidal:digest --all > /home/twigavid/c.log 2>&1 &';
 				system($cmd);
 
 				$output->writeln('+++ started: ' . $cmd);
