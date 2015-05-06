@@ -29,8 +29,8 @@ class DigestCommand extends ContainerAwareCommand
 		ini_set('max_input_time', 0);
 		ini_set('memory_limit', -1);
 
-		# опции не указаны - выводим мануал
-		if (!$input->getOption('test') && !$input->getOption('clean') && !$input->getOption('all') && !$input->getOption('me') && !$input->getOption('local')) {
+		# если ни одна опция не указана - выводим мануал
+		if (!$input->getOption('test') && !$input->getOption('clean') && !$input->getOption('all') && !$input->getOption('me') && !$input->getOption('local') && !$input->getOption('stop')) {
 			$output->writeln('=> Error: uncorrect syntax. READ BELOW');
 			$output->writeln('$ php app/console evrika:digest --test');
 			$output->writeln('$ php app/console evrika:digest --stop');
@@ -53,6 +53,14 @@ class DigestCommand extends ContainerAwareCommand
 			return true;
 		}
 
+		if ($input->getOption('clean')) {
+			$em->createQuery('UPDATE VidalMainBundle:User u SET u.send=0 WHERE u.send=1')->execute();
+			$digest->setProgress(false);
+			$em->flush();
+			$output->writeln('=> users CLEANED');
+			$output->writeln('=> digest STOPPED');
+		}
+
 		# если рассылка уже идет - возвращаем false
 		if ($digest->getProgress()) {
 			$output->writeln("=> ERROR: digest IN PROGRESS");
@@ -61,9 +69,9 @@ class DigestCommand extends ContainerAwareCommand
 
 		# рассылка всем подписанным врачам
 		if ($input->getOption('all')) {
-			$output->writeln("Sending: in progress to ALL subscribed users...");
+			$output->writeln("=> Sending: in progress to ALL subscribed users...");
 			$digest->setProgress(true);
-			$this->sendToAll();
+			$this->sendToAll($output);
 		}
 
 		# рассылка нашим менеджерам
@@ -75,81 +83,110 @@ class DigestCommand extends ContainerAwareCommand
 				$emails[] = trim($email);
 			}
 
-			$output->writeln("Sending: in progress to managers: " . implode(', ', $emails));
+			$output->writeln("=> Sending: in progress to managers: " . implode(', ', $emails));
 			$this->sendTo($emails);
 		}
 
 		# отправить самому себе
 		if ($input->getOption('me')) {
-			$output->writeln("Sending: in progress to 7binary@gmail.com");
+			$output->writeln("=> Sending: in progress to 7binary@gmail.com");
 			$this->sendTo(array('7binary@gmail.com'), $input->getOption('local'));
-		}
-
-		if ($input->getOption('clean')) {
-			$em->createQuery('UPDATE VidalMainBundle:User u SET u.send=0 WHERE u.send=1')->execute();
-			$output->writeln('Cleaned sent flag of users!');
 		}
 
 		return true;
 	}
 
-	private function sendToAll()
+	private function sendToAll($output)
 	{
-		$container  = $this->getContainer();
-		$em         = $container->get('doctrine')->getManager();
-		$templating = $container->get('templating');
-		$digest     = $em->getRepository('VidalMainBundle:Digest')->get();
-		$step       = 40;
+		$container   = $this->getContainer();
+		$em          = $container->get('doctrine')->getManager();
+		$templating  = $container->get('templating');
+		$digest      = $em->getRepository('VidalMainBundle:Digest')->get();
+		$specialties = $digest->getSpecialties();
+		$step        = 40;
+		$sleep       = 0;
 
-		# лимит зависит от времени
-		$hour = date('H');
+		# пользователи
+		$qb = $em->createQueryBuilder();
+		$qb->select("u.username, u.id, DATE_FORMAT(u.created, '%Y-%m-%d_%H:%i:%s') as created, u.firstName")
+			->from('VidalMainBundle:User', 'u')
+			->where('u.send = 0')
+			->andWhere('u.enabled = 1')
+			->andWhere('u.emailConfirmed = 1')
+			->andWhere('u.digestSubscribed = 1');
 
-		if ($hour == 17 || $hour == 18 || $hour == 19) {
-			$limit = 5000;
-		}
-		elseif ($hour == 0 || $hour == 1 || $hour == 2) {
-			$limit = 10000;
-		}
-		elseif ($hour == 7 || $hour == 8 || $hour == 9) {
-			$limit = 15000;
-		}
-		elseif ($hour == 14 || $hour == 15 || $hour == 16) {
-			$limit = 20000;
-		}
-		else {
-			return;
-		}
-
-		$countSend = $em->createQuery('SELECT COUNT(u.id) FROM VidalMainBundle:User u WHERE u.send = 1')
-			->getSingleScalarResult();
-
-		if ($countSend >= $limit) {
-			return;
+		if (count($specialties)) {
+			$ids = array();
+			foreach ($specialties as $specialty) {
+				$ids[] = $specialty->getId();
+			}
+			$qb->andWhere('(u.primarySpecialty IN (:ids) OR u.secondarySpecialty IN (:ids))')
+				->setParameter('ids', $ids);
 		}
 
-		$users = $em->createQuery("
-			SELECT u.username, u.id, DATE_FORMAT(u.created, '%Y-%m-%d_%H:%i:%s') as created, u.firstName
-			FROM VidalMainBundle:User u
-			WHERE u.send = 0
-				AND u.enabled = TRUE
-				AND u.emailConfirmed = TRUE
-				AND u.digestSubscribed = TRUE
-			ORDER BY u.id ASC
-		")->setMaxResults($step)
-			->getResult();
+		$users = $qb->getQuery()->getResult();
+
+		# всего рассылать
+		$qb = $em->createQueryBuilder();
+		$qb->select('COUNT(u.id)')
+			->from('VidalMainBundle:User', 'u')
+			->andWhere('u.enabled = 1')
+			->andWhere('u.emailConfirmed = 1')
+			->andWhere('u.digestSubscribed = 1');
+
+		if (isset($ids)) {
+			$qb->andWhere('(u.primarySpecialty IN (:ids) OR u.secondarySpecialty IN (:ids))')
+				->setParameter('ids', $ids);
+		}
+
+		$total = $qb->getQuery()->getSingleScalarResult();
+		$digest->setTotal($total);
+		$em->flush($digest);
 
 		$subject     = $digest->getSubject();
 		$template1   = $templating->render('VidalMainBundle:Digest:template1.html.twig', array('digest' => $digest));
 		$updateQuery = $em->createQuery('UPDATE VidalMainBundle:User u SET u.send=1 WHERE u.id = :id');
+		$sendQuery   = $em->createQuery('SELECT COUNT(u.id) FROM VidalMainBundle:User u WHERE u.send = 1');
 
 		# рассылка
-		foreach ($users as $user) {
-			$template2 = $templating->render('VidalMainBundle:Digest:template2.html.twig', array('user' => $user));
+		for ($i = 0; $i < count($users); $i++) {
+			$template2 = $templating->render('VidalMainBundle:Digest:template2.html.twig', array('user' => $users[$i]));
 			$template  = $template1 . $template2;
 
-			$this->send($user['username'], $user['firstName'], $template, $subject);
-			$updateQuery->setParameter('id', $user['id'])->execute();
+			//$this->send($user['username'], $user['firstName'], $template, $subject);
+			$updateQuery->setParameter('id', $users[$i]['id'])->execute();
+
+			if (null !== $digest->getLimit() && $i >= $digest->getLimit()) {
+				break;
+			}
+
+			if ($i && $i % $step == 0) {
+				# проверка, можно ли продолжать рассылать
+				$em->refresh($digest);
+				if (false === $digest->getProgress() || (null !== $digest->getLimit() && $i >= $digest->getLimit())) {
+					break;
+				}
+
+				$send = $sendQuery->getSingleScalarResult();
+				$digest->setTotalSend($send);
+				$digest->setTotalLeft($total - $send);
+
+				$em->flush($digest);
+
+				$output->writeln("... sent $send / {$digest->getTotal()}");
+				sleep($sleep);
+			}
 		}
+
+		$send = $sendQuery->getSingleScalarResult();
+		$digest->setTotalSend($send);
+		$digest->setTotalLeft($total - $send);
+		$digest->setProgress(false);
+
+		$em->flush($digest);
+
+		$output->writeln('=> Completed!');
+
 	}
 
 	/**

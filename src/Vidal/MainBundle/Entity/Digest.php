@@ -33,6 +33,18 @@ class Digest extends BaseEntity
 	/** @ORM\Column(type="string", length=255) */
 	protected $font;
 
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $limit;
+
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $total;
+
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $totalSend;
+
+	/** @ORM\Column(type="integer", nullable=true) */
+	protected $totalLeft;
+
 	public function __construct()
 	{
 		$this->specialties = new ArrayCollection();
@@ -164,5 +176,75 @@ class Digest extends BaseEntity
 	public function setFont($font)
 	{
 		$this->font = $font;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getLimit()
+	{
+		return $this->limit;
+	}
+
+	/**
+	 * @param mixed $limit
+	 */
+	public function setLimit($limit)
+	{
+		$this->limit = $limit;
+	}
+
+	public function limitMunus($step)
+	{
+		$limit       = $this->limit - $step;
+		$this->limit = $limit < 0 ? 0 : $limit;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTotal()
+	{
+		return $this->total;
+	}
+
+	/**
+	 * @param mixed $total
+	 */
+	public function setTotal($total)
+	{
+		$this->total = $total;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTotalSend()
+	{
+		return $this->totalSend;
+	}
+
+	/**
+	 * @param mixed $totalSend
+	 */
+	public function setTotalSend($totalSend)
+	{
+		$this->totalSend = $totalSend;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTotalLeft()
+	{
+		return $this->totalLeft;
+	}
+
+	/**
+	 * @param mixed $totalLeft
+	 */
+	public function setTotalLeft($totalLeft)
+	{
+		$this->totalLeft = $totalLeft;
 	}
 }

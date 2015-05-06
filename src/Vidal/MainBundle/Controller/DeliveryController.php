@@ -30,6 +30,11 @@ class DeliveryController extends Controller
 			->add('allSpecialties', null, array('label' => 'Всем специальностям', 'required' => false))
 			->add('font', null, array('label' => 'Название шрифта без кавычек', 'required' => true))
 			->add('emails', null, array('label' => 'Тестовые e-mail через ;', 'required' => false))
+			->add('total', null, array('label' => 'Всего к отправке', 'required' => false, 'disabled' => true))
+			->add('totalSend', null, array('label' => 'Уже отправлено', 'required' => false, 'disabled' => true))
+			->add('totalLeft', null, array('label' => 'Осталось отправить', 'required' => false, 'disabled' => true))
+			->add('limit', null, array('label' => 'Лимит писем', 'required' => false))
+			->add('progress', null, array('label' => 'Рассылка запущена', 'required' => false, 'disabled' => true))
 			->add('test', 'submit', array('label' => 'Разослать на тестовые', 'attr' => array('class' => 'btn-red')))
 			->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn-red')))
 			->getForm();
@@ -37,14 +42,45 @@ class DeliveryController extends Controller
 		$form->handleRequest($request);
 
 		if ($form->isValid()) {
-			$em->flush();
 			$formData = $request->request->get('form');
+			$specialties = $digest->getSpecialties();
 
 			if (isset($formData['test'])) {
 				$emails = isset($formData['emails']) ? explode(';', $formData['emails']) : array();
 				$this->testTo($emails, $digest);
 				$this->get('session')->getFlashBag()->add('test', true);
 			}
+
+			# считаем, сколько всего к отправке
+			$qb = $em->createQueryBuilder();
+			$qb->select("COUNT(u.id)")
+				->from('VidalMainBundle:User', 'u')
+				->andWhere('u.enabled = 1')
+				->andWhere('u.emailConfirmed = 1')
+				->andWhere('u.digestSubscribed = 1');
+
+			if (count($specialties)) {
+				$ids = array();
+				foreach ($specialties as $specialty) {
+					$ids[] = $specialty->getId();
+				}
+				$qb->andWhere('u.primarySpecialty IN (:ids) OR u.secondarySpecialty IN (:ids)')
+					->setParameter('ids', $ids);
+			}
+
+			$total = $qb->getQuery()->getSingleScalarResult();
+			$digest->setTotal($total);
+
+			# считаем, сколько отправлено
+			$totalSend = $em->createQuery('SELECT COUNT(u.id) FROM VidalMainBundle:User u WHERE u.send = 1')
+				->getSingleScalarResult();
+			$digest->setTotalSend($totalSend);
+
+			# cчитаем, сколько осталось отправить
+			$left = $digest->getTotal() - $digest->getTotalSend();
+			$digest->setTotalLeft($left < 0 ? 0 : $left);
+
+			$em->flush();
 
 			return $this->redirect($this->generateUrl('delivery'));
 		}
