@@ -62,8 +62,8 @@ class DigestCommand extends ContainerAwareCommand
 		}
 
 		# если рассылка уже идет - возвращаем false
-		if ($digest->getProgress()) {
-			$output->writeln("=> ERROR: digest IN PROGRESS");
+		exec("pgrep digest", $pids);
+		if (!empty($pids)) {
 			return false;
 		}
 

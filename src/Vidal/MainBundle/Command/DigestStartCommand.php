@@ -23,17 +23,21 @@ class DigestStartCommand extends ContainerAwareCommand
 		$digest = $em->getRepository('VidalMainBundle:Digest')->get();
 
 		if (true == $digest->getProgress()) {
-			$kernel       = $container->get('kernel');
-			$cmd          = 'php ' . $kernel->getRootDir() . '/console vidal:digest --all';
-			$foundProcess = shell_exec("which $cmd");
-
-			if (empty($foundProcess)) {
+			exec("pgrep digest", $pids);
+			if (empty($pids)) {
+				$kernel  = $container->get('kernel');
+				$cmd     = 'php ' . $kernel->getRootDir() . '/console vidal:digest --all';
 				$process = new \Symfony\Component\Process\Process($cmd);
+
 				$process->run();
-				$output->writeln('=> started');
+				$output->writeln('+++ started');
+			}
+			else {
+				$output->writeln('--- digest already running');
 			}
 		}
-
-		$output->writeln('=> no');
+		else {
+			$output->writeln('--- progress is zero');
+		}
 	}
 }
