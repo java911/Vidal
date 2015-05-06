@@ -70,9 +70,14 @@ class DeliveryController extends Controller
 				$this->get('session')->getFlashBag()->add('test', 'Рассылка запущена (в течении 5 минут начнется отправка)');
 
 				# если команда уже не запущена, то запускаем на выполнение
-				$kernel = $this->get('kernel');
-				$cmd    = 'php ' . $kernel->getRootDir() . '/console vidal:digest:start';
-				@system($cmd);
+				exec("/bin/ps -axw", $out);
+				if (!preg_match('/vidal:digest --all/', $out)) {
+					$kernel  = $this->get('kernel');
+					$cmd     = 'nohup php ' . $kernel->getRootDir() . '/console vidal:digest --all > /dev/null 2>&1 &';
+					system($cmd);
+
+					$output->writeln('+++ started: ' . $cmd);
+				}
 
 				return $this->redirect($this->generateUrl('delivery'));
 			}
