@@ -104,7 +104,7 @@ class DigestCommand extends ContainerAwareCommand
 		$digest      = $em->getRepository('VidalMainBundle:Digest')->get();
 		$specialties = $digest->getSpecialties();
 		$step        = 40;
-		$sleep       = 60;
+		$sleep       = 0;
 
 		# пользователи
 		$qb = $em->createQueryBuilder();
@@ -143,10 +143,9 @@ class DigestCommand extends ContainerAwareCommand
 		$digest->setTotal($total);
 		$em->flush($digest);
 
-		$subject     = $digest->getSubject();
-		$template1   = $templating->render('VidalMainBundle:Digest:template1.html.twig', array('digest' => $digest));
-		$updateQuery = $em->createQuery('UPDATE VidalMainBundle:User u SET u.send=1 WHERE u.id = :id');
-		$sendQuery   = $em->createQuery('SELECT COUNT(u.id) FROM VidalMainBundle:User u WHERE u.send = 1');
+		$subject   = $digest->getSubject();
+		$template1 = $templating->render('VidalMainBundle:Digest:template1.html.twig', array('digest' => $digest));
+		$sendQuery = $em->createQuery('SELECT COUNT(u.id) FROM VidalMainBundle:User u WHERE u.send = 1');
 
 		# рассылка
 		for ($i = 0; $i < count($users); $i++) {
@@ -154,7 +153,10 @@ class DigestCommand extends ContainerAwareCommand
 			$template  = $template1 . $template2;
 
 			//$this->send($user['username'], $user['firstName'], $template, $subject);
-			$updateQuery->setParameter('id', $users[$i]['id'])->execute();
+			$em = $container->get('doctrine')->getManager();
+			$em->createQuery('UPDATE VidalMainBundle:User u SET u.send=1 WHERE u.id = :id')
+				->setParameter('id', $users[$i]['id'])
+				->execute();
 
 			if (null !== $digest->getLimit() && $i >= $digest->getLimit()) {
 				break;
@@ -167,7 +169,8 @@ class DigestCommand extends ContainerAwareCommand
 					break;
 				}
 
-				$send = $sendQuery->getSingleScalarResult();
+				$send = $em->createQuery('SELECT COUNT(u.id) FROM VidalMainBundle:User u WHERE u.send = 1')
+					->getSingleScalarResult();
 				$digest->setTotalSend($send);
 				$digest->setTotalLeft($total - $send);
 
