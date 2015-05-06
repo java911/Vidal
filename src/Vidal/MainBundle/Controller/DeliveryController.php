@@ -54,10 +54,8 @@ class DeliveryController extends Controller
 
 			if (isset($formData['clean'])) {
 				$em->createQuery('UPDATE VidalMainBundle:User u SET u.send=0 WHERE u.send=1')->execute();
-				$em->createQuery('UPDATE VidalMainBundle:Digest d SET d.progress = 0')->execute();
+				$digest->setProgress(false);
 				$this->get('session')->getFlashBag()->add('test', 'Разосланные обнулены');
-
-				return $this->redirect($this->generateUrl('delivery'));
 			}
 
 			if (isset($formData['stop'])) {
@@ -70,6 +68,10 @@ class DeliveryController extends Controller
 			if (isset($formData['start'])) {
 				$em->createQuery('UPDATE VidalMainBundle:Digest d SET d.progress = 1')->execute();
 				$this->get('session')->getFlashBag()->add('test', 'Рассылка запущена (в течении нескольких минут начнется отправка)');
+
+				$kernel = $this->get('kernel');
+				$process = new \Symfony\Component\Process\Process('nohup php '. $kernel->getRootDir() .'/console vidal:digest --all > /dev/null 2>&1 &');
+				$process->run();
 
 				return $this->redirect($this->generateUrl('delivery'));
 			}
