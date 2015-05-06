@@ -34,21 +34,61 @@ class DeliveryController extends Controller
 			->add('totalSend', null, array('label' => 'Уже отправлено', 'required' => false, 'disabled' => true))
 			->add('totalLeft', null, array('label' => 'Осталось отправить', 'required' => false, 'disabled' => true))
 			->add('limit', null, array('label' => 'Лимит писем', 'required' => false))
-			->add('progress', null, array('label' => 'Рассылка запущена', 'required' => false, 'disabled' => true))
-			->add('test', 'submit', array('label' => 'Разослать на тестовые', 'attr' => array('class' => 'btn-red')))
 			->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn-red')))
-			->getForm();
+			->add('test', 'submit', array('label' => 'Разослать на тестовые', 'attr' => array('class' => 'btn-red')))
+			->add('clean', 'submit', array('label' => 'Обнулить разосланные', 'attr' => array('class' => 'btn-red')));
+
+		if (true == $digest->getProgress()) {
+			$form->add('stop', 'submit', array('label' => 'Остановить рассылку', 'attr' => array('class' => 'btn-red')));
+		}
+		else {
+			$form->add('start', 'submit', array('label' => 'Запустить рассылку', 'attr' => array('class' => 'btn-red')));
+		}
+
+		$form = $form->getForm();
 
 		$form->handleRequest($request);
 
 		if ($form->isValid()) {
 			$formData = $request->request->get('form');
+
+			if (isset($formData['clean'])) {
+				$em->createQuery('UPDATE VidalMainBundle:User u SET u.send=0 WHERE u.send=1')->execute();
+				$em->createQuery('UPDATE VidalMainBundle:Digest d SET d.progress = 0')->execute();
+				$this->get('session')->getFlashBag()->add('test', 'Разосланные обнулены');
+
+				return $this->redirect($this->generateUrl('delivery'));
+			}
+
+			if (isset($formData['stop'])) {
+				$em->createQuery('UPDATE VidalMainBundle:Digest d SET d.progress = 0')->execute();
+				$this->get('session')->getFlashBag()->add('test', 'Рассылка остановлена');
+
+				return $this->redirect($this->generateUrl('delivery'));
+			}
+
+			if (isset($formData['start'])) {
+				$em->createQuery('UPDATE VidalMainBundle:Digest d SET d.progress = 1')->execute();
+				$this->get('session')->getFlashBag()->add('test', 'Рассылка запущена (в течении нескольких минут начнется отправка)');
+
+				return $this->redirect($this->generateUrl('delivery'));
+			}
+
+			if (isset($formData['start'])) {
+				$em->createQuery('UPDATE VidalMainBundle:User u SET u.send=0 WHERE u.send=1')->execute();
+				$em->createQuery('UPDATE VidalMainBundle:Digest d SET d.progress = 0')->execute();
+				$em->flush();
+				$this->get('session')->getFlashBag()->add('test', 'Обнулили разосланных и остановили рассылку');
+
+				return $this->redirect($this->generateUrl('delivery'));
+			}
+
 			$specialties = $digest->getSpecialties();
 
 			if (isset($formData['test'])) {
 				$emails = isset($formData['emails']) ? explode(';', $formData['emails']) : array();
 				$this->testTo($emails, $digest);
-				$this->get('session')->getFlashBag()->add('test', true);
+				$this->get('session')->getFlashBag()->add('test', 'Было отправлено на адреса: ' . $formData['emails']);
 			}
 
 			# считаем, сколько всего к отправке
@@ -81,6 +121,8 @@ class DeliveryController extends Controller
 			$digest->setTotalLeft($left < 0 ? 0 : $left);
 
 			$em->flush();
+
+			$this->get('session')->getFlashBag()->add('test', 'Изменения сохранены');
 
 			return $this->redirect($this->generateUrl('delivery'));
 		}

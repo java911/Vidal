@@ -8,9 +8,9 @@
 
 {% block middle %}
 	<div class="outer">
-		{% if app.session.flashbag.get('test')|length %}
-			<div class="emails">Было отправлено на адреса: {{ digest.emails }}</div>
-		{% endif %}
+		{% for msg in app.session.flashbag.get('test') %}
+			<div class="msg">{{ msg }}</div>
+		{% endfor %}
 
 		{% include 'VidalMainBundle:Digest:render.html.twig' with {'digest':digest} %}
 
@@ -33,6 +33,12 @@
 		{{ form_widget(form.text) }}
 		{{ form_widget(form) }}
 	</form>
+
+	{% if digest.progress %}
+		<div class="progress">Рассылка запущена</div>
+	{% else %}
+
+	{% endif %}
 
 	{# Подписанные и отписавшиеся #}
 	<div class="subs">
@@ -75,10 +81,15 @@
 		.outer {
 			margin: 40px 0;
 		}
-		.emails {
+		.progress {
+			background: lightgreen;
+			padding:    6px 10px;
+			margin:     20px 0 10px;
+		}
+		.msg {
 			background:    lightgreen;
 			padding:       6px 10px;
-			margin-bottom: 30px;
+			margin-bottom: 15px;
 		}
 		#delivery_form select, #delivery_form input[type="text"], #status_form input[type="text"] {
 			width: 600px;
@@ -117,6 +128,10 @@
 			margin-left: 0;
 			width:       18px;
 			height:      18px;
+		}
+		.btn-red {
+			width:         325px;
+			border-radius: 4px;
 		}
 	</style>
 {% endblock %}
