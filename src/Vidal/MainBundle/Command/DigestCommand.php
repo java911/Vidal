@@ -153,7 +153,8 @@ class DigestCommand extends ContainerAwareCommand
 			$template  = $template1 . $template2;
 
 			//$this->send($user['username'], $user['firstName'], $template, $subject);
-			$em = $container->get('doctrine')->getManager();
+
+			# обновляем пользователя
 			$em->createQuery('UPDATE VidalMainBundle:User u SET u.send=1 WHERE u.id = :id')
 				->setParameter('id', $users[$i]['id'])
 				->execute();
@@ -177,7 +178,10 @@ class DigestCommand extends ContainerAwareCommand
 				$em->flush($digest);
 
 				$output->writeln("... sent $send / {$digest->getTotal()}");
+
+				$em->getConnection()->close();
 				sleep($sleep);
+				$em->getConnection()->connect();
 			}
 		}
 
