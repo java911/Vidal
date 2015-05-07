@@ -104,7 +104,7 @@ class DigestCommand extends ContainerAwareCommand
 		$digest      = $em->getRepository('VidalMainBundle:Digest')->get();
 		$specialties = $digest->getSpecialties();
 		$step        = 40;
-		$sleep       = 55;
+		$sleep       = 0;
 
 		# пользователи
 		$qb = $em->createQueryBuilder();
