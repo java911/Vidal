@@ -104,7 +104,7 @@ class DigestCommand extends ContainerAwareCommand
 		$digest      = $em->getRepository('VidalMainBundle:Digest')->get();
 		$specialties = $digest->getSpecialties();
 		$step        = 40;
-		$sleep       = 0;
+		$sleep       = 55;
 
 		# пользователи
 		$qb = $em->createQueryBuilder();
@@ -150,7 +150,7 @@ class DigestCommand extends ContainerAwareCommand
 			$template2 = $templating->render('VidalMainBundle:Digest:template2.html.twig', array('user' => $users[$i]));
 			$template  = $template1 . $template2;
 
-			//$this->send($users[$i]['username'], $users[$i]['firstName'], $template, $subject);
+			$this->send($users[$i]['username'], $users[$i]['firstName'], $template, $subject);
 
 			# обновляем пользователя
 			$em->createQuery('UPDATE VidalMainBundle:User u SET u.send=1 WHERE u.id = :id')
@@ -240,13 +240,13 @@ class DigestCommand extends ContainerAwareCommand
 		$mail->addCustomHeader('Precedence', 'bulk');
 
 		if ($local) {
-			$mail->Host       = 'smtp.gmail.com';
-			$mail->From       = 'binacy@gmail.com';
+			$mail->Host       = 'smtp.yandex.ru';
+			$mail->From       = 'binacy@yandex.ru';
 			$mail->SMTPSecure = 'ssl';
 			$mail->Port       = 465;
 			$mail->SMTPAuth   = true;
-			$mail->Username   = 'binacy@gmail.com';
-			$mail->Password   = '2q32q3q2';
+			$mail->Username   = 'binacy@yandex.ru';
+			$mail->Password   = 'oijoijoij';
 		}
 
 		$result = $mail->send();

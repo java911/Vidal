@@ -35,12 +35,12 @@ class EmailService
 		else {
 			//$mail->SMTPDebug  = 2;
 			$mail->Host       = 'smtp.yandex.ru';
-			$mail->From       = 'binarya@yandex.ru';
+			$mail->From       = 'binacy@yandex.ru';
 			$mail->SMTPSecure = 'ssl';
 			$mail->Port       = 465;
 			$mail->SMTPAuth   = true;
-			$mail->Username   = 'binarya@yandex.ru';
-			$mail->Password   = 'ijoijojy';
+			$mail->Username   = 'binacy@yandex.ru';
+			$mail->Password   = 'oijoijoij';
 		}
 
 		# устанавливаем содержимое письма
