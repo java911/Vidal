@@ -33,7 +33,7 @@ class EmailService
 			$mail->From = $from;
 		}
 		else {
-			$mail->SMTPDebug  = 2;
+			//$mail->SMTPDebug  = 2;
 			$mail->Host       = 'smtp.gmail.com';
 			$mail->From       = '7binary@list.ru';
 			$mail->SMTPSecure = 'ssl';

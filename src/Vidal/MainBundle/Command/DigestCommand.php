@@ -150,7 +150,7 @@ class DigestCommand extends ContainerAwareCommand
 			$template2 = $templating->render('VidalMainBundle:Digest:template2.html.twig', array('user' => $users[$i]));
 			$template  = $template1 . $template2;
 
-			$this->send($users[$i]['username'], $users[$i]['firstName'], $template, $subject);
+			//$this->send($users[$i]['username'], $users[$i]['firstName'], $template, $subject);
 
 			# обновляем пользователя
 			$em->createQuery('UPDATE VidalMainBundle:User u SET u.send=1 WHERE u.id = :id')
