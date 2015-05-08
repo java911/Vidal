@@ -380,10 +380,6 @@ class ProductRepository extends EntityRepository
 				$where .= "(p.RusName2 LIKE '$word%' OR p.EngName LIKE '$word%' OR p.RusName2 LIKE '% $word%' OR p.EngName LIKE '% $word%' OR p.RusName2 LIKE '%-$word' OR p.EngName LIKE '%-$word')";
 			}
 
-			# включать ли бады
-			$qb->where('p.ProductTypeCode IN (:productTypes)')
-				->setParameter('productTypes', $productTypes);
-
 			$productsRaw = $qb
 				->andWhere('p.MarketStatusID IN (1,2,7)')
 				->andWhere('p.inactive = FALSE')
