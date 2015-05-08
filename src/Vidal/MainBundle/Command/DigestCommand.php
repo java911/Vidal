@@ -240,13 +240,13 @@ class DigestCommand extends ContainerAwareCommand
 		$mail->addCustomHeader('Precedence', 'bulk');
 
 		if ($local) {
-			$mail->Host       = 'smtp.gmail.com';
-			$mail->From       = 'binacy@gmail.com';
+			$mail->Host       = 'smtp.yandex.ru';
+			$mail->From       = 'binacy@yandex.ru';
 			$mail->SMTPSecure = 'ssl';
 			$mail->Port       = 465;
 			$mail->SMTPAuth   = true;
-			$mail->Username   = 'binacy@gmail.com';
-			$mail->Password   = '2q32q3q2';
+			$mail->Username   = 'binacy@yandex.ru';
+			$mail->Password   = 'oijoijoij';
 		}
 
 		$result = $mail->send();

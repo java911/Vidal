@@ -63,6 +63,11 @@
 						<a href="{{ path('sonata_admin_dashboard') }}" class="dotted">Панель администратора</a>
 					</li>
 				{% endif %}
+				{% if is_granted('ROLE_SUPERADMIN') %}
+					<li>
+						<a href="{{ path('delivery') }}" class="dotted">Рассылка</a>
+					</li>
+				{% endif %}
 				{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_QA') %}
 					<li id="qanswer">
 						<a href="{{ path('qa_admin') }}" class="dotted">Ответы</a>

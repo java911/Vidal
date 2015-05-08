@@ -1,14 +1,15 @@
-{% extends 'VidalMainBundle::layout.html.twig' %}
+{% extends 'VidalMainBundle::layout_blank.html.twig' %}
 
 
-{% block title %}
-	<h1>{{ title }}</h1>
-{% endblock %}
+{% block content %}
+	<div class="controls">
+		<a class="control" href="{{ path('delivery_control') }}" title="Управление рассылкой">Управление</a>
+		<a class="control" href="{{ path('delivery_test') }}"
+		   title="Отправить на тестовые e-mail адреса">Тестовая рассылка</a>
+	</div>
 
-
-{% block middle %}
 	<div class="outer">
-		{% for msg in app.session.flashbag.get('test') %}
+		{% for msg in app.session.flashbag.get('msg') %}
 			<div class="msg">{{ msg }}</div>
 		{% endfor %}
 
@@ -33,12 +34,6 @@
 		{{ form_widget(form.text) }}
 		{{ form_widget(form) }}
 	</form>
-
-	{% if digest.progress %}
-		<div class="progress">Рассылка запущена</div>
-	{% else %}
-
-	{% endif %}
 
 	{# Подписанные и отписавшиеся #}
 	<div class="subs">
@@ -79,17 +74,12 @@
 	{{ parent() }}
 	<style type="text/css">
 		.outer {
-			margin: 40px 0;
-		}
-		.progress {
-			background: lightgreen;
-			padding:    6px 10px;
-			margin:     20px 0 10px;
+			margin: 0 0 20px;
 		}
 		.msg {
-			background:    lightgreen;
+			background:    rgb(193, 232, 214);
 			padding:       6px 10px;
-			margin-bottom: 15px;
+			margin-bottom: 25px;
 		}
 		#delivery_form select, #delivery_form input[type="text"], #delivery_form input[type="number"] {
 			width: 600px;
@@ -129,9 +119,23 @@
 			width:       18px;
 			height:      18px;
 		}
-		.btn-red {
-			width:         325px;
-			border-radius: 4px;
+		.controls {
+			text-align: center;
+			margin-bottom: 28px;
+		}
+		.control {
+			display:          inline-block;
+			text-decoration:  none;
+			font-weight:      bold;
+			color:            #2e3f51;
+			margin-right:     6px;
+			height:           24px;
+			line-height:      24px;
+			border:           1px solid #2e3f51;
+			padding:          0 7px;
+			border-radius:    4px;
+			background-color: white;
+			vertical-align:   top;
 		}
 	</style>
 {% endblock %}
@@ -142,14 +146,4 @@
 	<script src="{{ asset('bundles/vidalmain/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('bundles/vidalmain/ckeditor/adapters/jquery.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('bundles/vidalmain/javascripts/ckeditor-config.js') }}"></script>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$('#delivery_form select').chosen({
-				search_contains:           true,
-				no_results_text:           "не найдено",
-				placeholder_text_single:   "Выберите",
-				placeholder_text_multiple: "Выберите"
-			});
-		});
-	</script>
 {% endblock %}

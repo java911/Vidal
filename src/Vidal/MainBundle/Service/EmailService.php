@@ -33,14 +33,14 @@ class EmailService
 			$mail->From = $from;
 		}
 		else {
-			$mail->SMTPDebug  = 2;
-			$mail->Host       = 'smtp.gmail.com';
-			$mail->From       = '7binary@list.ru';
+			//$mail->SMTPDebug  = 2;
+			$mail->Host       = 'smtp.yandex.ru';
+			$mail->From       = 'binacy@yandex.ru';
 			$mail->SMTPSecure = 'ssl';
-			$mail->Port       = 587;
+			$mail->Port       = 465;
 			$mail->SMTPAuth   = true;
-			$mail->Username   = '7binacy@gmail.com';
-			$mail->Password   = 'ijoijojg';
+			$mail->Username   = 'binacy@yandex.ru';
+			$mail->Password   = 'oijoijoij';
 		}
 
 		# устанавливаем содержимое письма
