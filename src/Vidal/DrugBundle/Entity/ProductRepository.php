@@ -18,7 +18,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE p.ProductID = :ProductID
 				AND p.MarketStatusID IN (1,2,7)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.ProductTypeCode NOT IN (\'SUBS\')
 				AND p.inactive = FALSE
 		')->setParameter('ProductID', $ProductID)
 			->getOneOrNullResult();
@@ -69,7 +69,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d = :DocumentID
 				AND p.MarketStatusID IN (1,2,7)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.ProductTypeCode NOT IN (\'SUBS\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('DocumentID', $DocumentID)
@@ -86,7 +86,7 @@ class ProductRepository extends EntityRepository
 			JOIN d.portfolios portfolio WITH portfolio.id = :portfolioId
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE p.MarketStatusID IN (1,2,7)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.ProductTypeCode NOT IN (\'SUBS\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('portfolioId', $portfolio->getId())
@@ -103,7 +103,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d IN (:DocumentIDs)
 				AND p.MarketStatusID IN (1,2,7)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.ProductTypeCode NOT IN (\'SUBS\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('DocumentIDs', $documentIds)
@@ -137,7 +137,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE m IN (:moleculeIds)
 				AND p.MarketStatusID IN (1,2,7)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.ProductTypeCode NOT IN (\'SUBS\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('moleculeIds', $moleculeIds)
@@ -155,7 +155,7 @@ class ProductRepository extends EntityRepository
 			JOIN p.atcCodes a WITH a = :ATCCode
 			LEFT JOIN p.document d
 			WHERE p.MarketStatusID IN (1,2,7)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.ProductTypeCode NOT IN (\'SUBS\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('ATCCode', $ATCCode)
@@ -175,6 +175,7 @@ class ProductRepository extends EntityRepository
 			->join('d.nozologies', 'n')
 			->join('n.articles', 'a')
 			->where('p.MarketStatusID IN (1,2,7)')
+			->andWhere('p.ProductTypeCode NOT IN (\'SUBS\')')
 			->andWhere('p.inactive = FALSE')
 			->andWhere('a.id = :articleId')
 			->andWhere('d.ArticleID IN (2,5)')
@@ -200,7 +201,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN p.document d
 			WHERE g = :ClPhGroupsID
 				AND p.MarketStatusID IN (1,2,7)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.ProductTypeCode NOT IN (\'SUBS\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('ClPhGroupsID', $ClPhGroupsID)
@@ -219,7 +220,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN p.document d
 			WHERE mn.MoleculeID = :MoleculeID
 				AND p.MarketStatusID IN (1,2,7)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.ProductTypeCode NOT IN (\'SUBS\')
 				AND p.inactive = FALSE
 			ORDER BY d.ArticleID ASC
 		')->setParameter('MoleculeID', $MoleculeID)
@@ -244,7 +245,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN VidalDrugBundle:Country co WITH i.CountryCode = co
 			WHERE c = :CompanyID
 				AND p.MarketStatusID IN (1,2,7)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.ProductTypeCode NOT IN (\'SUBS\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('CompanyID', $CompanyID)
@@ -274,7 +275,7 @@ class ProductRepository extends EntityRepository
 			JOIN d.infoPages i
 			WHERE i.InfoPageID = :InfoPageID
 				AND p.MarketStatusID IN (1,2,7)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.ProductTypeCode NOT IN (\'SUBS\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('InfoPageID', $InfoPageID)
@@ -283,14 +284,14 @@ class ProductRepository extends EntityRepository
 
 	public function findAutocomplete()
 	{
-		$products = $this->_em->createQuery("
+		$products = $this->_em->createQuery('
 			SELECT DISTINCT p.RusName, p.EngName
 			FROM VidalDrugBundle:Product p
 			WHERE p.MarketStatusID IN (1,2,7)
-				AND p.ProductTypeCode IN ('DRUG','GOME','BAD')
+				AND p.ProductTypeCode NOT IN (\'SUBS\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
-		")->getResult();
+		')->getResult();
 
 		$productNames = array();
 
@@ -433,7 +434,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d IN (:documentIds)
 				AND p.MarketStatusID IN (1,2,7)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.ProductTypeCode NOT IN (\'SUBS\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('documentIds', $documentIds)
@@ -477,7 +478,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d IN (:documentIds)
 				AND p.MarketStatusID IN (1,2,7)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.ProductTypeCode NOT IN (\'SUBS\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('documentIds', $documentIds)
@@ -508,7 +509,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d.ClPhGrName = :description
 				AND p.MarketStatusID IN (1,2,7)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.ProductTypeCode NOT IN (\'SUBS\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('description', $description)
@@ -526,7 +527,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN p.document d
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE p.MarketStatusID IN (1,2,7)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.ProductTypeCode NOT IN (\'SUBS\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('id', $id)
@@ -540,7 +541,7 @@ class ProductRepository extends EntityRepository
 		$qb->select('DISTINCT g.Name, g.id')
 			->from('VidalDrugBundle:Product', 'p')
 			->join('p.phthgroups', 'g')
-			->where("p.MarketStatusID IN (1,2,7) AND p.ProductTypeCode IN ('DRUG','GOME') AND p.inactive = FALSE")
+			->where("p.MarketStatusID IN (1,2,7) AND p.ProductTypeCode NOT IN ('SUBS') AND p.inactive = FALSE")
 			->orderBy('g.Name', 'ASC');
 
 		# поиск по всем словам словам
@@ -576,7 +577,7 @@ class ProductRepository extends EntityRepository
 				$where .= "(g.Name LIKE '$word%' OR g.Name LIKE '% $word%')";
 			}
 
-			$qb->where("p.MarketStatusID IN (1,2,7) AND p.ProductTypeCode IN ('DRUG','GOME') AND p.inactive = FALSE");
+			$qb->where("p.MarketStatusID IN (1,2,7) AND p.ProductTypeCode NOT IN ('SUBS') AND p.inactive = FALSE");
 			$qb->andWhere($where);
 			$groups = $qb->getQuery()->getResult();
 		}
@@ -604,13 +605,13 @@ class ProductRepository extends EntityRepository
 		}
 
 		if ($type == 'p') {
-			$qb->andWhere('p.ProductTypeCode IN (\'DRUG\',\'GOME\')');
+			$qb->andWhere('p.ProductTypeCode NOT IN (\'SUBS\', \'BAD\')');
 		}
 		elseif ($type == 'b') {
 			$qb->andWhere('p.ProductTypeCode = \'BAD\'');
 		}
 		else {
-			$qb->andWhere('p.ProductTypeCode IN (\'DRUG\',\'GOME\',\'BAD\')');
+			$qb->andWhere('p.ProductTypeCode NOT IN (\'SUBS\')');
 		}
 
 		if ($nonPrescription) {
@@ -653,7 +654,7 @@ class ProductRepository extends EntityRepository
 			JOIN d.clphPointers pointer
 			WHERE pointer = :id
 				AND p.MarketStatusID IN (1,2,7)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.ProductTypeCode NOT IN (\'SUBS\')
 				AND p.inactive = FALSE
 				AND d.ArticleID IN (1,2,3,4,5)
 			ORDER BY p.RusName ASC
@@ -672,17 +673,17 @@ class ProductRepository extends EntityRepository
 
 	public function countByCompanyID($CompanyID)
 	{
-		return $this->_em->createQuery("
+		return $this->_em->createQuery('
 			SELECT COUNT(DISTINCT p.ProductID)
 			FROM VidalDrugBundle:Product p
 			JOIN VidalDrugBundle:ProductCompany pc WITH pc.ProductID = p
 			JOIN VidalDrugBundle:Company c WITH pc.CompanyID = c
 			WHERE c = :CompanyID
 				AND p.MarketStatusID IN (1,2,7)
-				AND p.ProductTypeCode IN ('DRUG','GOME')
+				AND p.ProductTypeCode NOT IN (\'SUBS\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
-		")->setParameter('CompanyID', $CompanyID)
+		')->setParameter('CompanyID', $CompanyID)
 			->getSingleScalarResult();
 	}
 
@@ -699,7 +700,7 @@ class ProductRepository extends EntityRepository
 			LEFT JOIN VidalDrugBundle:MarketStatus ms WITH ms.MarketStatusID = p.MarketStatusID
 			WHERE d IN (:DocumentIDs)
 				AND p.MarketStatusID IN (1,2,7)
-				AND p.ProductTypeCode IN (\'DRUG\',\'GOME\')
+				AND p.ProductTypeCode NOT IN (\'SUBS\')
 				AND p.inactive = FALSE
 			ORDER BY p.RusName ASC
 		')->setParameter('DocumentIDs', $documentIds)
@@ -714,13 +715,13 @@ class ProductRepository extends EntityRepository
 
 		switch ($t) {
 			case 'p':
-				$where = "('DRUG', 'GOME')";
+				$where = "('DRUG', 'GOME', 'ALRG', 'DIAG', 'SRED')";
 				break;
 			case 'b':
 				$where = "('BAD')";
 				break;
 			default:
-				$where = "('DRUG', 'GOME', 'BAD')";
+				$where = "('DRUG', 'GOME', 'ALRG', 'DIAG', 'SRED', 'BAD')";
 		}
 
 		if ($n) {
@@ -1017,14 +1018,6 @@ class ProductRepository extends EntityRepository
 		$then      = mb_substr($string, 1, $strlen - 1, $encoding);
 
 		return mb_strtoupper($firstChar, $encoding) . $then;
-	}
-
-	private function sortByDate($a, $b)
-	{
-		$dateA = $a->getDate();
-		$dateB = $b->getDate();
-
-		return $dateA == $dateB ? 0 : ($dateA < $dateB ? 1 : -1);
 	}
 
 	private function findParentATC($atcCode)
