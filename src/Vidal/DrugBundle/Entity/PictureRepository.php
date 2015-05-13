@@ -76,7 +76,7 @@ class PictureRepository extends EntityRepository
 				ORDER BY prod.ProductID DESC, pp.YearEdition DESC
 			')->setParameter('productIds', $productIds)
 				->setParameter('year', $year)
-					->getResult();
+				->getResult();
 		}
 		else {
 			$picturesRaw = $this->_em->createQuery('
@@ -98,6 +98,31 @@ class PictureRepository extends EntityRepository
 			if (!isset($pictures[$key])) {
 				$path           = preg_replace('/.+\\\\JPG\\\\/', '', $picturesRaw[$i]['path']);
 				$pictures[$key] = $path;
+			}
+		}
+
+		$products = $this->_em->createQuery('
+			SELECT p.ProductID, p.photo, p.photo2, p.photo3, p.photo4
+			FROM VidalDrugBundle:Product p
+			WHERE p.ProductID IN (:productIds)
+				AND (p.photo IS NOT NULL OR p.photo2 IS NOT NULL OR p.photo3 IS NOT NULL OR p.photo4 IS NOT NULL)
+		')->setParameter('productIds', $productIds)
+			->getResult();
+
+		foreach ($products as $product) {
+			$key = $product['ProductID'];
+
+			if ($product['photo']) {
+				$pictures[$key] = $product['photo'];
+			}
+			elseif ($product['photo2']) {
+				$pictures[$key] = $product['photo2'];
+			}
+			elseif ($product['photo3']) {
+				$pictures[$key] = $product['photo3'];
+			}
+			elseif ($product['photo4']) {
+				$pictures[$key] = $product['photo4'];
 			}
 		}
 

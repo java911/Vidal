@@ -53,9 +53,9 @@
 	{% if document is defined %}
 		{% include 'VidalDrugBundle:Vidal:document_conditions.html.twig' %}
 
-	{#{% else %}#}
+		{#{% else %}#}
 		{#<div class="conditions">#}
-			{#{{ render(controller('VidalMainBundle:Market:button', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}#}
+		{#{{ render(controller('VidalMainBundle:Market:button', { 'drugId' :  product is defined ?  product.ProductID : document.DocumentID , 'isDocs' : ( product is defined ? 'false' : 'true' ) })) }}#}
 		{#</div>#}
 	{% endif %}
 
@@ -77,12 +77,14 @@
 
 	{# Изображения препарата #}
 	{% if not product.hidePhoto %}
-		{% if product.photo %}
+		{% if product.photo or product.photo2 or product.photo3 or product.photo4 %}
 			<div class="pictures block">
-				<a href="{{ product.photo.path }}" target="_blank">
-					<img src="{{ product.photo.path }}"/>
-				</a>
-				{% if product.photo3 %}
+				{% if product.photo %}
+					<a href="{{ product.photo.path }}" target="_blank">
+						<img src="{{ product.photo.path }}"/>
+					</a>
+				{% endif %}
+				{% if product.photo2 %}
 					<a href="{{ product.photo2.path }}" target="_blank">
 						<img src="{{ product.photo2.path }}"/>
 					</a>
@@ -90,6 +92,11 @@
 				{% if product.photo3 %}
 					<a href="{{ product.photo3.path }}" target="_blank">
 						<img src="{{ product.photo3.path }}"/>
+					</a>
+				{% endif %}
+				{% if product.photo4 %}
+					<a href="{{ product.photo4.path }}" target="_blank">
+						<img src="{{ product.phot4.path }}"/>
 					</a>
 				{% endif %}
 			</div>
@@ -285,8 +292,8 @@
 			<div class="block-head">Форма выпуска, состав и упаковка</div>
 			<div class="block-content composition">
 				{{ Composition|replace({
-				'[PRING]':'<i class"pring">Вспомогательные вещества</i>:',
-				'&loz;':'<img class="loz" src="'~loz~'" title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>'
+					'[PRING]':'<i class"pring">Вспомогательные вещества</i>:',
+					'&loz;':'<img class="loz" src="'~loz~'" title="Препарат разрешен к применению в качестве средств безрецептурного отпуска"/>'
 				})|raw }}
 			</div>
 		</div>
@@ -423,7 +430,8 @@
 {% block javascripts %}
 	{{ parent() }}
 	<script type="text/javascript" src="{{ asset('bundles/vidalmain/fancybox/source/jquery.fancybox.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('bundles/vidalmain/placeholder/jquery.placeholder.min.js') }}"></script>
+	<script type="text/javascript"
+			src="{{ asset('bundles/vidalmain/placeholder/jquery.placeholder.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/jquery.form.min.js') }}"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {

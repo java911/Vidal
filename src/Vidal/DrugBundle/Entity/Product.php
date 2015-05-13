@@ -167,6 +167,12 @@ class Product
 	 */
 	protected $photo3;
 
+	/**
+	 * @ORM\Column(type="array", nullable=true)
+	 * @FileStore\UploadableField(mapping="product_photo")
+	 */
+	protected $photo4;
+
 	/** @ORM\Column(type="boolean") */
 	protected $inactive = false;
 
@@ -1006,5 +1012,21 @@ class Product
 	public function setPhoto2($photo2)
 	{
 		$this->photo2 = $photo2;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPhoto4()
+	{
+		return $this->photo4;
+	}
+
+	/**
+	 * @param mixed $photo4
+	 */
+	public function setPhoto4($photo4)
+	{
+		$this->photo4 = $photo4;
 	}
 }
