@@ -100,9 +100,18 @@ $(document).ready(function() {
 		}
 	});
 
+	$('.pharm-article .text a').each(function() {
+		var href = this.getAttribute('href');
+
+		if (href.substr(0, 2) == '#_') {
+			var id = $(this).closest('.pharm-article').attr('data');
+			var newHref = href + '_' + id;
+		}
+	});
+
 	$('.text a').click(function() {
 		var id = this.getAttribute('href').substring(2);
-		$('#' + id).closest('.text .spoiler-content').show();
+		$('#' + id).closest('.spoiler-content').show();
 	});
 
 	$('.block table, .text table, .text img, .block img').not('.products-table').each(function() {
