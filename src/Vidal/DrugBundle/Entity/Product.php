@@ -155,6 +155,18 @@ class Product
 	 */
 	protected $photo;
 
+	/**
+	 * @ORM\Column(type="array", nullable=true)
+	 * @FileStore\UploadableField(mapping="product_photo")
+	 */
+	protected $photo2;
+
+	/**
+	 * @ORM\Column(type="array", nullable=true)
+	 * @FileStore\UploadableField(mapping="product_photo")
+	 */
+	protected $photo3;
+
 	/** @ORM\Column(type="boolean") */
 	protected $inactive = false;
 
@@ -962,5 +974,37 @@ class Product
 	public function getRusName2()
 	{
 		return $this->RusName2;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPhoto3()
+	{
+		return $this->photo3;
+	}
+
+	/**
+	 * @param mixed $photo3
+	 */
+	public function setPhoto3($photo3)
+	{
+		$this->photo3 = $photo3;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPhoto2()
+	{
+		return $this->photo2;
+	}
+
+	/**
+	 * @param mixed $photo2
+	 */
+	public function setPhoto2($photo2)
+	{
+		$this->photo2 = $photo2;
 	}
 }

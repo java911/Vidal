@@ -58,16 +58,12 @@
 				<div>
 					{% if isAdmin %}
 						<a class="admin-edit fade" target="_blank"
-						   href="{{ path('admin_vidal_drug_artcategory_edit', {'id':type.id}) }}">
+						   href="{{ path('admin_vidal_drug_artcategory_edit', {'id':category.id}) }}">
 							<img src="{{ asset('bundles/vidalmain/images/edit.png') }}"/>
 						</a>
 					{% endif %}
 					<a class="link"
 					   href="{{ path('art', {'url':[rubrique.url, type.url, category.url]|join('/') }) }}">{{ category.title }}</a>
-
-					{% if category.announce is not empty %}
-						<div class="announce">{{ type.announce|raw }}</div>
-					{% endif %}
 				</div>
 			{% endfor %}
 		{% elseif item.is == 'category' %}

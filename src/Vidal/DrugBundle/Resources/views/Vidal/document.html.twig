@@ -82,6 +82,16 @@
 				<a href="{{ product.photo.path }}" target="_blank">
 					<img src="{{ product.photo.path }}"/>
 				</a>
+				{% if product.photo3 %}
+					<a href="{{ product.photo2.path }}" target="_blank">
+						<img src="{{ product.photo2.path }}"/>
+					</a>
+				{% endif %}
+				{% if product.photo3 %}
+					<a href="{{ product.photo3.path }}" target="_blank">
+						<img src="{{ product.photo3.path }}"/>
+					</a>
+				{% endif %}
 			</div>
 		{% elseif pictures is defined and pictures is not empty %}
 			<div class="pictures block">

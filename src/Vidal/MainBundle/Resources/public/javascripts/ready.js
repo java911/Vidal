@@ -102,7 +102,7 @@ $(document).ready(function() {
 
 	$('.text a').click(function() {
 		var id = this.getAttribute('href').substring(2);
-		$('#' + id).closest('.spoiler-content').show();
+		$('#' + id).closest('.text .spoiler-content').show();
 	});
 
 	$('.block table, .text table, .text img, .block img').not('.products-table').each(function() {

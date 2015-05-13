@@ -44,8 +44,14 @@ class IndexController extends Controller
 		return $params;
 	}
 
+	/** @Route("/otvety_specialistov", name="qa_redirect") */
+	public function redirectQa()
+	{
+		return $this->redirect($this->generateUrl('qa'), 301);
+	}
+
 	/**
-	 * @Route("/otvety_specialistov", name="qa")
+	 * @Route("/otvety_farmakologov", name="qa")
 	 * @Template("VidalMainBundle:Index:qa.html.twig")
 	 */
 	public function qaAction(Request $request)
@@ -91,7 +97,7 @@ class IndexController extends Controller
 				$em->refresh($faq);
 
 				$this->get('email.service')->send(
-					$this->container->getParameter('manager_emails'),
+					array_diff($this->container->getParameter('manager_emails'), array('olesya2383@mail.ru.')),
 					array('VidalMainBundle:Email:qa_question.html.twig', array('faq' => $faq)),
 					'Вопрос на сайте vidal.ru'
 				);
@@ -103,7 +109,7 @@ class IndexController extends Controller
 		$qaPagination = $this->get('knp_paginator')->paginate($qus, $request->query->get('p', 1), 10);
 
 		return array(
-			'title'           => 'Ответы специалистов',
+			'title'           => 'Ответы фармакологов',
 			'menu_left'       => 'qa',
 			'questionAnswers' => $qus,
 			'form'            => $form->createView(),
@@ -112,8 +118,14 @@ class IndexController extends Controller
 		);
 	}
 
+	/** @Route("/otvety_specialistov/asked/{id}", name="qa_asked_redirect") */
+	public function redirectQaAsked($id)
+	{
+		return $this->redirect($this->generateUrl('qa_asked', array('id' => $id)), 301);
+	}
+
 	/**
-	 * @Route("/otvety_specialistov/asked/{id}", name="qa_asked")
+	 * @Route("/otvety_farmakologov/asked/{id}", name="qa_asked")
 	 * @Template("VidalMainBundle:Index:qa_asked.html.twig")
 	 */
 	public function qaAskedAction($id)
@@ -173,7 +185,7 @@ class IndexController extends Controller
 
 	/**
 	 * @Secure(roles="ROLE_QA")
-	 * @Route("/otvety_specialistov_doctor_edit/{faqId}", name="qa_admin_edit")
+	 * @Route("/otvety_farmakologov_doctor_edit/{faqId}", name="qa_admin_edit")
 	 * @Template()
 	 */
 	public function doctorAnswerEditAction(Request $request, $faqId)
@@ -181,6 +193,7 @@ class IndexController extends Controller
 		$em       = $this->getDoctrine()->getManager();
 		$faq      = $em->getRepository('VidalMainBundle:QuestionAnswer')->findOneById($faqId);
 		$question = $faq->getQuestion();
+
 		if ($faq->getAnswer() == null) {
 			$builder = $this->createFormBuilder($faq);
 			$builder
