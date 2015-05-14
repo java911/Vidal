@@ -24,7 +24,7 @@ $(document).ready(function() {
 			select:    function(event, ui) {
 				if (ui.item) {
 					$('#bad').prop('checked')
-						? window.location = Routing.generate('search', {'q': ui.item.value, 'bad':'on'})
+						? window.location = Routing.generate('search', {'q': ui.item.value, 'bad': 'on'})
 						: window.location = Routing.generate('search', {'q': ui.item.value});
 				}
 			}
@@ -101,17 +101,37 @@ $(document).ready(function() {
 	});
 
 	$('.pharm-article .text a').each(function() {
-		var href = this.getAttribute('href');
+		var href = $(this).attr('href');
 
 		if (href.substr(0, 2) == '#_') {
-			var id = $(this).closest('.pharm-article').attr('data');
-			var newHref = href + '_' + id;
+			var data = $(this).closest('.pharm-article').attr('data');
+			$(this).attr('data', data);
 		}
 	});
 
 	$('.text a').click(function() {
-		var id = this.getAttribute('href').substring(2);
-		$('#' + id).closest('.spoiler-content').show();
+		var id = $(this).attr('href').substring(2);
+		var data = $(this).closest('.pharm-article').attr('data');
+		if (data) {
+			$(this).closest('.pharm-article').find('.spoiler-content').show()
+				.closest('.spoiler').find('.spoiler-toggle').removeClass('show-icon').addClass('hide-icon');
+		}
+		else {
+			$('#' + id).closest('.spoiler-content').show()
+				.closest('.spoiler').find('.spoiler-toggle').removeClass('show-icon').addClass('hide-icon');
+		}
+	});
+
+	$('.spoiler').click(function() {
+		var $content = $(this).find('.spoiler-content');
+		if ($content.css('display') == 'none') {
+			$(this).find('.spoiler-toggle').removeClass('show-icon').addClass('hide-icon');
+			$content.slideDown();
+		}
+		else {
+			$(this).find('.spoiler-toggle').removeClass('hide-icon').addClass('show-icon');
+			$content.slideUp();
+		}
 	});
 
 	$('.block table, .text table, .text img, .block img').not('.products-table').each(function() {
