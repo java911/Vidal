@@ -109,22 +109,22 @@ class PictureRepository extends EntityRepository
 		')->setParameter('productIds', $productIds)
 			->getResult();
 
-//		foreach ($products as $product) {
-//			$key = $product['ProductID'];
-//
-//			if ($product['photo']) {
-//				$pictures[$key] = $product['photo'];
-//			}
-//			elseif ($product['photo2']) {
-//				$pictures[$key] = $product['photo2'];
-//			}
-//			elseif ($product['photo3']) {
-//				$pictures[$key] = $product['photo3'];
-//			}
-//			elseif ($product['photo4']) {
-//				$pictures[$key] = $product['photo4'];
-//			}
-//		}
+		foreach ($products as $product) {
+			$key = $product['ProductID'];
+
+			if ($product['photo']) {
+				$pictures[$key] = $product['photo'];
+			}
+			elseif ($product['photo2']) {
+				$pictures[$key] = $product['photo2'];
+			}
+			elseif ($product['photo3']) {
+				$pictures[$key] = $product['photo3'];
+			}
+			elseif ($product['photo4']) {
+				$pictures[$key] = $product['photo4'];
+			}
+		}
 
 		return $pictures;
 	}
