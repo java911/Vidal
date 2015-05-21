@@ -10,10 +10,75 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Lsw\SecureControllerBundle\Annotation\Secure;
 use Vidal\MainBundle\Entity\Digest;
+use Vidal\MainBundle\Entity\Delivery;
+use Vidal\MainBundle\Entity\DeliveryOpen;
 
 /** @Secure(roles="ROLE_SUPERADMIN") */
 class DeliveryController extends Controller
 {
+	/**
+	 * Открыли письмо - записали в БД и вернули как бы картинку
+	 * @Route("digest/opened/{digestName}/{doctorId}")
+	 */
+	public function deliveryOpened($deliveryName, $doctorId)
+	{
+		$em       = $this->getDoctrine()->getManager();
+		$delivery = $em->getRepository('EvrikaMainBundle:Delivery')->findOneByName($deliveryName);
+		$user   = $em->getRepository('EvrikaMainBundle:Doctor')->findOneById($doctorId);
+
+		if (null == $delivery || null == $user) {
+			throw $this->createNotFoundException();
+		}
+
+		$do = new DeliveryOpen();
+		$do->setUser($user);
+		$do->setDelivery($delivery);
+		$em->persist($do);
+		$em->flush();
+
+		$imagePath = $this->get('kernel')->getRootDir() . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR
+			. 'web' . DIRECTORY_SEPARATOR . 'bundles' . DIRECTORY_SEPARATOR . 'vidalmain' . DIRECTORY_SEPARATOR
+			. 'images' . DIRECTORY_SEPARATOR . 'delivery' . DIRECTORY_SEPARATOR . '1px.png';
+
+		$file = readfile($imagePath);
+
+		$headers = array(
+			'Content-Type'        => 'image/png',
+			'Content-Disposition' => 'inline; filename="1px.png"'
+		);
+
+		return new Response($file, 200, $headers);
+	}
+
+	public function deliveriesAction()
+	{
+		$em         = $this->getDoctrine()->getManager();
+		$deliveries = $em->getRepository('VidalMainBundle:Delivery')->findAll();
+
+		return $this->render('VidalMainBundle:Delivery:deliveries.html.twig', array(
+			'deliveries' => $deliveries,
+		));
+	}
+
+	/**
+	 * @Route("/delivery/add", name="delivery_add")
+	 * @Template("VidalMainBundle:Delivery:add.html.twig")
+	 */
+	public function addAction()
+	{
+		$delivery = new Delivery();
+
+		$form = $this->createFormBuilder()
+			->add('name', 'null', array('label' => 'Код рассылки', 'requered' => true))
+			->add('subject', 'null', array('label' => 'Заголовок письма', 'requered' => true))
+			->add('template', 'null', array('label' => 'Шаблон письма', 'requered' => true))
+			->getForm();
+
+		return array(
+			'form' => $form->createView()
+		);
+	}
+
 	/** @Route("/delivery/reset", name="delivery_reset") */
 	public function deliveryResetAction()
 	{

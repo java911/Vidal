@@ -204,6 +204,9 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	/** @ORM\Column(type = "boolean") */
 	protected $send = false;
 
+	/** @ORM\OneToMany(targetEntity="DeliveryOpen", mappedBy="user") */
+	protected $deliveryOpen;
+
 	public function __construct()
 	{
 		$this->confirmationScan = array();
@@ -216,6 +219,7 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 		$this->confirmation     = false;
 		$this->unsubscribed     = false;
 		$this->roles            = 'ROLE_UNCONFIRMED';
+		$this->deliveryOpen     = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -1152,5 +1156,37 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 	public function setDigestUnsubscribed($digestUnsubscribed)
 	{
 		$this->digestUnsubscribed = $digestUnsubscribed;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSend()
+	{
+		return $this->send;
+	}
+
+	/**
+	 * @param mixed $send
+	 */
+	public function setSend($send)
+	{
+		$this->send = $send;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDeliveryOpen()
+	{
+		return $this->deliveryOpen;
+	}
+
+	/**
+	 * @param mixed $deliveryOpen
+	 */
+	public function setDeliveryOpen($deliveryOpen)
+	{
+		$this->deliveryOpen = $deliveryOpen;
 	}
 }

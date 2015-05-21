@@ -1,0 +1,8 @@
+{% if deliveries is not empty %}
+	<ul>
+		{% for d in deliveries %}
+			<li>{{ d.subject }}</li>
+		{% endfor %}
+	</ul>
+	<a href="{{ path('delivery_add') }}">Создать</a>
+{% endif %}

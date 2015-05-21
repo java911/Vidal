@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+{% set isAdmin = app.user and is_granted('ROLE_ADMIN') %}
+{% set route = app.request.get('_route') %}
+<html lang="ru">
+<head>
+	<meta charset="UTF-8"/>
+	<link rel="shortcut icon" href="{{ asset('favicon.ico') }}?v=2"/>
+
+	{% block meta %}
+		<title>{{ title }}</title>
+	{% endblock %}
+
+	{% block stylesheets %}
+		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/stylesheets/common.min.css') }}"/>
+		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/jquery-chosen/chosen.min.css') }}"/>
+		<link rel="stylesheet" type="text/css" href="{{ asset('bundles/vidalmain/checkbox/checkbox.css') }}"/>
+		<link rel="stylesheet" type="text/css"
+			  href="{{ asset('bundles/vidalmain/jquery-ui/jquery-ui-1.10.4.custom.min.css') }}"/>
+		<style type="text/css">
+			.wrapper {
+				margin-bottom: 40px;
+			}
+			.header td {
+				border-top:    none;
+				border-bottom: 6px solid #b70039;
+			}
+			.header-last {
+				text-align: right;
+			}
+			.header-last h1 {
+				margin:    0;
+				font-size: 30px;
+			}
+			.main {
+				width:           100%;
+				border-collapse: collapse;
+			}
+			.main .deliveries {
+				border-right: 2px solid #eee;
+			}
+			.controls {
+				text-align:    center;
+				margin-bottom: 28px;
+			}
+			.control {
+				display:          inline-block;
+				text-decoration:  none;
+				font-weight:      bold;
+				color:            #2e3f51;
+				margin-right:     6px;
+				height:           24px;
+				line-height:      24px;
+				border:           1px solid #2e3f51;
+				padding:          0 7px;
+				border-radius:    4px;
+				background-color: white;
+				vertical-align:   top;
+			}
+		</style>
+	{% endblock %}
+
+	{% block javascripts %}
+		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/jquery-1.11.0.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('bundles/vidalmain/javascripts/coockie.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('bundles/vidalmain/checkbox/jquery.checkbox.js') }}"></script>
+		<script type="text/javascript"
+				src="{{ asset('bundles/vidalmain/jquery-chosen/chosen.jquery.min.js') }}"></script>
+		<script type="text/javascript"
+				src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+		<script type="text/javascript"
+				src="{{ asset('bundles/vidalmain/jquery-ui/jquery-ui-1.10.4.custom.min.js') }}"></script>
+	{% endblock %}
+</head>
+
+<body>
+<div id="wrapper" class="wrapper">
+	{% block header %}
+		<div class="header">
+			<table>
+				<tr>
+					<td class="header-1">
+						<a href="{{ path('index') }}" class="header-link">
+							<img src="{{ asset('bundles/vidalmain/images/vidal.png') }}"/>
+						</a>
+					</td>
+					<td class="header-last">
+						<h1>{{ title }}</h1>
+					</td>
+				</tr>
+			</table>
+		</div>
+	{% endblock %}
+
+	<div class="outer">
+		{% for msg in app.session.flashbag.get('msg') %}
+			<div class="msg">{{ msg }}</div>
+		{% endfor %}
+	</div>
+
+	{% block table %}
+		<table class="main">
+			<tr>
+				<td class="deliveries">{{ render(controller('VidalMainBundle:Delivery:deliveries')) }}</td>
+				<td class="content">{% block content %}{% endblock %}</td>
+			</tr>
+		</table>
+	{% endblock %}
+</div>
+
+</body>
+</html>

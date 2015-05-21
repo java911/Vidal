@@ -41,11 +41,15 @@ class Specialty
 	/** @ORM\ManyToMany(targetEntity="Digest", mappedBy="specialties") */
 	protected $digests;
 
+	/** @ORM\ManyToMany(targetEntity="Digest", mappedBy="specialties") */
+	protected $deliveries;
+
 	public function __construct()
 	{
 		$this->primarySpecialties   = new ArrayCollection();
 		$this->secondarySpecialties = new ArrayCollection();
 		$this->digests              = new ArrayCollection();
+		$this->deliveries           = new ArrayCollection();
 	}
 
 	public function __toString()
@@ -173,5 +177,21 @@ class Specialty
 	public function setDigests($digests)
 	{
 		$this->digests = $digests;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDeliveries()
+	{
+		return $this->deliveries;
+	}
+
+	/**
+	 * @param mixed $deliveries
+	 */
+	public function setDeliveries($deliveries)
+	{
+		$this->deliveries = $deliveries;
 	}
 }
