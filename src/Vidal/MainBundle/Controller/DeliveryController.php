@@ -79,6 +79,21 @@ class DeliveryController extends Controller
 		);
 	}
 
+	/**
+	 * @Route("/delivery/preview", name="delivery_preview")
+	 * @Template("VidalMainBundle:Digest:preview.html.twig")
+	 */
+	public function previewAction()
+	{
+		return array();
+	}
+
+	/**************************************************************************************************************/
+
+	/**************************************************************************************************************/
+
+	/**************************************************************************************************************/
+
 	/** @Route("/delivery/reset", name="delivery_reset") */
 	public function deliveryResetAction()
 	{
