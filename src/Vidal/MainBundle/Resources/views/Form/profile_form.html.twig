@@ -135,6 +135,17 @@
 					<h1 id="work">РАБОТА</h1></div>
 				</td>
 			</tr>
+		{% elseif name == 'submit3' %}
+			{% set img = app.user.confirmationScan %}
+			{% if img and is_file(img.path) and app.user.countConfirmationSent %}
+				<tr>
+					<td>
+						<a href="{{ img.path }}" style="display: inline-block; position: relative; margin-top:-86px; border:1px solid #ccc;">
+							<img src="{{ img.path }}" style="max-width:160px; max-height:200px;"/>
+						</a>
+					</td>
+				</tr>
+			{% endif %}
 		{% endif %}
 
 	{% endspaceless %}

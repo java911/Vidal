@@ -187,6 +187,17 @@ class AuthController extends Controller
 			$em->flush();
 			$this->get('session')->getFlashBag()->add('saved', '');
 
+			if (!empty($_FILES['profile']['name']['ConfirmationScan']['file'])) {
+				# отправить письмо Максимилиану, что загрузили скан
+				$this->get('email.service')->send(
+					$user->getUsername(),
+					array('VidalMainBundle:Email:scan_uploaded.html.twig', array('user' => $user)),
+					'Сертификат специалиста был загружен пользователем',
+					'7binary@bk.ru'
+					//'m.vlasenko@vidal.ru'
+				);
+			}
+
 			return $this->redirect($this->generateUrl('profile'));
 		}
 
