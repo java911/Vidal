@@ -193,8 +193,7 @@ class AuthController extends Controller
 					$user->getUsername(),
 					array('VidalMainBundle:Email:scan_uploaded.html.twig', array('user' => $user)),
 					'Сертификат специалиста был загружен пользователем',
-					'7binary@bk.ru'
-					//'m.vlasenko@vidal.ru'
+					'm.vlasenko@vidal.ru'
 				);
 			}
 
