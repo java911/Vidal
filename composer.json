@@ -42,7 +42,8 @@
 		"ornicar/apc-bundle": "1.0.*",
 		"liuggio/excelbundle": "~2.0",
 		"elasticsearch/elasticsearch": "~1.0",
-		"antimattr/google-bundle": "~2.0"
+		"antimattr/google-bundle": "~2.0",
+		"liip/theme-bundle": "dev-master"
 	},
 
 	"scripts": {

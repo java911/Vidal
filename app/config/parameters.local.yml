@@ -1,0 +1,21 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: null
+    database_vidal: twigavid_vidal
+    database_drug: twigavid_drug
+    database_veterinar: twigavid_veterinar
+    database_user: root
+    database_password: null
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    locale: ru
+    secret: 1a104c5b6fb4f4f4a081ac1e3a0b1a612
+    manager_emails:
+        - 7binary@bk.ru
+    portal: «Vidal.ru»
+    upload_dir: '%kernel.root_dir%/../web/upload'
+    session_path: 'C:/wamp/session'
