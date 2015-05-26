@@ -13,6 +13,7 @@
 if (!defined('GETID3_OS_ISWINDOWS')) {
 	define('GETID3_OS_ISWINDOWS', (stripos(PHP_OS, 'WIN') === 0));
 }
+
 // Get base path of getID3() - ONCE
 if (!defined('GETID3_INCLUDEPATH')) {
 	define('GETID3_INCLUDEPATH', dirname(__FILE__).DIRECTORY_SEPARATOR);
